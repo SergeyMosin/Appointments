@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+    <id>appointments</id>
+    <name>Appointments</name>
+    <summary>Book appointments into you calendar via secure online form.</summary>
+    <description><![CDATA[Book appointments into you calendar via secure online form. Attendees can confirm or cancel appointments via an email link.]]></description>
+    <version>0.1.2</version>
+    <licence>agpl</licence>
+    <author mail="sergey@srgdev.com" homepage="https://www.srgdev.com">Sergey Mosin</author>
+    <namespace>Appointments</namespace>
+    <category>office</category>
+    <category>organization</category>
+    <category>tools</category>
+    <bugs>https://www.srgdev.com/lab</bugs>
+    <dependencies>
+        <nextcloud min-version="15" max-version="20"/>
+    </dependencies>
+    <repair-steps>
+        <install>
+            <step>OCA\Appointments\InstallHook</step>
+        </install>
+    </repair-steps>
+    <navigations>
+        <navigation>
+            <name>Appointments</name>
+            <route>appointments.page.index</route>
+        </navigation>
+    </navigations>
+</info>

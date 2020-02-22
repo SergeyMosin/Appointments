@@ -1,0 +1,187 @@
+.srgdev-ncfp-wrap{
+  text-align: center;
+  width: 100%;
+}
+.srgdev-appt-info-cont,
+.srgdev-ncfp-form{
+  display: inline-block;
+  margin: 2em 1em 1em;
+  padding: 1.5em;
+  border: 1px solid $color-border;
+  text-align: left;
+  vertical-align: top;
+}
+
+.srgdev-ncfp-form-org{
+  margin: 0;
+  line-height: 1.2;
+}
+.srgdev-ncfp-form-addr{
+  color: $color-text-lighter;
+  margin-bottom: .75em;
+  line-height: 1.25;
+}
+.srgdev-ncfp-form-header{
+  font-weight: bold;
+  padding: 0 0 .35em;
+  border-bottom: 1px solid $color-border;
+  margin-top: 0;
+}
+.srgdev-ncfp-form-main-cont{
+  width: 18em;
+  margin: 0 auto;
+}
+.srgdev-ncfp-form-label{
+  display: block;
+  margin: 1em 0 0;
+}
+.srgdev-ncfp-form-input{
+  display: block;
+  width: 100%;
+  margin: 0 !important;
+}
+.srgdev-ncfp-form-btn{
+  display: block;
+  margin: 1.5em 0 0;
+}
+#srgdev-ncfp_sel-dummy{
+  cursor: pointer;
+  background: var(--icon-triangle-s-000) no-repeat right 4px center;
+}
+// Because it is a read-only input, the setCustomValidity() does not work
+#srgdev-ncfp_sel-dummy[err]{
+  box-shadow: none !important;
+  border-color: var(--color-error) !important;
+}
+#srgdev-ncfp_sel_cont{
+  position: relative;
+}
+
+$time-cont-width:7.5em;
+#srgdev-dpu_main-cont{
+  left: 0;
+  right: 2px;
+  top: 85%;
+  position: absolute;
+  padding-right: $time-cont-width;
+  box-shadow: 1px 1px 3px $color-box-shadow;
+  overflow: hidden;
+  background: $color-main-background;
+  display: none;
+}
+#srgdev-dpu_main-cont[data-open]{
+  display: block;
+}
+#srgdev-dpu_main-date{
+  background: $color-main-background;
+  position: relative;
+  min-height: 10.75em;
+  border-right: 1px solid $color-border;
+  z-index: 520;
+}
+.srgdev-dpu-date-cont{
+  padding: .32em 1.5em .38em 1em;
+  border-bottom: 1px solid $color-border;
+  cursor: pointer;
+  position: relative;
+  color: $color-text-light;
+}
+.srgdev-dpu-date-cont:before,
+.srgdev-dpu-date-cont:after{
+  content: '';
+  display: none;
+  position: absolute;
+  height: 50%;
+  width: 100%;
+  right: 0;
+  z-index: 0;
+  background: $color-primary;
+}
+.srgdev-dpu-date-cont:before{
+  top: 0;
+  border-bottom: thin solid $color-primary;
+  transform-origin:  right top;
+  transform: skewX(16deg);
+}
+.srgdev-dpu-date-cont:after{
+  //top: 50%;
+  //border-top: thin solid $color-primary;
+  bottom: 0;
+  transform-origin: right bottom;
+  transform: skewX(-16deg);
+}
+
+.srgdev-dpu-date-cont[data-active]{
+  background: $color-primary;
+  color: $color-primary-text;
+}
+.srgdev-dpu-date-cont[data-active]:before,
+.srgdev-dpu-date-cont[data-active]:after{
+  display: block;
+}
+
+.srgdev-dpu-date-cont:last-child{
+  border: none;
+}
+.srgdev-dpu-date-wd,
+.srgdev-dpu-date-md{
+  display: block;
+  line-height: 1.2;
+  cursor: pointer;
+  position: relative;
+}
+.srgdev-dpu-date-wd{
+  font-weight: bold;
+  opacity: .95;
+  z-index: 1;
+}
+.srgdev-dpu-date-md{
+  padding: .1em 0 0;
+  font-size: 92%;
+  z-index: 2;
+ }
+.srgdev-dpu-time-cont{
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: $time-cont-width;
+  right: $time-cont-width;
+  overflow: hidden;
+  background: $color-main-background;
+  transition: transform .5s;
+}
+.srgdev-dpu-time-cont[data-active]{
+  transform: translateX(100%);
+  z-index: 510;
+  overflow-y: scroll;
+}
+
+.srgdev-dpu-time-unit{
+  display: block;
+  margin: .3em .5em;
+  text-align: center;
+  cursor: pointer;
+}
+.srgdev-dpu-time-unit:hover{
+  color: $color-primary;;
+  font-weight: bold;
+}
+
+
+// ---- THANK YOU NOTE ------
+
+.srgdev-appt-info-cont{
+  margin-top: 3em;
+  max-width: 40em;
+}
+.srgdev-appt-info-cont>h1{
+  font-size: 125%;
+  font-weight: bold;
+}
+.srgdev-appt-info-cont>*{
+  margin: 1em 0;
+}
+.srgdev-appt-err-a{
+  color: $color-primary;
+  text-decoration: underline;
+}

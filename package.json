@@ -1,0 +1,48 @@
+{
+  "name": "appointments",
+  "version": "0.0.1",
+  "license": "agpl",
+  "private": true,
+  "scripts": {
+    "dev": "webpack --config webpack.dev.js",
+    "watch": "webpack --progress --watch --config webpack.dev.js",
+    "build": "webpack --progress --hide-modules --config webpack.prod.js"
+  },
+  "dependencies": {
+    "@nextcloud/axios": "^1.3.1",
+    "@nextcloud/l10n": "^1.0.1",
+    "@nextcloud/logger": "^1.1.1",
+    "@nextcloud/vue": "1.2.7",
+    "nextcloud-vue": "^0.13.0",
+    "nextcloud-vue-collections": "^0.7.1",
+    "vue": "^2.6.11",
+    "vue2-datepicker": "^3.3.0",
+    "vue-clipboard2": "^0.3.1"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.3",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "@vue/test-utils": "^1.0.0-beta.31",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^10.0.3",
+    "babel-jest": "^25.1.0",
+    "babel-loader": "^8.0.6",
+    "browserslist-config-nextcloud": "0.1.0",
+    "css-loader": "^3.4.2",
+    "file-loader": "^5.0.2",
+    "node-sass": "^4.13.1",
+    "regenerator-runtime": "^0.13.3",
+    "sass-loader": "^8.0.2",
+    "terser-webpack-plugin": "^2.3.2",
+    "vue-jest": "^3.0.5",
+    "vue-loader": "^15.8.3",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-merge": "^4.2.2"
+  }
+}

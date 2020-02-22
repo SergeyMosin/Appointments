@@ -1,0 +1,308 @@
+.srgdev-icon-override{
+	background-image: url("/svg/core/places/calendar?color=222");
+	background-image: var(--srgdev-dot-img);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.srgdev_com_circle .action-button__icon--url{
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 8px;
+}
+
+.srgdev-appt-cal-view-cont{
+	display: block;
+	margin: 0;
+	white-space: nowrap;
+	max-width: 100%;
+	overflow: scroll;
+	text-align: center;
+}
+
+.srgdev-appt-cal-view-col{
+	display: inline-block;
+	vertical-align: top;
+	width: 19%;
+	min-width: 7em;
+	max-width: 12em;
+	white-space: normal;
+	text-align: left;
+}
+.srgdev-appt-cal-view-cell{
+	display: block;
+	position: relative;
+	color: $color-primary-text;
+	border: 1px solid $color-border;
+	border-radius: 4px;
+	overflow: hidden;
+	/*border-bottom: 1px solid #eee;*/
+}
+.srgdev-appt-cell-txt{
+	padding: 0 0 0 .4em;
+	font-size: 80%;
+	font-weight: bold;
+	white-space: nowrap;
+	display: block;
+	overflow: hidden;
+	margin-right: .25em;
+	text-overflow: ellipsis;
+}
+.srgdev-appt-cell-txt>span{
+	opacity: .8;
+}
+
+.srgdev-appt-cell-bkr{
+	position: absolute;
+	display: block;
+	z-index: -1;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	opacity: .5;
+}
+.srgdev-appt-cal-view-head{
+	background-color: $color-main-background;
+	color: $color-main-text;
+	border-radius: 0;
+}
+.srgdev-appt-cell30{
+	height: 2.5em;
+}
+.srgdev-appt-cell45{
+	height: 3.75em;
+}
+.srgdev-appt-cell60{
+	height: 5em;
+}
+.srgdev-appt-cell-lunch{
+	background-color: $color-main-background;
+	color: $color-text-lighter;
+}
+.srgdev-appt-cell-lunch_past{
+	background-color: $color-main-background;
+	color: $color-text-maxcontrast;
+}
+.srgdev-appt-cell-txt>span.srgdev-appt-lunch-time{
+	opacity: .6;
+	white-space: normal;
+}
+.srgdev-appt-cell-past{
+	background-color: rgba($color-main-background, .8);
+	color: $color-text-light;
+}
+.srgdev-appt-cell-past .srgdev-appt-cell-txt{
+	opacity: .5;
+}
+.srgdev-appt-cal-view-btns{
+	margin: 1em 0;
+}
+.srgdev-appt-modal_content {
+	min-width: 50vw;
+	text-align: center;
+	margin: 3em 1em;
+}
+
+.srgdev-appt-modal-lbl{
+	margin: 1em 0;
+}
+$srgdev-prog-height:3px;
+
+.srgdev-appt-modal-slider{
+	position:relative;
+	width:90%;
+	overflow: hidden;
+	margin: 1em auto;
+	height: 1.5em;
+}
+
+.srgdev-appt-slider-line,
+.srgdev-appt-slider-inc,
+.srgdev-appt-slider-dec{
+	position:absolute;
+	height:$srgdev-prog-height;
+	background: $color-primary;
+	width:100%;
+	left:0;
+}
+
+.srgdev-appt-slider-line{
+	opacity: .2;
+}
+
+.srgdev-appt-slider-inc{
+	animation: increase 1.8s infinite;
+}
+.srgdev-appt-slider-dec{
+	animation: decrease 2s 0.5s infinite;
+}
+
+@keyframes increase {
+	from { transform: translateX(-50%) scaleX(.1); }
+	to { transform: translateX(130%) scaleX(1);}
+}
+@keyframes decrease {
+	from { transform: translateX(-80%) scaleX(.8); }
+	to { transform: translateX(110%) scaleX(.1);}
+}
+
+
+.srgdev-appt-main-sec{
+	display: block;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	padding-top: 4.25em;
+	box-sizing: border-box;
+}
+.srgdev-appt-main-frame-cont{
+	width: 100%;
+	height: 100%;
+}
+.srgdev-appt-main-frame {
+	width: 100%;
+	min-height: 100%;
+	display: block;
+	margin: 0 auto;
+}
+.srgdev-appt-main-info{
+	padding: .5em 0;
+	border-bottom: 1px solid $color-border;
+	text-align: center;
+	position: absolute;
+	width: 100%;
+	top: 0;
+}
+.srgdev-appt-main-info > *{
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
+
+@import "../node_modules/@nextcloud/vue/src/assets/variables.scss";
+
+
+
+.appt-stn-input-form {
+	opacity: $opacity_normal;
+	display: flex;
+	.appt-stn-input-field {
+		border-color: var(--color-border-dark);
+	}
+}
+
+$stn-txt-input-margin: 4px;
+
+.appt-stn-txt-cont{
+	display: flex;
+	align-items: flex-start;
+
+	width: 100%;
+	height: auto;
+	margin: 0;
+	padding: 0;
+
+	cursor: pointer;
+	white-space: nowrap;
+
+	opacity: $opacity_normal;
+	color: var(--color-main-text);
+	border: 0;
+	border-radius: 0; // otherwise Safari will cut the border-radius area
+	background-color: transparent;
+	box-shadow: none;
+
+	font-weight: normal;
+	line-height: $clickable-area;
+}
+
+.appt-stn-txt-form{
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+
+	position: relative;
+	margin: $stn-txt-input-margin 0;
+}
+input.appt-stn-txt-submit{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	// bottom-right corner
+	position: absolute;
+	bottom: 1px;
+	right: 1px;
+	width: #{$clickable-area - $stn-txt-input-margin * 2};
+	height: #{$clickable-area - $stn-txt-input-margin * 2};
+	margin: 0;
+	padding: 7px 6px;
+
+	cursor: pointer;
+
+	opacity: $opacity_full;
+	color: var(--color-text-lighter);
+	border: 0;
+	border-radius: 50%;
+	/* Avoid background under border */
+	background-color: var(--color-main-background);
+	background-clip: padding-box;
+}
+input.appt-stn-txt-submit:active{
+	background-color: var(--color-primary-element) !important;
+}
+textarea.appt-stn-txt-ta{
+	flex: 1 1 auto;
+
+	min-height: #{$clickable-area * 2 - $stn-txt-input-margin * 7}; /* twice the element margin-y */
+	max-height: #{$clickable-area * 3 - $stn-txt-input-margin * 2}; /* twice the element margin-y */
+	// block width widening
+	min-width: $clickable-area * 4;
+	width: 100%;
+	margin: 0;
+	color: var(--color-main-text);
+
+	// if disabled, change cursor
+	&:disabled {
+		cursor: default;
+	}
+}
+
+//.srgdev-appt-help-sec{
+//
+//}
+.srgdev-appt-hs-inner{
+	margin: 3em 4.5em;
+	line-height: 1.2;
+}
+
+.srgdev-appt-hs-h1{
+	font-size: 120%;
+	font-weight: bold;
+	margin: .75em 0 0;
+}
+.srgdev-appt-hs-p{
+	margin: .25em 0 0;
+}
+
+@media only screen and (max-width: $breakpoint-mobile) {
+	.srgdev-app-content{
+		max-width: 100%;
+	}
+	.srgdev-appt-cal-view-cont {
+		margin-left: 3.25em;
+		//margin-top: 0;
+		margin-right: 0;
+		max-width: 100%;
+		//text-align: right;
+	}
+	.srgdev-appt-cal-view-col{
+		width: 18%;
+	}
+	.srgdev-appt-hs-inner{
+		margin: 4em 1em 0;
+	}
+
+}
