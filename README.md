@@ -1,13 +1,12 @@
 # Appointments
-Place this app in **nextcloud/apps/**
 
-
-![Image Screenshot1](https://github.com/SergeyMosin/Appointments/blob/master/screenshots/screenshot1.jpg)
+![Image Screenshot1](screenshots/screenshot1.jpg)
 
 ---
 
-![Image Screenshot1](https://github.com/SergeyMosin/Appointments/blob/master/screenshots/screenshot2.jpg)
+![Image Screenshot1](screenshots/screenshot2.jpg)
 
+Place this app in **nextcloud/apps/**
 
 ## Building the app
 
