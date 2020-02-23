@@ -8,14 +8,14 @@
         f.addEventListener("submit",formSubmit)
 
         // chrome bfcache
-        setTimeout(function (){f.autocomplete="on"},1000);
+        setTimeout(function (){f.autocomplete="on"},1000)
 
 
         makeDpu()
         document.getElementById("srgdev-ncfp_sel-dummy").addEventListener("click",selClick)
 
         setTimeout(function () {
-            let b=document.getElementById("srgdev-ncfp_fbtn");
+            let b=document.getElementById("srgdev-ncfp_fbtn")
             b.disabled=true;
             b.textContent="Session Timeout. Reload."
         },900000)
