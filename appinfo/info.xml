@@ -12,7 +12,7 @@
     <category>office</category>
     <category>organization</category>
     <category>tools</category>
-    <bugs>https://www.srgdev.com/lab</bugs>
+    <bugs>https://github.com/SergeyMosin/Appointments/issues</bugs>
     <dependencies>
         <nextcloud min-version="15" max-version="20"/>
     </dependencies>
