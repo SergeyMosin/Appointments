@@ -1,3 +1,8 @@
+## 1.0.5 - 2020-02-25
+### Fixed
+- Dark theme
+- Persist tokens after update 
+
 ## 1.0.4 - 2020-02-25
 ### Fixed
 - Token verify bug
