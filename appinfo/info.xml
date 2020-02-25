@@ -13,6 +13,10 @@
     <category>organization</category>
     <category>tools</category>
     <bugs>https://github.com/SergeyMosin/Appointments/issues</bugs>
+    <repository>https://github.com/SergeyMosin/Appointments</repository>
+    <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/21afcc9c0fa2971c1ac7005d441fc66cbdf41344/screenshots/screenshot1.jpg</screenshot>
+    <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/21afcc9c0fa2971c1ac7005d441fc66cbdf41344/screenshots/screenshot2.jpg</screenshot>
+    <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/21afcc9c0fa2971c1ac7005d441fc66cbdf41344/screenshots/screenshot3.jpg</screenshot>
     <dependencies>
         <nextcloud min-version="15" max-version="20"/>
     </dependencies>
