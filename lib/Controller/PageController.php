@@ -252,6 +252,7 @@ class PageController extends Controller {
      */
     private function verifyToken($token){
         if(empty($token) || strlen($token)>256) return false;
+        $token=str_replace("_","/",$token);
         $key=hex2bin($this->c->getAppValue($this->appName, 'hk'));
         $iv=hex2bin($this->c->getAppValue($this->appName, 'tiv'));
         if(empty($key) || empty($iv)){
@@ -273,7 +274,10 @@ class PageController extends Controller {
         if(empty($key) || empty($iv)){
             throw new \ErrorException("Can't find key");
         }
-        return urlencode($this->encrypt(hash ( 'adler32' , $uid,true).$uid,$key,$iv));
+//        return urlencode($this->encrypt(hash ( 'adler32' , $uid,true).$uid,$key,$iv));
+        return urlencode(str_replace("/","_",
+                $this->encrypt(hash ( 'adler32' , $uid,true).$uid,$key,$iv),)
+        );
     }
 
     /**
