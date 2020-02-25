@@ -16,6 +16,13 @@ class InstallHook{
      * @param IUserManager $um
      */
     public function __construct($AppName,$UserId,IConfig $config,IAccountManager $am,IUserManager $um){
+
+
+
+        // TODO: check if the value already set, othervice update breaks everything ...
+
+
+
         $config->setAppValue($AppName, 'hk',
             bin2hex(openssl_random_pseudo_bytes(32,$is_good)));
         $config->setAppValue($AppName, 'tiv',
@@ -38,7 +45,6 @@ class InstallHook{
         $email=$u->getEMailAddress();
 
 
-        // TODO: check if the value already set, othervice update breaks...
         $config->setUserValue(
             $UserId,
             $AppName,

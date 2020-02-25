@@ -1,0 +1,38 @@
+$namespace: 'mx' !default;
+
+$default-color: var(--color-main-text) !default;
+$primary-color: var(--color-primary) !default;
+$color-main-background: var(--color-main-background);
+
+$dt_default-color: var(--color-main-text) !default;
+$dt_primary-color: var(--color-primary) !default;
+$dt_primary-color-light: var(--color-primary-light) !default;
+
+
+$today-color: $dt_default-color !default;
+
+$popup-z-index: 2001 !default;
+
+$input-border-color: var(--color-border) !default;
+$input-color: $dt_default-color !default;
+$input-hover-border-color: $dt_primary-color !default;
+
+$disabled-color: var(--color-text-lighter) !default;
+$disabled-background-color: var(--color-background-alternate) !default;
+
+$border-color: var(--color-border) !default;
+
+$calendar-active-color: $dt_default-color !default;
+$calendar-active-background-color: var(--color-primary-element) !default;
+
+$calendar-hover-color: $dt_default-color !default;
+$calendar-hover-background-color: var(--color-background-hover) !default;
+
+$calendar-in-range-color: $dt_default-color !default;
+$calendar-in-range-background-color: $dt_primary-color-light !default;
+
+$time-active-color: $dt_default-color !default;
+$time-active-background-color: $dt_primary-color !default;
+
+$time-hover-color: $dt_default-color !default;
+$time-hover-background-color: var(--color-background-hover) !default;

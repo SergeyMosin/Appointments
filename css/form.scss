@@ -8,6 +8,7 @@
   margin: 2em 1em 1em;
   padding: 1.5em;
   border: 1px solid $color-border;
+  border: 1px solid var(--color-border);
   text-align: left;
   vertical-align: top;
 }
@@ -18,6 +19,8 @@
 }
 .srgdev-ncfp-form-addr{
   color: $color-text-lighter;
+  color: var(--color-text-lighter);
+
   margin-bottom: .75em;
   line-height: 1.25;
 }
@@ -65,26 +68,35 @@ $time-cont-width:7.5em;
   position: absolute;
   padding-right: $time-cont-width;
   box-shadow: 1px 1px 3px $color-box-shadow;
+  box-shadow: 1px 1px 3px var(--color-box-shadow);
   overflow: hidden;
-  background: $color-main-background;
   display: none;
 }
+
+.srgdev-dpu-bkr-cls{
+  background: $color-main-background;
+  background-color: var(--color-main-background);
+}
+
 #srgdev-dpu_main-cont[data-open]{
   display: block;
 }
+
 #srgdev-dpu_main-date{
-  background: $color-main-background;
   position: relative;
   min-height: 10.75em;
   border-right: 1px solid $color-border;
+  border-right: 1px solid var(--color-border);
   z-index: 520;
 }
 .srgdev-dpu-date-cont{
   padding: .32em 1.5em .38em 1em;
   border-bottom: 1px solid $color-border;
+  border-bottom: 1px solid var(--color-border);
   cursor: pointer;
   position: relative;
   color: $color-text-light;
+  color: var(--color-text-light);
 }
 .srgdev-dpu-date-cont:before,
 .srgdev-dpu-date-cont:after{
@@ -96,10 +108,12 @@ $time-cont-width:7.5em;
   right: 0;
   z-index: 0;
   background: $color-primary;
+  background: var(--color-primary);
 }
 .srgdev-dpu-date-cont:before{
   top: 0;
   border-bottom: thin solid $color-primary;
+  border-bottom: thin solid var(--color-primary);
   transform-origin:  right top;
   transform: skewX(16deg);
 }
@@ -113,7 +127,9 @@ $time-cont-width:7.5em;
 
 .srgdev-dpu-date-cont[data-active]{
   background: $color-primary;
+  background: var(--color-primary);
   color: $color-primary-text;
+  color: var(--color-primary-text);
 }
 .srgdev-dpu-date-cont[data-active]:before,
 .srgdev-dpu-date-cont[data-active]:after{
@@ -148,6 +164,7 @@ $time-cont-width:7.5em;
   right: $time-cont-width;
   overflow: hidden;
   background: $color-main-background;
+  background-color: var(--color-main-background);
   transition: transform .5s;
 }
 .srgdev-dpu-time-cont[data-active]{
@@ -163,7 +180,8 @@ $time-cont-width:7.5em;
   cursor: pointer;
 }
 .srgdev-dpu-time-unit:hover{
-  color: $color-primary;;
+  color: $color-primary;
+  color: var(--color-primary);
   font-weight: bold;
 }
 
@@ -183,5 +201,6 @@ $time-cont-width:7.5em;
 }
 .srgdev-appt-err-a{
   color: $color-primary;
+  color: var(--color-primary);
   text-decoration: underline;
 }

@@ -67,7 +67,7 @@
 <script>
     import SlideBar from "./SlideBar.vue"
     import DatePicker from 'vue2-datepicker'
-    import 'vue2-datepicker/index.css';
+    import '../../css/datepicker.css';
     import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 
     export default {

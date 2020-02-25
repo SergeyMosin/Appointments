@@ -163,9 +163,11 @@
 
         cont=document.createElement('div')
         cont.id="srgdev-dpu_main-cont"
+        cont.className="srgdev-dpu-bkr-cls"
 
         let lcd=document.createElement('div')
         lcd.id="srgdev-dpu_main-date"
+        lcd.className="srgdev-dpu-bkr-cls"
 
         let lcc=0
 
