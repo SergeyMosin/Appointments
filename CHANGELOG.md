@@ -1,4 +1,4 @@
-## 1.0.2 - 2020-02-25
+## 1.0.3 - 2020-02-25
 ### Fixed
 - Multi-user access
 - Token verification
