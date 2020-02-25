@@ -67,6 +67,9 @@ class PageController extends Controller {
 
 
 
+    /**
+     * @NoAdminRequired
+     */
     public function callist(){
 //      '{DAV:}displayname'                                           => 'displayname',
 //		'{http://apple.com/ns/ical/}refreshrate'                      => 'refreshrate',
@@ -82,7 +85,6 @@ class PageController extends Controller {
 //        $fields[] = 'components'; ??
 //        $fields[] = 'transparent'; ??
         $cals=$this->calBackend->getCalendarsForUser('principals/users/'.$this->userId);
-
         $out='';
         $l=count($cals);
         $c30=chr(30);
@@ -97,6 +99,9 @@ class PageController extends Controller {
         return substr($out,0,-1);
     }
 
+    /**
+     * @NoAdminRequired
+     */
     public function state(){
         $action = $this->request->getParam("a");
         $r=new SendDataResponse();
@@ -252,8 +257,7 @@ class PageController extends Controller {
         if(empty($key) || empty($iv)){
             throw new \ErrorException("Can't find key");
         }
-        $td=$this->decrypt(urldecode($token),$key,$iv);
-
+        $td=$this->decrypt($token,$key,$iv);
         if(strlen($td)>4 && substr($td,0,4)===hash( 'adler32', substr($td,4),true)){
             return substr($td,4);
         }else{
@@ -273,6 +277,7 @@ class PageController extends Controller {
     }
 
     /**
+     * @NoAdminRequired
      * @PublicPage
      * @NoCSRFRequired
      */
@@ -293,6 +298,7 @@ class PageController extends Controller {
     /**
      * @PublicPage
      * @NoCSRFRequired
+     * @NoAdminRequired
      */
     public function formPost(){
         $uid=$this->verifyToken($this->request->getParam("token"));
@@ -309,6 +315,7 @@ class PageController extends Controller {
 
 
     /**
+     * @NoAdminRequired
      * @PublicPage
      * @NoCSRFRequired
      */
@@ -634,6 +641,9 @@ class PageController extends Controller {
         return $tr;
     }
 
+    /**
+     * @NoAdminRequired
+     */
     public function help(){
 
 
@@ -653,7 +663,6 @@ class PageController extends Controller {
         return $data;
 
     }
-
 
     /**
      * @param $render
@@ -784,6 +793,9 @@ class PageController extends Controller {
         return $tr;
     }
 
+    /**
+     * @NoAdminRequired
+     */
     public function caladd(){
         $ds=$this->request->getParam("d");
         if($ds===null) return '1:No Key';

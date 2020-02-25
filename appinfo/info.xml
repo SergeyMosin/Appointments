@@ -5,7 +5,7 @@
     <name>Appointments</name>
     <summary>Book appointments into you calendar via secure online form.</summary>
     <description><![CDATA[Book appointments into you calendar via secure online form. Attendees can confirm or cancel their appointments via an email link.]]></description>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <licence>agpl</licence>
     <author mail="sergey@srgdev.com" homepage="https://www.srgdev.com">Sergey Mosin</author>
     <namespace>Appointments</namespace>
@@ -13,10 +13,10 @@
     <category>organization</category>
     <category>tools</category>
     <bugs>https://github.com/SergeyMosin/Appointments/issues</bugs>
-    <repository>https://github.com/SergeyMosin/Appointments</repository>
-    <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/21afcc9c0fa2971c1ac7005d441fc66cbdf41344/screenshots/screenshot1.jpg</screenshot>
-    <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/21afcc9c0fa2971c1ac7005d441fc66cbdf41344/screenshots/screenshot2.jpg</screenshot>
-    <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/21afcc9c0fa2971c1ac7005d441fc66cbdf41344/screenshots/screenshot3.jpg</screenshot>
+    <repository type="git">https://github.com/SergeyMosin/Appointments.git</repository>
+    <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/master/screenshots/screenshot1.jpg</screenshot>
+    <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/master/screenshots/screenshot2.jpg</screenshot>
+    <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/master/screenshots/screenshot3.jpg</screenshot>
     <dependencies>
         <nextcloud min-version="15" max-version="20"/>
     </dependencies>
