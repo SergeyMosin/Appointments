@@ -14,12 +14,9 @@ class InstallHook{
      * @param IConfig $config
      * @param IAccountManager $am
      * @param IUserManager $um
+     * @noinspection PhpDocMissingThrowsInspection
      */
     public function __construct($AppName,$UserId,IConfig $config,IAccountManager $am,IUserManager $um){
-
-
-
-        // TODO: check if the value already set, othervice update breaks everything ...
 
         if(empty($config->getAppValue($AppName,'hk'))){
             $config->setAppValue($AppName, 'hk',
