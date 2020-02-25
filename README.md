@@ -11,7 +11,7 @@
 ![Public View](screenshots/screenshot3.jpg)
 
 ---
-
+## Getting Started...
 #### 1. Select a Calendar
 It is recommended to create a separate calendar.
 #### 2. Enter Organization Info
