@@ -1,59 +1,24 @@
-# Appointments
+# Appointments App | NextCloud
 
-![Image Screenshot1](screenshots/screenshot1.jpg)
+![Main View](screenshots/screenshot1.jpg)
 
 ---
 
-![Image Screenshot1](screenshots/screenshot2.jpg)
+![Schedule Generator](screenshots/screenshot2.jpg)
 
-Place this app in **nextcloud/apps/**
+---
 
-## Building the app
+![Public View](screenshots/screenshot3.jpg)
 
-The app can be built by using the provided Makefile by running:
+---
 
-    make
-
-This requires the following things to be present:
-* make
-* which
-* tar: for building the archive
-* curl: used if phpunit and composer are not installed to fetch them from the web
-* npm: for building and testing everything JS, only required if a package.json is placed inside the **js/** folder
-
-The make command will install or update Composer dependencies if a composer.json is present and also **npm run build** if a package.json is present in the **js/** folder. The npm **build** script should use local paths for build systems and package managers, so people that simply want to build the app won't need to install npm libraries globally, e.g.:
-
-**package.json**:
-```json
-"scripts": {
-    "test": "node node_modules/gulp-cli/bin/gulp.js karma",
-    "prebuild": "npm install && node_modules/bower/bin/bower install && node_modules/bower/bin/bower update",
-    "build": "node node_modules/gulp-cli/bin/gulp.js"
-}
-```
-
-
-## Publish to App Store
-
-First get an account for the [App Store](http://apps.nextcloud.com/) then run:
-
-    make && make appstore
-
-The archive is located in build/artifacts/appstore and can then be uploaded to the App Store.
-
-## Running tests
-You can use the provided Makefile to run all tests by using:
-
-    make test
-
-This will run the PHP unit and integration tests and if a package.json is present in the **js/** folder will execute **npm run test**
-
-Of course you can also install [PHPUnit](http://phpunit.de/getting-started.html) and use the configurations directly:
-
-    phpunit -c phpunit.xml
-
-or:
-
-    phpunit -c phpunit.integration.xml
-
-for integration tests
+#### 1. Select a Calendar
+It is recommended to create a separate calendar.
+#### 2. Enter Organization Info
+See the Settings section for the required Organization Name, Address and Email.
+#### 3. Generate a Schedule or Add Appointments Manualy
+To add an appointment manually add a calendar event and set status to <strong>TENTATIVE</strong>, category to <strong>Appointment</strong> and time zone to <strong>floating</strong>.
+#### 4. Share the Public Link
+Enable sharing and pass along the public form link. Seven upcoming days of appointments are going to be available on the booking page.
+#### 5. Check Status in the Calendar
+Once an appointment is booked it will be visible in the calendar with "⌛ pending" status. The attendee can "✔️ Confirm" or "~~Cancel~~" the appointment via an email link, the status change will be reflected in the calendar upon page reload.
