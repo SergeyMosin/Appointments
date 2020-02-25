@@ -37,6 +37,8 @@ class InstallHook{
 
         $email=$u->getEMailAddress();
 
+
+        // TODO: check if the value already set, othervice update breaks...
         $config->setUserValue(
             $UserId,
             $AppName,

@@ -251,7 +251,7 @@ class PageController extends Controller {
      * @noinspection PhpDocMissingThrowsInspection
      */
     private function verifyToken($token){
-        if(empty($token) || strlen($token>256)) return false;
+        if(empty($token) || strlen($token)>256) return false;
         $key=hex2bin($this->c->getAppValue($this->appName, 'hk'));
         $iv=hex2bin($this->c->getAppValue($this->appName, 'tiv'));
         if(empty($key) || empty($iv)){
