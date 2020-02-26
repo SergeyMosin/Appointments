@@ -275,9 +275,8 @@ class PageController extends Controller {
             throw new \ErrorException("Can't find key");
         }
 //        return urlencode($this->encrypt(hash ( 'adler32' , $uid,true).$uid,$key,$iv));
-        return urlencode(str_replace("/","_",
-                $this->encrypt(hash ( 'adler32' , $uid,true).$uid,$key,$iv),)
-        );
+        $tkn=$this->encrypt(hash ( 'adler32' , $uid,true).$uid,$key,$iv);
+        return urlencode(str_replace("/","_",$tkn));
     }
 
     /**
