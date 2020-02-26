@@ -1,3 +1,7 @@
+## 1.0.7 - 2020-02-26
+### Fixed
+- Mostly style tweaks
+
 ## 1.0.6 - 2020-02-25
 ### Fixed
 - PHP 5 token encode error 
