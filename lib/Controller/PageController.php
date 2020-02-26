@@ -824,7 +824,17 @@ class PageController extends Controller {
         $rn="\r\n";
         $u=$this->um->get($this->userId);
 
-        $u_email=$u->getEMailAddress();
+        $u_email=$this->c->getUserValue(
+                $this->userId,
+                $this->appName,
+                self::KEY_O_EMAIL);
+
+        if(empty($u_email)) $u_email=$u->getEMailAddress();
+
+        if(empty($u_email)){
+            if($cal===null) return '1:Cant find your email';
+        }
+
         $u_name=trim($u->getDisplayName());
 
         $cr_date_rn=$data[0].$rn;
@@ -883,8 +893,8 @@ class PageController extends Controller {
                 $p++;
                 if($cc===$p){
                     $j++;
-                    $cc+=$br_u[$j]+1;
                     if($j<$br_c){
+                        $cc+=$br_u[$j]+1;
                         $e_url[$p]='-';
                         $p++;
                     }
