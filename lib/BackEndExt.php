@@ -120,8 +120,9 @@ class BackEndExt extends CalDAV\CalDavBackend{
         }
 
         $uri=$row['uri'];
-        $cd=$this->readBlob($row['calendardata']);
-        $vo=Reader::read($cd);
+//        $cd=$this->readBlob($row['calendardata']);
+        // This actually wants a resource
+        $vo=Reader::read($row['calendardata']);
 
         $evt=$vo->VEVENT;
 
@@ -218,8 +219,9 @@ class BackEndExt extends CalDAV\CalDavBackend{
         }
 
         $uri=$row['uri'];
-        $cd=$this->readBlob($row['calendardata']);
-        $vo=Reader::read($cd);
+//        $cd=$this->readBlob($row['calendardata']);
+        // This actually wants a resource
+        $vo=Reader::read($row['calendardata']);
 
         $evt=$vo->VEVENT;
 
