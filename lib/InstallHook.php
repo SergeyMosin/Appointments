@@ -31,7 +31,7 @@ class InstallHook{
 
         $u=$um->get($UserId);
 
-        if(empty($config->getUserValue($UserId,$AppName,'phone'))){
+        if(empty($config->getUserValue($UserId,$AppName,PageController::KEY_O_PHONE))){
             try {
                 $a = $am->getAccount($u);
                 $ap = $a->getProperty(IAccountManager::PROPERTY_PHONE);
@@ -42,16 +42,16 @@ class InstallHook{
             $config->setUserValue(
                 $UserId,
                 $AppName,
-                'phone',
+                PageController::KEY_O_PHONE,
                 $phone);
         }
 
-        if(empty($config->getUserValue($UserId,$AppName,'email'))) {
+        if(empty($config->getUserValue($UserId,$AppName,PageController::KEY_O_EMAIL))) {
             $email = $u->getEMailAddress();
             $config->setUserValue(
                 $UserId,
                 $AppName,
-                'email',
+                PageController::KEY_O_EMAIL,
                 empty($email) ? '' : $email);
         }
     }
