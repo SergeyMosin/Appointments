@@ -1,6 +1,10 @@
 const path = require('path')
 const webpack = require('webpack')
 const { VueLoaderPlugin } = require('vue-loader')
+const CopyPlugin = require('copy-webpack-plugin');
+
+//@import "../node_modules/@nextcloud/vue/src/assets/variables.scss";
+
 
 module.exports = {
 	entry:{
@@ -46,7 +50,11 @@ module.exports = {
 		new VueLoaderPlugin(),
 		new webpack.DefinePlugin({
 			appVersion: JSON.stringify(require('./package.json').version)
-		})
+		}),
+		new CopyPlugin([
+			{ from: 'node_modules/@nextcloud/vue/src/assets/variables.scss', to: '../css/variables.scss' },
+		]),
+
 	]
 	,
 	resolve: {

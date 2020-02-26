@@ -180,10 +180,7 @@ $srgdev-prog-height:3px;
 	margin-right: 1em;
 }
 
-
-@import "../node_modules/@nextcloud/vue/src/assets/variables.scss";
-
-
+//@import "../node_modules/@nextcloud/vue/src/assets/variables.scss";
 
 .appt-stn-input-form {
 	opacity: $opacity_normal;
@@ -242,7 +239,7 @@ input.appt-stn-txt-submit{
 
 	cursor: pointer;
 
-	opacity: $opacity_full;
+	opacity: $opacity_normal;
 	color: var(--color-text-lighter);
 	border: 0;
 	border-radius: 50%;

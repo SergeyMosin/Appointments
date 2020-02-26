@@ -1,5 +1,6 @@
 <script>
     import {AppNavigationSettings} from '@nextcloud/vue'
+
     export default {
         components: {AppNavigationSettings},
         extends: AppNavigationSettings,
