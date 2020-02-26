@@ -143,7 +143,10 @@ class BackEndExt extends CalDAV\CalDavBackend{
         $evt->DESCRIPTION->setValue($name."\n".$phone."\n".$email);
 
         if(!isset($evt->SEQUENCE)) $evt->add('SEQUENCE',1);
-        else $evt->SEQUENCE->setValue($evt->SEQUENCE+1);
+        else{
+            $sv=intval($evt->SEQUENCE->getValue());
+            $evt->SEQUENCE->setValue($sv+1);
+        }
 
         if(!isset($evt->{'LAST-MODIFIED'})) $evt->add('LAST-MODIFIED');
         $evt->{'LAST-MODIFIED'}->setValue(new \DateTime());
@@ -243,6 +246,16 @@ class BackEndExt extends CalDAV\CalDavBackend{
             $evt->SUMMARY->setValue("✔️ ".$a->parameters['CN']->getValue());
             $evt->STATUS->setValue("CONFIRMED");
         }
+
+        if(!isset($evt->SEQUENCE)) $evt->add('SEQUENCE',1);
+        else{
+            $sv=intval($evt->SEQUENCE->getValue());
+            $evt->SEQUENCE->setValue($sv+1);
+        }
+
+        if(!isset($evt->{'LAST-MODIFIED'})) $evt->add('LAST-MODIFIED');
+        $evt->{'LAST-MODIFIED'}->setValue(new \DateTime());
+
 
         $data=$vo->serialize();
 
