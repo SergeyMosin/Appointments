@@ -1,3 +1,7 @@
+## 1.0.6 - 2020-02-25
+### Fixed
+- PHP 5 token encode error 
+
 ## 1.0.5 - 2020-02-25
 ### Fixed
 - Dark theme
