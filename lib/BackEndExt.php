@@ -16,6 +16,7 @@ class BackEndExt extends CalDAV\CalDavBackend{
 
     private $_db;
     private $_dispatcher;
+    private $_logger;
 
     /**
      * BackEndExt constructor.
@@ -40,6 +41,7 @@ class BackEndExt extends CalDAV\CalDavBackend{
                                 $random,$logger, $dispatcher, $legacyEndpoint = false);
         $this->_db = $db;
         $this->_dispatcher=$dispatcher;
+        $this->_logger=$logger;
     }
 
 
@@ -118,7 +120,8 @@ class BackEndExt extends CalDAV\CalDavBackend{
         }
 
         $uri=$row['uri'];
-        $vo=Reader::read($row['calendardata']);
+        $cd=$this->readBlob($row['calendardata']);
+        $vo=Reader::read($cd);
 
         $evt=$vo->VEVENT;
 
@@ -173,7 +176,8 @@ class BackEndExt extends CalDAV\CalDavBackend{
         $stmt = $query->execute();
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
         $stmt->closeCursor();
-        if ($row === false || $data!==$row['calendardata']) {
+        $cd=$this->readBlob($row['calendardata']);
+        if ($row === false || $data!==$cd) {
             return 2;
         }else{
             return $evt->DTSTART->getValue();
@@ -214,7 +218,8 @@ class BackEndExt extends CalDAV\CalDavBackend{
         }
 
         $uri=$row['uri'];
-        $vo=Reader::read($row['calendardata']);
+        $cd=$this->readBlob($row['calendardata']);
+        $vo=Reader::read($cd);
 
         $evt=$vo->VEVENT;
 
@@ -277,112 +282,25 @@ class BackEndExt extends CalDAV\CalDavBackend{
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
         $stmt->closeCursor();
 
+        $cd=$this->readBlob($row['calendardata']);
 
-        if ($row === false || $data!==$row['calendardata']) {
+        if ($row === false || $data!==$cd) {
             return [null,2];
         }else{
             return [$evt->DTSTART->getValue(),$sts_changed];
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-//    /**
-//     * This is needed for first/last occurrence override
-//     *
-//     * @param mixed $calendarId
-//     * @param string $objectUri
-//     * @param string $calendarData
-//     * @param string $uid
-//     * @param int $first
-//     * @param int $last
-//     * @return string
-//     * @throws \Sabre\DAV\Exception\BadRequest
-//     */
-//    function createCalendarObjectCustom($calendarId, $objectUri, $calendarData, $uid, $first, $last) {
-//        $calendarType=self::CALENDAR_TYPE_CALENDAR;
-////        $extraData = $this->getDenormalizedData($calendarData);
-//        $extraData=[
-//            'etag' => md5($calendarData),
-//			'size' => strlen($calendarData),
-//			'componentType' => "VEVENT",
-//			'firstOccurence' => $first,
-//			'lastOccurence'  => $last,
-//			'uid' => $uid,
-//			'classification' => self::CLASSIFICATION_PUBLIC
-//        ];
-//
-//        $q = $this->_db->getQueryBuilder();
-//        $q->select($q->func()->count('*'))
-//            ->from('calendarobjects')
-//            ->where($q->expr()->eq('calendarid', $q->createNamedParameter($calendarId)))
-//            ->andWhere($q->expr()->eq('uid', $q->createNamedParameter($extraData['uid'])))
-//            ->andWhere($q->expr()->eq('calendartype', $q->createNamedParameter($calendarType)));
-//
-//        $result = $q->execute();
-//        $count = (int) $result->fetchColumn();
-//        $result->closeCursor();
-//
-//        if ($count !== 0) {
-//            throw new \Sabre\DAV\Exception\BadRequest('Calendar object with uid already exists in this calendar collection.');
-//        }
-//
-//        $query = $this->_db->getQueryBuilder();
-//        $query->insert('calendarobjects')
-//            ->values([
-//                'calendarid' => $query->createNamedParameter($calendarId),
-//                'uri' => $query->createNamedParameter($objectUri),
-//                'calendardata' => $query->createNamedParameter($calendarData, IQueryBuilder::PARAM_LOB),
-//                'lastmodified' => $query->createNamedParameter(time()),
-//                'etag' => $query->createNamedParameter($extraData['etag']),
-//                'size' => $query->createNamedParameter($extraData['size']),
-//                'componenttype' => $query->createNamedParameter($extraData['componentType']),
-//                'firstoccurence' => $query->createNamedParameter($extraData['firstOccurence']),
-//                'lastoccurence' => $query->createNamedParameter($extraData['lastOccurence']),
-//                'classification' => $query->createNamedParameter($extraData['classification']),
-//                'uid' => $query->createNamedParameter($extraData['uid']),
-//                'calendartype' => $query->createNamedParameter($calendarType),
-//            ])
-//            ->execute();
-//
-//        $this->updateProperties($calendarId, $objectUri, $calendarData, $calendarType);
-//
-////        if ($calendarType === self::CALENDAR_TYPE_CALENDAR) {
-//            $this->_dispatcher->dispatch('\OCA\DAV\CalDAV\CalDavBackend::createCalendarObject', new GenericEvent(
-//                '\OCA\DAV\CalDAV\CalDavBackend::createCalendarObject',
-//                [
-//                    'calendarId' => $calendarId,
-//                    'calendarData' => $this->getCalendarById($calendarId),
-//                    'shares' => $this->getShares($calendarId),
-//                    'objectData' => $this->getCalendarObject($calendarId, $objectUri),
-//                ]
-//            ));
-////        } else {
-////            $this->_dispatcher->dispatch('\OCA\DAV\CalDAV\CalDavBackend::createCachedCalendarObject', new GenericEvent(
-////                '\OCA\DAV\CalDAV\CalDavBackend::createCachedCalendarObject',
-////                [
-////                    'subscriptionId' => $calendarId,
-////                    'calendarData' => $this->getCalendarById($calendarId),
-////                    'shares' => $this->getShares($calendarId),
-////                    'objectData' => $this->getCalendarObject($calendarId, $objectUri),
-////                ]
-////            ));
-////        }
-//        $this->addChange($calendarId, $objectUri, 1, $calendarType);
-//
-//        return '"' . $extraData['etag'] . '"';
-//    }
-
-
+    public function readBlob($cardData) {
+        if (is_resource($cardData)) {
+            $sr=stream_get_contents($cardData);
+            if($sr===false){
+                $this->_logger->error("stream_get_contents() failed.");
+                return '';
+            }
+            else return $sr;
+        }
+        return $cardData;
+    }
 
 }

@@ -757,8 +757,9 @@ class PageController extends Controller {
         $ivlen = openssl_cipher_iv_length(self::CIPHER);
         $key=hex2bin($hkey);
         $c=0;
+        $be=$this->calBackend;
         while($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $cd=$row['calendardata'];
+            $cd=$be->readBlob($row['calendardata']);
             $first=(int)$row['firstoccurence'];
             $last=(int)$row['lastoccurence'];
             $diff=$last-$first;
