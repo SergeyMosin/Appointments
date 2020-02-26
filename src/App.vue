@@ -402,6 +402,9 @@
                 }
             },
             makePreviewGrid(d){
+
+                console.log(d)
+
                 const MS_DAY=86400000
                 const MS_HOUR=3600000
                 const MS_MIN=60000
