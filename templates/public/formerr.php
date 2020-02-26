@@ -7,7 +7,7 @@ style('appointments', 'form');
         <h1><?php p($l->t("An Error Has Occurred"));?></h1>
         <?php
         /** @noinspection PhpUndefinedVariableInspection */
-        if($_['appt_e_rc']==='1'){
+        if(!empty($_['appt_e_rc']) && $_['appt_e_rc']==='1'){
             echo $l->t('Please %stry again%s and select a different date.', ['<a class="srgdev-appt-err-a" href="form">', '</a>']);
         }elseif (!empty($_['appt_e_ne'])) {
             echo '<p>';
