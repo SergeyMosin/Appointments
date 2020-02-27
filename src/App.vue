@@ -117,6 +117,7 @@
         AppNavigationIconBullet,
         Modal,
     } from '@nextcloud/vue'
+    import {detectColor} from "./utils.js";
 
     import StnText from "./components/StnText.vue";
     import StnInput from "./components/StnInput.vue";
@@ -197,7 +198,7 @@
                         if(t.length===3){
                             this.setCurCal({
                                 name: t[0],
-                                clr: t[1],
+                                clr: detectColor(t[1]),
                                 url: t[2]
                             })
                         }
@@ -403,7 +404,7 @@
             },
             makePreviewGrid(d){
 
-                console.log(d)
+                // console.log(d)
 
                 const MS_DAY=86400000
                 const MS_HOUR=3600000
