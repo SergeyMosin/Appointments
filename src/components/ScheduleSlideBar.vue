@@ -5,12 +5,12 @@
     }">
         <template slot="main-area">
             <div class="appt-gen-wrap">
-            <label class="datepicker-label">Dates:</label>
+            <label class="datepicker-label">{{t('appointments','Dates:')}}</label>
             <DatePicker
                     :disabled-date="compNotBefore"
                     :appendToBody="false"
                     :popup-style="datePickerPopupStyle"
-                    placeholder="Select Dates"
+                    :placeholder="t('appointments','Select Dates')"
                     v-model="apptWeek"
                     :lang="lang"
                     @input="setToStartOfWeek"
@@ -20,27 +20,27 @@
             <DatePicker
                     :appendToBody="false"
                     :popup-style="datePickerPopupStyle"
-                    placeholder="Select Time"
+                    :placeholder="t('appointments','Select Time')"
                     v-model="apptStart"
                     :lang="lang"
                     :editable="false"
                     :format="getTimeFormat()"
                     :time-picker-options="{start: '09:00', step:'00:30' , end: '17:00', format: getTimeFormat() }"
                     type="time"></DatePicker>
-                <label for="appt-dur-select" class="select-label">Appointment Duration:</label>
+                <label for="appt-dur-select" class="select-label">{{t('appointments','Appointment Duration:')}}</label>
                 <Multiselect
                         v-model="apptDur"
                         :value="apptDur"
                         :options="apptDurOpts"
                         :searchable="false"
                         :allowEmpty="false"
-                        placeholder="Select Time"
+                        :placeholder="t('appointments','Select Time')"
                         openDirection="below"
                         track-by="min"
                         id="appt-dur-select"
                         class="dur-select"
                         label="label"/>
-                <label for="appt-dur-select2" class="select-label">Appointments per Day:</label>
+                <label for="appt-dur-select2" class="select-label">{{t('appointments','Appointments per Day:')}}</label>
                 <Multiselect
                         v-model="apptNbr"
                         :value="apptNbr"
@@ -48,13 +48,13 @@
                         :searchable="false"
                         :allowEmpty="false"
                         openDirection="above"
-                        placeholder="Select Number"
+                        :placeholder="t('appointments','Select Number')"
                         id="appt-dur-select2"
                         class="dur-select"/>
             <div class="checkbox-wrap">
             <input type="checkbox" id="srgdev-appt-cb1" class="checkbox"
                    checked="checked" v-model="apptLunch">
-            <label for="srgdev-appt-cb1">Add Launch Break</label><br>
+            <label for="srgdev-appt-cb1">{{t('appointments','Add Lunch Break')}}</label><br>
             </div>
             <button @click="goApptGen" :disabled="apptWeek===null || apptStart===null" class="primary appt-genbtn">
                 Start

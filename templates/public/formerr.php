@@ -8,7 +8,7 @@ style('appointments', 'form');
         <?php
         /** @noinspection PhpUndefinedVariableInspection */
         if(!empty($_['appt_e_rc']) && $_['appt_e_rc']==='1'){
-            echo $l->t('Please %stry again%s and select a different date.', ['<a class="srgdev-appt-err-a" href="form">', '</a>']);
+            echo $l->t('Please %1$stry again%2$s and select a different date.', ['<a class="srgdev-appt-err-a" href="form">', '</a>']);
         }elseif (!empty($_['appt_e_ne'])) {
             echo '<p>';
             // TRANSLATORS This is folowed by an email address

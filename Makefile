@@ -55,8 +55,10 @@ appstore: build-prod
 	$(project_directory)/appinfo \
 	$(project_directory)/css \
 	$(project_directory)/img \
+	$(project_directory)/js \
+	$(project_directory)/l10n \
 	$(project_directory)/lib \
 	$(project_directory)/templates \
-	$(project_directory)/js \
+	$(project_directory)/translationfiles \
 	$(project_directory)/COPYING \
 	$(project_directory)/CHANGELOG.md

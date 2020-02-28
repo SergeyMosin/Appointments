@@ -53,7 +53,7 @@
                 this.calendars=[]
                 this.$set(this.calendars,0,{
                     icon:"icon-loading",
-                    name:"Loading...",
+                    name:t('appointments',"Loading..."),
                     clr:"",
                     url:"",
                 })
@@ -79,7 +79,7 @@
                         if(l===0){
                             this.$set(this.calendars,0,{
                                 icon:"icon-error",
-                                name:"Loading...",
+                                name:this.t('appointments',"Loading..."),
                                 clr:"",
                                 url:"",
                             })

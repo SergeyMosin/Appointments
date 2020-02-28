@@ -1,3 +1,7 @@
+## 1.0.9 - 2020-02-27
+### Added
+- L10N compatibility
+
 ## 1.0.8 - 2020-02-26
 ### Fixed
 - Issue #9 (PostgreSQL related)

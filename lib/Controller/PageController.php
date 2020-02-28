@@ -235,7 +235,7 @@ class PageController extends Controller {
             $s=\OC::$server;
             $u=$s->getURLGenerator()->getBaseUrl().'/index.php'
             .$s->getAppManager()->getAppWebPath($this->appName).'/'
-            .urldecode($this->pubPrx($this->getToken($this->userId))).'form';
+            .$this->pubPrx($this->getToken($this->userId)).'form';
 
             $r->setData($u);
             $r->setStatus(200);
@@ -274,7 +274,6 @@ class PageController extends Controller {
         if(empty($key) || empty($iv)){
             throw new \ErrorException("Can't find key");
         }
-//        return urlencode($this->encrypt(hash ( 'adler32' , $uid,true).$uid,$key,$iv));
         $tkn=$this->encrypt(hash ( 'adler32' , $uid,true).$uid,$key,$iv);
         return urlencode(str_replace("/","_",$tkn));
     }
@@ -312,7 +311,7 @@ class PageController extends Controller {
     }
 
     private function pubPrx($token){
-        return 'pub/'.urlencode($token).'/';
+        return 'pub/'.$token.'/';
     }
 
 
@@ -369,25 +368,35 @@ class PageController extends Controller {
             $tr->setStatus(500);
 
         }else{
+
+            $date_time=str_replace(':00 ', ' ', $this->l->l('datetime', $ra[0], ['width' => 'medium']));
+            $org_name = $this->c->getUserValue(
+                $uid, $this->appName,
+                self::KEY_O_NAME);
+
             if($a==='1'){
-                $atx='confirmed';
+                // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Confirmed
+                $subject=$this->l->t("%s Appointment is Confirmed",[$org_name]);
+                // TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now confirmed.
+                $body=$this->l->t('Your %1$s appointment scheduled for %2$s is now confirmed.',[$org_name,$date_time]);
+                // TRANSLATORS Your {{Date Time}} appointment is confirmed.
+                $page_text=$this->l->t("Your %s appointment is confirmed.",[$date_time]);
             }else{
-                $atx='canceled';
+                // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Canceled
+                $subject=$this->l->t("%s Appointment is Canceled",[$org_name]);
+                // TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now canceled.
+                $body=$this->l->t('Your %1$s appointment scheduled for %2$s is now canceled.',[$org_name,$date_time]);
+                // TRANSLATORS Your {{Date Time}} appointment is confirmed.
+                $page_text=$this->l->t("Your %s appointment is canceled.",[$date_time]);
             }
 
             if($ra[1]===0) {
 
-                $org_name = $this->c->getUserValue(
-                    $uid, $this->appName,
-                    self::KEY_O_NAME);
-
                 // Send email
                 $tml = $this->mailer->createEMailTemplate('ID' . time());
-                $tml->setSubject($org_name . " Appointment is " . ucfirst($atx));
-                $tml->addBodyText("Your " . $org_name . " appointment scheduled for " . str_replace(
-                        ':00 ', ' ',
-                        $this->l->l('datetime', $ra[0], ['width' => 'medium'])) . " is now " . $atx . ".");
-                $tml->addBodyText("Thank You");
+                $tml->setSubject($subject);
+                $tml->addBodyText($body);
+                $tml->addBodyText($this->l->t("Thank you"));
 
                 $tml->addFooter("Booked via Nextcloud Appointments App");
 
@@ -407,10 +416,9 @@ class PageController extends Controller {
             $tr=new TemplateResponse($this->appName,
                 "public/thanks",
                 [
-                    'appt_c_head'=>"All done!",
-                    'appt_c_msg'=>"Your ".str_replace(
-                        ':00 ',' ',
-                        $this->l->l('datetime',$ra[0],['width'=>'medium']))." appointment is ".$atx."."
+                    // TRANSLATORS Meaning the booking process is finished
+                    'appt_c_head'=>$this->l->t("All done."),
+                    'appt_c_msg'=>$page_text
                 ],"public");
             $tr->setStatus(200);
         }
@@ -552,23 +560,30 @@ class PageController extends Controller {
 
         $btn_url= $s->getURLGenerator()->getBaseUrl().'/index.php'
             .$s->getAppManager()->getAppWebPath($this->appName).'/'
-            .urldecode($this->pubPrx($this->getToken($uid))).'cncf?d=';
+            .$this->pubPrx($this->getToken($uid)).'cncf?d=';
         $btn_tkn=urlencode($this->encrypt($post['email'].chr(31).$da[1],$key));
 
+
+        // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment (action needed)
+        $subject=$this->l->t("%s Appointment (action needed)",[$org_name]);
+        // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
+        $body1=$this->l->t("Dear %s,",[$post['name']]);
+
+        $date_time=str_replace(':00 ','',$this->l->l('datetime',$r,['width'=>'medium']));
+        // TRANSLATORS Main part of email, Ex: The {{Organization Name}} appointment scheduled for {{Date Time}} is awaiting your confirmation.
+        $body2=$this->l->t('The %1$s appointment scheduled for %2$s is awaiting your confirmation.',[$org_name,$date_time]);
+
         $tml=$this->mailer->createEMailTemplate('ID'.$ts);
-        $tml->setSubject($org_name." Appointment (action needed)");
-        $tml->addBodyText("Dear ".$post['name'].",",
-            "Dear ".$post['name'].",");
-        $tml->addBodyText("The ".$org_name." appointment scheduled for ".str_replace(
-                ':00 ','',
-                $this->l->l('datetime',$r,['width'=>'medium']))." is awaiting your confirmation.");
+        $tml->setSubject($subject);
+        $tml->addBodyText($body1);
+        $tml->addBodyText($body2);
         $tml->addBodyButtonGroup(
-            'Confirm',
+            $this->l->t("Confirm"),
             $btn_url.'1'.$btn_tkn,
-            'Cancel',
+            $this->l->t("Cancel"),
             $btn_url.'0'.$btn_tkn
         );
-        $tml->addBodyText("Thank You");
+        $tml->addBodyText($this->l->t("Thank you"));
 
         $tml->addFooter("Booked via Nextcloud Appointments App");
 
@@ -606,7 +621,7 @@ class PageController extends Controller {
         $tmpl='public/formerr';
         $rs=500;
         $param=[
-            'appt_c_head'=>"Almost done..."
+            'appt_c_head'=>$this->l->t("Almost done..."),
         ];
 
         $sts=$this->request->getParam('sts');
@@ -627,13 +642,13 @@ class PageController extends Controller {
                 if($ts+8>=time()){
                     if($this->mailer->validateMailAddress($em)) {
                         $tmpl = 'public/thanks';
-                        $param['appt_c_msg'] = "We have sent an email to " . $em . ", please open it and click on the confirmation link to finalize your appointment request.";
+                        $param['appt_c_msg'] = $this->l->t("We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request",[$em]);
                         $rs = 200;
                     }
                 }else{
                     $tmpl = 'public/thanks';
-                    $param['appt_c_head']="Warning";
-                    $param['appt_c_msg'] = "Link Expired...";
+                    $param['appt_c_head']=$this->l->t("Error");
+                    $param['appt_c_msg'] = $this->l->t("Link Expired...");
                     $rs = 409;
                 }
             }
@@ -805,7 +820,7 @@ class PageController extends Controller {
         if($ds===null) return '1:No Key';
         $data=explode(',',$ds);
         $c=count($data);
-        if($c<3) return '1:Bad Lenght '.$c;
+        if($c<3) return '1:Bad Length '.$c;
 
         $cal_url=$this->c->getUserValue(
             $this->userId,

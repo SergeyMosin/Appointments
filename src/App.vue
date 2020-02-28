@@ -2,48 +2,91 @@
     <div id="content">
         <AppNavigation>
             <ul>
-            <AppNavigationItem @click="getFormData" :title="'Booking Page ' + (pageEnabled==='1'?'(Online)':'(Disabled)')" icon="icon-projects">
+            <AppNavigationItem
+                    @click="getFormData"
+                    :title="(pageEnabled==='1'
+                        ?t('appointments','Booking Page [Online]')
+                        :t('appointments','Booking Page [Disabled]'))"
+                    icon="icon-projects">
                 <template slot="actions">
                     <ActionButton :disabled="pageEnabled==='1'" @click="togglePageEnabled('1')" icon="icon-category-enabled" closeAfterClick>
-                        Share Online
+                        {{t('appointments','Share Online')}}
                     </ActionButton>
                     <ActionButton :disabled="pageEnabled==='0'" @click="togglePageEnabled('0')" icon="icon-category-disabled" closeAfterClick>
-                        Stop Sharing
+                        {{t('appointments','Stop Sharing')}}
                     </ActionButton>
                 </template>
             </AppNavigationItem>
             <AppNavigationSpacer/>
             <NavAccountItem :calLoading="isCalLoading" @calSelected="setCalendar" :curCal="curCal"></NavAccountItem>
-                <AppNavigationItem @click="showSlideBar" title="Generate Schedule" icon="icon-add"></AppNavigationItem>
-                <AppNavigationItem @click="showHelp" title="Help/Tutorial" icon="icon-info"></AppNavigationItem>
+            <AppNavigationItem
+                    @click="showSlideBar"
+                    :title="t('appointments','Generate Schedule')"
+                    icon="icon-add"></AppNavigationItem>
+            <AppNavigationItem
+                    @click="showHelp"
+                    :title="t('appointments','Help/Tutorial')"
+                    icon="icon-info"></AppNavigationItem>
             </ul>
 
             <SettingsExt @open="settingsOpen">
                 <ul class="settings-fieldset-interior">
                 <li>
-                    <StnInput @submit="setStn" sname="org" :disabled="!settings.loaded" :value="settings.org" placeholder="Organization Name"></StnInput>
+                    <StnInput
+                            @submit="setStn"
+                            sname="org"
+                            :disabled="!settings.loaded"
+                            :value="settings.org"
+                            :placeholder="t('appointments','Organization Name')">
+                    </StnInput>
                 </li>
-                    <li>
-                        <StnText @submit="setStn" sname="addr" :disabled="!settings.loaded" :value="settings.addr" placeholder="Organization Address"></StnText>
-                    </li>
-                    <li>
-                        <StnInput @submit="setStn" sname="eml" :disabled="!settings.loaded" :value="settings.eml" placeholder="Email"></StnInput>
-                    </li>
-                    <li>
-                        <StnInput @submit="setStn" sname="phn" :disabled="!settings.loaded" :value="settings.phn" placeholder="Phone (optional)"></StnInput>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="appt-stn_chb-notify" class="checkbox" @change="notImplemented">
-                        <label for="appt-stn_chb-notify">Show Notifications on Status Change</label><br>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="appt-stn_chb-captcha" class="checkbox" @change="notImplemented">
-                        <label for="appt-stn_chb-captcha">Use Google reCAPTCHA</label><br>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="appt-stn_chb-json_email" class="checkbox" @change="notImplemented">
-                        <label for="appt-stn_chb-json_email">Add One Click Actions to Email</label><br>
-                    </li>
+                <li>
+                    <StnText
+                            @submit="setStn"
+                            sname="addr"
+                            :disabled="!settings.loaded"
+                            :value="settings.addr"
+                            :placeholder="t('appointments','Organization Address')">
+                    </StnText>
+                </li>
+                <li>
+                    <StnInput
+                            @submit="setStn"
+                            sname="eml"
+                            :disabled="!settings.loaded"
+                            :value="settings.eml"
+                            :placeholder="t('appointments','Email')">
+                    </StnInput>
+                </li>
+                <li>
+                    <StnInput
+                            @submit="setStn"
+                            sname="phn"
+                            :disabled="!settings.loaded"
+                            :value="settings.phn"
+                            :placeholder="t('appointments','Phone (optional)')">
+                    </StnInput>
+                </li>
+                <li>
+                    <input
+                            type="checkbox"
+                            id="appt-stn_chb-notify"
+                            class="checkbox"
+                            @change="notImplemented">
+                    <label for="appt-stn_chb-notify">{{t('appointments','Show Notifications on Status Change')}}</label><br>
+                </li>
+                <li>
+                    <input
+                            type="checkbox"
+                            id="appt-stn_chb-captcha"
+                            class="checkbox"
+                            @change="notImplemented">
+                    <label for="appt-stn_chb-captcha">{{t('appointments','Use Google reCAPTCHA')}}</label><br>
+                </li>
+<!--                <li>-->
+<!--                    <input type="checkbox" id="appt-stn_chb-json_email" class="checkbox" @change="notImplemented">-->
+<!--                    <label for="appt-stn_chb-json_email">Add One Click Actions to Email</label><br>-->
+<!--                </li>-->
                 </ul>
             </SettingsExt>
         </AppNavigation>
@@ -52,10 +95,10 @@
         <div v-show="visibleSection===1" class="srgdev-appt-cal-view-cont">
             <div class="srgdev-appt-cal-view-btns">
                 <button @click="addScheduleToCalendar()" class="primary">
-                    Add to Calendar
+                    {{t('appointments','Add to Calendar')}}
                 </button>
                 <button @click="closePreviewGrid()">
-                    Discard
+                    {{t('appointments','Discard')}}
                 </button>
             </div>
             <ul v-for="(col) in apptInfo" class="srgdev-appt-cal-view-col">
@@ -68,27 +111,27 @@
             <Modal v-if="evtGridModal!==0" :canClose="false">
                 <div class="srgdev-appt-modal_content">
                     <div v-if="evtGridModal===1" class="srgdev-appt-modal-lbl">
-                        Adding appointment to {{curCal.name}} calendar...
+                        {{t('appointments', 'Adding appointment to {calendarName} calendar...', {calendarName:curCal.name})}}
                     </div>
                     <div v-if="evtGridModal===2" class="srgdev-appt-modal-lbl">
-                        All appointments had been added to {{curCal.name}} calendar.
+                        {{t('appointments', 'All appointments had been added to {calendarName} calendar.', {calendarName:curCal.name})}}
                     </div>
                     <div v-if="evtGridModal===3" class="srgdev-appt-modal-lbl">
-                        Error occurred. Check console...
+                        {{t('appointments', 'Error occurred. Check console...')}}
                     </div>
                     <div v-if="evtGridModal===1" class="srgdev-appt-modal-slider">
                         <div class="srgdev-appt-slider-line"></div>
                         <div class="srgdev-appt-slider-inc"></div>
                         <div class="srgdev-appt-slider-dec"></div>
                     </div>
-                    <button v-if="evtGridModal>1" class="primary" @click="closeEvtModal">Close</button>
+                    <button v-if="evtGridModal>1" class="primary" @click="closeEvtModal">{{t('appointments', 'Close')}}</button>
                 </div>
             </Modal>
         </div>
         <div  v-show="visibleSection===0" class="srgdev-appt-main-sec">
             <ul class="srgdev-appt-main-info">
-                <li>Public Form Preview</li>
-                <ActionButton icon="icon-clippy" @click="copyPubLink">Copy public link</ActionButton>
+                <li>{{t('appointments', 'Public Form Preview')}}</li>
+                <ActionButton icon="icon-clippy" @click="copyPubLink">{{t('appointments', 'Copy public link')}}</ActionButton>
             </ul>
             <div class="srgdev-appt-main-frame-cont">
                 <iframe class="srgdev-appt-main-frame" ref="pubPageRef" :src="pubPage"></iframe>
@@ -97,8 +140,8 @@
         <div v-html="helpContent" v-show="visibleSection===2" class="srgdev-appt-help-sec">
         </div>
         <ScheduleSlideBar
-                title="Schedule Generator"
-                subtitle="Add open appointments to you calendar"
+                :title="t('appointments','Schedule Generator')"
+                :subtitle="t('appointments','Add open appointments to you calendar')"
                 @agDataReady="makePreviewGrid"
                 v-show="sbShow" @close="sbShow=false"/>
     </AppContent>
@@ -178,7 +221,7 @@
                 },
 
                 helpContent:"",
-                tken:this.getPubUri()
+                tken:""
             };
         },
         computed: {
@@ -203,6 +246,7 @@
                             })
                         }
                         this.pageEnabled=rda[1]
+                        this.getPubUri()
                     }
                 }
                 this.isCalLoading=false
@@ -246,7 +290,7 @@
                     }
                 }).catch((error) => {
                     console.log(v,n,error)
-                    OC.Notification.showTemporary("Settings Error Occurred. Check console.",{timeout:4,type:'warning'})
+                    OC.Notification.showTemporary(t('appointments','Settings Error Occurred. Check console...'),{timeout:4,type:'warning'})
                 });
             },
 
@@ -270,7 +314,7 @@
                     }
                 }catch (e) {
                     console.log(e)
-                    OC.Notification.showTemporary("Can't get Settings. Check console   ",{timeout:8,type:'error'})
+                    OC.Notification.showTemporary(t('appointments',"Can't get Settings. Check console..."),{timeout:8,type:'error'})
                     return null
                 }
             },
@@ -295,10 +339,10 @@
                 // copy link for calendar to clipboard
                 try {
                     await this.$copyText(this.tken)
-                    OCP.Toast.success('Public link copied to clipboard...')
+                    OCP.Toast.success(this.t('appointments','Public link copied to clipboard...'))
                 } catch (error) {
                     console.log(error)
-                    OCP.Toast.error('Public link could not be copied to clipboard...')
+                    OCP.Toast.error(this.t('appointments','Public link could not be copied to clipboard...'))
                 }
             },
 
@@ -336,10 +380,11 @@
                     let n = ''
                     for (let i = 2; i > -1; i--){
                         if (rda[i] === '') {
-                            if (i === 0) n = 'Organization Name'
-                            else if (i === 1) n = 'Address'
-                            else n = 'Email'
-                            OC.Notification.showTemporary("Error: '"+n+"' empty, check settings...",{timeout:8,type:'error'})
+                            if (i === 0) n = this.t('appointments','Organization Name')
+                            else if (i === 1) n = this.t('appointments','Address');
+                            else n = this.t('appointments','Email')
+                            OC.Notification.showTemporary(
+                                this.t('appointments',"Error: {fieldName} empty, check settings...",{fieldName:n}),{timeout:8,type:'error'})
                         }
                     }
                     if(n!=='') return
@@ -354,13 +399,11 @@
                     }
                 }).catch((error) => {
                     console.log(error)
-                    OC.Notification.showTemporary("Page enable error. Check console...",{timeout:4,type:'error'})
+                    OC.Notification.showTemporary(this.t('appointments',"Page enable error. Check console..."),{timeout:4,type:'error'})
                 }).then(()=>{
                     // always executed
                     this.getFormData()
                 });
-
-
             },
 
             setCalendar:function(c){
@@ -608,10 +651,10 @@
                 this.curCal.clr=c.clr
             },
             noCalSet(){
-                OC.Notification.showTemporary("Select a Calendar First...",{timeout:5,type:'warning'})
+                OC.Notification.showTemporary(this.t('appointments',"Select a Calendar First..."),{timeout:5,type:'warning'})
             },
             notImplemented(){
-                OC.Notification.showTemporary("Not Implemented Yet.",{timeout:5,type:'error'})
+                OC.Notification.showTemporary(this.t('appointments',"Not Implemented Yet."),{timeout:5,type:'error'})
             }
         }
     }

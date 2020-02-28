@@ -4,7 +4,7 @@
             <header :class="{'app-sidebar-header--with-figure': hasFigure}"
                     class="app-sidebar-header">
                 <!-- close sidebar button -->
-                <a href="#" class="app-sidebar__close icon-close" title="close"
+                <a href="#" class="app-sidebar__close icon-close" :title="t('appointments','close')"
                    @click.prevent="closeSidebar" />
 
                 <!-- sidebar header illustration/figure -->

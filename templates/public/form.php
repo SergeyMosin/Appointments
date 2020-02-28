@@ -35,7 +35,7 @@ style('appointments', 'form');
         <input name="phone" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter Phone Number")); ?>" id="srgdev-ncfp_fphone" class="srgdev-ncfp-form-input" type="tel">
         <button id="srgdev-ncfp_fbtn" <?php echo $disabled ?>class="primary srgdev-ncfp-form-btn"><?php
             // TRANSLATORS This is the text for the "Book Now" button, on the appointment form.
-            p($l->t("Book %s",['Now']));
+            p($l->t("Book Now"));
             ?></button>
     </div>
     </form>
