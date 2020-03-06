@@ -218,6 +218,7 @@
     }
     &.#{$namespace}-active-week {
       background-color: $calendar-in-range-background-color;
+      color: $calendar-in-range-color;
     }
     .cell {
       &:hover {

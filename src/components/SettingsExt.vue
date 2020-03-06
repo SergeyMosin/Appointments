@@ -1,15 +1,9 @@
 <script>
     import {AppNavigationSettings} from '@nextcloud/vue'
-
     export default {
         components: {AppNavigationSettings},
         extends: AppNavigationSettings,
         name: "SettingsExt",
-        // data() {
-        //     return {
-        //         // oToggle: this.toggleMenu
-        //     }
-        // },
         methods: {
             toggleMenu() {
                 AppNavigationSettings.methods.toggleMenu.call(this)

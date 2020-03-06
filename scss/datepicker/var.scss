@@ -28,8 +28,8 @@ $calendar-active-background-color: var(--color-primary-element) !default;
 $calendar-hover-color: $dt_default-color !default;
 $calendar-hover-background-color: var(--color-background-hover) !default;
 
-$calendar-in-range-color: $dt_default-color !default;
-$calendar-in-range-background-color: $dt_primary-color-light !default;
+$calendar-in-range-color: var(--color-primary-text) !default;
+$calendar-in-range-background-color: $dt_primary-color !default;
 
 $time-active-color: $dt_default-color !default;
 $time-active-background-color: $dt_primary-color !default;

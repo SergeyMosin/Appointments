@@ -11,7 +11,7 @@
         setTimeout(function (){f.autocomplete="on"},1000)
 
 
-        makeDpu()
+        makeDpu(f.getAttribute("data-pps"))
         document.getElementById("srgdev-ncfp_sel-dummy").addEventListener("click",selClick)
 
         setTimeout(function () {
@@ -87,21 +87,26 @@
         return false
     }
 
-    function dateClick() {
-        let n=this.id.slice(-1)
+    function dateClick(e) {
+
+        let n=this.id.slice(13)
         let c=this.parentElement.curActive
         if(c===n) return
-
         document.getElementById('srgdev-dpu_dc'+c)
             .removeAttribute('data-active');
         document.getElementById('srgdev-dpu_dc'+n).setAttribute('data-active','')
+        this.parentElement.curActive=n
+        if(n.slice(-1)==='e') n='e'
+        if(c.slice(-1)==='e') c='e'
 
         document.getElementById('srgdev-dpu_tc'+c)
             .removeAttribute('data-active');
         document.getElementById('srgdev-dpu_tc'+n).setAttribute('data-active','')
 
-        this.parentElement.curActive=n
+        e.stopPropagation()
     }
+
+
 
     function timeClick(e) {
         let t=e.target
@@ -112,13 +117,78 @@
         }
     }
 
-    function makeDpu() {
+    function prevNextDPU(e) {
+        const p=e.target.parentElement
+        if(e.target.id==="srgdev-dpu_bf-back"){
+            if(p.curDP>0) p.curDP--
+        }else{
+            if(p.curDP<p.maxDP) p.curDP++
+            if(p.curDP===p.maxDP){
+                e.target.setAttribute('disabled','')
+            }else{
+                e.target.removeAttribute('disabled')
+            }
+        }
+        if(p.curDP===0){
+            p.firstElementChild.setAttribute('disabled','')
+        }else{
+            p.firstElementChild.removeAttribute('disabled')
+        }
+
+        if(p.curDP===p.maxDP){
+            p.lastElementChild.setAttribute('disabled','')
+        }else{
+            p.lastElementChild.removeAttribute('disabled')
+        }
+
+
+
+
+        document.getElementById("srgdev-dpu_main-date").style.left="-"+(p.curDP*5*4.6)+"em"
+    }
+    
+    
+    function makeDpu(pps) {
+
+
+
+        const PPS_NWEEKS="nbrWeeks";
+        const PPS_EMPTY="showEmpty";
+        const PPS_FNED="startFNED";
+        const PPS_WEEKEND="showWeekends";
+        const PPS_TIME2="time2Cols";
+
+        let pso={}
+        let ta=pps.slice(0,-1).split('.')
+        for(let a,l=ta.length,i=0;i<l;i++){
+            a=ta[i].split(':')
+            pso[a[0]]= +a[1]
+        }
+
+        console.log(pso)
+
+        let min_days=7
 
         let s=document.getElementById('srgdev-ncfp_sel-hidden')
         if(s.getAttribute("data-state")!=='2'){
             console.log("data-state: ",s.getAttribute("data-state"))
             return
         }
+
+        let mn
+        let dn
+
+        if(window.monthNames!==undefined){
+            mn=window.monthNames
+        }else{
+            mn=["January","February","March","April","May","June","July","August","September","October","November","December"]
+        }
+        if(window.dayNames!==undefined){
+            dn=window.dayNames
+        }else{
+            dn=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
+        }
+
 
         let tf
         if(window.Intl && typeof window.Intl === "object") {
@@ -133,21 +203,44 @@
         let df
         if(window.Intl && typeof window.Intl === "object") {
             let f = new Intl.DateTimeFormat([],
-                {month: "short", day: "2-digit", year:"numeric"})
+                {month: "long"})
             df=f.format
         }else{
             df=function (d) {
-                return d.toLocaleDateString()
+                return mn[d.getMonth()]
             }
         }
+
         let wf
         if(window.Intl && typeof window.Intl === "object") {
             let f = new Intl.DateTimeFormat([],
-                {weekday: "long"})
+                {weekday: "short"})
             wf=f.format
         }else{
             wf=function (d) {
-                return ''
+                return dn[d.getDay()]
+            }
+        }
+
+        let wft
+        if(window.Intl && typeof window.Intl === "object") {
+            let f = new Intl.DateTimeFormat([],
+                {weekday: "short", month: "long", day: "2-digit"})
+            wft=f.format
+        }else{
+            wft=function (d) {
+                return d.toDateString()
+            }
+        }
+
+        let wff
+        if(window.Intl && typeof window.Intl === "object") {
+            let f = new Intl.DateTimeFormat([],
+                {weekday: "long", month: "long", day: "numeric", year:"numeric"})
+            wff=f.format
+        }else{
+            wff=function (d) {
+                return d.toLocaleDateString()
             }
         }
 
@@ -166,61 +259,216 @@
         cont.className="srgdev-dpu-bkr-cls"
 
         let lcd=document.createElement('div')
+        lcd.id="srgdev-dpu_main-header"
+        lcd.appendChild(document.createTextNode(t('appointments','Select Date and Time')))
+        let lcdBF=document.createElement('div')
+        lcdBF.id="srgdev-dpu_main-hdr-icon"
+        lcdBF.className="icon-close"
+        lcdBF.addEventListener('click',function () {
+            document.getElementById("srgdev-dpu_main-cont").removeAttribute("data-open")
+        })
+        lcd.appendChild(lcdBF)
+        cont.appendChild(lcd)
+
+
+        lcdBF=document.createElement('div')
+        lcdBF.maxDP=0
+        lcdBF.curDP=0
+        lcdBF.id="srgdev-dpu_bf-cont"
+        lcdBF.appendChild(document.createElement("span"))
+        lcdBF.appendChild(document.createElement("span"))
+        lcdBF.firstElementChild.id="srgdev-dpu_bf-back"
+        lcdBF.firstElementChild.appendChild(document.createTextNode(t('appointments','Back')))
+        lcdBF.firstElementChild.addEventListener("click",prevNextDPU)
+        lcdBF.firstElementChild.setAttribute('disabled','')
+        lcdBF.lastElementChild.id="srgdev-dpu_bf-next"
+        lcdBF.lastElementChild.appendChild(document.createTextNode(t('appointments','Next')))
+        lcdBF.lastElementChild.addEventListener("click",prevNextDPU)
+
+        cont.appendChild(lcdBF)
+
+        lcd=document.createElement('div')
         lcd.id="srgdev-dpu_main-date"
         lcd.className="srgdev-dpu-bkr-cls"
+        lcd.style.left="0em"
+        cont.appendChild(lcd)
+
+        let lcTime=document.createElement('div')
+        lcTime.id="srgdev-dpu_main-time"
+        cont.appendChild(lcTime)
 
         let lcc=0
+        let rccN=5
 
-        let lastUD=-1;
         let d=new Date()
+        // console.log(d.getTimezoneOffset())
         let tzOffset=d.getTimezoneOffset()*60000
-        for(let txt,te,pe,ce,i=0;i<l;i++){
-            let ts= opts[i].getAttribute('data-ts')*1000
-            d.setTime(ts+tzOffset)
+        let lastUD=-1
+
+        let an=-1
+        let do_break=false
+
+        let makeDateCont=function (d,is_empty) {
+            let e1=document.createElement("div")
+            e1.id="srgdev-dpu_dc"+lcc+(is_empty?"e":"")
+            e1.className='srgdev-dpu-date-cont'+(is_empty?" srgdev-dpu-dc-empty":"")
+
+            let e2=document.createElement('span')
+            e2.className='srgdev-dpu-date-wd'
+            e2.appendChild(document.createTextNode(wf(d)))
+            e1.appendChild(e2)
+
+            e2=document.createElement('span')
+            e2.className='srgdev-dpu-date-dn'
+            e2.appendChild(document.createTextNode(d.getDate()))
+            e1.appendChild(e2)
+
+            e2=document.createElement('span')
+            e2.className='srgdev-dpu-date-md'
+            e2.appendChild(document.createTextNode(df(d)))
+            e1.appendChild(e2)
+            e1.addEventListener('click',dateClick)
+
+            if(lcc===rccN){
+                rccN+=5
+                lcdBF.maxDP++
+                e1.setAttribute("fdsfs","1")
+                if(lcc>min_days) do_break=true
+            }
+            lcc++
+            return e1
+        }
+
+        let td=new Date()
+        td.setSeconds(1)
+        td.setMinutes(0)
+        td.setHours(0)
+
+        // This is Ugly...
+        if(pso[PPS_EMPTY]===1 && pso[PPS_FNED]===0){
+            // Need to prepend epmty days so the week start on Monday
+
+            let ts= opts[0].getAttribute('data-ts')*1000
+            d.setTime(ts)
+            d.setTime(ts+d.getTimezoneOffset()*60000)
+            d.setSeconds(1)
+            d.setMinutes(0)
+            d.setHours(0)
+            let fd=d.getDay()
+            console.log("fd:",fd)
+            if(fd>0 && fd<6) {
+                td.setTime(d.getTime()-86400000*(fd-1))
+            }
+        }
+
+        let tu_class
+        // Time columns
+        if(pso[PPS_TIME2]===1){
+            tu_class='srgdev-dpu-time-unit2'
+        }else{
+            tu_class='srgdev-dpu-time-unit'
+        }
+
+        for(let ts,ti,ets,tts,te,pe,i=0;i<l;i++){
+            ts= opts[i].getAttribute('data-ts')*1000
+            if(ts===0) break
+            d.setTime(ts)
+            d.setTime(ts+d.getTimezoneOffset()*60000)
 
             let ud=d.getUTCDate()
             if(lastUD!==ud){
-                if(lastUD!==-1){
-                    cont.appendChild(pe)
-                    if(ts===0) break // the end
+
+                // Show "empty" days ...
+                tts=td.getTime()
+                td.setTime(d.getTime())
+                td.setSeconds(1)
+                td.setMinutes(0)
+                td.setHours(0)
+                ets=td.getTime()
+
+                if(pso[PPS_EMPTY]===1) {
+                    while (tts < ets) {
+                        td.setTime(tts)
+
+                        // Deal with weekends
+                        if(pso[PPS_WEEKEND]===0) {
+                            // only show weekdays
+                            ti = td.getDay()
+                        }else{
+                            // show all days
+                            ti=1
+                        }
+
+                        if(ti!==0 && ti!==6) {
+                            lcd.appendChild(makeDateCont(td, true))
+                            if (do_break) break
+                        }
+                        tts += 86400000;
+                    }
                 }
 
-                ce=document.createElement("div")
-                ce.id="srgdev-dpu_dc"+lcc
-                ce.className='srgdev-dpu-date-cont'
+                if(do_break){
+                    d=td
+                    break
+                }
 
-                te=document.createElement('span')
-                te.className='srgdev-dpu-date-wd'
-                te.appendChild(document.createTextNode(wf(d)))
-                ce.appendChild(te)
+                td.setTime(tts+86400000)
 
-                txt=df(d)
-                te=document.createElement('span')
-                te.className='srgdev-dpu-date-md'
-                te.appendChild(document.createTextNode(txt))
-                ce.appendChild(te)
-                ce.addEventListener('click',dateClick)
-                lcd.appendChild(ce)
+                te=makeDateCont(d,false)
+                if(an===-1){
+                    an=lcc-1
+                    te.setAttribute('data-active','')
+                }
+                lcd.appendChild(te)
+                if(do_break) break
+
+
+                te=document.createElement('div')
+                te.id="srgdev-dpu_tc"+(lcc-1)
+                te.className='srgdev-dpu-time-cont'
 
                 pe=document.createElement('div')
-                pe.id="srgdev-dpu_tc"+lcc
-                pe.setAttribute('data-dm',txt)
-                pe.className='srgdev-dpu-time-cont'
+                pe.className="srgdev-dpu-tc-full-date"
+                pe.appendChild(document.createTextNode(wff(d)))
+                te.appendChild(pe)
 
-                lcc++
+                pe=document.createElement('div')
+                pe.setAttribute('data-dm',wft(d))
+                pe.className="srgdev-dpu-tc-tu-wrap"
+                te.appendChild(pe)
+
+                lcTime.appendChild(te)
+
                 lastUD=ud
             }
             te=document.createElement("span")
-            te.className="srgdev-dpu-time-unit"
+            te.className=tu_class
             te.dpuClickID=i
             te.appendChild(document.createTextNode(tf(d)))
             pe.appendChild(te)
         }
 
-        cont.firstElementChild.setAttribute('data-active','')
-        lcd.firstElementChild.setAttribute('data-active','')
-        lcd.curActive='0'
-        cont.appendChild(lcd)
+        // console.log(d.toLocaleString())
+        // fill in empty space
+        d.setSeconds(0)
+        d.setMinutes(0)
+        d.setHours(1)
+        d.setTime(d.getTime()+86400000)
+        // console.log(d.toLocaleString())
+        for(let l=5-(lcc%5),i=0;i<l;i++){
+            lcd.appendChild(makeDateCont(d,true))
+            d.setTime(d.getTime()+86400000)
+        }
+
+        // Make empty time cont
+        lcdBF=document.createElement('div')
+        lcdBF.id="srgdev-dpu_tce"
+        lcdBF.className='srgdev-dpu-time-cont'
+        lcTime.appendChild(lcdBF)
+
+        lcTime.firstElementChild.setAttribute('data-active','')
+        lcd.curActive=an.toString()
+
         cont.addEventListener("click", timeClick)
         document.getElementById('srgdev-ncfp_sel_cont').appendChild(cont)
 

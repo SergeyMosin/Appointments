@@ -11,7 +11,7 @@ style('appointments', 'form');
     if($_['appt_state']!=='2'){
         $disabled='disabled ';
     }
-    print '<form autocomplete="off" action="'.$_SERVER['PHP_SELF'].'" method="POST" class="srgdev-ncfp-form" '.$disabled.' id="srgdev-ncfp_frm">
+    print '<form autocomplete="off" action="'.$_SERVER['PHP_SELF'].'" method="POST" class="srgdev-ncfp-form" '.$disabled.' id="srgdev-ncfp_frm" data-pps="'.$_['appt_pps'].'">
         <h2 class="srgdev-ncfp-form-org">'.htmlentities($_['appt_org_name']).'</h2>
         <div class="srgdev-ncfp-form-addr">'.$_['appt_org_addr'].'</div>
         <h3 class="srgdev-ncfp-form-header">'.

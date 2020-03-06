@@ -4,6 +4,7 @@ namespace OCA\Appointments;
 use Doctrine\DBAL\Driver\Statement;
 use OCA\DAV\CalDAV;
 use OCA\DAV\Connector\Sabre\Principal;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\IGroupManager;
 use OCP\ILogger;
@@ -11,6 +12,7 @@ use OCP\IUserManager;
 use OCP\Security\ISecureRandom;
 use Sabre\VObject\Reader;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class BackEndExt extends CalDAV\CalDavBackend{
 
@@ -139,6 +141,7 @@ class BackEndExt extends CalDAV\CalDavBackend{
         $a=$evt->add('ATTENDEE',"mailto:".$email);
         $a['CN']=$name;
         $a['PARTSTAT']="NEEDS-ACTION";
+//        $a['RSVP']="FALSE";
 
         if(!isset($evt->SUMMARY)) $evt->add('SUMMARY');
         $evt->SUMMARY->setValue("⌛ ".$name);
@@ -192,9 +195,14 @@ class BackEndExt extends CalDAV\CalDavBackend{
      * @param $id
      * @param $email
      * @param $cc_sts
-     * @return array [DateTime|null,int] 0=OK/Status Changed, 1=Error: bad input, 2=Server Error, 3=OK/Status NOT Changed
+     * @param bool $ics return vCard object
+     * @return array [
+     *              DateTime|null,
+     *              int, - 0=OK/Status Changed, 1=Error: bad input, 2=Server Error, 3=OK/Status NOT Changed
+     *              vCard - only if $ics is true
+     * ]
      */
-    public function updateApptStatus($userId, $cal_url, $id, $email, $cc_sts) {
+    public function updateApptStatus($userId, $cal_url, $id, $email, $cc_sts,$ics=false) {
 
         $cal_id=$this->getCalendarIDByUri($userId,$cal_url);
         if($cal_id===null) return [null,2];
@@ -237,6 +245,9 @@ class BackEndExt extends CalDAV\CalDavBackend{
             return [null,1];
         }
 
+//        if(!isset($a->RSVP)) $a->add('RSVP');
+//        $a->parameters['RSVP']->setValue('FALSE');
+
         $sts_changed=3; // this is backwards
         if($cc_sts==='0'){
             if($a->parameters['PARTSTAT']->getValue()!=='DECLINED'){
@@ -254,14 +265,24 @@ class BackEndExt extends CalDAV\CalDavBackend{
             $evt->STATUS->setValue("CONFIRMED");
         }
 
+        if($sts_changed!==0){
+            // No need to go further
+            $this->_db->commit();
+            return [$evt->DTSTART->getValue(),$sts_changed];
+        }
+
+
         if(!isset($evt->SEQUENCE)) $evt->add('SEQUENCE',1);
         else{
             $sv=intval($evt->SEQUENCE->getValue());
             $evt->SEQUENCE->setValue($sv+1);
         }
 
+        $mdate=new \DateTime();
         if(!isset($evt->{'LAST-MODIFIED'})) $evt->add('LAST-MODIFIED');
-        $evt->{'LAST-MODIFIED'}->setValue(new \DateTime());
+        $evt->{'LAST-MODIFIED'}->setValue($mdate);
+        if(!isset($evt->{'LAST-MODIFIED'})) $evt->add('LAST-MODIFIED');
+        $evt->{'LAST-MODIFIED'}->setValue($mdate);
 
 
         $data=$vo->serialize();
@@ -289,9 +310,13 @@ class BackEndExt extends CalDAV\CalDavBackend{
         if ($row === false || $data!==$cd) {
             return [null,2];
         }else{
-            return [$evt->DTSTART->getValue(),$sts_changed];
+            return [
+                $evt->DTSTART->getValue(),
+                $sts_changed,
+                $ics===true?$vo:null];
         }
     }
+
 
     public function readBlob($cardData) {
         if (is_resource($cardData)) {

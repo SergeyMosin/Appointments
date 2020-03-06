@@ -3,9 +3,6 @@ const webpack = require('webpack')
 const { VueLoaderPlugin } = require('vue-loader')
 const CopyPlugin = require('copy-webpack-plugin');
 
-//@import "../node_modules/@nextcloud/vue/src/assets/variables.scss";
-
-
 module.exports = {
 	entry:{
 		script: path.join(__dirname, 'src', 'main.js'),
@@ -53,6 +50,7 @@ module.exports = {
 		}),
 		new CopyPlugin([
 			{ from: 'node_modules/@nextcloud/vue/src/assets/variables.scss', to: '../css/variables.scss' },
+			{ from: '../../core/css/variables.scss', to: '../css/svariables.scss' },
 		]),
 
 	]

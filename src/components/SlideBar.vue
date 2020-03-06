@@ -1,6 +1,6 @@
 <template>
     <transition name="slide-right">
-        <aside id="app-slidebar">
+        <aside class="app-slidebar">
             <header :class="{'app-sidebar-header--with-figure': hasFigure}"
                     class="app-sidebar-header">
                 <!-- close sidebar button -->
@@ -109,7 +109,7 @@
 
     $top-buttons-spacing: 6px;
 
-    #app-slidebar {
+    .app-slidebar {
         z-index: 1500;
         /** height: calc(100vh - #{$header-height}); */
         height: 100%;
@@ -269,7 +269,7 @@
     }
 
     @media only screen and (max-width: $breakpoint-mobile) {
-        #app-slidebar {
+        .app-slidebar {
             border-right: none;
             border-left: 1px solid var(--color-border);
             position: absolute;

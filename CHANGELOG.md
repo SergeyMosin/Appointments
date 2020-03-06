@@ -1,3 +1,14 @@
+## 1.1.0 - 2020-03-06
+### Added
+- Address in the appointment location filed
+- .ics file attachment option
+### Changed
+- New public page date/time picker UI
+- New appointment generator UI
+### Fixed
+- Daylight savings 1 hour shift
+
+
 ## 1.0.9 - 2020-02-27
 ### Added
 - L10N compatibility

@@ -5,60 +5,33 @@
     }">
         <template slot="main-area">
             <div class="appt-gen-wrap">
-            <label class="datepicker-label">{{t('appointments','Dates:')}}</label>
-            <DatePicker
-                    :disabled-date="compNotBefore"
-                    :appendToBody="false"
-                    :popup-style="datePickerPopupStyle"
-                    :placeholder="t('appointments','Select Dates')"
-                    v-model="apptWeek"
-                    :lang="lang"
-                    @input="setToStartOfWeek"
-                    :format="weekFormat"
-                    type="week"></DatePicker>
-            <label class="datepicker-label">Start Time:</label>
-            <DatePicker
-                    :appendToBody="false"
-                    :popup-style="datePickerPopupStyle"
-                    :placeholder="t('appointments','Select Time')"
-                    v-model="apptStart"
-                    :lang="lang"
-                    :editable="false"
-                    :format="getTimeFormat()"
-                    :time-picker-options="{start: '09:00', step:'00:30' , end: '17:00', format: getTimeFormat() }"
-                    type="time"></DatePicker>
+                <label class="datepicker-label">{{t('appointments','Select Dates:')}}</label>
+                <DatePicker
+                        :inline="true"
+                        :disabled-date="compNotBefore"
+                        :appendToBody="false"
+                        :popup-style="datePickerPopupStyle"
+                        :placeholder="t('appointments','Select Dates')"
+                        v-model="apptWeek"
+                        :lang="lang"
+                        @input="setToStartOfWeek"
+                        :format="weekFormat"
+                        type="week"></DatePicker>
                 <label for="appt-dur-select" class="select-label">{{t('appointments','Appointment Duration:')}}</label>
-                <Multiselect
-                        v-model="apptDur"
-                        :value="apptDur"
-                        :options="apptDurOpts"
-                        :searchable="false"
-                        :allowEmpty="false"
-                        :placeholder="t('appointments','Select Time')"
-                        openDirection="below"
-                        track-by="min"
+                <vue-slider
+                        :min="10"
+                        :max="120"
+                        :interval="5"
+                        tooltip="always"
+                        tooltipPlacement="bottom"
+                        :tooltip-formatter="'{value} Min'"
                         id="appt-dur-select"
-                        class="dur-select"
-                        label="label"/>
-                <label for="appt-dur-select2" class="select-label">{{t('appointments','Appointments per Day:')}}</label>
-                <Multiselect
-                        v-model="apptNbr"
-                        :value="apptNbr"
-                        :options="apptNbrOpts"
-                        :searchable="false"
-                        :allowEmpty="false"
-                        openDirection="above"
-                        :placeholder="t('appointments','Select Number')"
-                        id="appt-dur-select2"
-                        class="dur-select"/>
-            <div class="checkbox-wrap">
-            <input type="checkbox" id="srgdev-appt-cb1" class="checkbox"
-                   checked="checked" v-model="apptLunch">
-            <label for="srgdev-appt-cb1">{{t('appointments','Add Lunch Break')}}</label><br>
-            </div>
-            <button @click="goApptGen" :disabled="apptWeek===null || apptStart===null" class="primary appt-genbtn">
-                Start
-            </button>
+                        v-model="apptDur"></vue-slider>
+                <button
+                        @click="goApptGen"
+                        :disabled="apptWeek===null"
+                        class="primary appt-genbtn">{{t('appointments','Start')}}
+                </button>
             </div>
         </template>
     </SlideBar>
@@ -68,13 +41,15 @@
     import SlideBar from "./SlideBar.vue"
     import DatePicker from 'vue2-datepicker'
     import '../../css/datepicker.css';
-    import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
+
+    import VueSlider from 'vue-slider-component'
+    import 'vue-slider-component/theme/default.css'
 
     export default {
         name: "ScheduleSlideBar",
         components: {
             SlideBar,
-            Multiselect,
+            VueSlider,
             DatePicker},
         props:{
             title:'',
@@ -120,20 +95,8 @@
             return {
                 /** @type {Date} */
                 apptWeek:null,
-                /** @type {Date} */
-                apptStart:null,
 
-                apptDurOpts:[
-                    {min:30,label:"30 Min"},
-                    {min:45,label:"45 Min"},
-                    {min:60,label:"1 Hour"}
-                ],
-                apptNbr:'5',
-                apptNbrOpts:['2','3','4','5','6','7','8','9','10','11','12','13','14','15'],
-
-                apptDur:{min:60,label:"1 Hour"},
-                apptLunch:true,
-
+                apptDur:30,
 
                 datePickerPopupStyle:{top:"100%",left:0},
                 weekFormat: {
@@ -186,18 +149,12 @@
             },
             resetAppt(){
                 this.apptWeek=null
-                this.apptStart=null
-                this.apptNbr='5'
-                this.apptDur={min:60,label:"1 Hour"}
-                this.apptLunch=true
+                this.apptDur=30
             },
             goApptGen(){
                 let r={
                     week:(this.apptWeek.getTime()),
-                    startTime:this.apptStart.getHours()*60+this.apptStart.getMinutes(),
-                    dur:this.apptDur.min,
-                    nbr:+this.apptNbr,
-                    lunch:this.apptLunch
+                    dur:this.apptDur,
                 }
                 this.resetAppt()
                 this.$emit("close")
@@ -211,24 +168,22 @@
     .appt-gen-wrap{
         text-align: left;
         display: inline-block;
+        margin-top: -20px;
     }
     .datepicker-label,
     .select-label{
         display: block;
         margin-top: 1em;
     }
+    .datepicker-label{
+        margin-top: 0;
+    }
     .select-label{
         margin-bottom: .25em;
     }
-    .checkbox-wrap{
-        margin-top: 1.25em;
-    }
     .appt-genbtn{
         min-width: 80%;
-        margin: 3em auto 0;
+        margin: 4em auto 0;
         display: block;
-    }
-    .dur-select{
-        width: 100%;
     }
 </style>

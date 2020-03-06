@@ -14,11 +14,10 @@
     "@nextcloud/l10n": "^1.0.1",
     "@nextcloud/logger": "^1.1.1",
     "@nextcloud/vue": "1.2.7",
-    "nextcloud-vue": "^0.13.0",
-    "nextcloud-vue-collections": "^0.7.1",
     "vue": "^2.6.11",
     "vue2-datepicker": "^3.3.0",
-    "vue-clipboard2": "^0.3.1"
+    "vue-clipboard2": "^0.3.1",
+    "vue-slider-component": "v3.1.0"
   },
   "engines": {
     "node": ">=10.0.0"

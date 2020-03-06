@@ -13,6 +13,7 @@ use OCP\AppFramework\Controller;
 use OCP\IUserManager;
 use Sabre\DAV\Exception\BadRequest;
 use OCP\Mail\IMailer;
+use OC\Mail\Attachment;
 
 class PageController extends Controller {
     const APP_CAT="Appointment";
@@ -24,6 +25,23 @@ class PageController extends Controller {
     const KEY_O_ADDR='address';
     const KEY_O_EMAIL='email';
     const KEY_O_PHONE='phone';
+    const KEY_O_ICS='icsFile';
+
+    const PPS_DEFAULT="11000";
+    const PPS_KEY="pubPageSettings";
+
+    const PPS_NWEEKS="nbrWeeks";
+    const PPS_EMPTY="showEmpty";
+    const PPS_FNED="startFNED"; // start at first not empty day
+    const PPS_WEEKEND="showWeekends";
+    const PPS_TIME2="time2Cols";
+
+    const PPS_IDX=array(
+        self::PPS_NWEEKS=>0,
+        self::PPS_EMPTY=>1,
+        self::PPS_FNED=>2,
+        self::PPS_WEEKEND=>3,
+        self::PPS_TIME2=>4);
 
     private $userId;
 	private $calBackend;
@@ -166,7 +184,11 @@ class PageController extends Controller {
             $rd.=$this->c->getUserValue(
                 $this->userId,
                 $this->appName,
-                self::KEY_O_PHONE);
+                self::KEY_O_PHONE).$c30;
+            $rd.=$this->c->getUserValue(
+                $this->userId,
+                $this->appName,
+                self::KEY_O_ICS);
 
             $r->setData($rd);
             $r->setStatus(200);
@@ -219,7 +241,8 @@ class PageController extends Controller {
             $sa=array("org"=>self::KEY_O_NAME,
                 "addr"=>self::KEY_O_ADDR,
                 "eml"=>self::KEY_O_EMAIL,
-                "phn"=>self::KEY_O_PHONE);
+                "phn"=>self::KEY_O_PHONE,
+                "ics"=>self::KEY_O_ICS);
             $n=$this->request->getParam("n");
             $v=$this->request->getParam("v");
             if($v!==null && $n!==null && array_key_exists($n,$sa)){
@@ -239,6 +262,68 @@ class PageController extends Controller {
 
             $r->setData($u);
             $r->setStatus(200);
+        }elseif ($action==="set_pps"){
+            $d=$this->request->getParam("d");
+            if($d!==null && strlen($d)<256) {
+                /** @noinspection PhpComposerExtensionStubsInspection */
+                $o=json_decode($d);
+                if($o!==null){
+                    $s=str_pad("",count(self::PPS_IDX),"0");
+                    foreach (self::PPS_IDX as $prop=>$idx){
+                        if(isset($o->$prop)){
+                            $ov=$o->$prop;
+                            if($prop===self::PPS_NWEEKS){
+                                if(preg_match("/^[1-3]{1}$/",$ov)!==1){
+                                    $s="";
+                                    break;
+                                }
+                                $v=$ov;
+                            }elseif(is_bool($ov)){
+                                $v=$ov===true?"1":"0";
+                            }else{
+                                $s="";
+                                break;
+                            }
+                            $s[$idx]=$v;
+                        }else{
+                            $s="";
+                            break;
+                        }
+                    }
+                    if(!empty($s)) {
+                        // Data looks OK
+                        $this->c->setUserValue(
+                            $this->userId,
+                            $this->appName,
+                            self::PPS_KEY,
+                            $s);
+                        $r->setStatus(200);
+                    }
+                }
+            }
+        }elseif ($action==="get_pps"){
+
+            $v=$this->c->getUserValue(
+                $this->userId,
+                $this->appName,
+                self::PPS_KEY,
+                self::PPS_DEFAULT);
+            $o=[];
+            foreach (self::PPS_IDX as $prop=>$idx){
+                if($prop===self::PPS_NWEEKS){
+                    $o[$prop]=$v[$idx];
+                }else{
+                    $o[$prop]=boolval($v[$idx]);
+                }
+            }
+            /** @noinspection PhpComposerExtensionStubsInspection */
+            $j=json_encode($o);
+            if($j!==false){
+                $r->setData($j);
+                $r->setStatus(200);
+            }else{
+                $r->setStatus(500);
+            }
         }
 
         return $r;
@@ -346,7 +431,15 @@ class PageController extends Controller {
             return $this->pubErrResponse();
         }
 
-        $ra=$this->calBackend->updateApptStatus($uid,$cal_url,$da[1],$da[0],$a);
+        if($this->c->getUserValue(
+            $uid,
+            $this->appName,
+            self::KEY_O_ICS,
+            ''
+            )==='1') $ics=true;
+        else $ics=false;
+
+        $ra=$this->calBackend->updateApptStatus($uid,$cal_url,$da[1],$da[0],$a,$ics);
 
 
         $org_email=$this->c->getUserValue(
@@ -392,8 +485,52 @@ class PageController extends Controller {
 
             if($ra[1]===0) {
 
+                $ics_attachment=null;
+                if($ics===true) {
+                    if ($ra[2] !== null) {
+                        $vo=$ra[2];
+                        // method https://tools.ietf.org/html/rfc5546#section-3.2
+                        if($a==='1'){
+                            $method='PUBLISH';
+                            if(isset($vo->VEVENT->DESCRIPTION)){
+                                $vo->VEVENT->remove($vo->VEVENT->DESCRIPTION);
+                            }
+                        }else{
+                            // TODO: only send if previously confirmed
+                            $method='CANCEL';
+                            if(isset($vo->VEVENT->DESCRIPTION)){
+                                $vo->VEVENT->DESCRIPTION->setValue(
+                                    $this->l->t("Appointment is Canceled")
+                                );
+                            }
+                        }
+
+                        if(!isset($vo->METHOD)) $vo->add('METHOD');
+                        $vo->METHOD->setValue($method);
+
+                        // TRANSLATORS Valendar event summary, Ex: {{Organization Name}} Appointment
+                        $smr=$this->l->t("%s Appointment",[$org_name]);
+
+                        if(!isset($vo->VEVENT->SUMMARY)) $vo->VEVENT->add('SUMMARY');
+                        $vo->VEVENT->SUMMARY->setValue($smr);
+
+
+//                        \OC::$server->getLogger()->error($vo->serialize());
+
+
+                        $ics_attachment = $this->mailer->createAttachment(
+                            $vo->serialize(),
+                            'appointment.ics',
+                            'text/calendar; method='.$method
+                        );
+                    }else{
+                        \OC::$server->getLogger()->error("No calendar Object");
+                    }
+                }
+
+
                 // Send email
-                $tml = $this->mailer->createEMailTemplate('ID' . time());
+                $tml = $this->mailer->createEMailTemplate('appointments.app.email');
                 $tml->setSubject($subject);
                 $tml->addBodyText($body);
                 $tml->addBodyText($this->l->t("Thank you"));
@@ -404,6 +541,9 @@ class PageController extends Controller {
                 $msg->setFrom(array($org_email));
                 $msg->setTo(array($da[0]));
                 $msg->useTemplate($tml);
+                if($ics_attachment!==null){
+                    $msg->attach($ics_attachment);
+                }
 
                 try {
                     $this->mailer->send($msg);
@@ -701,9 +841,9 @@ class PageController extends Controller {
             'appt_org_name'=>$this->c->getUserValue(
                 $uid,$this->appName, self::KEY_O_NAME,
                 'Organization Name'),
-            'appt_org_addr'=>$this->c->getUserValue(
+            'appt_org_addr'=>str_replace(array("\r\n","\n","\r"),'<br>',$this->c->getUserValue(
                 $uid, $this->appName, self::KEY_O_ADDR,
-                '123 Main Street<br>New York, NY 45678')
+                "123 Main Street\nNew York, NY 45678"))
         ];
 
         // google recaptcha
@@ -748,6 +888,16 @@ class PageController extends Controller {
         }
         $params['appt_state']='2';
 
+        $pps=$this->c->getUserValue(
+            $this->userId,
+            $this->appName,
+            self::PPS_KEY,
+            self::PPS_DEFAULT);
+
+        $nw=intval(substr($pps,self::PPS_IDX[self::PPS_NWEEKS],1));
+
+        $nw++; // for alignment in the form
+
         $now=new \DateTime('now',$this->getUserTimeZone($uid));
 
         // this is needed to get the range for floating appointments right
@@ -755,7 +905,7 @@ class PageController extends Controller {
 
         $t_start=$now->getTimestamp()+$t_offset;
 
-        $t_end=$now->setTime(0,0)->getTimestamp()+604800+$t_offset;
+        $t_end=$now->setTime(0,0)->getTimestamp()+(7*$nw*86400)+$t_offset;
 
         $stmt=$this->calBackend->queryWeek($cid,$t_start,$t_end);
         if($stmt->rowCount()===0){
@@ -784,7 +934,7 @@ class PageController extends Controller {
                 && strpos($cd,"\r\nSTATUS:TENTATIVE\r\n",14)!==false
                 && $first>$last_valid_end // no overlap
                 && $diff<=7200 // two hours max
-                && $diff>=900 // 15 minutes minimum
+                && $diff>=600 // 10 minutes minimum
             ){
                 //Encrypt $ses_end|uri
                 $iv = openssl_random_pseudo_bytes($ivlen);
@@ -803,6 +953,14 @@ class PageController extends Controller {
         if($out==='') {
             $params['appt_state']='5';
         }
+
+        $str='';
+        foreach (self::PPS_IDX as $name=>$idx){
+            $str.=$name.":".$pps[$idx].'.';
+        }
+
+        $params['appt_pps']=$str;
+
 
         $params['appt_sel_opts'] = $out;
         $tr->setParams($params);
@@ -844,6 +1002,12 @@ class PageController extends Controller {
                 $this->userId,
                 $this->appName,
                 self::KEY_O_EMAIL);
+
+        $u_addr=str_replace(array("\r\n","\n", "\r"), ' \n',
+            $this->c->getUserValue(
+            $this->userId,
+            $this->appName,
+            self::KEY_O_ADDR));
 
         if(empty($u_email)) $u_email=$u->getEMailAddress();
 
@@ -898,6 +1062,7 @@ class PageController extends Controller {
                 "DTSTART:" . $data[$i] . $rn .
                 "DTEND:" . $data[$i+1] . $rn .
                 "ORGANIZER;CN=" . $u_name . ":acct:" . $u_email . $rn .
+                "LOCATION:".$u_addr.$rn.
                 "END:VEVENT\r\nEND:VCALENDAR\r\n";
 
 
