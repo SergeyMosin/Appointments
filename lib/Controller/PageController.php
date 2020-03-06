@@ -889,7 +889,7 @@ class PageController extends Controller {
         $params['appt_state']='2';
 
         $pps=$this->c->getUserValue(
-            $this->userId,
+            $uid,
             $this->appName,
             self::PPS_KEY,
             self::PPS_DEFAULT);
