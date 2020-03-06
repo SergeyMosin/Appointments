@@ -1,4 +1,4 @@
-## 1.1.0 - 2020-03-06
+## 1.1.1 - 2020-03-06
 ### Fixed
 - Public page settings propagation
 
