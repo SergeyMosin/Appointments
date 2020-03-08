@@ -13,6 +13,8 @@
                     <option value="1">{{t('appointments','One Week')}}</option>
                     <option value="2">{{t('appointments','Two Weeks')}}</option>
                     <option value="3">{{t('appointments','Three Weeks')}}</option>
+                    <option value="4">{{t('appointments','Four Weeks')}}</option>
+                    <option value="5">{{t('appointments','Five Weeks')}}</option>
                 </select>
                 <input
                         v-model="ppsInfo.showEmpty"

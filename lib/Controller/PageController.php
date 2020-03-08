@@ -273,7 +273,7 @@ class PageController extends Controller {
                         if(isset($o->$prop)){
                             $ov=$o->$prop;
                             if($prop===self::PPS_NWEEKS){
-                                if(preg_match("/^[1-3]{1}$/",$ov)!==1){
+                                if(preg_match("/^[1-5]{1}$/",$ov)!==1){
                                     $s="";
                                     break;
                                 }
