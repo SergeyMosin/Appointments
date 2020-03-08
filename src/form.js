@@ -165,7 +165,7 @@
             pso[a[0]]= +a[1]
         }
 
-        console.log(pso)
+        // console.log(pso)
 
         let min_days=7
 
@@ -302,7 +302,7 @@
 
         let d=new Date()
         // console.log(d.getTimezoneOffset())
-        let tzOffset=d.getTimezoneOffset()*60000
+        // let tzOffset=d.getTimezoneOffset()*60000
         let lastUD=-1
 
         let an=-1
@@ -355,7 +355,7 @@
             d.setMinutes(0)
             d.setHours(0)
             let fd=d.getDay()
-            console.log("fd:",fd)
+            // console.log("fd:",fd)
             if(fd>0 && fd<6) {
                 td.setTime(d.getTime()-86400000*(fd-1))
             }
@@ -455,15 +455,20 @@
         d.setHours(1)
         d.setTime(d.getTime()+86400000)
         // console.log(d.toLocaleString())
-        for(let l=5-(lcc%5),i=0;i<l;i++){
-            lcd.appendChild(makeDateCont(d,true))
-            d.setTime(d.getTime()+86400000)
+
+        lcc%=5
+        if(lcc>0) {
+            for (let l = 5 - (lcc % 5), i = 0; i < l; i++) {
+                lcd.appendChild(makeDateCont(d, true))
+                d.setTime(d.getTime() + 86400000)
+            }
         }
 
         // Make empty time cont
         lcdBF=document.createElement('div')
         lcdBF.id="srgdev-dpu_tce"
         lcdBF.className='srgdev-dpu-time-cont'
+        lcdBF.appendChild(document.createTextNode(t('appointments','No Appointments Available')))
         lcTime.appendChild(lcdBF)
 
         lcTime.firstElementChild.setAttribute('data-active','')

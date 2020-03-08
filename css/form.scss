@@ -233,6 +233,18 @@
   background-color: var(--color-main-background);
   //transition: transform .5s;
 }
+
+// empty time cont
+#srgdev-dpu_tce{
+  font-size: 150%;
+  word-spacing: 100em;
+  text-align: center;
+  padding-top: 2.5em;
+  line-height: 1.6;
+  color: $color-text-lighter;
+  color: var(--color-text-lighter);
+}
+
 .srgdev-dpu-time-cont[data-active]{
   //transform: translateX(100%);
   z-index: 510;
