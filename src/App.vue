@@ -24,7 +24,7 @@
             <NavAccountItem :calLoading="isCalLoading" @calSelected="setCalendar" :curCal="curCal"></NavAccountItem>
                 <AppNavigationItem
                         @click="showSlideBar"
-                        :title="t('appointments','Generate Schedule')"
+                        :title="t('appointments','Add Appointments')"
                         icon="icon-add"></AppNavigationItem>
                 <AppNavigationItem
                         :loading="ppsLoading"
@@ -594,6 +594,7 @@
                     this.noCalSet()
                     return
                 }
+
                 this.toggleSlideBar(1)
             },
 
@@ -633,6 +634,10 @@
 
                 let ws=d.week
                 let td=new Date(ws)
+
+                let pd=td.getDate()+"-"+(td.getMonth()+1)+"-"+td.getFullYear()
+
+
                 // Same formula as @see grid.js#makeColumns(n)
                 let w=Math.floor((100 - 1) / NBR_DAYS) + "%"
 
@@ -652,6 +657,24 @@
                 this.gridApptTs=d.week
 
                 this.visibleSection=1
+
+                console.log(pd)
+
+                // dd-mm-yyyy
+                axios.get('calgetweek', {
+                    params:{
+                        t:pd
+                    }
+                }).then(response=>{
+                    if(response.status===200) {
+                        console.log(response.data)
+                        if(response.data!==""){
+                            gridMaker.addPastAppts(response.data,this.curCal.clr)
+                        }
+                    }
+                }).catch(error=>{
+                    console.log(error);
+                })
             },
 
             addScheduleToCalendar(){

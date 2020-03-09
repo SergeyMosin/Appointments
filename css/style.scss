@@ -126,6 +126,11 @@ $appt_grid_ml:6em;
 	border-radius: 4px;
 
 }
+.srgdev-appt-grd-appt-empty{
+	z-index: -1;
+	opacity: .125;
+}
+
 .srgdev-appt-grd-appt_txt{
 	font-size: 75%;
 	margin: .25em 0 0 .25em;

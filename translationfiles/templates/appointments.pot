@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2020-03-06 15:27-0500\n"
+"POT-Creation-Date: 2020-03-09 12:31-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,105 +18,105 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Confirmed
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:472
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:519
 #, php-format
 msgid "%s Appointment is Confirmed"
 msgstr ""
 
 #. TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now confirmed.
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:474
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:521
 #, php-format
 msgid "Your %1$s appointment scheduled for %2$s is now confirmed."
 msgstr ""
 
 #. TRANSLATORS Your {{Date Time}} appointment is confirmed.
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:476
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:523
 #, php-format
 msgid "Your %s appointment is confirmed."
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Canceled
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:479
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:526
 #, php-format
 msgid "%s Appointment is Canceled"
 msgstr ""
 
 #. TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now canceled.
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:481
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:528
 #, php-format
 msgid "Your %1$s appointment scheduled for %2$s is now canceled."
 msgstr ""
 
 #. TRANSLATORS Your {{Date Time}} appointment is confirmed.
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:483
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:530
 #, php-format
 msgid "Your %s appointment is canceled."
 msgstr ""
 
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:503
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:550
 msgid "Appointment is Canceled"
 msgstr ""
 
 #. TRANSLATORS Valendar event summary, Ex: {{Organization Name}} Appointment
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:512
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:559
 #, php-format
 msgid "%s Appointment"
 msgstr ""
 
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:536
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:726
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:583
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:773
 #: /home/sergey/PhpstormProjects/nextc/apps/appointments/templates/public/formerr.php:21
 #: /home/sergey/PhpstormProjects/nextc/apps/appointments/templates/public/thanks.php:9
 msgid "Thank you"
 msgstr ""
 
 #. TRANSLATORS Meaning the booking process is finished
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:560
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:607
 msgid "All done."
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment (action needed)
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:708
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:755
 #, php-format
 msgid "%s Appointment (action needed)"
 msgstr ""
 
 #. TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:710
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:757
 #, php-format
 msgid "Dear %s,"
 msgstr ""
 
 #. TRANSLATORS Main part of email, Ex: The {{Organization Name}} appointment scheduled for {{Date Time}} is awaiting your confirmation.
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:714
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:761
 #, php-format
 msgid "The %1$s appointment scheduled for %2$s is awaiting your confirmation."
 msgstr ""
 
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:721
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:768
 msgid "Confirm"
 msgstr ""
 
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:723
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:770
 msgid "Cancel"
 msgstr ""
 
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:764
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:811
 msgid "Almost done..."
 msgstr ""
 
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:785
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:832
 #, php-format
 msgid ""
 "We have sent an email to %s, please open it and click on the confirmation "
 "link to finalize your appointment request"
 msgstr ""
 
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:790
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:837
 msgid "Error"
 msgstr ""
 
-#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:791
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/lib/Controller/PageController.php:838
 msgid "Link Expired..."
 msgstr ""
 
@@ -151,7 +151,7 @@ msgid "Stop Sharing"
 msgstr ""
 
 #: /home/sergey/PhpstormProjects/nextc/apps/appointments/specialVueFakeDummyForL10nScript.js:5
-msgid "Generate Schedule"
+msgid "Add Appointments"
 msgstr ""
 
 #: /home/sergey/PhpstormProjects/nextc/apps/appointments/specialVueFakeDummyForL10nScript.js:6
@@ -281,42 +281,50 @@ msgid "Three Weeks"
 msgstr ""
 
 #: /home/sergey/PhpstormProjects/nextc/apps/appointments/specialVueFakeDummyForL10nScript.js:38
-msgid "Show Empty Days"
+msgid "Four Weeks"
 msgstr ""
 
 #: /home/sergey/PhpstormProjects/nextc/apps/appointments/specialVueFakeDummyForL10nScript.js:39
-msgid "Start on current day instead of Monday"
+msgid "Five Weeks"
 msgstr ""
 
 #: /home/sergey/PhpstormProjects/nextc/apps/appointments/specialVueFakeDummyForL10nScript.js:40
-msgid "Show Empty Weekends"
+msgid "Show Empty Days"
 msgstr ""
 
 #: /home/sergey/PhpstormProjects/nextc/apps/appointments/specialVueFakeDummyForL10nScript.js:41
-msgid "Show time in two columns"
+msgid "Start on current day instead of Monday"
 msgstr ""
 
 #: /home/sergey/PhpstormProjects/nextc/apps/appointments/specialVueFakeDummyForL10nScript.js:42
-msgid "Apply"
+msgid "Show Empty Weekends"
 msgstr ""
 
 #: /home/sergey/PhpstormProjects/nextc/apps/appointments/specialVueFakeDummyForL10nScript.js:43
-msgid "Select Dates:"
+msgid "Show time in two columns"
 msgstr ""
 
 #: /home/sergey/PhpstormProjects/nextc/apps/appointments/specialVueFakeDummyForL10nScript.js:44
-msgid "Select Dates"
+msgid "Apply"
 msgstr ""
 
 #: /home/sergey/PhpstormProjects/nextc/apps/appointments/specialVueFakeDummyForL10nScript.js:45
-msgid "Appointment Duration:"
+msgid "Select Dates:"
 msgstr ""
 
 #: /home/sergey/PhpstormProjects/nextc/apps/appointments/specialVueFakeDummyForL10nScript.js:46
-msgid "Start"
+msgid "Select Dates"
 msgstr ""
 
 #: /home/sergey/PhpstormProjects/nextc/apps/appointments/specialVueFakeDummyForL10nScript.js:47
+msgid "Appointment Duration:"
+msgstr ""
+
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/specialVueFakeDummyForL10nScript.js:48
+msgid "Start"
+msgstr ""
+
+#: /home/sergey/PhpstormProjects/nextc/apps/appointments/specialVueFakeDummyForL10nScript.js:49
 msgid "close"
 msgstr ""
 

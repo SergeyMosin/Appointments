@@ -88,6 +88,53 @@ class PageController extends Controller {
     /**
      * @NoAdminRequired
      */
+    public function calgetweek(){
+        // t must should be dd-mm-yyyy
+        $t = $this->request->getParam("t");
+        $r=new SendDataResponse();
+
+        if($t===null){
+            $r->setStatus(400);
+            return $r;
+        }
+
+        $t_start=strtotime($t);
+        if($t_start===false){
+            $r->setStatus(400);
+            return $r;
+        }
+
+        $cid=null;
+        $cal_url=$this->c->getUserValue(
+            $this->userId,
+            $this->appName,
+            'cal_url',
+            ''
+        );
+        if(!empty($cal_url)){
+            $cid=$this->calBackend->getCalendarIDByUri($this->userId,$cal_url);
+        }
+
+        if($cid===null){
+            $r->setStatus(400);
+        }else{
+            $r->setStatus(200);
+            $d="";
+            $t_end=$t_start+(5*86400);
+            $stmt=$this->calBackend->queryWeek($cid,$t_start,$t_end);
+            while($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+                $d.=$row['firstoccurence'].','.$row['lastoccurence'].',';
+            }
+            $r->setData($d);
+        }
+        return $r;
+    }
+
+
+
+        /**
+     * @NoAdminRequired
+     */
     public function callist(){
 //      '{DAV:}displayname'                                           => 'displayname',
 //		'{http://apple.com/ns/ical/}refreshrate'                      => 'refreshrate',

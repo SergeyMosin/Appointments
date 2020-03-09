@@ -135,10 +135,14 @@ function _apptGridMaker() {
         let elm = document.createElement('div')
         elm.className = sP+'appt'
         elm.style.backgroundColor=clr
-        elm.uTop = uTop
-        elm.uLen = uLen
-        elm.cIdx = idx
-        elm.cID = cID
+        if(idx!==null) {
+            elm.uTop = uTop
+            elm.uLen = uLen
+            elm.cIdx = idx
+            elm.cID = cID
+        }else{
+            elm.className+=" "+sP+"appt-empty"
+        }
 
 
         // console.log(uTop,uLen,idx)
@@ -154,14 +158,35 @@ function _apptGridMaker() {
         et.appendChild(document.createTextNode(ge.dxt + ' - ' + mData.elms[uTop + uLen].dxt))
         elm.appendChild(et)
 
-        // TODO: delegate these events to parent ???
-        elm.addEventListener("mousedown", appGoDrag)
+        if(idx!==null) {
 
-        mData.mc_pos[cID].push(uTop, uTop + uLen - 1)
-        mData.mc_elm[cID].push(elm)
+            // TODO: delegate these events to parent ???
+            elm.addEventListener("mousedown", appGoDrag)
 
+            mData.mc_pos[cID].push(uTop, uTop + uLen - 1)
+            mData.mc_elm[cID].push(elm)
+
+        }
         return elm
     }
+
+    function addPastAppts(data,clr) {
+        for(let elm,uTop,d,uLen,cID,da=data.slice(0,-1).split(","),
+                l=da.length,i=0;i<l;i+=2){
+            d= new Date(da[i]*1000)
+            d.setTime(d.getTime()+(d.getTimezoneOffset()*60000))
+            uLen= (da[i+1]-da[i])/300
+            cID=d.getDay()-1
+            uTop=Math.floor((((d.getHours()-8)*60)/5)
+                +((d.getMinutes()/5)))
+
+            if(uTop>=0){
+                elm=makeApptElement(uTop,uLen,null,cID,clr)
+                mData.mc_cols[cID].appendChild(elm)
+            }
+        }
+    }
+
 
 
     function appGoDrag(e) {
@@ -324,13 +349,18 @@ function _apptGridMaker() {
 
         // DH*12 = 12 5 minute sections per hour * DH
         let d = new Date()
-        let tzo = d.getTimezoneOffset() * 60000
-        let tss = SH * MPH + tzo
+        // let tzo = d.getTimezoneOffset() * 60000
+        d.setMilliseconds(0)
+        d.setSeconds(0)
+        d.setMinutes(0)
+        d.setHours(SH)
+        let tss = d.getTime()
 
         for (let els = mData.elms, vc = VS_LINE, dxt, ce,
                  l = DH * 12, i = 0; i < l; i++) {
 
             ce = document.createElement('div')
+            let tzo = d.getTimezoneOffset() * 60000
             d.setTime(tss)
             dxt = timeFormat(d)
             if (vc === VS_LINE) {
@@ -413,7 +443,8 @@ function _apptGridMaker() {
         cloneColumns:cloneColumns,
         resetColumn:resetColumn,
         resetAllColumns:resetAllColumns,
-        getStarEnds:getStarEnds
+        getStarEnds:getStarEnds,
+        addPastAppts:addPastAppts
     }
 }
 

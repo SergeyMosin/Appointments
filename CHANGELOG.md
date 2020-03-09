@@ -1,3 +1,13 @@
+## 1.1.2 - 2020-03-09
+### Fixed
+- Daylight savings grid drift
+- Extra empty week
+### Added
+- Empty days text
+### Changed
+- Max range is 5 weeks now
+- Help/Tutorial
+
 ## 1.1.1 - 2020-03-06
 ### Fixed
 - Public page settings propagation
