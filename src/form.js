@@ -167,7 +167,7 @@
 
         // console.log(pso)
 
-        let min_days=7
+        let min_days=7*pso[PPS_NWEEKS]
 
         let s=document.getElementById('srgdev-ncfp_sel-hidden')
         if(s.getAttribute("data-state")!=='2'){

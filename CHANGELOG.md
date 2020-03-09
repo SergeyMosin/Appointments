@@ -1,3 +1,7 @@
+## 1.1.3 - 2020-03-09
+### Fixed
+- Max range verified
+
 ## 1.1.2 - 2020-03-09
 ### Fixed
 - Daylight savings grid drift
