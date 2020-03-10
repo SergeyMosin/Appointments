@@ -539,8 +539,19 @@ class PageController extends Controller {
                         // method https://tools.ietf.org/html/rfc5546#section-3.2
                         if($a==='1'){
                             $method='PUBLISH';
-                            if(isset($vo->VEVENT->DESCRIPTION)){
-                                $vo->VEVENT->remove($vo->VEVENT->DESCRIPTION);
+
+                            $tel=$this->c->getUserValue(
+                                $uid, $this->appName,
+                                self::KEY_O_PHONE);
+                            if(!empty($tel)){
+                                if (!isset($vo->VEVENT->DESCRIPTION)) {
+                                    $vo->VEVENT->add('DESCRIPTION');
+                                }
+                                $vo->VEVENT->DESCRIPTION->setValue($org_name."\n".$tel);
+                            }else {
+                                if (isset($vo->VEVENT->DESCRIPTION)) {
+                                    $vo->VEVENT->remove($vo->VEVENT->DESCRIPTION);
+                                }
                             }
                         }else{
                             // TODO: only send if previously confirmed
