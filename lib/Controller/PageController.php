@@ -552,6 +552,23 @@ class PageController extends Controller {
                             }
                         }
 
+                        // SCHEDULE-AGENT
+                        // https://tools.ietf.org/html/rfc6638#section-7.1
+                        // Servers MUST NOT include this parameter in any scheduling messages sent as the result of a scheduling operation.
+                        // Clients MUST NOT include this parameter in any scheduling messages that they themselves send.
+
+                        $l=$vo->VEVENT->ATTENDEE->count();
+                        for($i=0;$i<$l;$i++){
+                            $at=$vo->VEVENT->ATTENDEE[$i];
+                            if(isset($at->parameters['SCHEDULE-AGENT'])){
+                                unset($at->parameters['SCHEDULE-AGENT']);
+                            }
+                        }
+                        if(isset($vo->VEVENT->ORGANIZER)
+                            && isset($vo->VEVENT->ORGANIZER->parameters['SCHEDULE-AGENT'])){
+                            unset($vo->VEVENT->ORGANIZER->parameters['SCHEDULE-AGENT']);
+                        }
+
                         if(!isset($vo->METHOD)) $vo->add('METHOD');
                         $vo->METHOD->setValue($method);
 
@@ -1132,7 +1149,7 @@ class PageController extends Controller {
                 "-ncapp@srgdev.com" . $rn .
                 "DTSTART".$tz_id.":" . $data[$i] . $rn .
                 "DTEND".$tz_id.":" . $data[$i+1] . $rn .
-                "ORGANIZER;CN=" . $u_name . ":acct:" . $u_email . $rn .
+                "ORGANIZER;SCHEDULE-AGENT=CLIENT;CN=" . $u_name . ":mailto:" . $u_email . $rn .
                 "LOCATION:".$u_addr.$rn.
                 "END:VEVENT\r\n".$tz_data."END:VCALENDAR\r\n";
 

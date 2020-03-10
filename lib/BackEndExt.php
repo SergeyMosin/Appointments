@@ -141,6 +141,7 @@ class BackEndExt extends CalDAV\CalDavBackend{
         $a=$evt->add('ATTENDEE',"mailto:".$email);
         $a['CN']=$name;
         $a['PARTSTAT']="NEEDS-ACTION";
+        $a['SCHEDULE-AGENT']="CLIENT";
 //        $a['RSVP']="FALSE";
 
         if(!isset($evt->SUMMARY)) $evt->add('SUMMARY');
