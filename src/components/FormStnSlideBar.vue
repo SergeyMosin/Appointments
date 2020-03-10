@@ -40,6 +40,14 @@
                         type="checkbox"
                         id="srgdev-appt_pps-time-cols"
                         class="checkbox"><label for="srgdev-appt_pps-time-cols">{{t('appointments','Show time in two columns')}}</label><br>
+                <label class="pps-txt-label" for="srgdev-appt_pps-form-title">{{t('appointments','Form Title')}}</label>
+                <input
+                        class="pps-text-input"
+                        v-model="ppsInfo.formTitle"
+                        id="srgdev-appt_pps-form-title"
+                        type="text"
+                        :placeholder="t('appointments','Book Your Appointment')"
+                >
                 <button
                         @click="applyPPS"
                         class="primary pps-genbtn">{{t('appointments','Apply')}}
@@ -80,13 +88,22 @@
         padding-left: 4%;
         min-width: 270px;
     }
+    .pps-txt-label,
     .pps-label{
         display: block;
+    }
+    .pps-txt-label{
+        margin-top: 1em;
     }
     .pps-input{
         display: block;
         min-width: 60%;
         margin-bottom: 1em;
+    }
+    .pps-text-input{
+        display: block;
+        margin: 0 0 1em 0;
+        width: 96%;
     }
     .pps-indent{
         padding-left: 2em;

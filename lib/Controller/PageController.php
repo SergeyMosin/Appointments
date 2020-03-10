@@ -29,6 +29,7 @@ class PageController extends Controller {
 
     const PPS_DEFAULT="11000";
     const PPS_KEY="pubPageSettings";
+    const PPS_KEY_FORM_TITLE="formTitle";
 
     const PPS_NWEEKS="nbrWeeks";
     const PPS_EMPTY="showEmpty";
@@ -345,6 +346,21 @@ class PageController extends Controller {
                             self::PPS_KEY,
                             $s);
                         $r->setStatus(200);
+                        // Form Title
+                        $ftv="";
+                        $ftk=self::PPS_KEY_FORM_TITLE;
+                        if(isset($o->$ftk)){
+                            $ftv=htmlspecialchars((string)strip_tags($o->$ftk), ENT_QUOTES, 'UTF-8');
+                        }
+                        if(empty($ftv)){
+                            $ftv=$this->l->t('Book Your Appointment');
+                        }
+
+                        $this->c->setUserValue(
+                            $this->userId,
+                            $this->appName,
+                            self::PPS_KEY_FORM_TITLE,
+                            $ftv);
                     }
                 }
             }
@@ -363,6 +379,11 @@ class PageController extends Controller {
                     $o[$prop]=boolval($v[$idx]);
                 }
             }
+            $o[self::PPS_KEY_FORM_TITLE]=$this->c->getUserValue(
+                $this->userId,
+                $this->appName,
+                self::PPS_KEY_FORM_TITLE);
+
             /** @noinspection PhpComposerExtensionStubsInspection */
             $j=json_encode($o);
             if($j!==false){
@@ -857,8 +878,9 @@ class PageController extends Controller {
                         $rs = 200;
                     }
                 }else{
+                    // TODO: graceful redirect somewhere, via js perhaps??
                     $tmpl = 'public/thanks';
-                    $param['appt_c_head']=$this->l->t("Error");
+                    $param['appt_c_head']=$this->l->t("Info");
                     $param['appt_c_msg'] = $this->l->t("Link Expired...");
                     $rs = 409;
                 }
@@ -914,7 +936,9 @@ class PageController extends Controller {
                 'Organization Name'),
             'appt_org_addr'=>str_replace(array("\r\n","\n","\r"),'<br>',$this->c->getUserValue(
                 $uid, $this->appName, self::KEY_O_ADDR,
-                "123 Main Street\nNew York, NY 45678"))
+                "123 Main Street\nNew York, NY 45678")),
+            'appt_form_title'=>$this->c->getUserValue(
+            $uid, $this->appName,self::PPS_KEY_FORM_TITLE)
         ];
 
         // google recaptcha

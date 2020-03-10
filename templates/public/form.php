@@ -16,7 +16,7 @@ style('appointments', 'form');
         <div class="srgdev-ncfp-form-addr">'.$_['appt_org_addr'].'</div>
         <h3 class="srgdev-ncfp-form-header">'.
             ($_['appt_state']==='2'
-                ?$l->t('Book Your Appointment')
+                ?$_['appt_form_title']
                 :$l->t('No Appointments Available')).'</h3>'
     ?>  <div class="srgdev-ncfp-form-main-cont">
         <label class="srgdev-ncfp-form-label"><?php p($l->t("Date & Time:")) ?></label>
