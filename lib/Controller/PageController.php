@@ -352,10 +352,6 @@ class PageController extends Controller {
                         if(isset($o->$ftk)){
                             $ftv=htmlspecialchars((string)strip_tags($o->$ftk), ENT_QUOTES, 'UTF-8');
                         }
-                        if(empty($ftv)){
-                            $ftv=$this->l->t('Book Your Appointment');
-                        }
-
                         $this->c->setUserValue(
                             $this->userId,
                             $this->appName,
@@ -928,6 +924,10 @@ class PageController extends Controller {
             [],
             $render);
 
+
+        $ft=$this->c->getUserValue(
+            $uid, $this->appName,self::PPS_KEY_FORM_TITLE);
+
         $params=[
             'appt_sel_opts'=>'',
             'appt_state'=>'0',
@@ -937,9 +937,7 @@ class PageController extends Controller {
             'appt_org_addr'=>str_replace(array("\r\n","\n","\r"),'<br>',$this->c->getUserValue(
                 $uid, $this->appName, self::KEY_O_ADDR,
                 "123 Main Street\nNew York, NY 45678")),
-            'appt_form_title'=>$this->c->getUserValue(
-            $uid, $this->appName,self::PPS_KEY_FORM_TITLE,
-                $this->l->t('Book Your Appointment'))
+            'appt_form_title'=>!empty($ft)?$ft:$this->l->t('Book Your Appointment')
         ];
 
         // google recaptcha
