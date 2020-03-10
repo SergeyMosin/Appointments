@@ -1,3 +1,9 @@
+## 1.1.4 - 2020-03-10
+### Added
+- Timezone support
+- Custom form title option
+- Add phone number to .ics files
+
 ## 1.1.3 - 2020-03-09
 ### Fixed
 - Max range verified
