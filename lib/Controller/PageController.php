@@ -938,7 +938,8 @@ class PageController extends Controller {
                 $uid, $this->appName, self::KEY_O_ADDR,
                 "123 Main Street\nNew York, NY 45678")),
             'appt_form_title'=>$this->c->getUserValue(
-            $uid, $this->appName,self::PPS_KEY_FORM_TITLE)
+            $uid, $this->appName,self::PPS_KEY_FORM_TITLE,
+                $this->l->t('Book Your Appointment'))
         ];
 
         // google recaptcha
