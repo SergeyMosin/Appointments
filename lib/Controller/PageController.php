@@ -13,7 +13,7 @@ use OCP\AppFramework\Controller;
 use OCP\IUserManager;
 use Sabre\DAV\Exception\BadRequest;
 use OCP\Mail\IMailer;
-use OC\Mail\Attachment;
+use Sabre\VObject\Reader;
 
 class PageController extends Controller {
     const APP_CAT="Appointment";
@@ -561,10 +561,6 @@ class PageController extends Controller {
                         if(!isset($vo->VEVENT->SUMMARY)) $vo->VEVENT->add('SUMMARY');
                         $vo->VEVENT->SUMMARY->setValue($smr);
 
-
-//                        \OC::$server->getLogger()->error($vo->serialize());
-
-
                         $ics_attachment = $this->mailer->createAttachment(
                             $vo->serialize(),
                             'appointment.ics',
@@ -976,9 +972,11 @@ class PageController extends Controller {
             $last=(int)$row['lastoccurence'];
             $diff=$last-$first;
             $cp=stripos($cd,"\r\ncategories:appointment\r\n",14);
+
+            $es=strpos($cd,"\r\nBEGIN:VEVENT\r\n")+14;
             if($cp!==false
-                && $cp===strpos($cd,"\r\nCATEGORIES:",14)
-                && strpos($cd,"\r\nSTATUS:TENTATIVE\r\n",14)!==false
+                && $cp===strpos($cd,"\r\nCATEGORIES:",$es)
+                && strpos($cd,"\r\nSTATUS:TENTATIVE\r\n",$es)!==false
                 && $first>$last_valid_end // no overlap
                 && $diff<=7200 // two hours max
                 && $diff>=600 // 10 minutes minimum
@@ -992,7 +990,19 @@ class PageController extends Controller {
                     OPENSSL_RAW_DATA,
                     $iv);
 
-                $out.='<option value="'.base64_encode($iv.$ciphertext_raw).'" data-ts="'.$row['firstoccurence'].'">'.$c.'</option>';
+                $dts=strpos($cd,"\r\nDTSTART",$es)+9;
+                //:20200311T094000
+
+                // let's find the time zone
+                if(strpos($cd,"\r\n",$dts)-$dts === 16){
+                    // floating/local
+                    $tz="L";
+                }else{
+                    // UTC
+                    $tz="U";
+                }
+
+                $out.='<option value="'.base64_encode($iv.$ciphertext_raw).'" data-ts="'.$row['firstoccurence'].'" data-tz="'.$tz.'">'.$c.'</option>';
                 $c++;
             }
         }
@@ -1038,9 +1048,23 @@ class PageController extends Controller {
         $be=$this->calBackend;
 
         $cal=$be->getCalendarByUri('principals/users/'.$this->userId,$cal_url);
-        if($cal===null) return '1:Cant find calendar';
+        if($cal===null) return '1:Can not find calendar';
 
         $cid=$cal['id'];
+
+
+        $tz_id="";
+        $tz_data="";
+        if($this->request->getParam("tz")==="C") {
+            if(isset($cal['{urn:ietf:params:xml:ns:caldav}calendar-timezone'])){
+                $tzo=Reader::read($cal['{urn:ietf:params:xml:ns:caldav}calendar-timezone']);
+                $tz_id=';TZID='.$tzo->VTIMEZONE->TZID->getValue();
+                $tz_data=$tzo->VTIMEZONE->serialize();
+            }else{
+                return '1:Can not get calendar timezone';
+            }
+        }
+
 
         $rn="\r\n";
         $u=$this->um->get($this->userId);
@@ -1106,11 +1130,11 @@ class PageController extends Controller {
                 "UID:" . implode('', $pieces)."-"
                 .floor($ts / (ord($pieces[1]) + ord($pieces[2]) + ord($pieces[$p - 2]))) .
                 "-ncapp@srgdev.com" . $rn .
-                "DTSTART:" . $data[$i] . $rn .
-                "DTEND:" . $data[$i+1] . $rn .
+                "DTSTART".$tz_id.":" . $data[$i] . $rn .
+                "DTEND".$tz_id.":" . $data[$i+1] . $rn .
                 "ORGANIZER;CN=" . $u_name . ":acct:" . $u_email . $rn .
                 "LOCATION:".$u_addr.$rn.
-                "END:VEVENT\r\nEND:VCALENDAR\r\n";
+                "END:VEVENT\r\n".$tz_data."END:VCALENDAR\r\n";
 
 
             // make calendar object uri

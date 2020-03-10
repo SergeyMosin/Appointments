@@ -7,7 +7,7 @@
             <div class="appt-gen-wrap">
                 <label class="datepicker-label">{{t('appointments','Select Dates:')}}</label>
                 <DatePicker
-                        :inline="true"
+                        :editable="false"
                         :disabled-date="compNotBefore"
                         :appendToBody="false"
                         :popup-style="datePickerPopupStyle"
@@ -17,7 +17,7 @@
                         @input="setToStartOfWeek"
                         :format="weekFormat"
                         type="week"></DatePicker>
-                <label for="appt-dur-select" class="select-label">{{t('appointments','Appointment Duration:')}}</label>
+                <label for="appt_dur-select" class="select-label">{{t('appointments','Appointment Duration:')}}</label>
                 <vue-slider
                         :min="10"
                         :max="120"
@@ -25,8 +25,14 @@
                         tooltip="always"
                         tooltipPlacement="bottom"
                         :tooltip-formatter="'{value} Min'"
-                        id="appt-dur-select"
+                        id="appt_dur-select"
+                        class="appt-slider"
                         v-model="apptDur"></vue-slider>
+                <label for="appt_tz-select" class="select-label">{{t('appointments','Timezone:')}}</label>
+                <select v-model="apptTZ" id="appt_tz-select" class="appt-select">
+                    <option value="L">Local (floating)</option>
+                    <option value="C">Calendar Timezone</option>
+                </select>
                 <button
                         @click="goApptGen"
                         :disabled="apptWeek===null"
@@ -98,7 +104,13 @@
 
                 apptDur:30,
 
-                datePickerPopupStyle:{top:"100%",left:0},
+                apptTZ:"L",
+
+                datePickerPopupStyle:{
+                    top:"75%",
+                    left:"50%",
+                    transform: "translate(-50%,0)"
+                },
                 weekFormat: {
                     // Date to String
                     stringify: (date,fmt) => {
@@ -153,6 +165,7 @@
             },
             goApptGen(){
                 let r={
+                    tz: this.apptTZ,
                     week:(this.apptWeek.getTime()),
                     dur:this.apptDur,
                 }
@@ -181,9 +194,17 @@
     .select-label{
         margin-bottom: .25em;
     }
+    .appt-slider{
+        margin-bottom: 3em;
+    }
+    .appt-select {
+        margin: 0;
+        width: 100%;
+        padding: 0 0 0 .25em;
+    }
     .appt-genbtn{
         min-width: 80%;
-        margin: 4em auto 0;
+        margin: 2.5em auto 0;
         display: block;
     }
 </style>

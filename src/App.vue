@@ -289,6 +289,7 @@
                 gridHeader:[],
                 gridApptLen:0,
                 gridApptTs:0,
+                gridApptTZ:"L",
 
                 ppsInfo:{},
                 ppsLoading:false
@@ -331,9 +332,6 @@
             this.getFormData()
         },
         methods: {
-
-
-
 
             applyPPS(info){
 
@@ -655,10 +653,9 @@
 
                 this.gridApptLen=d.dur
                 this.gridApptTs=d.week
+                this.gridApptTZ=d.tz
 
                 this.visibleSection=1
-
-                console.log(pd)
 
                 // dd-mm-yyyy
                 axios.get('calgetweek', {
@@ -667,7 +664,6 @@
                     }
                 }).then(response=>{
                     if(response.status===200) {
-                        console.log(response.data)
                         if(response.data!==""){
                             gridMaker.addPastAppts(response.data,this.curCal.clr)
                         }
@@ -682,7 +678,8 @@
                 this.evtGridModal=1
 
                 axios.post('caladd', {
-                    d: tsa.join(',')
+                    d: tsa.join(','),
+                    tz:this.gridApptTZ
                 }).then(response=>{
                     if(response.status===200) {
                         this.evtGridModal=2

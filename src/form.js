@@ -141,6 +141,7 @@
             p.lastElementChild.removeAttribute('disabled')
         }
 
+        // TODO: find first not empty and select it ?
 
 
 
@@ -373,7 +374,10 @@
             ts= opts[i].getAttribute('data-ts')*1000
             if(ts===0) break
             d.setTime(ts)
-            d.setTime(ts+d.getTimezoneOffset()*60000)
+
+            if(opts[i].getAttribute('data-tz')==="L") {
+                d.setTime(ts + d.getTimezoneOffset() * 60000)
+            }
 
             let ud=d.getUTCDate()
             if(lastUD!==ud){
