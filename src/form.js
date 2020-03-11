@@ -41,12 +41,13 @@
         }
 
         el=document.getElementById("srgdev-ncfp_sel-hidden")
-        if (el.options[el.selectedIndex].getAttribute('data-ts')==='0'){
+        if (el.selectedIndex===-1 || el.value===""){
             el=document.getElementById("srgdev-ncfp_sel-dummy")
             el.setAttribute('err','err');
             el.addEventListener("focus",clearFormErr,false)
             lee=1
         }
+
         el=document.getElementById("srgdev-ncfp_fname")
         if (el.value.length<3){
             el.setCustomValidity("Name is required.");
@@ -166,8 +167,6 @@
             pso[a[0]]= +a[1]
         }
 
-        // console.log(pso)
-
         let min_days=7*pso[PPS_NWEEKS]
 
         let s=document.getElementById('srgdev-ncfp_sel-hidden')
@@ -245,17 +244,32 @@
             }
         }
 
-        // temp (last option to finalize the loop)
-        let cont=document.createElement('option')
-        cont.setAttribute('data-ts','0')
-        s.appendChild(cont)
+        // Options can be unsorted if mixed timezones are used
+        // TODO: maybe use data-xxx to send info instead of options
+        let so=s.options
+        let dta=[]
+        for(let ts,dd=new Date(),o,l=so.length,i=0;i<l;i++) {
+            o=so[i]
+            ts= o.getAttribute('data-ts')*1000
+            if(ts!==0) {
+                dd.setTime(ts)
+                if (o.getAttribute('data-tz') === "L") {
+                    ts+=dd.getTimezoneOffset() * 60000
+                }
+                dta[i]={
+                    rts:ts,
+                    idx:i,
+                }
+            }
+        }
+        dta.sort((a, b) => (a.rts > b.rts) ? 1 : -1)
+        dta.push({rts:0,idx:0}) //last option to finalize the loop
+        let l=dta.length
 
-        let opts=s.options
-        let l=opts.length
+        s.selectedIndex=-1
+        s.value=""
 
-        s.selectedIndex=l-1
-
-        cont=document.createElement('div')
+        let cont=document.createElement('div')
         cont.id="srgdev-dpu_main-cont"
         cont.className="srgdev-dpu-bkr-cls"
 
@@ -302,8 +316,7 @@
         let rccN=5
 
         let d=new Date()
-        // console.log(d.getTimezoneOffset())
-        // let tzOffset=d.getTimezoneOffset()*60000
+
         let lastUD=-1
 
         let an=-1
@@ -349,14 +362,13 @@
         if(pso[PPS_EMPTY]===1 && pso[PPS_FNED]===0){
             // Need to prepend epmty days so the week start on Monday
 
-            let ts= opts[0].getAttribute('data-ts')*1000
+            let ts= dta[0].rts
             d.setTime(ts)
             d.setTime(ts+d.getTimezoneOffset()*60000)
             d.setSeconds(1)
             d.setMinutes(0)
             d.setHours(0)
             let fd=d.getDay()
-            // console.log("fd:",fd)
             if(fd>0 && fd<6) {
                 td.setTime(d.getTime()-86400000*(fd-1))
             }
@@ -371,15 +383,12 @@
         }
 
         for(let ts,ti,ets,tts,te,pe,i=0;i<l;i++){
-            ts= opts[i].getAttribute('data-ts')*1000
+            ts= dta[i].rts
             if(ts===0) break
             d.setTime(ts)
 
-            if(opts[i].getAttribute('data-tz')==="L") {
-                d.setTime(ts + d.getTimezoneOffset() * 60000)
-            }
+            let ud=d.getDate()
 
-            let ud=d.getUTCDate()
             if(lastUD!==ud){
 
                 // Show "empty" days ...
@@ -447,18 +456,16 @@
             }
             te=document.createElement("span")
             te.className=tu_class
-            te.dpuClickID=i
+            te.dpuClickID=dta[i].idx
             te.appendChild(document.createTextNode(tf(d)))
             pe.appendChild(te)
         }
 
-        // console.log(d.toLocaleString())
         // fill in empty space
         d.setSeconds(0)
         d.setMinutes(0)
         d.setHours(1)
         d.setTime(d.getTime()+86400000)
-        // console.log(d.toLocaleString())
 
         lcc%=5
         if(lcc>0) {

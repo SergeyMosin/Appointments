@@ -348,6 +348,7 @@
                 }).then(response => {
                     if(response.status===200) {
                         this.getFormData()
+                        OCP.Toast.success(this.t('appointments','New Settings Applied.'))
                     }
                 }).catch((error) => {
                     console.log(error)

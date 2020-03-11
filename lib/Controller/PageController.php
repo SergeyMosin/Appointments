@@ -15,6 +15,7 @@ use Sabre\DAV\Exception\BadRequest;
 use OCP\Mail\IMailer;
 use Sabre\VObject\Reader;
 
+
 class PageController extends Controller {
     const APP_CAT="Appointment";
     const TIME_FORMAT="Ymd\THis";
@@ -124,7 +125,20 @@ class PageController extends Controller {
             $t_end=$t_start+(5*86400);
             $stmt=$this->calBackend->queryWeek($cid,$t_start,$t_end);
             while($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-                $d.=$row['firstoccurence'].','.$row['lastoccurence'].',';
+                $cd=$this->calBackend->readBlob($row['calendardata']);
+
+                $es=strpos($cd,"\r\nBEGIN:VEVENT\r\n")+14;
+                $dts=strpos($cd,"\r\nDTSTART",$es)+9;
+
+                if(strpos($cd,"\r\n",$dts)-$dts === 16){
+                    // floating/local
+                    $tz="L";
+                }else{
+                    // UTC
+                    $tz="U";
+                }
+
+                $d.=$row['firstoccurence'].','.$row['lastoccurence'].','.$tz.",";
             }
             $r->setData($d);
         }
@@ -525,7 +539,6 @@ class PageController extends Controller {
             $tr->setStatus(500);
 
         }else{
-
             $date_time=str_replace(':00 ', ' ', $this->l->l('datetime', $ra[0], ['width' => 'medium']));
             $org_name = $this->c->getUserValue(
                 $uid, $this->appName,
@@ -1084,6 +1097,7 @@ class PageController extends Controller {
      * @NoAdminRequired
      */
     public function caladd(){
+
         $ds=$this->request->getParam("d");
         if($ds===null) return '1:No Key';
         $data=explode(',',$ds);
@@ -1215,6 +1229,7 @@ class PageController extends Controller {
                     $cid,
                     implode('',$e_url).".ics",
                     $eo);
+
             } catch (BadRequest $e) {
                 $rtn='1:bad request';
                 break;

@@ -172,10 +172,15 @@ function _apptGridMaker() {
 
     function addPastAppts(data,clr) {
         for(let elm,uTop,d,uLen,cID,da=data.slice(0,-1).split(","),
-                l=da.length,i=0;i<l;i+=2){
+                l=da.length,i=0;i<l;i+=3){
             d= new Date(da[i]*1000)
-            d.setTime(d.getTime()+(d.getTimezoneOffset()*60000))
+            // d.setTime(d.getTime()+(d.getTimezoneOffset()*60000))
             uLen= (da[i+1]-da[i])/300
+
+            if(da[i+2]==="L") {
+                d.setTime(d.getTime()+(d.getTimezoneOffset()*60000))
+            }
+
             cID=d.getDay()-1
             uTop=Math.floor((((d.getHours()-8)*60)/5)
                 +((d.getMinutes()/5)))
