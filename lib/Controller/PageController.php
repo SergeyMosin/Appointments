@@ -585,11 +585,13 @@ class PageController extends Controller {
                         // Servers MUST NOT include this parameter in any scheduling messages sent as the result of a scheduling operation.
                         // Clients MUST NOT include this parameter in any scheduling messages that they themselves send.
 
-                        $l=$vo->VEVENT->ATTENDEE->count();
-                        for($i=0;$i<$l;$i++){
-                            $at=$vo->VEVENT->ATTENDEE[$i];
-                            if(isset($at->parameters['SCHEDULE-AGENT'])){
-                                unset($at->parameters['SCHEDULE-AGENT']);
+                        if(isset($vo->VEVENT->ATTENDEE)) {
+                            $l = $vo->VEVENT->ATTENDEE->count();
+                            for ($i = 0; $i < $l; $i++) {
+                                $at = $vo->VEVENT->ATTENDEE[$i];
+                                if (isset($at->parameters['SCHEDULE-AGENT'])) {
+                                    unset($at->parameters['SCHEDULE-AGENT']);
+                                }
                             }
                         }
                         if(isset($vo->VEVENT->ORGANIZER)

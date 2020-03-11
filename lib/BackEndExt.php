@@ -234,7 +234,7 @@ class BackEndExt extends CalDAV\CalDavBackend{
 
         $evt=$vo->VEVENT;
 
-        if($evt->ATTENDEE->count()!==1){
+        if(!isset($evt->ATTENDEE) || $evt->ATTENDEE->count()!==1){
             $this->_db->commit();
             return [null,1];
         }
