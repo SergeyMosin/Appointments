@@ -1,0 +1,11 @@
+{ "translations": {
+    "Confirm" : "Батлах",
+    "Cancel" : "болиулах",
+    "Info" : "Info",
+    "Email" : "Цахим шуудан",
+    "Close" : "Хаах",
+    "Address" : "хаяг",
+    "Apply" : "хэрэглэх",
+    "Start" : "эхлэх"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

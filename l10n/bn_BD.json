@@ -1,0 +1,8 @@
+{ "translations": {
+    "Cancel" : "বাতির",
+    "Info" : "Info",
+    "Email" : "ইমেইল",
+    "Close" : "বন্ধ",
+    "Address" : "ঠিকানা"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

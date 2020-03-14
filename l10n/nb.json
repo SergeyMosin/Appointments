@@ -1,0 +1,12 @@
+{ "translations": {
+    "Confirm" : "Bekreft",
+    "Cancel" : "Avbryt",
+    "Info" : "Info",
+    "Email" : "E-post",
+    "Close" : "Lukk",
+    "Copy public link" : "Kopier offentlig lenke",
+    "Address" : "Adresse",
+    "Apply" : "Bruk",
+    "Start" : "Start"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

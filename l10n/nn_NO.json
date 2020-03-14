@@ -1,0 +1,10 @@
+{ "translations": {
+    "Cancel" : "Avbryt",
+    "Info" : "Info",
+    "Email" : "E-post",
+    "Close" : "Lukk",
+    "Address" : "Adresse",
+    "Apply" : "Anvend",
+    "Start" : "Start"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

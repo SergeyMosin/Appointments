@@ -1,0 +1,13 @@
+{ "translations": {
+    "Confirm" : "Vahvista",
+    "Cancel" : "Peruuta",
+    "Info" : "Tietoa",
+    "Email" : "Sähhköposti",
+    "Close" : "Sulje",
+    "Copy public link" : "Kopioi julkinen linkki",
+    "Address" : "Osoite",
+    "Apply" : "Toteuta",
+    "Start" : "Aloita",
+    "close" : "sulje"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

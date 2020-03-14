@@ -1,0 +1,13 @@
+{ "translations": {
+    "Confirm" : "Berretsi",
+    "Cancel" : "Utzi",
+    "Info" : "Informazioa",
+    "Email" : "Helbide elektronikoa",
+    "Close" : "Itxi",
+    "Copy public link" : "Kopiatu esteka publikoa",
+    "Address" : "Helbidea",
+    "Apply" : "Aplikatu",
+    "Start" : "Hasi",
+    "close" : "itxi"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

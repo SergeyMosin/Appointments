@@ -1,0 +1,11 @@
+{ "translations": {
+    "Confirm" : "დადასტურება",
+    "Cancel" : "უარყოფა",
+    "Info" : "ინფორმაცია",
+    "Email" : "ელ-ფოსტა",
+    "Close" : "დახურვა",
+    "Address" : "მისამართი",
+    "Apply" : "გამოყენება",
+    "Start" : "დაწყება"
+},"pluralForm" :"nplurals=2; plural=(n!=1);"
+}
