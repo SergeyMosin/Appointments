@@ -18,7 +18,7 @@ OC.L10N.register(
     "Cancel" : "Cancelar",
     "Almost done..." : "Casi feito...",
     "Info" : "Información",
-    "Link Expired..." : "Ligazón caducada ...",
+    "Link Expired..." : "Ligazón caducada...",
     "Book Your Appointment" : "Reserve a súa cita",
     "Appointments" : "Cita",
     "Email" : "Correo-e",
