@@ -3,6 +3,7 @@ namespace OCA\Appointments\Controller;
 
 use OCA\Appointments\BackEndExt;
 use OCA\Appointments\SendDataResponse;
+use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\IConfig;
@@ -81,7 +82,13 @@ class PageController extends Controller {
      */
     public function index() {
         $t=new TemplateResponse($this->appName, 'index');
-        $t->getContentSecurityPolicy()->addAllowedFrameDomain('\'self\'');
+
+        $csp=$t->getContentSecurityPolicy();
+        if($csp===null){
+            $csp=new ContentSecurityPolicy();
+            $t->setContentSecurityPolicy($csp);
+        }
+        $csp->addAllowedFrameDomain('\'self\'');
         return  $t;// templates/index.php
     }
 
