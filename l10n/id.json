@@ -1,0 +1,11 @@
+{ "translations": {
+    "Confirm" : "Konfirmasi",
+    "Cancel" : "Membatalkan",
+    "Info" : "Info",
+    "Email" : "Surel",
+    "Close" : "Tutup",
+    "Address" : "Alamat",
+    "Apply" : "Terapkan",
+    "Start" : "Mulai"
+},"pluralForm" :"nplurals=1; plural=0;"
+}

@@ -1,0 +1,11 @@
+{ "translations": {
+    "Confirm" : "Confirmar",
+    "Cancel" : "Cancellar",
+    "Info" : "Info",
+    "Email" : "E-posta",
+    "Close" : "Clauder",
+    "Address" : "Adresse",
+    "Apply" : "Applicar",
+    "Start" : "Initio"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

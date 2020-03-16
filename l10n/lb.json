@@ -1,0 +1,9 @@
+{ "translations": {
+    "Cancel" : "Ofbriechen",
+    "Info" : "Info",
+    "Email" : "Email",
+    "Close" : "Zoumaachen",
+    "Address" : "Adress",
+    "Apply" : "Uwenden"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

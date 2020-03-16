@@ -1,0 +1,11 @@
+{ "translations": {
+    "Confirm" : "Kinnita",
+    "Cancel" : "Loobu",
+    "Info" : "Info",
+    "Email" : "Epost",
+    "Close" : "Sulge",
+    "Address" : "Aadress",
+    "Apply" : "Rakenda",
+    "Start" : "Algus"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
