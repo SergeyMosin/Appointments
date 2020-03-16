@@ -1,3 +1,8 @@
+## 1.1.6 - 2020-03-16
+### Fixed
+- Issue #29
+- acorn security alert
+
 ## 1.1.5 - 2020-03-11
 ### Fixed
 - Mixed timezones in date/time picker

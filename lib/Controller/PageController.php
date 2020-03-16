@@ -939,7 +939,6 @@ class PageController extends Controller {
             [],
             $render);
 
-
         $ft=$this->c->getUserValue(
             $uid, $this->appName,self::PPS_KEY_FORM_TITLE);
 

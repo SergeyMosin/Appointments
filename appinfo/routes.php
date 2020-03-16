@@ -21,5 +21,9 @@ return [
         ['name' => 'page#form', 'url' => '/pub/{token}/form', 'verb' => 'GET'],
         ['name' => 'page#formpost', 'url' => '/pub/{token}/form', 'verb' => 'POST'],
         ['name' => 'page#cncf', 'url' => '/pub/{token}/cncf', 'verb' => 'GET'],
+
+//        ['name' => 'public#form2', 'url' => '/pub/{token}/form2', 'verb' => 'GET'],
+//        ['name' => 'public#form2post', 'url' => '/pub/{token}/form2', 'verb' => 'POST'],
+
     ]
 ];
