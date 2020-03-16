@@ -9,6 +9,7 @@ OC.L10N.register(
     "Copy public link" : "复制公开链接",
     "Address" : "地址",
     "Apply" : "应用",
+    "Timezone:" : "时区：",
     "Start" : "起点",
     "close" : "关闭"
 },

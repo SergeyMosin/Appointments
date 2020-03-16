@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Confirm" : "Berretsi",
     "Cancel" : "Utzi",
+    "We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request" : "Emaila bidali dugu %s helbidera, mesedez ireki eta klikatu baieztapen esteka zure hitzordu eskaera amaitzeko",
     "Info" : "Informazioa",
     "Email" : "Helbide elektronikoa",
     "Close" : "Itxi",
