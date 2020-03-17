@@ -86,7 +86,7 @@ OC.L10N.register(
     "Enter Phone Number" : "Digita numero di telefono",
     "Book Now" : "Prenota ora",
     "An Error Has Occurred" : "Si è verificato un errore",
-    "Please %1$stry again%2$s and select a different date." : " %1$sProva ancora%2$s e seleziona una data diversa.",
+    "Please %1$stry again%2$s and select a different date." : "%1$sProva ancora%2$s e seleziona una data diversa.",
     "Please contact us directly at" : "Contattaci direttamente a",
     "Please try again later" : "Riprova più tardi"
 },
