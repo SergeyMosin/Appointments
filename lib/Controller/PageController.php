@@ -326,7 +326,7 @@ class PageController extends Controller {
         }elseif ($action==='get_puburi'){
             $s=\OC::$server;
             $u=$s->getURLGenerator()->getBaseUrl().'/index.php'
-            .$s->getAppManager()->getAppWebPath($this->appName).'/'
+            .$this->getPublicWebBase().'/'
             .$this->pubPrx($this->getToken($this->userId)).'form';
 
             $r->setData($u);
@@ -809,7 +809,7 @@ class PageController extends Controller {
                 self::KEY_O_EMAIL);
 
         $btn_url= $s->getURLGenerator()->getBaseUrl().'/index.php'
-            .$s->getAppManager()->getAppWebPath($this->appName).'/'
+            .$this->getPublicWebBase().'/'
             .$this->pubPrx($this->getToken($uid)).'cncf?d=';
         $btn_tkn=urlencode($this->encrypt($post['email'].chr(31).$da[1],$key));
 
@@ -1296,6 +1296,18 @@ class PageController extends Controller {
         return new \DateTimeZone($timeZone);
     }
 
-
+    private function getPublicWebBase(){
+        try{
+            $webPath=\OC::$server->getAppManager()->getAppWebPath($this->appName);
+        }catch (\Exception $e){
+            $webPath="";
+        }catch (\Throwable $e){
+            $webPath="";
+        }
+        if($webPath===""){
+            $webPath=\OC_App::getAppWebPath($this->appName);
+        }
+        return $webPath;
+    }
 
 }
