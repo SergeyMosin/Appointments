@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2020-03-16 03:26+0000\n"
+"POT-Creation-Date: 2020-03-17 03:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,108 +18,108 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Confirmed
-#: /app/lib/Controller/PageController.php:549
+#: /app/lib/Controller/PageController.php:556
 #, php-format
 msgid "%s Appointment is Confirmed"
 msgstr ""
 
 #. TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now confirmed.
-#: /app/lib/Controller/PageController.php:551
+#: /app/lib/Controller/PageController.php:558
 #, php-format
 msgid "Your %1$s appointment scheduled for %2$s is now confirmed."
 msgstr ""
 
 #. TRANSLATORS Your {{Date Time}} appointment is confirmed.
-#: /app/lib/Controller/PageController.php:553
+#: /app/lib/Controller/PageController.php:560
 #, php-format
 msgid "Your %s appointment is confirmed."
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Canceled
-#: /app/lib/Controller/PageController.php:556
+#: /app/lib/Controller/PageController.php:563
 #, php-format
 msgid "%s Appointment is Canceled"
 msgstr ""
 
 #. TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now canceled.
-#: /app/lib/Controller/PageController.php:558
+#: /app/lib/Controller/PageController.php:565
 #, php-format
 msgid "Your %1$s appointment scheduled for %2$s is now canceled."
 msgstr ""
 
 #. TRANSLATORS Your {{Date Time}} appointment is confirmed.
-#: /app/lib/Controller/PageController.php:560
+#: /app/lib/Controller/PageController.php:567
 #, php-format
 msgid "Your %s appointment is canceled."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:591
+#: /app/lib/Controller/PageController.php:598
 msgid "Appointment is Canceled"
 msgstr ""
 
 #. TRANSLATORS Valendar event summary, Ex: {{Organization Name}} Appointment
-#: /app/lib/Controller/PageController.php:619
+#: /app/lib/Controller/PageController.php:626
 #, php-format
 msgid "%s Appointment"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:639
-#: /app/lib/Controller/PageController.php:829
+#: /app/lib/Controller/PageController.php:646
+#: /app/lib/Controller/PageController.php:836
 #: /app/templates/public/formerr.php:21 /app/templates/public/thanks.php:9
 msgid "Thank you"
 msgstr ""
 
 #. TRANSLATORS Meaning the booking process is finished
-#: /app/lib/Controller/PageController.php:663
+#: /app/lib/Controller/PageController.php:670
 msgid "All done."
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment (action needed)
-#: /app/lib/Controller/PageController.php:811
+#: /app/lib/Controller/PageController.php:818
 #, php-format
 msgid "%s Appointment (action needed)"
 msgstr ""
 
 #. TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
-#: /app/lib/Controller/PageController.php:813
+#: /app/lib/Controller/PageController.php:820
 #, php-format
 msgid "Dear %s,"
 msgstr ""
 
 #. TRANSLATORS Main part of email, Ex: The {{Organization Name}} appointment scheduled for {{Date Time}} is awaiting your confirmation.
-#: /app/lib/Controller/PageController.php:817
+#: /app/lib/Controller/PageController.php:824
 #, php-format
 msgid "The %1$s appointment scheduled for %2$s is awaiting your confirmation."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:824
+#: /app/lib/Controller/PageController.php:831
 msgid "Confirm"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:826
+#: /app/lib/Controller/PageController.php:833
 msgid "Cancel"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:867
+#: /app/lib/Controller/PageController.php:874
 msgid "Almost done..."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:888
+#: /app/lib/Controller/PageController.php:895
 #, php-format
 msgid ""
 "We have sent an email to %s, please open it and click on the confirmation "
 "link to finalize your appointment request"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:894
+#: /app/lib/Controller/PageController.php:901
 msgid "Info"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:895
+#: /app/lib/Controller/PageController.php:902
 msgid "Link Expired..."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:955
+#: /app/lib/Controller/PageController.php:961
 #: /app/specialVueFakeDummyForL10nScript.js:46
 msgid "Book Your Appointment"
 msgstr ""
