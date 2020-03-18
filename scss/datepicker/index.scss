@@ -190,6 +190,9 @@
   box-sizing: border-box;
   .cell {
     cursor: pointer;
+    div{
+      cursor: pointer;
+    }
     &:hover {
       color: $calendar-hover-color;
       background-color: $calendar-hover-background-color;
@@ -206,6 +209,9 @@
       cursor: not-allowed;
       color: $disabled-color;
       background-color: $disabled-background-color;
+      div{
+        cursor: not-allowed;
+      }
     }
   }
 }
