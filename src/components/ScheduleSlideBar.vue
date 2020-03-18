@@ -28,7 +28,12 @@
                         id="appt_dur-select"
                         class="appt-slider"
                         v-model="apptDur"></vue-slider>
+                <div class="srgdev-appt-info-lcont">
                 <label for="appt_tz-select" class="select-label">{{t('appointments','Timezone:')}}</label>
+                    <a
+                            class="icon-info srgdev-appt-info-link"
+                            @click="$root.$emit('helpWanted','timezone')"></a>
+                </div>
                 <select v-model="apptTZ" id="appt_tz-select" class="appt-select">
                     <option value="L">Local (floating)</option>
                     <option value="C">Calendar Timezone</option>

@@ -330,6 +330,10 @@
 
         mounted() {
             this.getFormData()
+            this.$root.$on('helpWanted', this.helpWantedHandler)
+        },
+        beforeDestroy() {
+            this.$root.$off('helpWanted', this.helpWantedHandler)
         },
         methods: {
 
@@ -470,13 +474,31 @@
             },
 
 
-            showHelp(){
+            helpWantedHandler(section){
+                this.toggleSlideBar(0)
+                this.showHelp(section)
+                // document.getElementById("sec_"+section).scrollIntoView()
+            },
+
+            showHelp(sec){
                 this.visibleSection=2
 
                 axios.get('help')
                     .then(response => {
                         if(response.status===200) {
                             this.helpContent=response.data
+                            if(sec!==undefined) {
+                                this.$nextTick(function () {
+                                    let elm=document.getElementById("srgdev-sec_" + sec)
+                                    if(elm!==null){
+                                        elm.scrollIntoView()
+                                        elm.className+=' srgdev-appt-temp-highlight'
+                                        setTimeout(function () {
+                                            elm.className=elm.className.replace(' srgdev-appt-temp-highlight','')
+                                        },1000)
+                                    }
+                                })
+                            }
                         }})
                     .catch((error) => {
                         console.log(error)

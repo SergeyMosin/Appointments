@@ -48,6 +48,18 @@
                         type="text"
                         :placeholder="t('appointments','Book Your Appointment')"
                 >
+                <div class="srgdev-appt-info-lcont">
+                <label class="pps-txt-label" for="srgdev-appt_pps-gdpr">{{t('appointments','GDPR Compliance')}}</label><a
+                        class="icon-info srgdev-appt-info-link"
+                        @click="$root.$emit('helpWanted','gdpr')"></a>
+                </div>
+                <input
+                        class="pps-text-input"
+                        v-model="ppsInfo.gdpr"
+                        id="srgdev-appt_pps-gdpr"
+                        type="text"
+                        :placeholder="t('appointments','See Tutorial...')"
+                >
                 <button
                         @click="applyPPS"
                         class="primary pps-genbtn">{{t('appointments','Apply')}}
@@ -114,5 +126,8 @@
         /*width: 60%;*/
         padding-left: 3em;
         padding-right: 3em;
+    }
+    .srgdev-appt-info-link{
+        right: 4%;
     }
 </style>

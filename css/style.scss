@@ -410,7 +410,41 @@ textarea.appt-stn-txt-ta{
 .srgdev-appt-hs-p{
 	margin: .25em 0 0;
 }
+.srgdev-appt-hs-code{
+	width: 96%;
+	margin: .75em 0 0;
+	display: block;
+	font-size: 95%;
+	cursor: text;
+}
+.srgdev-appt-info-lcont{
+	display: block;
+	position: relative;
+}
+.srgdev-appt-info-link{
+	display: block;
+	position: absolute;
+	width: 1em;
+	height: 1em;
+	min-width: 1em;
+	min-height: 1em;
+	right: 0;
+	top: 50%;
+	margin-top: -.5em;
+	background-size: 1em;
+	opacity: .5;
+}
+.srgdev-appt-info-link:hover{
+	opacity: 1;
+}
+.srgdev-appt-temp-highlight{
+	//background: $color-primary;
+	background: var(--color-primary);
+	//color: $color-primary-text;
+	color: var(--color-primary-text);
+	transition: color .5s;
 
+}
 @media only screen and (max-width: $breakpoint-mobile) {
 	.srgdev-app-content{
 		max-width: 100%;

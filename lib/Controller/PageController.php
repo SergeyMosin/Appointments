@@ -32,6 +32,7 @@ class PageController extends Controller {
     const PPS_DEFAULT="11000";
     const PPS_KEY="pubPageSettings";
     const PPS_KEY_FORM_TITLE="formTitle";
+    const PPS_KEY_GDPR="gdpr";
 
     const PPS_NWEEKS="nbrWeeks";
     const PPS_EMPTY="showEmpty";
@@ -333,7 +334,7 @@ class PageController extends Controller {
             $r->setStatus(200);
         }elseif ($action==="set_pps"){
             $d=$this->request->getParam("d");
-            if($d!==null && strlen($d)<256) {
+            if($d!==null && strlen($d)<512) {
                 /** @noinspection PhpComposerExtensionStubsInspection */
                 $o=json_decode($d);
                 if($o!==null){
@@ -360,13 +361,14 @@ class PageController extends Controller {
                         }
                     }
                     if(!empty($s)) {
-                        // Data looks OK
+                        // Checkbox data looks OK
                         $this->c->setUserValue(
                             $this->userId,
                             $this->appName,
                             self::PPS_KEY,
                             $s);
                         $r->setStatus(200);
+
                         // Form Title
                         $ftv="";
                         $ftk=self::PPS_KEY_FORM_TITLE;
@@ -378,6 +380,13 @@ class PageController extends Controller {
                             $this->appName,
                             self::PPS_KEY_FORM_TITLE,
                             $ftv);
+                        // GDPR, user is responsible for validation, etc...
+                        $ftk=self::PPS_KEY_GDPR;
+                        $this->c->setUserValue(
+                            $this->userId,
+                            $this->appName,
+                            self::PPS_KEY_GDPR,
+                            $o->$ftk);
                     }
                 }
             }
@@ -400,6 +409,11 @@ class PageController extends Controller {
                 $this->userId,
                 $this->appName,
                 self::PPS_KEY_FORM_TITLE);
+
+            $o[self::PPS_KEY_GDPR]=$this->c->getUserValue(
+                $this->userId,
+                $this->appName,
+                self::PPS_KEY_GDPR);
 
             /** @noinspection PhpComposerExtensionStubsInspection */
             $j=json_encode($o);
@@ -911,29 +925,6 @@ class PageController extends Controller {
     }
 
     /**
-     * @NoAdminRequired
-     */
-    public function help(){
-
-
-        $f=\OC::$server->getAppManager()->getAppPath($this->appName).'/templates/help.php';
-
-        // Include
-        ob_start();
-        try {
-            include $f;
-            $data = ob_get_contents();
-        } catch (\Exception $e) {
-            @ob_end_clean();
-            throw $e;
-        }
-        @ob_end_clean();
-
-        return $data;
-
-    }
-
-    /**
      * @param $render
      * @param $uid
      * @return TemplateResponse
@@ -1090,6 +1081,11 @@ class PageController extends Controller {
 
         $params['appt_pps']=$str;
 
+        // GDPR
+        $params['appt_gdpr']=$this->c->getUserValue(
+            $uid,
+            $this->appName,
+            self::PPS_KEY_GDPR);
 
         $params['appt_sel_opts'] = $out;
         $tr->setParams($params);
@@ -1098,6 +1094,32 @@ class PageController extends Controller {
 
         return $tr;
     }
+
+    /**
+     * @NoAdminRequired
+     */
+    public function help(){
+
+
+        $f=\OC::$server->getAppManager()->getAppPath($this->appName).'/templates/help.php';
+
+        // Include
+        ob_start();
+        try {
+            include $f;
+            $data = ob_get_contents();
+        } catch (\Exception $e) {
+            @ob_end_clean();
+            throw $e;
+        }
+        @ob_end_clean();
+
+        return $data;
+
+    }
+
+
+
 
     /**
      * @NoAdminRequired

@@ -1,3 +1,9 @@
+## 1.1.7 - 2020-03-17
+### Added
+- GDPR Compliance
+### Fixed
+- NC16 Compatibility
+
 ## 1.1.6 - 2020-03-16
 ### Fixed
 - Issue #29

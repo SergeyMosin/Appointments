@@ -36,6 +36,7 @@
   width: 18em;
   margin: 0 auto;
 }
+.srgdev-ncfp-chb-cont,
 .srgdev-ncfp-form-label{
   display: block;
   margin: 1em 0 0;
@@ -45,9 +46,26 @@
   width: 100%;
   margin: 0 !important;
 }
+.srgdev-ncfp-chb-cont{
+  position: relative;
+}
+.srgdev-ncfp-chb-cont a{
+  color: $color-primary;
+  color: var(--color-primary);
+}
+.srgdev-ncfp-chb-cont a:hover{
+  text-decoration: underline;
+}
+.checkbox[err]+label:before{
+  border-color: $color-error !important;
+  border-color: var(--color-error) !important;
+}
 .srgdev-ncfp-form-btn{
   display: block;
   margin: 1.5em 0 0;
+}
+.srgdev-ncfp-form-btn[shade]{
+  opacity: .5;
 }
 #srgdev-ncfp_sel-dummy{
   cursor: pointer;

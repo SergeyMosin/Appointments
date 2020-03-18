@@ -3,6 +3,11 @@
     window.addEventListener('DOMContentLoaded',formReady)
 
     function formReady() {
+        let gdpr=document.getElementById('appt_gdpr_id')
+        if(gdpr!==null){
+            gdpr.addEventListener('change',gdprCheck)
+            gdprCheck.apply(gdpr)
+        }
 
         let f=document.getElementById("srgdev-ncfp_frm")
         f.addEventListener("submit",formSubmit)
@@ -21,6 +26,19 @@
         },900000)
     }
 
+    function gdprCheck() {
+        let btn=document.getElementById("srgdev-ncfp_fbtn")
+        if(this.checked){
+            if(btn.hasAttribute('shade')) btn.removeAttribute('shade')
+        }else{
+            if(!btn.hasAttribute('shade')) btn.setAttribute('shade',"1")
+        }
+
+        if(this.hasAttribute("err")){
+            this.removeAttribute("err")
+        }
+    }
+
     function clearFormErr() {
         this.setCustomValidity('')
         if(this.getAttribute('err')){
@@ -33,11 +51,18 @@
 
     function formSubmit(e){
         let lee=0
+
         let el=document.getElementById("srgdev-ncfp_fbtn")
         if(el.disabled===true){
             e.preventDefault()
             e.stopPropagation()
             return false
+        }
+
+        el=document.getElementById('appt_gdpr_id')
+        if(el!==null && el.checked===false){
+            el.setAttribute("err","err")
+            lee=1
         }
 
         el=document.getElementById("srgdev-ncfp_sel-hidden")

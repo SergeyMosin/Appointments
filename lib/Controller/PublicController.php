@@ -37,8 +37,6 @@ class PublicController extends Controller{
      * @NoCSRFRequired
      */
     public function form2(){
-        $this->logger->error("fffffffffffffffffffff");
-
         $tr=new TemplateResponse($this->appName,
             'public/form2',
             [],
