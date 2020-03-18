@@ -1,3 +1,7 @@
+## 1.1.8 - 2020-03-18
+### Fixed
+- Minor stability issues
+
 ## 1.1.7 - 2020-03-17
 ### Added
 - GDPR Compliance
