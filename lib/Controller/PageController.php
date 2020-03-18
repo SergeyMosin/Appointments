@@ -949,7 +949,9 @@ class PageController extends Controller {
             'appt_org_addr'=>str_replace(array("\r\n","\n","\r"),'<br>',$this->c->getUserValue(
                 $uid, $this->appName, self::KEY_O_ADDR,
                 "123 Main Street\nNew York, NY 45678")),
-            'appt_form_title'=>!empty($ft)?$ft:$this->l->t('Book Your Appointment')
+            'appt_form_title'=>!empty($ft)?$ft:$this->l->t('Book Your Appointment'),
+            'appt_pps'=>'',
+            'appt_gdpr'=>'',
         ];
 
         // google recaptcha
@@ -1326,8 +1328,12 @@ class PageController extends Controller {
         }catch (\Throwable $e){
             $webPath="";
         }
+
         if($webPath===""){
-            $webPath=\OC_App::getAppWebPath($this->appName);
+            $webPath="/apps/appointments";
+
+//          This does not pass validation ???????
+//          $webPath=\OC_App::getAppWebPath($this->appName);
         }
         return $webPath;
     }

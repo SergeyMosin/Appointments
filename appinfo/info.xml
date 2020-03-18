@@ -8,12 +8,15 @@
     <version>1.1.7</version>
     <licence>agpl</licence>
     <author mail="sergey@srgdev.com" homepage="https://www.srgdev.com">Sergey Mosin</author>
+    <namespace>Appointments</namespace>
+    <types>
+        <dav/>
+    </types>
     <documentation>
         <user>https://github.com/SergeyMosin/Appointments#getting-started</user>
         <admin>https://github.com/SergeyMosin/Appointments</admin>
         <developer>https://github.com/SergeyMosin/Appointments</developer>
     </documentation>
-    <namespace>Appointments</namespace>
     <category>office</category>
     <category>organization</category>
     <category>tools</category>
@@ -36,9 +39,6 @@
             <route>appointments.page.index</route>
         </navigation>
     </navigations>
-<!--    <types>-->
-<!--        <dav/>-->
-<!--    </types>-->
 <!--    <sabre>-->
 <!--        <plugins>-->
 <!--            <plugin>OCA\Appointments\DavP</plugin>-->
