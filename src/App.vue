@@ -509,17 +509,23 @@
 
             async copyPubLink(){
                 // copy link for calendar to clipboard
-                try {
-                    await this.$copyText(this.tken)
-                    OCP.Toast.success(this.t('appointments','Public link copied to clipboard...'))
-                } catch (error) {
-                    console.log(error)
+                await this.getPubUri()
+                if (this.tken==="") {
+                    console.log("token empty...")
                     OCP.Toast.error(this.t('appointments','Public link could not be copied to clipboard...'))
+                }else {
+                    try {
+                        await this.$copyText(this.tken)
+                        OCP.Toast.success(this.t('appointments', 'Public link copied to clipboard...'))
+                    } catch (error) {
+                        console.log(error)
+                        OCP.Toast.error(this.t('appointments', 'Public link could not be copied to clipboard...'))
+                    }
                 }
             },
 
-            getPubUri(){
-                axios.post('state', {
+            async getPubUri(){
+                await axios.post('state', {
                     a: 'get_puburi'
                 }).then(response => {
                     if(response.status===200) {

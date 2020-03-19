@@ -1,3 +1,7 @@
+## 1.1.9 - 2020-03-18
+### Fixed
+- Fetch public link from server if empty
+
 ## 1.1.8 - 2020-03-18
 ### Fixed
 - Minor stability issues
