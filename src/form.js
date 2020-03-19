@@ -37,6 +37,10 @@
         if(this.hasAttribute("err")){
             this.removeAttribute("err")
         }
+        if(this.hasAttribute("required")){
+            this.removeAttribute("required")
+        }
+
     }
 
     function clearFormErr() {
@@ -59,12 +63,6 @@
             return false
         }
 
-        el=document.getElementById('appt_gdpr_id')
-        if(el!==null && el.checked===false){
-            el.setAttribute("err","err")
-            lee=1
-        }
-
         el=document.getElementById("srgdev-ncfp_sel-hidden")
         if (el.selectedIndex===-1 || el.value===""){
             el=document.getElementById("srgdev-ncfp_sel-dummy")
@@ -75,21 +73,28 @@
 
         el=document.getElementById("srgdev-ncfp_fname")
         if (el.value.length<3){
-            el.setCustomValidity("Name is required.");
+            el.setCustomValidity(t('appointments','Name is required.'));
             el.addEventListener("input",clearFormErr,false)
             lee=1
         }
         el=document.getElementById("srgdev-ncfp_femail")
         if (el.value.length<5 || el.value.indexOf("@")===-1 || el.value.indexOf("@")>el.value.lastIndexOf(".")){
-            el.setCustomValidity("Email is required.");
+            el.setCustomValidity(t('appointments','Email is required.'));
             el.addEventListener("input",clearFormErr,false)
             lee=1
         }
         // match [0-9], '.()-+,/' and ' ' (space) at least 9 digits
         el=document.getElementById("srgdev-ncfp_fphone")
         if (el.value==='' || el.value.length<9 || /^[0-9 .()\-+,/]*$/.test(el.value)===false){
-            el.setCustomValidity("Phone number is required.");
+            el.setCustomValidity(t('appointments','Phone number is required.'));
             el.addEventListener("input",clearFormErr,false)
+            lee=1
+        }
+
+        el=document.getElementById('appt_gdpr_id')
+        if(el!==null && el.checked===false){
+            el.setAttribute("err","err")
+            el.setAttribute("required","1")
             lee=1
         }
 

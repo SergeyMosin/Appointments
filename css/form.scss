@@ -49,6 +49,20 @@
 .srgdev-ncfp-chb-cont{
   position: relative;
 }
+// Override NC styles so the browsers built-in error message can displayed
+#appt_gdpr_id{
+  display: block;
+  left: .5em;
+  top: 50%;
+  margin: -.5em 0 0 0;
+  padding: 0;
+  height: 1em;
+  min-height: 1em;
+  border: none;
+  z-index: -1;
+  opacity: 0;
+  width: 1em;
+}
 .srgdev-ncfp-chb-cont a{
   color: $color-primary;
   color: var(--color-primary);
