@@ -155,13 +155,13 @@
             <Modal v-if="evtGridModal!==0" :canClose="false">
                 <div class="srgdev-appt-modal_content">
                     <div v-if="evtGridModal===1" class="srgdev-appt-modal-lbl">
-                        {{t('appointments', 'Adding appointment to {calendarName} calendar...', {calendarName:curCal.name})}}
+                        {{t('appointments', 'Adding appointment to {calendarName} calendar…', {calendarName:curCal.name})}}
                     </div>
                     <div v-if="evtGridModal===2" class="srgdev-appt-modal-lbl">
                         {{t('appointments', 'All appointments had been added to {calendarName} calendar.', {calendarName:curCal.name})}}
                     </div>
                     <div v-if="evtGridModal===3" class="srgdev-appt-modal-lbl">
-                        {{t('appointments', 'Error occurred. Check console...')}}
+                        {{t('appointments', 'Error occurred. Check console …')}}
                     </div>
                     <div v-if="evtGridModal===1" class="srgdev-appt-modal-slider">
                         <div class="srgdev-appt-slider-line"></div>
