@@ -3,7 +3,7 @@
       xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
     <id>appointments</id>
     <name>Appointments</name>
-    <summary>Book appointments into you calendar via secure online form.</summary>
+    <summary>Book appointments into your calendar via secure online form.</summary>
     <description><![CDATA[Book appointments into you calendar via secure online form. Attendees can confirm or cancel their appointments via an email link.]]></description>
     <version>1.1.10</version>
     <licence>agpl</licence>
