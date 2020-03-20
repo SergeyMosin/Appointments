@@ -1,4 +1,6 @@
 <?php
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
+/** @noinspection PhpComposerExtensionStubsInspection */
 namespace OCA\Appointments\Controller;
 
 use OCA\Appointments\BackEndExt;
@@ -15,7 +17,6 @@ use OCP\IUserManager;
 use Sabre\DAV\Exception\BadRequest;
 use OCP\Mail\IMailer;
 use Sabre\VObject\Reader;
-
 
 class PageController extends Controller {
     const APP_CAT="Appointment";
@@ -93,10 +94,9 @@ class PageController extends Controller {
         return  $t;// templates/index.php
     }
 
-
-
     /**
      * @NoAdminRequired
+     * @noinspection PhpUnused
      */
     public function calgetweek(){
         // t must should be dd-mm-yyyy
@@ -153,10 +153,9 @@ class PageController extends Controller {
         return $r;
     }
 
-
-
-        /**
+    /**
      * @NoAdminRequired
+     * @noinspection PhpUnused
      */
     public function callist(){
 //      '{DAV:}displayname'                                           => 'displayname',
@@ -189,6 +188,8 @@ class PageController extends Controller {
 
     /**
      * @NoAdminRequired
+     * @throws \OCP\PreConditionNotMetException
+     * @throws \ErrorException
      */
     public function state(){
         $action = $this->request->getParam("a");
@@ -325,9 +326,7 @@ class PageController extends Controller {
                 $r->setStatus(200);
             }
         }elseif ($action==='get_puburi'){
-            $s=\OC::$server;
-            $u=$s->getURLGenerator()->getBaseUrl().'/index.php'
-            .$this->getPublicWebBase().'/'
+            $u=$this->getPublicWebBase().'/'
             .$this->pubPrx($this->getToken($this->userId)).'form';
 
             $r->setData($u);
@@ -343,7 +342,7 @@ class PageController extends Controller {
                         if(isset($o->$prop)){
                             $ov=$o->$prop;
                             if($prop===self::PPS_NWEEKS){
-                                if(preg_match("/^[1-5]{1}$/",$ov)!==1){
+                                if(preg_match("/^[1-5]$/",$ov)!==1){
                                     $s="";
                                     break;
                                 }
@@ -428,11 +427,10 @@ class PageController extends Controller {
         return $r;
     }
 
-
     /**
      * @param $token
      * @return string|false user name on success, false=not verified
-     * @noinspection PhpDocMissingThrowsInspection
+     * @throws \ErrorException
      */
     private function verifyToken($token){
         if(empty($token) || strlen($token)>256) return false;
@@ -450,8 +448,11 @@ class PageController extends Controller {
         }
     }
 
-
-
+    /**
+     * @param $uid
+     * @return string
+     * @throws \ErrorException
+     */
     private function getToken($uid){
         $key=hex2bin($this->c->getAppValue($this->appName, 'hk'));
         $iv=hex2bin($this->c->getAppValue($this->appName, 'tiv'));
@@ -466,6 +467,7 @@ class PageController extends Controller {
      * @NoAdminRequired
      * @PublicPage
      * @NoCSRFRequired
+     * @throws \ErrorException
      */
     public function form(){
         $uid=$this->verifyToken($this->request->getParam("token"));
@@ -485,6 +487,8 @@ class PageController extends Controller {
      * @PublicPage
      * @NoCSRFRequired
      * @NoAdminRequired
+     * @throws \ErrorException
+     * @noinspection PhpUnused
      */
     public function formPost(){
         $uid=$this->verifyToken($this->request->getParam("token"));
@@ -498,12 +502,12 @@ class PageController extends Controller {
         return 'pub/'.$token.'/';
     }
 
-
-
     /**
      * @NoAdminRequired
      * @PublicPage
      * @NoCSRFRequired
+     * @throws \ErrorException
+     * @noinspection PhpUnused
      */
     public function cncf(){
         $uid=$this->verifyToken($this->request->getParam("token"));
@@ -652,7 +656,6 @@ class PageController extends Controller {
                     }
                 }
 
-
                 // Send email
                 $tml = $this->mailer->createEMailTemplate('appointments.app.email');
                 $tml->setSubject($subject);
@@ -676,7 +679,6 @@ class PageController extends Controller {
                 }
             }
 
-
             $tr=new TemplateResponse($this->appName,
                 "public/thanks",
                 [
@@ -690,20 +692,16 @@ class PageController extends Controller {
         return $tr;
     }
 
-
-
     private function pubErrResponse(){
         $tr=new TemplateResponse($this->appName,'public/formerr',[],'public');
         $tr->setStatus(500);
         return $tr;
     }
 
-
-
-
     /**
      * @NoAdminRequired
      * @NoCSRFRequired
+     * @noinspection PhpUnused
      */
     public function formBase(){
         if($this->request->getParam("sts")!==null) {
@@ -717,6 +715,8 @@ class PageController extends Controller {
     /**
      * @NoAdminRequired
      * @NoCSRFRequired
+     * @throws \ErrorException
+     * @noinspection PhpUnused
      */
     public function formBasePost(){
         return $this->showFormPost($this->userId);
@@ -725,7 +725,7 @@ class PageController extends Controller {
     /**
      * @param $uid
      * @return RedirectResponse
-     * @noinspection PhpDocMissingThrowsInspection
+     * @throws \ErrorException
      */
     public function showFormPost($uid){
 
@@ -795,16 +795,13 @@ class PageController extends Controller {
             return $rr;
         }
 
-        $s=\OC::$server;
-
-
         try {
             $r = $this->calBackend->updateApptEntry(
                 $uid, $cal_url, $da[1],
                 $post['name'], $post['email'], $post['phone']);
         } catch (\Exception $e) {
             $r=2;
-            $s->getLogger()->error($e);
+            \OC::$server->getLogger()->error($e);
         }
 
         if(gettype($r)==="integer"){
@@ -822,11 +819,9 @@ class PageController extends Controller {
                 $uid, $this->appName,
                 self::KEY_O_EMAIL);
 
-        $btn_url= $s->getURLGenerator()->getBaseUrl().'/index.php'
-            .$this->getPublicWebBase().'/'
+        $btn_url=$this->getPublicWebBase().'/'
             .$this->pubPrx($this->getToken($uid)).'cncf?d=';
         $btn_tkn=urlencode($this->encrypt($post['email'].chr(31).$da[1],$key));
-
 
         // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment (action needed)
         $subject=$this->l->t("%s Appointment (action needed)",[$org_name]);
@@ -856,12 +851,11 @@ class PageController extends Controller {
         $msg->setTo(array($post['email']));
         $msg->useTemplate($tml);
 
-
         try {
             $this->mailer->send($msg);
             $uri=$ok_uri."&d=".urlencode($this->encrypt(pack('I',time()).$post['email'],$key));
         } catch (\Exception $e) {
-            $s->getLogger()->error("Can not send email to ".$post['email']);
+            \OC::$server->getLogger()->error("Can not send email to ".$post['email']);
             $uri=$server_err_url."&eml=".urlencode($org_email);
         }
 
@@ -874,6 +868,7 @@ class PageController extends Controller {
      * @param string $render
      * @param string $uid
      * @return TemplateResponse
+     * @noinspection PhpUnusedParameterInspection
      */
     public function showFinish($render,$uid){
         // Redirect to finalize page...
@@ -958,7 +953,6 @@ class PageController extends Controller {
         // 'jsfiles'=>['https://www.google.com/recaptcha/api.js']
         //        $tr->getContentSecurityPolicy()->addAllowedScriptDomain('https://www.google.com/recaptcha/')->addAllowedScriptDomain('https://www.gstatic.com/recaptcha/')->addAllowedFrameDomain('https://www.google.com/recaptcha/');
 
-
         if($this->c->getUserValue(
             $uid,
             $this->appName,
@@ -969,7 +963,6 @@ class PageController extends Controller {
             $tr->setParams($params);
             return $tr;
         }
-
 
         $cid=null;
         $cal_url=$this->c->getUserValue(
@@ -1006,6 +999,7 @@ class PageController extends Controller {
 
         $nw++; // for alignment in the form
 
+        /** @noinspection PhpUnhandledExceptionInspection */
         $now=new \DateTime('now',$this->getUserTimeZone($uid));
 
         // this is needed to get the range for floating appointments right
@@ -1099,9 +1093,9 @@ class PageController extends Controller {
 
     /**
      * @NoAdminRequired
+     * @throws \Exception
      */
     public function help(){
-
 
         $f=\OC::$server->getAppManager()->getAppPath($this->appName).'/templates/help.php';
 
@@ -1117,14 +1111,11 @@ class PageController extends Controller {
         @ob_end_clean();
 
         return $data;
-
     }
-
-
-
 
     /**
      * @NoAdminRequired
+     * @noinspection PhpUnused
      */
     public function caladd(){
 
@@ -1149,7 +1140,6 @@ class PageController extends Controller {
 
         $cid=$cal['id'];
 
-
         $tz_id="";
         $tz_data="";
         if($this->request->getParam("tz")==="C") {
@@ -1161,7 +1151,6 @@ class PageController extends Controller {
                 return '1:Can not get calendar timezone';
             }
         }
-
 
         $rn="\r\n";
         $u=$this->um->get($this->userId);
@@ -1233,7 +1222,6 @@ class PageController extends Controller {
                 "LOCATION:".$u_addr.$rn.
                 "END:VEVENT\r\n".$tz_data."END:VCALENDAR\r\n";
 
-
             // make calendar object uri
             $p=0;
             $cc=$br_u[0];
@@ -1291,7 +1279,6 @@ class PageController extends Controller {
         return base64_encode($_iv.$ciphertext_raw);
     }
 
-
     /**
      * @param string $data
      * @param string $key
@@ -1314,28 +1301,28 @@ class PageController extends Controller {
         return $t===false?'':$t;
     }
 
-
     private function getUserTimeZone($uid) {
         $timeZone = $this->c->getUserValue($uid, 'core', 'timezone', 'utc');
         return new \DateTimeZone($timeZone);
     }
 
     private function getPublicWebBase(){
-        try{
-            $webPath=\OC::$server->getAppManager()->getAppWebPath($this->appName);
-        }catch (\Exception $e){
-            $webPath="";
-        }catch (\Throwable $e){
-            $webPath="";
-        }
+//        try{
+//              // This does not work with custom app install directories
+//            $webPath=\OC::$server->getAppManager()->getAppWebPath($this->appName);
+//        }catch (\Exception $e){
+//            $webPath="";
+//        }catch (\Throwable $e){
+//            $webPath="";
+//        }
+//
+//        if($webPath===""){
+//            $webPath="/apps/appointments";
+//
+////          This does not pass validation ???????
+////          $webPath=\OC_App::getAppWebPath($this->appName);
+//        }
 
-        if($webPath===""){
-            $webPath="/apps/appointments";
-
-//          This does not pass validation ???????
-//          $webPath=\OC_App::getAppWebPath($this->appName);
-        }
-        return $webPath;
+        return \OC::$server->getURLGenerator()->getBaseUrl().'/index.php/apps/appointments';
     }
-
 }
