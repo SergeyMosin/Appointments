@@ -68,6 +68,8 @@ OC.L10N.register(
     "Show Empty Weekends" : "Zobrazit prázdné víkendy",
     "Show time in two columns" : "Zobrazovat čas ve dvou sloupcích",
     "Form Title" : "Nadpis formuláře",
+    "GDPR Compliance" : "Shoda s nařízením GDPR",
+    "See Tutorial..." : "Viz návod…",
     "Apply" : "Použít",
     "Select Dates:" : "Vyberte datumy:",
     "Select Dates" : "Vyberte datumy",

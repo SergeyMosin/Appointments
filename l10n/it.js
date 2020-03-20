@@ -68,6 +68,8 @@ OC.L10N.register(
     "Show Empty Weekends" : "Mostra fine settimana vuoti",
     "Show time in two columns" : "Mostra orario in due colonne",
     "Form Title" : "Titolo modulo",
+    "GDPR Compliance" : "Conformità al GDPR",
+    "See Tutorial..." : "Vedi la guida...",
     "Apply" : "Applica",
     "Select Dates:" : "Seleziona date:",
     "Select Dates" : "Seleziona date",
