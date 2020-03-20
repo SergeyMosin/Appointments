@@ -24,7 +24,7 @@
             <NavAccountItem :calLoading="isCalLoading" @calSelected="setCalendar" :curCal="curCal"></NavAccountItem>
                 <AppNavigationItem
                         @click="showSlideBar"
-                        :title="t('appointments','Add Appointments')"
+                        :title="t('appointments','Add appointments')"
                         icon="icon-add"></AppNavigationItem>
                 <AppNavigationItem
                         :loading="ppsLoading"
