@@ -8,7 +8,6 @@ use OCP\IUserManager;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
-
 class InstallHook implements IRepairStep{
 
     private $config;
@@ -17,7 +16,6 @@ class InstallHook implements IRepairStep{
     private $appName;
     private $userId;
 
-
     /**
      * InstallHook constructor.
      * @param $AppName
@@ -25,7 +23,6 @@ class InstallHook implements IRepairStep{
      * @param IConfig $config
      * @param IAccountManager $am
      * @param IUserManager $um
-     * @noinspection PhpDocMissingThrowsInspection
      */
     public function __construct($AppName,
                                 $UserId,
@@ -63,7 +60,6 @@ class InstallHook implements IRepairStep{
                     $is_good)));
         }
 
-
         $u=$this->um->get($this->userId);
         if($u!==null) {
             if (empty($this->config->getUserValue(
@@ -96,7 +92,6 @@ class InstallHook implements IRepairStep{
                     empty($email) ? '' : $email);
             }
         }
-
 
         $output->info("Appointments install hook finished");
     }
