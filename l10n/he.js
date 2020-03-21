@@ -9,7 +9,6 @@ OC.L10N.register(
     "Public Page [Disabled]" : "עמוד ציבורי [מושבת]",
     "Share Online" : "שיתוף מקוון",
     "Stop Sharing" : "הפסקת השיתוף",
-    "Add Appointments" : "הוספת פגישות",
     "Customize Public Page" : "התאמת העמוד הציבורי",
     "Help/Tutorial" : "עזרה/הדרכה",
     "Organization Name" : "שם הארגון",

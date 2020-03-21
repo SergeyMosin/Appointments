@@ -20,7 +20,6 @@ OC.L10N.register(
     "Appointments" : "Sestanki",
     "Public Page [Online]" : "Javna stran [povezano]",
     "Public Page [Disabled]" : "Javna stran [onemogočeno]",
-    "Add Appointments" : "Dodaj sestanek",
     "Customize Public Page" : "Javna stran po meri",
     "Organization Name" : "Ime ustanove",
     "Organization Address" : "Naslov ustanove",
