@@ -8,118 +8,118 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2020-03-20 03:21+0000\n"
+"POT-Creation-Date: 2020-03-22 03:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Confirmed
-#: /app/lib/Controller/PageController.php:570
+#: /app/lib/Controller/PageController.php:574
 #, php-format
 msgid "%s Appointment is Confirmed"
 msgstr ""
 
 #. TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now confirmed.
-#: /app/lib/Controller/PageController.php:572
+#: /app/lib/Controller/PageController.php:576
 #, php-format
 msgid "Your %1$s appointment scheduled for %2$s is now confirmed."
 msgstr ""
 
 #. TRANSLATORS Your {{Date Time}} appointment is confirmed.
-#: /app/lib/Controller/PageController.php:574
+#: /app/lib/Controller/PageController.php:578
 #, php-format
 msgid "Your %s appointment is confirmed."
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Canceled
-#: /app/lib/Controller/PageController.php:577
+#: /app/lib/Controller/PageController.php:581
 #, php-format
 msgid "%s Appointment is Canceled"
 msgstr ""
 
 #. TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now canceled.
-#: /app/lib/Controller/PageController.php:579
+#: /app/lib/Controller/PageController.php:583
 #, php-format
 msgid "Your %1$s appointment scheduled for %2$s is now canceled."
 msgstr ""
 
 #. TRANSLATORS Your {{Date Time}} appointment is confirmed.
-#: /app/lib/Controller/PageController.php:581
+#: /app/lib/Controller/PageController.php:585
 #, php-format
 msgid "Your %s appointment is canceled."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:612
+#: /app/lib/Controller/PageController.php:616
 msgid "Appointment is Canceled"
 msgstr ""
 
 #. TRANSLATORS Valendar event summary, Ex: {{Organization Name}} Appointment
-#: /app/lib/Controller/PageController.php:640
+#: /app/lib/Controller/PageController.php:644
 #, php-format
 msgid "%s Appointment"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:660
-#: /app/lib/Controller/PageController.php:850
+#: /app/lib/Controller/PageController.php:663
+#: /app/lib/Controller/PageController.php:845
 #: /app/templates/public/formerr.php:21 /app/templates/public/thanks.php:9
 msgid "Thank you"
 msgstr ""
 
 #. TRANSLATORS Meaning the booking process is finished
-#: /app/lib/Controller/PageController.php:684
+#: /app/lib/Controller/PageController.php:686
 msgid "All done."
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment (action needed)
-#: /app/lib/Controller/PageController.php:832
+#: /app/lib/Controller/PageController.php:827
 #, php-format
 msgid "%s Appointment (action needed)"
 msgstr ""
 
 #. TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
-#: /app/lib/Controller/PageController.php:834
+#: /app/lib/Controller/PageController.php:829
 #, php-format
 msgid "Dear %s,"
 msgstr ""
 
 #. TRANSLATORS Main part of email, Ex: The {{Organization Name}} appointment scheduled for {{Date Time}} is awaiting your confirmation.
-#: /app/lib/Controller/PageController.php:838
+#: /app/lib/Controller/PageController.php:833
 #, php-format
 msgid "The %1$s appointment scheduled for %2$s is awaiting your confirmation."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:845
+#: /app/lib/Controller/PageController.php:840
 msgid "Confirm"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:847
+#: /app/lib/Controller/PageController.php:842
 msgid "Cancel"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:888
+#: /app/lib/Controller/PageController.php:883
 msgid "Almost done..."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:909
+#: /app/lib/Controller/PageController.php:904
 #, php-format
 msgid ""
 "We have sent an email to %s, please open it and click on the confirmation "
 "link to finalize your appointment request"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:915
+#: /app/lib/Controller/PageController.php:910
 msgid "Info"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:916
+#: /app/lib/Controller/PageController.php:911
 msgid "Link Expired..."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:952
+#: /app/lib/Controller/PageController.php:947
 #: /app/specialVueFakeDummyForL10nScript.js:47
 msgid "Book Your Appointment"
 msgstr ""
@@ -129,12 +129,12 @@ msgid "Appointments"
 msgstr ""
 
 #: /app/specialAppInfoFakeDummyForL10nScript.php:3
-msgid "Book appointments into you calendar via secure online form."
+msgid "Book appointments into your calendar via secure online form."
 msgstr ""
 
 #: /app/specialAppInfoFakeDummyForL10nScript.php:4
 msgid ""
-"Book appointments into you calendar via secure online form. Attendees can "
+"Book appointments into your calendar via secure online form. Attendees can "
 "confirm or cancel their appointments via an email link."
 msgstr ""
 
@@ -155,7 +155,7 @@ msgid "Stop Sharing"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:5
-msgid "Add Appointments"
+msgid "Add appointments"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:6
@@ -213,7 +213,7 @@ msgid "Copy to Next"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:19
-msgid "Adding appointment to {calendarName} calendar..."
+msgid "Adding appointment to {calendarName} calendar…"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:20
@@ -221,7 +221,7 @@ msgid "All appointments had been added to {calendarName} calendar."
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:21
-msgid "Error occurred. Check console..."
+msgid "Error occurred. Check console …"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:22
@@ -351,6 +351,14 @@ msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:56
 msgid "close"
+msgstr ""
+
+#: /app/src/form.js:76
+msgid "Name is required."
+msgstr ""
+
+#: /app/src/form.js:82
+msgid "Email is required."
 msgstr ""
 
 #: /app/templates/public/form.php:20
