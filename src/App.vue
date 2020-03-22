@@ -440,7 +440,7 @@
                     }
                 }).catch((error) => {
                     console.log(v,n,error)
-                    OC.Notification.showTemporary(t('appointments','Settings Error Occurred. Check console...'),{timeout:4,type:'warning'})
+                    OC.Notification.showTemporary(t('appointments','Settings error occurred. Check console …'),{timeout:4,type:'warning'})
                 });
             },
 
@@ -468,7 +468,7 @@
                     }
                 }catch (e) {
                     console.log(e)
-                    OC.Notification.showTemporary(t('appointments',"Can't get Settings. Check console..."),{timeout:8,type:'error'})
+                    OC.Notification.showTemporary(t('appointments',"Can't get settings. Check console …"),{timeout:8,type:'error'})
                     return null
                 }
             },
@@ -512,14 +512,14 @@
                 await this.getPubUri()
                 if (this.tken==="") {
                     console.log("token empty...")
-                    OCP.Toast.error(this.t('appointments','Public link could not be copied to clipboard...'))
+                    OCP.Toast.error(this.t('appointments','Public link could not be copied to clipboard …'))
                 }else {
                     try {
                         await this.$copyText(this.tken)
-                        OCP.Toast.success(this.t('appointments', 'Public link copied to clipboard...'))
+                        OCP.Toast.success(this.t('appointments', 'Public link copied to clipboard …'))
                     } catch (error) {
                         console.log(error)
-                        OCP.Toast.error(this.t('appointments', 'Public link could not be copied to clipboard...'))
+                        OCP.Toast.error(this.t('appointments', 'Public link could not be copied to clipboard …'))
                     }
                 }
             },
@@ -562,7 +562,7 @@
                             else if (i === 1) n = this.t('appointments','Address');
                             else n = this.t('appointments','Email')
                             OC.Notification.showTemporary(
-                                this.t('appointments',"Error: {fieldName} empty, check settings...",{fieldName:n}),{timeout:8,type:'error'})
+                                this.t('appointments',"Error: {fieldName} empty, check settings …",{fieldName:n}),{timeout:8,type:'error'})
                         }
                     }
                     if(n!=='') return
@@ -581,7 +581,7 @@
                     }
                 }).catch((error) => {
                     console.log(error)
-                    OC.Notification.showTemporary(this.t('appointments',"Page enable error. Check console..."),{timeout:4,type:'error'})
+                    OC.Notification.showTemporary(this.t('appointments',"Page enable error. Check console …"),{timeout:4,type:'error'})
                 }).then(()=>{
                     // always executed
                     this.getFormData()
@@ -750,7 +750,7 @@
                 this.curCal.clr=c.clr
             },
             noCalSet(){
-                OC.Notification.showTemporary(this.t('appointments',"Select a Calendar First..."),{timeout:5,type:'warning'})
+                OC.Notification.showTemporary(this.t('appointments',"Select a calendar first …"),{timeout:5,type:'warning'})
             },
             notImplemented(){
                 OC.Notification.showTemporary(this.t('appointments',"Not Implemented Yet."),{timeout:5,type:'error'})
