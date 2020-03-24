@@ -663,9 +663,11 @@ class PageController extends Controller {
                 $tml->addBodyText($this->l->t("Thank you"));
 
                 $tml->addFooter("Booked via Nextcloud Appointments App");
+                $from_email = \OCP\Util::getDefaultEmailAddress('appointments-noreply');
 
                 $msg = $this->mailer->createMessage();
-                $msg->setFrom(array($org_email));
+                $msg->setFrom([$from_email]);
+                $msg->setReplyTo([$org_email]);
                 $msg->setTo(array($da[0]));
                 $msg->useTemplate($tml);
                 if($ics_attachment!==null){
@@ -846,8 +848,11 @@ class PageController extends Controller {
 
         $tml->addFooter("Booked via Nextcloud Appointments App");
 
-        $msg=$this->mailer->createMessage();
-        $msg->setFrom(array($org_email));
+        $from_email = \OCP\Util::getDefaultEmailAddress('appointments-noreply');
+
+        $msg = $this->mailer->createMessage();
+        $msg->setFrom([$from_email]);
+        $msg->setReplyTo([$org_email]);
         $msg->setTo(array($post['email']));
         $msg->useTemplate($tml);
 
