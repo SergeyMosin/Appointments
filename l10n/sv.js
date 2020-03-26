@@ -57,6 +57,7 @@ OC.L10N.register(
     "Address" : "Adress",
     "Public Page Settings" : "Inställningar för publik sida",
     "Control what your visitors see" : "Anpassa vad dina besökare kan se",
+    "Show appointments for next" : "Visa möten för kommande",
     "One Week" : "En vecka",
     "Two Weeks" : "Två veckor",
     "Three Weeks" : "Tre veckor",
