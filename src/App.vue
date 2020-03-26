@@ -746,7 +746,7 @@
                 this.curCal.name=c.name
                 this.curCal.url=c.url
                 this.curCal.rIcon="--srgdev-dot-img: url(" +
-                    window.location.protocol + '//' + window.location.host + "/svg/core/places/calendar?color=" + c.clr.slice(1) + ");"
+                    window.location.protocol + '//' + window.location.host + "/index.php/svg/core/places/calendar?color=" + c.clr.slice(1) + ");"
                 this.curCal.clr=c.clr
             },
             noCalSet(){
