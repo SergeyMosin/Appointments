@@ -57,7 +57,7 @@
                     clr:"",
                     url:"",
                 })
-                const f_host = window.location.protocol + '//' + window.location.host+"/index.php/svg/appointments/circ?color="
+                const f_host = window.location.protocol + '//' + window.location.host+ OC.webroot+"/index.php/svg/appointments/circ?color="
                 axios.get('callist')
                     .then(response=>{
                         let cals=response.data.split(String.fromCharCode(31))

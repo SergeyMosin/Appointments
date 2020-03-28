@@ -1,9 +1,9 @@
 @import "../../core/css/variables.scss";
 .srgdev-icon-override{
-	background-image: url("index.php/svg/core/places/calendar?color=222");
-	background-image: var(--srgdev-dot-img);
 	background-repeat: no-repeat;
 	background-position: center;
+	@include icon-color('calendar', 'places', '#222', 1, true);
+	background-image: var(--srgdev-dot-img);
 }
 .srgdev_com_circle .action-button__icon--url{
 	background-repeat: no-repeat;
