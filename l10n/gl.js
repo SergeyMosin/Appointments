@@ -39,7 +39,7 @@ OC.L10N.register(
     "Show Notifications on Status Change" : "Amosar notificacións sobre o cambio de estado",
     "Use Google reCAPTCHA" : "Usar Google reCAPTCHA",
     "Add to Calendar" : "Engadir no calendario",
-    "Discard" : "Desbotar",
+    "Discard" : "Descartar",
     "Remove All" : "Retirar todo",
     "Copy to Next" : "Copiar na seguinte",
     "Adding appointment to {calendarName} calendar…" : "Engadindo a cita no calendario {calendarName}…",
