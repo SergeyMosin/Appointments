@@ -1,14 +1,25 @@
 { "translations": {
+    "%s Appointment is Canceled" : "与 %s 的会面已取消",
+    "%s Appointment (action needed)" : "与 %s 会面（需要操作）",
+    "Dear %s," : "亲爱的%s，",
+    "The %1$s appointment scheduled for %2$s is awaiting your confirmation." : "与 %1$s 的会面已安排到 %2$s，等待您的确认。",
     "Confirm" : "确认",
     "Cancel" : "取消",
     "Info" : "信息",
+    "Public Page [Disabled]" : "公共主页[已禁用]",
+    "Organization Name" : "组织名称",
+    "Organization Address" : "组织地址",
     "Email" : "电子邮箱",
     "Close" : "关闭",
     "Copy public link" : "复制公开链接",
     "Address" : "地址",
     "Apply" : "应用",
+    "Select Dates:" : "选择日期：",
     "Timezone:" : "时区：",
     "Start" : "起点",
-    "close" : "关闭"
+    "close" : "关闭",
+    "Name:" : "名称：",
+    "Enter Email" : "输入电子邮箱",
+    "Please %1$stry again%2$s and select a different date." : "请%1$s重新尝试%2$s，选择一个不同的日期。"
 },"pluralForm" :"nplurals=1; plural=0;"
 }
