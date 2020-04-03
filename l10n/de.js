@@ -2,7 +2,7 @@ OC.L10N.register(
     "appointments",
     {
     "%s Appointment is Confirmed" : "Der Termin mit %s ist bestätigt",
-    "Your %1$s appointment scheduled for %2$s is now confirmed." : "Dein für %1$s geplanter %2$s-Termin ist jetzt bestätigt.",
+    "Your %1$s appointment scheduled for %2$s is now confirmed." : "Dein Termin: %1$s am %2$s ist jetzt bestätigt.",
     "Your %s appointment is confirmed." : "Dein Termin für %s ist bestätigt.",
     "%s Appointment is Canceled" : "Der %s-Termin ist abgesagt",
     "Your %1$s appointment scheduled for %2$s is now canceled." : "Dein für %1$s geplanter %2$s-Termin ist jetzt abgesagt.",
@@ -55,7 +55,7 @@ OC.L10N.register(
     "Public link could not be copied to clipboard..." : "Öffentlicher Link konnte nicht in die Zwischenablage kopiert werden.",
     "Public link copied to clipboard..." : "Öffentlicher Link in die Zwischenablage kopiert.",
     "Address" : "Adresse",
-    "Public Page Settings" : "Einstellungen für öffentliche Seite",
+    "Public Page Settings" : "Optionen für öffentliche Seite",
     "Control what your visitors see" : "Kontrolliere, was Deine Besucher sehen",
     "Show appointments for next" : "Termine anzeigen für",
     "One Week" : "Eine Woche",
