@@ -185,7 +185,7 @@
         </div>
             <ScheduleSlideBar
                     :title="t('appointments','Schedule Generator')"
-                    :subtitle="t('appointments','Add open appointments to you calendar')"
+                    :subtitle="t('appointments','Add open appointments to your calendar')"
                     @agDataReady="makePreviewGrid"
                     v-show="sbShow===1" @close="sbShow=0"/>
             <FormStnSlideBar
