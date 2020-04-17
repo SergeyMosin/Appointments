@@ -571,14 +571,14 @@ class PageController extends Controller {
 
             if($a==='1'){
                 // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Confirmed
-                $subject=$this->l->t("%s Appointment is Confirmed",[$org_name]);
+                $subject=$this->l->t("%s Appointment is confirmed",[$org_name]);
                 // TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now confirmed.
                 $body=$this->l->t('Your %1$s appointment scheduled for %2$s is now confirmed.',[$org_name,$date_time]);
                 // TRANSLATORS Your {{Date Time}} appointment is confirmed.
                 $page_text=$this->l->t("Your %s appointment is confirmed.",[$date_time]);
             }else{
                 // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Canceled
-                $subject=$this->l->t("%s Appointment is Canceled",[$org_name]);
+                $subject=$this->l->t("%s Appointment is canceled",[$org_name]);
                 // TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now canceled.
                 $body=$this->l->t('Your %1$s appointment scheduled for %2$s is now canceled.',[$org_name,$date_time]);
                 // TRANSLATORS Your {{Date Time}} appointment is confirmed.
@@ -613,7 +613,7 @@ class PageController extends Controller {
                             $method='CANCEL';
                             if(isset($vo->VEVENT->DESCRIPTION)){
                                 $vo->VEVENT->DESCRIPTION->setValue(
-                                    $this->l->t("Appointment is Canceled")
+                                    $this->l->t("Appointment is canceled")
                                 );
                             }
                         }
@@ -908,7 +908,7 @@ class PageController extends Controller {
                     // TODO: graceful redirect somewhere, via js perhaps??
                     $tmpl = 'public/thanks';
                     $param['appt_c_head']=$this->l->t("Info");
-                    $param['appt_c_msg'] = $this->l->t("Link Expired...");
+                    $param['appt_c_msg'] = $this->l->t("Link expired...");
                     $rs = 409;
                 }
             }
@@ -944,7 +944,7 @@ class PageController extends Controller {
             'appt_org_addr'=>str_replace(array("\r\n","\n","\r"),'<br>',$this->c->getUserValue(
                 $uid, $this->appName, self::KEY_O_ADDR,
                 "123 Main Street\nNew York, NY 45678")),
-            'appt_form_title'=>!empty($ft)?$ft:$this->l->t('Book Your Appointment'),
+            'appt_form_title'=>!empty($ft)?$ft:$this->l->t('Book your appointment'),
             'appt_pps'=>'',
             'appt_gdpr'=>'',
         ];
