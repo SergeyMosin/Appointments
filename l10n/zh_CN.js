@@ -63,6 +63,7 @@ OC.L10N.register(
     "Show Empty Weekends" : "显示空闲周末",
     "Show time in two columns" : "以两列显示时间",
     "Form Title" : "表单标题",
+    "See Tutorial..." : "参阅教程...",
     "Apply" : "应用",
     "Select Dates:" : "选择日期：",
     "Select Dates" : "选择日期",
