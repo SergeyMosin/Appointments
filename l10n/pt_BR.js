@@ -29,7 +29,7 @@ OC.L10N.register(
     "Share Online" : "Compartilhar Online",
     "Stop Sharing" : "Parar Compartilhamento",
     "Add appointments" : "Adicionar compromissos",
-    "Customize Public Page" : "Customizar Página Pública",
+    "Customize Public Page" : "Personalizar Página Pública",
     "Help/Tutorial" : "Ajuda/Tutorial",
     "Organization Name" : "Nome da Organização",
     "Organization Address" : "Endereço da Organização",
