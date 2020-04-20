@@ -11,6 +11,7 @@ OC.L10N.register(
     "Address" : "地址",
     "Apply" : "套用",
     "Start" : "起點",
-    "close" : " 關閉"
+    "close" : " 關閉",
+    "Name:" : "姓名："
 },
 "nplurals=1; plural=0;");
