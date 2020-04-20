@@ -2,7 +2,7 @@
     <h2 class="srgdev-appt-hs-h1">1. Select a Calendar</h2>
     <p class="srgdev-appt-hs-p">It is recommended to create a separate calendar.</p>
     <h2 class="srgdev-appt-hs-h1">2. Enter Organization Info</h2>
-    <p class="srgdev-appt-hs-p">See the "User/Organization Info" section for the required Name, Location and Email Address.</p>
+    <p class="srgdev-appt-hs-p">See the "User/Organization Info" section for required Name, Location and Email Address settings.</p>
     <h2 class="srgdev-appt-hs-h1">3. Add Appointments</h2>
     <p class="srgdev-appt-hs-p">Please use the "Add Appointment Slots" dialog.</p>
     <div class="srgdev-appt-hs-p">
