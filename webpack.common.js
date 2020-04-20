@@ -7,7 +7,6 @@ module.exports = {
 	entry:{
 		script: path.join(__dirname, 'src', 'main.js'),
 		form: path.join(__dirname, 'src', 'form.js'),
-		form2: path.join(__dirname, 'src', 'form2.js'),
 	},
 	output: {
 		path: path.resolve(__dirname, './js'),
@@ -36,6 +35,7 @@ module.exports = {
 					options: {
 						plugins: [
 							'@babel/plugin-syntax-dynamic-import',
+							'@babel/plugin-proposal-object-rest-spread'
 						],
 						presets: ['@babel/preset-env']
 					}

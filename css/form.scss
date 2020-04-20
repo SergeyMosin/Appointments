@@ -84,6 +84,8 @@
 #srgdev-ncfp_sel-dummy{
   cursor: pointer;
   background: var(--icon-triangle-s-000) no-repeat right 4px center;
+  background-color: $color-main-background;
+  background-color: var(--color-main-background);
 }
 // Because it is a read-only input, the setCustomValidity() does not work
 #srgdev-ncfp_sel-dummy[err]{
@@ -155,6 +157,7 @@
   padding: .3em;
   cursor: pointer;
   vertical-align: middle;
+  user-select:none;
 }
 #srgdev-dpu_bf-next:hover,
 #srgdev-dpu_bf-back:hover{

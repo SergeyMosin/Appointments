@@ -9,7 +9,7 @@ $dt_primary-color: var(--color-primary) !default;
 $dt_primary-color-light: var(--color-primary-light) !default;
 
 
-$today-color: $dt_default-color !default;
+$today-color: $dt_primary-color !default;
 
 $popup-z-index: 2001 !default;
 

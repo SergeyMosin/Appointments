@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import App from './App.vue'
-import VueClipboard from 'vue-clipboard2'
 
 // Vue.config.devtools = true;
 
@@ -15,8 +14,6 @@ import VueClipboard from 'vue-clipboard2'
 // We do not want the index.php since we're loading files
 // noinspection JSUnresolvedVariable
 // __webpack_public_path__ = linkTo('appointments', 'js/')
-
-Vue.use(VueClipboard)
 
 Vue.prototype.t = t
 Vue.prototype.n = n

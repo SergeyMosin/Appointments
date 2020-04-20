@@ -5,6 +5,8 @@ function _apptGridMaker() {
     const MP5 = 300000
     // Start at 8AM
     const SH = 8
+    // 11 hours
+    const DH = 11
 
     let sP
 
@@ -113,20 +115,30 @@ function _apptGridMaker() {
     }
 
     /**
+     * Soft reset (keeps past appointments)
      * @param {number} cID
      */
     function resetColumn(cID) {
+        let p = mData.mc_cols[cID]
+        for(let els=mData.mc_elm[cID],c=els.length,i=0;i<c;i++){
+                p.removeChild(els[i])
+                els[i]=null; //???
+        }
         mData.mc_pos[cID] = []
         mData.mc_elm[cID] = []
-        let p = mData.mc_cols[cID]
-        while (p.lastElementChild) {
-            p.removeChild(p.lastElementChild)
-        }
     }
 
+    /**
+     * Hard reset, deletes all elements including past appointments
+     */
     function resetAllColumns() {
         for(let i=0,l=mData.mc_cols.length;i<l;i++){
-            resetColumn(i)
+            mData.mc_pos[i] = []
+            mData.mc_elm[i] = []
+            let p = mData.mc_cols[i]
+            while (p.lastElementChild){
+                p.removeChild(p.lastElementChild)
+            }
         }
     }
 
@@ -171,21 +183,32 @@ function _apptGridMaker() {
     }
 
     function addPastAppts(data,clr) {
-        for(let elm,uTop,d,uLen,cID,da=data.slice(0,-1).split(","),
-                l=da.length,i=0;i<l;i+=3){
-            d= new Date(da[i]*1000)
-            // d.setTime(d.getTime()+(d.getTimezoneOffset()*60000))
-            uLen= (da[i+1]-da[i])/300
+        const btm=DH*12; // 12*5min=1hour
+        for(let elm,uTop,d=new Date(),ds,uLen,cID,da=data.split(","),
+                l=da.length,i=0;i<l;i++){
 
-            if(da[i+2]==="L") {
-                d.setTime(d.getTime()+(d.getTimezoneOffset()*60000))
-            }
+            ds=da[i]
+            console.log(ds)
+            d.setTime(Date.parse(
+                // 20200331T083000 -> 2020-03-31T08:30:00
+                ds.substr(0,4)+"-"+
+                ds.substr(4,2)+"-"+
+                ds.substr(6,5)+":"+
+                ds.substr(11,2)+":"+
+                ds.substr(13,2)
+            ))
+            uLen=(Date.parse(
+                ds.substr(15,4)+"-"+
+                ds.substr(19,2)+"-"+
+                ds.substr(21,5)+":"+
+                ds.substr(26,2)+":"+
+                ds.substr(28,2))-d.getTime())/300000
 
             cID=d.getDay()-1
             uTop=Math.floor((((d.getHours()-8)*60)/5)
                 +((d.getMinutes()/5)))
 
-            if(uTop>=0){
+            if(uTop>=0 && uTop+uLen<=btm){
                 elm=makeApptElement(uTop,uLen,null,cID,clr)
                 mData.mc_cols[cID].appendChild(elm)
             }
@@ -336,8 +359,6 @@ function _apptGridMaker() {
 
         // Ever 3rd line visible i.e. 15min
         const VS_LINE = 2
-        // 11 hour
-        const DH = 11
 
        let timeFormat
         if(window.Intl && typeof window.Intl === "object") {
@@ -407,8 +428,6 @@ function _apptGridMaker() {
         function makeT(d) {
             const h=d.getHours()
             const m=d.getMinutes()
-            const month = d.getMonth() + 1
-            const day = d.getDate()
             return "T"+(h<10?"0"+h:""+h)+(m<10?"0"+m:""+m)+"00"
         }
         function makeD(d) {

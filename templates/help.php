@@ -2,23 +2,52 @@
     <h2 class="srgdev-appt-hs-h1">1. Select a Calendar</h2>
     <p class="srgdev-appt-hs-p">It is recommended to create a separate calendar.</p>
     <h2 class="srgdev-appt-hs-h1">2. Enter Organization Info</h2>
-    <p class="srgdev-appt-hs-p">See the Settings section for the required Organization Name, Address and Email.</p>
+    <p class="srgdev-appt-hs-p">See the "User/Organization Info" section for the required Name, Location and Email Address.</p>
     <h2 class="srgdev-appt-hs-h1">3. Add Appointments</h2>
-    <p class="srgdev-appt-hs-p">Please use the "Add Appointments" dialog.</p>
-    <p class="srgdev-appt-hs-p"><strong id="srgdev-sec_timezone">Timezone Options:</strong></p>
+    <p class="srgdev-appt-hs-p">Please use the "Add Appointment Slots" dialog.</p>
+    <div class="srgdev-appt-hs-p">
+        <span>1. Set "Schedule Generator" settings</span><br>
+        <span>2. Use "3 Dot" dropdown menus</span><br>
+        <span>3. Adjust times/Add break times by dragging slots up/down</span><br>
+        <span>4. Duplicate the day's slots by clicking "Copy to Next" day option in ellipsis menu</span><br>
+    </div>
+    <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_timezone">Timezone Options:</strong></p>
     <p class="srgdev-appt-hs-p"><span style="text-decoration: underline">Local (floating)</span> - this option should be used if you are booking appointments for a real location, like an office or a store. "Floating" values are not bound to any time zone in particular, and will represent the same hour, minute, and second value regardless of which time zone is currently being observed.</p>
     <p class="srgdev-appt-hs-p"><span style="text-decoration: underline">Calendar Timezone</span> - your calendar's timezone will be used. This option should be used if you are booking events where people participate from different locations, like phone calls or video conferences.</p>
     <p class="srgdev-appt-hs-p" style="font-style: italic">This options mostly affect the .ics file attached to the confirmation email. Also, Gnome Calendar does not like "floating" timezones.</p>
     <h2 class="srgdev-appt-hs-h1">4. Customize Public Page</h2>
-    <p class="srgdev-appt-hs-p"><strong id="srgdev-sec_gdpr">GDPR Compliance:</strong></p>
+    <p class="srgdev-appt-hs-p"><strong id="srgdev-sec_gdpr">GDPR Compliance</strong></p>
     <p class="srgdev-appt-hs-p">Any text in the "GDPR Compliance" field will trigger display of the "GDPR" check box. Plain text (no html) will work as is, but if you need to add a link to a privacy policy please read on... For the link to work properly you should separate it from the &lt;label&gt; element, and the &lt;label&gt;'s <strong>"for"</strong> attribute MUST be set to <strong>"appt_gdpr_id"</strong>, example:</p>
 <code class="srgdev-appt-hs-code">
 &lt;label for=&quot;appt_gdpr_id&quot;&gt;Some text &lt;/label&gt;&lt;a href=&quot;PRIVACY_POLCY_URL&quot;&gt;Privacy Policy&lt;/a&gt;&lt;label for=&quot;appt_gdpr_id&quot;&gt; some more text.&lt;/label&gt;
 </code>
-
-    <h2 class="srgdev-appt-hs-h1">5. Share the Public Link</h2>
-    <p class="srgdev-appt-hs-p">Enable sharing and pass along the public form link. Seven upcoming days of appointments are going to be available on the booking page.</p>
-    <h2 class="srgdev-appt-hs-h1">6. Check Status in the Calendar</h2>
+    <p class="srgdev-appt-hs-p"><strong id="srgdev-sec_style">Style Override</strong></p>
+    <p class="srgdev-appt-hs-p">Insert custom <code>&lt;style&gt;&lt;/style&gt;</code> element to override default page style. Try something like this for example:</p>
+<code style="white-space: pre;" class="srgdev-appt-hs-code">&lt;style&gt;
+#header{
+    background: transparent !important;
+}
+#content{
+    background: linear-gradient(to bottom, #ff00cc, #333399)  !important;
+}
+#body-public #content {
+    min-height: 100%;
+}
+form{
+    background:whitesmoke;box-shadow: 3px 3px 25px 0px rgba(0,0,0,0.75);
+}
+.srgdev-ncfp-form-header{
+    border-bottom: 3px solid #961AB1;
+}
+&lt;/style&gt;
+</code>
+    <h2 class="srgdev-appt-hs-h1">5. Email Settings</h2>
+    <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_emailatt">Email Attendee when the appointment is modified and/or deleted</strong> - Attendees will be notified via email when their <strong>upcoming</strong> appointments are updated or deleted in the calendar app or via some other external mechanism. Only changes to Date/Time, Status or Location will trigger the "Modified" notification.</p>
+    <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_emailme">Email Me when an appointment is updated</strong> - A notification email will be sent to you when an appointment is booked via the public page or an upcoming appointment is confirmed or canceled via the email links.</p>
+    <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_emaildef"><code>'appointments.use.default.email'=>true</code></strong> config.php option is available for servers that do not provide email addresses for all users. In this case <code>\OCP\Util::getDefaultEmailAddress</code> will be used as the "from" address and your address will be used as the "reply-to" address.</p>
+    <h2 class="srgdev-appt-hs-h1">6. Share the Public Link</h2>
+    <p class="srgdev-appt-hs-p">Enable sharing and pass along the public page link. Upcoming appointments will be available on the booking page.</p>
+    <h2 class="srgdev-appt-hs-h1">7. Check Status in the Calendar</h2>
     <p class="srgdev-appt-hs-p">Once an appointment is booked it will be visible in the calendar with "⌛ pending" status. The attendee can "✔️ Confirm" or "<span style="text-decoration: line-through">Cancel</span>" the appointment via an email link, the status change will be reflected in the calendar upon page reload.</p>
 
 </div>

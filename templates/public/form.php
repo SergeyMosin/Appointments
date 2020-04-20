@@ -11,7 +11,7 @@ style('appointments', 'form');
     if($_['appt_state']!=='2'){
         $disabled='disabled ';
     }
-    print '<form autocomplete="off" method="POST" class="srgdev-ncfp-form" '.$disabled.' id="srgdev-ncfp_frm" data-pps="'.$_['appt_pps'].'">
+    print $_['appt_inline_style'].'<form autocomplete="off" method="POST" class="srgdev-ncfp-form" '.$disabled.' id="srgdev-ncfp_frm" data-pps="'.$_['appt_pps'].'">
         <h2 class="srgdev-ncfp-form-org">'.htmlentities($_['appt_org_name']).'</h2>
         <div class="srgdev-ncfp-form-addr">'.$_['appt_org_addr'].'</div>
         <h3 class="srgdev-ncfp-form-header">'.
@@ -22,16 +22,14 @@ style('appointments', 'form');
         <label class="srgdev-ncfp-form-label"><?php p($l->t("Date & Time:")) ?></label>
         <div id="srgdev-ncfp_sel_cont">
             <input <?php echo $disabled ?>readonly placeholder="<?php p($l->t("Select Date & Time")); ?>" name="dtstr" class="srgdev-ncfp-form-input" id="srgdev-ncfp_sel-dummy">
-            <select name="adatetime" style="display:none;" id="srgdev-ncfp_sel-hidden"
-                <?php /** @noinspection PhpUndefinedVariableInspection */
-                print_unescaped(' data-state="'.$_['appt_state'].'">'.$_['appt_sel_opts']); ?>
-            </select>
+            <input type="hidden" name="adatetime" style="display:none;" id="srgdev-ncfp_sel-hidden"
+                <?php print_unescaped(' '.$disabled.'data-state="'.$_['appt_state'].'" data-info="'.$_['appt_sel_opts'].'">'); ?>
         </div>
-        <label class="srgdev-ncfp-form-label"><?php p($l->t("Name:"))?></label>
+        <label for="srgdev-ncfp_fname" class="srgdev-ncfp-form-label"><?php p($l->t("Name:"))?></label>
         <input name="name" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter Name")); ?>" id="srgdev-ncfp_fname" class="srgdev-ncfp-form-input" type="text">
-        <label class="srgdev-ncfp-form-label"><?php p($l->t("Email:"));?></label>
+        <label for="srgdev-ncfp_femail" class="srgdev-ncfp-form-label"><?php p($l->t("Email:"));?></label>
         <input name="email" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter Email")); ?>" id="srgdev-ncfp_femail" class="srgdev-ncfp-form-input" type="email">
-        <label class="srgdev-ncfp-form-label"><?php p($l->t("Phone:")); ?></label>
+        <label for="srgdev-ncfp_fphone" class="srgdev-ncfp-form-label"><?php p($l->t("Phone:")); ?></label>
         <input name="phone" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter Phone Number")); ?>" id="srgdev-ncfp_fphone" class="srgdev-ncfp-form-input" type="tel"><?php
         if(!empty($_['appt_gdpr'])){
             echo '<div class="srgdev-ncfp-chb-cont"><input class="checkbox" type="checkbox" id="appt_gdpr_id"/>'.(strpos($_['appt_gdpr'],'appt_gdpr_id')===false?'<label for="appt_gdpr_id">'.$_['appt_gdpr'].'</label>':$_['appt_gdpr']).'</div>';

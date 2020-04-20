@@ -23,94 +23,33 @@
             <AppNavigationSpacer/>
             <NavAccountItem :calLoading="isCalLoading" @calSelected="setCalendar" :curCal="curCal"></NavAccountItem>
                 <AppNavigationItem
-                        @click="showSlideBar"
-                        :title="t('appointments','Add Appointments')"
+                        @click="openSlideBarAGen"
+                        :title="t('appointments','Add Appointment Slots')"
                         icon="icon-add"></AppNavigationItem>
+                <AppNavigationSpacer/>
                 <AppNavigationItem
-                        :loading="ppsLoading"
-                        @click="showPPS"
+                        :loading="sbLoading===3"
+                        @click="openSlideBar(3,'get_uci',uciInfo)"
+                        :title="t('appointments','User/Organization Info')"
+                        icon="icon-user"></AppNavigationItem>
+                <AppNavigationItem
+                        :loading="sbLoading===2"
+                        @click="openSlideBar(2,'get_pps',ppsInfo)"
                         :title="t('appointments','Customize Public Page')"
                         icon="icon-category-customization"></AppNavigationItem>
+                <AppNavigationItem
+                        :loading="sbLoading===4"
+                        @click="openSlideBar(4,'get_eml',emlInfo)"
+                        :title="t('appointments','Email Settings')"
+                        icon="icon-mail"></AppNavigationItem>
                 <AppNavigationItem
                         :pinned="true"
                         @click="showHelp"
                         :title="t('appointments','Help/Tutorial')"
                         icon="icon-info"></AppNavigationItem>
             </ul>
-
-            <SettingsExt @open="settingsOpen">
-                <ul class="settings-fieldset-interior">
-                <li>
-                    <StnInput
-                            @submit="setStn"
-                            sname="org"
-                            :disabled="!settings.loaded"
-                            :value="settings.org"
-                            :placeholder="t('appointments','Organization Name')">
-                    </StnInput>
-                </li>
-                <li>
-                    <StnText
-                            @submit="setStn"
-                            sname="addr"
-                            :disabled="!settings.loaded"
-                            :value="settings.addr"
-                            :placeholder="t('appointments','Organization Address')">
-                    </StnText>
-                </li>
-                <li>
-                    <StnInput
-                            @submit="setStn"
-                            sname="eml"
-                            :disabled="!settings.loaded"
-                            :value="settings.eml"
-                            :placeholder="t('appointments','Email')">
-                    </StnInput>
-                </li>
-                <li>
-                    <StnInput
-                            @submit="setStn"
-                            sname="phn"
-                            :disabled="!settings.loaded"
-                            :value="settings.phn"
-                            :placeholder="t('appointments','Phone (optional)')">
-                    </StnInput>
-                </li>
-                    <li>
-                        <input
-                                type="checkbox"
-                                :disabled="!settings.loaded"
-                                v-model="settings.ics"
-                                id="appt-stn_chb-ics_file"
-                                class="checkbox"
-                                @change="setChbStn('ics')">
-                        <label for="appt-stn_chb-ics_file">{{t('appointments','Attach .ics file to confirmation email')}}</label><br>
-                    </li>
-                <li>
-                    <input
-                            type="checkbox"
-                            id="appt-stn_chb-notify"
-                            class="checkbox"
-                            @change="notImplemented">
-                    <label for="appt-stn_chb-notify">{{t('appointments','Show Notifications on Status Change')}}</label><br>
-                </li>
-
-<!--                    <li>-->
-<!--                        <input-->
-<!--                                type="checkbox"-->
-<!--                                id="appt-stn_chb-captcha"-->
-<!--                                class="checkbox"-->
-<!--                                @change="notImplemented">-->
-<!--                        <label for="appt-stn_chb-captcha">{{t('appointments','Use Google reCAPTCHA')}}</label><br>-->
-<!--                    </li>-->
-<!--                <li>-->
-<!--                    <input type="checkbox" id="appt-stn_chb-json_email" class="checkbox" @change="notImplemented">-->
-<!--                    <label for="appt-stn_chb-json_email">Add One Click Actions to Email</label><br>-->
-<!--                </li>-->
-                </ul>
-            </SettingsExt>
         </AppNavigation>
-        <AppContent class="srgdev-app-content" :aria-expanded="navOpen">
+        <AppContent style="transition: none;" class="srgdev-app-content" :aria-expanded="navOpen">
 
         <div v-show="visibleSection===1" class="srgdev-appt-cal-view-cont">
             <div class="srgdev-appt-cal-view-btns">
@@ -163,6 +102,10 @@
                     <div v-if="evtGridModal===3" class="srgdev-appt-modal-lbl">
                         {{t('appointments', 'Error occurred. Check console...')}}
                     </div>
+                    <div v-if="evtGridModal===4" class="srgdev-appt-modal-lbl">
+                        <div style="font-size: 110%;font-weight: bold">{{modalHeader}}</div>
+                        <div style="user-select: text; cursor: text;">{{modalText}}</div>
+                    </div>
                     <div v-if="evtGridModal===1" class="srgdev-appt-modal-slider">
                         <div class="srgdev-appt-slider-line"></div>
                         <div class="srgdev-appt-slider-inc"></div>
@@ -185,13 +128,21 @@
         </div>
             <ScheduleSlideBar
                     :title="t('appointments','Schedule Generator')"
-                    :subtitle="t('appointments','Add open appointments to you calendar')"
+                    :subtitle="t('appointments','Add open appointments to your calendar')"
                     @agDataReady="makePreviewGrid"
                     v-show="sbShow===1" @close="sbShow=0"/>
             <FormStnSlideBar
-                    :ppsInfo="ppsInfo"
-                    @ppsApply="applyPPS"
+                    :pps-info="ppsInfo"
+                    @apply="setState('set_pps',$event)"
                     v-show="sbShow===2" @close="sbShow=0"/>
+            <UserStnSlideBar
+                    :uci-info="uciInfo"
+                    @apply="setState('set_uci',$event)"
+                    v-show="sbShow===3" @close="sbShow=0"/>
+            <MailStnSlideBar
+                    :eml-info="emlInfo"
+                    @apply="setState('set_eml',$event)"
+                    v-show="sbShow===4" @close="sbShow=0"/>
     </AppContent>
     </div>
 </template>
@@ -211,16 +162,15 @@
     } from '@nextcloud/vue'
     import {detectColor} from "./utils.js";
 
-    import StnText from "./components/StnText.vue";
-    import StnInput from "./components/StnInput.vue";
-    import SettingsExt from "./components/SettingsExt.vue";
     import ActionInput from "./components/ActionInputExt.vue";
     import NavAccountItem from "./components/NavAccountItem.vue";
     import ScheduleSlideBar from "./components/ScheduleSlideBar.vue";
     import axios from '@nextcloud/axios'
 
     import gridMaker from "./grid.js"
-    import FormStnSlideBar from "./components/FormStnSlideBar";
+    import FormStnSlideBar from "./components/FormStnSlideBar.vue";
+    import UserStnSlideBar from "./components/UserStnSlideBar.vue";
+    import MailStnSlideBar from "./components/MailStnSlideBar.vue";
 
     // const ttt=require('./ttt.js')
 
@@ -232,7 +182,6 @@
         name: 'App',
         components: {
             FormStnSlideBar,
-            SettingsExt,
             ScheduleSlideBar,
             AppNavigation,
             AppNavigationItem,
@@ -243,10 +192,10 @@
             ActionCheckbox,
             AppNavigationIconBullet,
             Modal,
-            StnInput,
-            StnText,
             Actions,
             ActionInput,
+            UserStnSlideBar,
+            MailStnSlideBar
         },
         data: function() {
             return {
@@ -260,27 +209,19 @@
 
                 pageEnabled:'0',
 
-                value: null,
+                value: null, // <-???
                 navOpen:false,
                 sbShow:0,
+                sbLoading:0,
 
                 visibleSection:0,
 
                 evtGridData:[],
                 evtGridModal:0,
-
-
-                settings:{
-                    loaded:false,
-                    org:"",
-                    addr:"",
-                    eml:"",
-                    phn:"",
-                    ics:false
-                },
+                modalHeader:"",
+                modalText:"",
 
                 helpContent:"",
-                tken:"",
 
                 isGridReady:false,
                 /**
@@ -289,10 +230,13 @@
                 gridHeader:[],
                 gridApptLen:0,
                 gridApptTs:0,
-                gridApptTZ:"L",
+                gridApptTZ:"C",
 
+                // SlideBars...
                 ppsInfo:{},
-                ppsLoading:false
+                uciInfo:{},
+                emlInfo:{},
+
             };
         },
         computed: {
@@ -317,7 +261,6 @@
                             })
                         }
                         this.pageEnabled=rda[1]
-                        this.getPubUri()
                     }
                 }
                 this.isCalLoading=false
@@ -336,53 +279,6 @@
             this.$root.$off('helpWanted', this.helpWantedHandler)
         },
         methods: {
-
-            applyPPS(info){
-
-                let ji
-                try {
-                    ji=JSON.stringify(info)
-                }catch (e) {
-                    console.log(e)
-                    OC.Notification.showTemporary(this.t('appointments',"Can't apply Public Page settings"),{timeout:4,type:'error'})
-                }
-                axios.post('state', {
-                    a: 'set_pps',
-                    d: ji
-                }).then(response => {
-                    if(response.status===200) {
-                        this.getFormData()
-                        OCP.Toast.success(this.t('appointments','New Settings Applied.'))
-                    }
-                }).catch((error) => {
-                    console.log(error)
-                    OC.Notification.showTemporary(this.t('appointments',"Can't apply Public Page settings"),{timeout:4,type:'error'})
-                })
-            },
-
-            showPPS(){
-                if(this.sbShow===2){
-                    // close
-                    this.toggleSlideBar(2)
-                    return
-                }
-
-                this.ppsLoading=true
-                axios.post('state', {
-                    a: 'get_pps',
-                }).then(response => {
-                    if(response.status===200) {
-                        this.ppsInfo= response.data
-                        this.toggleSlideBar(2)
-                    }
-                }).catch((error) => {
-                    console.log(error)
-                    OC.Notification.showTemporary(this.t('appointments',"Can't get Public Page settings"),{timeout:4,type:'error'})
-                }).then(()=>{
-                    // always executed
-                    this.ppsLoading=false
-                })
-            },
 
             gridApptsAdd(cID,event){
                 let hd=this.gridHeader[cID]
@@ -410,68 +306,101 @@
                 this.gridHeader[cID+1].hasAppts=true
             },
 
-            async settingsOpen(){
-                this.settings.org=""
-                this.settings.addr = ""
-                this.settings.eml = ""
-                this.settings.phn = ""
-                this.settings.ics = false
-                this.settings.loaded=false
-
-                const rda = await this.getStn()
-                if(rda===null) return
-
-                this.settings.org = rda[0]
-                this.settings.addr = rda[1].replace(/<br>/g, "\n")
-                this.settings.eml = rda[2]
-                this.settings.phn = rda[3]
-                this.settings.ics = rda[4]==="1"
-                this.settings.loaded = true
-            },
-
-            setStn(v,n){
-                axios.post('state', {
-                    a: 'set_settings',
-                    n: n,
-                    v: v.trim()
-                }).then(response => {
-                    if(response.status===200) {
-                        this.getFormData()
-                    }
-                }).catch((error) => {
-                    console.log(v,n,error)
-                    OC.Notification.showTemporary(t('appointments','Settings Error Occurred. Check console...'),{timeout:4,type:'warning'})
-                });
-            },
-
-            setChbStn(n){
-                this.setStn(this.settings[n]===true?'1':'0',n)
-            },
-
             /**
-             * @return {Promise<string[]|null>}
+             * @param {number} sbn SlideBar number
+             * @param {string} action get_xxx...
+             * @param {Object} props props/info object for the slide bar
              */
-            async getStn(){
-                try {
-                    const res= await axios.post('state', {a: 'get_settings'})
-                    if(res.status===200){
-                        const rda=res.data.split(String.fromCharCode(30))
-                        if(rda.length===5) {
-                            return rda
-                        }else{
-                            // noinspection ExceptionCaughtLocallyJS
-                            throw new Error("Bad settings lenght: "+rda.length)
+            openSlideBar(sbn,action,props){
+                if(this.sbShow===sbn){
+                    // already open, close...
+                    this.toggleSlideBar(sbn)
+                    return
+                }
+                this.sbLoading=sbn
+                this.getState(action).then(res=>{
+                    for (let key in res) {
+                        if (res.hasOwnProperty(key)) {
+                            this.$set(props,key,res[key])
                         }
+                    }
+                    this.sbLoading=0
+                    this.toggleSlideBar(sbn)
+                })
+            },
+
+            /** @return {Promise<JSON|null>} */
+            async getState(action){
+                try {
+                    const res= await axios.post('state', {a: action})
+                    if(res.status===200){
+                        return res.data
                     }else{
-                        // noinspection ExceptionCaughtLocallyJS
-                        throw new Error("Bad status: "+res.status)
+                        console.log(res)
+                        OC.Notification.showTemporary(t('appointments',"Can't get Settings. Check console")+"\xa0\xa0\xa0\xa0",{timeout:8,type:'error'})
+                        return null
                     }
                 }catch (e) {
                     console.log(e)
-                    OC.Notification.showTemporary(t('appointments',"Can't get Settings. Check console..."),{timeout:8,type:'error'})
+                    OC.Notification.showTemporary(t('appointments',"Can't get Settings. Check console")+"\xa0\xa0\xa0\xa0",{timeout:8,type:'error'})
                     return null
                 }
             },
+
+            /**
+             * @param {string} action
+             * @param {Object} value
+             */
+            setState(action,value){
+                let ji=""
+                try {
+                    ji=JSON.stringify(value)
+                }catch (e) {
+                    console.log(e)
+                    OC.Notification.showTemporary(this.t('appointments',"Can't apply settings"),{timeout:4,type:'error'})
+                }
+                axios.post('state', {
+                    a: action,
+                    d: ji
+                }).then(response => {
+                    if(response.status===200) {
+                        this.getFormData()
+                        OCP.Toast.success(this.t('appointments','New Settings Applied.'))
+                    }
+                }).catch((error) => {
+                    console.log(error)
+                    OC.Notification.showTemporary(this.t('appointments',"Can't apply settings"),{timeout:4,type:'error'})
+                })
+            },
+
+            openSlideBarAGen: function(){
+                if(!this.isGridReady){
+                    gridMaker.setup(this.$refs["grid_cont"],5,"srgdev-appt-grd-")
+                    this.isGridReady=true
+                }
+
+                if(this.curCal.url===""){
+                    this.noCalSet()
+                    return
+                }
+
+                this.toggleSlideBar(1)
+            },
+
+            toggleSlideBar(sbn){
+                this.closeNav()
+                if(this.sbShow===sbn) this.sbShow=0
+                else this.sbShow=sbn
+            },
+
+            closeNav:function () {
+                let elm=document.getElementById("app-navigation-toggle")
+                if(elm!==null && elm.hasAttribute('aria-expanded')
+                    && elm.getAttribute('aria-expanded')==='true'){
+                    elm.dispatchEvent(new Event('click'))
+                }
+            },
+
 
 
             helpWantedHandler(section){
@@ -481,6 +410,11 @@
             },
 
             showHelp(sec){
+                if(typeof sec!=="string" && this.visibleSection===2){
+                    this.visibleSection=0
+                    return
+                }
+
                 this.visibleSection=2
 
                 axios.get('help')
@@ -491,11 +425,11 @@
                                 this.$nextTick(function () {
                                     let elm=document.getElementById("srgdev-sec_" + sec)
                                     if(elm!==null){
-                                        elm.scrollIntoView()
+                                        elm.scrollIntoView({block: "center"})
                                         elm.className+=' srgdev-appt-temp-highlight'
                                         setTimeout(function () {
                                             elm.className=elm.className.replace(' srgdev-appt-temp-highlight','')
-                                        },1000)
+                                        },2000)
                                     }
                                 })
                             }
@@ -506,35 +440,67 @@
                     })
             },
 
+            copyPubLink(){
+                axios.post('state', {
+                    a: 'get_puburi'
+                }).then(response => {
+                    if(response.status===200) {
+                        try {
+                            this.doCopy(response.data)
+                        }catch (e) {
+                            console.log(e)
+                        }
+                    }
+                }).catch((error) => {
+                    console.log(error)
+                    OCP.Toast.error(this.t('appointments','Can not get public URL from server')+"\xa0\xa0\xa0\xa0")
+                })
+            },
 
-            async copyPubLink(){
-                // copy link for calendar to clipboard
-                await this.getPubUri()
-                if (this.tken==="") {
-                    console.log("token empty...")
-                    OCP.Toast.error(this.t('appointments','Public link could not be copied to clipboard...'))
-                }else {
+            doCopy(text){
+                const ok_txt=this.t('appointments', 'Public link copied to clipboard')+"\xa0\xa0\xa0\xa0"
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(text).then(function() {
+                        OCP.Toast.success(ok_txt)
+                    }, function(err) {
+                        console.error('copy error:',err);
+                        this.showModal(this.t('appointments', 'Public URL:'),text)
+                    });
+                }else{
+                    // fallback
+                    let textArea = document.createElement("textarea");
+                    textArea.value = text;
+
+                    // Avoid scrolling to bottom
+                    textArea.style.top = "0";
+                    textArea.style.left = "0";
+                    textArea.style.position = "fixed";
+
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+
+                    let copyOK
                     try {
-                        await this.$copyText(this.tken)
-                        OCP.Toast.success(this.t('appointments', 'Public link copied to clipboard...'))
-                    } catch (error) {
-                        console.log(error)
-                        OCP.Toast.error(this.t('appointments', 'Public link could not be copied to clipboard...'))
+                        copyOK = document.execCommand('copy');
+                    } catch (err) {
+                        console.error('copy error:',err)
+                        copyOK=false
+                    }
+                    document.body.removeChild(textArea);
+
+                    if(copyOK){
+                        OCP.Toast.success(ok_txt)
+                    }else {
+                        this.showModal(this.t('appointments','Public URL:'), text)
                     }
                 }
             },
 
-            async getPubUri(){
-                await axios.post('state', {
-                    a: 'get_puburi'
-                }).then(response => {
-                    if(response.status===200) {
-                        this.tken=response.data
-                    }
-                }).catch((error) => {
-                    console.log(error)
-                    this.tken=''
-                })
+            showModal(title,txt){
+                this.modalHeader=title
+                this.modalText=txt
+                this.evtGridModal=4
             },
 
             getFormData(){
@@ -552,36 +518,41 @@
 
                 // Check settings... Org name, address and email are needed...
                 if(enable==='1') {
-                    const rda = await this.getStn()
-                    if (rda === null) return
 
-                    let n = ''
-                    for (let i = 2; i > -1; i--){
-                        if (rda[i] === '') {
-                            if (i === 0) n = this.t('appointments','Organization Name')
-                            else if (i === 1) n = this.t('appointments','Address');
-                            else n = this.t('appointments','Email')
-                            OC.Notification.showTemporary(
-                                this.t('appointments',"Error: {fieldName} empty, check settings...",{fieldName:n}),{timeout:8,type:'error'})
+                    this.getState("get_uci").then(res=>{
+                        //organization: "", email: "", address: ""
+                        let n=-1
+                        let pa=["organization","email","address"];
+                        for(let v,i=0,l=pa.length;i<l;i++){
+                            v=pa[i]
+                            if(!res.hasOwnProperty(v) || res[v].length<2){
+                                n=i
+                                break
+                            }
+
                         }
-                    }
-                    if(n!=='') return
+                        if(n!==-1){
+                            let fn=["'Name'","'Email'","'Location'"][n]
+                            OC.Notification.showTemporary(this.t('appointments',"Error: {fieldName} empty, check settings",{fieldName:fn})+"\xa0\xa0\xa0\xa0",{timeout:8,type:'error'})
+                            return
+                        }
+                        this.setPageState(enable)
+                    })
+                }else{
+                    this.setPageState(enable)
                 }
-
+            },
+            setPageState(enable){
                 axios.post('state', {
                     a: 'enable',
                     v: enable
                 }).then(response => {
                     if(response.status===200) {
                         this.pageEnabled=enable
-                        // set color
-
-
-
                     }
                 }).catch((error) => {
                     console.log(error)
-                    OC.Notification.showTemporary(this.t('appointments',"Page enable error. Check console..."),{timeout:4,type:'error'})
+                    OC.Notification.showTemporary(this.t('appointments',"Page enable error. Check console")+"\xa0\xa0\xa0\xa0",{timeout:4,type:'error'})
                 }).then(()=>{
                     // always executed
                     this.getFormData()
@@ -611,38 +582,7 @@
                 });
             },
 
-            showSlideBar: function(){
-                if(!this.isGridReady){
-                    gridMaker.setup(this.$refs["grid_cont"],5,"srgdev-appt-grd-")
-                    this.isGridReady=true
-                }
-
-                if(this.curCal.url===""){
-                    this.noCalSet()
-                    return
-                }
-
-                this.toggleSlideBar(1)
-            },
-
-            toggleSlideBar(sbn){
-                this.closeNav()
-                if(this.sbShow===sbn) this.sbShow=0
-                else this.sbShow=sbn
-            },
-
-
-            closeNav:function () {
-                let elm=document.getElementById("app-navigation-toggle")
-                if(elm!==null && elm.hasAttribute('aria-expanded')
-                    && elm.getAttribute('aria-expanded')==='true'){
-                    elm.dispatchEvent(new Event('click'))
-                }
-            },
-
             makePreviewGrid(d){
-
-                // TODO: Load already existing appointments
 
                 gridMaker.resetAllColumns()
 
@@ -654,6 +594,7 @@
                         {weekday:"short",month: "2-digit", day: "2-digit"})
                     tff=f.format
                 }else{
+                    // noinspection JSUnusedLocalSymbols
                     tff=function (d) {
                         return td.toDateString().slice(0,10)
                     }
@@ -720,7 +661,6 @@
                 //     .finally(()=>{
                 //     this.closePreviewGrid()
                 // })
-
             },
 
             closePreviewGrid() {
@@ -728,7 +668,7 @@
             },
 
             closeEvtModal(){
-                this.getFormData()
+                if(this.evtGridModal<4) this.getFormData()
                 this.evtGridModal=0
             },
 
@@ -749,11 +689,9 @@
                     window.location.protocol + '//' + window.location.host + OC.webroot+"/index.php/svg/core/places/calendar?color=" + c.clr.slice(1) + ");"
                 this.curCal.clr=c.clr
             },
+
             noCalSet(){
-                OC.Notification.showTemporary(this.t('appointments',"Select a Calendar First..."),{timeout:5,type:'warning'})
-            },
-            notImplemented(){
-                OC.Notification.showTemporary(this.t('appointments',"Not Implemented Yet."),{timeout:5,type:'error'})
+                OC.Notification.showTemporary(this.t('appointments',"Select a Calendar First")+"\xa0\xa0\xa0\xa0",{timeout:5,type:'warning'})
             }
         }
     }

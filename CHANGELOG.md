@@ -1,3 +1,22 @@
+## 1.4.0 - 2020-04-20
+### Changed
+- Moved "User/Organization" settings to navigation area
+- "Add Appointments" -> "Add Appointment Slots"
+- "Help/Tutorial" is a toggle now
+### Added
+- Timezone abbreviation for non "floating" time appointments in emails
+- Options for sending "update/cancel" emails to attendees when appointments are updated or deleted via the calendar or other external app
+- Appointment booked/confirmed/canceled notifications for organizer
+- Reset option for cancelled appointments.
+- "appointments.use.default.email" config.php option for servers that do not provide email addresses for all users
+- Advanced public page customization options
+- BackendManager class and IBackendConnector interface
+- DavListener class to send email on "updateCalendarObject" and "deleteCalendarObject" events
+- "appointments_hash" table to keep track of active appointments
+### Fixed
+- "Copy public link" button for older versions of Safari
+- Minor style tweaks
+
 ## 1.1.10 - 2020-03-20
 ### Fixed
 - Webpath for custom install directories

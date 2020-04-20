@@ -143,7 +143,10 @@
         let t=e.target
         if(t.dpuClickID!==undefined){
             document.getElementById('srgdev-ncfp_sel-dummy').value=t.parentElement.getAttribute('data-dm')+' - '+t.textContent;
-            document.getElementById('srgdev-ncfp_sel-hidden').selectedIndex=t.dpuClickID
+            let elm=document.getElementById('srgdev-ncfp_sel-hidden')
+            elm.selectedIndex=t.dpuClickID
+            elm.value=elm.dataRef[t.dpuClickID].d
+
             document.getElementById("srgdev-dpu_main-cont").removeAttribute("data-open")
         }
     }
@@ -174,15 +177,11 @@
 
         // TODO: find first not empty and select it ?
 
-
-
         document.getElementById("srgdev-dpu_main-date").style.left="-"+(p.curDP*5*4.6)+"em"
     }
     
     
     function makeDpu(pps) {
-
-
 
         const PPS_NWEEKS="nbrWeeks";
         const PPS_EMPTY="showEmpty";
@@ -191,7 +190,7 @@
         const PPS_TIME2="time2Cols";
 
         let pso={}
-        let ta=pps.slice(0,-1).split('.')
+        let ta=pps.split('.')
         for(let a,l=ta.length,i=0;i<l;i++){
             a=ta[i].split(':')
             pso[a[0]]= +a[1]
@@ -274,30 +273,29 @@
             }
         }
 
-        // Options can be unsorted if mixed timezones are used
-        // TODO: maybe use data-xxx to send info instead of options
-        let so=s.options
+
         let dta=[]
-        for(let ts,dd=new Date(),o,l=so.length,i=0;i<l;i++) {
-            o=so[i]
-            ts= o.getAttribute('data-ts')*1000
-            if(ts!==0) {
-                dd.setTime(ts)
-                if (o.getAttribute('data-tz') === "L") {
-                    ts+=dd.getTimezoneOffset() * 60000
-                }
-                dta[i]={
-                    rts:ts,
-                    idx:i,
-                }
+        for(let ia=s.getAttribute("data-info").split(','),
+                l=ia.length,i=0,ds,ets;i<l;i++){
+            ds=ia[i]
+            ets=Date.parse(
+                ds.substr(0,4)+"-"+
+                ds.substr(4,2)+"-"+
+                ds.substr(6,5)+":"+
+                ds.substr(11,2)+":"+
+                ds.substr(13,2))
+            dta[i] = {
+                rts: ets,
+                d: ds.substr(15),
             }
         }
-        dta.sort((a, b) => (a.rts > b.rts) ? 1 : -1)
-        dta.push({rts:0,idx:0}) //last option to finalize the loop
-        let l=dta.length
 
-        s.selectedIndex=-1
-        s.value=""
+        dta.sort((a, b) => (a.rts > b.rts) ? 1 : -1)
+        dta.push({rts:0,d:""}) //last option to finalize the loop
+
+        s.dataRef=dta
+
+        let l=dta.length
 
         let cont=document.createElement('div')
         cont.id="srgdev-dpu_main-cont"
@@ -376,10 +374,9 @@
             if(lcc===rccN){
                 rccN+=5
                 lcdBF.maxDP++
-                e1.setAttribute("fdsfs","1")
                 if(lcc>min_days) do_break=true
             }
-            lcc++
+            ++lcc
             return e1
         }
 
@@ -388,13 +385,11 @@
         td.setMinutes(0)
         td.setHours(0)
 
-        // This is Ugly...
         if(pso[PPS_EMPTY]===1 && pso[PPS_FNED]===0){
-            // Need to prepend epmty days so the week start on Monday
-
+            // Need to prepend empty days so the week start on Monday
             let ts= dta[0].rts
             d.setTime(ts)
-            d.setTime(ts+d.getTimezoneOffset()*60000)
+            // d.setTime(ts+d.getTimezoneOffset()*60000)
             d.setSeconds(1)
             d.setMinutes(0)
             d.setHours(0)
@@ -465,7 +460,6 @@
                 lcd.appendChild(te)
                 if(do_break) break
 
-
                 te=document.createElement('div')
                 te.id="srgdev-dpu_tc"+(lcc-1)
                 te.className='srgdev-dpu-time-cont'
@@ -486,7 +480,7 @@
             }
             te=document.createElement("span")
             te.className=tu_class
-            te.dpuClickID=dta[i].idx
+            te.dpuClickID=i
             te.appendChild(document.createTextNode(tf(d)))
             pe.appendChild(te)
         }
@@ -499,8 +493,25 @@
 
         lcc%=5
         if(lcc>0) {
-            for (let l = 5 - (lcc % 5), i = 0; i < l; i++) {
-                lcd.appendChild(makeDateCont(d, true))
+            for(let ti,l = 5 - (lcc % 5), i = 0; i < l; i++) {
+
+                ti = d.getDay()
+
+                // Deal with weekends
+                if(pso[PPS_WEEKEND]===0) {
+                    // only show weekdays
+                    ti = d.getDay()
+                }else{
+                    // show all days
+                    ti=1
+                }
+
+                if(ti!==0 && ti!==6) {
+                    lcd.appendChild(makeDateCont(d, true))
+                }else{
+                    //skipping weekend
+                    i--
+                }
                 d.setTime(d.getTime() + 86400000)
             }
         }
@@ -517,7 +528,6 @@
 
         cont.addEventListener("click", timeClick)
         document.getElementById('srgdev-ncfp_sel_cont').appendChild(cont)
-
     }
 
 })()

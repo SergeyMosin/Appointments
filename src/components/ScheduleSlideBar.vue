@@ -109,7 +109,7 @@
 
                 apptDur:30,
 
-                apptTZ:"L",
+                apptTZ:"C",
 
                 datePickerPopupStyle:{
                     top:"75%",

@@ -11,7 +11,7 @@ style('appointments', 'form');
             echo $l->t('Please %1$stry again%2$s and select a different date.', ['<a class="srgdev-appt-err-a" href="form">', '</a>']);
         }elseif (!empty($_['appt_e_ne'])) {
             echo '<p>';
-            // TRANSLATORS This is folowed by an email address
+            // TRANSLATORS This is followed by an email address
             p($l->t("Please contact us directly at"));
             echo ' <a class="srgdev-appt-err-a" href="mailto:'.$_['appt_e_ne'].'">'.$_['appt_e_ne'].'</a></p>';
         }else{
