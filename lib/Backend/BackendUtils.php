@@ -139,10 +139,9 @@ class BackendUtils{
         /** @var  \Sabre\VObject\Property $a*/
         $a=$evt->ATTENDEE[0];
 
-        // TODO: we are forcing 'medium' format, because translations are not ready
         $dts=$this->getDateTimeString(
             $evt->DTSTART->getDateTime(),
-            true //$evt->DTSTART->isFloating()
+            $evt->DTSTART->isFloating()
         );
 
         if($a->parameters['PARTSTAT']->getValue()==='ACCEPTED'){
@@ -178,10 +177,9 @@ class BackendUtils{
         /** @var  \Sabre\VObject\Property $a*/
         $a=$evt->ATTENDEE[0];
 
-        // TODO: we are forcing 'medium' format, because translations are not ready
         $dts=$this->getDateTimeString(
             $evt->DTSTART->getDateTime(),
-            true //$evt->DTSTART->isFloating()
+            $evt->DTSTART->isFloating()
         );
 
         if($a->parameters['PARTSTAT']->getValue()==='DECLINED'
@@ -248,10 +246,10 @@ class BackendUtils{
             $dt="";
             $f=false;
         }
-        // TODO: we are forcing 'medium' format, because translations are not ready
+
         return [$this->getDateTimeString(
             $evt->DTSTART->getDateTime(),
-            true //$evt->DTSTART->isFloating()
+            $evt->DTSTART->isFloating()
         ),$dt,$f];
     }
 

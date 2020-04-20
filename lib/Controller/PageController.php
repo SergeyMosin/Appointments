@@ -483,12 +483,11 @@ class PageController extends Controller {
                 BackendUtils::APPT_SES_KEY_HINT,
                 BackendUtils::APPT_SES_CONFIRM);
 
-            //TODO: 'medium' date_time format is forced in BackendUtils->dataConfirmAttendee() because messages need to be rewritten.
             list($sts, $date_time) = $this->bc->confirmAttendee($uid, $cal_id, $uri);
 
             if ($sts === 0) { // Appointment is confirmed successfully
-                // TRANSLATORS Your {{Date Time}} appointment is confirmed.
-                $page_text = $this->l->t("Your %s appointment is confirmed.", [$date_time]);
+                // TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is confirmed.
+                $page_text = $this->l->t("Your appointment scheduled for %s is confirmed.", [$date_time]);
             }
         }else{
             // Cancel
@@ -506,7 +505,6 @@ class PageController extends Controller {
             $mr=$pps[self::PSN_ON_CANCEL];
             if($mr==='mark') {
                 // Just Cancel
-                //TODO: 'medium' date_time format is forced in BackendUtils->dataCancelAttendee() because messages need to be rewritten.
                 list($sts, $date_time) = $this->bc->cancelAttendee($uid, $cal_id, $uri);
 
             }else{
@@ -524,8 +522,8 @@ class PageController extends Controller {
             }
 
             if ($sts === 0) { // Appointment is cancelled successfully
-                // TRANSLATORS Your {{Date Time}} appointment is canceled.
-                $page_text = $this->l->t("Your %s appointment is canceled.", [$date_time]);
+                // TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is canceled.
+                $page_text = $this->l->t("Your appointment scheduled for %s is canceled.", [$date_time]);
             }
         }
 
