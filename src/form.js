@@ -275,17 +275,21 @@
 
 
         let dta=[]
-        for(let ia=s.getAttribute("data-info").split(','),
-                l=ia.length,i=0,ds,ets;i<l;i++){
+        for(let md=new Date(),ia=s.getAttribute("data-info").split(','),
+                l=ia.length,i=0,ds;i<l;i++){
             ds=ia[i]
-            ets=Date.parse(
-                ds.substr(0,4)+"-"+
-                ds.substr(4,2)+"-"+
-                ds.substr(6,5)+":"+
-                ds.substr(11,2)+":"+
-                ds.substr(13,2))
+
+            md.setFullYear(
+                +ds.substr(0,4),
+                (+ds.substr(4,2))-1, // month is zero based
+                +ds.substr(6,2))
+            md.setHours(
+                +ds.substr(9,2),
+                +ds.substr(11,2),
+                +ds.substr(13,2),0)
+
             dta[i] = {
-                rts: ets,
+                rts: md.getTime(),
                 d: ds.substr(15),
             }
         }
