@@ -492,7 +492,7 @@ textarea.appt-stn-txt-ta{
 .srgdev-appt-info-link{
 	display: block;
 	position: absolute;
-	width: 1em;
+	width: auto;
 	height: 1em;
 	min-width: 1em;
 	min-height: 1em;
@@ -501,10 +501,20 @@ textarea.appt-stn-txt-ta{
 	margin-top: -.5em;
 	background-size: 1em;
 	opacity: .5;
+	padding-right: 1.5em;
+	background-position: right center;
+	line-height: 1em;
+}
+.srgdev-appt-info-link>span{
+	font-size: 70%;
 }
 .srgdev-appt-info-link:hover{
 	opacity: 1;
 }
+.srgdev-appt-info-link:hover>span{
+	opacity: .65;
+}
+
 .srgdev-appt-temp-highlight{
 	//background: $color-primary;
 	background: var(--color-primary);

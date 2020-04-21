@@ -300,6 +300,8 @@ class PageController extends Controller {
             foreach ($o as $k => $v) {
                 $o[$k] = $this->c->getUserValue($this->userId, $this->appName, $k);
             }
+            $o[BackendUtils::KEY_USE_DEF_EMAIL]=$this->c->getAppValue(
+                $this->appName,BackendUtils::KEY_USE_DEF_EMAIL,'yes');
             $j = json_encode($o);
             if ($j !== false) {
                 $r->setData($j);

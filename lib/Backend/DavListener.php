@@ -297,11 +297,15 @@ class DavListener {
         $def_email=\OCP\Util::getDefaultEmailAddress('appointments-noreply');
 
         $msg=$mailer->createMessage();
-        if($config->getSystemValueBool("appointments.use.default.email")){
+
+        if($config->getAppValue($this->appName,
+                BackendUtils::KEY_USE_DEF_EMAIL,
+                'yes')==='no')
+        {
+            $msg->setFrom(array($org_email));
+        }else{
             $msg->setFrom(array($def_email));
             $msg->setReplyTo(array($org_email));
-        }else{
-            $msg->setFrom(array($org_email));
         }
         $msg->setTo(array($to_email));
         $msg->useTemplate($tmpl);

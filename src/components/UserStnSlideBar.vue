@@ -13,7 +13,7 @@
                         type="text">
                 <div class="srgdev-appt-info-lcont">
                     <label class="srgdev-appt-sb-label" for="srgdev-appt_uci-org-email">{{t('appointments','Email:')}}</label><a style="right: 4%" class="icon-info srgdev-appt-info-link"
-                        @click="$root.$emit('helpWanted','emaildef')"></a>
+                        @click="$root.$emit('helpWanted','emaildef')"><span>{{uciInfo.useDefaultEmail==='yes'?'useDefaultEmail=yes':''}}</span></a>
                 </div>
                 <input
                         v-model="uciInfo.email"
@@ -64,7 +64,7 @@
             uciInfo: {
                 type: Object,
                 default: function () {
-                    return {organization: "", email: "", address: "", phone: ""}
+                    return {organization: "", email: "", address: "", phone: "",useDefaultEmail:"yes"}
                 }
             }
         },

@@ -29,6 +29,8 @@ class BackendUtils{
     public const KEY_O_ADDR = 'address';
     public const KEY_O_PHONE = 'phone';
 
+    public const KEY_USE_DEF_EMAIL = 'useDefaultEmail';
+
     // Email Settings
     public const KEY_EML = 'email_options';
     public const EML_ICS= 'icsFile';
