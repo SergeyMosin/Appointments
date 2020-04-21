@@ -9,17 +9,11 @@
     "Stop Sharing" : "הפסקת השיתוף",
     "Customize Public Page" : "התאמת העמוד הציבורי",
     "Help/Tutorial" : "עזרה/הדרכה",
-    "Organization Name" : "שם הארגון",
-    "Organization Address" : "כתובת הארגון",
-    "Email" : "דוא״ל",
-    "Phone (optional)" : "טלפון (רשות)",
-    "Attach .ics file to confirmation email" : "הוספת קובץ ‎.ics להודעת האישור בדוא״ל",
     "Add to Calendar" : "הוספה ללוח השנה",
     "Discard" : "התעלמות",
     "Remove All" : "להסיר הכול",
     "Copy to Next" : "להעתיק לבאה",
     "Close" : "סגור",
-    "Address" : "כתובת",
     "Apply" : "החלה",
     "Start" : "התחלה"
 },"pluralForm" :"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;"

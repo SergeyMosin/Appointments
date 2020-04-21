@@ -4,9 +4,7 @@ OC.L10N.register(
     "Confirm" : "Батлах",
     "Cancel" : "болиулах",
     "Info" : "Info",
-    "Email" : "Цахим шуудан",
     "Close" : "Хаах",
-    "Address" : "хаяг",
     "Apply" : "хэрэглэх",
     "Start" : "эхлэх"
 },

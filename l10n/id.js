@@ -4,9 +4,7 @@ OC.L10N.register(
     "Confirm" : "Konfirmasi",
     "Cancel" : "Membatalkan",
     "Info" : "Info",
-    "Email" : "Surel",
     "Close" : "Tutup",
-    "Address" : "Alamat",
     "Apply" : "Terapkan",
     "Start" : "Mulai"
 },

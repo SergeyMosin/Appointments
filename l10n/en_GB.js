@@ -4,9 +4,7 @@ OC.L10N.register(
     "Confirm" : "Confirm",
     "Cancel" : "Cancel",
     "Info" : "Info",
-    "Email" : "Email",
     "Close" : "Close",
-    "Address" : "Address",
     "Apply" : "Apply",
     "Start" : "Start"
 },
