@@ -4,9 +4,7 @@ OC.L10N.register(
     "Confirm" : "Konfirmo",
     "Cancel" : "Anullo",
     "Info" : "Info",
-    "Email" : "email",
     "Close" : "Mbylleni",
-    "Address" : "Adresa",
     "Apply" : "Apliko",
     "Start" : "Fillo",
     "close" : "mbyll"

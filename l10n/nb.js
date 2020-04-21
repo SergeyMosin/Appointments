@@ -4,10 +4,8 @@ OC.L10N.register(
     "Confirm" : "Bekreft",
     "Cancel" : "Avbryt",
     "Info" : "Info",
-    "Email" : "E-post",
     "Close" : "Lukk",
     "Copy public link" : "Kopier offentlig lenke",
-    "Address" : "Adresse",
     "Apply" : "Bruk",
     "Start" : "Start"
 },

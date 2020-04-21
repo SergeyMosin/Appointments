@@ -4,9 +4,7 @@ OC.L10N.register(
     "Confirm" : "Apstiprināt",
     "Cancel" : "Atcelt",
     "Info" : "Info",
-    "Email" : "E-pasts",
     "Close" : "Aizvērt",
-    "Address" : "Adrese",
     "Apply" : "Apstiprināt",
     "Start" : "Sākt"
 },

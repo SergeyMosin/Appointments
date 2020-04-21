@@ -4,9 +4,7 @@ OC.L10N.register(
     "Confirm" : "Confirmar",
     "Cancel" : "Cancelar",
     "Info" : "Informação",
-    "Email" : "Email",
     "Close" : "Fechar",
-    "Address" : "Morada",
     "Apply" : "Aplicar",
     "Start" : "Início",
     "close" : "fechar"

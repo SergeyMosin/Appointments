@@ -4,9 +4,7 @@ OC.L10N.register(
     "Confirm" : "Confirmar",
     "Cancel" : "Encaboxar",
     "Info" : "Info",
-    "Email" : "email",
     "Close" : "Zarrar",
-    "Address" : "Direición",
     "Apply" : "Aplicar",
     "Start" : "Aniciu"
 },

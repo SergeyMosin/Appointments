@@ -4,9 +4,7 @@ OC.L10N.register(
     "Confirm" : "Konfirmi",
     "Cancel" : "Nuligi",
     "Info" : "Info",
-    "Email" : "Retpoŝtadreso",
     "Close" : "Malfermi",
-    "Address" : "Adreso",
     "Apply" : "Validigi",
     "Start" : "Komenco"
 },

@@ -4,10 +4,8 @@ OC.L10N.register(
     "Confirm" : "Потврди",
     "Cancel" : "Откажи",
     "Info" : "Info",
-    "Email" : "Е-пошта",
     "Close" : "Затвори",
     "Copy public link" : "Копирај јавен линк",
-    "Address" : "Адреса",
     "Apply" : "Примени",
     "Start" : "Почеток"
 },
