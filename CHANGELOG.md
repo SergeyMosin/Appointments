@@ -1,3 +1,9 @@
+## 1.4.1 - 2020-04-21
+### Fixed
+- Safari wrong time issue 59
+### Changed
+- Make default email default issues 52 53
+
 ## 1.4.0 - 2020-04-20
 ### Changed
 - Moved "User/Organization" settings to navigation area
