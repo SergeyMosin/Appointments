@@ -6,6 +6,9 @@ OC.L10N.register(
     "Info" : "Info",
     "Close" : "Хаах",
     "Apply" : "хэрэглэх",
-    "Start" : "эхлэх"
+    "Deleted" : "Устгагдсан",
+    "Confirmed" : "Баталгаажсан",
+    "Start" : "эхлэх",
+    "Location:" : "Байршил:"
 },
 "nplurals=2; plural=(n != 1);");

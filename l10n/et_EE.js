@@ -7,6 +7,9 @@ OC.L10N.register(
     "Close" : "Sulge",
     "Copy public link" : "Kopeeri avalik link",
     "Apply" : "Rakenda",
-    "Start" : "Algus"
+    "Deleted" : "Kustutatud",
+    "Confirmed" : "Kinnitatud",
+    "Start" : "Algus",
+    "Location:" : "Asukoht:"
 },
 "nplurals=2; plural=(n != 1);");

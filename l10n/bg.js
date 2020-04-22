@@ -4,9 +4,13 @@ OC.L10N.register(
     "Confirm" : "Потвърди",
     "Cancel" : "Отказ",
     "Info" : "Информация",
+    "Available" : "Налични",
     "Close" : "Затваряне",
     "Copy public link" : "Копирай публичната връзка",
     "Apply" : "Приложи",
-    "Start" : "Начало"
+    "Deleted" : "Изтрито",
+    "Confirmed" : "Потвърдено",
+    "Start" : "Начало",
+    "Location:" : "Местоположение:"
 },
 "nplurals=2; plural=(n != 1);");

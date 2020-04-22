@@ -6,6 +6,9 @@ OC.L10N.register(
     "Info" : "ინფორმაცია",
     "Close" : "დახურვა",
     "Apply" : "გამოყენება",
-    "Start" : "დაწყება"
+    "Deleted" : "გაუქმდა",
+    "Confirmed" : "დადასტურებლია",
+    "Start" : "დაწყება",
+    "Location:" : "ადგილმდებარეობა:"
 },
 "nplurals=2; plural=(n!=1);");

@@ -6,6 +6,8 @@ OC.L10N.register(
     "Info" : "Info",
     "Close" : "Tutup",
     "Apply" : "Terapkan",
-    "Start" : "Mulai"
+    "Deleted" : "Dihapus",
+    "Start" : "Mulai",
+    "Location:" : "Lokasi:"
 },
 "nplurals=1; plural=0;");

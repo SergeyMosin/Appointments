@@ -1,0 +1,10 @@
+{ "translations": {
+    "Cancel" : "ยกเลิก",
+    "Info" : "Info",
+    "Close" : "ปิด",
+    "Apply" : "นำไปใช้",
+    "Deleted" : "ลบแล้ว",
+    "Confirmed" : "ได้รับการยืนยันแล้ว",
+    "Location:" : "สถานที่ตั้ง:"
+},"pluralForm" :"nplurals=1; plural=0;"
+}

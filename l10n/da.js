@@ -7,7 +7,10 @@ OC.L10N.register(
     "Close" : "Luk",
     "Copy public link" : "Kopier offentligt link",
     "Apply" : "Anvend",
+    "Deleted" : "Slettet",
+    "Confirmed" : "Bekræftet",
     "Start" : "Start",
-    "close" : "luk"
+    "close" : "luk",
+    "Location:" : "Sted:"
 },
 "nplurals=2; plural=(n != 1);");

@@ -1,0 +1,10 @@
+{ "translations": {
+    "Cancel" : "Avbryt",
+    "Info" : "Info",
+    "Close" : "Lukk",
+    "Apply" : "Anvend",
+    "Deleted" : "Sletta",
+    "Confirmed" : "Stadfesta",
+    "Start" : "Start"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

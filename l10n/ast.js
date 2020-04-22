@@ -6,6 +6,9 @@ OC.L10N.register(
     "Info" : "Info",
     "Close" : "Zarrar",
     "Apply" : "Aplicar",
-    "Start" : "Aniciu"
+    "Deleted" : "Desanicióse",
+    "Confirmed" : "Confirmáu",
+    "Start" : "Aniciu",
+    "Location:" : "Llocalización:"
 },
 "nplurals=2; plural=(n != 1);");

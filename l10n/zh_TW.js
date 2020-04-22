@@ -8,8 +8,11 @@ OC.L10N.register(
     "Close" : "關閉",
     "Copy public link" : "複製公開連結",
     "Apply" : "套用",
+    "Deleted" : "已刪除",
+    "Confirmed" : "已確認",
     "Start" : "起點",
     "close" : " 關閉",
-    "Name:" : "姓名："
+    "Name:" : "姓名：",
+    "Location:" : "地點："
 },
 "nplurals=1; plural=0;");
