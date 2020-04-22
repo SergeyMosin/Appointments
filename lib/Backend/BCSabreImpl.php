@@ -139,7 +139,8 @@ class BCSabreImpl implements IBackendConnector{
     function getCalendarById($calId,$userId){
         $ca=$this->backend->getCalendarsForUser(BackendManager::PRINCIPAL_PREFIX.$userId);
         foreach ($ca as $c){
-            if($calId===$c['id']){
+            // TODO: $c['id'] can be a string or an int
+            if($calId==$c['id']){
                 return $this->transformCalInfo($c);
             }
         }
