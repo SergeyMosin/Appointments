@@ -1,3 +1,7 @@
+## 1.4.2 - 2020-04-22
+### Fixed
+- issue 51: can't set calendar on some instances
+
 ## 1.4.1 - 2020-04-21
 ### Fixed
 - Safari wrong time issue 59
