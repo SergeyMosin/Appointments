@@ -23,6 +23,7 @@
             <AppNavigationSpacer/>
             <NavAccountItem :calLoading="isCalLoading" @calSelected="setCalendar" :curCal="curCal"></NavAccountItem>
                 <AppNavigationItem
+                        :loading="sbLoading===5"
                         @click="openSlideBarAGen"
                         :title="t('appointments','Add Appointment Slots')"
                         icon="icon-add"></AppNavigationItem>
@@ -172,11 +173,7 @@
     import UserStnSlideBar from "./components/UserStnSlideBar.vue";
     import MailStnSlideBar from "./components/MailStnSlideBar.vue";
 
-    // const ttt=require('./ttt.js')
-
-    // const SHARE_NONE=0
-    // const SHARE_TOKEN=0
-    // const SHARE_ALL=0
+    // import {linkTo} from '@nextcloud/router'
 
     export default {
         name: 'App',
@@ -319,13 +316,15 @@
                 }
                 this.sbLoading=sbn
                 this.getState(action).then(res=>{
-                    for (let key in res) {
-                        if (res.hasOwnProperty(key)) {
-                            this.$set(props,key,res[key])
+                    if(res!==null) {
+                        for (let key in res) {
+                            if (res.hasOwnProperty(key)) {
+                                this.$set(props, key, res[key])
+                            }
                         }
+                        this.toggleSlideBar(sbn)
                     }
                     this.sbLoading=0
-                    this.toggleSlideBar(sbn)
                 })
             },
 
@@ -374,6 +373,13 @@
             },
 
             openSlideBarAGen: function(){
+
+                if(this.sbShow===1){
+                    this.toggleSlideBar(1)
+                    return;
+                }
+
+                this.sbLoading=5;
                 if(!this.isGridReady){
                     gridMaker.setup(this.$refs["grid_cont"],5,"srgdev-appt-grd-")
                     this.isGridReady=true
@@ -381,8 +387,30 @@
 
                 if(this.curCal.url===""){
                     this.noCalSet()
+                    this.sbLoading=0;
                     return
                 }
+
+                // this.getState("get_tz").then(res=>{
+                //     console.log(res)
+                //     if(res!==null) {
+                //         let url=linkTo('appointments','ajax/zones.json')
+                //         axios.get(url).then(tzr=>{
+                //             console.log(tzr)
+                //             if(tzr.status===200) {
+                //                 console.log(res, tzr.data)
+                //                 this.sbLoading=0;
+                //             }else{
+                //                 throw new DOMException("error")
+                //             }
+                //         })
+                //     }else{
+                //         throw new DOMException("error")
+                //     }
+                // }).catch(err=>{
+                //     console.log(err)
+                //     this.sbLoading=0;
+                // })
 
                 this.toggleSlideBar(1)
             },

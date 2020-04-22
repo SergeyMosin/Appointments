@@ -354,6 +354,10 @@ class PageController extends Controller {
                     $r->setStatus(500);
                 }
             }
+        }else if($action==="get_tz"){
+            $tz=$this->utils->getUserTimezone($this->userId,$this->c);
+            $r->setData($tz->getName());
+            $r->setStatus(200);
         }
         return $r;
     }

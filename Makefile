@@ -46,6 +46,11 @@ test-php-coverage:
 	phpunit -c phpunit.xml --coverage-clover=coverage-unit.xml
 	phpunit -c phpunit.integration.xml --coverage-clover=coverage-integration.xml
 
+# Get timezone data from comm-central calendar project https://hg.mozilla.org/comm-central/file/tip/calendar by Mozilla, licensed under the MPL 2.0 https://www.mozilla.org/en-US/MPL/2.0/
+timezones:
+	curl https://hg.mozilla.org/comm-central/raw-file/tip/calendar/timezones/zones.json --output ajax/zones.json
+
+
 # Builds the source package for the app store, ignores php and js tests
 appstore: build-prod
 	rm -rf $(appstore_build_directory)
