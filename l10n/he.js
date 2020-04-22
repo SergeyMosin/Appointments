@@ -4,6 +4,7 @@ OC.L10N.register(
     "Confirm" : "אימות",
     "Cancel" : "ביטול",
     "Info" : "פרטים",
+    "Available" : "זמינות",
     "Appointments" : "פגישות",
     "Public Page [Online]" : "עמוד ציבורי [מקוון]",
     "Public Page [Disabled]" : "עמוד ציבורי [מושבת]",
@@ -17,6 +18,9 @@ OC.L10N.register(
     "Copy to Next" : "להעתיק לבאה",
     "Close" : "סגור",
     "Apply" : "החלה",
-    "Start" : "התחלה"
+    "Deleted" : "נמחק",
+    "Confirmed" : "מאושר",
+    "Start" : "התחלה",
+    "Location:" : "מיקום:"
 },
 "nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;");

@@ -4,6 +4,9 @@
     "Info" : "ინფორმაცია",
     "Close" : "დახურვა",
     "Apply" : "გამოყენება",
-    "Start" : "დაწყება"
+    "Deleted" : "გაუქმდა",
+    "Confirmed" : "დადასტურებლია",
+    "Start" : "დაწყება",
+    "Location:" : "ადგილმდებარეობა:"
 },"pluralForm" :"nplurals=2; plural=(n!=1);"
 }

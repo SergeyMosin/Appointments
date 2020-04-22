@@ -4,6 +4,8 @@
     "Info" : "Info",
     "Close" : "Tutup",
     "Apply" : "Terapkan",
-    "Start" : "Mulai"
+    "Deleted" : "Dihapus",
+    "Start" : "Mulai",
+    "Location:" : "Lokasi:"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

@@ -4,6 +4,8 @@
     "Info" : "Info",
     "Close" : "Clauder",
     "Apply" : "Applicar",
+    "Deleted" : "Delite",
+    "Confirmed" : "Confirmate",
     "Start" : "Initio"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

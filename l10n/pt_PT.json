@@ -4,7 +4,10 @@
     "Info" : "Informação",
     "Close" : "Fechar",
     "Apply" : "Aplicar",
+    "Deleted" : "Eliminado",
+    "Confirmed" : "Confirmado",
     "Start" : "Início",
-    "close" : "fechar"
+    "close" : "fechar",
+    "Location:" : "Localização:"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

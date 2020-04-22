@@ -1,0 +1,11 @@
+{ "translations": {
+    "Confirm" : "Bevestig",
+    "Cancel" : "Kanselleer",
+    "Info" : "Inligting",
+    "Close" : "Sluit",
+    "Deleted" : "Geskrap",
+    "Confirmed" : "Bevestig",
+    "Start" : "Start",
+    "Location:" : "Ligging:"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

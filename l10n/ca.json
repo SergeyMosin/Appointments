@@ -13,10 +13,15 @@
     "Info" : "Info",
     "Link Expired..." : "Enllaç caducat...",
     "Book Your Appointment" : "Reserva la teva cita",
+    "Available" : "Disponible",
     "Appointments" : "Cites",
     "Close" : "Tanca",
     "Apply" : "Aplica",
+    "Deleted" : "Suprimit",
+    "Confirmed" : "Confirmat",
+    "Canceled" : "Cancel·lat",
     "Start" : "Inici",
-    "close" : "tanca"
+    "close" : "tanca",
+    "Location:" : "Ubicació:"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

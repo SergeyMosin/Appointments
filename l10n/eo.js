@@ -4,8 +4,13 @@ OC.L10N.register(
     "Confirm" : "Konfirmi",
     "Cancel" : "Nuligi",
     "Info" : "Info",
+    "Available" : "Disponeblaj",
     "Close" : "Malfermi",
     "Apply" : "Validigi",
-    "Start" : "Komenco"
+    "Deleted" : "Forigita",
+    "Confirmed" : "Konfirmita",
+    "Canceled" : "Nuligita",
+    "Start" : "Komenco",
+    "Location:" : "Loko:"
 },
 "nplurals=2; plural=(n != 1);");

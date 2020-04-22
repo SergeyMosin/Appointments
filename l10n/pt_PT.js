@@ -6,7 +6,10 @@ OC.L10N.register(
     "Info" : "Informação",
     "Close" : "Fechar",
     "Apply" : "Aplicar",
+    "Deleted" : "Eliminado",
+    "Confirmed" : "Confirmado",
     "Start" : "Início",
-    "close" : "fechar"
+    "close" : "fechar",
+    "Location:" : "Localização:"
 },
 "nplurals=2; plural=(n != 1);");

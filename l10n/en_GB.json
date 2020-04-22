@@ -4,6 +4,9 @@
     "Info" : "Info",
     "Close" : "Close",
     "Apply" : "Apply",
-    "Start" : "Start"
+    "Deleted" : "Deleted",
+    "Confirmed" : "Confirmed",
+    "Start" : "Start",
+    "Location:" : "Location:"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

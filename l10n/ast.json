@@ -4,6 +4,9 @@
     "Info" : "Info",
     "Close" : "Zarrar",
     "Apply" : "Aplicar",
-    "Start" : "Aniciu"
+    "Deleted" : "Desanicióse",
+    "Confirmed" : "Confirmáu",
+    "Start" : "Aniciu",
+    "Location:" : "Llocalización:"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

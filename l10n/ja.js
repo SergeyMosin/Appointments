@@ -1,13 +1,30 @@
 OC.L10N.register(
     "appointments",
     {
+    "Dear %s," : "%s様",
     "Confirm" : "確認",
     "Cancel" : "キャンセル",
+    "Appointment Pending" : "保留中のアポイントメント",
+    "Appointment Confirmed" : "確認済みのアポイントメント",
+    "%s Appointment is Canceled" : "%sのアポイントメントはキャンセルされました。",
+    "Appointment Canceled" : "キャンセルされたアポイントメント",
+    "Your appointment details have changed. Please review information below." : "アポイントメントの詳細が変更されました｡下記の情報を確認してください。",
+    "Date/Time: %s" : "日時：%s",
+    "Status: Canceled" : "ステータス：キャンセル済",
+    "Status: Pending Confirmation" : "ステータス：保留中",
+    "Status: Confirmed" : "ステータス：確認済",
+    "Location: %s" : "場所：%s",
+    "If you have any questions please write to %s" : "ご質問があれば%sまで御連絡ください",
+    "Thank you" : "ありがとうございました",
     "Info" : "情報",
+    "Available" : "利用可能",
     "Close" : "閉じる",
     "Copy public link" : "公開リンクをコピー",
     "Apply" : "適用",
+    "Deleted" : "削除済み",
+    "Confirmed" : "確認済み",
     "Start" : "出発地点",
-    "close" : "閉じる"
+    "close" : "閉じる",
+    "Location:" : "市区町村:"
 },
 "nplurals=1; plural=0;");

@@ -15,10 +15,15 @@ OC.L10N.register(
     "Info" : "Info",
     "Link Expired..." : "Enllaç caducat...",
     "Book Your Appointment" : "Reserva la teva cita",
+    "Available" : "Disponible",
     "Appointments" : "Cites",
     "Close" : "Tanca",
     "Apply" : "Aplica",
+    "Deleted" : "Suprimit",
+    "Confirmed" : "Confirmat",
+    "Canceled" : "Cancel·lat",
     "Start" : "Inici",
-    "close" : "tanca"
+    "close" : "tanca",
+    "Location:" : "Ubicació:"
 },
 "nplurals=2; plural=(n != 1);");

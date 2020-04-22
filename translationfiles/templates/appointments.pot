@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2020-04-21 03:18+0000\n"
+"POT-Creation-Date: 2020-04-22 03:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -135,58 +135,58 @@ msgstr ""
 msgid "Thank you"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:343
+#: /app/lib/Backend/DavListener.php:347
 msgid "Appointment is canceled"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:365
+#: /app/lib/Backend/DavListener.php:369
 #, php-format
 msgid "%s Appointment"
 msgstr ""
 
 #. TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is confirmed.
-#: /app/lib/Controller/PageController.php:490
+#: /app/lib/Controller/PageController.php:492
 #, php-format
 msgid "Your appointment scheduled for %s is confirmed."
 msgstr ""
 
 #. TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is canceled.
-#: /app/lib/Controller/PageController.php:526
+#: /app/lib/Controller/PageController.php:528
 #, php-format
 msgid "Your appointment scheduled for %s is canceled."
 msgstr ""
 
 #. TRANSLATORS Meaning the booking process is finished
-#: /app/lib/Controller/PageController.php:535
+#: /app/lib/Controller/PageController.php:537
 msgid "All done."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:705
+#: /app/lib/Controller/PageController.php:707
 msgid "Almost done..."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:726
+#: /app/lib/Controller/PageController.php:728
 #, php-format
 msgid ""
 "We have sent an email to %s, please open it and click on the confirmation "
 "link to finalize your appointment request"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:732
+#: /app/lib/Controller/PageController.php:734
 msgid "Info"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:733
+#: /app/lib/Controller/PageController.php:735
 msgid "Link Expired..."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:778
+#: /app/lib/Controller/PageController.php:780
 #: /app/specialVueFakeDummyForL10nScript.js:29
 msgid "Book Your Appointment"
 msgstr ""
 
 #. TRANSLATORS Appointment time is "Available"
-#: /app/lib/Controller/PageController.php:984
+#: /app/lib/Controller/PageController.php:986
 msgid "Available"
 msgstr ""
 
