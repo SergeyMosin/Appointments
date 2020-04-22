@@ -476,6 +476,17 @@
                     textArea.style.left = "0";
                     textArea.style.position = "fixed";
 
+                    textArea.style.width = '2em';
+                    textArea.style.height = '2em';
+
+                    textArea.style.padding = 0;
+
+                    textArea.style.border = 'none';
+                    textArea.style.outline = 'none';
+                    textArea.style.boxShadow = 'none';
+
+                    textArea.style.background = 'transparent';
+
                     document.body.appendChild(textArea);
                     textArea.focus();
                     textArea.select();
@@ -652,7 +663,14 @@
                     tz:this.gridApptTZ
                 }).then(response=>{
                     if(response.status===200) {
-                        this.evtGridModal=2
+                        if(response.data.substr(0,1)!=='0'){
+                            // error
+                            console.log(response.data);
+                            this.evtGridModal=3
+                        }else{
+                            // good
+                            this.evtGridModal=2
+                        }
                     }
                 }).catch(error=>{
                     this.evtGridModal=3
@@ -668,7 +686,7 @@
             },
 
             closeEvtModal(){
-                if(this.evtGridModal<4) this.getFormData()
+                if(this.evtGridModal<3) this.getFormData()
                 this.evtGridModal=0
             },
 
