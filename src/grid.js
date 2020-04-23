@@ -423,7 +423,7 @@ function _apptGridMaker() {
         tbl.appendChild(f)
     }
 
-    function getStarEnds(ts) {
+    function getStarEnds(ts,add_offset) {
 
         //For start and end need this: YYYYMMDDTHHMMSS
         function makeT(d) {
@@ -448,13 +448,20 @@ function _apptGridMaker() {
         for(let d=new Date(),ds_ts,dst,i=0,l=mData.mc_cols.length;i<l;i++){
             ds_ts=ts+day_start_ms+ms_per_day*i
             d.setTime(ds_ts)
+            if(add_offset){
+                d.setTime(d.getTime()+d.getTimezoneOffset()*60000)
+            }
             dst=makeD(d)
-            for(let pa=mData.mc_pos[i], j=0,k=pa.length;j<k;j+=2){
+            for(let ofs=0,pa=mData.mc_pos[i], j=0,k=pa.length;j<k;j+=2){
                 // Start
                 d.setTime(pa[j]*MP5+ds_ts)
+                if(add_offset){
+                    ofs=d.getTimezoneOffset()*60000
+                    d.setTime(d.getTime()+ofs)
+                }
                 r[++rc]=dst+makeT(d)
                 // End
-                d.setTime((pa[j+1]+1)*MP5+ds_ts)
+                d.setTime((pa[j+1]+1)*MP5+ds_ts+ofs)
                 r[++rc]=dst+makeT(d)
             }
         }

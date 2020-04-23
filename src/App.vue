@@ -710,7 +710,7 @@
             },
 
             addScheduleToCalendar(){
-                const tsa=gridMaker.getStarEnds(this.gridApptTs)
+                const tsa=gridMaker.getStarEnds(this.gridApptTs,this.gridApptTZ==='UTC')
                 this.evtGridModal=1
 
                 axios.post('caladd', {

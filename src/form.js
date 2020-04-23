@@ -211,6 +211,11 @@
             console.log("data-state: ",s.getAttribute("data-state"))
             return
         }
+        // There is a proble with js translations without Vue, so just get it from PHP for now
+        const dpuHdr=s.getAttribute("data-hdr")
+
+
+
 
         let mn
         let dn
@@ -337,7 +342,7 @@
 
         let lcd=document.createElement('div')
         lcd.id="srgdev-dpu_main-header"
-        lcd.appendChild(document.createTextNode(t('appointments','Select Date and Time')))
+        lcd.appendChild(document.createTextNode(dpuHdr))
         let lcdBF=document.createElement('div')
         lcdBF.id="srgdev-dpu_main-hdr-icon"
         lcdBF.className="icon-close"
