@@ -48,8 +48,9 @@ class DavListener {
         $userId=str_replace(BackendManager::PRINCIPAL_PREFIX,"",$event['calendarData']['principaluri']);
         $cal_id=$config->getUserValue($userId,$this->appName,"cal_id");
 
-        if($cal_id!==$event['calendarData']['id']){
-            // Not this users' calendar
+        // $event['calendarData']['id'] can be a string or an int
+        if($cal_id!=$event['calendarData']['id']){
+            // Not this user's calendar
             return;
         }
 
