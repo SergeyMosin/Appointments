@@ -1,5 +1,11 @@
 ## 1.4.2 - 2020-04-22
 ### Fixed
+- issue #61: emails not sent on postgres instances
+### Changed
+- Non 'floating' times are "casted" to visitors local times if in different timezone
+
+## 1.4.2 - 2020-04-22
+### Fixed
 - issue 51: can't set calendar on some instances
 
 ## 1.4.1 - 2020-04-21
