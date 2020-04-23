@@ -8,6 +8,7 @@ OC.L10N.register(
     "Cancel" : "Absagen",
     "%s Appointment is Confirmed" : "Der Termin mit %s ist bestätigt",
     "Your %1$s appointment scheduled for %2$s is now confirmed." : "Dein Termin: %1$s am %2$s ist jetzt bestätigt.",
+    "Appointment Confirmed" : "Termin bestätigt",
     "%s Appointment is Canceled" : "Der %s-Termin ist abgesagt",
     "Your %1$s appointment scheduled for %2$s is now canceled." : "Dein für %1$s geplanter %2$s-Termin ist jetzt abgesagt.",
     "Thank you" : "Vielen Dank",

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2020-04-22 03:19+0000\n"
+"POT-Creation-Date: 2020-04-23 03:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -145,48 +145,48 @@ msgid "%s Appointment"
 msgstr ""
 
 #. TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is confirmed.
-#: /app/lib/Controller/PageController.php:492
+#: /app/lib/Controller/PageController.php:496
 #, php-format
 msgid "Your appointment scheduled for %s is confirmed."
 msgstr ""
 
 #. TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is canceled.
-#: /app/lib/Controller/PageController.php:528
+#: /app/lib/Controller/PageController.php:532
 #, php-format
 msgid "Your appointment scheduled for %s is canceled."
 msgstr ""
 
 #. TRANSLATORS Meaning the booking process is finished
-#: /app/lib/Controller/PageController.php:537
+#: /app/lib/Controller/PageController.php:541
 msgid "All done."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:707
+#: /app/lib/Controller/PageController.php:711
 msgid "Almost done..."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:728
+#: /app/lib/Controller/PageController.php:732
 #, php-format
 msgid ""
 "We have sent an email to %s, please open it and click on the confirmation "
 "link to finalize your appointment request"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:734
+#: /app/lib/Controller/PageController.php:738
 msgid "Info"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:735
+#: /app/lib/Controller/PageController.php:739
 msgid "Link Expired..."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:780
+#: /app/lib/Controller/PageController.php:784
 #: /app/specialVueFakeDummyForL10nScript.js:29
 msgid "Book Your Appointment"
 msgstr ""
 
 #. TRANSLATORS Appointment time is "Available"
-#: /app/lib/Controller/PageController.php:986
+#: /app/lib/Controller/PageController.php:990
 msgid "Available"
 msgstr ""
 
