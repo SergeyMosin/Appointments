@@ -33,6 +33,7 @@ class DavListener {
 
         if(strpos($cd,"\r\nATTENDEE;")===false
             || strpos($cd,"\r\nCATEGORIES:".BackendUtils::APPT_CAT."\r\n")===false
+            || strpos($cd,"\r\n".BackendUtils::TZI_PROP.":")===false
             || strpos($cd,"\r\nORGANIZER;")===false
             || strpos($cd,"\r\nUID:")===false){
                 // Not a good appointment, bail early...
@@ -99,6 +100,7 @@ class DavListener {
             return;
         }
 
+        // TODO: this needs to be fixed @see BackendUtils->encodeCalendarData
         $now_f=(float)$now->format(BackendUtils::FLOAT_TIME_FORMAT);
         if($now_f > (float)str_replace("T",".",$evt->DTEND->getRawMimeDirValue())
             && $now_f > $utils->getHashDTStart($hash)
@@ -155,7 +157,7 @@ class DavListener {
 
         $date_time=$utils->getDateTimeString(
             $evt->DTSTART->getDateTime(),
-            $evt->DTSTART->isFloating()
+            $evt->{BackendUtils::TZI_PROP}->getValue()
         );
 
         $org_name=$config->getUserValue(
@@ -238,7 +240,7 @@ class DavListener {
             $tmpl->addBodyText($this->l10N->t('Your %1$s appointment scheduled for %2$s is now canceled.',[$org_name,$date_time]));
             $is_cancelled=true;
 
-            if($eml_settings[BackendUtils::EML_MCNCL]) {
+            if($eml_settings[BackendUtils::EML_MCNCL] && $hint!==null) {
                 $om_prefix = $this->l10N->t("Appointment Canceled");
             }
 
@@ -391,13 +393,20 @@ class DavListener {
         if(!empty($om_prefix) && isset($om_info)) {
             // $om_info should have attendee info separated by \n
             $oma=explode("\n",$om_info);
+
+
             if(count($oma)>2) {
+
+                $evt_dt=$evt->DTSTART->getDateTime();
+                // Here we need organizer's timezone for getDateTimeString()
+                $utz_info=$evt->{BackendUtils::TZI_PROP}->getValue()[0].$utils->getUserTimezone($userId,$config)->getName();
+
                 $tmpl = $mailer->createEMailTemplate("ID_" . time());
                 $tmpl->setSubject($om_prefix . ": " . $to_name . ", "
-                    . $this->l10N->l('datetime', $evt->DTSTART->getRawMimeDirValue(), ['width' => 'short']));
+                    . $utils->getDateTimeString($evt_dt,$utz_info,true));
                 $tmpl->addHeading(" "); // spacer
                 $tmpl->addBodyText($om_prefix);
-                $tmpl->addBodyListItem($date_time);
+                $tmpl->addBodyListItem($utils->getDateTimeString($evt_dt,$utz_info));
                 foreach ($oma as $info){
                     $tmpl->addBodyListItem($info);
                 }

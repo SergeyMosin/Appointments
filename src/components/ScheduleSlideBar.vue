@@ -36,7 +36,7 @@
                 </div>
                 <select v-model="apptTZ" id="appt_tz-select" class="appt-select">
                     <option value="L">Local (floating)</option>
-                    <option value="C">Calendar Timezone</option>
+                    <option value="C">{{tzName}}</option>
                 </select>
                 <button
                         @click="goApptGen"
@@ -65,6 +65,8 @@
         props:{
             title:'',
             subtitle:'',
+            tzName:'',
+            tzData:''
         },
         computed:{
             lang: function(){
@@ -102,6 +104,12 @@
                 return d
             }
         },
+        watch: {
+            tzName(val){
+                this.apptTZ = val === 'UTC' ? "L" : "C";
+            }
+        },
+
         data() {
             return {
                 /** @type {Date} */
@@ -119,7 +127,7 @@
                 weekFormat: {
                     // Date to String
                     stringify: (date,fmt) => {
-                        // console.log(fmt)
+
                         if(date){
                             const ts=date.getTime() + 5 * 86400000;
                             if(window.Intl && typeof window.Intl === "object") {
@@ -144,7 +152,6 @@
                 }
             },
             setToStartOfWeek(){
-                // console.log()
                 if(this.apptWeek!==null) {
                     this.apptWeek=this.getStartOfWeek(this.apptWeek)
                 }
@@ -170,7 +177,7 @@
             },
             goApptGen(){
                 let r={
-                    tz: this.apptTZ,
+                    tz: this.apptTZ==="C"?this.tzData:"L",
                     week:(this.apptWeek.getTime()),
                     dur:this.apptDur,
                 }

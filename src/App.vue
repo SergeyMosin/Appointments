@@ -130,6 +130,8 @@
             <ScheduleSlideBar
                     :title="t('appointments','Schedule Generator')"
                     :subtitle="t('appointments','Add open appointments to your calendar')"
+                    :tz-name="gridTZName"
+                    :tz-data="gridTZData"
                     @agDataReady="makePreviewGrid"
                     v-show="sbShow===1" @close="sbShow=0"/>
             <FormStnSlideBar
@@ -173,7 +175,7 @@
     import UserStnSlideBar from "./components/UserStnSlideBar.vue";
     import MailStnSlideBar from "./components/MailStnSlideBar.vue";
 
-    // import {linkTo} from '@nextcloud/router'
+    import {linkTo} from '@nextcloud/router'
 
     export default {
         name: 'App',
@@ -227,7 +229,10 @@
                 gridHeader:[],
                 gridApptLen:0,
                 gridApptTs:0,
-                gridApptTZ:"C",
+                gridApptTZ:"L",
+
+                gridTZData:"",
+                gridTZName:"",
 
                 // SlideBars...
                 ppsInfo:{},
@@ -328,7 +333,7 @@
                 })
             },
 
-            /** @return {Promise<JSON|null>} */
+            /** @return {Promise<JSON|string|null>} */
             async getState(action){
                 try {
                     const res= await axios.post('state', {a: action})
@@ -391,28 +396,50 @@
                     return
                 }
 
-                // this.getState("get_tz").then(res=>{
-                //     console.log(res)
-                //     if(res!==null) {
-                //         let url=linkTo('appointments','ajax/zones.json')
-                //         axios.get(url).then(tzr=>{
-                //             console.log(tzr)
-                //             if(tzr.status===200) {
-                //                 console.log(res, tzr.data)
-                //                 this.sbLoading=0;
-                //             }else{
-                //                 throw new DOMException("error")
-                //             }
-                //         })
-                //     }else{
-                //         throw new DOMException("error")
-                //     }
-                // }).catch(err=>{
-                //     console.log(err)
-                //     this.sbLoading=0;
-                // })
+                this.gridTZName="UTC"
+                this.gridTZData="UTC"
 
-                this.toggleSlideBar(1)
+                this.getState("get_tz").then(res=>{
+                    if(res!==null && res.toLowerCase()!=='utc') {
+                        let url=linkTo('appointments','ajax/zones.json')
+                        return axios.get(url).then(tzr=>{
+                            if(tzr.status===200) {
+                                let tzd=tzr.data
+                                if(typeof tzd==="object"
+                                    && tzd.hasOwnProperty('aliases')
+                                    && tzd.hasOwnProperty('zones')
+                                ){
+                                    let tzs=""
+                                    if(tzd.zones[res]!==undefined){
+                                        tzs=tzd.zones[res].ics.join("\r\n")
+                                    }else if(tzd.aliases[res]!==undefined){
+                                        let alias=tzd.aliases[res].aliasTo
+                                        if(tzd.zones[alias]!==undefined){
+                                            res=alias
+                                            tzs=tzd.zones[alias].ics.join("\r\n")
+                                        }
+                                    }
+                                    return [res,tzs]
+                                }
+                            }
+                            return null
+                        })
+                    }else return Promise.resolve(null)
+                }).then((r)=>{
+                    if(r===null || !Array.isArray(r) || r.length!==2 || r[1]===""){
+                        console.error("can't get timezone data")
+                    }else{
+                        this.gridTZName=r[0]
+                        this.gridTZData= "BEGIN:VTIMEZONE\r\nTZID:"
+                            +r[0].trim()+"\r\n"+r[1].trim()+"\r\nEND:VTIMEZONE"
+                    }
+                    this.sbLoading=0;
+                    this.toggleSlideBar(1)
+                }).catch(err=>{
+                    console.log(err)
+                    this.sbLoading=0;
+                    this.toggleSlideBar(1)
+                })
             },
 
             toggleSlideBar(sbn){

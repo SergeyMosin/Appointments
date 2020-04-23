@@ -156,9 +156,6 @@ function _apptGridMaker() {
             elm.className+=" "+sP+"appt-empty"
         }
 
-
-        // console.log(uTop,uLen,idx)
-
         let ge = mData.elms[uTop]
         let e2 = mData.elms[uTop + uLen - 1]
 
@@ -183,26 +180,30 @@ function _apptGridMaker() {
     }
 
     function addPastAppts(data,clr) {
-        const btm=DH*12; // 12*5min=1hour
-        for(let elm,uTop,d=new Date(),ds,uLen,cID,da=data.split(","),
-                l=da.length,i=0;i<l;i++){
 
+        const btm=DH*12; // 12*5min=1hour
+        for(let sp,tzo,ets,elm,uTop,d=new Date(),ds,uLen,cID,da=data.split(","),
+                l=da.length,i=0;i<l;i++){
             ds=da[i]
-            console.log(ds)
-            d.setTime(Date.parse(
-                // 20200331T083000 -> 2020-03-31T08:30:00
-                ds.substr(0,4)+"-"+
-                ds.substr(4,2)+"-"+
-                ds.substr(6,5)+":"+
-                ds.substr(11,2)+":"+
-                ds.substr(13,2)
-            ))
-            uLen=(Date.parse(
-                ds.substr(15,4)+"-"+
-                ds.substr(19,2)+"-"+
-                ds.substr(21,5)+":"+
-                ds.substr(26,2)+":"+
-                ds.substr(28,2))-d.getTime())/300000
+
+            sp=ds.indexOf(":",8);
+
+            //get end time first
+            d.setTime(ds.substr(sp+2)*1000)
+
+            tzo=d.getTimezoneOffset()
+            if(ds.charAt(0)==="F"){
+                tzo*=60000
+            }else{
+                tzo=0
+            }
+
+            ets=d.getTime()+tzo
+
+            // start
+            d.setTime(ds.substr(1,sp-1)*1000+tzo)
+
+            uLen=Math.floor((ets-d.getTime())/300000)
 
             cID=d.getDay()-1
             uTop=Math.floor((((d.getHours()-8)*60)/5)

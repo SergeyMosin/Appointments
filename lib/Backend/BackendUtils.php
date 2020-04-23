@@ -1,4 +1,5 @@
-<?php /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+<?php
+/** @noinspection PhpPossiblePolymorphicInvocationInspection */
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 /** @noinspection PhpComposerExtensionStubsInspection */
 
@@ -11,6 +12,8 @@ use Sabre\VObject\Reader;
 class BackendUtils{
 
     const APPT_CAT="Appointment";
+    const TZI_PROP="X-TZI";
+
     const CIPHER="AES-128-CFB";
     const HASH_TABLE_NAME="appointments_hash";
     const FLOAT_TIME_FORMAT="Ymd.His";
@@ -48,31 +51,51 @@ class BackendUtils{
         self::EML_MCNCL=>false);
 
     /**
-     * @param string $data
+     * @param \Sabre\VObject\Document $vo
      * @param string $ses_info Session start(time()).'|'.object uri
      * @param string $key Encryption key...
      *                    if key==="" return end_time instead of uri
+     * @param int $my_offset user's timezone offset from UTC
+     * @param bool $my_tz_is_floating
      * @return string[]
-     *          0: Start date - Ex: 20200415.141617,
+     *          0: timestamp in user's time,
      *          1: Encoded string - the separator ',' is always appended to the end
      */
-    function encodeCalendarData($data, $ses_info, $key){
+    function encodeCalendarData($vo, $ses_info, $key, $my_offset, $my_tz_is_floating){
 
-        $es=strpos($data,"BEGIN:VEVENT")+14;
+        /**
+         * @var  \Sabre\VObject\Property\ICalendar\DateTime $dtstart
+         */
+        $dtstart=$vo->VEVENT->DTSTART;
+        $start_date_time=$dtstart->getDateTime();
+        $evt_offset=$start_date_time->getOffset();
+        $ts=$start_date_time->getTimestamp();
 
-        $ds=strpos($data,":",strpos($data,"DTSTART",$es)+7)+1;
-        $start_str=substr($data,$ds,strpos($data,"\r\n",$ds)-$ds);
+        $is_floating=$dtstart->isFloating();
+        // strlen($dt_value)===15 when not UTC
+        if($is_floating || ($my_tz_is_floating && strlen($dt_value=$dtstart->getValue())===15 && $evt_offset===$my_offset)
+        ){
+            // we want local time - no matter timezone
+            $ts_out="F".($ts+$evt_offset);
+            if($is_floating) $ts-=$my_offset;
 
-        if (!empty($key)) {
-            $str=$start_str.$this->encrypt($ses_info,$key).",";
-        } else {
-            $ds=strpos($data,":",strpos($data,"DTEND",$es)+5)+1;
-            $str=$start_str.substr($data,$ds,strpos($data,"\r\n",$ds)-$ds).",";
+            $t=":F";
+        }else{
+            // utc timestamp
+            $ts_out="U".$ts;
+
+            $t=":U";
+            $evt_offset=0;
         }
 
-        return [str_replace("T",".",$start_str),$str];
-    }
+        if($key!==""){
+            $ts_out.=":".$this->encrypt($ses_info,$key).",";
+        }else{
+            $ts_out.=$t.($vo->VEVENT->DTEND->getDateTime()->getTimestamp()+$evt_offset).',';
+        }
 
+        return [$ts,$ts_out];
+    }
 
     /**
      * @param $data
@@ -117,6 +140,10 @@ class BackendUtils{
         if(!isset($evt->STATUS)) $evt->add('STATUS');
         $evt->STATUS->setValue("CONFIRMED");
 
+        // Attendee's timezone info at the time of booking
+        if(!isset($evt->{self::TZI_PROP})) $evt->add(self::TZI_PROP);
+        $evt->{self::TZI_PROP}->setValue($info['tzi']);
+
         $this->setSEQ($evt);
 
         $this->setApptHash($evt);
@@ -143,7 +170,7 @@ class BackendUtils{
 
         $dts=$this->getDateTimeString(
             $evt->DTSTART->getDateTime(),
-            $evt->DTSTART->isFloating()
+            $evt->{self::TZI_PROP}->getValue()
         );
 
         if($a->parameters['PARTSTAT']->getValue()==='ACCEPTED'){
@@ -181,7 +208,7 @@ class BackendUtils{
 
         $dts=$this->getDateTimeString(
             $evt->DTSTART->getDateTime(),
-            $evt->DTSTART->isFloating()
+            $evt->{self::TZI_PROP}->getValue()
         );
 
         if($a->parameters['PARTSTAT']->getValue()==='DECLINED'
@@ -224,15 +251,19 @@ class BackendUtils{
      * Returns Array [
      *          Localized DateTime string,
      *          "dtsamp,dtstart,dtend" (string)
-     *          is_floating bool
+     *          $tz_data for new appointment can be one of:
+     *                  VTIMEZONE data,
+     *                  'L' = floating (default)
+     *                  'UTC' for UTC/GMT
      * ]
      * @param string $data
      * @return string[]
      * @noinspection PhpDocMissingThrowsInspection
      */
     function dataDeleteAppt($data){
+        $f="L";
         $vo=$this->getAppointment($data,'CONFIRMED');
-        if($vo===null) return ['','',false];
+        if($vo===null) return ['','',$f];
 
         /** @var \Sabre\VObject\Component\VEvent $evt*/
         $evt=$vo->VEVENT;
@@ -243,15 +274,21 @@ class BackendUtils{
                 $evt->DTSTART->getRawMimeDirValue().",".
                 $evt->DTEND->getRawMimeDirValue();
 
-            $f=$evt->DTSTART->isFloating();
+            if(!$evt->DTSTART->isFloating()){
+                if(isset($evt->DTSTART['TZID']) && isset($vo->VTIMEZONE)){
+                    $f=$vo->VTIMEZONE->serialize();
+                    if(empty($f)) $f='UTC'; // <- ???
+                }else{
+                    $f='UTC';
+                }
+            }
         }else{
             $dt="";
-            $f=false;
         }
 
         return [$this->getDateTimeString(
             $evt->DTSTART->getDateTime(),
-            $evt->DTSTART->isFloating()
+            $evt->{self::TZI_PROP}->getValue()
         ),$dt,$f];
     }
 
@@ -431,6 +468,11 @@ class BackendUtils{
             return null;
         }
 
+        if(!isset($evt->{self::TZI_PROP})){
+            \OC::$server->getLogger()->error("Missing ".self::TZI_PROP." property");
+            return null;
+        }
+
         if (!isset($evt->ATTENDEE) || $evt->ATTENDEE->count() !== 1
             || !isset($evt->ATTENDEE[0]->parameters['PARTSTAT'])
             || !isset($evt->ATTENDEE[0]->parameters['CN'])) {
@@ -527,29 +569,42 @@ class BackendUtils{
 
     /**
      * @param \DateTimeImmutable $date
-     * @param bool $isFloating
+     * @param string $tzi Timezone info [UF][+-]\d{4} Ex: U+0300 @see dataSetAttendee() or [UF](valid timezone name) Ex: UAmerica/New_York
+     * @param bool $short_dt return short format (for email subject)
      * @return string
      * @noinspection PhpDocMissingThrowsInspection
      */
-    function getDateTimeString($date, $isFloating){
+    function getDateTimeString($date, $tzi, $short_dt=false){
+
         $l10N=\OC::$server->getL10N(Application::APP_ID);
-        if($isFloating){
-            $date_time=$l10N->l(
-                    'date', $date->format('Ymd\THis'),
-                    ['width'=>'full']).', '. $l10N->l(
-                    'time', $date->format('Ymd\THis'),
-                    ['width'=>'short']);
+        if($tzi[0]==="F"){
+            $d=$date->format('Ymd\THis');
+            if($short_dt){
+                $date_time =$l10N->l('datetime', $d, ['width' => 'short']);
+            }else {
+                $date_time =
+                    $l10N->l('date', $d, ['width' => 'full']) . ', ' .
+                    $l10N->l('time', $d, ['width' => 'short']);
+            }
         }else{
-            /** @noinspection PhpUnhandledExceptionInspection */
-            $d = new \DateTime('now', $date->getTimezone());
+            try {
+                $d = new \DateTime('now', new \DateTimeZone(substr($tzi, 1)));
+            } catch (\Exception $e) {
+                \OC::$server->getLogger()->error($e->getMessage());
+                /** @noinspection PhpUnhandledExceptionInspection */
+                $d = new \DateTime('now', $date->getTimezone());
+            }
             $d->setTimestamp($date->getTimestamp());
-            $date_time=$l10N->l(
-                'date',$d,
-                ['width'=>'full']).', '.
-                str_replace(':00 ', '', $l10N->l(
-                    'time',$d,
-                    ['width'=>'long']));
+
+            if($short_dt){
+                $date_time =$l10N->l('datetime', $d, ['width' => 'short']);
+            }else {
+                $date_time = $l10N->l('date', $d, ['width' => 'full']).', '.
+                    str_replace(':00 ', ' ',
+                        $l10N->l('time', $d, ['width' => 'long']));
+            }
         }
+
         return $date_time;
     }
 

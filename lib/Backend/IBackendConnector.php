@@ -4,8 +4,8 @@ namespace OCA\Appointments\Backend;
 interface IBackendConnector{
     /**
      * @param string $calId
-     * @param \DateTime $start UTC
-     * @param \DateTime $end UTC
+     * @param \DateTime $start should have user's timezone
+     * @param \DateTime $end should have user's timezone
      * @param bool $no_uri (optional)
      * @return string|null
      */
@@ -104,16 +104,16 @@ interface IBackendConnector{
 
 
     /**
-     * Returns array [int, string, string|null, bool]
-     *              Status: 0=OK,1=Error,
-     *              Localized DateTime string can be empty
-     *              see PageController:addAppointments $ds param can be empty
-     *              is_floating does the new appt have floating timezone
+     * Returns array [int, string, string|null, string]
+     *              Status: 0=OK,1=Error
+     *              Localized DateTime string, can be empty
+     *              see PageController:addAppointments $ds param, can be empty
+     *              $tz_data for new appointment can be one of: VTIMEZONE data, 'L' = floating or 'UTC'
      *
      * @param $userId
      * @param $calId
      * @param $uri
-     * @return array [int, string|null, string|null, bool]
+     * @return array [int, string|null, string|null, string]
      */
     function deleteCalendarObject($userId, $calId, $uri);
 

@@ -515,12 +515,12 @@ class PageController extends Controller {
 
             }else{
                 // Delete and Reset ($date_time can be an empty string here)
-                list($sts, $date_time, $dt_info, $is_floating) = $this->bc->deleteCalendarObject($uid, $cal_id, $uri);
+                list($sts, $date_time, $dt_info, $tz_data) = $this->bc->deleteCalendarObject($uid, $cal_id, $uri);
 
                 if(empty($dt_info)){
                     \OC::$server->getLogger()->error('can not re-create appointment, no dt_info');
                 }else{
-                    $cr=$this->addAppointments($uid,$dt_info,$is_floating);
+                    $cr=$this->addAppointments($uid,$dt_info,$tz_data);
                     if($cr[0]!=='0'){
                         \OC::$server->getLogger()->error('addAppointments() failed '.$cr);
                     }
@@ -606,14 +606,16 @@ class PageController extends Controller {
 
         $post=$this->request->getParams();
 
-        if(strlen($post['adatetime'])>127
+        if(!isset($post['adatetime']) || strlen($post['adatetime'])>127
             || preg_match('/[^a-zA-Z0-9+\/=]/',$post['adatetime'])
-            || strlen($post['name']) > 64
+            || !isset($post['name']) || strlen($post['name']) > 64
             || strlen($post['name']) < 3
-            || strlen($post['email']) > 128
+            || !isset($post['email']) || strlen($post['email']) > 128
             || strlen($post['email']) < 4
-            || strlen($post['phone']) > 32
-            || strlen($post['phone']) < 4){
+            || !isset($post['phone']) || strlen($post['phone']) > 32
+            || strlen($post['phone']) < 4
+            || !isset($post['tzi']) || strlen($post['tzi'])>64){
+
             $rr=new RedirectResponse($bad_input_url);
             $rr->setStatus(303);
             return $rr;
@@ -635,7 +637,9 @@ class PageController extends Controller {
             || strlen($da[1])>64
             || preg_match('/[^\PC ]/u',$post['name'])
             || $this->mailer->validateMailAddress($post['email'])===false
-            || preg_match('/[^0-9 .()\-+,\/]/',$post['phone'])){
+            || preg_match('/[^0-9 .()\-+,\/]/',$post['phone'])
+            || preg_match('/^[UF][^\pC ]*$/u',$post['tzi'])!==1){
+
             $rr=new RedirectResponse($bad_input_url);
             $rr->setStatus(303);
             return $rr;
@@ -901,7 +905,7 @@ class PageController extends Controller {
         return $this->addAppointments(
             $this->userId,
             $this->request->getParam("d"),
-            $this->request->getParam("tz")!=="C"
+            $this->request->getParam("tz")
         );
     }
 
@@ -911,10 +915,10 @@ class PageController extends Controller {
      *      dtsamp,dtstart,dtend [,dtstart,dtend,...] -
      *      dtsamp: 20200414T073008Z must be UTC (ends with Z),
      *      dtstart/dtend: 20200414T073008
-     * @param boolean $is_floating
+     * @param string $tz_data_str Can be VTIMEZONE data, 'L' = floating or 'UTC'
      * @return string
      */
-    private function addAppointments($userId,$ds,$is_floating){
+    private function addAppointments($userId,$ds,$tz_data_str){
 
         if(empty($ds)) return '1:No Data';
         $data=explode(',',$ds);
@@ -931,15 +935,15 @@ class PageController extends Controller {
         if($cal===null) return '1:Can not find calendar';
 
         $tz_id="";
-        $tz_data="";
-        if(!$is_floating){ // We want calendar's timezone
-            if(!empty($cal['timezone'])){
-                $tzo=Reader::read($cal['timezone']);
-                // TODO: Error check in-case the timezone data is bad...
+        $tz_Z="";
+        $tz_data = "";
+        if ($tz_data_str==='UTC'){
+            $tz_Z="Z";
+        }elseif($tz_data_str!=="L" && !empty($tz_data_str)){
+            $tzo=Reader::read("BEGIN:VCALENDAR\r\nPRODID:-//IDN nextcloud.com//Appointments App//EN\r\nCALSCALE:GREGORIAN\r\nVERSION:2.0\r\n".$tz_data_str."\r\nEND:VCALENDAR");
+            if(isset($tzo->VTIMEZONE) &&  isset($tzo->VTIMEZONE->TZID)){
                 $tz_id=';TZID='.$tzo->VTIMEZONE->TZID->getValue();
-                $tz_data=$tzo->VTIMEZONE->serialize();
-            }else{
-                return '1:Can not get calendar timezone';
+                $tz_data=trim($tzo->VTIMEZONE->serialize())."\r\n";
             }
         }
 
@@ -1016,8 +1020,8 @@ class PageController extends Controller {
                 "CATEGORIES:" . BackendUtils::APPT_CAT . $rn .
                 "CREATED:" . $cr_date_rn .
                 "UID:" . implode('', $pieces)                .floor($ts / (ord($pieces[1]) + ord($pieces[2]) + ord($pieces[3]))) . $rn .
-                "DTSTART".$tz_id.":" . $data[$i] . $rn .
-                "DTEND".$tz_id.":" . $data[$i+1] . $rn .
+                "DTSTART".$tz_id.":" . $data[$i] . $tz_Z.$rn .
+                "DTEND".$tz_id.":" . $data[$i+1] . $tz_Z.$rn .
                 $organizer_location .
                 "END:VEVENT\r\n".$tz_data."END:VCALENDAR\r\n";
 

@@ -64,12 +64,14 @@
         }
 
         el=document.getElementById("srgdev-ncfp_sel-hidden")
-        if (el.selectedIndex===-1 || el.value===""){
+        let sdx=el.selectedIndex
+        if (sdx===-1 || el.value===""){
             el=document.getElementById("srgdev-ncfp_sel-dummy")
             el.setAttribute('err','err');
             el.addEventListener("focus",clearFormErr,false)
             lee=1
         }
+        let tzi=el.dataRef[sdx].tzi
 
         el=document.getElementById("srgdev-ncfp_fname")
         if (el.value.length<3){
@@ -103,6 +105,12 @@
             e.stopPropagation()
             return false
         }
+
+        el=document.createElement("input")
+        el.type="hidden"
+        el.name="tzi"
+        el.value=tzi
+        this.appendChild(el)
     }
 
 
@@ -218,9 +226,10 @@
             dn=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
         }
 
+        const has_intl=window.Intl && typeof window.Intl === "object"
 
         let tf
-        if(window.Intl && typeof window.Intl === "object") {
+        if(has_intl) {
             let f = new Intl.DateTimeFormat([],
                 {hour: "numeric", minute: "2-digit"})
             tf=f.format
@@ -230,7 +239,7 @@
             }
         }
         let df
-        if(window.Intl && typeof window.Intl === "object") {
+        if(has_intl) {
             let f = new Intl.DateTimeFormat([],
                 {month: "long"})
             df=f.format
@@ -241,7 +250,7 @@
         }
 
         let wf
-        if(window.Intl && typeof window.Intl === "object") {
+        if(has_intl) {
             let f = new Intl.DateTimeFormat([],
                 {weekday: "short"})
             wf=f.format
@@ -252,7 +261,7 @@
         }
 
         let wft
-        if(window.Intl && typeof window.Intl === "object") {
+        if(has_intl) {
             let f = new Intl.DateTimeFormat([],
                 {weekday: "short", month: "long", day: "2-digit"})
             wft=f.format
@@ -263,7 +272,7 @@
         }
 
         let wff
-        if(window.Intl && typeof window.Intl === "object") {
+        if(has_intl) {
             let f = new Intl.DateTimeFormat([],
                 {weekday: "long", month: "long", day: "numeric", year:"numeric"})
             wff=f.format
@@ -275,27 +284,48 @@
 
 
         let dta=[]
-        for(let md=new Date(),ia=s.getAttribute("data-info").split(','),
+        let tzn=undefined
+        if(has_intl){
+            try {
+                tzn=Intl.DateTimeFormat().resolvedOptions().timeZone
+            }catch (e) {
+                console.log("no Intl timeZone ",e)
+            }
+            if(typeof tzn!=="string") tzn=undefined
+        }
+
+        for(let md=new Date(),tzo,tzi,t,
+                ia=s.getAttribute("data-info").split(','),
                 l=ia.length,i=0,ds;i<l;i++){
             ds=ia[i]
 
-            md.setFullYear(
-                +ds.substr(0,4),
-                (+ds.substr(4,2))-1, // month is zero based
-                +ds.substr(6,2))
-            md.setHours(
-                +ds.substr(9,2),
-                +ds.substr(11,2),
-                +ds.substr(13,2),0)
+            let sp=ds.indexOf(":",8);
+            md.setTime(+ds.substr(1,sp-1)*1000)
+            tzo=md.getTimezoneOffset()
+            t=ds.charAt(0)
+
+            if(t==="F") md.setTime(md.getTime()+(tzo*60000))
+
+            if(tzn!==undefined){
+                tzi=t+tzn
+            }else {
+                // fallback, needs to be done for every date because of daylight savings
+                let ao=Math.abs(tzo)
+                let h=Math.floor(ao/60)
+                let m=ao-h*60
+                // offset sign is reversed https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
+                tzi=t+(tzo>0?'-':'+')+(h<10?'0'+h:h)+(m<10?'0'+m:m)
+            }
 
             dta[i] = {
                 rts: md.getTime(),
-                d: ds.substr(15),
+                d: ds.substr(sp+1),
+                tzi:tzi
             }
         }
 
         dta.sort((a, b) => (a.rts > b.rts) ? 1 : -1)
-        dta.push({rts:0,d:""}) //last option to finalize the loop
+        dta.push({rts:0,d:"",tzi:""}) //last option to finalize the loop
 
         s.dataRef=dta
 

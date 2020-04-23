@@ -9,6 +9,7 @@ use Sabre\CalDAV\Backend\BackendInterface;
 use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Xml\Service as XmlService;
 use Sabre\Xml\ParseException;
+use Sabre\VObject\Reader;
 
 class BCSabreImpl implements IBackendConnector{
 
@@ -46,13 +47,13 @@ class BCSabreImpl implements IBackendConnector{
             }
         }
 
-        $f_start=(float)$start->format(BackendUtils::FLOAT_TIME_FORMAT);
-        $f_end=(float)$end->format(BackendUtils::FLOAT_TIME_FORMAT);
+        $f_start=$start->getTimestamp();
+        $f_end=$end->getTimestamp();
 
         // We need to adjust for floating timezones and filter
         // 50400 = 14 hours
-        $start->setTimestamp($start->getTimestamp()-50400);
-        $end->setTimestamp($end->getTimestamp()+50400);
+        $start->setTimestamp($f_start-50400);
+        $end->setTimestamp($f_end+50400);
 
         $parser=new XmlService();
         $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
@@ -68,14 +69,19 @@ class BCSabreImpl implements IBackendConnector{
 
         $ses_start=time().'|';
         $ret='';
+
+        $offset=$start->getOffset();
+
+        $use_my_float=false;
         foreach ($objs as $obj){
 
-            $da = $this->utils->encodeCalendarData(
-                $obj['calendardata'],$ses_start.$obj['uri'],$key);
+            $vo=Reader::read($obj['calendardata']);
 
-            $fes=(float)$da[0];
-            if($fes>$f_start && $fes<$f_end) {
-                $ret.=$da[1];
+            list($ts,$out) = $this->utils->encodeCalendarData(
+                $vo,$ses_start.$obj['uri'],$key,$offset,$use_my_float);
+
+            if($ts>$f_start && $ts<$f_end) {
+                $ret.=$out;
             }
         }
 
@@ -276,7 +282,7 @@ class BCSabreImpl implements IBackendConnector{
      * @inheritDoc
      */
     function deleteCalendarObject($userId, $calId, $uri){
-        $ret=[0,'','',false];
+        $ret=[0,'','','L'];
         $d=$this->getObjectData($calId,$uri);
         if($d!==null){
             $ra=$this->utils->dataDeleteAppt($d);
