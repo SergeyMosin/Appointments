@@ -57,6 +57,7 @@ appstore: build-prod
 	mkdir -p $(appstore_build_directory)
 	tar czf $(appstore_package_name).tar.gz \
 	--exclude-vcs \
+	$(project_directory)/ajax \
 	$(project_directory)/appinfo \
 	$(project_directory)/css \
 	$(project_directory)/img \
