@@ -1,3 +1,7 @@
+## 1.4.5 - 2020-04-23
+### Fixed
+- Makefile and path to timezones.json
+
 ## 1.4.4 - 2020-04-23
 ### Fixed
 - Minor fixes
