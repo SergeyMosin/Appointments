@@ -75,20 +75,20 @@
 
         el=document.getElementById("srgdev-ncfp_fname")
         if (el.value.length<3){
-            el.setCustomValidity(t('appointments','Name is required.'));
+            el.setCustomValidity( t('appointments','Name is required.'));
             el.addEventListener("input",clearFormErr,false)
             lee=1
         }
         el=document.getElementById("srgdev-ncfp_femail")
         if (el.value.length<5 || el.value.indexOf("@")===-1 || el.value.indexOf("@")>el.value.lastIndexOf(".")){
-            el.setCustomValidity(t('appointments','Email is required.'));
+            el.setCustomValidity( t('appointments','Email is required.'));
             el.addEventListener("input",clearFormErr,false)
             lee=1
         }
         // match [0-9], '.()-+,/' and ' ' (space) at least 9 digits
         el=document.getElementById("srgdev-ncfp_fphone")
         if (el.value==='' || el.value.length<9 || /^[0-9 .()\-+,/]*$/.test(el.value)===false){
-            el.setCustomValidity(t('appointments','Phone number is required.'));
+            el.setCustomValidity( t('appointments','Phone number is required.'));
             el.addEventListener("input",clearFormErr,false)
             lee=1
         }
@@ -212,9 +212,10 @@
             return
         }
         // There is a proble with js translations without Vue, so just get it from PHP for now
-        const dpuHdr=s.getAttribute("data-hdr")
-
-
+        const dpuTrHdr=s.getAttribute("data-hdr")
+        const dpuTrBack=s.getAttribute("data-tr-back")
+        const dpuTrNext=s.getAttribute("data-tr-next")
+        const dpuTrNA=s.getAttribute("data-tr-not-available")
 
 
         let mn
@@ -342,7 +343,7 @@
 
         let lcd=document.createElement('div')
         lcd.id="srgdev-dpu_main-header"
-        lcd.appendChild(document.createTextNode(dpuHdr))
+        lcd.appendChild(document.createTextNode(dpuTrHdr))
         let lcdBF=document.createElement('div')
         lcdBF.id="srgdev-dpu_main-hdr-icon"
         lcdBF.className="icon-close"
@@ -360,11 +361,11 @@
         lcdBF.appendChild(document.createElement("span"))
         lcdBF.appendChild(document.createElement("span"))
         lcdBF.firstElementChild.id="srgdev-dpu_bf-back"
-        lcdBF.firstElementChild.appendChild(document.createTextNode(t('appointments','Back')))
+        lcdBF.firstElementChild.appendChild(document.createTextNode(dpuTrBack))
         lcdBF.firstElementChild.addEventListener("click",prevNextDPU)
         lcdBF.firstElementChild.setAttribute('disabled','')
         lcdBF.lastElementChild.id="srgdev-dpu_bf-next"
-        lcdBF.lastElementChild.appendChild(document.createTextNode(t('appointments','Next')))
+        lcdBF.lastElementChild.appendChild(document.createTextNode(dpuTrNext))
         lcdBF.lastElementChild.addEventListener("click",prevNextDPU)
 
         cont.appendChild(lcdBF)
@@ -428,7 +429,6 @@
             // Need to prepend empty days so the week start on Monday
             let ts= dta[0].rts
             d.setTime(ts)
-            // d.setTime(ts+d.getTimezoneOffset()*60000)
             d.setSeconds(1)
             d.setMinutes(0)
             d.setHours(0)
@@ -559,7 +559,7 @@
         lcdBF=document.createElement('div')
         lcdBF.id="srgdev-dpu_tce"
         lcdBF.className='srgdev-dpu-time-cont'
-        lcdBF.appendChild(document.createTextNode(t('appointments','No Appointments Available')))
+        lcdBF.appendChild(document.createTextNode(dpuTrNA))
         lcTime.appendChild(lcdBF)
 
         lcTime.firstElementChild.setAttribute('data-active','')

@@ -23,7 +23,14 @@ style('appointments', 'form');
         <div id="srgdev-ncfp_sel_cont">
             <input <?php echo $disabled ?>readonly placeholder="<?php p($l->t("Select Date & Time")); ?>" name="dtstr" class="srgdev-ncfp-form-input" id="srgdev-ncfp_sel-dummy">
             <input type="hidden" name="adatetime" style="display:none;" id="srgdev-ncfp_sel-hidden"
-                <?php print_unescaped(' '.$disabled.'data-state="'.$_['appt_state'].'" data-info="'.$_['appt_sel_opts'].'">'); ?>
+                <?php
+                // TRANSLATORS Button: meaning go back to previous section. Keep short if possible, abbreviations OK
+                $back=$l->t('Back');
+                // TRANSLATORS Button: meaning go to next section. Keep short if possible, abbreviations OK
+                $next=$l->t('Next');
+
+                echo ' '.$disabled.'data-state="'.$_['appt_state'].'" data-info="'.$_['appt_sel_opts'].'" data-hdr="'.htmlspecialchars($l->t('Select Date and Time'),ENT_QUOTES, 'UTF-8').'" data-tr-back="'.htmlspecialchars($back,ENT_QUOTES, 'UTF-8').'" data-tr-next="'.htmlspecialchars($next,ENT_QUOTES, 'UTF-8').'" data-tr-not-available="'.htmlspecialchars($l->t('No Appointments Available'),ENT_QUOTES, 'UTF-8').'">';
+                ?>
         </div>
         <label for="srgdev-ncfp_fname" class="srgdev-ncfp-form-label"><?php p($l->t("Name:"))?></label>
         <input name="name" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter Name")); ?>" id="srgdev-ncfp_fname" class="srgdev-ncfp-form-input" type="text">

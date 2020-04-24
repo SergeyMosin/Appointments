@@ -119,7 +119,7 @@
         <div  v-show="visibleSection===0" class="srgdev-appt-main-sec">
             <ul class="srgdev-appt-main-info">
                 <li>{{t('appointments', 'Public Page Preview')}}</li>
-                <ActionButton icon="icon-clippy" @click="copyPubLink">{{t('appointments', 'Copy public link')}}</ActionButton>
+                <ActionButton class="srgdev-appt-main-pub-link" icon="icon-clippy" @click="copyPubLink">{{t('appointments', 'Copy public link')}}</ActionButton>
             </ul>
             <div class="srgdev-appt-main-frame-cont">
                 <iframe class="srgdev-appt-main-frame" ref="pubPageRef" :src="pubPage"></iframe>
