@@ -49,6 +49,9 @@ form{
     <p class="srgdev-appt-hs-p">Enable sharing and pass along the public page link. Upcoming appointments will be available on the booking page.</p>
     <h2 class="srgdev-appt-hs-h1">7. Check Status in the Calendar</h2>
     <p class="srgdev-appt-hs-p">Once an appointment is booked it will be visible in the calendar with "⌛ pending" status. The attendee can "✔️ Confirm" or "<span style="text-decoration: line-through">Cancel</span>" the appointment via an email link, the status change will be reflected in the calendar upon page reload.</p>
+    <?php
+        echo "TEST";
+    ?>
 
 </div>
 
