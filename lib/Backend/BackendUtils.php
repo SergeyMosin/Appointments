@@ -246,6 +246,10 @@ class BackendUtils{
 
         $evt->STATUS->setValue('CANCELLED');
 
+        if(!isset($evt->TRANSP)) $evt->add('TRANSP');
+        $evt->TRANSP->setValue("TRANSPARENT");
+
+
     }
 
 
