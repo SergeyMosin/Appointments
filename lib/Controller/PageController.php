@@ -1014,6 +1014,7 @@ class PageController extends Controller {
                 "BEGIN:VEVENT\r\n" .
                 "SUMMARY:".$available .
                 "STATUS:TENTATIVE\r\n" .
+                "TRANSP:TRANSPARENT\r\n".
                 "LAST-MODIFIED:" . $cr_date_rn .
                 "DTSTAMP:" . $cr_date_rn .
                 "SEQUENCE:1\r\n" .

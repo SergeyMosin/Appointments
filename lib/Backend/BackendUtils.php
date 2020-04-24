@@ -140,6 +140,9 @@ class BackendUtils{
         if(!isset($evt->STATUS)) $evt->add('STATUS');
         $evt->STATUS->setValue("CONFIRMED");
 
+        if(!isset($evt->TRANSP)) $evt->add('TRANSP');
+        $evt->TRANSP->setValue("OPAQUE");
+
         // Attendee's timezone info at the time of booking
         if(!isset($evt->{self::TZI_PROP})) $evt->add(self::TZI_PROP);
         $evt->{self::TZI_PROP}->setValue($info['tzi']);
