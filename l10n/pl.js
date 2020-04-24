@@ -112,6 +112,8 @@ OC.L10N.register(
     "No Appointments Available" : "Brak wolnych terminów",
     "Date & Time:" : "Data i godzina:",
     "Select Date & Time" : "Wybierz datę i godzinę",
+    "Back" : "Wróć",
+    "Next" : "Następny",
     "Enter Name" : "Wpisz nazwę",
     "Enter Email" : "Wpisz e-mail",
     "Enter Phone Number" : "Wpisz numer telefonu",

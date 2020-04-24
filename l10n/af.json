@@ -6,6 +6,8 @@
     "Deleted" : "Geskrap",
     "Confirmed" : "Bevestig",
     "Start" : "Start",
-    "Location:" : "Ligging:"
+    "Location:" : "Ligging:",
+    "Back" : "Terug",
+    "Next" : "Volgende"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

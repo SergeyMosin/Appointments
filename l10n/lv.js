@@ -10,6 +10,8 @@ OC.L10N.register(
     "Deleted" : "Dzēstie",
     "Confirmed" : "Apstiprināts",
     "Start" : "Sākt",
-    "Location:" : "Vieta:"
+    "Location:" : "Vieta:",
+    "Back" : "Atpakaļ",
+    "Next" : "Nākamā"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");

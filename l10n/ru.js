@@ -73,6 +73,8 @@ OC.L10N.register(
     "No Appointments Available" : "Нет доступного времени для записи",
     "Date & Time:" : "Дата и время:",
     "Select Date & Time" : "Выберите дату и время",
+    "Back" : "Назад",
+    "Next" : "Далее",
     "Enter Name" : "Введите имя",
     "Enter Email" : "Введите адрес эл. почты",
     "Enter Phone Number" : "Введите номер телефона",

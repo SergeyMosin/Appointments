@@ -6,6 +6,8 @@
     "Apply" : "Applicar",
     "Deleted" : "Delite",
     "Confirmed" : "Confirmate",
-    "Start" : "Initio"
+    "Start" : "Initio",
+    "Back" : "Retro",
+    "Next" : "Sequente"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

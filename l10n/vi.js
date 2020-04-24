@@ -70,6 +70,8 @@ OC.L10N.register(
     "No Appointments Available" : "Không có các lịch hẹn khả dụng",
     "Date & Time:" : "Ngày và Giờ:",
     "Select Date & Time" : "Chọn Ngày và Giờ",
+    "Back" : "Quay lại",
+    "Next" : "Kế tiếp",
     "Enter Name" : "Nhập Tên",
     "Enter Email" : "Nhập Thư điện tử",
     "Enter Phone Number" : "Nhập Số Điện Thoại",

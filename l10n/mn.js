@@ -9,6 +9,8 @@ OC.L10N.register(
     "Deleted" : "Устгагдсан",
     "Confirmed" : "Баталгаажсан",
     "Start" : "эхлэх",
-    "Location:" : "Байршил:"
+    "Location:" : "Байршил:",
+    "Back" : "буцах",
+    "Next" : "дараагийх"
 },
 "nplurals=2; plural=(n != 1);");

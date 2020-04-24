@@ -8,6 +8,8 @@
     "Confirmed" : "E konfirmuar",
     "Start" : "Fillo",
     "close" : "mbyll",
-    "Location:" : "Vendndodhje:"
+    "Location:" : "Vendndodhje:",
+    "Back" : "Prapa",
+    "Next" : "Tjetër"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
