@@ -1,4 +1,8 @@
-## 1.4.2 - 2020-04-22
+## 1.4.4 - 2020-04-23
+### Fixed
+- Minor fixes
+
+## 1.4.3 - 2020-04-23
 ### Fixed
 - issue #61: emails not sent on postgres instances
 ### Changed
