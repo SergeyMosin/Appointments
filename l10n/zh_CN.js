@@ -68,6 +68,8 @@ OC.L10N.register(
     "No Appointments Available" : "没有可用预约",
     "Date & Time:" : "日期和时间：",
     "Select Date & Time" : "选择日期和时间",
+    "Back" : "返回",
+    "Next" : "下一个",
     "Enter Name" : "输入名称",
     "Enter Email" : "输入电子邮箱",
     "Enter Phone Number" : "输入电话号码",

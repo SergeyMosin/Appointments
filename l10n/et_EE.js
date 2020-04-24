@@ -10,6 +10,8 @@ OC.L10N.register(
     "Deleted" : "Kustutatud",
     "Confirmed" : "Kinnitatud",
     "Start" : "Algus",
-    "Location:" : "Asukoht:"
+    "Location:" : "Asukoht:",
+    "Back" : "Tagasi",
+    "Next" : "Järgmine"
 },
 "nplurals=2; plural=(n != 1);");

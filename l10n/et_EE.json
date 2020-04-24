@@ -8,6 +8,8 @@
     "Deleted" : "Kustutatud",
     "Confirmed" : "Kinnitatud",
     "Start" : "Algus",
-    "Location:" : "Asukoht:"
+    "Location:" : "Asukoht:",
+    "Back" : "Tagasi",
+    "Next" : "Järgmine"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

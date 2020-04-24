@@ -7,6 +7,8 @@
     "Deleted" : "Устгагдсан",
     "Confirmed" : "Баталгаажсан",
     "Start" : "эхлэх",
-    "Location:" : "Байршил:"
+    "Location:" : "Байршил:",
+    "Back" : "буцах",
+    "Next" : "дараагийх"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -18,6 +18,7 @@ OC.L10N.register(
     "Available" : "Disponible",
     "Appointments" : "Cites",
     "Close" : "Tanca",
+    "Copy public link" : "Copiar l'enllaç públic",
     "Apply" : "Aplica",
     "Deleted" : "Suprimit",
     "Confirmed" : "Confirmat",

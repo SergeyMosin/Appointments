@@ -75,6 +75,8 @@ OC.L10N.register(
     "No Appointments Available" : "Keine Termine verfügbar",
     "Date & Time:" : "Datum & Uhrzeit:",
     "Select Date & Time" : "Datum & Uhrzeit auswählen",
+    "Back" : "Zurück",
+    "Next" : "Benötigt keine Übersetzung. Für iOS wird nur die formelle Übersetzung verwendet (de_DE).",
     "Enter Name" : "Namen eingeben",
     "Enter Email" : "E-Mail eingeben",
     "Enter Phone Number" : "Telefonnummer eingeben",

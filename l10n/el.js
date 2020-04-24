@@ -112,6 +112,8 @@ OC.L10N.register(
     "No Appointments Available" : "Δεν υπάρχουν Διαθέσιμα Ραντεβού",
     "Date & Time:" : "Ημερομηνία & Ώρα:",
     "Select Date & Time" : "Επιλογή Ημερομηνίας & Ώρας",
+    "Back" : "Πίσω",
+    "Next" : "Επόμενο",
     "Enter Name" : "Εισαγωγή Ονόματος",
     "Enter Email" : "Εισαγωγή Ηλ. ταχυδρομείου",
     "Enter Phone Number" : "Εισαγωγή Αριθμού Τηλεφώνου",

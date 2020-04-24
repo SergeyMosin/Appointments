@@ -10,6 +10,8 @@ OC.L10N.register(
     "Confirmed" : "E konfirmuar",
     "Start" : "Fillo",
     "close" : "mbyll",
-    "Location:" : "Vendndodhje:"
+    "Location:" : "Vendndodhje:",
+    "Back" : "Prapa",
+    "Next" : "Tjetër"
 },
 "nplurals=2; plural=(n != 1);");

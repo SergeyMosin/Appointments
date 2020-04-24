@@ -8,6 +8,8 @@ OC.L10N.register(
     "Apply" : "Applicar",
     "Deleted" : "Delite",
     "Confirmed" : "Confirmate",
-    "Start" : "Initio"
+    "Start" : "Initio",
+    "Back" : "Retro",
+    "Next" : "Sequente"
 },
 "nplurals=2; plural=(n != 1);");
