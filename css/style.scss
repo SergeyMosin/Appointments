@@ -461,7 +461,7 @@ textarea.appt-stn-txt-ta{
 	overflow: scroll;
 }
 .srgdev-appt-hs-inner{
-	margin: 3em 4.5em;
+	margin: 0 4.5em 3em;
 	line-height: 1.2;
 }
 
@@ -488,6 +488,15 @@ textarea.appt-stn-txt-ta{
 	font-size: 95%;
 	cursor: text;
 }
+.srgdev-appt-hs-tz-img{
+	width: 90%;
+	display: block;
+	margin: .5em 0 2em;
+}
+.srgdev-appt-hs-p_t{
+	padding-top: 1em;
+}
+
 .srgdev-appt-info-lcont{
 	display: block;
 	position: relative;

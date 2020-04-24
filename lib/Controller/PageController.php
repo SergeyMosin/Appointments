@@ -877,24 +877,11 @@ class PageController extends Controller {
 
     /**
      * @NoAdminRequired
+     * @NoCSRFRequired
      * @throws \Exception
      */
     public function help(){
-
-        $f=\OC::$server->getAppManager()->getAppPath($this->appName).'/templates/help.php';
-
-        // Include
-        ob_start();
-        try {
-            include $f;
-            $data = ob_get_contents();
-        } catch (\Exception $e) {
-            @ob_end_clean();
-            throw $e;
-        }
-        @ob_end_clean();
-
-        return $data;
+        return new TemplateResponse($this->appName,'help', [],"base");
     }
 
     /**
