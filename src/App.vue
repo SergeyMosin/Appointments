@@ -175,8 +175,6 @@
     import UserStnSlideBar from "./components/UserStnSlideBar.vue";
     import MailStnSlideBar from "./components/MailStnSlideBar.vue";
 
-    import {linkTo} from '@nextcloud/router'
-
     export default {
         name: 'App',
         components: {
@@ -401,7 +399,7 @@
 
                 this.getState("get_tz").then(res=>{
                     if(res!==null && res.toLowerCase()!=='utc') {
-                        let url=linkTo('appointments','ajax/zones.json')
+                        let url=OC.webroot+'/apps/appointments/ajax/zones.json'
                         return axios.get(url).then(tzr=>{
                             if(tzr.status===200) {
                                 let tzd=tzr.data
