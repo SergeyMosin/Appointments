@@ -1,3 +1,9 @@
+## 1.4.6 - 2020-04-24
+### Changed
+- Free/Busy - issue #57
+### Fixed
+- translations 
+
 ## 1.4.5 - 2020-04-23
 ### Fixed
 - Makefile and path to timezones.json
