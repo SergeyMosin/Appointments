@@ -7,6 +7,8 @@
     "Deleted" : "Deleted",
     "Confirmed" : "Confirmed",
     "Start" : "Start",
-    "Location:" : "Location:"
+    "Location:" : "Location:",
+    "Back" : "Back",
+    "Next" : "Next"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -10,6 +10,8 @@ OC.L10N.register(
     "Deleted" : "Slettet",
     "Confirmed" : "Bekreftet",
     "Start" : "Start",
-    "Location:" : "Sted:"
+    "Location:" : "Sted:",
+    "Back" : "Tilbake",
+    "Next" : "Neste"
 },
 "nplurals=2; plural=(n != 1);");

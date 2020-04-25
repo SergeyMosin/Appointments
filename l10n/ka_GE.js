@@ -9,6 +9,8 @@ OC.L10N.register(
     "Deleted" : "გაუქმდა",
     "Confirmed" : "დადასტურებლია",
     "Start" : "დაწყება",
-    "Location:" : "ადგილმდებარეობა:"
+    "Location:" : "ადგილმდებარეობა:",
+    "Back" : "უკან",
+    "Next" : "შემდეგი"
 },
 "nplurals=2; plural=(n!=1);");

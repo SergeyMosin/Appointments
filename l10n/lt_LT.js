@@ -86,6 +86,8 @@ OC.L10N.register(
     "No Appointments Available" : "Nėra prieinamų susitikimų",
     "Date & Time:" : "Data ir laikas:",
     "Select Date & Time" : "Pasirinkite datą ir laiką",
+    "Back" : "Atgal",
+    "Next" : "Kitas",
     "Enter Name" : "Įveskite pavadinimą",
     "Enter Email" : "Įveskite el. paštą",
     "Enter Phone Number" : "Įveskite telefono numerį",

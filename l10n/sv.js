@@ -73,6 +73,8 @@ OC.L10N.register(
     "No Appointments Available" : "Inga möten tillgängliga",
     "Date & Time:" : "Datum & tid:",
     "Select Date & Time" : "Välj datum & tid",
+    "Back" : "Tillbaka",
+    "Next" : "Nästa",
     "Enter Name" : "Ange namn",
     "Enter Email" : "Ange e-post",
     "Enter Phone Number" : "Ange telefonnummer",

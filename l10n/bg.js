@@ -11,6 +11,8 @@ OC.L10N.register(
     "Deleted" : "Изтрито",
     "Confirmed" : "Потвърдено",
     "Start" : "Начало",
-    "Location:" : "Местоположение:"
+    "Location:" : "Местоположение:",
+    "Back" : "Назад",
+    "Next" : "Напред"
 },
 "nplurals=2; plural=(n != 1);");

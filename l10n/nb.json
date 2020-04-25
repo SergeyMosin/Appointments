@@ -8,6 +8,8 @@
     "Deleted" : "Slettet",
     "Confirmed" : "Bekreftet",
     "Start" : "Start",
-    "Location:" : "Sted:"
+    "Location:" : "Sted:",
+    "Back" : "Tilbake",
+    "Next" : "Neste"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

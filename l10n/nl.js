@@ -94,6 +94,8 @@ OC.L10N.register(
     "No Appointments Available" : "Geen afspraken beschikbaar",
     "Date & Time:" : "Datum & Tijd:",
     "Select Date & Time" : "Selecteer Datum & Tijd",
+    "Back" : "Terug",
+    "Next" : "Volgende",
     "Enter Name" : "Opgeven naam",
     "Enter Email" : "Opgeven e-mailadres",
     "Enter Phone Number" : "Invoeren telefoonnummer",

@@ -9,6 +9,8 @@ OC.L10N.register(
     "Deleted" : "Deleted",
     "Confirmed" : "Confirmed",
     "Start" : "Start",
-    "Location:" : "Location:"
+    "Location:" : "Location:",
+    "Back" : "Back",
+    "Next" : "Next"
 },
 "nplurals=2; plural=(n != 1);");

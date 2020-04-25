@@ -7,6 +7,8 @@ OC.L10N.register(
     "Apply" : "Anvend",
     "Deleted" : "Sletta",
     "Confirmed" : "Stadfesta",
-    "Start" : "Start"
+    "Start" : "Start",
+    "Back" : "Tilbake",
+    "Next" : "Neste"
 },
 "nplurals=2; plural=(n != 1);");

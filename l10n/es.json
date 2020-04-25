@@ -67,6 +67,8 @@
     "Start" : "Iniciar",
     "close" : "cerrar",
     "Name:" : "Nombre:",
-    "Location:" : "Ubicación:"
+    "Location:" : "Ubicación:",
+    "Back" : "Atrás",
+    "Next" : "Siguiente"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

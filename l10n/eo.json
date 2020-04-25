@@ -9,6 +9,8 @@
     "Confirmed" : "Konfirmita",
     "Canceled" : "Nuligita",
     "Start" : "Komenco",
-    "Location:" : "Loko:"
+    "Location:" : "Loko:",
+    "Back" : "Antaŭen",
+    "Next" : "Sekva"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -72,6 +72,8 @@ OC.L10N.register(
     "No Appointments Available" : "Ez dago hitzordurik eskuragarri",
     "Date & Time:" : "Data eta ordua",
     "Select Date & Time" : "Hautatu data eta ordua",
+    "Back" : "Atzera",
+    "Next" : "Hurrengoa",
     "Enter Name" : "Sartu izena",
     "Enter Email" : "Sartu e-posta",
     "Enter Phone Number" : "Sartu telefono zenbakia",

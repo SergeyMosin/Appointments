@@ -8,6 +8,8 @@ OC.L10N.register(
     "Apply" : "Terapkan",
     "Deleted" : "Dihapus",
     "Start" : "Mulai",
-    "Location:" : "Lokasi:"
+    "Location:" : "Lokasi:",
+    "Back" : "Kembali",
+    "Next" : "Berikutnya"
 },
 "nplurals=1; plural=0;");

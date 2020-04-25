@@ -66,6 +66,8 @@ OC.L10N.register(
     "No Appointments Available" : "Nema dostupnih dogovora",
     "Date & Time:" : "Datum i vrijeme:",
     "Select Date & Time" : "Odaberite datum i vrijeme",
+    "Back" : "Natrag",
+    "Next" : "Sljedeća",
     "Enter Name" : "Unesite naziv",
     "Enter Email" : "Unesite adresu e-pošte",
     "Enter Phone Number" : "Unesite broj telefona",

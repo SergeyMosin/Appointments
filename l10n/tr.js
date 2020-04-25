@@ -77,6 +77,8 @@ OC.L10N.register(
     "No Appointments Available" : "Herhangi Bir Randevu Yok",
     "Date & Time:" : "Tarih ve Saat:",
     "Select Date & Time" : "Tarih ve Saat Seçin",
+    "Back" : "Geri",
+    "Next" : "Sonraki",
     "Enter Name" : "Adı Yazın",
     "Enter Email" : "E-postayı Yazın",
     "Enter Phone Number" : "Telefon Numarasını Yazın",

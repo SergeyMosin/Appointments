@@ -5,6 +5,8 @@
     "Apply" : "Anvend",
     "Deleted" : "Sletta",
     "Confirmed" : "Stadfesta",
-    "Start" : "Start"
+    "Start" : "Start",
+    "Back" : "Tilbake",
+    "Next" : "Neste"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

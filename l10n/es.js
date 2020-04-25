@@ -69,6 +69,8 @@ OC.L10N.register(
     "Start" : "Iniciar",
     "close" : "cerrar",
     "Name:" : "Nombre:",
-    "Location:" : "Ubicación:"
+    "Location:" : "Ubicación:",
+    "Back" : "Atrás",
+    "Next" : "Siguiente"
 },
 "nplurals=2; plural=(n != 1);");

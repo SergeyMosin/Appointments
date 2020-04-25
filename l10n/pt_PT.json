@@ -8,6 +8,8 @@
     "Confirmed" : "Confirmado",
     "Start" : "Início",
     "close" : "fechar",
-    "Location:" : "Localização:"
+    "Location:" : "Localização:",
+    "Back" : "Anterior",
+    "Next" : "Próximo"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

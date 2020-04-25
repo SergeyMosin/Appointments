@@ -114,6 +114,7 @@ OC.L10N.register(
     "Select Date & Time" : "Datum & Uhrzeit auswählen",
     "Back" : "Zurück",
     "Next" : "Weiter",
+    "Select Date and Time" : "Datum und Zeit wählen",
     "Enter Name" : "Name eingeben",
     "Enter Email" : "E-Mail eingeben",
     "Enter Phone Number" : "Telefonnummer eingeben",

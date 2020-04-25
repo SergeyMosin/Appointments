@@ -11,6 +11,8 @@ OC.L10N.register(
     "Confirmed" : "Bekræftet",
     "Start" : "Start",
     "close" : "luk",
-    "Location:" : "Sted:"
+    "Location:" : "Sted:",
+    "Back" : "Tilbage",
+    "Next" : "Næste"
 },
 "nplurals=2; plural=(n != 1);");
