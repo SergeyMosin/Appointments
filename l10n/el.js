@@ -114,6 +114,7 @@ OC.L10N.register(
     "Select Date & Time" : "Επιλογή Ημερομηνίας & Ώρας",
     "Back" : "Πίσω",
     "Next" : "Επόμενο",
+    "Select Date and Time" : "Επιλογή Ημερομηνίας και Ώρας",
     "Enter Name" : "Εισαγωγή Ονόματος",
     "Enter Email" : "Εισαγωγή Ηλ. ταχυδρομείου",
     "Enter Phone Number" : "Εισαγωγή Αριθμού Τηλεφώνου",
