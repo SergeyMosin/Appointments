@@ -1,3 +1,12 @@
+## 1.4.8 - 2020-04-28
+### Change
+- Timezone info in the help section
+### Added
+- Longer hours in the 'Schedule Generator' issues #62
+### Fixed
+- Error reporting when 'Schedule Generator' fails
+- Do not re-run old update-hook.
+
 ## 1.4.6 - 2020-04-24
 ### Changed
 - Free/Busy - issue #57
