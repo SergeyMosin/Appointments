@@ -910,16 +910,16 @@ class PageController extends Controller {
         if(empty($ds)) return '1:No Data';
         $data=explode(',',$ds);
         $c=count($data);
-        if($c<3) return '1:Bad Data Length '.$c;
+        if($c<3) return '1:'.$this->l->t("Please add add timeslots first.")." [DL = ".$c."]";
 
         $cal_id=$this->c->getUserValue(
             $userId,
             $this->appName,
             'cal_id');
-        if(empty($cal_id)) return '1:No calendar URI';
+        if(empty($cal_id)) return '1:'.$this->l->t("Please select a calendar first");
 
         $cal=$this->bc->getCalendarById($cal_id,$userId);
-        if($cal===null) return '1:Can not find calendar';
+        if($cal===null) return '1:'.$this->l->t("Selected calendar not found");
 
         $tz_id="";
         $tz_Z="";
@@ -942,7 +942,7 @@ class PageController extends Controller {
             $this->appName,
             BackendUtils::KEY_O_EMAIL);
         if(empty($u_email)) $u_email=$u->getEMailAddress();
-        if(empty($u_email)) return '1:Cant find your email';
+        if(empty($u_email)) return '1:'.$this->l->t("Your email address is required for this operation.");
 
 //        ESCAPED-CHAR = ("\\" / "\;" / "\," / "\N" / "\n")
 //        \\ encodes \ \N or \n encodes newline \; encodes ; \, encodes ,
@@ -950,17 +950,17 @@ class PageController extends Controller {
             $userId,
             $this->appName,
             BackendUtils::KEY_O_ADDR);
-        if(empty($u_addr)) return '1:Cant find your address';
+        if(empty($u_addr)) return '1:'.$this->l->t("A location, address or URL is required for this operation. Check User/Organization settings.");
         $u_addr=str_replace(array("\\",";",",","\r\n","\r","\n"),array('\\\\','\;','\,',' \n',' \n',' \n'),$u_addr);
 
-//        $u_name=trim($this->c->getUserValue(
-//            $this->userId,
-//            $this->appName,
-//            self::KEY_O_NAME));
-//        if(empty($u_name)) $u_name=trim($u->getDisplayName());
-
         $u_name=trim($u->getDisplayName());
-        if(empty($u_name)) return '1:Cant find your name';
+        if(empty($u_name)){
+            $u_name=trim($this->c->getUserValue(
+                $this->userId,
+                $this->appName,
+                BackendUtils::KEY_O_NAME));
+        }
+        if(empty($u_name)) return '1:'.$this->l->t("Can't find your name. Check User/Organization settings.");
 
         $cr_date_rn=$data[0].$rn;
         $pieces = [];

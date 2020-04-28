@@ -101,7 +101,8 @@
                         {{t('appointments', 'All appointments had been added to {calendarName} calendar.', {calendarName:curCal.name})}}
                     </div>
                     <div v-if="evtGridModal===3" class="srgdev-appt-modal-lbl">
-                        {{t('appointments', 'Error occurred. Check console...')}}
+                        <span v-show="modalErrTxt!==''">{{modalErrTxt}}</span>
+                        <span v-show="modalErrTxt===''">{{t('appointments', 'Error occurred. Check console...')}}</span>
                     </div>
                     <div v-if="evtGridModal===4" class="srgdev-appt-modal-lbl">
                         <div style="font-size: 110%;font-weight: bold">{{modalHeader}}</div>
@@ -217,6 +218,7 @@
 
                 evtGridData:[],
                 evtGridModal:0,
+                modalErrTxt:"",
                 modalHeader:"",
                 modalText:"",
 
@@ -721,6 +723,9 @@
                         if(response.data.substr(0,1)!=='0'){
                             // error
                             console.log(response.data);
+                            if(response.data.length>6){
+                                this.modalErrTxt=response.data.substr(2)
+                            }
                             this.evtGridModal=3
                         }else{
                             // good
@@ -728,6 +733,8 @@
                         }
                     }
                 }).catch(error=>{
+                    // What text can we get from the error ???
+                    this.modalErrTxt=""
                     this.evtGridModal=3
                     console.log(error);
                 })
@@ -742,6 +749,7 @@
 
             closeEvtModal(){
                 if(this.evtGridModal<3) this.getFormData()
+                this.modalErrTxt=""
                 this.evtGridModal=0
             },
 
