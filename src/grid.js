@@ -169,7 +169,7 @@ function _apptGridMaker() {
 
         if(idx!==null) {
 
-            // TODO: delegate these events to parent ???
+            // TODO: delegate these events to the parent ???
             elm.addEventListener("mousedown", appGoDrag)
 
             mData.mc_pos[cID].push(uTop, uTop + uLen - 1)
