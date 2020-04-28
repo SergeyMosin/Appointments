@@ -370,7 +370,11 @@ class DavListener {
 
             if(!isset($evt->SUMMARY)) $evt->add('SUMMARY');
             $evt->SUMMARY->setValue($this->l10N->t("%s Appointment",[$org_name]));
-            
+
+            if(isset($evt->{BackendUtils::TZI_PROP})){
+                $evt->remove($evt->{BackendUtils::TZI_PROP});
+            }
+
             $msg->attach(
                 $mailer->createAttachment(
                     $vObject->serialize(),
