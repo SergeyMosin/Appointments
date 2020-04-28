@@ -50,6 +50,8 @@ OC.L10N.register(
     "Phone:" : "Telefon:",
     "Date & Time:" : "Datum in ura:",
     "Select Date & Time" : "Izbor datuma in ure",
+    "Back" : "Nazaj",
+    "Next" : "Naprej",
     "Enter Name" : "Vpis imena",
     "Enter Email" : "Vpis elektronskega naslova",
     "Enter Phone Number" : "Vpis telefonske številke",

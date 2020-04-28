@@ -9,6 +9,8 @@ OC.L10N.register(
     "Deleted" : "Desanicióse",
     "Confirmed" : "Confirmáu",
     "Start" : "Aniciu",
-    "Location:" : "Llocalización:"
+    "Location:" : "Llocalización:",
+    "Back" : "Atrás",
+    "Next" : "Siguiente"
 },
 "nplurals=2; plural=(n != 1);");

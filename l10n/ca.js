@@ -25,6 +25,8 @@ OC.L10N.register(
     "Canceled" : "Cancel·lat",
     "Start" : "Inici",
     "close" : "tanca",
-    "Location:" : "Ubicació:"
+    "Location:" : "Ubicació:",
+    "Back" : "Enrere",
+    "Next" : "Següent"
 },
 "nplurals=2; plural=(n != 1);");

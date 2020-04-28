@@ -12,6 +12,8 @@ OC.L10N.register(
     "Confirmed" : "확인됨",
     "Start" : "Start",
     "close" : "닫기",
-    "Location:" : "위치:"
+    "Location:" : "위치:",
+    "Back" : "뒤로",
+    "Next" : "Next"
 },
 "nplurals=1; plural=0;");

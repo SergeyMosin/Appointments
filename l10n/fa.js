@@ -12,6 +12,8 @@ OC.L10N.register(
     "Confirmed" : "تایید شده",
     "Start" : "شروع کنید",
     "close" : "بستن",
-    "Location:" : "مکان:"
+    "Location:" : "مکان:",
+    "Back" : "بازگشت",
+    "Next" : "بعدی"
 },
 "nplurals=2; plural=(n > 1);");

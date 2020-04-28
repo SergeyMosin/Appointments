@@ -23,6 +23,8 @@
     "Canceled" : "Cancel·lat",
     "Start" : "Inici",
     "close" : "tanca",
-    "Location:" : "Ubicació:"
+    "Location:" : "Ubicació:",
+    "Back" : "Enrere",
+    "Next" : "Següent"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

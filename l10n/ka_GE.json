@@ -7,6 +7,8 @@
     "Deleted" : "გაუქმდა",
     "Confirmed" : "დადასტურებლია",
     "Start" : "დაწყება",
-    "Location:" : "ადგილმდებარეობა:"
+    "Location:" : "ადგილმდებარეობა:",
+    "Back" : "უკან",
+    "Next" : "შემდეგი"
 },"pluralForm" :"nplurals=2; plural=(n!=1);"
 }

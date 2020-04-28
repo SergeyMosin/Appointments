@@ -25,6 +25,8 @@ OC.L10N.register(
     "Confirmed" : "確認済み",
     "Start" : "出発地点",
     "close" : "閉じる",
-    "Location:" : "市区町村:"
+    "Location:" : "市区町村:",
+    "Back" : "戻る",
+    "Next" : "次へ"
 },
 "nplurals=1; plural=0;");

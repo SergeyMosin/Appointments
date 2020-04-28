@@ -55,6 +55,8 @@ OC.L10N.register(
     "No Appointments Available" : "Nincs Elérhető Találkozó ",
     "Date & Time:" : "Dárum és Idő:",
     "Select Date & Time" : "Dátum és Idő Kiválasztása",
+    "Back" : "Vissza",
+    "Next" : "Következő",
     "Enter Name" : "Név Megadása",
     "Enter Email" : "Email megadása",
     "Enter Phone Number" : "Telefonszám Megadása",

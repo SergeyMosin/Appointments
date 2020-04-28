@@ -10,6 +10,8 @@ OC.L10N.register(
     "Confirmed" : "Confirmado",
     "Start" : "Início",
     "close" : "fechar",
-    "Location:" : "Localização:"
+    "Location:" : "Localização:",
+    "Back" : "Anterior",
+    "Next" : "Próximo"
 },
 "nplurals=2; plural=(n != 1);");

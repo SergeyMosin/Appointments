@@ -9,6 +9,8 @@
     "Confirmed" : "Bekræftet",
     "Start" : "Start",
     "close" : "luk",
-    "Location:" : "Sted:"
+    "Location:" : "Sted:",
+    "Back" : "Tilbage",
+    "Next" : "Næste"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

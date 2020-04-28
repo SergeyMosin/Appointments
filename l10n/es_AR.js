@@ -5,6 +5,7 @@ OC.L10N.register(
     "Cancel" : "Cancelar",
     "Info" : "Info",
     "Close" : "Cerrar",
+    "Copy public link" : "Copiar link publico",
     "Apply" : "Aplicar",
     "Deleted" : "Borrado",
     "Confirmed" : "Confirmado",

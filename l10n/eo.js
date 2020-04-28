@@ -11,6 +11,8 @@ OC.L10N.register(
     "Confirmed" : "Konfirmita",
     "Canceled" : "Nuligita",
     "Start" : "Komenco",
-    "Location:" : "Loko:"
+    "Location:" : "Loko:",
+    "Back" : "Antaŭen",
+    "Next" : "Sekva"
 },
 "nplurals=2; plural=(n != 1);");

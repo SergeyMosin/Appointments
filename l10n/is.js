@@ -49,6 +49,8 @@ OC.L10N.register(
     "No Appointments Available" : "Engin stefnumót tiltæk",
     "Date & Time:" : "Dagsetning og tími:",
     "Select Date & Time" : "Veldu dagsetningu og tíma",
+    "Back" : "Til baka",
+    "Next" : "Næsta",
     "Enter Name" : "Settu inn nafn",
     "Enter Email" : "Settu inn tölvupóstfang",
     "Enter Phone Number" : "Settu inn símanúmer",

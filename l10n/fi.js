@@ -68,6 +68,8 @@ OC.L10N.register(
     "No Appointments Available" : "Tapaamisia ei ole saatavilla",
     "Date & Time:" : "Päivä ja aika:",
     "Select Date & Time" : "Valitse päivä ja aika",
+    "Back" : "Takaisin",
+    "Next" : "Seuraava",
     "Enter Name" : "Kirjoita nimi",
     "Enter Email" : "Kirjoita sähköpostiosoite",
     "Enter Phone Number" : "Kirjoita puhelinnumero",

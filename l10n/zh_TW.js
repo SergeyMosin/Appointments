@@ -13,6 +13,8 @@ OC.L10N.register(
     "Start" : "起點",
     "close" : " 關閉",
     "Name:" : "姓名：",
-    "Location:" : "地點："
+    "Location:" : "地點：",
+    "Back" : "返回",
+    "Next" : "下一個"
 },
 "nplurals=1; plural=0;");

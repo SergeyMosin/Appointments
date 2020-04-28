@@ -13,3 +13,5 @@
 ---
 ## Getting Started...
 [Help/Tutorial](https://htmlpreview.github.io/?https://github.com/SergeyMosin/Appointments/blob/master/templates/help.php)
+
+[Timezone Settings](https://github.com/SergeyMosin/Appointments/issues/58#issuecomment-619092772)
