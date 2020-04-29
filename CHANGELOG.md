@@ -1,3 +1,9 @@
+## 1.4.9 - 2020-04-29
+### Added
+- Option to hide phone number input
+### Fixed
+- Confirm page error (regression from v1.4.8)
+
 ## 1.4.8 - 2020-04-28
 ### Change
 - Timezone info in the help section
