@@ -135,7 +135,7 @@ class BackendUtils{
         $evt->SUMMARY->setValue("⌛ ".$info['name']);
 
         if(!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
-        $evt->DESCRIPTION->setValue($info['name']."\n".$info['phone']."\n".$info['email']);
+        $evt->DESCRIPTION->setValue($info['name']."\n".(empty($info['phone'])?"":($info['phone']."\n")).$info['email']);
 
         if(!isset($evt->STATUS)) $evt->add('STATUS');
         $evt->STATUS->setValue("CONFIRMED");

@@ -51,6 +51,11 @@
                     title="Advanced Settings"
                     :open="false">
                     <template slot="content">
+                        <div style="padding-top: .5em"><input
+                                v-model="ppsInfo.hidePhone"
+                                type="checkbox"
+                                id="srgdev-appt_pps-hide-phone"
+                                class="checkbox"><label for="srgdev-appt_pps-hide-phone">{{t('appointments','Hide phone number field')}}</label></div>
                         <div class="srgdev-appt-info-lcont">
                             <label class="pps-txt-label" for="srgdev-appt_pps-gdpr">{{t('appointments','GDPR Compliance')}}</label><a
                                 class="icon-info srgdev-appt-info-link"
@@ -73,6 +78,7 @@
                             <option value="mark">{{t('appointments','Mark the appointment as canceled')}}</option>
                             <option value="reset">{{t('appointments','Reset (make the timeslot available)')}}</option>
                         </select>
+
                         <label class="pps-txt-label" for="srgdev-appt_pps-page-title">{{t('appointments','Page Header Title:')}}</label>
                         <input
                                 v-model="ppsInfo.pageTitle"
@@ -134,6 +140,7 @@
                         time2Cols: false,
                         gdpr: "",
                         whenCanceled:"mark",
+                        hidePhone:false,
                         pageTitle:"",
                         pageSubTitle:"",
                         pageStyle:""

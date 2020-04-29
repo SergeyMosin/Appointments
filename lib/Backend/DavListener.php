@@ -399,9 +399,9 @@ class DavListener {
         if(!empty($om_prefix) && isset($om_info)) {
             // $om_info should have attendee info separated by \n
             $oma=explode("\n",$om_info);
-
-
-            if(count($oma)>2) {
+            // At least two parts (name and email, [phone optional])
+            $omc=count($oma);
+            if($omc>1 && $omc<5) {
 
                 $evt_dt=$evt->DTSTART->getDateTime();
                 // Here we need organizer's timezone for getDateTimeString()
@@ -428,8 +428,9 @@ class DavListener {
                     \OC::$server->getLogger()->error("Can not send email to ".$org_email);
                     return;
                 }
+            }else{
+                \OC::$server->getLogger()->error("Bad oma count");
             }
         }
-
     }
 }

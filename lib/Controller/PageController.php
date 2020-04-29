@@ -30,6 +30,7 @@ class PageController extends Controller {
     const PSN_FNED="startFNED";
     const PSN_WEEKEND="showWeekends";
     const PSN_TIME2="time2Cols";
+    const PSN_HIDE_TEL="hidePhone";
     const PSN_GDPR="gdpr";
     const PSN_ON_CANCEL="whenCanceled";
     const PSN_PAGE_TITLE="pageTitle";
@@ -43,6 +44,7 @@ class PageController extends Controller {
         self::PSN_FNED=>false, // start at first not empty day
         self::PSN_WEEKEND=>false,
         self::PSN_TIME2=>false,
+        self::PSN_HIDE_TEL=>false,
         self::PSN_GDPR=>"",
         self::PSN_ON_CANCEL=>"mark",
         self::PSN_PAGE_TITLE=>"",
@@ -604,7 +606,15 @@ class PageController extends Controller {
             return $rr;
         }
 
+        $pps=$this->utils->getUserSettings(
+            self::KEY_PSN,self::PSN_DEF,
+            $uid,$this->appName);
+        $hide_phone=$pps[self::PSN_HIDE_TEL];
+
         $post=$this->request->getParams();
+
+        // this will pass validation
+        if($hide_phone) $post['phone']="1234567890";
 
         if(!isset($post['adatetime']) || strlen($post['adatetime'])>127
             || preg_match('/[^a-zA-Z0-9+\/=]/',$post['adatetime'])
@@ -646,6 +656,7 @@ class PageController extends Controller {
         }
 
         $post['name']=htmlspecialchars($post['name'], ENT_QUOTES, 'UTF-8');
+        if($hide_phone) $post['phone']="";
 
         // Input seems OK...
 
@@ -788,7 +799,8 @@ class PageController extends Controller {
             'appt_form_title'=>!empty($ft)?$ft:$this->l->t('Book Your Appointment'),
             'appt_pps'=>'',
             'appt_gdpr'=>'',
-            'appt_inline_style'=>$pps[self::PSN_PAGE_STYLE]
+            'appt_inline_style'=>$pps[self::PSN_PAGE_STYLE],
+            'appt_hide_phone'=>$pps[self::PSN_HIDE_TEL]
         ];
 
         // google recaptcha
