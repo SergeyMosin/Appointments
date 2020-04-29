@@ -313,6 +313,8 @@ class DavListener {
         $msg->setTo(array($to_email));
         $msg->useTemplate($tmpl);
 
+        $utz_info=$evt->{BackendUtils::TZI_PROP}->getValue()[0];
+
         // .ics attachment
         if($hint!== BackendUtils::APPT_SES_BOOK && $eml_settings[BackendUtils::EML_ICS]===true){
 
@@ -403,7 +405,7 @@ class DavListener {
 
                 $evt_dt=$evt->DTSTART->getDateTime();
                 // Here we need organizer's timezone for getDateTimeString()
-                $utz_info=$evt->{BackendUtils::TZI_PROP}->getValue()[0].$utils->getUserTimezone($userId,$config)->getName();
+                $utz_info.=$utils->getUserTimezone($userId,$config)->getName();
 
                 $tmpl = $mailer->createEMailTemplate("ID_" . time());
                 $tmpl->setSubject($om_prefix . ": " . $to_name . ", "
