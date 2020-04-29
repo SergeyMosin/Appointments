@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2020-04-28 03:17+0000\n"
+"POT-Creation-Date: 2020-04-29 03:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -185,8 +185,34 @@ msgstr ""
 msgid "Book Your Appointment"
 msgstr ""
 
+#: /app/lib/Controller/PageController.php:913
+msgid "Please add add timeslots first."
+msgstr ""
+
+#: /app/lib/Controller/PageController.php:919
+msgid "Please select a calendar first"
+msgstr ""
+
+#: /app/lib/Controller/PageController.php:922
+msgid "Selected calendar not found"
+msgstr ""
+
+#: /app/lib/Controller/PageController.php:945
+msgid "Your email address is required for this operation."
+msgstr ""
+
+#: /app/lib/Controller/PageController.php:953
+msgid ""
+"A location, address or URL is required for this operation. Check User/"
+"Organization settings."
+msgstr ""
+
+#: /app/lib/Controller/PageController.php:963
+msgid "Can't find your name. Check User/Organization settings."
+msgstr ""
+
 #. TRANSLATORS Appointment time is "Available"
-#: /app/lib/Controller/PageController.php:994
+#: /app/lib/Controller/PageController.php:981
 msgid "Available"
 msgstr ""
 
