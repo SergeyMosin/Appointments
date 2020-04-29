@@ -910,7 +910,7 @@ class PageController extends Controller {
         if(empty($ds)) return '1:No Data';
         $data=explode(',',$ds);
         $c=count($data);
-        if($c<3) return '1:'.$this->l->t("Please add add timeslots first.")." [DL = ".$c."]";
+        if($c<3) return '1:'.$this->l->t("Please add time slots first.")." [DL = ".$c."]";
 
         $cal_id=$this->c->getUserValue(
             $userId,
