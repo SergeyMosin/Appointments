@@ -33,12 +33,12 @@ style('appointments', 'form');
                 ?>
         </div>
         <label for="srgdev-ncfp_fname" class="srgdev-ncfp-form-label"><?php p($l->t("Name:"))?></label>
-        <input name="name" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter Name")); ?>" id="srgdev-ncfp_fname" class="srgdev-ncfp-form-input" type="text">
+        <input name="name" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter name")); ?>" id="srgdev-ncfp_fname" class="srgdev-ncfp-form-input" type="text">
         <label for="srgdev-ncfp_femail" class="srgdev-ncfp-form-label"><?php p($l->t("Email:"));?></label>
-        <input name="email" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter Email")); ?>" id="srgdev-ncfp_femail" class="srgdev-ncfp-form-input" type="email">
+        <input name="email" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter email")); ?>" id="srgdev-ncfp_femail" class="srgdev-ncfp-form-input" type="email">
         <?php
         if($_['appt_hide_phone']===false) {
-            echo '<label for="srgdev-ncfp_fphone" class="srgdev-ncfp-form-label">'.htmlspecialchars($l->t("Phone:"), ENT_QUOTES, 'UTF-8').'</label><input name="phone" ' .$disabled .' placeholder="' . htmlspecialchars($l->t("Enter Phone Number"), ENT_QUOTES, 'UTF-8') . '" id="srgdev-ncfp_fphone" class="srgdev-ncfp-form-input" type="tel">';
+            echo '<label for="srgdev-ncfp_fphone" class="srgdev-ncfp-form-label">'.htmlspecialchars($l->t("Phone:"), ENT_QUOTES, 'UTF-8').'</label><input name="phone" ' .$disabled .' placeholder="' . htmlspecialchars($l->t("Enter phone number"), ENT_QUOTES, 'UTF-8') . '" id="srgdev-ncfp_fphone" class="srgdev-ncfp-form-input" type="tel">';
         }
         if(!empty($_['appt_gdpr'])){
             echo '<div class="srgdev-ncfp-chb-cont"><input class="checkbox" type="checkbox" id="appt_gdpr_id"/>'.(strpos($_['appt_gdpr'],'appt_gdpr_id')===false?'<label for="appt_gdpr_id">'.$_['appt_gdpr'].'</label>':$_['appt_gdpr']).'</div>';

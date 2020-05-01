@@ -185,7 +185,7 @@ class DavListener {
             // Just booked, send email to the attendee requesting confirmation...
 
             // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment (action needed)
-            $tmpl->setSubject($this->l10N->t("%s Appointment (action needed)",[$org_name]));
+            $tmpl->setSubject($this->l10N->t("%s appointment (action needed)",[$org_name]));
             // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
             $tmpl->addBodyText($this->l10N->t("Dear %s,",$to_name));
 
@@ -204,20 +204,20 @@ class DavListener {
             );
 
             if($eml_settings[BackendUtils::EML_MREQ]){
-                $om_prefix=$this->l10N->t("Appointment Pending");
+                $om_prefix=$this->l10N->t("Appointment pending");
             }
 
         }elseif ($hint === BackendUtils::APPT_SES_CONFIRM){
             // Confirm link in the email is clicked
 
             // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Confirmed
-            $tmpl->setSubject($this->l10N->t("%s Appointment is Confirmed",[$org_name]));
+            $tmpl->setSubject($this->l10N->t("%s Appointment is confirmed",[$org_name]));
             $tmpl->addBodyText($to_name.",");
             // TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now confirmed.
             $tmpl->addBodyText($this->l10N->t('Your %1$s appointment scheduled for %2$s is now confirmed.',[$org_name,$date_time]));
 
             if($eml_settings[BackendUtils::EML_MCONF]) {
-                $om_prefix = $this->l10N->t("Appointment Confirmed");
+                $om_prefix = $this->l10N->t("Appointment confirmed");
             }
 
         }elseif ($hint === BackendUtils::APPT_SES_CANCEL || $eventName===self::DEL_EVT_NAME){
@@ -227,12 +227,12 @@ class DavListener {
                 // Cancelled by the attendee (via the email link)
 
                 // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Canceled
-                $tmpl->setSubject($this->l10N->t("%s Appointment is Canceled", [$org_name]));
+                $tmpl->setSubject($this->l10N->t("%s Appointment is canceled", [$org_name]));
             }else{
                 // Cancelled/deleted by the organizer
 
                 // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment Status Changed
-                $tmpl->setSubject($this->l10N->t("%s Appointment Status Changed", [$org_name]));
+                $tmpl->setSubject($this->l10N->t("%s appointment status changed", [$org_name]));
             }
 
             // TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now canceled.
@@ -241,14 +241,14 @@ class DavListener {
             $is_cancelled=true;
 
             if($eml_settings[BackendUtils::EML_MCNCL] && $hint!==null) {
-                $om_prefix = $this->l10N->t("Appointment Canceled");
+                $om_prefix = $this->l10N->t("Appointment canceled");
             }
 
         }elseif($hint === null){
             // Organizer or External Action (something changed...)
 
             // TRANSLATORS Subject for email, Ex: {{Organization Name}} appointment status update
-            $tmpl->setSubject($this->l10N->t("%s Appointment Update",[$org_name]));
+            $tmpl->setSubject($this->l10N->t("%s Appointment update",[$org_name]));
             // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
             $tmpl->addBodyText($this->l10N->t("Dear %s,",[$to_name]));
             // TRANSLATORS Main part of email
@@ -267,7 +267,7 @@ class DavListener {
                     // Non cancelled status is determined by the attendee's PARTSTAT
                     $pst = $att->parameters['PARTSTAT']->getValue();
                     if ($pst === 'NEEDS-ACTION') {
-                        $tmpl->addBodyListItem($this->l10N->t('Status: Pending Confirmation'));
+                        $tmpl->addBodyListItem($this->l10N->t('Status: Pending confirmation'));
                     } elseif ($pst === 'ACCEPTED') {
                         $tmpl->addBodyListItem($this->l10N->t('Status: Confirmed'));
                     }

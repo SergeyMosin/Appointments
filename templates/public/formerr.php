@@ -4,7 +4,7 @@ style('appointments', 'form');
 
 <div class="srgdev-ncfp-wrap">
     <div class="srgdev-appt-info-cont">
-        <h1><?php p($l->t("An Error Has Occurred"));?></h1>
+        <h1><?php p($l->t("An error has occurred"));?></h1>
         <?php
         /** @noinspection PhpUndefinedVariableInspection */
         if(!empty($_['appt_e_rc']) && $_['appt_e_rc']==='1'){
