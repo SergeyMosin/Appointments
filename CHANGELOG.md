@@ -1,3 +1,7 @@
+## 1.4.10 - 2020-05-01
+### Added
+- Translations push
+
 ## 1.4.9 - 2020-04-29
 ### Added
 - Option to hide phone number input
