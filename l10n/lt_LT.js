@@ -77,6 +77,7 @@ OC.L10N.register(
     "Timezone:" : "Laiko juosta:",
     "Start" : "Pradėti",
     "close" : "užverti",
+    "Your Contact Information" : "Jūsų kontaktinė informacija",
     "Name:" : "Pavadinimas:",
     "Email:" : "El. paštas:",
     "Location:" : "Vieta:",

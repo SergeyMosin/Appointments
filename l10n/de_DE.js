@@ -1,9 +1,9 @@
 OC.L10N.register(
     "appointments",
     {
-    "%s Appointment (action needed)" : "%s-Termin (Aktion erforderlich)",
+    "%s Appointment (action needed)" : "Termin mit %s: (Aktion erforderlich)",
     "Dear %s," : "Hallo %s,",
-    "The %1$s appointment scheduled for %2$s is awaiting your confirmation." : "Der für %2$s geplante %1$s-Termin wartet auf Ihre Bestätigung.",
+    "The %1$s appointment scheduled for %2$s is awaiting your confirmation." : "Ihr Termin mit %1$s für den %2$s Uhr wartet auf Ihre Bestätigung.",
     "Confirm" : "Bestätigen",
     "Cancel" : "Absagen",
     "Appointment Pending" : "Termin wartet auf Bestätigung",
@@ -96,7 +96,7 @@ OC.L10N.register(
     "Confirmed" : "Bestätigt",
     "Canceled" : "Abgebrochen",
     "Select Dates:" : "Termine auswählen:",
-    "Select Dates" : "Daten auswählen",
+    "Select Dates" : "Woche auswählen",
     "Appointment Duration:" : "Termindauer:",
     "Timezone:" : "Zeitzone:",
     "Start" : "Start",
