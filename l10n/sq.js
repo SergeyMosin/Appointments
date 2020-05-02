@@ -12,6 +12,7 @@ OC.L10N.register(
     "close" : "mbyll",
     "Location:" : "Vendndodhje:",
     "Back" : "Prapa",
-    "Next" : "Tjetër"
+    "Next" : "Tjetër",
+    "An error has occurred" : "Ka ndodhur një gabim"
 },
 "nplurals=2; plural=(n != 1);");

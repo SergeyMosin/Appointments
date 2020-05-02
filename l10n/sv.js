@@ -1,14 +1,11 @@
 OC.L10N.register(
     "appointments",
     {
-    "%s Appointment (action needed)" : "%s-mötet (åtgärd krävs)",
     "Dear %s," : "Bäste%s,",
     "The %1$s appointment scheduled for %2$s is awaiting your confirmation." : "%1$s-mötet inbokat den%2$s väntar på din bekräftelse.",
     "Confirm" : "Bekräfta",
     "Cancel" : "Avbryt",
-    "%s Appointment is Confirmed" : "%s möte är bekräftat",
     "Your %1$s appointment scheduled for %2$s is now confirmed." : "Ditt%1$s-möte inbokat den %2$s är nu bekräftat.",
-    "%s Appointment is Canceled" : "%s möte är avbokat",
     "Your %1$s appointment scheduled for %2$s is now canceled." : "Ditt %1$s-möte inbokat %2$s är nu avbokat.",
     "Thank you" : "Tack",
     "%s Appointment" : "%smöte",
@@ -75,11 +72,8 @@ OC.L10N.register(
     "Select Date & Time" : "Välj datum & tid",
     "Back" : "Tillbaka",
     "Next" : "Nästa",
-    "Enter Name" : "Ange namn",
-    "Enter Email" : "Ange e-post",
-    "Enter Phone Number" : "Ange telefonnummer",
     "Book Now" : "Boka nu",
-    "An Error Has Occurred" : "Ett fel inträffade",
+    "An error has occurred" : "Ett fel inträffade",
     "Please %1$stry again%2$s and select a different date." : "Var vänlig %1$sförsök igen%2$s med ett annat datum.",
     "Please contact us directly at" : "Kontakta oss direkt på",
     "Please try again later" : "Försök igen senare"

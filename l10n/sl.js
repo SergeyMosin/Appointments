@@ -1,14 +1,11 @@
 OC.L10N.register(
     "appointments",
     {
-    "%s Appointment (action needed)" : "%s: sestanek (zahtevan je odziv)",
     "Dear %s," : "Spoštovani %s,",
     "The %1$s appointment scheduled for %2$s is awaiting your confirmation." : "Sestanek, ki ga pripravlja %1$s in je predviden na %2$s, čaka na vašo potrditev.",
     "Confirm" : "Potrdi",
     "Cancel" : "Prekliči",
-    "%s Appointment is Confirmed" : "%s: sestanek je potrjen",
     "Your %1$s appointment scheduled for %2$s is now confirmed." : " %1$s: sestanek %2$s je potrjen.",
-    "%s Appointment is Canceled" : "%s: sestanek je preklican",
     "Your %1$s appointment scheduled for %2$s is now canceled." : " %1$s: sestanek %2$s je preklican.",
     "Thank you" : "Hvala",
     "%s Appointment" : "%s: sestanek",
@@ -52,10 +49,7 @@ OC.L10N.register(
     "Select Date & Time" : "Izbor datuma in ure",
     "Back" : "Nazaj",
     "Next" : "Naprej",
-    "Enter Name" : "Vpis imena",
-    "Enter Email" : "Vpis elektronskega naslova",
-    "Enter Phone Number" : "Vpis telefonske številke",
-    "An Error Has Occurred" : "Prišlo je do napake",
+    "An error has occurred" : "Prišlo je do napake",
     "Please try again later" : "Poskusite znova kasneje"
 },
 "nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);");

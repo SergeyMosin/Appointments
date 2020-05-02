@@ -13,6 +13,7 @@ OC.L10N.register(
     "close" : "luk",
     "Location:" : "Sted:",
     "Back" : "Tilbage",
-    "Next" : "Næste"
+    "Next" : "Næste",
+    "An error has occurred" : "Der opstod en fejl."
 },
 "nplurals=2; plural=(n != 1);");

@@ -1,14 +1,11 @@
 OC.L10N.register(
     "appointments",
     {
-    "%s Appointment (action needed)" : "Întâlnirea %s (necesită acțiune)",
     "Dear %s," : "Stimate %s,",
     "The %1$s appointment scheduled for %2$s is awaiting your confirmation." : "Întâlnirea %1$s programată la %2$s așteaptă confirmare.",
     "Confirm" : "Confirmă",
     "Cancel" : "Anulează",
-    "%s Appointment is Confirmed" : "%s Întâlnire Confirmată",
     "Your %1$s appointment scheduled for %2$s is now confirmed." : "Întâlnirea %1$s programată la ora %2$s a fost confirmată",
-    "%s Appointment is Canceled" : "Întâlnirea %s este Anulată",
     "Your %1$s appointment scheduled for %2$s is now canceled." : "Întâlnirea %1$s programată la ora %2$s a fost anulată.",
     "Thank you" : "Mulțumesc",
     "%s Appointment" : "Întâlnire%s",
@@ -68,11 +65,7 @@ OC.L10N.register(
     "Select Date & Time" : "Selectează Data și Ora",
     "Back" : "Înapoi",
     "Next" : "Următorul",
-    "Enter Name" : "Introduceți numele",
-    "Enter Email" : "Introduceți emailul",
-    "Enter Phone Number" : "Introduceți Număr de telefon",
     "Book Now" : "Notează acum",
-    "An Error Has Occurred" : "A apărut o eroare",
     "Please contact us directly at" : "Vă rugăm să ne contactați direct la ",
     "Please try again later" : "Vă rugăm încercați mai târziu"
 },

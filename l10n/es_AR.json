@@ -10,6 +10,7 @@
     "Start" : "Inicio",
     "Location:" : "Ubicación:",
     "Back" : "Atrás",
-    "Next" : "Siguiente"
+    "Next" : "Siguiente",
+    "An error has occurred" : "Se ha presentado un error"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -4,10 +4,8 @@ OC.L10N.register(
     "Dear %s," : "לכבוד %s,",
     "Confirm" : "אימות",
     "Cancel" : "ביטול",
-    "Appointment Pending" : "פגישה ממתינה",
     "Date/Time: %s" : "תאריך/שעה: %s",
     "Status: Canceled" : "מצב: בוטלה",
-    "Status: Pending Confirmation" : "מצב: בהמתנה לאישור",
     "Status: Confirmed" : "מצב: עברה אישור",
     "Location: %s" : "מיקום: %s",
     "If you have any questions please write to %s" : "אם יש לך שאלות נא לכתוב אל %s",
@@ -38,6 +36,7 @@ OC.L10N.register(
     "Name:" : "שם:",
     "Location:" : "מיקום:",
     "Back" : "חזרה",
-    "Next" : "הבא"
+    "Next" : "הבא",
+    "An error has occurred" : "אירעה שגיאה"
 },
 "nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;");

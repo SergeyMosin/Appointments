@@ -9,6 +9,7 @@
     "Start" : "Aniciu",
     "Location:" : "Llocalización:",
     "Back" : "Atrás",
-    "Next" : "Siguiente"
+    "Next" : "Siguiente",
+    "An error has occurred" : "Asocedió un fallu"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

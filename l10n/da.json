@@ -11,6 +11,7 @@
     "close" : "luk",
     "Location:" : "Sted:",
     "Back" : "Tilbage",
-    "Next" : "Næste"
+    "Next" : "Næste",
+    "An error has occurred" : "Der opstod en fejl."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

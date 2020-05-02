@@ -1,5 +1,4 @@
 { "translations": {
-    "%s Appointment (action needed)" : "%s stefnumót (aðgerðar krafist)",
     "Dear %s," : "Kæri %s,",
     "Confirm" : "Staðfesta",
     "Cancel" : "Hætta við",
@@ -49,11 +48,8 @@
     "Select Date & Time" : "Veldu dagsetningu og tíma",
     "Back" : "Til baka",
     "Next" : "Næsta",
-    "Enter Name" : "Settu inn nafn",
-    "Enter Email" : "Settu inn tölvupóstfang",
-    "Enter Phone Number" : "Settu inn símanúmer",
     "Book Now" : "Bóka núna",
-    "An Error Has Occurred" : "Villa kom upp",
+    "An error has occurred" : "Villa átti sér stað",
     "Please contact us directly at" : "Hafðu samband beint við okkur á",
     "Please try again later" : "Reyndu aftur síðar"
 },"pluralForm" :"nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);"

@@ -12,6 +12,7 @@ OC.L10N.register(
     "Start" : "Sākt",
     "Location:" : "Vieta:",
     "Back" : "Atpakaļ",
-    "Next" : "Nākamā"
+    "Next" : "Nākamā",
+    "An error has occurred" : "Radusies kļūda"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");

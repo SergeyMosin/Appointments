@@ -11,6 +11,7 @@ OC.L10N.register(
     "Start" : "Aniciu",
     "Location:" : "Llocalización:",
     "Back" : "Atrás",
-    "Next" : "Siguiente"
+    "Next" : "Siguiente",
+    "An error has occurred" : "Asocedió un fallu"
 },
 "nplurals=2; plural=(n != 1);");

@@ -10,6 +10,7 @@ OC.L10N.register(
     "Start" : "Mulai",
     "Location:" : "Lokasi:",
     "Back" : "Kembali",
-    "Next" : "Berikutnya"
+    "Next" : "Berikutnya",
+    "An error has occurred" : "Sebuah kesalahan yang terjadi"
 },
 "nplurals=1; plural=0;");

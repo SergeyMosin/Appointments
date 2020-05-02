@@ -11,6 +11,7 @@ OC.L10N.register(
     "Start" : "Start",
     "Location:" : "Location:",
     "Back" : "Back",
-    "Next" : "Next"
+    "Next" : "Next",
+    "An error has occurred" : "An error has occurred"
 },
 "nplurals=2; plural=(n != 1);");

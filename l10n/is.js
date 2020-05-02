@@ -1,7 +1,6 @@
 OC.L10N.register(
     "appointments",
     {
-    "%s Appointment (action needed)" : "%s stefnumót (aðgerðar krafist)",
     "Dear %s," : "Kæri %s,",
     "Confirm" : "Staðfesta",
     "Cancel" : "Hætta við",
@@ -51,11 +50,8 @@ OC.L10N.register(
     "Select Date & Time" : "Veldu dagsetningu og tíma",
     "Back" : "Til baka",
     "Next" : "Næsta",
-    "Enter Name" : "Settu inn nafn",
-    "Enter Email" : "Settu inn tölvupóstfang",
-    "Enter Phone Number" : "Settu inn símanúmer",
     "Book Now" : "Bóka núna",
-    "An Error Has Occurred" : "Villa kom upp",
+    "An error has occurred" : "Villa átti sér stað",
     "Please contact us directly at" : "Hafðu samband beint við okkur á",
     "Please try again later" : "Reyndu aftur síðar"
 },

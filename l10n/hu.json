@@ -2,8 +2,6 @@
     "Dear %s," : "Kedves %s,",
     "Confirm" : "Megerősít",
     "Cancel" : "Mégse",
-    "%s Appointment is Confirmed" : "%s találkozó visszaigazolva",
-    "%s Appointment is Canceled" : "%s találkozó lemondva",
     "Thank you" : "Köszönöm",
     "%s Appointment" : "%s Találkozó",
     "All done." : "Minden kész.",
@@ -55,10 +53,7 @@
     "Select Date & Time" : "Dátum és Idő Kiválasztása",
     "Back" : "Vissza",
     "Next" : "Következő",
-    "Enter Name" : "Név Megadása",
-    "Enter Email" : "Email megadása",
-    "Enter Phone Number" : "Telefonszám Megadása",
-    "An Error Has Occurred" : "Hiba Történt",
+    "An error has occurred" : "Hiba történt",
     "Please contact us directly at" : "Kérlek Lépj Velünk Kapcsolatba itt",
     "Please try again later" : "Kérlek próbáld újra"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

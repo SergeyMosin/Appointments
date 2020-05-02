@@ -9,6 +9,7 @@
     "Start" : "Start",
     "Location:" : "Location:",
     "Back" : "Back",
-    "Next" : "Next"
+    "Next" : "Next",
+    "An error has occurred" : "An error has occurred"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
