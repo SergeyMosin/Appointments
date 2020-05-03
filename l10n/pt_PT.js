@@ -12,6 +12,7 @@ OC.L10N.register(
     "close" : "fechar",
     "Location:" : "Localização:",
     "Back" : "Anterior",
-    "Next" : "Próximo"
+    "Next" : "Próximo",
+    "An error has occurred" : "Ocorreu um erro"
 },
 "nplurals=2; plural=(n != 1);");

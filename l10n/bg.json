@@ -11,6 +11,7 @@
     "Start" : "Начало",
     "Location:" : "Местоположение:",
     "Back" : "Назад",
-    "Next" : "Напред"
+    "Next" : "Напред",
+    "An error has occurred" : "Възникна грешка"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

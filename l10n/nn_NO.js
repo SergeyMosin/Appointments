@@ -9,6 +9,7 @@ OC.L10N.register(
     "Confirmed" : "Stadfesta",
     "Start" : "Start",
     "Back" : "Tilbake",
-    "Next" : "Neste"
+    "Next" : "Neste",
+    "An error has occurred" : "Ein feil har oppstått"
 },
 "nplurals=2; plural=(n != 1);");

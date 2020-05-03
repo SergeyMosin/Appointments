@@ -11,6 +11,7 @@ OC.L10N.register(
     "Start" : "დაწყება",
     "Location:" : "ადგილმდებარეობა:",
     "Back" : "უკან",
-    "Next" : "შემდეგი"
+    "Next" : "შემდეგი",
+    "An error has occurred" : "წარმოიშვა შეცდომა"
 },
 "nplurals=2; plural=(n!=1);");

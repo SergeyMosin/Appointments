@@ -107,6 +107,7 @@ OC.L10N.register(
     "Next" : "Επόμενο",
     "Select Date and Time" : "Επιλογή Ημερομηνίας και Ώρας",
     "Book Now" : "Κράτηση Τώρα",
+    "An error has occurred" : "Παρουσιάστηκε σφάλμα",
     "Please %1$stry again%2$s and select a different date." : "Παρακαλώ %1$s δοκιμάστε ξανά %2$s και επιλέξτε διαφορετική ημερομηνία.",
     "Please contact us directly at" : "Παρακαλώ επικοινωνήστε μαζί μας στο",
     "Please try again later" : "Παρακαλώ δοκιμάστε αργότερα"

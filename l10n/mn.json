@@ -9,6 +9,7 @@
     "Start" : "эхлэх",
     "Location:" : "Байршил:",
     "Back" : "буцах",
-    "Next" : "дараагийх"
+    "Next" : "дараагийх",
+    "An error has occurred" : "Алдаа гарлаа"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

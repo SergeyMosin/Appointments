@@ -10,6 +10,7 @@ OC.L10N.register(
     "Start" : "Start",
     "Location:" : "Ligging:",
     "Back" : "Terug",
-    "Next" : "Volgende"
+    "Next" : "Volgende",
+    "An error has occurred" : "’n Fout het voorgekom"
 },
 "nplurals=2; plural=(n != 1);");

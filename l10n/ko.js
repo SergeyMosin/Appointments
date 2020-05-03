@@ -14,6 +14,7 @@ OC.L10N.register(
     "close" : "닫기",
     "Location:" : "위치:",
     "Back" : "뒤로",
-    "Next" : "Next"
+    "Next" : "Next",
+    "An error has occurred" : "오류가 발생했습니다"
 },
 "nplurals=1; plural=0;");

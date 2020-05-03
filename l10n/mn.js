@@ -11,6 +11,7 @@ OC.L10N.register(
     "Start" : "эхлэх",
     "Location:" : "Байршил:",
     "Back" : "буцах",
-    "Next" : "дараагийх"
+    "Next" : "дараагийх",
+    "An error has occurred" : "Алдаа гарлаа"
 },
 "nplurals=2; plural=(n != 1);");

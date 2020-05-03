@@ -24,6 +24,7 @@ OC.L10N.register(
     "close" : "tanca",
     "Location:" : "Ubicació:",
     "Back" : "Enrere",
-    "Next" : "Següent"
+    "Next" : "Següent",
+    "An error has occurred" : "S'ha produït un error"
 },
 "nplurals=2; plural=(n != 1);");

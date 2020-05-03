@@ -13,6 +13,7 @@ OC.L10N.register(
     "Start" : "Начало",
     "Location:" : "Местоположение:",
     "Back" : "Назад",
-    "Next" : "Напред"
+    "Next" : "Напред",
+    "An error has occurred" : "Възникна грешка"
 },
 "nplurals=2; plural=(n != 1);");

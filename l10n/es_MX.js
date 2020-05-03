@@ -107,6 +107,7 @@ OC.L10N.register(
     "Next" : "Siguiente",
     "Select Date and Time" : "Seleccione Fecha y Hora",
     "Book Now" : "Agendar",
+    "An error has occurred" : "Se presentó un error",
     "Please %1$stry again%2$s and select a different date." : "Por favor %1$sintente de nuevo %2$s y seleccione una fecha diferente.",
     "Please contact us directly at" : "Por favor contáctenos directamente en ",
     "Please try again later" : "Por favor intente de nuevo más tarde"

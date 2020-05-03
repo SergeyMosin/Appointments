@@ -9,6 +9,7 @@
     "Start" : "დაწყება",
     "Location:" : "ადგილმდებარეობა:",
     "Back" : "უკან",
-    "Next" : "შემდეგი"
+    "Next" : "შემდეგი",
+    "An error has occurred" : "წარმოიშვა შეცდომა"
 },"pluralForm" :"nplurals=2; plural=(n!=1);"
 }

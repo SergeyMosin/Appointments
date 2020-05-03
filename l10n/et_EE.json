@@ -10,6 +10,7 @@
     "Start" : "Algus",
     "Location:" : "Asukoht:",
     "Back" : "Tagasi",
-    "Next" : "Järgmine"
+    "Next" : "Järgmine",
+    "An error has occurred" : "Tekkis tõrge"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
