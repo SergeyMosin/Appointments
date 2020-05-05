@@ -1,3 +1,7 @@
+## 1.4.11 - 2020-05-05
+### Added
+- Translations
+
 ## 1.4.10 - 2020-05-01
 ### Added
 - Translations push
