@@ -9,6 +9,7 @@ OC.L10N.register(
     "Deleted" : "Borrado",
     "Confirmed" : "Confirmado",
     "Start" : "Iniciar",
+    "close" : "Cerrar",
     "Location:" : "Ubicación:",
     "Back" : "Atrás",
     "Next" : "Siguiente",
