@@ -1,6 +1,7 @@
 OC.L10N.register(
     "appointments",
     {
+    "%s appointment (action needed)" : "%s 预约（需要操作）",
     "Dear %s," : "亲爱的%s，",
     "The %1$s appointment scheduled for %2$s is awaiting your confirmation." : "与 %1$s 的预约已安排到 %2$s，等待您的确认。",
     "Confirm" : "确认",
