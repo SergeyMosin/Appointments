@@ -1,3 +1,9 @@
+## 1.4.12 - 2020-05-07
+### Change
+- Display all existing appointments in the schedule generator
+### Fixed
+- Shared calendars support (must have edit permission)
+
 ## 1.4.11 - 2020-05-05
 ### Added
 - Translations
