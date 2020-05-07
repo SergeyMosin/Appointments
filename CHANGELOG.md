@@ -1,3 +1,7 @@
+## 1.4.14 - 2020-05-07
+### Added
+- Option to skip email validation test
+
 ## 1.4.13 - 2020-05-07
 ### Test
 - Install test
