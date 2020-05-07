@@ -40,6 +40,14 @@ class DavListener {
             return;
         }
 
+        $ses=\OC::$server->getSession();
+        $hint=$ses->get(BackendUtils::APPT_SES_KEY_HINT);
+        if($hint===BackendUtils::APPT_SES_SKIP){
+            // no need for email
+            return;
+        }
+
+
         $vObject=Reader::read($cd);
         if(!isset($vObject->VEVENT)){
             // Not a VEVENT
@@ -117,9 +125,6 @@ class DavListener {
             // Event is in the past
             return;
         }
-
-        $ses=\OC::$server->getSession();
-        $hint=$ses->get(BackendUtils::APPT_SES_KEY_HINT);
 
         $hash_ch=$utils->getHashChanges($hash,$evt);
 
@@ -217,7 +222,8 @@ class DavListener {
             }
 
         }elseif ($hint === BackendUtils::APPT_SES_CONFIRM){
-            // Confirm link in the email is clicked
+            // Confirm link in the email is clicked ...
+            // ... or the email validation step is skipped
 
             // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Confirmed
             $tmpl->setSubject($this->l10N->t("%s Appointment is confirmed",[$org_name]));

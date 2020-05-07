@@ -91,17 +91,14 @@ interface IBackendConnector{
 
     /**
      * Returns array [int,string|null]
+     *      Status: 0=OK,1=Error, Localized DateTime string or null.
      *
      * @param $userId
      * @param $calId
      * @param $uri
-     * @return array [int, string|null]
-     *                  Status: 0=OK,1=Error,
-     *                  Localized DateTime string or null.
+     * @return array
      */
     function cancelAttendee($userId, $calId, $uri);
-
-
 
     /**
      * Returns array [int, string, string|null, string]

@@ -1,5 +1,9 @@
+## 1.4.13 - 2020-05-07
+### Test
+- Install test
+
 ## 1.4.12 - 2020-05-07
-### Change
+### Changed
 - Display all existing appointments in the schedule generator
 ### Fixed
 - Shared calendars support (must have edit permission)
@@ -19,7 +23,7 @@
 - Confirm page error (regression from v1.4.8)
 
 ## 1.4.8 - 2020-04-28
-### Change
+### Changed
 - Timezone info in the help section
 ### Added
 - Longer hours in the 'Schedule Generator' issues #62

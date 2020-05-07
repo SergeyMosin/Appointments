@@ -46,6 +46,15 @@
                             id="srgdev-appt_emn-me-cancel"
                             class="checkbox"><label class="srgdev-appt-sb-label-inline" for="srgdev-appt_emn-me-cancel">{{t('appointments','Canceled')}}</label><br>
                 </div>
+                <div class="srgdev-appt-info-lcont">
+                    <input
+                            v-model="emlInfo.skipEVS"
+                            type="checkbox"
+                            id="srgdev-appt_emn-skip-evs"
+                            class="checkbox"><label style="margin-left: -3px;" class="srgdev-appt-sb-label-inline" for="srgdev-appt_emn-skip-evs">{{t('appointments','Skip email validation step')}}</label><a
+                        class="icon-info srgdev-appt-info-link"
+                        @click="$root.$emit('helpWanted','emailskipevs')"></a>
+                </div>
                 <button
                         @click="apply"
                         class="primary srgdev-appt-sb-genbtn">{{t('appointments','Apply')}}
@@ -72,6 +81,7 @@
                 default: function () {
                     return {
                         icsFile: false,
+                        skipEVS: false,
                         attMod: false,
                         attDel: false,
                         meReq: false,

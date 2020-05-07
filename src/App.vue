@@ -98,7 +98,7 @@
                         {{t('appointments', 'Adding appointment to {calendarName} calendar...', {calendarName:curCal.name})}}
                     </div>
                     <div v-if="evtGridModal===2" class="srgdev-appt-modal-lbl">
-                        {{t('appointments', 'All appointments had been added to {calendarName} calendar.', {calendarName:curCal.name})}}
+                        {{t('appointments', 'All appointments have been added to {calendarName} calendar.', {calendarName:curCal.name})}}
                     </div>
                     <div v-if="evtGridModal===3" class="srgdev-appt-modal-lbl">
                         <span v-show="modalErrTxt!==''">{{modalErrTxt}}</span>

@@ -462,12 +462,11 @@ class PageController extends Controller {
         $uid=$this->verifyToken($this->request->getParam("token"));
         $pd=$this->request->getParam("d");
         if($uid===false || $pd===null || strlen($pd)>512
-            || (($a=substr($pd,0,1))!=='0') && $a!=='1'){
+            || (($a=substr($pd,0,1))!=='0') && $a!=='1' && $a!=='2'){
             return new NotFoundResponse();
         }
 
         $key=hex2bin($this->c->getAppValue($this->appName, 'hk'));
-
         $uri=$this->utils->decrypt(substr($pd,1),$key).".ics";
         if(empty($uri)){
             return $this->pubErrResponse($uid);
@@ -482,22 +481,50 @@ class PageController extends Controller {
         }
 
         $page_text='';
-        if($a==='1') {
-            // Confirm
+        $sts=1; // <- assume fail
+        if($a==='1' || $a==='2') {
+            // Confirm or Skip email verification step ($a==='2')
 
-            // Emails are handled by the DavListener... set the Hint
-            $ses=\OC::$server->getSession();
-            $ses->set(
-                BackendUtils::APPT_SES_KEY_HINT,
-                BackendUtils::APPT_SES_CONFIRM);
+            $a_ok=true;
+            $skip_evs_text='';
 
-            list($sts, $date_time) = $this->bc->confirmAttendee($uid, $cal_id, $uri);
-
-            if ($sts === 0) { // Appointment is confirmed successfully
-                // TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is confirmed.
-                $page_text = $this->l->t("Your appointment scheduled for %s is confirmed.", [$date_time]);
+            if($a==='2'){
+                $a_ok=false;
+                $sp=strpos($uri,chr(31));
+                if($sp!==false) {
+                    $ts = unpack('Iint', substr($uri, 0, 4))['int'];
+                    if ($ts + 8 >= time()) {
+                        $em = substr($uri, 4,$sp-4);
+                        if ($this->mailer->validateMailAddress($em)) {
+                            $uri=substr($uri,$sp+1);
+                            // TRANSLATORS the '%s' is an email address
+                            $skip_evs_text=$this->l->t("An email with additional details is on its way to you at %s", [$em]);
+                            $a_ok=true; // :)
+                        }
+                    }else{
+                        // link expired
+                        $sts=2;
+                    }
+                }
             }
-        }else{
+
+            if($a_ok) {
+
+                // Emails are handled by the DavListener... set the Hint
+                $ses = \OC::$server->getSession();
+                $ses->set(
+                    BackendUtils::APPT_SES_KEY_HINT,
+                    BackendUtils::APPT_SES_CONFIRM);
+
+                list($sts, $date_time) = $this->bc->confirmAttendee($uid, $cal_id, $uri);
+
+                if ($sts === 0) { // Appointment is confirmed successfully
+                    // TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is confirmed.
+                    $page_text = $this->l->t("Your appointment scheduled for %s is confirmed.", [$date_time]);
+                    // TODO: add $skip_evs_text when it is translated
+                }
+            }
+        }elseif($a==="0"){
             // Cancel
 
             // Emails are handled by the DavListener... set the Hint
@@ -530,8 +557,12 @@ class PageController extends Controller {
             }
 
             if ($sts === 0) { // Appointment is cancelled successfully
-                // TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is canceled.
-                $page_text = $this->l->t("Your appointment scheduled for %s is canceled.", [$date_time]);
+                if(!empty($date_time)) {
+                    // TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is canceled.
+                    $page_text = $this->l->t("Your appointment scheduled for %s is canceled.", [$date_time]);
+                }else{
+                    $page_text = $this->l->t("Your appointment is canceled.");
+                }
             }
         }
 
@@ -550,9 +581,20 @@ class PageController extends Controller {
             $org_email = $this->c->getUserValue(
                 $uid, $this->appName,
                 BackendUtils::KEY_O_EMAIL);
-            $tr=$this->getPublicTemplate("public/formerr",$uid);
-            $tr->setParams(['appt_e_ne' => $org_email]);
-            $tr->setStatus(500);
+
+            if($sts!==2) {
+                // general error
+                $tr = $this->getPublicTemplate("public/formerr", $uid);
+                $tr->setParams(['appt_e_ne' => $org_email]);
+                $tr->setStatus(500);
+            }else{
+                // link expired
+                $tr = $this->getPublicTemplate('public/thanks',$uid);
+                $param['appt_c_head']=$this->l->t("Info");
+                $param['appt_c_msg'] = $this->l->t("Link Expired...");
+                $tr->setParams($param);
+                $tr->setStatus(409);
+            }
         }
         return $tr;
     }
@@ -598,6 +640,9 @@ class PageController extends Controller {
         $ok_uri="form?sts=0";
         $bad_input_url="form?sts=1";
         $server_err_url="form?sts=2";
+
+        // skip email verification step
+        $skip_evs_url="cncf";
 
         $key=hex2bin($this->c->getAppValue($this->appName, 'hk'));
         if(empty($key)){
@@ -675,6 +720,11 @@ class PageController extends Controller {
 
         // cal_id is good...
 
+        $eml_settings=$this->utils->getUserSettings(
+            BackendUtils::KEY_EML, BackendUtils::EML_DEF,
+            $uid,$this->appName);
+        $skip_evs=$eml_settings[BackendUtils::EML_SKIP_EVS];
+
         // TODO: make sure that the appointment time is within the actual range
 
         // Emails are handled by the DavListener...
@@ -682,17 +732,19 @@ class PageController extends Controller {
         $ses=\OC::$server->getSession();
         $ses->set(
             BackendUtils::APPT_SES_KEY_HINT,
-            BackendUtils::APPT_SES_BOOK);
+            ($skip_evs?BackendUtils::APPT_SES_SKIP:BackendUtils::APPT_SES_BOOK));
         $ses->set(
             BackendUtils::APPT_SES_KEY_BURL,
             $this->getPublicWebBase().'/' .$this->pubPrx($this->getToken($uid)).'cncf?d=');
+
+        $raw_btkn=substr($da[1],0,-4);
         $ses->set(
             BackendUtils::APPT_SES_KEY_BTKN,
-            urlencode($this->utils->encrypt(substr($da[1],0,-4),$key))
+            urlencode($this->utils->encrypt($raw_btkn,$key))
         );
 
         // Update appointment data
-        $r=$this->bc->setAttendee($uid,$cal_id,$da[1],$post);
+        $r = $this->bc->setAttendee($uid, $cal_id, $da[1], $post);
 
         if($r>0){
             // &r=1 means there was a race and someone else has booked that slot
@@ -701,9 +753,19 @@ class PageController extends Controller {
             return $rr;
         }
 
-        $uri=$ok_uri."&d=".urlencode(
-                $this->utils->encrypt(pack('I',time()).$post['email'],$key)
-            );
+        if($skip_evs===false) {
+
+            $uri = $ok_uri . "&d=" . urlencode(
+                    $this->utils->encrypt(pack('I', time()) . $post['email'], $key)
+                );
+        }else{
+            $uri=$skip_evs_url."?d=2".urlencode(
+                    $this->utils->encrypt(
+                        pack('I', time()).$post['email'].chr(31).$raw_btkn,
+                        $key)
+                );
+        }
+
         $rr=new RedirectResponse($uri);
         $rr->setStatus(303);
         return $rr;

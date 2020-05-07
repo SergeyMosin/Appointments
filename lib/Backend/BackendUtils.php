@@ -26,6 +26,7 @@ class BackendUtils{
     public const APPT_SES_CONFIRM = "1";
     public const APPT_SES_BOOK = "0";
     public const APPT_SES_CANCEL = "2";
+    public const APPT_SES_SKIP = "3";
 
     // TODO: convert to JSON storage
     public const KEY_O_NAME = 'organization';
@@ -38,6 +39,7 @@ class BackendUtils{
     // Email Settings
     public const KEY_EML = 'email_options';
     public const EML_ICS= 'icsFile';
+    public const EML_SKIP_EVS = 'skipEVS';
     public const EML_AMOD = 'attMod';
     public const EML_ADEL = 'attDel';
     public const EML_MREQ = 'meReq';
@@ -45,6 +47,7 @@ class BackendUtils{
     public const EML_MCNCL = 'meCancel';
     const EML_DEF=array(
         self::EML_ICS=>false,
+        self::EML_SKIP_EVS=>false,
         self::EML_AMOD=>false,
         self::EML_ADEL=>false,
         self::EML_MREQ=>false,
