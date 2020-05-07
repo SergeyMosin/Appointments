@@ -13,6 +13,7 @@ class BackendUtils{
 
     const APPT_CAT="Appointment";
     const TZI_PROP="X-TZI";
+    const XAD_PROP="X-APPT-DATA";
 
     const CIPHER="AES-128-CFB";
     const HASH_TABLE_NAME="appointments_hash";
@@ -100,11 +101,12 @@ class BackendUtils{
     /**
      * @param $data
      * @param $info
+     * @param $userId
      * @return string   Event Data |
      *                  "1"=Bad Status (Most likely booked while waiting),
      *                  "2"=Other Error
      */
-    function dataSetAttendee($data, $info){
+    function dataSetAttendee($data, $info, $userId){
 
         $vo = Reader::read($data);
 
@@ -146,6 +148,11 @@ class BackendUtils{
         // Attendee's timezone info at the time of booking
         if(!isset($evt->{self::TZI_PROP})) $evt->add(self::TZI_PROP);
         $evt->{self::TZI_PROP}->setValue($info['tzi']);
+
+        // Additional Appointment info (userId for now)
+        // ... this is a way to pass data to DavListener
+        if(!isset($evt->{self::XAD_PROP})) $evt->add(self::XAD_PROP);
+        $evt->{self::XAD_PROP}->setValue($this->encrypt($userId,$evt->UID));
 
         $this->setSEQ($evt);
 

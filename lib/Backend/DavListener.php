@@ -40,27 +40,11 @@ class DavListener {
             return;
         }
 
-        if(!isset($event['calendarData']['principaluri'])){
-            \OC::$server->getLogger()->error("calendarData not available");
-            return;
-        }
-
-        $config=\OC::$server->getConfig();
-        $userId=str_replace(BackendManager::PRINCIPAL_PREFIX,"",$event['calendarData']['principaluri']);
-        $cal_id=$config->getUserValue($userId,$this->appName,"cal_id");
-
-        // $event['calendarData']['id'] can be a string or an int
-        if($cal_id!=$event['calendarData']['id']){
-            // Not this user's calendar
-            return;
-        }
-
         $vObject=Reader::read($cd);
         if(!isset($vObject->VEVENT)){
             // Not a VEVENT
             return;
         }
-
         /** @var \Sabre\VObject\Component\VEvent $evt*/
         $evt=$vObject->VEVENT;
         if(!isset($evt->UID)){
@@ -73,6 +57,31 @@ class DavListener {
             $utils = \OC::$server->query(BackendUtils::class);
         } catch (QueryException $e) {
             \OC::$server->getLogger()->error($e->getMessage());
+            return;
+        }
+
+        $config=\OC::$server->getConfig();
+
+        if(isset($evt->{BackendUtils::XAD_PROP})){
+            // New: shared calendar support
+            $userId=$utils->decrypt(
+                $evt->{BackendUtils::XAD_PROP}->getValue(),
+                $evt->UID->getValue());
+        }else {
+            // fallback: might not work with shared calendars
+            // TODO: remove this in the next major release
+            if(!isset($event['calendarData']['principaluri'])){
+                \OC::$server->getLogger()->error("calendarData not available");
+                return;
+            }
+            $userId = str_replace(BackendManager::PRINCIPAL_PREFIX, "", $event['calendarData']['principaluri']);
+        }
+
+        $cal_id=$config->getUserValue($userId,$this->appName,"cal_id");
+
+        // $event['calendarData']['id'] can be a string or an int
+        if($cal_id!=$event['calendarData']['id']){
+            // Not this user's calendar
             return;
         }
 
@@ -375,6 +384,9 @@ class DavListener {
 
             if(isset($evt->{BackendUtils::TZI_PROP})){
                 $evt->remove($evt->{BackendUtils::TZI_PROP});
+            }
+            if(isset($evt->{BackendUtils::XAD_PROP})){
+                $evt->remove($evt->{BackendUtils::XAD_PROP});
             }
 
             $msg->attach(

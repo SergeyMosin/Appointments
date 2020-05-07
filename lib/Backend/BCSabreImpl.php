@@ -134,7 +134,10 @@ class BCSabreImpl implements IBackendConnector{
         $ca=$this->backend->getCalendarsForUser(BackendManager::PRINCIPAL_PREFIX.$userId);
         $ret=[];
         foreach ($ca as $c){
-            $ret[]=$this->transformCalInfo($c);
+            $ci=$this->transformCalInfo($c);
+            if($ci!==null){
+                $ret[]=$ci;
+            }
         }
         return $ret;
     }
@@ -183,10 +186,11 @@ class BCSabreImpl implements IBackendConnector{
             if($us!==false){
                 $us+=6;
                 $uid=substr($d,$us,strpos($d,"\r\n",$us)-$us);
+
                 $db=\OC::$server->getDatabaseConnection();
+                // Ugly locking to avoid booking the same appointment twice...
                 $db->lockTable(BackendUtils::HASH_TABLE_NAME);
 
-                // Ugly locking to avoid booking the same appointment twice...
                 $hash=$this->utils->getApptHash($uid);
                 if($hash===null){
                     // It is safe to take this time slot
@@ -198,7 +202,7 @@ class BCSabreImpl implements IBackendConnector{
                         ])->execute();
                     $db->unlockTable();
 
-                    $newData=$this->utils->dataSetAttendee($d,$info);
+                    $newData=$this->utils->dataSetAttendee($d,$info,$userId);
                     if($newData==="1"){
                         // $ec=1;
                         $err="Bad appointment status, [select different time]";
@@ -313,6 +317,11 @@ class BCSabreImpl implements IBackendConnector{
 
 
     private function transformCalInfo($c){
+        // Do not use read only calendars
+        if(isset($c['{http://owncloud.org/ns}read-only']) && $c['{http://owncloud.org/ns}read-only']===true){
+            return null;
+        }
+
         $a=[];
         $a['id']=$c["id"];
         $a['displayName']=isset($c['{DAV:}displayname'])?$c['{DAV:}displayname']:"Calendar";
