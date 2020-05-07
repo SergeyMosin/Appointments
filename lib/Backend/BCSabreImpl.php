@@ -58,7 +58,8 @@ class BCSabreImpl implements IBackendConnector{
         $parser=new XmlService();
         $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
         try {
-            $result = $parser->parse($this->makeDavReport($start,$end));
+            //$no_url(do not filter status) request is for the schedule generator @see grid.js::addPastAppts()
+            $result = $parser->parse($this->makeDavReport($start,$end,$no_uri===false));
         } catch (ParseException $e) {
             \OC::$server->getLogger()->error($e);
             return null;
@@ -104,6 +105,7 @@ class BCSabreImpl implements IBackendConnector{
 
     /**
      * @inheritDoc
+     * @noinspection PhpRedundantCatchClauseInspection
      */
     function createObject($calId, $uri, $data)
     {
@@ -148,7 +150,7 @@ class BCSabreImpl implements IBackendConnector{
     function getCalendarById($calId,$userId){
         $ca=$this->backend->getCalendarsForUser(BackendManager::PRINCIPAL_PREFIX.$userId);
         foreach ($ca as $c){
-            // TODO: $c['id'] can be a string or an int
+            // $c['id'] can be a string or an int
             if($calId==$c['id']){
                 return $this->transformCalInfo($c);
             }
@@ -335,10 +337,11 @@ class BCSabreImpl implements IBackendConnector{
     /**
      * @param \DateTime $start
      * @param \DateTime $end
+     * @param bool $only_tentative
      * @return string
      */
-    public static function makeDavReport($start,$end){
-        return '<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop xmlns:D="DAV:"><C:calendar-data/></D:prop><C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:time-range start="'.$start->format(self::TIME_FORMAT).'" end="'.$end->format(self::TIME_FORMAT).'"/></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="CATEGORIES"><C:text-match>'.BackendUtils::APPT_CAT.'</C:text-match></C:prop-filter><C:prop-filter name="STATUS"><C:text-match>TENTATIVE</C:text-match></C:prop-filter><C:prop-filter name="RRULE"><C:is-not-defined/></C:prop-filter></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
+    public static function makeDavReport($start,$end,$only_tentative){
+        return '<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop xmlns:D="DAV:"><C:calendar-data/></D:prop><C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:time-range start="'.$start->format(self::TIME_FORMAT).'" end="'.$end->format(self::TIME_FORMAT).'"/></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="CATEGORIES"><C:text-match>'.BackendUtils::APPT_CAT.'</C:text-match></C:prop-filter>'.($only_tentative?'<C:prop-filter name="STATUS"><C:text-match>TENTATIVE</C:text-match></C:prop-filter>':'').'<C:prop-filter name="RRULE"><C:is-not-defined/></C:prop-filter></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
     }
 
 }
