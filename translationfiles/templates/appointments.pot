@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2020-05-07 03:18+0000\n"
+"POT-Creation-Date: 2020-05-08 03:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,201 +18,213 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment (action needed)
-#: /app/lib/Backend/DavListener.php:188
+#: /app/lib/Backend/DavListener.php:202
 #, php-format
 msgid "%s appointment (action needed)"
 msgstr ""
 
 #. TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
-#: /app/lib/Backend/DavListener.php:190 /app/lib/Backend/DavListener.php:253
+#: /app/lib/Backend/DavListener.php:204 /app/lib/Backend/DavListener.php:268
 #, php-format
 msgid "Dear %s,"
 msgstr ""
 
 #. TRANSLATORS Main part of email, Ex: The {{Organization Name}} appointment scheduled for {{Date Time}} is awaiting your confirmation.
-#: /app/lib/Backend/DavListener.php:193
+#: /app/lib/Backend/DavListener.php:207
 #, php-format
 msgid "The %1$s appointment scheduled for %2$s is awaiting your confirmation."
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:200
+#: /app/lib/Backend/DavListener.php:214
 msgid "Confirm"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:202
+#: /app/lib/Backend/DavListener.php:216
 msgid "Cancel"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:207
+#: /app/lib/Backend/DavListener.php:221
 msgid "Appointment pending"
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Confirmed
-#: /app/lib/Backend/DavListener.php:214
+#: /app/lib/Backend/DavListener.php:229
 #, php-format
 msgid "%s Appointment is confirmed"
 msgstr ""
 
 #. TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now confirmed.
-#: /app/lib/Backend/DavListener.php:217
+#: /app/lib/Backend/DavListener.php:232
 #, php-format
 msgid "Your %1$s appointment scheduled for %2$s is now confirmed."
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:220
+#: /app/lib/Backend/DavListener.php:235
 msgid "Appointment confirmed"
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Canceled
-#: /app/lib/Backend/DavListener.php:230
+#: /app/lib/Backend/DavListener.php:245
 #, php-format
 msgid "%s Appointment is canceled"
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment Status Changed
-#: /app/lib/Backend/DavListener.php:235
+#: /app/lib/Backend/DavListener.php:250
 #, php-format
 msgid "%s appointment status changed"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:240
+#: /app/lib/Backend/DavListener.php:255
 #, php-format
 msgid "Your %1$s appointment scheduled for %2$s is now canceled."
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:244
+#: /app/lib/Backend/DavListener.php:259
 msgid "Appointment canceled"
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} appointment status update
-#: /app/lib/Backend/DavListener.php:251
+#: /app/lib/Backend/DavListener.php:266
 #, php-format
 msgid "%s Appointment update"
 msgstr ""
 
 #. TRANSLATORS Main part of email
-#: /app/lib/Backend/DavListener.php:255
+#: /app/lib/Backend/DavListener.php:270
 msgid "Your appointment details have changed. Please review information below."
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:259
+#: /app/lib/Backend/DavListener.php:274
 #, php-format
 msgid "Date/Time: %s"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:264
+#: /app/lib/Backend/DavListener.php:279
 msgid "Status: Canceled"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:270
+#: /app/lib/Backend/DavListener.php:285
 msgid "Status: Pending confirmation"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:272
+#: /app/lib/Backend/DavListener.php:287
 msgid "Status: Confirmed"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:278
+#: /app/lib/Backend/DavListener.php:293
 #, php-format
 msgid "Location: %s"
 msgstr ""
 
 #. TRANSLATORS Additional part of email - contact information WITHOUT phone number (only email). The last argument is email address.
-#: /app/lib/Backend/DavListener.php:283
+#: /app/lib/Backend/DavListener.php:298
 #, php-format
 msgid "If you have any questions please write to %s"
 msgstr ""
 
 #. TRANSLATORS Additional part of email - contact information WITH email AND phone number: If you have any questions please feel free to call {123-456-7890} or write to {email@example.com}
-#: /app/lib/Backend/DavListener.php:286
+#: /app/lib/Backend/DavListener.php:301
 #, php-format
 msgid ""
 "If you have any questions please feel free to call %1$s or write to %2$s"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:295 /app/templates/public/formerr.php:21
+#: /app/lib/Backend/DavListener.php:310 /app/templates/public/formerr.php:21
 #: /app/templates/public/thanks.php:9
 msgid "Thank you"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:352
+#: /app/lib/Backend/DavListener.php:367
 msgid "Appointment is canceled"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:374
+#: /app/lib/Backend/DavListener.php:389
 #, php-format
 msgid "%s Appointment"
 msgstr ""
 
+#. TRANSLATORS the '%s' is an email address
+#: /app/lib/Controller/PageController.php:501
+#, php-format
+msgid "An email with additional details is on its way to you at %s"
+msgstr ""
+
 #. TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is confirmed.
-#: /app/lib/Controller/PageController.php:498
+#: /app/lib/Controller/PageController.php:523
 #, php-format
 msgid "Your appointment scheduled for %s is confirmed."
 msgstr ""
 
 #. TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is canceled.
-#: /app/lib/Controller/PageController.php:534
+#: /app/lib/Controller/PageController.php:562
 #, php-format
 msgid "Your appointment scheduled for %s is canceled."
 msgstr ""
 
+#: /app/lib/Controller/PageController.php:564
+msgid "Your appointment is canceled."
+msgstr ""
+
 #. TRANSLATORS Meaning the booking process is finished
-#: /app/lib/Controller/PageController.php:543
+#: /app/lib/Controller/PageController.php:574
 msgid "All done."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:726
+#: /app/lib/Controller/PageController.php:593
+#: /app/lib/Controller/PageController.php:815
+msgid "Info"
+msgstr ""
+
+#: /app/lib/Controller/PageController.php:594
+#: /app/lib/Controller/PageController.php:816
+msgid "Link Expired..."
+msgstr ""
+
+#: /app/lib/Controller/PageController.php:788
 msgid "Almost done..."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:747
+#: /app/lib/Controller/PageController.php:809
 #, php-format
 msgid ""
 "We have sent an email to %s, please open it and click on the confirmation "
 "link to finalize your appointment request"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:753
-msgid "Info"
-msgstr ""
-
-#: /app/lib/Controller/PageController.php:754
-msgid "Link Expired..."
-msgstr ""
-
-#: /app/lib/Controller/PageController.php:799
+#: /app/lib/Controller/PageController.php:861
 #: /app/specialVueFakeDummyForL10nScript.js:29
 msgid "Book Your Appointment"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:925
+#: /app/lib/Controller/PageController.php:987
 msgid "Please add time slots first."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:931
+#: /app/lib/Controller/PageController.php:993
 msgid "Please select a calendar first"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:934
+#: /app/lib/Controller/PageController.php:996
 msgid "Selected calendar not found"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:957
+#: /app/lib/Controller/PageController.php:1019
 msgid "Your email address is required for this operation."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:965
+#: /app/lib/Controller/PageController.php:1027
 msgid ""
 "A location, address or URL is required for this operation. Check User/"
 "Organization settings."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:975
+#: /app/lib/Controller/PageController.php:1037
 msgid "Can't find your name. Check User/Organization settings."
 msgstr ""
 
 #. TRANSLATORS Appointment time is "Available"
-#: /app/lib/Controller/PageController.php:993
+#: /app/lib/Controller/PageController.php:1055
 msgid "Available"
 msgstr ""
 
@@ -287,7 +299,7 @@ msgid "Adding appointment to {calendarName} calendar..."
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:15
-msgid "All appointments had been added to {calendarName} calendar."
+msgid "All appointments have been added to {calendarName} calendar."
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:16
@@ -420,8 +432,8 @@ msgid "Style Override:"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:49
-#: /app/specialVueFakeDummyForL10nScript.js:59
-#: /app/specialVueFakeDummyForL10nScript.js:71
+#: /app/specialVueFakeDummyForL10nScript.js:60
+#: /app/specialVueFakeDummyForL10nScript.js:72
 msgid "Apply"
 msgstr ""
 
@@ -465,53 +477,57 @@ msgstr ""
 msgid "Canceled"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:60
-msgid "Select Dates:"
+#: /app/specialVueFakeDummyForL10nScript.js:59
+msgid "Skip email validation step"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:61
-msgid "Select Dates"
+msgid "Select Dates:"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:62
-msgid "Appointment Duration:"
+msgid "Select Dates"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:63
-msgid "Timezone:"
+msgid "Appointment Duration:"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:64
-msgid "Start"
+msgid "Timezone:"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:65
+msgid "Start"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:66
 msgid "close"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:66
+#: /app/specialVueFakeDummyForL10nScript.js:67
 msgid "Your Contact Information"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:66
+#: /app/specialVueFakeDummyForL10nScript.js:67
 msgid "Form header and event organizer settings"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:67
+#: /app/specialVueFakeDummyForL10nScript.js:68
 #: /app/templates/public/form.php:35
 msgid "Name:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:68
+#: /app/specialVueFakeDummyForL10nScript.js:69
 #: /app/templates/public/form.php:37
 msgid "Email:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:69
+#: /app/specialVueFakeDummyForL10nScript.js:70
 msgid "Location:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:70
+#: /app/specialVueFakeDummyForL10nScript.js:71
 #: /app/templates/public/form.php:41
 msgid "Phone:"
 msgstr ""
