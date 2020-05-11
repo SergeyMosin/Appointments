@@ -89,7 +89,7 @@ OC.L10N.register(
     "See Tutorial..." : "Ver o titorial…",
     "When Attendee Cancels" : "Cando o asistente cancela",
     "Mark the appointment as canceled" : "Marcar a cita como cancelada",
-    "Reset (make the timeslot available)" : "Restablecer (facer que a franxa horaria estea dispoñíbel)",
+    "Reset (make the timeslot available)" : "Restabelecer (facer que a franxa horaria estea dispoñíbel)",
     "Page Header Title:" : "Título da cabeceira da páxina",
     "Page Header Subtitle:" : "Subtítulo da cabeceira da páxina:",
     "Style Override:" : "Anulación do estilo:",
