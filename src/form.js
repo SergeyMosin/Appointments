@@ -65,13 +65,15 @@
 
         el=document.getElementById("srgdev-ncfp_sel-hidden")
         let sdx=el.selectedIndex
+        let tzi
         if (sdx===-1 || el.value===""){
             el=document.getElementById("srgdev-ncfp_sel-dummy")
             el.setAttribute('err','err');
             el.addEventListener("focus",clearFormErr,false)
             lee=1
+        }else{
+            tzi=el.dataRef[sdx].tzi
         }
-        let tzi=el.dataRef[sdx].tzi
 
         el=document.getElementById("srgdev-ncfp_fname")
         if (el.value.length<3){
