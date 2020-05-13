@@ -412,6 +412,10 @@ class PageController extends Controller {
         return urlencode(str_replace("/","_",$tkn));
     }
 
+
+//* @NoSameSiteCookieRequired
+
+
     /**
      * @NoAdminRequired
      * @PublicPage
@@ -1137,6 +1141,16 @@ class PageController extends Controller {
         $tr->setFooterVisible(false);
 
 //        $tr->setHeaderActions([new SimpleMenuAction('download', 'Label', '', 'link-url', 0)]);
+
+        // Embedding test
+        // @NoSameSiteCookieRequired is required as well
+//        $csp=$tr->getContentSecurityPolicy();
+//        if($csp===null){
+//            $csp=new ContentSecurityPolicy();
+//            $tr->setContentSecurityPolicy($csp);
+//        }
+//        $csp->addAllowedFrameAncestorDomain("http://localhost:8123");
+
         return $tr;
     }
 
