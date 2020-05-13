@@ -1,3 +1,7 @@
+## 1.4.15 - 2020-05-13
+### Fixed
+- frontend error check fails when date empty
+
 ## 1.4.14 - 2020-05-07
 ### Added
 - Option to skip email validation test
