@@ -4,6 +4,7 @@ OC.L10N.register(
     "Confirm" : "Підтвердити",
     "Cancel" : "Скасувати",
     "Info" : "Info",
+    "Available" : "Доступно",
     "Close" : "Закрити",
     "Copy public link" : "Копіювати публічне посилання",
     "Apply" : "Застосувати",
