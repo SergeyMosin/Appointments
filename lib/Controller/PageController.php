@@ -1142,6 +1142,9 @@ class PageController extends Controller {
 
 //        $tr->setHeaderActions([new SimpleMenuAction('download', 'Label', '', 'link-url', 0)]);
 
+        // https://support.google.com/webmasters/answer/93710?hl=en
+        \OC_Util::addHeader("meta",['name'=>'robots','content'=>'noindex']);
+
         // Embedding test
         // @NoSameSiteCookieRequired is required as well
 //        $csp=$tr->getContentSecurityPolicy();
