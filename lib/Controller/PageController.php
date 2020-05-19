@@ -486,6 +486,7 @@ class PageController extends Controller {
 
         $page_text='';
         $sts=1; // <- assume fail
+        $a_base=false; // are we in preview mode (renderAs base)
         if($a==='1' || $a==='2') {
             // Confirm or Skip email verification step ($a==='2')
 
@@ -504,6 +505,7 @@ class PageController extends Controller {
                             // TRANSLATORS the '%s' is an email address
                             $skip_evs_text=$this->l->t("An email with additional details is on its way to you at %s", [$em]);
                             $a_ok=true; // :)
+                            $a_base=true;
                         }
                     }else{
                         // link expired
@@ -524,8 +526,7 @@ class PageController extends Controller {
 
                 if ($sts === 0) { // Appointment is confirmed successfully
                     // TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is confirmed.
-                    $page_text = $this->l->t("Your appointment scheduled for %s is confirmed.", [$date_time]);
-                    // TODO: add $skip_evs_text when it is translated
+                    $page_text = $this->l->t("Your appointment scheduled for %s is confirmed.", [$date_time])." ".$skip_evs_text;
                 }
             }
         }elseif($a==="0"){
@@ -572,13 +573,13 @@ class PageController extends Controller {
 
         if ($sts === 0) {
             // Confirm/Cancel OK.
-            $tr=$this->getPublicTemplate("public/thanks",$uid);
-            $tr->setParams([
+            $tr_name="public/thanks";
+            $tr_params=[
                 // TRANSLATORS Meaning the booking process is finished
                 'appt_c_head' => $this->l->t("All done."),
                 'appt_c_msg' => $page_text
-            ]);
-            $tr->setStatus(200);
+            ];
+            $tr_sts=200;
         } else {
             // Error
             // TODO: add phone number to "contact us ..."
@@ -588,18 +589,30 @@ class PageController extends Controller {
 
             if($sts!==2) {
                 // general error
-                $tr = $this->getPublicTemplate("public/formerr", $uid);
-                $tr->setParams(['appt_e_ne' => $org_email]);
-                $tr->setStatus(500);
+                $tr_name="public/formerr";
+                $tr_params=['appt_e_ne' => $org_email];
+                $tr_sts=500;
             }else{
                 // link expired
-                $tr = $this->getPublicTemplate('public/thanks',$uid);
-                $param['appt_c_head']=$this->l->t("Info");
-                $param['appt_c_msg'] = $this->l->t("Link Expired...");
-                $tr->setParams($param);
-                $tr->setStatus(409);
+                $tr_name="public/thanks";
+                $tr_params=[
+                    'appt_c_head'=>$this->l->t("Info"),
+                    'appt_c_msg'=>$this->l->t("Link Expired...")
+                ];
+                $tr_sts=409;
             }
         }
+
+        if($a_base===false){
+            // renderAs=public
+            $tr=$this->getPublicTemplate($tr_name,$uid);
+        }else{
+            // renderAs=base (used for preview when email validation step is skipped
+            $tr = new TemplateResponse($this->appName,$tr_name, [],"base");
+        }
+        $tr->setParams($tr_params);
+        $tr->setStatus($tr_sts);
+
         return $tr;
     }
 
@@ -644,9 +657,6 @@ class PageController extends Controller {
         $ok_uri="form?sts=0";
         $bad_input_url="form?sts=1";
         $server_err_url="form?sts=2";
-
-        // skip email verification step
-        $skip_evs_url="cncf";
 
         $key=hex2bin($this->c->getAppValue($this->appName, 'hk'));
         if(empty($key)){
@@ -737,9 +747,11 @@ class PageController extends Controller {
         $ses->set(
             BackendUtils::APPT_SES_KEY_HINT,
             ($skip_evs?BackendUtils::APPT_SES_SKIP:BackendUtils::APPT_SES_BOOK));
+
+        $raw_burl=$this->getPublicWebBase().'/' .$this->pubPrx($this->getToken($uid)).'cncf?d=';
         $ses->set(
             BackendUtils::APPT_SES_KEY_BURL,
-            $this->getPublicWebBase().'/' .$this->pubPrx($this->getToken($uid)).'cncf?d=');
+            $raw_burl);
 
         $raw_btkn=substr($da[1],0,-4);
         $ses->set(
@@ -763,7 +775,7 @@ class PageController extends Controller {
                     $this->utils->encrypt(pack('I', time()) . $post['email'], $key)
                 );
         }else{
-            $uri=$skip_evs_url."?d=2".urlencode(
+            $uri=$raw_burl."2".urlencode(
                     $this->utils->encrypt(
                         pack('I', time()).$post['email'].chr(31).$raw_btkn,
                         $key)
