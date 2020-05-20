@@ -35,6 +35,7 @@ class PageController extends Controller {
     const PSN_ON_CANCEL="whenCanceled";
     const PSN_PAGE_TITLE="pageTitle";
     const PSN_PAGE_SUB_TITLE="pageSubTitle";
+    const PSN_META_NO_INDEX="metaNoIndex";
     const PSN_PAGE_STYLE="pageStyle";
 
     const PSN_DEF=array(
@@ -49,6 +50,7 @@ class PageController extends Controller {
         self::PSN_ON_CANCEL=>"mark",
         self::PSN_PAGE_TITLE=>"",
         self::PSN_PAGE_SUB_TITLE=>"",
+        self::PSN_META_NO_INDEX=>false,
         self::PSN_PAGE_STYLE=>""
     );
 
@@ -1154,8 +1156,10 @@ class PageController extends Controller {
 
 //        $tr->setHeaderActions([new SimpleMenuAction('download', 'Label', '', 'link-url', 0)]);
 
-        // https://support.google.com/webmasters/answer/93710?hl=en
-        \OC_Util::addHeader("meta",['name'=>'robots','content'=>'noindex']);
+        if($pps[self::PSN_META_NO_INDEX]===true) {
+            // https://support.google.com/webmasters/answer/93710?hl=en
+            \OC_Util::addHeader("meta", ['name' => 'robots', 'content' => 'noindex']);
+        }
 
         // Embedding test
         // @NoSameSiteCookieRequired is required as well

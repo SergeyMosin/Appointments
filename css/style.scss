@@ -406,6 +406,11 @@ textarea.appt-stn-txt-ta{
     min-width: 270px;
 }
 
+.srgdev-appt-sb-chb-cont{
+	margin-top: 1em;
+	margin-left: -3px;
+}
+
 .srgdev-appt-sb-main-cont {
 
 	label{
@@ -437,7 +442,6 @@ textarea.appt-stn-txt-ta{
 	.srgdev-appt-sb-textarea:not(:disabled):active {
 		border-color: var(--color-primary-element) !important;
 	}
-
 
 	.srgdev-appt-sb-indent{
 		padding-left: 2em;

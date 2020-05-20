@@ -51,11 +51,6 @@
                     title="Advanced Settings"
                     :open="false">
                     <template slot="content">
-                        <div style="padding-top: .5em"><input
-                                v-model="ppsInfo.hidePhone"
-                                type="checkbox"
-                                id="srgdev-appt_pps-hide-phone"
-                                class="checkbox"><label for="srgdev-appt_pps-hide-phone">{{t('appointments','Hide phone number field')}}</label></div>
                         <div class="srgdev-appt-info-lcont">
                             <label class="pps-txt-label" for="srgdev-appt_pps-gdpr">{{t('appointments','GDPR Compliance')}}</label><a
                                 class="icon-info srgdev-appt-info-link"
@@ -78,7 +73,20 @@
                             <option value="mark">{{t('appointments','Mark the appointment as canceled')}}</option>
                             <option value="reset">{{t('appointments','Reset (make the timeslot available)')}}</option>
                         </select>
-
+                        <div style="padding-top: .25em"
+                             class="srgdev-appt-sb-chb-cont"><input
+                                v-model="ppsInfo.hidePhone"
+                                type="checkbox"
+                                id="srgdev-appt_pps-hide-phone"
+                                class="checkbox"><label for="srgdev-appt_pps-hide-phone">{{t('appointments','Hide phone number field')}}</label></div>
+                        <div class="srgdev-appt-info-lcont srgdev-appt-sb-chb-cont"><input
+                                v-model="ppsInfo.metaNoIndex"
+                                type="checkbox"
+                                id="srgdev-appt_pps-meta-noindex"
+                                class="checkbox"><label for="srgdev-appt_pps-meta-noindex">{{t('appointments','Add {taginfo} tag',{taginfo: '"noindex" meta'})}}</label><a
+                                class="icon-info srgdev-appt-info-link"
+                                target="_blank"
+                                href="https://support.google.com/webmasters/answer/93710?hl=en"></a></div>
                         <label class="pps-txt-label" for="srgdev-appt_pps-page-title">{{t('appointments','Page Header Title:')}}</label>
                         <input
                                 v-model="ppsInfo.pageTitle"
@@ -143,6 +151,7 @@
                         hidePhone:false,
                         pageTitle:"",
                         pageSubTitle:"",
+                        metaNoIndex:false,
                         pageStyle:""
                     }
                 }
