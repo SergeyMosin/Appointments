@@ -1,3 +1,9 @@
+## 1.4.16 - 2020-05-20
+### Added
+- Option to add 'robots noindex' meta tag
+### Fixed
+- Preview for "skip email verification step" option
+
 ## 1.4.15 - 2020-05-13
 ### Fixed
 - frontend error check fails when date empty
