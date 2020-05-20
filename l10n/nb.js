@@ -10,6 +10,7 @@ OC.L10N.register(
     "Deleted" : "Slettet",
     "Confirmed" : "Bekreftet",
     "Start" : "Start",
+    "close" : "lukk",
     "Location:" : "Sted:",
     "Back" : "Tilbake",
     "Next" : "Neste",
