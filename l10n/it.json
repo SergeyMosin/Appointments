@@ -88,6 +88,7 @@
     "Mark the appointment as canceled" : "Marca l'appuntamento come annullato",
     "Reset (make the timeslot available)" : "Ripristina (rendi disponibile lo slot)",
     "Hide phone number field" : "Nascondi il campo del numero telefonico",
+    "Add {taginfo} tag" : "Aggiungi tag {taginfo}",
     "Page Header Title:" : "Titolo intestazione pagina:",
     "Page Header Subtitle:" : "Sottotitolo intestazione pagina:",
     "Style Override:" : "Sovrascrittura stile:",

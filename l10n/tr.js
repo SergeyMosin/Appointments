@@ -90,6 +90,7 @@ OC.L10N.register(
     "Mark the appointment as canceled" : "Randevu iptal edilmiş olarak işaretlensin",
     "Reset (make the timeslot available)" : "Sıfırlansın (zaman aralığı boşaltılsın)",
     "Hide phone number field" : "Telefon numarası alanı gizlensin",
+    "Add {taginfo} tag" : "{taginfo} etiketini ekle",
     "Page Header Title:" : "Sayfa Üst Bilgisi Başlığı: ",
     "Page Header Subtitle:" : "Sayfa Üst Bilgisi Alt Başlığı:",
     "Style Override:" : "Biçem Değişikliği:",

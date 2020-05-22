@@ -90,6 +90,7 @@ OC.L10N.register(
     "Mark the appointment as canceled" : "Σημείωση ως ακυρωμένο",
     "Reset (make the timeslot available)" : "Επαναφορά (κάνει διαθέσιμη την χρονική περίοδο)",
     "Hide phone number field" : "Απόκρυψη του πεδίου τηλεφωνικού αριθμού",
+    "Add {taginfo} tag" : "Προσθήκη ετικέτας {taginfo}",
     "Page Header Title:" : "Τίτλος επικεφαλίδας σελίδας:",
     "Page Header Subtitle:" : "Υπότιτλος επικεφαλίδας σελίδας:",
     "Style Override:" : "Αντικατάσταση στυλ:",

@@ -90,6 +90,7 @@ OC.L10N.register(
     "Mark the appointment as canceled" : "Termin als abgesagt markieren",
     "Reset (make the timeslot available)" : "Zurücksetzen (Termin-Slot wird wieder verfügbar)",
     "Hide phone number field" : "Telefonnummernfeld ausblenden",
+    "Add {taginfo} tag" : "Schlagwort {taginfo} hinzufügen",
     "Page Header Title:" : "Titel Seitenkopf:",
     "Page Header Subtitle:" : "Untertitel Seitenkopf:",
     "Style Override:" : "Stil überschreiben:",

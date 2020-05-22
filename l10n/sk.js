@@ -90,6 +90,7 @@ OC.L10N.register(
     "Mark the appointment as canceled" : "Označte stretnutie ako zrušené",
     "Reset (make the timeslot available)" : "Obnoviť (sprístupniť časový rozvrh)",
     "Hide phone number field" : "Skryť kolónku telefónneho čísla",
+    "Add {taginfo} tag" : "Pridať štítok {taginfo}",
     "Page Header Title:" : "Nadpis hlavičky stránky:",
     "Page Header Subtitle:" : "Podnadpis hlavičky stránky:",
     "Style Override:" : "Prepísanie štýlu:",

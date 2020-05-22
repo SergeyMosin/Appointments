@@ -90,6 +90,7 @@ OC.L10N.register(
     "Mark the appointment as canceled" : "Marcar a cita como cancelada",
     "Reset (make the timeslot available)" : "Restabelecer (facer que a franxa horaria estea dispoñíbel)",
     "Hide phone number field" : "Agochar o campo do número de teléfono",
+    "Add {taginfo} tag" : "Engadir a etiqueta {taginfo}",
     "Page Header Title:" : "Título da cabeceira da páxina",
     "Page Header Subtitle:" : "Subtítulo da cabeceira da páxina:",
     "Style Override:" : "Anulación do estilo:",
