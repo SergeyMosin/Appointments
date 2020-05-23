@@ -88,6 +88,7 @@
     "Mark the appointment as canceled" : "Marquer le rendez-vous comme annulé",
     "Reset (make the timeslot available)" : "Réinitialiser (rendre la plage horaire disponible)",
     "Hide phone number field" : "Masquer le champ numéro de téléphone",
+    "Add {taginfo} tag" : "Ajouter l'étiquette {taginfo}",
     "Page Header Title:" : "Titre de l'en-tête :",
     "Page Header Subtitle:" : "Sous-titre de l'en-tête :",
     "Style Override:" : "Remplacement du style :",

@@ -88,6 +88,7 @@
     "Mark the appointment as canceled" : "Marcar la cita com a cancel·lada",
     "Reset (make the timeslot available)" : "Reinicialització (deixar el bloc de temps disponible)",
     "Hide phone number field" : "Amaga el camp del número de telèfon",
+    "Add {taginfo} tag" : "Afegeix l'etiqueta {taginfo}",
     "Page Header Title:" : "Títol de la capçalera de la pàgina:",
     "Page Header Subtitle:" : "Subtítol de la capçalera de la pàgina:",
     "Style Override:" : "Estil de substitució:",

@@ -90,6 +90,7 @@ OC.L10N.register(
     "Mark the appointment as canceled" : "Markeer de afspraak als Geannuleerd",
     "Reset (make the timeslot available)" : "Reset (maak het tijdslot weer beschikbaar)",
     "Hide phone number field" : "Verberg veld telefoonnummer",
+    "Add {taginfo} tag" : "Toevoegen {taginfo} tag",
     "Page Header Title:" : "Pagina Koptitel:",
     "Page Header Subtitle:" : "Paginakop ondertitel:",
     "Style Override:" : "Stijl overschrijven:",
