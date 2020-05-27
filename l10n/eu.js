@@ -90,6 +90,7 @@ OC.L10N.register(
     "Mark the appointment as canceled" : "Markatu hitzordua bertan behera utzita bezala",
     "Reset (make the timeslot available)" : "Berrezarri (jarri ordu-tartea erabilgarri)",
     "Hide phone number field" : "Ezkutatu telefono zenbakiaren eremua",
+    "Add {taginfo} tag" : "Gehitu {taginfo} etiketa",
     "Page Header Title:" : "Orri goiburuaren izenburua:",
     "Page Header Subtitle:" : "Orri goiburuaren azpititulua:",
     "Style Override:" : "Estilo gainidazketa:",
