@@ -67,7 +67,16 @@
                     <div v-if="generalModal===1 && generalModalLoadingTxt===''">
                         <div class="srgdev-appt-modal-lbl" style="user-select: text; cursor: text;">
                             <span style="cursor: text; display: inline-block; vertical-align: middle;">{{generalModalTxt[0]}}</span><div class="srgdev-appt-icon_btn icon-clippy" @click="doCopyPubLink"></div><a target="_blank" :href="generalModalTxt[0]" class="srgdev-appt-icon_btn icon-external"></a>
-                            <div class="srgdev-appt-modal-lbl_dim" style="cursor: text;" >iframe: {{generalModalTxt[1]}}</div>
+                            <div style="position: relative;">
+                            <ApptAccordion
+                                    style="display: inline-block; margin-top: 1.25em;"
+                                    title="Show iframe/embeddable"
+                                    :open="false">
+                                <template slot="content">
+                            <div class="srgdev-appt-modal-lbl_dim" style="cursor: text;position: absolute;left: 0;width: 100%;text-align: center;margin: 0;" >{{generalModalTxt[1]}}</div><br>
+                                </template>
+                            </ApptAccordion>
+                            </div>
                         </div>
                         <button @click="closeGeneralModal" class="primary srgdev-appt-modal-btn">{{t('appointments', 'Close')}}</button>
                     </div>
@@ -241,6 +250,7 @@
     import MailStnSlideBar from "./components/MailStnSlideBar.vue"
 
     import TimeSlotSlideBar from "./components/TimeSlotSlideBar";
+    import ApptAccordion from "./components/ApptAccordion.vue";
 
     export default {
         name: 'App',
@@ -261,6 +271,7 @@
             ActionInput,
             UserStnSlideBar,
             MailStnSlideBar,
+            ApptAccordion,
         },
         data: function() {
             return {
