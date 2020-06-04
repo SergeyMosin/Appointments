@@ -88,6 +88,7 @@
     "Mark the appointment as canceled" : "Пометить запись как отменённую",
     "Reset (make the timeslot available)" : "Сбросить (освободить интервал для записи)",
     "Hide phone number field" : "Скрыть поле номера телефона",
+    "Add {taginfo} tag" : "Добавить метку {taginfo}",
     "Page Header Title:" : "Заголовок страницы",
     "Page Header Subtitle:" : "Подзаголовок страницы",
     "Style Override:" : "Пользовательские стили:",
