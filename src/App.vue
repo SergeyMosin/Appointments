@@ -18,40 +18,98 @@
                     <ActionButton :disabled="pageEnabled==='0'" @click="togglePageEnabled('0')" icon="icon-category-disabled" closeAfterClick>
                         {{t('appointments','Stop Sharing')}}
                     </ActionButton>
+                    <ActionButton @click="showPubLink" icon="icon-public" closeAfterClick>
+                        {{t('appointments','Show URL/link')}}
+                    </ActionButton>
                 </template>
             </AppNavigationItem>
             <AppNavigationSpacer/>
-            <NavAccountItem :calLoading="isCalLoading" @calSelected="setCalendar" :curCal="curCal"></NavAccountItem>
-                <AppNavigationItem
-                        :loading="sbLoading===5"
-                        @click="openSlideBarAGen"
-                        :title="t('appointments','Add Appointment Slots')"
-                        icon="icon-add"></AppNavigationItem>
-                <AppNavigationSpacer/>
-                <AppNavigationItem
-                        :loading="sbLoading===3"
-                        @click="openSlideBar(3,'get_uci',uciInfo)"
-                        :title="t('appointments','User/Organization Info')"
-                        icon="icon-user"></AppNavigationItem>
-                <AppNavigationItem
-                        :loading="sbLoading===2"
-                        @click="openSlideBar(2,'get_pps',ppsInfo)"
-                        :title="t('appointments','Customize Public Page')"
-                        icon="icon-category-customization"></AppNavigationItem>
-                <AppNavigationItem
-                        :loading="sbLoading===4"
-                        @click="openSlideBar(4,'get_eml',emlInfo)"
-                        :title="t('appointments','Email Settings')"
-                        icon="icon-mail"></AppNavigationItem>
-                <AppNavigationItem
-                        :pinned="true"
-                        @click="showHelp"
-                        :title="t('appointments','Help/Tutorial')"
-                        icon="icon-info"></AppNavigationItem>
+            <AppNavigationItem
+                    :loading="sbLoading===6"
+                    @click="function (){
+                        openSlideBar(6,'',null)
+                        // Dest calendar info is needed
+                        getCalInfo('openNot')
+                    }"
+                    :title="t('appointments','Manage Appointment Slots')"
+                    icon="icon-appt-calendar-clock"></AppNavigationItem>
+            <AppNavigationSpacer/>
+            <AppNavigationItem
+                    :loading="sbLoading===3"
+                    @click="openSlideBar(3,'get_uci',uciInfo)"
+                    :title="t('appointments','User/Organization Info')"
+                    icon="icon-user"></AppNavigationItem>
+            <AppNavigationItem
+                    :loading="sbLoading===2"
+                    @click="openSlideBar(2,'get_pps',ppsInfo)"
+                    :title="t('appointments','Customize Public Page')"
+                    icon="icon-category-customization"></AppNavigationItem>
+            <AppNavigationItem
+                    :loading="sbLoading===4"
+                    @click="openSlideBar(4,'get_eml',emlInfo)"
+                    :title="t('appointments','Email Settings')"
+                    icon="icon-mail"></AppNavigationItem>
+            <AppNavigationItem
+                    :pinned="true"
+                    @click="showHelp"
+                    :title="t('appointments','Help/Tutorial')"
+                    icon="icon-info"></AppNavigationItem>
             </ul>
         </AppNavigation>
         <AppContent style="transition: none;" class="srgdev-app-content" :aria-expanded="navOpen">
-
+        <div v-show="visibleSection===2" class="srgdev-appt-cal-view-cont">
+            <Modal v-if="generalModal!==0" :canClose="false">
+                <div class="srgdev-appt-modal_pop">
+                    <span :data-pop="generalModalPop" class="srgdev-appt-modal_pop_txt">{{generalModalPopTxt}}</span>
+                </div>
+                <div v-if="generalModal===1" class="srgdev-appt-modal_content">
+                    <div class="srgdev-appt-modal-header">{{t('appointments', 'Public Page URL')}}</div>
+                    <div v-if="generalModal===1 && generalModalLoadingTxt===''">
+                        <div class="srgdev-appt-modal-lbl" style="user-select: text; cursor: text;">
+                            <span style="cursor: text; display: inline-block; vertical-align: middle;">{{generalModalTxt[0]}}</span><div class="srgdev-appt-icon_btn icon-clippy" @click="doCopyPubLink"></div><a target="_blank" :href="generalModalTxt[0]" class="srgdev-appt-icon_btn icon-external"></a>
+                            <div class="srgdev-appt-modal-lbl_dim" style="cursor: text;" >iframe: {{generalModalTxt[1]}}</div>
+                        </div>
+                        <button @click="closeGeneralModal" class="primary srgdev-appt-modal-btn">{{t('appointments', 'Close')}}</button>
+                    </div>
+                    <div v-if="generalModal===1 && generalModalLoadingTxt!==''">
+                        <div class="srgdev-appt-modal-lbl">{{generalModalLoadingTxt}}</div>
+                        <div class="srgdev-appt-modal-slider">
+                            <div class="srgdev-appt-slider-line"></div>
+                            <div class="srgdev-appt-slider-inc"></div>
+                            <div class="srgdev-appt-slider-dec"></div>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="generalModal===2" class="srgdev-appt-modal_content">
+                    <div class="srgdev-appt-modal-header">{{t('appointments', 'Remove Old Appointments')}}</div>
+                    <div v-if="generalModal===2 && generalModalLoadingTxt===''">
+                        <div class="srgdev-appt-modal-lbl">{{generalModalTxt[0]}}<div :class="{'srgdev-appt-modal-lbl_dim':generalModalTxt[0]!==''}">{{generalModalTxt[1]}}</div>
+                        </div>
+                        <button
+                                @click="removeOldAppointments"
+                                v-show="generalModalTxt[0]!==''"
+                                style="margin-right: 3em"
+                                class="primary srgdev-appt-modal-btn">{{t('appointments', 'Remove')}}</button>
+                        <button
+                                v-show="generalModalTxt[0]!==''"
+                                @click="closeGeneralModal"
+                                class="srgdev-appt-modal-btn">{{t('appointments', 'Cancel')}}</button>
+                        <button
+                                v-show="generalModalTxt[0]===''"
+                                @click="closeGeneralModal"
+                                class="primary srgdev-appt-modal-btn">{{t('appointments', 'Close')}}</button>
+                    </div>
+                    <div v-if="generalModal===2 && generalModalLoadingTxt!==''">
+                        <div class="srgdev-appt-modal-lbl">{{generalModalLoadingTxt}}</div>
+                        <div class="srgdev-appt-modal-slider">
+                            <div class="srgdev-appt-slider-line"></div>
+                            <div class="srgdev-appt-slider-inc"></div>
+                            <div class="srgdev-appt-slider-dec"></div>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
+        </div>
         <div v-show="visibleSection===1" class="srgdev-appt-cal-view-cont">
             <div class="srgdev-appt-cal-view-btns">
                 <button @click="addScheduleToCalendar()" class="primary">
@@ -117,10 +175,10 @@
                 </div>
             </Modal>
         </div>
-        <div  v-show="visibleSection===0" class="srgdev-appt-main-sec">
+        <div v-show="visibleSection===0" class="srgdev-appt-main-sec">
             <ul class="srgdev-appt-main-info">
                 <li>{{t('appointments', 'Public Page Preview')}}</li>
-                <ActionButton class="srgdev-appt-main-pub-link" icon="icon-clippy" @click="copyPubLink">{{t('appointments', 'Copy public link')}}</ActionButton>
+<!--                <ActionButton class="srgdev-appt-main-pub-link" icon="icon-clippy" @click="copyPubLink">{{t('appointments', 'Copy public link')}}</ActionButton>-->
             </ul>
             <div class="srgdev-appt-main-frame-cont">
                 <iframe class="srgdev-appt-main-frame" ref="pubPageRef" :src="pubPage"></iframe>
@@ -128,25 +186,31 @@
         </div>
         <div v-html="helpContent" v-show="visibleSection===2" class="srgdev-appt-help-sec">
         </div>
-            <ScheduleSlideBar
-                    :title="t('appointments','Schedule Generator')"
-                    :subtitle="t('appointments','Add open appointments to your calendar')"
-                    :tz-name="gridTZName"
-                    :tz-data="gridTZData"
-                    @agDataReady="makePreviewGrid"
-                    v-show="sbShow===1" @close="sbShow=0"/>
-            <FormStnSlideBar
-                    :pps-info="ppsInfo"
-                    @apply="setState('set_pps',$event)"
-                    v-show="sbShow===2" @close="sbShow=0"/>
-            <UserStnSlideBar
-                    :uci-info="uciInfo"
-                    @apply="setState('set_uci',$event)"
-                    v-show="sbShow===3" @close="sbShow=0"/>
-            <MailStnSlideBar
-                    :eml-info="emlInfo"
-                    @apply="setState('set_eml',$event)"
-                    v-show="sbShow===4" @close="sbShow=0"/>
+        <FormStnSlideBar
+                :pps-info="ppsInfo"
+                @apply="setState('set_pps',$event)"
+                v-show="sbShow===2" @close="sbShow=0"/>
+        <UserStnSlideBar
+                :uci-info="uciInfo"
+                @apply="setState('set_uci',$event)"
+                v-show="sbShow===3" @close="sbShow=0"/>
+        <MailStnSlideBar
+                :eml-info="emlInfo"
+                @apply="setState('set_eml',$event)"
+                v-show="sbShow===4" @close="sbShow=0"/>
+        <TimeSlotSlideBar
+                ref="tsbRef"
+                :cur-cal="curCal"
+                :cal-info="calInfo"
+                :is-grid-ready="isGridReady"
+                v-show="sbShow===6"
+                @remOldAppts="countOldAppointments"
+                @setCalInfo="setState('set_cls',$event)"
+                @calSelected="setCalendar"
+                @agDataReady="makePreviewGrid"
+                @setupGrid="gridSetup"
+                @getCalInfo="getCalInfo"
+                @close="sbShow=0"/>
     </AppContent>
     </div>
 </template>
@@ -176,11 +240,12 @@
     import UserStnSlideBar from "./components/UserStnSlideBar.vue"
     import MailStnSlideBar from "./components/MailStnSlideBar.vue"
 
-    import {linkTo} from '@nextcloud/router'
+    import TimeSlotSlideBar from "./components/TimeSlotSlideBar";
 
     export default {
         name: 'App',
         components: {
+            TimeSlotSlideBar,
             FormStnSlideBar,
             ScheduleSlideBar,
             AppNavigation,
@@ -195,7 +260,7 @@
             Actions,
             ActionInput,
             UserStnSlideBar,
-            MailStnSlideBar
+            MailStnSlideBar,
         },
         data: function() {
             return {
@@ -204,8 +269,6 @@
                 pubPage:'',
 
                 curCal:{},
-
-                isCalLoading:false,
 
                 pageEnabled:'0',
 
@@ -233,21 +296,26 @@
                 gridApptTs:0,
                 gridApptTZ:"L",
 
-                gridTZData:"",
-                gridTZName:"",
+                generalModal:0,
+                generalModalTxt:["",""],
+                generalModalLoadingTxt:"",
+                generalModalPop:0,
+                generalModalPopTxt:"",
 
                 // SlideBars...
+                calInfo:{}, // <- calendar settings (NOT curCal)
                 ppsInfo:{},
                 uciInfo:{},
                 emlInfo:{},
 
+                roaData:""
             };
         },
         computed: {
         },
         beforeMount() {
             this.resetCurCal()
-            this.isCalLoading=true
+            this.curCal.isCalLoading=true
 
             axios.post('state', {
                 a: 'get'
@@ -267,10 +335,10 @@
                         this.pageEnabled=rda[1]
                     }
                 }
-                this.isCalLoading=false
+                this.curCal.isCalLoading=false
             })
             .catch(error=> {
-                this.isCalLoading=false
+                this.curCal.isCalLoading=false
                 console.log(error);
             });
         },
@@ -283,6 +351,128 @@
             this.$root.$off('helpWanted', this.helpWantedHandler)
         },
         methods: {
+
+
+            removeOldAppointments(){
+                if(this.roaData===""){
+                    OC.Notification.showTemporary('Can not remove appointments: bad info',{timeout:4,type:'error'})
+                }
+
+
+                if(!confirm(this.t('appointments','This action can NOT be undone. Continue ?'))) return;
+
+                this.generalModalLoadingTxt=this.t('appointments','Removing Appointment Slots')+"..."
+
+                this.openGeneralModal(2)
+
+                const errTxt=this.t('appointments','Can not delete old appointments/slots')+"\xa0\xa0\xa0\xa0"
+
+                const str=this.roaData.slice(0, -1)+',"delete":true}';
+                this.roaData=""
+
+                axios.get('calgetweek', {
+                    params:{
+                        t:str
+                    }
+                }).then(response=>{
+                    if(response.status===200) {
+                        const ua = response.data.split("|")
+                        if (ua[0] !== "0") {
+                            const dt = new Date()
+                            dt.setTime(ua[1] * 1000)
+
+                            let txt
+                            let dts=dt.toLocaleDateString(undefined, {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            })
+
+                            if(str.indexOf("empty")>-1){
+                                txt=this.t('appointments', 'All empty appointment slots created before {fullDate} are removed', {
+                                    fullDate: dts})
+                            }else{
+                                txt=this.t('appointments', 'All empty slots and booked appointments created before {fullDate} are removed', {
+                                    fullDate: dts})
+                            }
+
+                            this.$set(this.generalModalTxt, 1, txt)
+                        } else {
+                            OCP.Toast.error(errTxt)
+                        }
+                        this.generalModalLoadingTxt = ""
+                    }
+                }).catch(error=>{
+                    this.closeGeneralModal()
+                    console.log(error)
+                    OCP.Toast.error(errTxt)
+                })
+            },
+
+            countOldAppointments(d){
+                // {"type": "empty|both" , "before": 1|7}
+
+                let str
+                try {
+                    str=JSON.stringify(d)
+                }catch (e) {
+                    console.log(e)
+                    OC.Notification.showTemporary(this.t('appointments',"Can not request data"),{timeout:4,type:'error'})
+                    return
+                }
+
+                this.generalModalLoadingTxt=this.t('appointments','Gathering calendar information')+"..."
+                this.openGeneralModal(2)
+
+
+                this.roaData=""
+
+                axios.get('calgetweek', {
+                    params:{
+                        t:str
+                    }
+                }).then(response=>{
+                    if(response.status===200) {
+                        const ua = response.data.split("|")
+                        if(ua[0]!=="0") {
+
+                            const dt=new Date()
+                            dt.setTime(ua[1]*1000)
+
+                            let txt
+                            let dts=dt.toLocaleDateString(undefined, {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            })
+                            if(d.type==="empty"){
+                                txt=this.t('appointments', 'Remove empty appointment slots created before {fullDate} ?', {
+                                    fullDate: dts})
+                            }else{
+                                txt=this.t('appointments', 'Remove empty slots and booked appointments created before {fullDate} ?', {
+                                    fullDate: dts})
+                            }
+                            this.$set(this.generalModalTxt, 0, txt)
+                            this.roaData=str
+                        }
+
+                        let att=""
+                        if(ua[0]!=="0" && d.type==="both" && this.calInfo.destCalId!==undefined
+                            && this.calInfo.destCalId!=="-1"){
+                            att=" [ "+this.t('appointments','two calendars affected')+" ]"
+                        }
+
+
+                        this.$set(this.generalModalTxt, 1, this.t('appointments','Number of expired appointments/slots: ')+ua[0]+att)
+
+                        this.generalModalLoadingTxt=""
+                    }
+                }).catch(error=>{
+                    this.closeGeneralModal()
+                    console.log(error)
+                    OCP.Toast.error(this.t('appointments','Can not get calendar data')+"\xa0\xa0\xa0\xa0")
+                })
+            },
 
             gridApptsAdd(cID,event){
                 let hd=this.gridHeader[cID]
@@ -310,29 +500,65 @@
                 this.gridHeader[cID+1].hasAppts=true
             },
 
+            gridSetup(){
+                gridMaker.setup(this.$refs["grid_cont"],5,"srgdev-appt-grd-")
+                this.isGridReady=true
+            },
+
+
+            getCalInfo(evt){
+                let sbn=-1
+                if(evt!==undefined && evt==='openNot'){
+                    sbn=-2
+                }
+                this.openSlideBar(sbn,'get_cls',this.calInfo)
+            },
+
             /**
-             * @param {number} sbn SlideBar number
+             * @param {number} sbn SlideBar number, -1=just get settings
              * @param {string} action get_xxx...
-             * @param {Object} props props/info object for the slide bar
+             * @param {Object|null} props props/info object for the slide bar
              */
             openSlideBar(sbn,action,props){
-                if(this.sbShow===sbn){
-                    // already open, close...
+                if(sbn>-1) {
+                    if (this.sbShow === sbn) {
+                        // already open, close...
+                        this.toggleSlideBar(sbn)
+                        return
+                    }
+                    this.sbLoading = sbn
+                }else{
+                    this.$set(props, 'isLoading', true)
+                    if(sbn===-1) this.$set(props, 'isReady', false)
+                }
+
+                if(action===""){
                     this.toggleSlideBar(sbn)
+                    this.sbLoading = 0
                     return
                 }
-                this.sbLoading=sbn
-                this.getState(action).then(res=>{
-                    if(res!==null) {
+
+
+                this.getState(action).then(res => {
+                    if (res !== null) {
                         for (let key in res) {
                             if (res.hasOwnProperty(key)) {
                                 this.$set(props, key, res[key])
                             }
                         }
-                        this.toggleSlideBar(sbn)
+
+                        if(sbn>-1){
+                            this.toggleSlideBar(sbn)
+                        }else if(sbn===-1){
+                            this.$set(props, 'isReady', true)
+                        }
                     }
-                    this.sbLoading=0
+                    this.sbLoading = 0
+                    if(sbn<0){
+                        this.$set(props, 'isLoading', false)
+                    }
                 })
+
             },
 
             /** @return {Promise<JSON|string|null>} */
@@ -376,71 +602,6 @@
                 }).catch((error) => {
                     console.log(error)
                     OC.Notification.showTemporary(this.t('appointments',"Can't apply settings"),{timeout:4,type:'error'})
-                })
-            },
-
-            openSlideBarAGen: function(){
-
-                if(this.sbShow===1){
-                    this.toggleSlideBar(1)
-                    return;
-                }
-
-                this.sbLoading=5;
-                if(!this.isGridReady){
-                    gridMaker.setup(this.$refs["grid_cont"],5,"srgdev-appt-grd-")
-                    this.isGridReady=true
-                }
-
-                if(this.curCal.url===""){
-                    this.noCalSet()
-                    this.sbLoading=0;
-                    return
-                }
-
-                this.gridTZName="UTC"
-                this.gridTZData="UTC"
-
-                this.getState("get_tz").then(res=>{
-                    if(res!==null && res.toLowerCase()!=='utc') {
-                        let url=linkTo('appointments','ajax/zones.json')
-                        return axios.get(url).then(tzr=>{
-                            if(tzr.status===200) {
-                                let tzd=tzr.data
-                                if(typeof tzd==="object"
-                                    && tzd.hasOwnProperty('aliases')
-                                    && tzd.hasOwnProperty('zones')
-                                ){
-                                    let tzs=""
-                                    if(tzd.zones[res]!==undefined){
-                                        tzs=tzd.zones[res].ics.join("\r\n")
-                                    }else if(tzd.aliases[res]!==undefined){
-                                        let alias=tzd.aliases[res].aliasTo
-                                        if(tzd.zones[alias]!==undefined){
-                                            res=alias
-                                            tzs=tzd.zones[alias].ics.join("\r\n")
-                                        }
-                                    }
-                                    return [res,tzs]
-                                }
-                            }
-                            return null
-                        })
-                    }else return Promise.resolve(null)
-                }).then((r)=>{
-                    if(r===null || !Array.isArray(r) || r.length!==2 || r[1]===""){
-                        console.error("can't get timezone data")
-                    }else{
-                        this.gridTZName=r[0]
-                        this.gridTZData= "BEGIN:VTIMEZONE\r\nTZID:"
-                            +r[0].trim()+"\r\n"+r[1].trim()+"\r\nEND:VTIMEZONE"
-                    }
-                    this.sbLoading=0;
-                    this.toggleSlideBar(1)
-                }).catch(err=>{
-                    console.log(err)
-                    this.sbLoading=0;
-                    this.toggleSlideBar(1)
                 })
             },
 
@@ -497,31 +658,37 @@
                     })
             },
 
-            copyPubLink(){
+            showPubLink(){
+
+                this.openGeneralModal(1)
+                this.generalModalLoadingTxt=this.t('appointments', 'Fetching URL from the server...')
                 axios.post('state', {
                     a: 'get_puburi'
                 }).then(response => {
                     if(response.status===200) {
-                        try {
-                            this.doCopy(response.data)
-                        }catch (e) {
-                            console.log(e)
-                        }
+                        const ua = response.data.split(String.fromCharCode(31))
+                        this.generalModalLoadingTxt=""
+                        this.$set(this.generalModalTxt, 0, ua[0])
+                        this.$set(this.generalModalTxt, 1, ua[1])
                     }
                 }).catch((error) => {
+                    this.closeGeneralModal()
                     console.log(error)
                     OCP.Toast.error(this.t('appointments','Can not get public URL from server')+"\xa0\xa0\xa0\xa0")
                 })
+
             },
 
-            doCopy(text){
+            doCopyPubLink(){
+                const text=this.generalModalTxt[0]
                 const ok_txt=this.t('appointments', 'Public link copied to clipboard')+"\xa0\xa0\xa0\xa0"
+                const err_txt=this.t('appointments', 'Copy Error')
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(text).then(function() {
-                        OCP.Toast.success(ok_txt)
+                        this.showGeneralModalPop(ok_txt)
                     }, function(err) {
                         console.error('copy error:',err);
-                        this.showModal(this.t('appointments', 'Public URL:'),text)
+                        this.showGeneralModalPop(err_txt)
                     });
                 }else{
                     // fallback
@@ -558,18 +725,31 @@
                     document.body.removeChild(textArea);
 
                     if(copyOK){
-                        OCP.Toast.success(ok_txt)
+                        this.showGeneralModalPop(ok_txt)
                     }else {
-                        this.showModal(this.t('appointments','Public URL:'), text)
+                        this.showGeneralModalPop(err_txt)
                     }
                 }
             },
 
-            showModal(title,txt){
-                this.modalHeader=title
-                this.modalText=txt
-                this.evtGridModal=4
+            showGeneralModalPop(txt){
+                const ctx=this
+                if(this.generalModalPop!==0){
+                    clearTimeout(this.generalModalPop)
+                }
+
+                this.generalModalPopTxt=txt
+                this.generalModalPop=setTimeout(function () {
+                    ctx.generalModalPop=0
+                },2000)
             },
+
+
+            // showModal(title,txt){
+            //     this.modalHeader=title
+            //     this.modalText=txt
+            //     this.evtGridModal=4
+            // },
 
             getFormData(){
                 this.pubPage='form?v='+Date.now();
@@ -640,6 +820,14 @@
                 }).then(response => {
                     if(response.status===200) {
                         this.setCurCal(c)
+
+                        // The dest cal is reset on the backend, so propagate changes to the frontend
+                        if(this.calInfo.destCalId!=="-1") {
+                            OC.Notification.showTemporary(this.t('appointments', "Calendar for booked appointments is reset") + "\xa0\xa0\xa0\xa0")
+                        }
+
+                        this.getCalInfo('openNot')
+                        this.$refs.tsbRef.getCalList()
                     }
                 }).catch((error) => {
                     this.resetCurCal()
@@ -753,21 +941,45 @@
                 this.evtGridModal=0
             },
 
+            openGeneralModal(id){
+                this.generalModal=id
+                this.visibleSection=2
+                this.clearGeneralModal()
+            },
+
+
+            closeGeneralModal(){
+                this.visibleSection=0
+                this.generalModal=0
+                this.generalModalLoadingTxt=""
+                this.clearGeneralModal()
+            },
+
+            clearGeneralModal(){
+                this.$set(this.generalModalTxt,0,"")
+                this.$set(this.generalModalTxt,1,"")
+                this.generalModalPopTxt=""
+                if(this.generalModalPop!==0){
+                    clearTimeout(this.generalModalPop)
+                }
+                this.generalModalPop=0
+            },
+
             resetCurCal(){
                 this.curCal={
-                    icon:"icon-calendar-dark",
+                    icon:"icon-appt-calendar",
                     name:"Select Calendar",
                     url:"",
                     rIcon:"",
-                    clr:""
+                    clr:"",
+                    isCalLoading:false
                 }
             },
             setCurCal(c){
-                this.curCal.icon='srgdev-icon-override'
+                this.curCal.icon='icon-appt-calendar'
                 this.curCal.name=c.name
                 this.curCal.url=c.url
-                this.curCal.rIcon="--srgdev-dot-img: url(" +
-                    window.location.protocol + '//' + window.location.host + OC.webroot+"/index.php/svg/core/places/calendar?color=" + c.clr.slice(1) + ");"
+                this.curCal.rIcon="--srgdev-dot-img: url("+OC.webroot+"/index.php/svg/appointments/appt-calendar?color="+c.clr.substr(1)+")"
                 this.curCal.clr=c.clr
             },
 

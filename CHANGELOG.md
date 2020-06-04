@@ -1,3 +1,13 @@
+## 1.5.0 - 2020-06-03
+### Changed
+- Grouped calendar options into 'Manage Appointment Slots'
+- Moved 'Attendee Cancels' options to 'Manage Appointment Slots &gt; Advanced Options'
+- Moved 'Copy public link' to 'Public Page [...]' menu
+### Added
+- Options for additional email text
+- Added 'Remove Old Appointments' option
+- Iframes support
+
 ## 1.4.16 - 2020-05-20
 ### Added
 - Option to add 'robots noindex' meta tag

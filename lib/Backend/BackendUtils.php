@@ -7,6 +7,7 @@
 namespace OCA\Appointments\Backend;
 
 use OCA\Appointments\AppInfo\Application;
+use OCA\Appointments\Controller\PageController;
 use Sabre\VObject\Reader;
 
 class BackendUtils{
@@ -45,6 +46,9 @@ class BackendUtils{
     public const EML_MREQ = 'meReq';
     public const EML_MCONF = 'meConfirm';
     public const EML_MCNCL = 'meCancel';
+    public const EML_VLD_TXT = 'vldNote';
+    public const EML_CNF_TXT = 'cnfNote';
+
     const EML_DEF=array(
         self::EML_ICS=>false,
         self::EML_SKIP_EVS=>false,
@@ -52,7 +56,18 @@ class BackendUtils{
         self::EML_ADEL=>false,
         self::EML_MREQ=>false,
         self::EML_MCONF=>false,
-        self::EML_MCNCL=>false);
+        self::EML_MCNCL=>false,
+        self::EML_VLD_TXT=>"",
+        self::EML_CNF_TXT=>"");
+
+    // Calendar Settings
+    public const KEY_CLS = 'calendar_settings';
+    public const CLS_DEST_ID= 'destCalId';
+    public const CLS_ON_CANCEL = 'whenCanceled';
+    const CLS_DEF=array(
+        self::CLS_DEST_ID=>'-1',
+        self::CLS_ON_CANCEL=>'mark'
+    );
 
     /**
      * @param \Sabre\VObject\Document $vo
@@ -167,7 +182,7 @@ class BackendUtils{
     /**
      * @param $data
      * @return array [string|null, string|null]
-     *                  null=error|""=already confirmed
+     *                  null=error|""=already confirmed,
      *                  Localized DateTime string
      */
     function dataConfirmAttendee($data){
@@ -210,11 +225,18 @@ class BackendUtils{
      */
     function dataCancelAttendee($data){
 
-        $vo=$this->getAppointment($data,'CONFIRMED');
+        $vo=$this->getAppointment($data,'*');
         if($vo===null) return [null,null];
 
         /** @var \Sabre\VObject\Component\VEvent $evt*/
         $evt=$vo->VEVENT;
+
+        if($evt->STATUS->getValue()==='TENTATIVE'){
+            // Can not cancel tentative appointments
+            return [null,null];
+        }
+
+
 
         /** @var  \Sabre\VObject\Property $a*/
         $a=$evt->ATTENDEE[0];
@@ -509,7 +531,26 @@ class BackendUtils{
      * @return array
      */
     function getUserSettings($key,$default,$userId,$appName){
+
         $config=\OC::$server->getConfig();
+
+        // TODO: remove in future versions
+        if($key===self::KEY_CLS && empty($config->getUserValue($userId,$appName,self::KEY_CLS))){
+            // First time access need to transfer...
+            // PageController::PSN_ON_CANCEL -> BackendUtils::CLS_ON_CANCEL
+            $a=$this->getUserSettings(
+                PageController::KEY_PSN,
+                PageController::PSN_DEF,
+                $userId,$appName);
+
+            $vs='{"'.PageController::PSN_ON_CANCEL.'":"'.$a[PageController::PSN_ON_CANCEL].'"}';
+
+            $this->setUserSettings(
+                self::KEY_CLS,
+                $vs, self::CLS_DEF,
+                $userId,$appName);
+        }
+
         $sa=json_decode(
             $config->getUserValue($userId,$appName,$key),
             true);

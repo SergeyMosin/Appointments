@@ -62,17 +62,6 @@
                                 id="srgdev-appt_pps-gdpr"
                                 type="text"
                                 :placeholder="t('appointments','See Tutorial...')">
-                        <label
-                                class="pps-label"
-                                for="srgdev-appt_pps-appt-reset">
-                            {{t('appointments','When Attendee Cancels')}}:</label>
-                        <select
-                                v-model="ppsInfo.whenCanceled"
-                                class="pps-input"
-                                id="srgdev-appt_pps-appt-reset">
-                            <option value="mark">{{t('appointments','Mark the appointment as canceled')}}</option>
-                            <option value="reset">{{t('appointments','Reset (make the timeslot available)')}}</option>
-                        </select>
                         <div style="padding-top: .25em"
                              class="srgdev-appt-sb-chb-cont"><input
                                 v-model="ppsInfo.hidePhone"

@@ -1,9 +1,12 @@
 @import "../../core/css/variables.scss";
+@import "icons.scss";
+
 .srgdev-icon-override{
 	background-repeat: no-repeat;
 	background-position: center;
-	@include icon-color('calendar', 'places', '#222', 1, true);
+	@include icon-color('appt-calendar','appointments', '#222222', 1);
 	background-image: var(--srgdev-dot-img);
+	opacity: 1 !important;
 }
 .srgdev_com_circle .action-button__icon--url{
 	background-repeat: no-repeat;
@@ -232,11 +235,61 @@ $appt_grid_ml:6em;
 .srgdev-appt-modal_content {
 	min-width: 50vw;
 	text-align: center;
-	margin: 3em 1em;
+	margin: 2em 1em;
+}
+.srgdev-appt-modal-header{
+	font-size: 110%;
+	font-weight: bold;
+	margin-bottom: 1.35em;
 }
 
 .srgdev-appt-modal-lbl{
 	margin: 1em 0;
+}
+.srgdev-appt-modal-lbl_dim{
+	margin: .75em 0;
+	color: var(--color-text-lighter);
+}
+
+.srgdev-appt-modal-btn{
+	margin-top: 1.5em;
+}
+
+.srgdev-appt-icon_btn{
+	display: inline-block;
+	width: 1.5em;
+	height: 1.5em;
+	vertical-align: middle;
+	margin: 0 0 0 .75em;
+	cursor: pointer;
+	transform-origin: center center;
+}
+.srgdev-appt-icon_btn:hover{
+	transform: scale(1.075);
+}
+.srgdev-appt-modal_pop{
+	position: relative;
+	display: block;
+	overflow: hidden;
+	height: 2.25em;
+	margin: 0 1em -2em;
+}
+.srgdev-appt-modal_pop_txt{
+	position: absolute;
+	display: block;
+	right: 0;
+	bottom: 0;
+	opacity: 1;
+	transition: transform .25s;
+}
+.srgdev-appt-modal_pop_txt:before{
+	content: "\25CF";
+	margin-right: .5em;
+}
+.srgdev-appt-modal_pop_txt[data-pop="0"]{
+	transition: none;
+	transform: translateX(100%);
+	opacity: 0;
 }
 $srgdev-prog-height:3px;
 
@@ -458,6 +511,26 @@ textarea.appt-stn-txt-ta{
 
 }
 
+.srgdev-appt_expando_cont{
+	display: none;
+	padding-left: 3.25em;
+	position: relative;
+	margin-bottom: 1.5em;
+	padding-bottom: 1.5em;
+}
+.srgdev-appt_expando_cont:before{
+	content: "";
+	position: absolute;
+	display: block;
+	left: 1.125em;
+	top: -.25em;
+	bottom: 0;
+	width: .2em;
+	background: var(--color-border);
+}
+.srgdev-appt_expando_cont[data-expand="1"]{
+	display: block;
+}
 
 
 .srgdev-appt-help-sec{
@@ -485,13 +558,23 @@ textarea.appt-stn-txt-ta{
 .srgdev-appt-hs-p-h{
 	margin: .5em 0 0;
 }
-.srgdev-appt-hs-code{
+.srgdev-appt-hs-code,
+.srgdev-appt-hs-code_short{
 	width: 96%;
 	margin: .5em 0 .75em;
+	padding: .75em 0 .75em 1em;
+	background: #eee;
 	display: block;
 	font-size: 95%;
 	cursor: text;
 }
+.srgdev-appt-hs-code_short {
+	display: inline-block;
+	padding: .5em;
+	margin: 0;
+	width: auto;
+}
+
 .srgdev-appt-hs-tz-img{
 	width: 90%;
 	display: block;
@@ -512,7 +595,7 @@ textarea.appt-stn-txt-ta{
 	height: 1em;
 	min-width: 1em;
 	min-height: 1em;
-	right: 0;
+	right: 4%;
 	top: 50%;
 	margin-top: -.5em;
 	background-size: 1em;

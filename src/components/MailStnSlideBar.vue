@@ -46,7 +46,9 @@
                             id="srgdev-appt_emn-me-cancel"
                             class="checkbox"><label class="srgdev-appt-sb-label-inline" for="srgdev-appt_emn-me-cancel">{{t('appointments','Canceled')}}</label><br>
                 </div>
-                <div class="srgdev-appt-info-lcont">
+                <div
+                        style="margin-bottom: .75em"
+                        class="srgdev-appt-info-lcont">
                     <input
                             v-model="emlInfo.skipEVS"
                             type="checkbox"
@@ -55,6 +57,30 @@
                         class="icon-info srgdev-appt-info-link"
                         @click="$root.$emit('helpWanted','emailskipevs')"></a>
                 </div>
+                <label
+                        v-show="emlInfo.skipEVS===false"
+                        class="srgdev-appt-sb-label-inline"
+                        for="srgdev-appt_emn-vld-note">
+                    {{t('appointments','Additional VALIDATION email text:')}}</label>
+                <textarea
+                        v-show="emlInfo.skipEVS===false"
+                        v-model="emlInfo.vldNote"
+                        class="srgdev-appt-sb-textarea"
+                        id="srgdev-appt_emn-vld-note"
+                ></textarea>
+                <div class="srgdev-appt-info-lcont">
+                    <label
+                        class="srgdev-appt-sb-label-inline"
+                        for="srgdev-appt_emn-cnf-note">
+                    {{t('appointments','Additional CONFIRMATION email text:')}}</label><a
+                        class="icon-info srgdev-appt-info-link"
+                        @click="$root.$emit('helpWanted','emailmoretext')"></a>
+                </div>
+                <textarea
+                        v-model="emlInfo.cnfNote"
+                        class="srgdev-appt-sb-textarea"
+                        id="srgdev-appt_emn-cnf-note"
+                ></textarea>
                 <button
                         @click="apply"
                         class="primary srgdev-appt-sb-genbtn">{{t('appointments','Apply')}}
@@ -86,7 +112,9 @@
                         attDel: false,
                         meReq: false,
                         meConfirm: false,
-                        meCancel: false
+                        meCancel: false,
+                        vldNote: "",
+                        cnfNote: ""
                     }
                 }
             }

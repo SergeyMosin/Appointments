@@ -1,11 +1,11 @@
 <template>
-    <AppNavigationItem
+    <ApptIconButton
             :key="curCal.name"
-            :title="curCal.name"
-            :icon="calLoading?null:curCal.icon"
+            :text="curCal.name"
+            :icon="curCal.rIcon===''?curCal.icon:'srgdev-icon-override'"
             :style="curCal.rIcon"
-            :loading="calLoading">
-        <Actions menuAlign="right" @open="getCalendars" forceMenu slot="counter">
+            :loading="curCal.isCalLoading">
+        <Actions menuAlign="right" @open="getCalendars" forceMenu slot="actions">
             <ActionButton
                     v-for="(cal,index) in calendars"
                     @click="setCalendarFromIndex(index)"
@@ -17,23 +17,24 @@
                     closeAfterClick>
             </ActionButton>
         </Actions>
-    </AppNavigationItem>
+    </ApptIconButton>
 </template>
 
 <script>
     // noinspection ES6CheckImport
     import{
-        AppNavigationItem,
         ActionButton,
         Actions,
      } from '@nextcloud/vue'
     import axios from '@nextcloud/axios'
     import {detectColor} from "../utils.js";
+    import ApptIconButton from "./ApptIconButton";
+
 
     export default {
         name: 'NavAccountItem',
         props:[
-            'curCal','calLoading'
+            'curCal'
         ],
         data: function() {
             return {
@@ -42,7 +43,7 @@
             };
         },
         components: {
-            AppNavigationItem,
+            ApptIconButton,
             ActionButton,
             Actions,
         },

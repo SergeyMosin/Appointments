@@ -35,6 +35,59 @@ class BCSabreImpl implements IBackendConnector{
     /**
      * @inheritDoc
      */
+    function queryRangePast($calIds,$end,$only_empty,$delete){
+
+        $cc=count($calIds);
+        if($cc===0){
+            return "0";
+        }
+
+        $parser=new XmlService();
+        $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
+
+        $ots=$end->getTimestamp();
+        $end->setTimestamp($ots+50400);
+
+        try {
+            $result = $parser->parse($this->makeDavReport(null,$end,$only_empty===true?"TENTATIVE":null));
+        } catch (ParseException $e) {
+            \OC::$server->getLogger()->error($e);
+            return null;
+        }
+
+        $utz=$end->getTimezone();
+        $cnt=0;
+
+        if($delete) {
+            // let's make easier for the DavListener...
+            $ses = \OC::$server->getSession();
+            $ses->set(
+                BackendUtils::APPT_SES_KEY_HINT,
+                BackendUtils::APPT_SES_SKIP);
+        }
+
+        for($i=0;$i<$cc;$i++) {
+            $calId=$calIds[$i];
+            $urls=$this->backend->calendarQuery($calId, $result->filters);
+            $objs=$this->backend->getMultipleCalendarObjects($calId,$urls);
+            foreach ($objs as $obj){
+                $vo=Reader::read($obj['calendardata']);
+                $ts=$vo->VEVENT->DTEND->getDateTime($utz)->getTimestamp();
+                if($ts<=$ots){
+                    if($delete){
+//                        $this->deleteCalendarObject("",$calId,$obj["uri"]);
+                        $this->backend->deleteCalendarObject($calId, $obj["uri"]);
+                    }
+                    $cnt++;
+                }
+            }
+        }
+        return $cnt;
+    }
+
+    /**
+     * @inheritDoc
+     */
     function queryRange($calId, $start, $end,$no_uri=false){
 
         if($no_uri){
@@ -59,7 +112,7 @@ class BCSabreImpl implements IBackendConnector{
         $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
         try {
             //$no_url(do not filter status) request is for the schedule generator @see grid.js::addPastAppts()
-            $result = $parser->parse($this->makeDavReport($start,$end,$no_uri===false));
+            $result = $parser->parse($this->makeDavReport($start,$end,$no_uri===false?"TENTATIVE":null));
         } catch (ParseException $e) {
             \OC::$server->getLogger()->error($e);
             return null;
@@ -242,20 +295,40 @@ class BCSabreImpl implements IBackendConnector{
      * @inheritDoc
      */
     function confirmAttendee($userId, $calId, $uri){
-        return $this->confirmCancel($calId,$uri,true);
+        return $this->confirmCancel($userId, $calId,$uri,true);
     }
 
     /**
      * @inheritDoc
      */
     function cancelAttendee($userId, $calId, $uri){
-        return $this->confirmCancel($calId,$uri,false);
+        return $this->confirmCancel($userId, $calId,$uri,false);
     }
 
-    private function confirmCancel($calId, $uri, $do_confirm){
+    private function confirmCancel($userId, $calId, $uri, $do_confirm){
         $ret=[1,null];
         $err='';
+
+        // check if we have destination calendar
+        $cls = $this->utils->getUserSettings(
+            BackendUtils::KEY_CLS, BackendUtils::CLS_DEF,
+            $userId, $this->appName);
+        $dcl_id = $cls[BackendUtils::CLS_DEST_ID];
+
+        if ($dcl_id != "-1" && $this->getCalendarById($dcl_id, $userId) === null) {
+            \OC::$server->getLogger()->error("WARNING: bad CLS_DEST_ID calendar with ID " . $dcl_id . " not found");
+            $dcl_id = "-1";
+        }
+
+        //correct cal_id for cancellations should be "calculated" in the page controller
         $d=$this->getObjectData($calId,$uri);
+
+        if($d===null && $do_confirm && $dcl_id!=="-1"){
+            // check dest calendar
+            $d=$this->getObjectData($dcl_id,$uri);
+            // if d!==null then appointment is in the dest calendar and it is probably already confirmed, but we still need the date.
+        }
+
         if($d===null){
             $err="Object does not exist: ".$uri;
         }else{
@@ -270,11 +343,37 @@ class BCSabreImpl implements IBackendConnector{
                 // Already confirmed
                 $ret=[0,$date];
             }else{
-                if($this->updateObject($calId,$uri,$newData)===false){
-                    $err="Can not update object: ".$uri;
-                }else{
-                    // Object Update: SUCCESS
-                    $ret=[0,$date];
+
+                if($do_confirm && $dcl_id!="-1"){
+                    // different destination calendar
+                    // ONLY for confirmations (cal_id for cancellations should be "calculated" in the page controller)
+
+                    // 1. delete from original calendar
+                    $ra=$this->deleteCalendarObject($userId,$calId,$uri);
+                    if($ra[0]!==0){
+                        $err = "Can not delete object: " . $uri .", dcl=".$dcl_id;
+                    }else{
+                        // 2. create new calendar object
+                        if($this->createObject($dcl_id,$uri,$newData)===false){
+                            $err = "Can not create object: " . $uri .", dcl=".$dcl_id;
+                        }else{
+                            // 3. update calendar object - this is bad, but as of now only updateObject() triggers a DavEvent that send emails
+                            if ($this->updateObject($dcl_id, $uri, $newData) === false) {
+                                $err = "Can not update object: " . $uri.", dcl=".$dcl_id;
+                            } else {
+                                // Object Update: SUCCESS
+                                $ret = [0, $date];
+                            }
+                        }
+                    }
+                }else {
+                    // same calendar
+                    if ($this->updateObject($calId, $uri, $newData) === false) {
+                        $err = "Can not update object: " . $uri;
+                    } else {
+                        // Object Update: SUCCESS
+                        $ret = [0, $date];
+                    }
                 }
             }
         }
@@ -335,13 +434,45 @@ class BCSabreImpl implements IBackendConnector{
     }
 
     /**
-     * @param \DateTime $start
+     * @param \DateTime|null $start
      * @param \DateTime $end
-     * @param bool $only_tentative
+     * @param string|null $status
      * @return string
      */
-    public static function makeDavReport($start,$end,$only_tentative){
-        return '<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop xmlns:D="DAV:"><C:calendar-data/></D:prop><C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:time-range start="'.$start->format(self::TIME_FORMAT).'" end="'.$end->format(self::TIME_FORMAT).'"/></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="CATEGORIES"><C:text-match>'.BackendUtils::APPT_CAT.'</C:text-match></C:prop-filter>'.($only_tentative?'<C:prop-filter name="STATUS"><C:text-match>TENTATIVE</C:text-match></C:prop-filter>':'').'<C:prop-filter name="RRULE"><C:is-not-defined/></C:prop-filter></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
+    public static function makeDavReport($start,$end,$status){
+//        return '<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop xmlns:D="DAV:"><C:calendar-data/></D:prop><C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:time-range '.($start!==null?('start="'.$start->format(self::TIME_FORMAT).'"' ):'').' end="'.$end->format(self::TIME_FORMAT).'"/></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="CATEGORIES"><C:text-match>'.BackendUtils::APPT_CAT.'</C:text-match></C:prop-filter>'
+//            .($status!==null?'<C:prop-filter name="STATUS"><C:text-match>'.$status.'</C:text-match></C:prop-filter>':'').
+//            '<C:prop-filter name="RRULE"><C:is-not-defined/></C:prop-filter></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
+
+        return '
+<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav">
+    <D:prop xmlns:D="DAV:">
+        <C:calendar-data/>
+    </D:prop>
+    <C:filter>
+        <C:comp-filter name="VCALENDAR">
+            <C:comp-filter name="VEVENT">
+                <C:prop-filter name="CATEGORIES">
+                    <C:text-match>'.BackendUtils::APPT_CAT.'</C:text-match>
+                </C:prop-filter>
+            </C:comp-filter>'
+                .($status!==null?'
+            <C:comp-filter name="VEVENT">
+                <C:prop-filter name="STATUS">
+                    <C:text-match>'.$status.'</C:text-match>
+                </C:prop-filter>
+            </C:comp-filter>':'').
+            '<C:comp-filter name="VEVENT">
+                <C:prop-filter name="RRULE">
+                    <C:is-not-defined/>
+                </C:prop-filter>
+            </C:comp-filter>
+            <C:comp-filter name="VEVENT">    
+                <C:time-range '.($start!==null?('start="'.$start->format(self::TIME_FORMAT).'"' ):'').' end="'.$end->format(self::TIME_FORMAT).'"/>
+            </C:comp-filter>    
+        </C:comp-filter>
+    </C:filter>
+</C:calendar-query>';
     }
 
 }

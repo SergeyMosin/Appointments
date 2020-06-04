@@ -4,7 +4,7 @@
             <header :class="{'app-sidebar-header--with-figure': hasFigure}"
                     class="app-sidebar-header">
                 <!-- close sidebar button -->
-                <a href="#" class="app-sidebar__close icon-close" :title="t('appointments','close')"
+                <a href="#" :class="['app-sidebar__close', icon]" :title="t('appointments','close')"
                    @click.prevent="closeSidebar" />
 
                 <!-- sidebar header illustration/figure -->
@@ -56,6 +56,10 @@
             subtitle: {
                 type: String,
                 default: ''
+            },
+            icon: {
+                type: String,
+                default: 'icon-close'
             },
             /**
              * Url to the top header background image

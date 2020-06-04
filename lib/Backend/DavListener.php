@@ -42,7 +42,9 @@ class DavListener {
 
         $ses=\OC::$server->getSession();
         $hint=$ses->get(BackendUtils::APPT_SES_KEY_HINT);
-        if($hint===BackendUtils::APPT_SES_SKIP){
+        if($hint===BackendUtils::APPT_SES_SKIP
+            || ($eventName===self::DEL_EVT_NAME && $hint===BackendUtils::APPT_SES_CONFIRM) // <-- booking in to a different calendar NOT deleting
+        ){
             // no need for email
             return;
         }
@@ -89,8 +91,14 @@ class DavListener {
 
         // $event['calendarData']['id'] can be a string or an int
         if($cal_id!=$event['calendarData']['id']){
-            // Not this user's calendar
-            return;
+            // Check dest calendar
+            $cls=$utils->getUserSettings(
+                BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
+                $userId ,$this->appName);
+            if($cls[BackendUtils::CLS_DEST_ID]!=$event['calendarData']['id']){
+                // Not this user's calendar
+                return;
+            }
         }
 
         $hash=$utils->getApptHash($evt->UID->getValue());
@@ -195,6 +203,7 @@ class DavListener {
             $om_info=$evt->DESCRIPTION->getValue();
         }
 
+
         if($hint === BackendUtils::APPT_SES_BOOK){
             // Just booked, send email to the attendee requesting confirmation...
 
@@ -217,6 +226,10 @@ class DavListener {
                 $btn_url.'0'.$btn_tkn
             );
 
+            if(!empty($eml_settings[BackendUtils::EML_VLD_TXT])){
+                $tmpl->addBodyText($eml_settings[BackendUtils::EML_VLD_TXT]);
+            }
+
             if($eml_settings[BackendUtils::EML_MREQ]){
                 $om_prefix=$this->l10N->t("Appointment pending");
             }
@@ -230,6 +243,10 @@ class DavListener {
             $tmpl->addBodyText($to_name.",");
             // TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now confirmed.
             $tmpl->addBodyText($this->l10N->t('Your %1$s appointment scheduled for %2$s is now confirmed.',[$org_name,$date_time]));
+
+            if(!empty($eml_settings[BackendUtils::EML_CNF_TXT])){
+                $tmpl->addBodyText($eml_settings[BackendUtils::EML_CNF_TXT]);
+            }
 
             if($eml_settings[BackendUtils::EML_MCONF]) {
                 $om_prefix = $this->l10N->t("Appointment confirmed");

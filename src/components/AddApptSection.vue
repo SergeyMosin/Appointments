@@ -1,55 +1,48 @@
 <template>
-    <SlideBar :title="this.title" :subtitle="subtitle" @close="function() {
-        resetAppt()
-        $emit('back')
-    }">
-        <template slot="main-area">
-            <div class="appt-gen-wrap">
-                <label class="datepicker-label">{{t('appointments','Select Dates:')}}</label>
-                <DatePicker
-                        :editable="false"
-                        :disabled-date="compNotBefore"
-                        :appendToBody="false"
-                        :popup-style="datePickerPopupStyle"
-                        :placeholder="t('appointments','Select Dates')"
-                        v-model="apptWeek"
-                        :lang="lang"
-                        @input="setToStartOfWeek"
-                        :format="weekFormat"
-                        type="week"></DatePicker>
-                <label for="appt_dur-select" class="select-label">{{t('appointments','Appointment Duration:')}}</label>
-                <vue-slider
-                        :min="10"
-                        :max="120"
-                        :interval="5"
-                        tooltip="always"
-                        tooltipPlacement="bottom"
-                        :tooltip-formatter="'{value} Min'"
-                        id="appt_dur-select"
-                        class="appt-slider"
-                        v-model="apptDur"></vue-slider>
-                <div class="srgdev-appt-info-lcont">
-                <label for="appt_tz-select" class="select-label">{{t('appointments','Timezone:')}}</label>
-                    <a
-                            class="icon-info srgdev-appt-info-link"
-                            @click="$root.$emit('helpWanted','timezone')"><span>Please read</span></a>
-                </div>
-                <select v-model="apptTZ" id="appt_tz-select" class="appt-select">
-                    <option value="L">Local (floating)</option>
-                    <option value="C">{{tzName}}</option>
-                </select>
-                <button
-                        @click="goApptGen"
-                        :disabled="apptWeek===null"
-                        class="primary appt-genbtn">{{t('appointments','Start')}}
-                </button>
-            </div>
-        </template>
-    </SlideBar>
+    <div class="appt-gen-wrap">
+        <label class="datepicker-label">{{t('appointments','Select Dates:')}}</label>
+        <DatePicker
+                style="width: 100%"
+                :editable="false"
+                :disabled-date="compNotBefore"
+                :appendToBody="false"
+                :popup-style="datePickerPopupStyle"
+                :placeholder="t('appointments','Select Dates')"
+                v-model="apptWeek"
+                :lang="lang"
+                @input="setToStartOfWeek"
+                :format="weekFormat"
+                type="week"></DatePicker>
+        <label for="appt_dur-select" class="select-label">{{t('appointments','Appointment Duration:')}}</label>
+        <vue-slider
+                :min="10"
+                :max="120"
+                :interval="5"
+                tooltip="always"
+                tooltipPlacement="bottom"
+                :tooltip-formatter="'{value} Min'"
+                id="appt_dur-select"
+                class="appt-slider"
+                v-model="apptDur"></vue-slider>
+        <div class="srgdev-appt-info-lcont">
+            <label for="appt_tz-select" class="select-label">{{t('appointments','Timezone:')}}</label>
+            <a
+                    class="icon-info srgdev-appt-info-link"
+                    @click="$root.$emit('helpWanted','timezone')"><span>Please read</span></a>
+        </div>
+        <select v-model="apptTZ" id="appt_tz-select" class="appt-select">
+            <option value="L">Local (floating)</option>
+            <option value="C">{{tzName}}</option>
+        </select>
+        <button
+                @click="goApptGen"
+                :disabled="apptWeek===null"
+                class="primary srgdev-appt-sb-genbtn">{{t('appointments','Start')}}
+        </button>
+    </div>
 </template>
 
 <script>
-    import SlideBar from "./SlideBar.vue"
     import DatePicker from 'vue2-datepicker'
     import '../../css/datepicker.css';
 
@@ -57,14 +50,12 @@
     import 'vue-slider-component/theme/default.css'
 
     export default {
-        name: "ScheduleSlideBar",
+        name: "AddApptSection",
         components: {
-            SlideBar,
             VueSlider,
-            DatePicker},
+            DatePicker
+        },
         props:{
-            title:'',
-            subtitle:'',
             tzName:'',
             tzData:''
         },
@@ -182,7 +173,6 @@
                     dur:this.apptDur,
                 }
                 this.resetAppt()
-                this.$emit("close")
                 this.$emit("agDataReady",r)
             }
         }
@@ -193,7 +183,6 @@
     .appt-gen-wrap{
         text-align: left;
         display: inline-block;
-        margin-top: -20px;
     }
     .datepicker-label,
     .select-label{
@@ -214,9 +203,9 @@
         width: 100%;
         padding: 0 0 0 .25em;
     }
-    .appt-genbtn{
-        min-width: 80%;
-        margin: 2.5em auto 0;
-        display: block;
-    }
+    /*.appt-genbtn{*/
+    /*    min-width: 80%;*/
+    /*    margin: 2.5em auto 0;*/
+    /*    display: block;*/
+    /*}*/
 </style>
