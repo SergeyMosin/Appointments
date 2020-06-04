@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2020-05-20 03:18+0000\n"
+"POT-Creation-Date: 2020-06-04 03:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -145,86 +145,86 @@ msgid "%s Appointment"
 msgstr ""
 
 #. TRANSLATORS the '%s' is an email address
-#: /app/lib/Controller/PageController.php:505
+#: /app/lib/Controller/PageController.php:508
 #, php-format
 msgid "An email with additional details is on its way to you at %s"
 msgstr ""
 
 #. TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is confirmed.
-#: /app/lib/Controller/PageController.php:527
+#: /app/lib/Controller/PageController.php:531
 #, php-format
 msgid "Your appointment scheduled for %s is confirmed."
 msgstr ""
 
 #. TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is canceled.
-#: /app/lib/Controller/PageController.php:566
+#: /app/lib/Controller/PageController.php:569
 #, php-format
 msgid "Your appointment scheduled for %s is canceled."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:568
+#: /app/lib/Controller/PageController.php:571
 msgid "Your appointment is canceled."
 msgstr ""
 
 #. TRANSLATORS Meaning the booking process is finished
-#: /app/lib/Controller/PageController.php:578
+#: /app/lib/Controller/PageController.php:581
 msgid "All done."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:597
-#: /app/lib/Controller/PageController.php:819
+#: /app/lib/Controller/PageController.php:601
+#: /app/lib/Controller/PageController.php:833
 msgid "Info"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:598
-#: /app/lib/Controller/PageController.php:820
+#: /app/lib/Controller/PageController.php:602
+#: /app/lib/Controller/PageController.php:834
 msgid "Link Expired..."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:792
+#: /app/lib/Controller/PageController.php:806
 msgid "Almost done..."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:813
+#: /app/lib/Controller/PageController.php:827
 #, php-format
 msgid ""
 "We have sent an email to %s, please open it and click on the confirmation "
 "link to finalize your appointment request"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:865
+#: /app/lib/Controller/PageController.php:879
 #: /app/specialVueFakeDummyForL10nScript.js:29
 msgid "Book Your Appointment"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:991
+#: /app/lib/Controller/PageController.php:1005
 msgid "Please add time slots first."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:997
+#: /app/lib/Controller/PageController.php:1011
 msgid "Please select a calendar first"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1000
+#: /app/lib/Controller/PageController.php:1014
 msgid "Selected calendar not found"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1023
+#: /app/lib/Controller/PageController.php:1037
 msgid "Your email address is required for this operation."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1031
+#: /app/lib/Controller/PageController.php:1045
 msgid ""
 "A location, address or URL is required for this operation. Check User/"
 "Organization settings."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1041
+#: /app/lib/Controller/PageController.php:1055
 msgid "Can't find your name. Check User/Organization settings."
 msgstr ""
 
 #. TRANSLATORS Appointment time is "Available"
-#: /app/lib/Controller/PageController.php:1059
+#: /app/lib/Controller/PageController.php:1073
 msgid "Available"
 msgstr ""
 
@@ -396,138 +396,142 @@ msgid "Show time in two columns"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:40
-msgid "Hide phone number field"
-msgstr ""
-
-#: /app/specialVueFakeDummyForL10nScript.js:41
 msgid "GDPR Compliance"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:42
+#: /app/specialVueFakeDummyForL10nScript.js:41
 msgid "See Tutorial..."
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:43
+#: /app/specialVueFakeDummyForL10nScript.js:42
 msgid "When Attendee Cancels"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:44
+#: /app/specialVueFakeDummyForL10nScript.js:43
 msgid "Mark the appointment as canceled"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:45
+#: /app/specialVueFakeDummyForL10nScript.js:44
 msgid "Reset (make the timeslot available)"
 msgstr ""
 
+#: /app/specialVueFakeDummyForL10nScript.js:45
+msgid "Hide phone number field"
+msgstr ""
+
 #: /app/specialVueFakeDummyForL10nScript.js:46
-msgid "Page Header Title:"
+msgid "Add {taginfo} tag"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:47
-msgid "Page Header Subtitle:"
+msgid "Page Header Title:"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:48
-msgid "Style Override:"
+msgid "Page Header Subtitle:"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:49
-#: /app/specialVueFakeDummyForL10nScript.js:60
-#: /app/specialVueFakeDummyForL10nScript.js:72
+msgid "Style Override:"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:50
+#: /app/specialVueFakeDummyForL10nScript.js:61
+#: /app/specialVueFakeDummyForL10nScript.js:73
 msgid "Apply"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:50
+#: /app/specialVueFakeDummyForL10nScript.js:51
 msgid "Emails and Notifications"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:50
+#: /app/specialVueFakeDummyForL10nScript.js:51
 msgid "Control when emails and notifications are sent"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:51
+#: /app/specialVueFakeDummyForL10nScript.js:52
 msgid "Attach .ics file to confirm/cancel emails"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:52
+#: /app/specialVueFakeDummyForL10nScript.js:53
 msgid "Email Attendee when the appointment is:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:53
+#: /app/specialVueFakeDummyForL10nScript.js:54
 msgid "Modified (Time, Status, Location)"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:54
+#: /app/specialVueFakeDummyForL10nScript.js:55
 msgid "Deleted"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:55
+#: /app/specialVueFakeDummyForL10nScript.js:56
 msgid "Email Me when an appointment is:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:56
+#: /app/specialVueFakeDummyForL10nScript.js:57
 msgid "Requested"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:57
+#: /app/specialVueFakeDummyForL10nScript.js:58
 msgid "Confirmed"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:58
+#: /app/specialVueFakeDummyForL10nScript.js:59
 msgid "Canceled"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:59
+#: /app/specialVueFakeDummyForL10nScript.js:60
 msgid "Skip email validation step"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:61
+#: /app/specialVueFakeDummyForL10nScript.js:62
 msgid "Select Dates:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:62
+#: /app/specialVueFakeDummyForL10nScript.js:63
 msgid "Select Dates"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:63
+#: /app/specialVueFakeDummyForL10nScript.js:64
 msgid "Appointment Duration:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:64
+#: /app/specialVueFakeDummyForL10nScript.js:65
 msgid "Timezone:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:65
+#: /app/specialVueFakeDummyForL10nScript.js:66
 msgid "Start"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:66
+#: /app/specialVueFakeDummyForL10nScript.js:67
 msgid "close"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:67
+#: /app/specialVueFakeDummyForL10nScript.js:68
 msgid "Your Contact Information"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:67
+#: /app/specialVueFakeDummyForL10nScript.js:68
 msgid "Form header and event organizer settings"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:68
+#: /app/specialVueFakeDummyForL10nScript.js:69
 #: /app/templates/public/form.php:35
 msgid "Name:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:69
+#: /app/specialVueFakeDummyForL10nScript.js:70
 #: /app/templates/public/form.php:37
 msgid "Email:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:70
+#: /app/specialVueFakeDummyForL10nScript.js:71
 msgid "Location:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:71
+#: /app/specialVueFakeDummyForL10nScript.js:72
 #: /app/templates/public/form.php:41
 msgid "Phone:"
 msgstr ""
