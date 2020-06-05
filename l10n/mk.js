@@ -6,11 +6,12 @@ OC.L10N.register(
     "Info" : "Info",
     "Available" : "Достапно",
     "Close" : "Затвори",
+    "Remove" : "Отстрани",
     "Copy public link" : "Копирај јавен линк",
+    "Start" : "Почеток",
     "Apply" : "Примени",
     "Deleted" : "Избришана",
     "Confirmed" : "Потврдено",
-    "Start" : "Почеток",
     "Location:" : "Локација:",
     "Back" : "Назад",
     "Next" : "Следно"
