@@ -55,6 +55,7 @@ OC.L10N.register(
     "Email Settings" : "E-posta ezarpenak",
     "Help/Tutorial" : "Laguntza/Tutoriala",
     "Close" : "Itxi",
+    "Remove" : "Ezabatu",
     "Add to Calendar" : "Gehitu egutegira",
     "Discard" : "Baztertu",
     "Remove All" : "Kendu dena",

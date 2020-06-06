@@ -23,6 +23,7 @@ OC.L10N.register(
     "Customize Public Page" : "Personalizează Pagina Publică",
     "Help/Tutorial" : "Ajutor/Tutorial",
     "Close" : "Închide",
+    "Remove" : "Șterge",
     "Add to Calendar" : "Adaugă la Calendar",
     "Discard" : "Anulează",
     "Remove All" : "Șterge tot",

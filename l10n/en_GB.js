@@ -5,6 +5,7 @@ OC.L10N.register(
     "Cancel" : "Cancel",
     "Info" : "Info",
     "Close" : "Close",
+    "Remove" : "Remove",
     "Start" : "Start",
     "Apply" : "Apply",
     "Deleted" : "Deleted",

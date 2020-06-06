@@ -4,6 +4,7 @@ OC.L10N.register(
     "Cancel" : "ยกเลิก",
     "Info" : "Info",
     "Close" : "ปิด",
+    "Remove" : "ลบออก",
     "Apply" : "นำไปใช้",
     "Deleted" : "ลบแล้ว",
     "Confirmed" : "ได้รับการยืนยันแล้ว",

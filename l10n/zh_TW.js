@@ -5,6 +5,7 @@ OC.L10N.register(
     "Cancel" : "取消",
     "Info" : "資訊",
     "Close" : "關閉",
+    "Remove" : "移除",
     "Copy public link" : "複製公開連結",
     "Start" : "起點",
     "Apply" : "套用",

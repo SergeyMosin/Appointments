@@ -37,6 +37,7 @@ OC.L10N.register(
     "Customize Public Page" : "定制化公共主页",
     "Help/Tutorial" : "帮助/教程",
     "Close" : "关闭",
+    "Remove" : "移除",
     "Add to Calendar" : "添加到日历",
     "Discard" : "丢弃",
     "Remove All" : "移除所有",

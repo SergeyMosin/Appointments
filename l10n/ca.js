@@ -55,6 +55,7 @@ OC.L10N.register(
     "Email Settings" : "Configuració del correu electrònic",
     "Help/Tutorial" : "Ajuda/tutorial",
     "Close" : "Tanca",
+    "Remove" : "Suprimeix",
     "Add to Calendar" : "Afegir al calendari",
     "Discard" : "Descarta'l",
     "Remove All" : "Elimineu tots els",

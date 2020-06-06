@@ -42,6 +42,7 @@ OC.L10N.register(
     "Email Settings" : "E-mail beállítások",
     "Help/Tutorial" : "Segítség/Bemutató",
     "Close" : "Bezár",
+    "Remove" : "Eltávolítás",
     "Add to Calendar" : "Naptárhoz ad",
     "Discard" : "Elvet",
     "Remove All" : "Összes Eltávolítása",

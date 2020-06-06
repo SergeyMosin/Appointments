@@ -6,6 +6,7 @@ OC.L10N.register(
     "Info" : "Инфо",
     "Available" : "Доступно",
     "Close" : "Затвори",
+    "Remove" : "Уклони",
     "Start" : "Почетак",
     "Apply" : "Примени",
     "Deleted" : "Обрисано",

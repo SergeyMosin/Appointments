@@ -55,6 +55,7 @@ OC.L10N.register(
     "Email Settings" : "Налаштування пошти",
     "Help/Tutorial" : "Довідка",
     "Close" : "Закрити",
+    "Remove" : "Вилучити",
     "Add to Calendar" : "Додати до календаря",
     "Discard" : "Відхилити",
     "Remove All" : "Вилучити все",

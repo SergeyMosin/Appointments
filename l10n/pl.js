@@ -55,6 +55,7 @@ OC.L10N.register(
     "Email Settings" : "Ustawienia poczty e-mail",
     "Help/Tutorial" : "Pomoc/Samouczek",
     "Close" : "Zamknij ",
+    "Remove" : "Usuń",
     "Add to Calendar" : "Dodaj kalendarz",
     "Discard" : "Odrzuć",
     "Remove All" : "Usuń wszystko",

@@ -26,6 +26,7 @@ OC.L10N.register(
     "Customize Public Page" : "Anpassa publika sidan",
     "Help/Tutorial" : "Hjälp/Guide",
     "Close" : "Stäng",
+    "Remove" : "Radera",
     "Add to Calendar" : "Lägg till i kalender",
     "Discard" : "Ignorera",
     "Remove All" : "Ta bort allt",

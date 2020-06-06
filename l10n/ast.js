@@ -5,6 +5,7 @@ OC.L10N.register(
     "Cancel" : "Encaboxar",
     "Info" : "Info",
     "Close" : "Zarrar",
+    "Remove" : "Desaniciar",
     "Start" : "Aniciu",
     "Apply" : "Aplicar",
     "Deleted" : "Desanicióse",
