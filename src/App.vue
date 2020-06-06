@@ -162,14 +162,14 @@
             <Modal v-if="evtGridModal!==0" :canClose="false">
                 <div class="srgdev-appt-modal_content">
                     <div v-if="evtGridModal===1" class="srgdev-appt-modal-lbl">
-                        {{t('appointments', 'Adding appointment to {calendarName} calendar...', {calendarName:curCal.name})}}
+                        {{t('appointments', 'Adding appointment to {calendarName} calendar …', {calendarName:curCal.name})}}
                     </div>
                     <div v-if="evtGridModal===2" class="srgdev-appt-modal-lbl">
                         {{t('appointments', 'All appointments have been added to {calendarName} calendar.', {calendarName:curCal.name})}}
                     </div>
                     <div v-if="evtGridModal===3" class="srgdev-appt-modal-lbl">
                         <span v-show="modalErrTxt!==''">{{modalErrTxt}}</span>
-                        <span v-show="modalErrTxt===''">{{t('appointments', 'Error occurred. Check console...')}}</span>
+                        <span v-show="modalErrTxt===''">{{t('appointments', 'Error occurred. Check console …')}}</span>
                     </div>
                     <div v-if="evtGridModal===4" class="srgdev-appt-modal-lbl">
                         <div style="font-size: 110%;font-weight: bold">{{modalHeader}}</div>
@@ -372,7 +372,7 @@
 
                 if(!confirm(this.t('appointments','This action can NOT be undone. Continue?'))) return;
 
-                this.generalModalLoadingTxt=this.t('appointments','Removing Appointment Slots')+"..."
+                this.generalModalLoadingTxt=this.t('appointments','Removing Appointment Slots')+" …"
 
                 this.openGeneralModal(2)
 
@@ -432,7 +432,7 @@
                     return
                 }
 
-                this.generalModalLoadingTxt=this.t('appointments','Gathering calendar information')+"..."
+                this.generalModalLoadingTxt=this.t('appointments','Gathering calendar information')+" …"
                 this.openGeneralModal(2)
 
 
@@ -672,7 +672,7 @@
             showPubLink(){
 
                 this.openGeneralModal(1)
-                this.generalModalLoadingTxt=this.t('appointments', 'Fetching URL from the server...')
+                this.generalModalLoadingTxt=this.t('appointments', 'Fetching URL from the server …')
                 axios.post('state', {
                     a: 'get_puburi'
                 }).then(response => {
