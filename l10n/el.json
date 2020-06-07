@@ -67,7 +67,6 @@
     "Error occurred. Check console..." : "Προέκυψε σφάλμα. Ελέγξτε την κονσόλα...",
     "Public Page Preview" : "Προεπισκόπηση Δημόσιας Σελίδας",
     "Copy public link" : "Αντιγραφή δημόσιου συνδέσμου",
-    "This action can NOT be undone. Continue ?" : "Αυτή η ενέργεια ΔΕΝ αναιρείται. Συνέχιση;",
     "Removing Appointment Slots" : "Αφαίρεση θέσης ραντεβού",
     "Can not delete old appointments/slots" : "Δεν μπορεί να διαγραφούν παλαιά ραντεβού/θέσεις",
     "All empty appointment slots created before {fullDate} are removed" : "Όλες οι κενές θέσεις ραντεβού που έχουν δημιουργηθεί πριν από {fullDate} καταργούνται",

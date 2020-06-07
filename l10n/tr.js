@@ -69,7 +69,6 @@ OC.L10N.register(
     "Error occurred. Check console..." : "Sorun çıktı. Konsola bakın...",
     "Public Page Preview" : "Herkese Açık Sayfa Ön İzlemesi",
     "Copy public link" : "Herkese açık bağlantıyı kopyala",
-    "This action can NOT be undone. Continue ?" : "Bu işlem geri alınamaz. İlerlemek istiyor musunuz?",
     "Removing Appointment Slots" : "Randevu Aralıkları Siliniyor",
     "Can not delete old appointments/slots" : "Eski randevular/aralıklar silinemedi",
     "All empty appointment slots created before {fullDate} are removed" : "{fullDate} tarihinden önce oluşturulmuş tüm boş randevu aralıkları silindi",

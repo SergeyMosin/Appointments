@@ -69,7 +69,6 @@ OC.L10N.register(
     "Error occurred. Check console..." : "エラーが発生しました。コンソールを確認してください...",
     "Public Page Preview" : "公開ページのプレビュー",
     "Copy public link" : "公開リンクをコピー",
-    "This action can NOT be undone. Continue ?" : "このアクションは元に戻すことができません。続けますか？",
     "Removing Appointment Slots" : "アポイントメントのスロットを削除しています",
     "Can not delete old appointments/slots" : "古いアポイントメント/スロットを削除できません",
     "All empty appointment slots created before {fullDate} are removed" : "{fullDate}以前に作成された空のアポイントメントスロットがすべて削除されます。",
