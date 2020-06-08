@@ -69,6 +69,7 @@ OC.L10N.register(
     "Error occurred. Check console..." : "Si è verificato un errore. Controlla la console…",
     "Public Page Preview" : "Anteprima pagina pubblica",
     "Copy public link" : "Copia collegamento pubblico",
+    "This action can NOT be undone. Continue?" : "Questa azione NON può essere annullata. Vuoi continuare?",
     "Removing Appointment Slots" : "Rimozione slot di appuntamenti",
     "Can not delete old appointments/slots" : "Impossibile eliminare i vecchi appuntamenti/slot",
     "All empty appointment slots created before {fullDate} are removed" : "Tutti gli slot di appuntamenti creati prima di {fullDate} sono rimossi",

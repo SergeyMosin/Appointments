@@ -67,6 +67,7 @@
     "Error occurred. Check console..." : "Vyskytla sa chyba. Skontrolujte konzolu...",
     "Public Page Preview" : "Ukážka verejnej stránky",
     "Copy public link" : "Kopírovať verejný odkaz",
+    "This action can NOT be undone. Continue?" : "Táto akcia nemôže byť vrátená späť. Pokračovať?",
     "Removing Appointment Slots" : "Odobrať časové okná pre schôdzky",
     "Can not delete old appointments/slots" : "Nie je možné odstrániť staré schôdzky/časové okná",
     "All empty appointment slots created before {fullDate} are removed" : "Odstránia sa všetky prázdne časové okná pre schôdzky vytvorené pred {fullDate}",

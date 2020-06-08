@@ -67,6 +67,7 @@
     "Error occurred. Check console..." : "Došlo k chybě. Podívejte se do konzole…",
     "Public Page Preview" : "Náhled veřejné stránky",
     "Copy public link" : "Zkopírovat veřejný odkaz",
+    "This action can NOT be undone. Continue?" : "Tuto akci NELZE vzít zpět. Pokračovat?",
     "Removing Appointment Slots" : "Odebrat sloty pro schůzky",
     "Can not delete old appointments/slots" : "Není možné smazat staré schůzky/sloty",
     "All empty appointment slots created before {fullDate} are removed" : "Všechny prázdné sloty pro schůzky vytvořené před {fullDate} jsou odebrány",
