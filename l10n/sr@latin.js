@@ -4,6 +4,7 @@ OC.L10N.register(
     "Cancel" : "Otkaži",
     "Info" : "Info",
     "Close" : "Zatvori",
+    "Remove" : "Ukloni",
     "Deleted" : "Obrisano",
     "close" : "zatvori",
     "Location:" : "Lokacija:",

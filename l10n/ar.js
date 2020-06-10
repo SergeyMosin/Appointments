@@ -6,6 +6,7 @@ OC.L10N.register(
     "Info" : "Info",
     "Available" : "متوفرة",
     "Close" : "إغلاق",
+    "Remove" : "حذف",
     "Deleted" : "تم حذفه",
     "Confirmed" : "مؤكَّد",
     "close" : "إغلاق",

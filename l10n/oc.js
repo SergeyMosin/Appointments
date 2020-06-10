@@ -4,6 +4,7 @@ OC.L10N.register(
     "Cancel" : "Anullar",
     "Info" : "Info",
     "Close" : "Tampar",
+    "Remove" : "Suprimir",
     "Apply" : "Aplicar",
     "Deleted" : "Suprimit",
     "Location:" : "Localizacion :",

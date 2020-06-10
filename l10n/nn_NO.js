@@ -4,10 +4,11 @@ OC.L10N.register(
     "Cancel" : "Avbryt",
     "Info" : "Info",
     "Close" : "Lukk",
+    "Remove" : "Fjern",
+    "Start" : "Start",
     "Apply" : "Anvend",
     "Deleted" : "Sletta",
     "Confirmed" : "Stadfesta",
-    "Start" : "Start",
     "Back" : "Tilbake",
     "Next" : "Neste",
     "An error has occurred" : "Ein feil har oppstått"

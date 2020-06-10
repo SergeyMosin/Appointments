@@ -6,11 +6,12 @@ OC.L10N.register(
     "Info" : "Info",
     "Available" : "Disponeblaj",
     "Close" : "Malfermi",
+    "Remove" : "Forigi",
+    "Start" : "Komenco",
     "Apply" : "Validigi",
     "Deleted" : "Forigita",
     "Confirmed" : "Konfirmita",
     "Canceled" : "Nuligita",
-    "Start" : "Komenco",
     "Location:" : "Loko:",
     "Back" : "Antaŭen",
     "Next" : "Sekva"

@@ -4,6 +4,7 @@ OC.L10N.register(
     "Cancel" : "Diddymu",
     "Info" : "Info",
     "Close" : "Cau",
+    "Remove" : "Gwaredu",
     "Deleted" : "Wedi dileu",
     "Confirmed" : "Cadarnhawyd",
     "Location:" : "Lleoliad:",

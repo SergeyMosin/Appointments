@@ -4,6 +4,7 @@ OC.L10N.register(
     "Cancel" : "Ofbriechen",
     "Info" : "Info",
     "Close" : "Zoumaachen",
+    "Remove" : "Läschen",
     "Apply" : "Uwenden",
     "Deleted" : "Geläscht",
     "Location:" : "Uert:",

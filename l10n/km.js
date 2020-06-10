@@ -4,6 +4,7 @@ OC.L10N.register(
     "Cancel" : "បោះបង់",
     "Info" : "Info",
     "Close" : "បិទ",
+    "Remove" : "ដកចេញ",
     "Apply" : "អនុវត្ត",
     "Deleted" : "បាន​លុប",
     "Location:" : "ទីតាំងៈ",

@@ -372,7 +372,7 @@
                 }
 
 
-                if(!confirm(this.t('appointments','This action can NOT be undone. Continue ?'))) return;
+                if(!confirm(this.t('appointments','This action can NOT be undone. Continue?'))) return;
 
                 this.generalModalLoadingTxt=this.t('appointments','Removing Appointment Slots')+"..."
 

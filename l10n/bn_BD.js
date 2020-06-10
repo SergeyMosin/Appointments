@@ -4,6 +4,7 @@ OC.L10N.register(
     "Cancel" : "বাতির",
     "Info" : "Info",
     "Close" : "বন্ধ",
+    "Remove" : "অপসারণ",
     "Deleted" : "মুছে ফেলা",
     "Location:" : "অবস্থান:",
     "Back" : "পেছনে যাও",
