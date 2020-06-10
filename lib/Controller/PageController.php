@@ -1410,14 +1410,7 @@ class PageController extends Controller {
             \OC_Util::addHeader("meta", ['name' => 'robots', 'content' => 'noindex']);
         }
 
-        // Embedding test
-        // @NoSameSiteCookieRequired is required as well
-//        $csp=$tr->getContentSecurityPolicy();
-//        if($csp===null){
-//            $csp=new ContentSecurityPolicy();
-//            $tr->setContentSecurityPolicy($csp);
-//        }
-//        $csp->addAllowedFrameAncestorDomain("http://localhost:8123");
+        \OC_Util::addStyle($this->appName,"form-xl-screen");
 
         return $tr;
     }

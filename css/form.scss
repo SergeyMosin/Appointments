@@ -17,6 +17,7 @@
 .srgdev-ncfp-form-org{
   margin: 0;
   line-height: 1.2;
+  font-size: 150%;
 }
 .srgdev-ncfp-form-addr{
   color: $color-text-lighter;
@@ -31,6 +32,7 @@
   border-bottom: 1px solid $color-border;
   border-bottom: 1px solid var(--color-border-dark);
   margin-top: 0;
+  font-size: 115%;
 }
 .srgdev-ncfp-form-main-cont{
   width: 18em;
@@ -40,11 +42,15 @@
 .srgdev-ncfp-form-label{
   display: block;
   margin: 1em 0 0;
+  line-height: 1.6;
 }
 .srgdev-ncfp-form-input{
   display: block;
   width: 100%;
   margin: 0 !important;
+  font-size: 94% !important;
+  padding: .5em .4em !important;
+  min-height: 2.55em;
 }
 .srgdev-ncfp-chb-cont{
   position: relative;
@@ -77,6 +83,10 @@
 .srgdev-ncfp-form-btn{
   display: block;
   margin: 1.5em 0 0;
+  font-size: 94% !important;
+  padding: .5em 1em !important;
+  min-height: 2.55em;
+
 }
 .srgdev-ncfp-form-btn[shade]{
   opacity: .5;
@@ -349,6 +359,7 @@
 .srgdev-appt-info-cont>*{
   margin: 1em 0;
 }
+
 .srgdev-appt-err-a{
   color: $color-primary;
   color: var(--color-primary);
