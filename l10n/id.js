@@ -6,6 +6,7 @@ OC.L10N.register(
     "Info" : "Info",
     "Close" : "Tutup",
     "Remove" : "Buang",
+    "Copy public link" : "Salin tautan publik",
     "Start" : "Mulai",
     "Apply" : "Terapkan",
     "Deleted" : "Dihapus",
