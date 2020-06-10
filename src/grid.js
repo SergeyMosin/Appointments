@@ -216,6 +216,12 @@ function _apptGridMaker() {
                 uLen = Math.floor((ets - d.getTime()) / 300000)
 
                 cID = d.getDay() - 1
+                if(cID<0){
+                    // this is sunday
+                    continue
+                }
+                // console.log("cID:",cID)
+
                 uTop = Math.floor((((d.getHours() - 8) * 60) / 5)
                     + ((d.getMinutes() / 5)))
 

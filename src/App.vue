@@ -128,6 +128,7 @@
                     {{t('appointments','Discard')}}
                 </button>
             </div>
+            <div id="srgdev-appt-grid-scroll_cont">
             <ul class="srgdev-appt-grid-header">
                 <li v-for="(hi, index) in gridHeader"
                     class="srgdev-appt-gh-li"
@@ -159,6 +160,7 @@
                 </li>
             </ul>
             <div ref="grid_cont" class="srgdev-appt-grid-cont"></div>
+            </div>
             <Modal v-if="evtGridModal!==0" :canClose="false">
                 <div class="srgdev-appt-modal_content">
                     <div v-if="evtGridModal===1" class="srgdev-appt-modal-lbl">
@@ -512,7 +514,7 @@
             },
 
             gridSetup(){
-                gridMaker.setup(this.$refs["grid_cont"],5,"srgdev-appt-grd-")
+                gridMaker.setup(this.$refs["grid_cont"],6,"srgdev-appt-grd-")
                 this.isGridReady=true
             },
 
@@ -853,7 +855,7 @@
 
                 gridMaker.resetAllColumns()
 
-                const NBR_DAYS=5
+                const NBR_DAYS=6
                 // Generate local names for days and month(s)
                 let tff
                 if(window.Intl && typeof window.Intl === "object") {
