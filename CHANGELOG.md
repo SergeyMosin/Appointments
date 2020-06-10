@@ -1,3 +1,8 @@
+## 1.5.1 - 2020-06-10
+### Added
+- css for XL screens
+- Saturday to "add appointments" grid
+
 ## 1.5.0 - 2020-06-03
 ### Changed
 - Grouped calendar options into 'Manage Appointment Slots'
