@@ -10,6 +10,7 @@ OC.L10N.register(
     "Start" : "Mulai",
     "Apply" : "Terapkan",
     "Deleted" : "Dihapus",
+    "Confirmed" : "Terkonfirmasi",
     "Location:" : "Lokasi:",
     "Back" : "Kembali",
     "Next" : "Berikutnya",
