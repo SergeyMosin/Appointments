@@ -10,7 +10,7 @@
                         :disabled="curCal.url===''"
                         :loading="tzLoading"
                         @click="openAddAppts"
-                        text="Add Appointment Slots"
+                        :text="t('appointments','Add Appointment Slots')"
                         icon="icon-add">
                     <Actions v-show="expando[2]===1" slot="actions">
                     <ActionButton @click.stop="toggleExpando(2)" icon="icon-triangle-n"></ActionButton>
@@ -30,7 +30,7 @@
                 <ApptIconButton
                         :disabled="curCal.url===''"
                         @click="openRemOld"
-                        text="Remove Old Appointments"
+                        :text="t('appointments','Remove Old Appointments')"
                         icon="icon-delete">
                     <Actions v-show="expando[0]===1" slot="actions">
                         <ActionButton @click.stop="toggleExpando(0)" icon='icon-triangle-n'></ActionButton>
@@ -70,7 +70,7 @@
                         :disabled="curCal.url===''"
                         :loading="calInfo.isLoading"
                         @click="openCalSettings"
-                        text="Advanced Settings"
+                        :text="t('appointments','Advanced Settings')"
                         icon="icon-settings">
                     <Actions v-show="expando[1]===1" slot="actions">
                         <ActionButton @click.stop="toggleExpando(1)" icon="icon-triangle-n"></ActionButton>
@@ -155,7 +155,7 @@
                 default: function () {
                     return {
                         icon: "icon-calendar-dark",
-                        name: "Select Calendar",
+                        name: this.t('appointments','Select Calendar'),
                         url: "",
                         rIcon: "",
                         clr: "",
