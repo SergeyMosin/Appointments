@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2020-06-12 03:20+0000\n"
+"POT-Creation-Date: 2020-06-13 03:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -294,6 +294,7 @@ msgid "Close"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:13
+#: /app/specialVueFakeDummyForL10nScript.js:90
 msgid "Remove Old Appointments"
 msgstr ""
 
@@ -424,7 +425,7 @@ msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:47
 #: /app/specialVueFakeDummyForL10nScript.js:86
-#: /app/specialVueFakeDummyForL10nScript.js:92
+#: /app/specialVueFakeDummyForL10nScript.js:94
 msgid "Start"
 msgstr ""
 
@@ -510,8 +511,8 @@ msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:68
 #: /app/specialVueFakeDummyForL10nScript.js:81
-#: /app/specialVueFakeDummyForL10nScript.js:97
-#: /app/specialVueFakeDummyForL10nScript.js:103
+#: /app/specialVueFakeDummyForL10nScript.js:100
+#: /app/specialVueFakeDummyForL10nScript.js:107
 msgid "Apply"
 msgstr ""
 
@@ -580,56 +581,68 @@ msgid "Manage appointments and calendar settings"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:89
-msgid "Scheduled before"
-msgstr ""
-
-#: /app/specialVueFakeDummyForL10nScript.js:90
-msgid "Remove empty slots only"
+msgid "Add Appointment Slots"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:91
-msgid "Remove empty and booked"
+msgid "Scheduled before"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:92
+msgid "Remove empty slots only"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:93
-msgid "When Attendee Cancels"
-msgstr ""
-
-#: /app/specialVueFakeDummyForL10nScript.js:94
-msgid "Mark the appointment as canceled"
+msgid "Remove empty and booked"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:95
-msgid "Reset (make the timeslot available)"
+msgid "Advanced Settings"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:96
-msgid "Calendar for booked appointments"
+msgid "When Attendee Cancels"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:97
+msgid "Mark the appointment as canceled"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:98
-msgid "Your Contact Information"
-msgstr ""
-
-#: /app/specialVueFakeDummyForL10nScript.js:98
-msgid "Form header and event organizer settings"
+msgid "Reset (make the timeslot available)"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:99
+msgid "Calendar for booked appointments"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:101
+msgid "Select Calendar"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:102
+msgid "Your Contact Information"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:102
+msgid "Form header and event organizer settings"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:103
 #: /app/templates/public/form.php:35
 msgid "Name:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:100
+#: /app/specialVueFakeDummyForL10nScript.js:104
 #: /app/templates/public/form.php:37
 msgid "Email:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:101
+#: /app/specialVueFakeDummyForL10nScript.js:105
 msgid "Location:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:102
+#: /app/specialVueFakeDummyForL10nScript.js:106
 #: /app/templates/public/form.php:41
 msgid "Phone:"
 msgstr ""

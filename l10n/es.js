@@ -106,6 +106,8 @@ OC.L10N.register(
     "Canceled" : "Cancelado",
     "Skip email validation step" : "Saltar paso de validación por correo",
     "close" : "cerrar",
+    "Add Appointment Slots" : "Añadir huecos para citas",
+    "Advanced Settings" : "Configuración avanzada",
     "When Attendee Cancels" : "Cuando el asistente cancela",
     "Mark the appointment as canceled" : "Marcar reunión como cancelada",
     "Reset (make the timeslot available)" : "Resetear (hacer disponible el hueco)",

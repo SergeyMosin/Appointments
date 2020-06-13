@@ -57,6 +57,7 @@ OC.L10N.register(
     "Confirmed" : "Vahvistettu",
     "Canceled" : "Peruttu",
     "close" : "sulje",
+    "Advanced Settings" : "Lisäasetukset",
     "Name:" : "Nimi:",
     "Email:" : "Sähköpostiosoite:",
     "Location:" : "Sijainti:",

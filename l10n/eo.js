@@ -12,6 +12,7 @@ OC.L10N.register(
     "Deleted" : "Forigita",
     "Confirmed" : "Konfirmita",
     "Canceled" : "Nuligita",
+    "Advanced Settings" : "Detalaj agordoj",
     "Location:" : "Loko:",
     "Back" : "Antaŭen",
     "Next" : "Sekva"

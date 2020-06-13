@@ -81,6 +81,8 @@ OC.L10N.register(
     "Confirmed" : "Elfogadva",
     "Canceled" : "Megszakítva",
     "close" : "bezárás",
+    "Add Appointment Slots" : "Találkozó időpontjainak megadása",
+    "Advanced Settings" : "Részletes beállítások",
     "Your Contact Information" : "Kapcsolati Információid",
     "Name:" : "Név:",
     "Email:" : "Email:",

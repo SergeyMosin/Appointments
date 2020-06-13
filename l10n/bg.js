@@ -12,6 +12,7 @@ OC.L10N.register(
     "Apply" : "Приложи",
     "Deleted" : "Изтрито",
     "Confirmed" : "Потвърдено",
+    "Advanced Settings" : "Допълнителни настройки",
     "Location:" : "Местоположение:",
     "Back" : "Назад",
     "Next" : "Напред",

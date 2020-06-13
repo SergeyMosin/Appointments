@@ -60,6 +60,7 @@ OC.L10N.register(
     "Confirmed" : "Bekräftad",
     "Canceled" : "Avbruten",
     "close" : "stäng",
+    "Advanced Settings" : "Avancerade inställningar",
     "Name:" : "Namn:",
     "Email:" : "E-post:",
     "Location:" : "Ort:",

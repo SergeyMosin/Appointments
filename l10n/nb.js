@@ -12,6 +12,7 @@ OC.L10N.register(
     "Deleted" : "Slettet",
     "Confirmed" : "Bekreftet",
     "close" : "lukk",
+    "Advanced Settings" : "Avanserte innstillinger",
     "Location:" : "Sted:",
     "Back" : "Tilbake",
     "Next" : "Neste",

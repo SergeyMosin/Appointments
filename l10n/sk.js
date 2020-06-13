@@ -127,6 +127,7 @@ OC.L10N.register(
     "close" : "Zatvoriť",
     "Calendars and Schedule" : "Kalendáre a plánovanie",
     "Manage appointments and calendar settings" : "Spravovať nastavenia schôdzok a kalendára",
+    "Add Appointment Slots" : "Pridať možné stretnutia",
     "Scheduled before" : "Naplánované pred",
     "Remove empty slots only" : "Odstrániť iba prázdne časové okná",
     "Remove empty and booked" : "Odstrániť prázdne a rezervované",

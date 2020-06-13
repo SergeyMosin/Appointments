@@ -105,6 +105,8 @@ OC.L10N.register(
     "Canceled" : "Otkazano",
     "Skip email validation step" : "Preskoči korak provjere e-pošte",
     "close" : "zatvori",
+    "Add Appointment Slots" : "Dodaj mjesta za dogovore",
+    "Advanced Settings" : "Napredne postavke",
     "When Attendee Cancels" : "Kad sudionik otkaže",
     "Mark the appointment as canceled" : "Označi dogovor kao otkazan",
     "Reset (make the timeslot available)" : "Resetiraj (oslobodi vremensko razdoblje)",

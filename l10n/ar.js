@@ -10,6 +10,7 @@ OC.L10N.register(
     "Deleted" : "تم حذفه",
     "Confirmed" : "مؤكَّد",
     "close" : "إغلاق",
+    "Advanced Settings" : "الإعدادات المتقدمة",
     "Location:" : "المكان :",
     "Back" : "العودة",
     "Next" : "التالي"

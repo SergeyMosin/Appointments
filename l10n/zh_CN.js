@@ -73,6 +73,7 @@ OC.L10N.register(
     "Confirmed" : "已确认",
     "Canceled" : "已取消",
     "close" : "关闭",
+    "Advanced Settings" : "高级设置",
     "When Attendee Cancels" : "当与会者取消时",
     "Name:" : "名称：",
     "Email:" : "邮箱：",

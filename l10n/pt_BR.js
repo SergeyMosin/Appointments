@@ -107,6 +107,8 @@ OC.L10N.register(
     "Canceled" : "Cancelado",
     "Skip email validation step" : "Pular a validação de e-mail",
     "close" : "fechar",
+    "Add Appointment Slots" : "Adicionar Horários de Compromisso",
+    "Advanced Settings" : "Configurações Avançadas",
     "When Attendee Cancels" : "Quando o Participante Cancela",
     "Mark the appointment as canceled" : "Marcar o compromisso como cancelado",
     "Reset (make the timeslot available)" : "Redefinir (disponibilizar o horário)",
