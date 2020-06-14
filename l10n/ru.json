@@ -104,6 +104,8 @@
     "Canceled" : "Отменена",
     "Skip email validation step" : "Пропустить шаг проверки адреса эл. почты",
     "close" : "закрыть",
+    "Add Appointment Slots" : "Добавить интервалы для записи",
+    "Advanced Settings" : "Расширенные настройки",
     "When Attendee Cancels" : "При отмене записи",
     "Mark the appointment as canceled" : "Пометить запись как отменённую",
     "Reset (make the timeslot available)" : "Сбросить (освободить интервал для записи)",

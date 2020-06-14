@@ -136,6 +136,7 @@ OC.L10N.register(
     "Mark the appointment as canceled" : "Termin als abgesagt markieren",
     "Reset (make the timeslot available)" : "Zurücksetzen (Zeitfenster wird wieder verfügbar)",
     "Calendar for booked appointments" : "Kalender für gebuchte Termine",
+    "Select Calendar" : "Ausgewählter Kalender",
     "Your Contact Information" : "Deine Kontaktinformationen",
     "Form header and event organizer settings" : "Einstellungen für Formularkopfzeile und Veranstalter",
     "Name:" : "Name:",

@@ -105,6 +105,8 @@ OC.L10N.register(
     "Canceled" : "מבוטלת",
     "Skip email validation step" : "דילוג על שלב בתיקוף דוא״ל",
     "close" : "סגירה",
+    "Add Appointment Slots" : "הוספת משבצות פגישות",
+    "Advanced Settings" : "הגדרות מתקדמות",
     "When Attendee Cancels" : "בעת ביטול מצד משתתף",
     "Mark the appointment as canceled" : "לסמן את הפגישה כמבוטלת",
     "Reset (make the timeslot available)" : "לאפס (להפוך את משבצת הזמן לזמינה)",
