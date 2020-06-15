@@ -66,10 +66,11 @@
                     <div class="srgdev-appt-modal-header">{{t('appointments', 'Public Page URL')}}</div>
                     <div v-if="generalModal===1 && generalModalLoadingTxt===''">
                         <div class="srgdev-appt-modal-lbl" style="user-select: text; cursor: text;">
-                            <span style="cursor: text; display: inline-block; vertical-align: middle;">{{generalModalTxt[0]}}</span><div class="srgdev-appt-icon_btn icon-clippy" @click="doCopyPubLink"></div><a target="_blank" :href="generalModalTxt[0]" class="srgdev-appt-icon_btn icon-external"></a>
+                            <span style="cursor: text; display: inline-block; vertical-align: middle;">{{generalModalTxt[0]}}</span>
                             <div style="position: relative;">
+                                <div class="srgdev-appt-icon_txt_btn icon-clippy" @click="doCopyPubLink">Copy</div><a target="_blank" :href="generalModalTxt[0]" class="srgdev-appt-icon_txt_btn icon-external">Visit</a>
                             <ApptAccordion
-                                    style="display: inline-block; margin-top: 1.25em;"
+                                    style="display: inline-block; margin-top: 1.25em; margin-left: .5em;"
                                     title="Show iframe/embeddable"
                                     :open="false">
                                 <template slot="content">
