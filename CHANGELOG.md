@@ -1,3 +1,8 @@
+## 1.5.2 - 2020-06-15
+### Added
+- Text to "Public Page URL" dialog buttons
+- Setup cancellation link for confirmation emails (awaiting translations)
+
 ## 1.5.1 - 2020-06-10
 ### Added
 - css for XL screens
