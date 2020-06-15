@@ -13,6 +13,7 @@ OC.L10N.register(
     "Confirmed" : "Потврђен",
     "Canceled" : "Отказано",
     "close" : "затвори",
+    "Advanced Settings" : "Напредне поставке",
     "Name:" : "Име:",
     "Location:" : "Локација:",
     "Back" : "Назад",

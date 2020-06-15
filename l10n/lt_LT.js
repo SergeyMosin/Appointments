@@ -73,6 +73,7 @@ OC.L10N.register(
     "Confirmed" : "Patvirtintas",
     "Canceled" : "Atsisakyta",
     "close" : "užverti",
+    "Advanced Settings" : "Išplėstiniai nustatymai",
     "When Attendee Cancels" : "Kai kviestinis atsisako",
     "Mark the appointment as canceled" : "Žymėti susitikimą kaip atsisakytą",
     "Reset (make the timeslot available)" : "Atstatyti (paversti laiko tarpą prieinamu)",

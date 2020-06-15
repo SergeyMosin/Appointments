@@ -104,6 +104,7 @@
     "Canceled" : "Скасовано",
     "Skip email validation step" : "Пропустити крок підтвердження ел.адреси",
     "close" : "закрити",
+    "Add Appointment Slots" : "Виберіть діапазони участі у зустрічі",
     "When Attendee Cancels" : "Коли учасник відхиляє",
     "Mark the appointment as canceled" : "Позначити зустріч скасованою",
     "Reset (make the timeslot available)" : "Обнулити (зробити цей діапазон часу доступним)",

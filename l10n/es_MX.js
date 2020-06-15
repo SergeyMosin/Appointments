@@ -85,6 +85,8 @@ OC.L10N.register(
     "Confirmed" : "Confirmado",
     "Canceled" : "Cancelada",
     "close" : "cerrar",
+    "Add Appointment Slots" : "Añadir espacio para citas",
+    "Advanced Settings" : "Configuraciones Avanzadas",
     "When Attendee Cancels" : "Cuando el Asistente Cancele",
     "Mark the appointment as canceled" : "Marcar la cita como cancelada",
     "Reset (make the timeslot available)" : "Reiniciar (marcar el espacio como disponible)",

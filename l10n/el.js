@@ -127,6 +127,7 @@ OC.L10N.register(
     "close" : "κλείσιμο",
     "Calendars and Schedule" : "Ημερολόγια και πρόγραμμα",
     "Manage appointments and calendar settings" : "Διαχειριστείτε ραντεβού και ρυθμίσεων ημερολογίου",
+    "Add Appointment Slots" : "Προσθήκη πεδίων ραντεβού",
     "Scheduled before" : "Προγραμματίστηκε πριν",
     "Remove empty slots only" : "Αφαίρεση κενών θέσεων μόνο",
     "Remove empty and booked" : "Αφαίρεση κενού και προγραμματισμένου",

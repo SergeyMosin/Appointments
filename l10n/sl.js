@@ -79,6 +79,7 @@ OC.L10N.register(
     "Confirmed" : "Potrjeno",
     "Canceled" : "Preklicano",
     "close" : "zapri",
+    "Add Appointment Slots" : "Dodaj časovno obdobje sestanka",
     "Name:" : "Ime:",
     "Email:" : "Elektronski naslov:",
     "Location:" : "Mesto:",
