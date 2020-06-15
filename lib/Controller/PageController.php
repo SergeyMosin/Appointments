@@ -753,6 +753,22 @@ class PageController extends Controller {
                     BackendUtils::APPT_SES_KEY_HINT,
                     BackendUtils::APPT_SES_CONFIRM);
 
+                // ... set cancel link info
+                $btn_url=$this->getPublicWebBase().'/' .$this->pubPrx($this->getToken($uid),$embed).'cncf?d=';
+                if($embed) {
+                    $btn_url=$this->c->getAppValue(
+                        $this->appName,
+                        'emb_cncf_'.$uid,$btn_url);
+                }
+
+                $ses->set(
+                    BackendUtils::APPT_SES_KEY_BURL,
+                    $btn_url);
+                $ses->set(
+                    BackendUtils::APPT_SES_KEY_BTKN,
+                    urlencode($this->utils->encrypt(substr($uri,0,-4),$key))
+                );
+
                 list($sts, $date_time) = $this->bc->confirmAttendee($uid, $cal_id, $uri);
 
                 if ($sts === 0) { // Appointment is confirmed successfully

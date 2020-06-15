@@ -203,6 +203,7 @@ class DavListener {
             $om_info=$evt->DESCRIPTION->getValue();
         }
 
+        $cnl_lnk_url=""; // cancellation link for confirmation emails
 
         if($hint === BackendUtils::APPT_SES_BOOK){
             // Just booked, send email to the attendee requesting confirmation...
@@ -247,6 +248,10 @@ class DavListener {
             if(!empty($eml_settings[BackendUtils::EML_CNF_TXT])){
                 $tmpl->addBodyText($eml_settings[BackendUtils::EML_CNF_TXT]);
             }
+
+            // add cancellation link
+            // These keys must be set in the page controller
+            $cnl_lnk_url=$ses->get(BackendUtils::APPT_SES_KEY_BURL)."0".$ses->get(BackendUtils::APPT_SES_KEY_BTKN);
 
             if($eml_settings[BackendUtils::EML_MCONF]) {
                 $om_prefix = $this->l10N->t("Appointment confirmed");
@@ -325,6 +330,20 @@ class DavListener {
 
 
         $tmpl->addBodyText($this->l10N->t("Thank you"));
+
+        // cancellation link for confirmation emails
+        // TODO: enable when translations are finished...
+        if(!empty($cnl_lnk_url) && 1===2){
+            $tmpl->addBodyText(
+                '<div style="font-size: 80%;color: #989898">' .
+                // TRANSLATORS This is a part of an email message. %1$s Cancel Appointment %2$s is a link to the cancellation page (HTML format).
+                $this->l10N->t('To cancel your appointment please click: %1$s Cancel Appointment %2$s', ['<a style="color: #989898" href="' . $cnl_lnk_url . '">', '</a>'])
+                . "</div>",
+                // TRANSLATORS This is a part of an email message. %s is a URL of the cancellation page (PLAIN TEXT format).
+                $this->l10N->t('To cancel your appointment please visit: %s', $cnl_lnk_url)
+            );
+        }
+
         $tmpl->addFooter("Booked via Nextcloud Appointments App");
 
         ///-------------------
