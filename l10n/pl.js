@@ -136,6 +136,7 @@ OC.L10N.register(
     "Mark the appointment as canceled" : "Oznacz spotkanie jako anulowane",
     "Reset (make the timeslot available)" : "Zresetuj (udostępnij przedział czasowy)",
     "Calendar for booked appointments" : "Kalendarz dla zarezerwowanych spotkań",
+    "Select Calendar" : "Wybierz kalendarz",
     "Your Contact Information" : "Twoje informacje kontaktowe",
     "Form header and event organizer settings" : "Forma nagłówka i ustawienie organizatora wydarzenia",
     "Name:" : "Nazwa:",
