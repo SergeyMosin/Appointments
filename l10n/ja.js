@@ -49,7 +49,7 @@ OC.L10N.register(
     "Public Page [Online]" : "公開ページ[オンライン]",
     "Public Page [Disabled]" : "公開ページ[利用不可]",
     "Share Online" : "オンラインで共有",
-    "Stop Sharing" : "共有を停止",
+    "Stop Sharing" : "共有の停止",
     "Show URL/link" : "URL/リンク を表示",
     "Manage Appointment Slots" : "アポイントメントのスロットを管理",
     "User/Organization Info" : "ユーザー/組織の情報",

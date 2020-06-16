@@ -54,6 +54,7 @@ OC.L10N.register(
     "Customize Public Page" : "Personalizar Página Pública",
     "Email Settings" : "Configurações de E-mail",
     "Help/Tutorial" : "Ajuda/Tutorial",
+    "Public Page URL" : "URL da Página Pública:",
     "Close" : "Fechar",
     "Remove" : "Excluir",
     "Add to Calendar" : "Adicionar ao Calendário",

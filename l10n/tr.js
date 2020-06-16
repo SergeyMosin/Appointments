@@ -136,6 +136,7 @@ OC.L10N.register(
     "Mark the appointment as canceled" : "Randevu iptal edilmiş olarak işaretlensin",
     "Reset (make the timeslot available)" : "Sıfırlansın (zaman aralığı boşaltılsın)",
     "Calendar for booked appointments" : "Randevuların takvimi",
+    "Select Calendar" : "Takvim Seçin",
     "Your Contact Information" : "İletişim Bilgileriniz",
     "Form header and event organizer settings" : "Form üst bilgisi ve etkinlik düzenleyicisi ayarları",
     "Name:" : "Ad:",
