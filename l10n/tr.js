@@ -24,6 +24,8 @@ OC.L10N.register(
     "If you have any questions please write to %s" : "Sorularınız varsa %s adresine yazabilirsiniz.",
     "If you have any questions please feel free to call %1$s or write to %2$s" : "Sorularınız varsa %1$s numarayı arayabilir ya da %2$s adresine yazabilirsiniz",
     "Thank you" : "Teşekkürler",
+    "To cancel your appointment please click: %1$s Cancel Appointment %2$s" : "Randevu iptali için lütfen tıklayınız: %1$sRandevu İptal %2$s",
+    "To cancel your appointment please visit: %s" : "Randevu iptali için lütfen ziyaret ediniz: %s",
     "Appointment is canceled" : "Randevu iptal edildi",
     "%s Appointment" : "%s Randevusu",
     "An email with additional details is on its way to you at %s" : "Ayrıntıların bulunduğu bir e-posta 1%s adresinize gönderildi",

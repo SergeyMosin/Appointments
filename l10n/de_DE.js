@@ -24,6 +24,8 @@ OC.L10N.register(
     "If you have any questions please write to %s" : "Wenn Sie Fragen haben, wenden Sie sich an %s",
     "If you have any questions please feel free to call %1$s or write to %2$s" : "Wenn Sie Fragen haben, rufen Sie unter %1$s an oder schreiben an %2$s",
     "Thank you" : "Danke",
+    "To cancel your appointment please click: %1$s Cancel Appointment %2$s" : "Um Ihren Termin abzusagen, klicken Sie bitte: %1$s Termin absagen %2$s",
+    "To cancel your appointment please visit: %s" : "Um Ihren Termin abzusagen besuchen Sie bitte: %s",
     "Appointment is canceled" : "Termin ist abgesagt",
     "%s Appointment" : "%s-Termin",
     "An email with additional details is on its way to you at %s" : "Eine E-Mail mit weiteren Einzelheiten ist auf dem Weg zu Ihnen an %s",

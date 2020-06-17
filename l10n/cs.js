@@ -24,6 +24,8 @@ OC.L10N.register(
     "If you have any questions please write to %s" : "Pokud máte jakékoli dotazy, napište na %s",
     "If you have any questions please feel free to call %1$s or write to %2$s" : "Pokud máte jakékoli dotazy, zavolejte na %1$s nebo napište na %2$s",
     "Thank you" : "Děkujeme",
+    "To cancel your appointment please click: %1$s Cancel Appointment %2$s" : "Pokud chcete schůzku zrušit klikněte na: %1$s Zrušit schůzku %2$s",
+    "To cancel your appointment please visit: %s" : "Pokud chcete schůzku zrušit, jděte na: %s",
     "Appointment is canceled" : "Schůzka je zrušena",
     "%s Appointment" : "%s schůzka",
     "An email with additional details is on its way to you at %s" : "Právě k vám míří e-mail (na %s) s dalšími podrobnostmi",
