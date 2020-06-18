@@ -24,6 +24,8 @@ OC.L10N.register(
     "If you have any questions please write to %s" : "Για ερωτήσεις, επικοινωνήστε μαζί μας στο %s",
     "If you have any questions please feel free to call %1$s or write to %2$s" : "Για ερωτήσεις καλέστε στο %1$s ή στείλτε το μήνυμά σας %2$s",
     "Thank you" : "Σας ευχαριστώ",
+    "To cancel your appointment please click: %1$s Cancel Appointment %2$s" : "Για ακύρωση του ραντεβού σας κάνετε κλίκ:%1$s Ακύρωση ραντεβού %2$s ",
+    "To cancel your appointment please visit: %s" : "Για ακύρωση του ραντεβού σας παρακαλούμε επισκεφθείτε: %s",
     "Appointment is canceled" : "Το ραντεβού ακυρώθηκε",
     "%s Appointment" : "%s Ραντεβού",
     "An email with additional details is on its way to you at %s" : "Στάλθηκε μήνυμα Ηλ.Ταχυδρομείου με λεπτομέρειες στο %s",
