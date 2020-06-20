@@ -79,6 +79,7 @@ OC.L10N.register(
     "Gathering calendar information" : "Poteka pridobivanje podrobnosti koledarja",
     "Remove empty appointment slots created before {fullDate} ?" : "Ali želite odstraniti prazne možnosti sestanka, ustvarjene pred {fullDate}?",
     "Remove empty slots and booked appointments created before {fullDate} ?" : "Ali želite odstraniti prazne in že izbrane možnosti sestanka, ustvarjene pred {fullDate}?",
+    "two calendars affected" : "se nanaša na dva koledarja",
     "Number of expired appointments/slots: " : "Število pretečenih možnosti sestanka",
     "Can not get calendar data" : "Ni mogoče pridobiti podatkov koledarja",
     "New Settings Applied." : "Nove nastavitve so uveljavljene",
@@ -157,6 +158,7 @@ OC.L10N.register(
     "Enter phone number" : "Vpis telefonske številke",
     "Book Now" : "Potrdi",
     "An error has occurred" : "Prišlo je do napake",
+    "Please %1$stry again%2$s and select a different date." : "Prosimo %1$s poskusite ponovno %2$s in izberite drug datum.",
     "Please contact us directly at" : "Stopite v stik z nami prek",
     "Please try again later" : "Poskusite znova kasneje"
 },
