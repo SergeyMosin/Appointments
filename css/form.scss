@@ -246,6 +246,12 @@
   z-index: 1;
   font-size: 95%;
 }
+.srgdev-dpu-date-wd-sunday{
+  color: #E23C2F;
+}
+.srgdev-dpu-date-cont[data-active] .srgdev-dpu-date-wd-sunday{
+  color: inherit;
+}
 .srgdev-dpu-date-dn{
   padding: .1em 0;
   z-index: 2;

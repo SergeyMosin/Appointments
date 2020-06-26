@@ -399,7 +399,7 @@
             e1.className='srgdev-dpu-date-cont'+(is_empty?" srgdev-dpu-dc-empty":"")
 
             let e2=document.createElement('span')
-            e2.className='srgdev-dpu-date-wd'
+            e2.className=d.getDay()!==0?'srgdev-dpu-date-wd':'srgdev-dpu-date-wd srgdev-dpu-date-wd-sunday';
             e2.appendChild(document.createTextNode(wf(d)))
             e1.appendChild(e2)
 
