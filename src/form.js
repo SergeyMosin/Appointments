@@ -458,6 +458,8 @@
 
             if(lastUD!==ud){
 
+                // if(do_break) break
+
                 // Show "empty" days ...
                 tts=td.getTime()
                 td.setTime(d.getTime())
@@ -500,7 +502,6 @@
                     te.setAttribute('data-active','')
                 }
                 lcd.appendChild(te)
-                if(do_break) break
 
                 te=document.createElement('div')
                 te.id="srgdev-dpu_tc"+(lcc-1)
@@ -533,8 +534,8 @@
         d.setHours(1)
         d.setTime(d.getTime()+86400000)
 
-        lcc%=5
-        if(lcc>0) {
+        // lcc%=5
+        if(lcc%5>0) {
             for(let ti,l = 5 - (lcc % 5), i = 0; i < l; i++) {
 
                 ti = d.getDay()
