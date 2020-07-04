@@ -69,6 +69,7 @@ OC.L10N.register(
     "Error occurred. Check console..." : "Fout opgetreden, Controleer de console...",
     "Public Page Preview" : "Voorbeeld openbare pagina",
     "Copy public link" : "Kopieer openbare link",
+    "This action can NOT be undone. Continue?" : "Dit kan NIET ongedaan worden gemaakt. Doorgaan?",
     "Removing Appointment Slots" : "Verwijderen afspraakplekken",
     "Can not delete old appointments/slots" : "Kan geen oude afspraken/plekken verwijderen",
     "All empty appointment slots created before {fullDate} are removed" : "Alle lege afspraakplekken gemaakt vóór {fullDate} zijn verwijderd",

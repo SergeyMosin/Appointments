@@ -24,6 +24,8 @@ OC.L10N.register(
     "If you have any questions please write to %s" : "Se ten algunha dúbida, escriba a %s",
     "If you have any questions please feel free to call %1$s or write to %2$s" : "Se ten algunha dúbida, chame a %1$s ou escríballe a %2$s",
     "Thank you" : "Grazas",
+    "To cancel your appointment please click: %1$s Cancel Appointment %2$s" : "Para cancelar a súa cita, prema en: %1$sCancelar cita%2$s",
+    "To cancel your appointment please visit: %s" : "Para cancelar a súa cita, visite: %s",
     "Appointment is canceled" : "A cita con foi cancelada",
     "%s Appointment" : "Cita con %s",
     "An email with additional details is on its way to you at %s" : "Foille enviado un correo con detalles adicionais a %s ",

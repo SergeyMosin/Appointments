@@ -24,6 +24,8 @@ OC.L10N.register(
     "If you have any questions please write to %s" : "Wenn Du Fragen hast, schreibe bitte an %s",
     "If you have any questions please feel free to call %1$s or write to %2$s" : "Wenn Du Fragen hast, rufe bitte %1$s an oder schreibe an %2$s",
     "Thank you" : "Vielen Dank",
+    "To cancel your appointment please click: %1$s Cancel Appointment %2$s" : "Um Deinen Termin abzusagen, klicke bitte: %1$s Termin absagen %2$s",
+    "To cancel your appointment please visit: %s" : "Um Deinen Termin abzusagen besuche bitte: %s",
     "Appointment is canceled" : "Termin ist abgesagt",
     "%s Appointment" : "%s-Termin",
     "An email with additional details is on its way to you at %s" : "Eine E-Mail mit weiteren Einzelheiten ist auf dem Weg zu Dir an %s",
@@ -155,7 +157,7 @@ OC.L10N.register(
     "Enter email" : "E-Mail eingeben",
     "Enter phone number" : "Telefonnummer eingeben",
     "Book Now" : "Jetzt buchen",
-    "An error has occurred" : "Benötigt keine Übersetzung. Für Windows Phone wird nur die formelle Übersetzung verwendet (de_DE).",
+    "An error has occurred" : "Es ist ein Fehler aufgetreten",
     "Please %1$stry again%2$s and select a different date." : "Bitte %1$s versuche es erneut %2$s und wähle ein anderes Datum.",
     "Please contact us directly at" : "Bitte kontaktiere uns direkt unter",
     "Please try again later" : "Bitte versuche es später noch einmal"
