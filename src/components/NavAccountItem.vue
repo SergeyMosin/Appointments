@@ -4,6 +4,7 @@
             :text="curCal.name"
             :icon="curCal.rIcon===''?curCal.icon:'srgdev-icon-override'"
             :style="curCal.rIcon"
+            :icon-scale="false"
             :loading="curCal.isCalLoading">
         <Actions menuAlign="right" @open="getCalendars" forceMenu slot="actions">
             <ActionButton

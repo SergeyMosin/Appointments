@@ -111,24 +111,24 @@ class UpdateHook implements IRepairStep {
                         $userId, $this->appName, $PPS_KEY, null);
 
                     if ($old_pps !== null) {
-                        $a = PageController::PSN_DEF;
-                        $a[PageController::PSN_NWEEKS] = $old_pps[0];
-                        $a[PageController::PSN_EMPTY] = boolval($old_pps[1]);
-                        $a[PageController::PSN_FNED] = boolval($old_pps[2]);
-                        $a[PageController::PSN_WEEKEND] = boolval($old_pps[3]);
-                        $a[PageController::PSN_TIME2] = boolval($old_pps[4]);
+                        $a = BackendUtils::PSN_DEF;
+                        $a[BackendUtils::PSN_NWEEKS] = $old_pps[0];
+                        $a[BackendUtils::PSN_EMPTY] = boolval($old_pps[1]);
+                        $a[BackendUtils::PSN_FNED] = boolval($old_pps[2]);
+                        $a[BackendUtils::PSN_WEEKEND] = boolval($old_pps[3]);
+                        $a[BackendUtils::PSN_TIME2] = boolval($old_pps[4]);
 
-                        $a[PageController::PSN_FORM_TITLE] = $this->c->getUserValue(
-                            $userId, $this->appName, PageController::PSN_FORM_TITLE);
-                        $a[PageController::PSN_GDPR] = $this->c->getUserValue(
-                            $userId, $this->appName, PageController::PSN_GDPR);
+                        $a[BackendUtils::PSN_FORM_TITLE] = $this->c->getUserValue(
+                            $userId, $this->appName, BackendUtils::PSN_FORM_TITLE);
+                        $a[BackendUtils::PSN_GDPR] = $this->c->getUserValue(
+                            $userId, $this->appName, BackendUtils::PSN_GDPR);
 
                         $j = json_encode($a);
                         if ($j !== false) {
                             try {
                                 $this->c->setUserValue(
                                     $userId, $this->appName,
-                                    PageController::KEY_PSN, $j);
+                                    BackendUtils::KEY_PSN, $j);
                             } catch (PreConditionNotMetException $e) {
                                 $output->warning($e->getMessage());
                             }
@@ -138,10 +138,10 @@ class UpdateHook implements IRepairStep {
                             $userId, $this->appName, $PPS_KEY);
                         $this->c->deleteUserValue(
                             $userId, $this->appName,
-                            PageController::PSN_FORM_TITLE);
+                            BackendUtils::PSN_FORM_TITLE);
                         $this->c->deleteUserValue(
                             $userId, $this->appName,
-                            PageController::PSN_GDPR);
+                            BackendUtils::PSN_GDPR);
                     }
                 }
             }

@@ -1,11 +1,11 @@
 <div class="srgdev-appt-hs-inner">
-    <h2 class="srgdev-appt-hs-h1">1. Select a Calendar</h2>
+    <h2 class="srgdev-appt-hs-h1">1. Select a Calendar (Simple Mode)</h2>
     <p class="srgdev-appt-hs-p"><code class="srgdev-appt-hs-code_short">Manage Appointment Slots &gt; Select a Calendar</code><br>It is recommended to create a separate calendar.</p>
     <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_destcal">Calendar for booked appointments</strong> - if this calendar is different from the main calendar, confirmed/finalized appointments will be moved here. <em style="font-style: italic;">This calendar is reset every time the main calendar is changed.</em></p>
     <h2 class="srgdev-appt-hs-h1">2. Enter Organization Info</h2>
     <p class="srgdev-appt-hs-p">See the "User/Organization Info" section for required Name, Location and Email Address settings.</p>
     <h2 class="srgdev-appt-hs-h1">3. Add Appointments</h2>
-    <p class="srgdev-appt-hs-p">Please use the <code class="srgdev-appt-hs-code_short">Manage Appointment Slots &gt; Add Appointment Slots</code> dialog.</p>
+    <p class="srgdev-appt-hs-p">Please use the <code class="srgdev-appt-hs-code_short">Manage Appointment Slots &gt; Add Appointment Slots</code> dialog or see "External mode" below.</p>
     <div class="srgdev-appt-hs-p">
         <span>1. Set "Schedule Generator" settings</span><br>
         <span>2. Use "3 Dot" dropdown menus</span><br>
@@ -47,14 +47,20 @@ form{
     <h2 class="srgdev-appt-hs-h1">5. Email Settings</h2>
     <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_emailatt">Email Attendee when the appointment is modified and/or deleted</strong> - Attendees will be notified via email when their <strong>upcoming</strong> appointments are updated or deleted in the calendar app or via some other external mechanism. Only changes to Date/Time, Status or Location will trigger the "Modified" notification.</p>
     <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_emailme">Email Me when an appointment is updated</strong> - A notification email will be sent to you when an appointment is booked via the public page or an upcoming appointment is confirmed or canceled via the email links.</p>
-    <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_emailskipevs">Skip email validation step</strong> - When this option is selected the "<em>... action needed</em>" validation email will NOT be sent to the attendee. Instead the "<em>... Appointment is confirmed</em>" message is going to be sent right away, and the "<em>All done</em>" page is going to be shown when the form is submitted. <span style="font-style: italic">As of now, appointment cancellation link/button is <strong>NOT</strong> included in the confirmation email.</span></p>
+    <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_emailskipevs">Skip email validation step</strong> - When this option is selected the "<em>... action needed</em>" validation email will NOT be sent to the attendee. Instead the "<em>... Appointment is confirmed</em>" message is going to be sent right away, and the "<em>All done</em>" page is going to be shown when the form is submitted.</p>
     <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_emaildef"><code>useDefaultEmail</code></strong> - Most instance of NC won't have the particular configuration allowing to send emails on behalf of organizers. Therefore, the default email address as per <a style="color: blue; text-decoration: underline" href="https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/email_configuration.html" target="_blank">Mail Settings</a> is used, and your address is added in the "Reply-To:" header field. If your Nextcloud configuration supports sending out emails for individual users, Admins can override the 'useDefaultEmail' directive like so: <code style="background: #eeeeee; padding: 0 .5em">occ config:app:set appointments useDefaultEmail --value no</code></p>
     <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_emailmoretext"><code>Additional Email Text</code></strong>  - this text is appended as paragraph to the end of validation and confirmation email. Currently only pain text is allowed, HTML will be escaped.</p>
     <h2 class="srgdev-appt-hs-h1">6. Share the Public Link</h2>
     <p class="srgdev-appt-hs-p">Enable sharing and pass along the public page link <code class="srgdev-appt-hs-code_short">Public Page [...] &gt; Show URL/link</code>. Upcoming appointments will be available on the booking page.</p>
     <h2 class="srgdev-appt-hs-h1">7. Check Status in the Calendar</h2>
     <p class="srgdev-appt-hs-p">Once an appointment is booked it will be visible in the calendar with "⌛ pending" status. The attendee can "✔️ Confirm" or "<span style="text-decoration: line-through">Cancel</span>" the appointment via an email link, the status change will be reflected in the calendar upon page reload.</p>
-    <h2 class="srgdev-appt-hs-h1">8. iFrame/Embedding</h2>
+    <h2 class="srgdev-appt-hs-h1" id="srgdev-sec_ts_mode">8. Time slot mode</h2>
+    <p class="srgdev-appt-hs-p-h"><strong>Simple mode</strong> - Use provided "Add Appointment Slots" dialog to add "available" time slots. Recurrence is not suported in this mode.</p>
+    <p class="srgdev-appt-hs-p-h"><strong>External mode</strong> - Use Nextcloud's Calendar App or any other CalDAV compatible client to add "available" timeslots. Most recurrence rules are supported in this mode. Two calendars are required: a "Source Calendar" to keep track of your availability timeslots and a "Destination Calendar" for booked appointments.</p>
+    <p style="margin-left: 1em" class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_sourcecal_nr">Source Calendar (External mode)</strong> - Any event with "Category" set to "<strong>Appointment</strong>" (in Engilsh) <strong>AND</strong> "Show As" a.k.a. "Time As" a.k.a. "Free/Busy" a.k.a. "Time Transparency" set to "<strong>Free</strong>", (<a style="color: blue; text-decoration: underline" href="https://tools.ietf.org/html/rfc5545#section-3.8.2.7">RFC5545 specs</a> "TRANSP:TRANSPARENT") will be available for booking in the public form. Most recurrence rules are supported.</p>
+    <p style="margin-left: 1em" class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_destcal_nr">Destination Calendar (External mode)</strong> - Booked appointments will be placed in this calendar and will "block-off" availability timeslots in the "Source Calendar"</p>
+    <p style="margin-left: 1em" class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_push_rec_nr">Optimize recurrence (External mode)</strong> - If recurrent events are used in the "Source Calendar" the start (DTSTART) date will be pushed forward once in a while in order to improve performance.</p>
+    <h2 class="srgdev-appt-hs-h1">9. iFrame/Embedding</h2>
     <div class="srgdev-appt-hs-p">
         1. If the iframe is under a different domain use <strong>occ</strong> to set allowed Frame Ancestor Domain:
         <code style="white-space: pre" class="srgdev-appt-hs-code">php occ config:app:set appointments "emb_afad_YourUserName" --value "your.domain.com"</code>

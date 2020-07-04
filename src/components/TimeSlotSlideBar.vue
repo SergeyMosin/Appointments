@@ -2,10 +2,11 @@
     <SlideBar :title="t('appointments','Calendars and Schedule')" :subtitle="t('appointments','Manage appointments and calendar settings')" @close="close">
         <template slot="main-area">
             <div class="srgdev-appt-sb-main-cont">
+
+                <template v-if="calInfo.tsMode!=='1'">
                 <NavAccountItem
                         v-on="$listeners"
                         :curCal="curCal"></NavAccountItem>
-
                 <ApptIconButton
                         :disabled="curCal.url===''"
                         :loading="tzLoading"
@@ -29,6 +30,7 @@
                 </div>
                 <ApptIconButton
                         :disabled="curCal.url===''"
+                        :loading="expLoading===0"
                         @click="openRemOld"
                         :text="t('appointments','Remove Old Appointments')"
                         icon="icon-delete">
@@ -66,9 +68,67 @@
                             class="primary srgdev-appt-sb-genbtn">{{t('appointments','Start')}}
                     </button>
                 </div>
+                </template>
+                <template v-if="calInfo.tsMode==='1'">
+                    <ApptIconButton
+                            :loading="expLoading===3"
+                            @click="openNRSettings"
+                            :text="t('appointments','External Mode Settings')"
+                            icon="icon-sched-mode">
+                        <Actions v-show="expando[3]===1" slot="actions">
+                            <ActionButton @click.stop="toggleExpando(3)" icon="icon-triangle-n"></ActionButton>
+                        </Actions>
+                    </ApptIconButton>
+                    <div :data-expand="expando[3]" class="srgdev-appt_expando_cont">
+                    <div class="srgdev-appt-info-lcont">
+                        <label
+                                class="tsb-label"
+                                for="appt_tsb-srcm2-cal-id">
+                            {{t('appointments','Source Calendar (Free Slots)')}}:</label><a
+                            style="right: 9%"
+                            class="icon-info srgdev-appt-info-link"
+                            @click="$root.$emit('helpWanted','sourcecal_nr')"></a>
+                    </div>
+                    <select
+                            v-model="calInfo.nrSrcCalId"
+                            class="tsb-input"
+                            id="appt_tsb-srcm2-cal-id">
+                        <option value="-1">{{t('appointments','Calendar Required')}}</option>
+                        <option v-for="cal in cals" :value="cal.id">{{cal.name}}</option>
+                    </select>
+                    <div class="srgdev-appt-info-lcont">
+                        <label
+                                class="tsb-label"
+                                for="appt_tsb-destm2-cal-id">
+                            {{t('appointments','Destination Calendar (Booked)')}}:</label><a
+                            style="right: 9%"
+                            class="icon-info srgdev-appt-info-link"
+                            @click="$root.$emit('helpWanted','destcal_nr')"></a>
+                    </div>
+                    <select
+                            v-model="calInfo.nrDstCalId"
+                            class="tsb-input"
+                            id="appt_tsb-destm2-cal-id">
+                        <option value="-1">{{t('appointments','Calendar Required')}}</option>
+                        <option v-for="cal in cals" :value="cal.id">{{cal.name}}</option>
+                    </select>
+                    <div class="srgdev-appt-info-lcont srgdev-appt-sb-chb-cont" style="margin-top: 1.5em"><input
+                            type="checkbox"
+                            v-model="calInfo.nrPushRec"
+                            id="appt_tsb-push-recur"
+                            class="checkbox"><label for="appt_tsb-push-recur">{{t('appointments','Optimize recurrence')}}</label><a
+                            class="icon-info srgdev-appt-info-link"
+                            style="right: 9%"
+                            @click="$root.$emit('helpWanted','push_rec_nr')"></a>
+                    </div>
+                    <button
+                            @click="applyNRSettings"
+                            class="primary srgdev-appt-sb-genbtn">{{t('appointments','Apply')}}
+                    </button>
+                    </div>
+                </template>
                 <ApptIconButton
-                        :disabled="curCal.url===''"
-                        :loading="calInfo.isLoading"
+                        :loading="expLoading===1"
                         @click="openCalSettings"
                         :text="t('appointments','Advanced Settings')"
                         icon="icon-settings">
@@ -77,7 +137,6 @@
                     </Actions>
                 </ApptIconButton>
                 <div :data-expand="expando[1]" class="srgdev-appt_expando_cont">
-
                     <label
                             class="tsb-label"
                             for="appt_tsb-appt-reset">
@@ -89,21 +148,40 @@
                         <option value="mark">{{t('appointments','Mark the appointment as canceled')}}</option>
                         <option value="reset">{{t('appointments','Reset (make the timeslot available)')}}</option>
                     </select>
+                    <template v-if="calInfo.tsMode==='0'">
+                        <div class="srgdev-appt-info-lcont">
+                            <label
+                                    class="tsb-label"
+                                    for="appt_tsb-dest-cal-id">
+                                {{t('appointments','Calendar for booked appointments')}}:</label><a
+                                style="right: 9%"
+                                class="icon-info srgdev-appt-info-link"
+                                @click="$root.$emit('helpWanted','destcal')"></a>
+                        </div>
+                        <select
+                                v-model="calInfo.destCalId"
+                                class="tsb-input"
+                                id="appt_tsb-dest-cal-id">
+                            <option value="-1">{{curCal.name}}</option>
+                            <option v-for="cal in cals" v-if="!cal.isCur" :value="cal.id">{{cal.name}}</option>
+                        </select>
+                    </template>
                     <div class="srgdev-appt-info-lcont">
-                    <label
-                            class="tsb-label"
-                            for="appt_tsb-dest-cal-id">
-                        {{t('appointments','Calendar for booked appointments')}}:</label><a
+                        <label
+                                class="tsb-label"
+                                for="appt_tsb-ts-mode">
+                            {{t('appointments','Time slot mode')}}:</label><a
                             style="right: 9%"
                             class="icon-info srgdev-appt-info-link"
-                            @click="$root.$emit('helpWanted','destcal')"></a>
+                            @click="$root.$emit('helpWanted','ts_mode')"></a>
                     </div>
                     <select
-                            v-model="calInfo.destCalId"
+                            v-model="calInfo.tsMode"
                             class="tsb-input"
-                            id="appt_tsb-dest-cal-id">
-                        <option value="-1">{{curCal.name}}</option>
-                        <option v-for="cal in cals" :value="cal.id">{{cal.name}}</option>
+                            @change="tsModeChanged"
+                            id="appt_tsb-ts-mode">
+                        <option value="0">{{t('appointments','Simple')}}</option>
+                        <option value="1">{{t('appointments','External')}}</option>
                     </select>
                     <button
                             @click="applyCalSettings"
@@ -131,8 +209,6 @@
 
     import axios from '@nextcloud/axios'
     import {linkTo} from '@nextcloud/router'
-    import {detectColor} from "../utils";
-
 
     export default {
         name: "TimeSlotSlideBar",
@@ -156,7 +232,7 @@
                     return {
                         icon: "icon-calendar-dark",
                         name: this.t('appointments','Select Calendar'),
-                        url: "",
+                        url: "", //url is id
                         rIcon: "",
                         clr: "",
                         isCalLoading:false
@@ -169,18 +245,12 @@
                     return {
                         whenCanceled:"mark",
                         destCalId:"-1",
-                        isLoading:false,
-                        isReady:false
+                        nrSrcCalId:"-1",
+                        nrDstCalId:"-1",
+                        nrPushRec:true,
+                        tsMode:"0",
                     }
                 },
-            }
-
-        },
-        watch: {
-            'calInfo.isReady':function (val) {
-                if(val===true){
-                    this.toggleExpando(1)
-                }
             },
         },
 
@@ -198,12 +268,13 @@
                     100:y,
                 }
             }
-
         },
 
         data: function() {
             return {
-                expando:[0,0,0],
+                expando:[0,0,0,0],
+                expLoading:-1,
+
                 rsValue:58,
                 remType:"empty",
 
@@ -211,25 +282,92 @@
                 tzData:'',
                 tzLoading:false,
 
-                cals:[]
+                setStateInProgress:false,
+
+                cals:[],
+                calsAll:[]
             };
         },
 
         methods: {
+            stateDataReady(nid){
+                const expId=nid*-1-1
+                this.expLoading=-1
+                if(expId<this.expando.length) {
+                    // NR and Adv. Settings should not be opemed at the same time
+                    if(expId===3){
+                        if(this.expando[1]===1){
+                            this.toggleExpando(1)
+                        }
+                    }else if(expId===1){
+                        if(this.expando[3]===1){
+                            this.toggleExpando(3)
+                        }
+                    }
+
+                    this.toggleExpando(expId)
+                }
+            },
+
 
             removeOld(){
                 this.$emit("remOldAppts",{type:this.remType,before:this.rsValue==="100"?1:7})
             },
             openRemOld(){
-                // this is need to fetch calInfo
-                if(this.expando[0]===0) {
-                    this.$emit('getCalInfo', 'openNot')
+                if(this.expando[0]===1) {
+                    this.toggleExpando(0)
+                }else {
+                    // this is need to fetch calInfo
+                    this.expLoading=0
+                    this.$emit('getCalInfo', 0)
                 }
-                this.toggleExpando(0)
             },
 
+            applyNRSettings(){
+                if(this.calInfo.nrSrcCalId==='-1') {
+                    this.$emit("showModal",[
+                        this.t('appointments','Error'),
+                        this.t('appointments','Source calendar is required')])
+                }else if(this.calInfo.nrDstCalId==='-1') {
+                    this.$emit("showModal",[
+                        this.t('appointments','Error'),
+                        this.t('appointments','Destination calendar is required')])
+                }else if(this.calInfo.nrSrcCalId===this.calInfo.nrDstCalId) {
+                    this.$emit("showModal",[
+                        this.t('appointments','Error'),
+                        this.t('appointments','Source and Destination calendars must be different')])
+                }else{
+                    this.applyCalSettings()
+                }
+
+            },
+
+            tsModeChanged(){
+                // this.calInfo.nrSrcCalId="-1"
+                // this.calInfo.nrDstCalId="-1"
+                // this.calInfo.destCalId="-1"
+                // this.$emit('calSelected',{url:"-1"})
+
+                this.$emit('pageOffline');
+                this.applyCalSettings()
+                this.$emit("showModal",[
+                    this.t('appointments','Warning'),
+                    this.t('appointments','Time slot mode has changed. Public page is going offline…')])
+
+            },
             applyCalSettings(){
                 this.$emit('setCalInfo',this.calInfo)
+            },
+
+            openNRSettings(){
+                if(this.expando[3]===1){
+                    // just close
+                    this.toggleExpando(3)
+                }else{
+                    this.expLoading=3
+                    this.$emit('getCalInfo',3)
+                    this.getCalList()
+                }
             },
 
             openCalSettings(){
@@ -237,10 +375,11 @@
                     // just close
                     this.toggleExpando(1)
                 }else{
-                    this.$emit('getCalInfo')
+                    this.expLoading=1
+                    this.$emit('getCalInfo',1)
                     this.getCalList()
+                    // expando open is triggered in via getCalInfo event
                 }
-
             },
 
             getCalList(){
@@ -251,18 +390,17 @@
                         const curCalId=this.curCal.url // url is id
                         for(let i=0,l=cals.length;i<l;i++){
                             let cal=cals[i].split(String.fromCharCode(30))
-                            if(curCalId!==cal[2])
-                                this.cals.push({
-                                    name:cal[0],
-                                    id:cal[2]
-                                })
+                            this.cals.push({
+                                name: cal[0],
+                                id: cal[2],
+                                isCur: (curCalId===cal[2])
+                            })
                         }
                     })
                     .catch(function (error) {
                         console.log(error);
                     })
             },
-
 
             openAddAppts: function(){
 
@@ -323,7 +461,6 @@
                 })
             },
 
-
             toggleExpando(expId){
                 this.expando.splice(expId, 1, this.expando[expId]^1)
             },
@@ -348,6 +485,8 @@
         display: block;
         min-width: 80%;
         margin-bottom: 1em;
+        color: var(--color-text-lighter);
     }
+
 
 </style>

@@ -351,7 +351,7 @@ $srgdev-prog-height:3px;
 	margin: 0;
 	width: 100%;
 	height: 100%;
-	padding-top: 4.25em;
+	padding-top: 3.25em;
 	box-sizing: border-box;
 }
 .srgdev-appt-main-frame-cont{
@@ -520,11 +520,16 @@ textarea.appt-stn-txt-ta{
 		margin-top: 3em;
 		padding-left: 3em;
 		padding-right: 3em;
+		display: block;
 	}
-
+}
+.srgdev-appt-sb-main-spacer{
+	height: 0;
+	margin: .75em 0 .75em -4%;
+	border-top: 1px solid $color-border-dark;
+	width: 104%;
 
 }
-
 .srgdev-appt_expando_cont{
 	display: none;
 	padding-left: 3.25em;
@@ -567,6 +572,10 @@ textarea.appt-stn-txt-ta{
 .srgdev-appt-hs-p-h code,
 .srgdev-appt-hs-p code{
 	font-size: 90%;
+}
+
+.sb_disable{
+	pointer-events: none;
 }
 
 .srgdev-appt-hs-p-h{
@@ -636,6 +645,20 @@ textarea.appt-stn-txt-ta{
 	transition: color .5s;
 
 }
+
+.appt_icon_button_cont:hover{
+	.action-item__menutoggle{
+		transform: scale(1.1);
+		opacity: 1;
+	}
+	.action-item--open{
+		.action-item__menutoggle{
+			transform: scale(1);
+		}
+	}
+}
+
+
 @media only screen and (max-width: $breakpoint-mobile) {
 	.srgdev-app-content{
 		max-width: 100%;

@@ -15,48 +15,14 @@ use OCP\IL10N;
 use OCP\IRequest;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Controller;
-use OCP\IUserManager;
 use OCP\Mail\IMailer;
-use Sabre\VObject\Reader;
 
 class PageController extends Controller {
     const RND_SPS = 'abcdefghijklmnopqrstuvwxyz1234567890';
     const RND_SPU = '1234567890ABCDEF';
 
-    const KEY_PSN="page_options";
-    const PSN_FORM_TITLE="formTitle";
-    const PSN_NWEEKS="nbrWeeks";
-    const PSN_EMPTY="showEmpty";
-    const PSN_FNED="startFNED";
-    const PSN_WEEKEND="showWeekends";
-    const PSN_TIME2="time2Cols";
-    const PSN_HIDE_TEL="hidePhone";
-    const PSN_GDPR="gdpr";
-    const PSN_ON_CANCEL="whenCanceled"; // <- TODO: this is in CLS_... now
-    const PSN_PAGE_TITLE="pageTitle";
-    const PSN_PAGE_SUB_TITLE="pageSubTitle";
-    const PSN_META_NO_INDEX="metaNoIndex";
-    const PSN_PAGE_STYLE="pageStyle";
-
-    const PSN_DEF=array(
-        self::PSN_FORM_TITLE=>"",
-        self::PSN_NWEEKS=>"1",
-        self::PSN_EMPTY=>true,
-        self::PSN_FNED=>false, // start at first not empty day
-        self::PSN_WEEKEND=>false,
-        self::PSN_TIME2=>false,
-        self::PSN_HIDE_TEL=>false,
-        self::PSN_GDPR=>"",
-        self::PSN_ON_CANCEL=>"mark", // <- TODO: this is in CLS_... now
-        self::PSN_PAGE_TITLE=>"",
-        self::PSN_PAGE_SUB_TITLE=>"",
-        self::PSN_META_NO_INDEX=>false,
-        self::PSN_PAGE_STYLE=>""
-    );
-
     private $userId;
     private $c;
-    private $um;
     private $mailer;
     private $l;
     /** @var \OCA\Appointments\Backend\IBackendConnector $bc */
@@ -67,7 +33,6 @@ class PageController extends Controller {
                                 IRequest $request,
                                 $UserId,
                                 IConfig $c,
-                                IUserManager $a,
                                 IMailer $mailer,
                                 IL10N $l,
                                 BackendManager $backendManager,
@@ -75,7 +40,6 @@ class PageController extends Controller {
 		parent::__construct($AppName, $request);
 		$this->userId = $UserId;
         $this->c=$c;
-        $this->um=$a;
         $this->mailer=$mailer;
         $this->l=$l;
         /** @noinspection PhpUnhandledExceptionInspection */
@@ -105,421 +69,6 @@ class PageController extends Controller {
         return  $t;// templates/index.php
     }
 
-
-    /**
-     * @param string $t JSON string {
-     *      "type": "empty|both" ,
-     *      "before": 1|7,
-     *      ["delete":boolean]
-     * }
-     * @return SendDataResponse
-     */
-    function calGetOld($t){
-
-        $r=new SendDataResponse();
-
-        $jo = json_decode($t);
-        if ($jo === null) {
-            $r->setStatus(400);
-            return $r;
-        }
-
-        // Because of floating timezones...
-        $utz=$this->utils->getUserTimezone($this->userId,$this->c);
-        try{
-            if($jo->before===1){
-                $rs='yesterday';
-            }else{
-                $rs='today -7 days';
-            }
-            $end=new \DateTime($rs,$utz);
-
-        } catch (\Exception $e) {
-            \OC::$server->getLogger()->error($e->getMessage().", timezone: ".$utz->getName());
-            $r->setStatus(400);
-            return $r;
-        }
-
-        $cals=[];
-
-        $cal_id=$this->c->getUserValue(
-            $this->userId,
-            $this->appName,
-            'cal_id');
-        if(!empty($cal_id) && $this->bc->getCalendarById($cal_id,$this->userId)!==null){
-            $cals[]=$cal_id;
-        }
-
-        if($jo->type==="both") {
-            // dest calendar
-            $cls = $this->utils->getUserSettings(
-                BackendUtils::KEY_CLS, BackendUtils::CLS_DEF,
-                $this->userId, $this->appName);
-            $dcl_id = $cls[BackendUtils::CLS_DEST_ID];
-            if ($dcl_id != "-1" && $this->bc->getCalendarById($dcl_id, $this->userId) !== null) {
-                $cals[]=$dcl_id;
-            }
-        }
-
-        $ots=$end->getTimestamp();
-
-        $out=$this->bc->queryRangePast($cals,$end, $jo->type==='empty',isset($jo->delete));
-
-        $r=new SendDataResponse();
-        if($out!==null) {
-            $r->setData($out."|".$ots);
-            $r->setStatus(200);
-        }else{
-            $r->setStatus(500);
-        }
-
-        return $r;
-
-    }
-
-
-
-    /**
-     * @NoAdminRequired
-     * @noinspection PhpUnused
-     */
-    public function calgetweek(){
-        // t must be d[d]-mm-yyyy
-        $t = $this->request->getParam("t","");
-
-        //Reusing the url for deleting old appointments
-        if(strpos($t,"before")!==false){
-            return $this->calGetOld($t);
-        }
-
-
-        $r=new SendDataResponse();
-
-        if(empty($t)){
-            $r->setStatus(400);
-            return $r;
-        }
-
-        // Because of floating timezones...
-        $utz=$this->utils->getUserTimezone($this->userId,$this->c);
-        try {
-            $t_start=\DateTime::createFromFormat(
-                'j-m-Y H:i:s',$t.' 00:00:00',$utz);
-        } catch (\Exception $e) {
-            \OC::$server->getLogger()->error($e->getMessage().", timezone: ".$utz->getName());
-            $r->setStatus(400);
-            return $r;
-        }
-
-        $cal_id=$this->c->getUserValue(
-            $this->userId,
-            $this->appName,
-            'cal_id');
-        if(empty($cal_id) || $this->bc->getCalendarById($cal_id,$this->userId)===null){
-            $r->setStatus(400);
-            return $r;
-        }
-
-        $r->setStatus(200);
-
-        $t_end=clone $t_start;
-        $t_end->setTimestamp($t_start->getTimestamp()+(7*86400));
-
-        $data_out="";
-
-        $out=$this->bc->queryRange($cal_id,$t_start,$t_end,true);
-        if($out!==null){
-            $data_out.=$out;
-        }
-
-        // check dest calendar
-        $cls=$this->utils->getUserSettings(
-            BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-            $this->userId ,$this->appName);
-        $dcl_id=$cls[BackendUtils::CLS_DEST_ID];
-        if($dcl_id!="-1"){
-            $dc=$this->bc->getCalendarById($dcl_id, $this->userId);
-            if($dc!==null){
-                $out=$this->bc->queryRange($dcl_id,$t_start,$t_end,true);
-                if($out!==null){
-                    $data_out.=chr(31).$dc['color'].chr(30).$out;
-                }
-            }
-        }
-
-        if(!empty($data_out)){
-            $r->setData($data_out);
-        }
-
-        return $r;
-    }
-
-    /**
-     * @NoAdminRequired
-     * @noinspection PhpUnused
-     */
-    public function callist(){
-
-        $cals=$this->bc->getCalendarsForUser($this->userId);
-        $out='';
-        $c30=chr(30);
-        $c31=chr(31);
-        foreach ($cals as $c){
-            $out.=
-                $c['displayName'].$c30.
-                $c['color'].$c30.
-                $c['id'].$c31;
-        }
-        return substr($out,0,-1);
-    }
-
-    /**
-     * @NoAdminRequired
-     * @throws \OCP\PreConditionNotMetException
-     * @throws \ErrorException
-     */
-    public function state(){
-        $action = $this->request->getParam("a");
-        $r=new SendDataResponse();
-        $r->setStatus(400);
-        if($action==="get"){
-            $cal_id=$this->c->getUserValue(
-                $this->userId,
-                $this->appName,
-                'cal_id',
-                ''
-            );
-            $enabled='';
-            if(!empty($cal_id)){
-                $cal=$this->bc->getCalendarById($cal_id,$this->userId);
-                if($cal!==null){
-
-                    $c30=chr(30);
-                    $c31=chr(31);
-                    $rd = $cal['displayName'].$c30.
-                        $cal['color'].$c30.
-                        $cal['id'].$c31;
-
-                    $enabled=$this->c->getUserValue(
-                        $this->userId,
-                        $this->appName,
-                        'page_enabled',
-                        '0'
-                    );
-                    $rd.=$enabled;
-
-                    $r->setData($rd);
-                    $r->setStatus(200);
-                }
-            }else{
-                $r->setStatus(204);
-            }
-            if(empty($enabled)){
-                /** @noinspection PhpUnhandledExceptionInspection */
-                $this->c->setUserValue(
-                    $this->userId,
-                    $this->appName,
-                    'page_enabled',
-                    '0');
-            }
-        }elseif($action==="set"){
-            $v=$this->request->getParam("url"); //url is actually id
-            if($v!==null) {
-                $cal=$this->bc->getCalendarById($v,$this->userId);
-                if($cal!==null) {
-                    /** @noinspection PhpUnhandledExceptionInspection */
-                    $this->c->setUserValue(
-                        $this->userId,
-                        $this->appName,
-                        'cal_id',
-                        $v);
-                    $r->setStatus(200);
-                }
-            }
-            // Disable and reset dest calendar automatically when changing calendars
-            /** @noinspection PhpUnhandledExceptionInspection */
-            $this->c->setUserValue(
-                $this->userId,
-                $this->appName,
-                'page_enabled',
-                '0');
-
-            $cls=$this->utils->getUserSettings(
-                BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-                $this->userId ,$this->appName);
-            $cls[BackendUtils::CLS_DEST_ID]="-1";
-            $j=json_encode($cls);
-            if($j!==false) {
-                $this->utils->setUserSettings(
-                    BackendUtils::KEY_CLS,
-                    $j, BackendUtils::CLS_DEF,
-                    $this->userId, $this->appName);
-            }else{
-                \OC::$server->getLogger()->error("Error(json_encode): Can not reset CLS_DEST_ID");
-            }
-
-        }elseif($action==="enable"){
-            $v=$this->request->getParam("v");
-
-            $r->setStatus(200);
-            if($v==='1'){
-                $c=$this->c;
-                $u=$this->userId;
-                $a=$this->appName;
-                if(empty($c->getUserValue($u,$a, BackendUtils::KEY_O_NAME))
-                    || empty($c->getUserValue($u,$a, BackendUtils::KEY_O_ADDR))
-                    || empty($c->getUserValue($u,$a, BackendUtils::KEY_O_EMAIL))){
-                    $r->setStatus(412);
-                    $v='0';
-                }
-            }else{
-                $v='0';
-            }
-            /** @noinspection PhpUnhandledExceptionInspection */
-            $this->c->setUserValue(
-                $this->userId,
-                $this->appName,
-                'page_enabled',
-                $v);
-        }elseif ($action==='get_puburi'){
-            $pb=$this->getPublicWebBase();
-            $tkn=$this->getToken($this->userId);
-
-            $u=$pb.'/' .$this->pubPrx($tkn,false).'form'.chr(31)
-                .$pb.'/' .$this->pubPrx($tkn,true).'form';
-
-            $r->setData($u);
-            $r->setStatus(200);
-        }elseif ($action==="set_pps"){
-            $value=$this->request->getParam("d");
-            if($value!==null) {
-                if($this->utils->setUserSettings(
-                        self::KEY_PSN,
-                        $value, self::PSN_DEF,
-                        $this->userId,$this->appName)===true
-                ){
-                    $r->setStatus(200);
-                }else{
-                    $r->setStatus(500);
-                }
-            }
-        }elseif ($action==="get_pps"){
-            $a=$this->utils->getUserSettings(
-                self::KEY_PSN,
-                self::PSN_DEF,
-                $this->userId,$this->appName);
-            $j=json_encode($a);
-            if($j!==false){
-                $r->setData($j);
-                $r->setStatus(200);
-            }else{
-                $r->setStatus(500);
-            }
-        }else if($action==="get_uci") {
-            $o = $this->getStateKeys('uci');
-            foreach ($o as $k => $v) {
-                $o[$k] = $this->c->getUserValue($this->userId, $this->appName, $k);
-            }
-            $o[BackendUtils::KEY_USE_DEF_EMAIL]=$this->c->getAppValue(
-                $this->appName,BackendUtils::KEY_USE_DEF_EMAIL,'yes');
-            $j = json_encode($o);
-            if ($j !== false) {
-                $r->setData($j);
-                $r->setStatus(200);
-            } else {
-                $r->setStatus(500);
-            }
-        }else if($action==="set_uci"){
-            $d=$this->request->getParam("d");
-            if($d!==null && strlen($d)<512) {
-                /** @noinspection PhpComposerExtensionStubsInspection */
-                $dvo = json_decode($d);
-                if ($dvo !== null) {
-                    $o = $this->getStateKeys('uci');
-                    foreach ($o as $k=>$v){
-                        if(isset($dvo->{$k})){
-                            $dv=$dvo->{$k};
-                        }else{
-                            $dv="";
-                        }
-                        $this->c->setUserValue(
-                            $this->userId,$this->appName,
-                            $k,$dv);
-                    }
-                    $r->setStatus(200);
-                }
-            }
-        }else if($action==="get_eml") {
-            $a=$this->utils->getUserSettings(
-                BackendUtils::KEY_EML,
-                BackendUtils::EML_DEF,
-                $this->userId,$this->appName);
-            $j=json_encode($a);
-            if($j!==false){
-                $r->setData($j);
-                $r->setStatus(200);
-            }else{
-                $r->setStatus(500);
-            }
-        }else if($action==="set_eml") {
-            $value=$this->request->getParam("d");
-            if($value!==null) {
-                if($this->utils->setUserSettings(
-                    BackendUtils::KEY_EML,
-                    $value, BackendUtils::EML_DEF,
-                    $this->userId,$this->appName)===true
-                ){
-                    $r->setStatus(200);
-                }else{
-                    $r->setStatus(500);
-                }
-            }
-        }else if($action==="get_tz"){
-            $tz=$this->utils->getUserTimezone($this->userId,$this->c);
-            $r->setData($tz->getName());
-            $r->setStatus(200);
-
-        }else if($action==="get_cls") {
-            $a=$this->utils->getUserSettings(
-                BackendUtils::KEY_CLS,
-                BackendUtils::CLS_DEF,
-                $this->userId,$this->appName);
-            $j=json_encode($a);
-            if($j!==false){
-                $r->setData($j);
-                $r->setStatus(200);
-            }else{
-                $r->setStatus(500);
-            }
-        }else if($action==="set_cls") {
-            $value=$this->request->getParam("d");
-            if($value!==null) {
-                if($this->utils->setUserSettings(
-                        BackendUtils::KEY_CLS,
-                        $value, BackendUtils::CLS_DEF,
-                        $this->userId,$this->appName)===true
-                ){
-                    $r->setStatus(200);
-                }else{
-                    $r->setStatus(500);
-                }
-            }
-        }
-        return $r;
-    }
-
-    function getStateKeys($s){
-        $o=[];
-        if($s==='uci'){
-            $o = [BackendUtils::KEY_O_NAME => "",
-                BackendUtils::KEY_O_EMAIL => "",
-                BackendUtils::KEY_O_ADDR => "",
-                BackendUtils::KEY_O_PHONE => ""];
-        }
-        return $o;
-    }
-
-
     /**
      * @param $token
      * @return string|false user name on success, false=not verified
@@ -539,21 +88,6 @@ class PageController extends Controller {
         }else{
             return false;
         }
-    }
-
-    /**
-     * @param $uid
-     * @return string
-     * @throws \ErrorException
-     */
-    private function getToken($uid){
-        $key=hex2bin($this->c->getAppValue($this->appName, 'hk'));
-        $iv=hex2bin($this->c->getAppValue($this->appName, 'tiv'));
-        if(empty($key) || empty($iv)){
-            throw new \ErrorException("Can't find key");
-        }
-        $tkn=$this->utils->encrypt(hash ( 'adler32' , $uid,true).$uid,$key,$iv);
-        return urlencode(str_replace("/","_",$tkn));
     }
 
 
@@ -622,7 +156,7 @@ class PageController extends Controller {
         return $tr;
     }
 
-    function setEmbCsp(&$tr,$userId){
+    function setEmbCsp($tr,$userId){
 
         $ad=$this->c->getAppValue(
             $this->appName,
@@ -676,15 +210,6 @@ class PageController extends Controller {
     }
 
     /**
-     * @param string $token
-     * @param bool $embed
-     * @return string
-     */
-    private function pubPrx($token,$embed){
-        return $embed ? 'embed/'.$token.'/' : 'pub/'.$token.'/';
-    }
-
-    /**
      * @NoAdminRequired
      * @PublicPage
      * @NoCSRFRequired
@@ -694,9 +219,9 @@ class PageController extends Controller {
      * @throws \ErrorException
      */
     public function cncf($embed=false){
-        $uid=$this->verifyToken($this->request->getParam("token"));
+        $userId=$this->verifyToken($this->request->getParam("token"));
         $pd=$this->request->getParam("d");
-        if($uid===false || $pd===null || strlen($pd)>512
+        if($userId===false || $pd===null || strlen($pd)>512
             || (($a=substr($pd,0,1))!=='0') && $a!=='1' && $a!=='2'){
             return new NotFoundResponse();
         }
@@ -704,15 +229,13 @@ class PageController extends Controller {
         $key=hex2bin($this->c->getAppValue($this->appName, 'hk'));
         $uri=$this->utils->decrypt(substr($pd,1),$key).".ics";
         if(empty($uri)){
-            return $this->pubErrResponse($uid,$embed);
+            return $this->pubErrResponse($userId,$embed);
         }
 
-        $cal_id=$this->c->getUserValue(
-            $uid,
-            $this->appName,
-            'cal_id');
-        if(empty($cal_id)) {
-            return $this->pubErrResponse($uid,$embed);
+        $otherCalId="-1";
+        $cal_id=$this->utils->getMainCalId($userId,$otherCalId);
+        if($cal_id==='-1') {
+            return $this->pubErrResponse($userId,$embed);
         }
 
         $page_text='';
@@ -728,7 +251,7 @@ class PageController extends Controller {
                 $a_ok=false;
                 $sp=strpos($uri,chr(31));
                 if($sp!==false) {
-                    $ts = unpack('Iint', substr($uri, 0, 4))['int'];
+                    $ts = unpack('Lint', substr($uri, 0, 4))['int'];
                     if ($ts + 8 >= time()) {
                         $em = substr($uri, 4,$sp-4);
                         if ($this->mailer->validateMailAddress($em)) {
@@ -754,11 +277,11 @@ class PageController extends Controller {
                     BackendUtils::APPT_SES_CONFIRM);
 
                 // ... set cancel link info
-                $btn_url=$this->getPublicWebBase().'/' .$this->pubPrx($this->getToken($uid),$embed).'cncf?d=';
+                $btn_url=$this->utils->getPublicWebBase().'/' .$this->utils->pubPrx($this->utils->getToken($userId),$embed).'cncf?d=';
                 if($embed) {
                     $btn_url=$this->c->getAppValue(
                         $this->appName,
-                        'emb_cncf_'.$uid,$btn_url);
+                        'emb_cncf_'.$userId,$btn_url);
                 }
 
                 $ses->set(
@@ -769,7 +292,7 @@ class PageController extends Controller {
                     urlencode($this->utils->encrypt(substr($uri,0,-4),$key))
                 );
 
-                list($sts, $date_time) = $this->bc->confirmAttendee($uid, $cal_id, $uri);
+                list($sts, $date_time) = $this->bc->confirmAttendee($userId, $cal_id, $uri);
 
                 if ($sts === 0) { // Appointment is confirmed successfully
                     // TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is confirmed.
@@ -785,32 +308,32 @@ class PageController extends Controller {
                 BackendUtils::APPT_SES_KEY_HINT,
                 BackendUtils::APPT_SES_CANCEL);
 
-            $cls=$this->utils->getUserSettings(
-                BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-                $uid ,$this->appName);
-
             $r_cal_id=$cal_id;
 
-            // check if we have destination calendar
-            $dcl_id=$cls[BackendUtils::CLS_DEST_ID];
-            // The appointment can be in the destination calendar
-            if($dcl_id!="-1" && $this->bc->getObjectData($dcl_id,$uri)!==null){
-                $r_cal_id=$dcl_id;
+            // The appointment can be in the destination calendar (manual mode)
+            // this needs to be done here just in case we need to 'reset'
+            if($otherCalId!=="-1" && $this->bc->getObjectData($otherCalId,$uri)!==null){
+                $r_cal_id=$otherCalId;
             }
 
+            $cls=$this->utils->getUserSettings(
+                BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
+                $userId ,$this->appName);
             // This can be 'mark' or 'reset'
             $mr=$cls[BackendUtils::CLS_ON_CANCEL];
             if($mr==='mark') {
                 // Just Cancel
-                list($sts, $date_time) = $this->bc->cancelAttendee($uid, $r_cal_id, $uri);
+                list($sts, $date_time) = $this->bc->cancelAttendee($userId, $r_cal_id, $uri);
             }else{
+
                 // Delete and Reset ($date_time can be an empty string here)
-                list($sts, $date_time, $dt_info, $tz_data) = $this->bc->deleteCalendarObject($uid, $r_cal_id, $uri);
+                list($sts, $date_time, $dt_info, $tz_data) = $this->bc->deleteCalendarObject($userId, $r_cal_id, $uri);
 
                 if(empty($dt_info)){
                     \OC::$server->getLogger()->error('can not re-create appointment, no dt_info');
-                }else{
-                    $cr=$this->addAppointments($uid,$dt_info,$tz_data);
+                }else if($cls[BackendUtils::CLS_TS_MODE]==='0'){
+                    // this only needed in manual mode
+                    $cr=$this->addAppointments($userId,$dt_info,$tz_data);
                     if($cr[0]!=='0'){
                         \OC::$server->getLogger()->error('addAppointments() failed '.$cr);
                     }
@@ -840,7 +363,7 @@ class PageController extends Controller {
             // Error
             // TODO: add phone number to "contact us ..."
             $org_email = $this->c->getUserValue(
-                $uid, $this->appName,
+                $userId, $this->appName,
                 BackendUtils::KEY_O_EMAIL);
 
             if($sts!==2) {
@@ -864,7 +387,7 @@ class PageController extends Controller {
             $tr = new TemplateResponse($this->appName,$tr_name, [],"base");
         }else{
             // renderAs=public
-            $tr=$this->getPublicTemplate($tr_name,$uid);
+            $tr=$this->getPublicTemplate($tr_name,$userId);
         }
 
         $tr->setParams($tr_params);
@@ -909,12 +432,12 @@ class PageController extends Controller {
     }
 
     /**
-     * @param $uid
+     * @param $userId
      * @param bool $embed
      * @return RedirectResponse
      * @throws \ErrorException
      */
-    public function showFormPost($uid,$embed=false){
+    public function showFormPost($userId, $embed=false){
 
         // sts: 0=OK, 1=bad input, 2=server error
         $ok_uri="form?sts=0";
@@ -929,9 +452,9 @@ class PageController extends Controller {
         }
 
         $pps=$this->utils->getUserSettings(
-            self::KEY_PSN,self::PSN_DEF,
-            $uid,$this->appName);
-        $hide_phone=$pps[self::PSN_HIDE_TEL];
+            BackendUtils::KEY_PSN, BackendUtils::PSN_DEF,
+            $userId,$this->appName);
+        $hide_phone=$pps[BackendUtils::PSN_HIDE_TEL];
 
         $post=$this->request->getParams();
 
@@ -940,65 +463,88 @@ class PageController extends Controller {
 
         if(!isset($post['adatetime']) || strlen($post['adatetime'])>127
             || preg_match('/[^a-zA-Z0-9+\/=]/',$post['adatetime'])
+
             || !isset($post['name']) || strlen($post['name']) > 64
             || strlen($post['name']) < 3
-            || !isset($post['email']) || strlen($post['email']) > 128
-            || strlen($post['email']) < 4
+            || preg_match('/[^\PC ]/u',$post['name'])
+
             || !isset($post['phone']) || strlen($post['phone']) > 32
             || strlen($post['phone']) < 4
-            || !isset($post['tzi']) || strlen($post['tzi'])>64){
-
-            $rr=new RedirectResponse($bad_input_url);
-            $rr->setStatus(303);
-            return $rr;
-        }
-
-        $dc=$this->utils->decrypt($post['adatetime'],$key);
-        if(empty($dc) || strpos($dc,'|')===false){
-            $rr=new RedirectResponse($bad_input_url);
-            $rr->setStatus(303);
-            return $rr;
-        }
-
-//        Session start(time()).'|'.object uri
-        $da=explode('|',$dc);
-        $ti=intval($da[0]);// session start, 15 minute max
-        $ts=time();
-
-        if($ts<$ti || $ts>$ti+900
-            || strlen($da[1])>64
-            || preg_match('/[^\PC ]/u',$post['name'])
-            || $this->mailer->validateMailAddress($post['email'])===false
             || preg_match('/[^0-9 .()\-+,\/]/',$post['phone'])
+
+            || !isset($post['email']) || strlen($post['email']) > 128
+            || strlen($post['email']) < 4
+            || $this->mailer->validateMailAddress($post['email'])===false
+
+            || !isset($post['tzi']) || strlen($post['tzi'])>64
             || preg_match('/^[UF][^\pC ]*$/u',$post['tzi'])!==1){
 
             $rr=new RedirectResponse($bad_input_url);
             $rr->setStatus(303);
             return $rr;
         }
-
-        $post['name']=htmlspecialchars($post['name'], ENT_QUOTES, 'UTF-8');
         if($hide_phone) $post['phone']="";
-
+        $post['name']=htmlspecialchars($post['name'], ENT_QUOTES, 'UTF-8');
         // Input seems OK...
 
-        $cal_id=$this->c->getUserValue(
-            $uid,
-            $this->appName,
-            'cal_id',
-            ''
-        );
-
-        if(empty($cal_id) || $this->bc->getCalendarById($cal_id,$uid)===null) {
+        $cal_id=$this->utils->getMainCalId($userId);
+        if($cal_id==="-1" || $this->bc->getCalendarById($cal_id,$userId)===null) {
             $rr=new RedirectResponse($server_err_url);
             $rr->setStatus(303);
             return $rr;
         }
-        // cal_id is good...
+        // main cal_id is good...
+
+        $dc=$this->utils->decrypt($post['adatetime'],$key);
+        if(empty($dc) || (strpos($dc,'|')===false && $dc[0]!=="_")){
+            $rr=new RedirectResponse($bad_input_url);
+            $rr->setStatus(303);
+            return $rr;
+        }
+
+        if(substr($dc,0,2)==="_1"){
+            // external mode
+            // $dc='_'ts_mode(1byte)ses_time(4bytes)dates(8bytes)uri(no extension)
+
+            // unpack into $ti
+            $ti=intval(unpack("Lint",substr($dc,2,4))['int']);
+
+            // ...add dates and srcUri to $post var
+            $dates=unpack("L2int",substr($dc,6,8));
+            $post['ext_start']=$dates['int1'];
+            $post['ext_end']=$dates['int2'];
+            $post['ext_src_uri']=substr($dc,14).".ics";
+
+            // make new uri, it is needed for email, buttons, etc...
+            $o = strtoupper(hash("tiger128,4", $dc."appointments app - srgdev.com".$userId.rand().$cal_id));
+            $evt_uri = substr($o, 0, 9) . "-" .
+                substr($o, 9, 5) . "-" .
+                substr($o, 14, 5) . "-" .
+                substr($o, 19, 5) . "-ASM" .
+                substr($o, 24) . ".ics";
+
+        }elseif(($da=explode('|',$dc)) && count($da)===2){
+            // manual mode,
+            //$da=Session start(time()).'|'.object uri
+            $ti=intval($da[0]);// session start, 15 minute max
+            $evt_uri=$da[1];
+        }else {
+            $evt_uri = "";
+            $ti = 0;// fail below
+        }
+
+        $ts=time();
+
+        if($ts<$ti || $ts>$ti+900
+            || strlen($evt_uri)>64){
+            $rr=new RedirectResponse($bad_input_url);
+            $rr->setStatus(303);
+            return $rr;
+        }
 
         $eml_settings=$this->utils->getUserSettings(
             BackendUtils::KEY_EML, BackendUtils::EML_DEF,
-            $uid,$this->appName);
+            $userId,$this->appName);
         $skip_evs=$eml_settings[BackendUtils::EML_SKIP_EVS];
 
         // TODO: make sure that the appointment time is within the actual range
@@ -1010,24 +556,24 @@ class PageController extends Controller {
             BackendUtils::APPT_SES_KEY_HINT,
             ($skip_evs?BackendUtils::APPT_SES_SKIP:BackendUtils::APPT_SES_BOOK));
 
-        $btn_url=$raw_url=$this->getPublicWebBase().'/' .$this->pubPrx($this->getToken($uid),$embed).'cncf?d=';
+        $btn_url=$raw_url=$this->utils->getPublicWebBase().'/' .$this->utils->pubPrx($this->utils->getToken($userId),$embed).'cncf?d=';
         if($embed) {
             $btn_url=$this->c->getAppValue(
                 $this->appName,
-                'emb_cncf_'.$uid,$btn_url);
+                'emb_cncf_'.$userId,$btn_url);
         }
         $ses->set(
             BackendUtils::APPT_SES_KEY_BURL,
             $btn_url);
 
-        $raw_btkn=substr($da[1],0,-4);
+        $raw_btkn=substr($evt_uri,0,-4);
         $ses->set(
             BackendUtils::APPT_SES_KEY_BTKN,
             urlencode($this->utils->encrypt($raw_btkn,$key))
         );
 
-        // Update appointment data
-        $r = $this->bc->setAttendee($uid, $cal_id, $da[1], $post);
+        // Update/create appointment data
+        $r = $this->bc->setAttendee($userId, $cal_id, $evt_uri, $post);
 
         if($r>0){
             // &r=1 means there was a race and someone else has booked that slot
@@ -1039,12 +585,12 @@ class PageController extends Controller {
         if($skip_evs===false) {
 
             $uri = $ok_uri . "&d=" . urlencode(
-                    $this->utils->encrypt(pack('I', time()) . $post['email'], $key)
+                    $this->utils->encrypt(pack('L', time()) . $post['email'], $key)
                 );
         }else{
             $uri=$raw_url."2".urlencode(
                     $this->utils->encrypt(
-                        pack('I', time()).$post['email'].chr(31).$raw_btkn,
+                        pack('L', time()).$post['email'].chr(31).$raw_btkn,
                         $key)
                 );
         }
@@ -1084,7 +630,7 @@ class PageController extends Controller {
             $key=hex2bin($this->c->getAppValue($this->appName, 'hk'));
             $dd=$this->utils->decrypt($this->request->getParam('d',''),$key);
             if(strlen($dd)>7){
-                $ts=unpack('Iint',substr($dd,0,4))['int'];
+                $ts=unpack('Lint',substr($dd,0,4))['int'];
                 $em=substr($dd,4);
                 if($ts+8>=time()){
                     if($this->mailer->validateMailAddress($em)) {
@@ -1127,10 +673,10 @@ class PageController extends Controller {
         }
 
         $pps=$this->utils->getUserSettings(
-            self::KEY_PSN,self::PSN_DEF,
+            BackendUtils::KEY_PSN, BackendUtils::PSN_DEF,
             $uid,$this->appName);
 
-        $ft=$pps[self::PSN_FORM_TITLE];
+        $ft=$pps[BackendUtils::PSN_FORM_TITLE];
         $org_name=$this->c->getUserValue(
             $uid,$this->appName, BackendUtils::KEY_O_NAME);
 
@@ -1144,8 +690,8 @@ class PageController extends Controller {
             'appt_form_title'=>!empty($ft)?$ft:$this->l->t('Book Your Appointment'),
             'appt_pps'=>'',
             'appt_gdpr'=>'',
-            'appt_inline_style'=>$pps[self::PSN_PAGE_STYLE],
-            'appt_hide_phone'=>$pps[self::PSN_HIDE_TEL]
+            'appt_inline_style'=>$pps[BackendUtils::PSN_PAGE_STYLE],
+            'appt_hide_phone'=>$pps[BackendUtils::PSN_HIDE_TEL]
         ];
 
         // google recaptcha
@@ -1171,13 +717,8 @@ class PageController extends Controller {
             return $tr;
         }
 
-        $cid=null;
-        $cid=$this->c->getUserValue(
-            $uid,
-            $this->appName,
-            'cal_id');
-
-        if(empty($cid) || $this->bc->getCalendarById($cid,$uid)===null){
+        $cid=$this->utils->getMainCalId($uid);
+        if($cid==="-1" || $this->bc->getCalendarById($cid,$uid)===null){
             $tr->setParams($params);
             return $tr;
         }
@@ -1191,8 +732,8 @@ class PageController extends Controller {
         }
         $params['appt_state']='2';
 
-        $nw=intval($pps[self::PSN_NWEEKS]);
-        $nw++; // for alignment in the form
+        $nw=intval($pps[BackendUtils::PSN_NWEEKS]);
+//        $nw++; // for alignment in the form <- TODO: <- not needed right ???
 
         // Because of floating timezones...
         $utz=$this->utils->getUserTimezone($uid,$this->c);
@@ -1209,7 +750,25 @@ class PageController extends Controller {
         $t_end->setTimestamp($t_start->getTimestamp()+(7*$nw*86400));
         $t_end->setTime(0,0);
 
-        $out=$this->bc->queryRange($cid,$t_start,$t_end);
+
+        $cls=$this->utils->getUserSettings(
+            BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
+            $uid,$this->appName);
+        $ts_mode=$cls[BackendUtils::CLS_TS_MODE];
+        if($ts_mode==="1"){
+            // external mode
+            if($cls[BackendUtils::CLS_XTM_SRC_ID]==="-1"){
+                // just in case
+                \OC::$server->getLogger()->error("Bad calInfo, mode: ".$ts_mode.", srcCalId: ".$cls[BackendUtils::CLS_XTM_SRC_ID]);
+                $params['appt_state']='8';
+                $tr->setParams($params);
+                return $tr;
+            }
+            // @see BCSabreImpl->queryRange()
+            $cid.=chr(31).$cls[BackendUtils::CLS_XTM_SRC_ID];
+        }
+
+        $out=$this->bc->queryRange($cid,$t_start,$t_end,$ts_mode.$uid);
 
         if(empty($out)) {
             $params['appt_state']='5';
@@ -1217,14 +776,14 @@ class PageController extends Controller {
 
         $params['appt_sel_opts'] = $out;
 
-        $params['appt_pps']=self::PSN_NWEEKS.":".$pps[self::PSN_NWEEKS].'.'.
-            self::PSN_EMPTY.":".($pps[self::PSN_EMPTY]?"1":"0").'.'.
-            self::PSN_FNED.":".($pps[self::PSN_FNED]?"1":"0").'.'.
-            self::PSN_WEEKEND.":".($pps[self::PSN_WEEKEND]?"1":"0").'.'.
-            self::PSN_TIME2.":".($pps[self::PSN_TIME2]?"1":"0");
+        $params['appt_pps']= BackendUtils::PSN_NWEEKS .":".$pps[BackendUtils::PSN_NWEEKS].'.'.
+            BackendUtils::PSN_EMPTY .":".($pps[BackendUtils::PSN_EMPTY]?"1":"0").'.'.
+            BackendUtils::PSN_FNED .":".($pps[BackendUtils::PSN_FNED]?"1":"0").'.'.
+            BackendUtils::PSN_WEEKEND .":".($pps[BackendUtils::PSN_WEEKEND]?"1":"0").'.'.
+            BackendUtils::PSN_TIME2 .":".($pps[BackendUtils::PSN_TIME2]?"1":"0");
 
         // GDPR
-        $params['appt_gdpr']=$pps[self::PSN_GDPR];
+        $params['appt_gdpr']=$pps[BackendUtils::PSN_GDPR];
 
         $tr->setParams($params);
 
@@ -1256,8 +815,8 @@ class PageController extends Controller {
     /**
      * @param string $userId
      * @param string|null $ds
-     *      dtsamp,dtstart,dtend [,dtstart,dtend,...] -
-     *      dtsamp: 20200414T073008Z must be UTC (ends with Z),
+     *      dtstamp,dtstart,dtend [,dtstart,dtend,...] -
+     *      dttsamp: 20200414T073008Z must be UTC (ends with Z),
      *      dtstart/dtend: 20200414T073008
      * @param string $tz_data_str Can be VTIMEZONE data, 'L' = floating or 'UTC'
      * @return string
@@ -1278,48 +837,12 @@ class PageController extends Controller {
         $cal=$this->bc->getCalendarById($cal_id,$userId);
         if($cal===null) return '1:'.$this->l->t("Selected calendar not found");
 
-        $tz_id="";
-        $tz_Z="";
-        $tz_data = "";
-        if ($tz_data_str==='UTC'){
-            $tz_Z="Z";
-        }elseif($tz_data_str!=="L" && !empty($tz_data_str)){
-            $tzo=Reader::read("BEGIN:VCALENDAR\r\nPRODID:-//IDN nextcloud.com//Appointments App//EN\r\nCALSCALE:GREGORIAN\r\nVERSION:2.0\r\n".$tz_data_str."\r\nEND:VCALENDAR");
-            if(isset($tzo->VTIMEZONE) &&  isset($tzo->VTIMEZONE->TZID)){
-                $tz_id=';TZID='.$tzo->VTIMEZONE->TZID->getValue();
-                $tz_data=trim($tzo->VTIMEZONE->serialize())."\r\n";
-            }
+        $evt_parts=$this->utils->makeAppointmentParts(
+            $this->userId,$this->appName,$tz_data_str,$data[0]);
+        if(isset($evt_parts['err'])){
+            return '1:'.$evt_parts['err'];
         }
 
-        $rn="\r\n";
-        $u=$this->um->get($userId);
-
-        $u_email=$this->c->getUserValue(
-            $userId,
-            $this->appName,
-            BackendUtils::KEY_O_EMAIL);
-        if(empty($u_email)) $u_email=$u->getEMailAddress();
-        if(empty($u_email)) return '1:'.$this->l->t("Your email address is required for this operation.");
-
-//        ESCAPED-CHAR = ("\\" / "\;" / "\," / "\N" / "\n")
-//        \\ encodes \ \N or \n encodes newline \; encodes ; \, encodes ,
-        $u_addr=$this->c->getUserValue(
-            $userId,
-            $this->appName,
-            BackendUtils::KEY_O_ADDR);
-        if(empty($u_addr)) return '1:'.$this->l->t("A location, address or URL is required for this operation. Check User/Organization settings.");
-        $u_addr=str_replace(array("\\",";",",","\r\n","\r","\n"),array('\\\\','\;','\,',' \n',' \n',' \n'),$u_addr);
-
-        $u_name=trim($u->getDisplayName());
-        if(empty($u_name)){
-            $u_name=trim($this->c->getUserValue(
-                $this->userId,
-                $this->appName,
-                BackendUtils::KEY_O_NAME));
-        }
-        if(empty($u_name)) return '1:'.$this->l->t("Can't find your name. Check User/Organization settings.");
-
-        $cr_date_rn=$data[0].$rn;
         $pieces = [];
         $ts=time();
 
@@ -1332,10 +855,10 @@ class PageController extends Controller {
         $br_c=count($br_u);
         $e_url=[];
 
-        $organizer_location=$this->chunk_split_unicode("ORGANIZER;SCHEDULE-AGENT=CLIENT;CN=".$u_name.":mailto:".$u_email,75,"\r\n ").$rn
-            .$this->chunk_split_unicode("LOCATION:".$u_addr,75,"\r\n ").$rn;
-        // TRANSLATORS Appointment time is "Available"
-        $available=$this->l->t("Available").$rn;
+        $ep1=$evt_parts['1_before_uid'];
+        $ep2=$evt_parts['2_before_dts'];
+        $ep3=$evt_parts['3_before_dte'];
+        $ep4=$evt_parts['4_last'];
 
         for($i=1;$i<$c;$i+=2) {
             $cc = 0;
@@ -1351,24 +874,9 @@ class PageController extends Controller {
                 ++$cc;
             }
 
-            $eo = "BEGIN:VCALENDAR\r\n" .
-                "PRODID:-//IDN nextcloud.com//Appointment App | srgdev.com//EN\r\n" .
-                "CALSCALE:GREGORIAN\r\n" .
-                "VERSION:2.0\r\n" .
-                "BEGIN:VEVENT\r\n" .
-                "SUMMARY:".$available .
-                "STATUS:TENTATIVE\r\n" .
-                "TRANSP:TRANSPARENT\r\n".
-                "LAST-MODIFIED:" . $cr_date_rn .
-                "DTSTAMP:" . $cr_date_rn .
-                "SEQUENCE:1\r\n" .
-                "CATEGORIES:" . BackendUtils::APPT_CAT . $rn .
-                "CREATED:" . $cr_date_rn .
-                "UID:" . implode('', $pieces)                .floor($ts / (ord($pieces[1]) + ord($pieces[2]) + ord($pieces[3]))) . $rn .
-                "DTSTART".$tz_id.":" . $data[$i] . $tz_Z.$rn .
-                "DTEND".$tz_id.":" . $data[$i+1] . $tz_Z.$rn .
-                $organizer_location .
-                "END:VEVENT\r\n".$tz_data."END:VCALENDAR\r\n";
+            $eo=$ep1.implode('', $pieces).floor($ts / (ord($pieces[1]) + ord($pieces[2]) + ord($pieces[3]))).
+                $ep2.$data[$i].
+                $ep3.$data[$i+1].$ep4;
 
             // make calendar object uri
             $p=0;
@@ -1406,22 +914,22 @@ class PageController extends Controller {
      */
     private function getPublicTemplate($templateName,$userId){
         $pps=$this->utils->getUserSettings(
-            self::KEY_PSN,self::PSN_DEF,
+            BackendUtils::KEY_PSN, BackendUtils::PSN_DEF,
             $userId,$this->appName);
         $tr = new PublicTemplateResponse($this->appName,$templateName, []);
-        if(!empty($pps[self::PSN_PAGE_TITLE])) {
-            $tr->setHeaderTitle($pps[self::PSN_PAGE_TITLE]);
+        if(!empty($pps[BackendUtils::PSN_PAGE_TITLE])) {
+            $tr->setHeaderTitle($pps[BackendUtils::PSN_PAGE_TITLE]);
         }else{
             $tr->setHeaderTitle("Nextcloud | Appointments");
         }
-        if(!empty($pps[self::PSN_PAGE_SUB_TITLE])) {
-            $tr->setHeaderDetails($pps[self::PSN_PAGE_SUB_TITLE]);
+        if(!empty($pps[BackendUtils::PSN_PAGE_SUB_TITLE])) {
+            $tr->setHeaderDetails($pps[BackendUtils::PSN_PAGE_SUB_TITLE]);
         }
         $tr->setFooterVisible(false);
 
 //        $tr->setHeaderActions([new SimpleMenuAction('download', 'Label', '', 'link-url', 0)]);
 
-        if($pps[self::PSN_META_NO_INDEX]===true) {
+        if($pps[BackendUtils::PSN_META_NO_INDEX]===true) {
             // https://support.google.com/webmasters/answer/93710?hl=en
             \OC_Util::addHeader("meta", ['name' => 'robots', 'content' => 'noindex']);
         }
@@ -1429,20 +937,5 @@ class PageController extends Controller {
         \OC_Util::addStyle($this->appName,"form-xl-screen");
 
         return $tr;
-    }
-
-
-    private function getPublicWebBase(){
-        return \OC::$server->getURLGenerator()->getBaseUrl().'/index.php/apps/appointments';
-    }
-
-    private function chunk_split_unicode($str, $l = 76, $e = "\r\n") {
-        $tmp = array_chunk(
-            preg_split("//u", $str, -1, PREG_SPLIT_NO_EMPTY), $l);
-        $str = "";
-        foreach ($tmp as $t) {
-            $str .= join("", $t) . $e;
-        }
-        return trim($str);
     }
 }

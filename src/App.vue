@@ -26,11 +26,7 @@
             <AppNavigationSpacer/>
             <AppNavigationItem
                     :loading="sbLoading===6"
-                    @click="function (){
-                        openSlideBar(6,'',null)
-                        // Dest calendar info is needed
-                        getCalInfo('openNot')
-                    }"
+                    @click="openSlideBar(6,'get_cls',calInfo)"
                     :title="t('appointments','Manage Appointment Slots')"
                     icon="icon-appt-calendar-clock"></AppNavigationItem>
             <AppNavigationSpacer/>
@@ -118,6 +114,15 @@
                         </div>
                     </div>
                 </div>
+                <div v-if="generalModal===3" class="srgdev-appt-modal_content">
+                    <div class="srgdev-appt-modal-header">{{generalModalTxt[0]}}</div>
+                    <div class="srgdev-appt-modal-lbl">{{generalModalTxt[1]}}
+                    </div>
+                    <button
+                           @click="closeGeneralModal"
+                           class="primary srgdev-appt-modal-btn">{{t('appointments', 'Close')}}
+                    </button>
+                </div>
             </Modal>
         </div>
         <div v-show="visibleSection===1" class="srgdev-appt-cal-view-cont">
@@ -190,14 +195,14 @@
         <div v-show="visibleSection===0" class="srgdev-appt-main-sec">
             <ul class="srgdev-appt-main-info">
                 <li>{{t('appointments', 'Public Page Preview')}}</li>
-<!--                <ActionButton class="srgdev-appt-main-pub-link" icon="icon-clippy" @click="copyPubLink">{{t('appointments', 'Copy public link')}}</ActionButton>-->
             </ul>
             <div class="srgdev-appt-main-frame-cont">
                 <iframe class="srgdev-appt-main-frame" ref="pubPageRef" :src="pubPage"></iframe>
             </div>
         </div>
-        <div v-html="helpContent" v-show="visibleSection===2" class="srgdev-appt-help-sec">
+        <div v-show="visibleSection===3" v-html="helpContent"  class="srgdev-appt-help-sec">
         </div>
+        <div :class="{'sb_disable':stateInProgress}">
         <FormStnSlideBar
                 :pps-info="ppsInfo"
                 @apply="setState('set_pps',$event)"
@@ -216,13 +221,16 @@
                 :cal-info="calInfo"
                 :is-grid-ready="isGridReady"
                 v-show="sbShow===6"
+                @pageOffline="setPageState('0')"
+                @showModal="showSimpleGeneralModal($event)"
                 @remOldAppts="countOldAppointments"
-                @setCalInfo="setState('set_cls',$event)"
                 @calSelected="setCalendar"
                 @agDataReady="makePreviewGrid"
                 @setupGrid="gridSetup"
-                @getCalInfo="getCalInfo"
+                @setCalInfo="setState('set_cls',$event)"
+                @getCalInfo="getCalInfo($event)"
                 @close="sbShow=0"/>
+            </div>
     </AppContent>
     </div>
 </template>
@@ -322,7 +330,9 @@
                 uciInfo:{},
                 emlInfo:{},
 
-                roaData:""
+                roaData:"",
+
+                stateInProgress:false
             };
         },
         computed: {
@@ -331,6 +341,7 @@
             this.resetCurCal()
             this.curCal.isCalLoading=true
 
+            // TODO: this just gets curCal + enabled??? ... migrate to calInfo
             axios.post('state', {
                 a: 'get'
             })
@@ -520,12 +531,8 @@
             },
 
 
-            getCalInfo(evt){
-                let sbn=-1
-                if(evt!==undefined && evt==='openNot'){
-                    sbn=-2
-                }
-                this.openSlideBar(sbn,'get_cls',this.calInfo)
+            getCalInfo(ebn){
+                this.openSlideBar(-(ebn+1),'get_cls',this.calInfo)
             },
 
             /**
@@ -541,9 +548,6 @@
                         return
                     }
                     this.sbLoading = sbn
-                }else{
-                    this.$set(props, 'isLoading', true)
-                    if(sbn===-1) this.$set(props, 'isReady', false)
                 }
 
                 if(action===""){
@@ -563,22 +567,22 @@
 
                         if(sbn>-1){
                             this.toggleSlideBar(sbn)
-                        }else if(sbn===-1){
-                            this.$set(props, 'isReady', true)
+                        }else{
+                            // Open setting only after they are fetched from the server
+                            this.$refs["tsbRef"].stateDataReady(sbn)
                         }
                     }
                     this.sbLoading = 0
-                    if(sbn<0){
-                        this.$set(props, 'isLoading', false)
-                    }
                 })
 
             },
 
             /** @return {Promise<JSON|string|null>} */
             async getState(action){
+                this.stateInProgress=true
                 try {
                     const res= await axios.post('state', {a: action})
+                    this.stateInProgress=false
                     if(res.status===200){
                         return res.data
                     }else{
@@ -587,6 +591,7 @@
                         return null
                     }
                 }catch (e) {
+                    this.stateInProgress=false
                     console.log(e)
                     OC.Notification.showTemporary(t('appointments',"Can't get Settings. Check console")+"\xa0\xa0\xa0\xa0",{timeout:8,type:'error'})
                     return null
@@ -599,9 +604,11 @@
              */
             setState(action,value){
                 let ji=""
+                this.stateInProgress=true
                 try {
                     ji=JSON.stringify(value)
                 }catch (e) {
+                    this.stateInProgress=false
                     console.log(e)
                     OC.Notification.showTemporary(this.t('appointments',"Can't apply settings"),{timeout:4,type:'error'})
                 }
@@ -609,11 +616,13 @@
                     a: action,
                     d: ji
                 }).then(response => {
+                    this.stateInProgress=false
                     if(response.status===200) {
                         this.getFormData()
                         OCP.Toast.success(this.t('appointments','New Settings Applied.'))
                     }
                 }).catch((error) => {
+                    this.stateInProgress=false
                     console.log(error)
                     OC.Notification.showTemporary(this.t('appointments',"Can't apply settings"),{timeout:4,type:'error'})
                 })
@@ -642,12 +651,12 @@
             },
 
             showHelp(sec){
-                if(typeof sec!=="string" && this.visibleSection===2){
+                if(typeof sec!=="string" && this.visibleSection===3){
                     this.visibleSection=0
                     return
                 }
 
-                this.visibleSection=2
+                this.visibleSection=3
 
                 axios.get('help')
                     .then(response => {
@@ -770,11 +779,7 @@
                 this.visibleSection=0
             },
 
-            togglePageEnabled: async function(enable){
-                if(this.curCal.url===""){
-                    this.noCalSet()
-                    return
-                }
+            togglePageEnabled: async function(enable) {
 
                 if(this.pageEnabled===enable) return
 
@@ -783,6 +788,9 @@
 
                     this.getState("get_uci").then(res=>{
                         //organization: "", email: "", address: ""
+
+                        if(res===null) return null
+
                         let n=-1
                         let pa=["organization","email","address"];
                         for(let v,i=0,l=pa.length;i<l;i++){
@@ -796,14 +804,36 @@
                         if(n!==-1){
                             let fn=["'Name'","'Email'","'Location'"][n]
                             OC.Notification.showTemporary(this.t('appointments',"Error: {fieldName} empty, check settings",{fieldName:fn})+"\xa0\xa0\xa0\xa0",{timeout:8,type:'error'})
-                            return
+                            return null
+                        }else{
+                            return this.getState("get_cls")
                         }
-                        this.setPageState(enable)
+                    }).then(res=>{
+
+                        if(res===null) return
+
+                        if(res.tsMode==="0"){
+                            if(this.curCal.url === "" || this.curCal.url === "-1"){
+                                this.noCalSet()
+                            }else{
+                                this.setPageState(enable)
+                            }
+                        }else if(res.tsMode==="1"){
+                            if(res.nrDstCalId==="-1"
+                                || res.nrSrcCalId==="-1"
+                                || res.nrDstCalId===res.nrSrcCalId){
+                                this.noCalSet()
+                            }else{
+                                this.setPageState(enable)
+                            }
+                        }
                     })
                 }else{
                     this.setPageState(enable)
                 }
             },
+
+
             setPageState(enable){
                 axios.post('state', {
                     a: 'enable',
@@ -825,23 +855,33 @@
                 // clr: "#795AAB"
                 // icon: "http://127.0.0.1:8080/svg/aptgo/circ?color=795AAB"
                 // name: "Personal"
-                // url: "personal"
+                // url: "5" // -1 = non
 
                 this.pageEnabled=0
+
+                this.showSimpleGeneralModal([
+                    this.t('appointments','Warning'),
+                    this.t('appointments','Main calendar is changed. Public page is going offline…')])
+
                 axios.post('state', {
                     a: 'set',
                     url: c.url
                 }).then(response => {
                     if(response.status===200) {
-                        this.setCurCal(c)
+                        if(c.url!=="-1") {
+                            this.setCurCal(c)
+                        }else{
+                            this.resetCurCal()
+                        }
 
                         // The dest cal is reset on the backend, so propagate changes to the frontend
                         if(this.calInfo.destCalId!=="-1") {
                             OC.Notification.showTemporary(this.t('appointments', "Calendar for booked appointments is reset") + "\xa0\xa0\xa0\xa0")
                         }
 
-                        this.getCalInfo('openNot')
-                        this.$refs.tsbRef.getCalList()
+                        // 999 does not trigger slide bar expandos open
+                        this.getCalInfo(999)
+                        this.$refs["tsbRef"].getCalList()
                     }
                 }).catch((error) => {
                     this.resetCurCal()
@@ -953,6 +993,15 @@
                 if(this.evtGridModal<3) this.getFormData()
                 this.modalErrTxt=""
                 this.evtGridModal=0
+            },
+
+            /**
+             * @param {string[]} txt 0=header, 1=text
+             */
+            showSimpleGeneralModal(txt){
+                this.openGeneralModal(3)
+                this.$set(this.generalModalTxt,0,txt[0])
+                this.$set(this.generalModalTxt,1,txt[1])
             },
 
             openGeneralModal(id){

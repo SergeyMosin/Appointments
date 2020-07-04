@@ -7,7 +7,6 @@
 namespace OCA\Appointments\Backend;
 
 use OCA\Appointments\AppInfo\Application;
-use OCA\Appointments\Controller\PageController;
 use Sabre\VObject\Reader;
 
 class BackendUtils{
@@ -24,8 +23,8 @@ class BackendUtils{
     public const APPT_SES_KEY_BTKN = "appointment_btkn";
     public const APPT_SES_KEY_BURL = "appointment_burl";
 
-    public const APPT_SES_CONFIRM = "1";
     public const APPT_SES_BOOK = "0";
+    public const APPT_SES_CONFIRM = "1";
     public const APPT_SES_CANCEL = "2";
     public const APPT_SES_SKIP = "3";
 
@@ -63,11 +62,82 @@ class BackendUtils{
     // Calendar Settings
     public const KEY_CLS = 'calendar_settings';
     public const CLS_DEST_ID= 'destCalId';
+    public const CLS_XTM_SRC_ID= 'nrSrcCalId';
+    public const CLS_XTM_DST_ID= 'nrDstCalId';
+    public const CLS_XTM_PUSH_REC= 'nrPushRec';
     public const CLS_ON_CANCEL = 'whenCanceled';
+    public const CLS_TS_MODE = 'tsMode';
     const CLS_DEF=array(
         self::CLS_DEST_ID=>'-1',
-        self::CLS_ON_CANCEL=>'mark'
+        self::CLS_XTM_SRC_ID=>'-1',
+        self::CLS_XTM_DST_ID=>'-1',
+        self::CLS_XTM_PUSH_REC=>true,
+        self::CLS_ON_CANCEL=>'mark',
+        self::CLS_TS_MODE=>'0' // 0=simple/manual, 1=external/XTM, (2=template)
     );
+    public const KEY_PSN = "page_options";
+    public const PSN_PAGE_TITLE = "pageTitle";
+    public const PSN_FNED = "startFNED";
+    public const PSN_PAGE_STYLE = "pageStyle";
+    public const PSN_GDPR = "gdpr";
+    public const PSN_FORM_TITLE = "formTitle";
+    public const PSN_META_NO_INDEX = "metaNoIndex";
+    public const PSN_EMPTY = "showEmpty";
+    public const PSN_WEEKEND = "showWeekends";
+    public const PSN_PAGE_SUB_TITLE = "pageSubTitle";
+    public const PSN_NWEEKS = "nbrWeeks";
+    public const PSN_ON_CANCEL = "whenCanceled"; // <- TODO: this is in CLS_... now
+    public const PSN_TIME2 = "time2Cols";
+    public const PSN_HIDE_TEL = "hidePhone";
+
+    public const PSN_DEF = array(
+        self::PSN_FORM_TITLE => "",
+        self::PSN_NWEEKS => "1",
+        self::PSN_EMPTY => true,
+        self::PSN_FNED => false, // start at first not empty day
+        self::PSN_WEEKEND => false,
+        self::PSN_TIME2 => false,
+        self::PSN_HIDE_TEL => false,
+        self::PSN_GDPR => "",
+        self::PSN_ON_CANCEL => "mark", // <- TODO: this is in CLS_... now
+        self::PSN_PAGE_TITLE => "",
+        self::PSN_PAGE_SUB_TITLE => "",
+        self::PSN_META_NO_INDEX => false,
+        self::PSN_PAGE_STYLE => ""
+    );
+
+    private $appName=Application::APP_ID;
+
+    /**
+     * @param \DateTimeImmutable $new_start
+     * @param \DateTimeImmutable $new_end
+     * @param int $skipped number of skipped recurrences (to adjust the 'COUNT')
+     * @param \Sabre\VObject\Component\VCalendar $vo
+     */
+    function optimizeRecurrence($new_start,$new_end,$skipped,$vo){
+
+        /**  @var \Sabre\VObject\Component\VEvent $evt */
+        $evt=$vo->VEVENT;
+
+        $is_floating=$evt->DTSTART->isFloating();
+
+        $evt->DTSTART->setDateTime($new_start,$is_floating);
+        // there can be "DURATION" instead of "DTSTART"
+        if(isset($evt->DTEND)){
+            // adjust end time
+            $evt->DTEND->setDateTime($new_end,$is_floating);
+        }
+
+        $this->setSEQ($evt);
+
+        //adjust count if present
+        $rra=$evt->RRULE->getParts();
+        if(isset($rra['COUNT'])){
+            $rra['COUNT']-=$skipped;
+            $evt->RRULE->setParts($rra);
+        }
+    }
+
 
     /**
      * @param \Sabre\VObject\Document $vo
@@ -396,14 +466,24 @@ class BackendUtils{
             return;
         }
 
-        $db=\OC::$server->getDatabaseConnection();
-        $query = $db->getQueryBuilder();
+        $this->deleteApptHashByUID(
+            $db=\OC::$server->getDatabaseConnection(),
+            $evt->UID->getValue()
+        );
+    }
 
+    /**
+     * @param \OCP\IDBConnection $db
+     * @param string $uid
+     */
+    function deleteApptHashByUID($db,$uid){
+        $query = $db->getQueryBuilder();
         $query->delete(self::HASH_TABLE_NAME)
             ->where($query->expr()->eq('uid',
-                $query->createNamedParameter($evt->UID->getValue())))
+                $query->createNamedParameter($uid)))
             ->execute();
     }
+
 
     function makeApptHash($evt){
         // !! ORDER IS IMPORTANT - DO NOT CHANGE !! //
@@ -411,7 +491,7 @@ class BackendUtils{
         if(isset($evt->DTSTART)){
             $hs.=str_replace("T",".",$evt->DTSTART->getRawMimeDirValue());
         }else{
-            $hs.="00000000.000000";
+            $hs.="99999999.000000";
         }
         if(isset($evt->STATUS)){
             $hs.=hash("crc32", $evt->STATUS->getValue(), false);
@@ -425,8 +505,6 @@ class BackendUtils{
         }
         return $hs;
     }
-
-
 
     /**
      * @param string $hash
@@ -470,9 +548,8 @@ class BackendUtils{
 
     /**
      * @param \Sabre\VObject\Component\VEvent $evt
-     * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection
      */
-    function setSEQ(&$evt){
+    function setSEQ($evt){
         if(!isset($evt->SEQUENCE)) $evt->add('SEQUENCE',1);
         else{
             $sv=intval($evt->SEQUENCE->getValue());
@@ -496,6 +573,11 @@ class BackendUtils{
         }
         /** @var \Sabre\VObject\Component\VEvent $evt*/
         $evt=$vo->VEVENT;
+
+        if(!$evt->DTSTART->hasTime()){
+            // no all-day events
+            return null;
+        }
 
         if(!isset($evt->STATUS) || ($status !== "*" && $evt->STATUS->getValue() !== $status)) {
             \OC::$server->getLogger()->error("Bad Status: must be " . $status);
@@ -539,11 +621,11 @@ class BackendUtils{
             // First time access need to transfer...
             // PageController::PSN_ON_CANCEL -> BackendUtils::CLS_ON_CANCEL
             $a=$this->getUserSettings(
-                PageController::KEY_PSN,
-                PageController::PSN_DEF,
+                self::KEY_PSN,
+                self::PSN_DEF,
                 $userId,$appName);
 
-            $vs='{"'.PageController::PSN_ON_CANCEL.'":"'.$a[PageController::PSN_ON_CANCEL].'"}';
+            $vs='{"'. self::PSN_ON_CANCEL .'":"'.$a[self::PSN_ON_CANCEL].'"}';
 
             $this->setUserSettings(
                 self::KEY_CLS,
@@ -597,6 +679,130 @@ class BackendUtils{
         return true;
     }
 
+
+    /**
+     * @param string $userId
+     * @param string $otherCal get the ID of the other calendar (destination CalId) for manual mode ONLY.
+     * @return string calendar Id or "-1" = no main cal
+     */
+    function getMainCalId($userId,&$otherCal=null){
+
+        $config=\OC::$server->getConfig();
+
+        // What mode are we in ??
+        $cls=$this->getUserSettings(
+            self::KEY_CLS,self::CLS_DEF,
+            $userId ,$this->appName);
+        $ts_mode=$cls[self::CLS_TS_MODE];
+        if ($ts_mode==="1"){
+            // External mode - main calendar is destination calendar
+            if($cls[BackendUtils::CLS_XTM_SRC_ID] === "-1"
+            || $cls[BackendUtils::CLS_XTM_DST_ID] === "-1"
+            || $cls[BackendUtils::CLS_XTM_SRC_ID] === $cls[BackendUtils::CLS_XTM_DST_ID]){
+//                if(isset($otherCal)){
+//                    $otherCal='-1';
+//                }
+                return "-1";
+            }else{
+//                if(isset($otherCal)){
+//                    $otherCal=$cls[self::CLS_XTM_SRC_ID];
+//                }
+                return $cls[self::CLS_XTM_DST_ID];
+            }
+        }else{
+            // Manual $ts_mode==="0"
+            if(isset($otherCal)){
+                $otherCal=$cls[self::CLS_DEST_ID];
+            }
+            return $config->getUserValue(
+                $userId,$this->appName, 'cal_id', '-1'
+            );
+        }
+    }
+
+    /**
+     * @param string $userId
+     * @param string $appName
+     * @param string $tz_data_str Can be VTIMEZONE data, 'L' = floating or 'UTC'
+     * @param string $cr_date 20200414T073008Z must be UTC (ends with Z),
+     * @return string[] ['1_before_uid'=>'string...','2_before_dts'=>'string...','3_before_dte'=>'string...','4_last'=>'string...'] or ['err'=>'Error text...']
+     */
+    function makeAppointmentParts($userId, $appName, $tz_data_str, $cr_date){
+
+        $config=\OC::$server->getConfig();
+        $l10n=\OC::$server->getL10N($appName);
+        $iUser=\OC::$server->getUserManager()->get($userId);
+        if($iUser===null){
+            return ['err'=>'Bad user Id.'];
+        }
+        $rn="\r\n";
+        $cr_date_rn=$cr_date."\r\n";
+
+        $tz_id="";
+        $tz_Z="";
+        $tz_data = "";
+        if ($tz_data_str==='UTC'){
+            $tz_Z="Z";
+        }elseif($tz_data_str!=="L" && !empty($tz_data_str)){
+            $tzo=Reader::read("BEGIN:VCALENDAR\r\nPRODID:-//IDN nextcloud.com//Appointments App//EN\r\nCALSCALE:GREGORIAN\r\nVERSION:2.0\r\n".$tz_data_str."\r\nEND:VCALENDAR");
+            if(isset($tzo->VTIMEZONE) &&  isset($tzo->VTIMEZONE->TZID)){
+                $tz_id=';TZID='.$tzo->VTIMEZONE->TZID->getValue();
+                $tz_data=trim($tzo->VTIMEZONE->serialize())."\r\n";
+            }
+        }
+
+        $email=$config->getUserValue($userId,$appName, BackendUtils::KEY_O_EMAIL);
+        if(empty($email)) $email=$iUser->getEMailAddress();
+        if(empty($email)){
+            return ['err'=>$l10n->t("Your email address is required for this operation.")];
+        }
+        $addr=$config->getUserValue($userId,$appName, BackendUtils::KEY_O_ADDR);
+        if(empty($addr)){
+            return ['err'=>$l10n->t("A location, address or URL is required for this operation. Check User/Organization settings.")];
+        }
+//        ESCAPED-CHAR = ("\\" / "\;" / "\," / "\N" / "\n")
+//        \\ encodes \ \N or \n encodes newline \; encodes ; \, encodes ,
+        $addr=str_replace(array("\\",";",",","\r\n","\r","\n"),array('\\\\','\;','\,',' \n',' \n',' \n'),$addr);
+
+        $name=trim($iUser->getDisplayName());
+        if(empty($name)){
+            $name=trim($config->getUserValue($userId, $appName,
+                BackendUtils::KEY_O_NAME));
+        }
+        if(empty($name)){
+            return ['err'=>$l10n->t("Can't find your name. Check User/Organization settings.")];
+        }
+
+        return [
+            '1_before_uid'=>"BEGIN:VCALENDAR\r\n" .
+                "PRODID:-//IDN nextcloud.com//Appointment App | srgdev.com//EN\r\n" .
+                "CALSCALE:GREGORIAN\r\n" .
+                "VERSION:2.0\r\n" .
+                "BEGIN:VEVENT\r\n" .
+                "SUMMARY:".\OC::$server->getL10N($appName)->t("Available") .$rn.
+                "STATUS:TENTATIVE\r\n" .
+                "TRANSP:TRANSPARENT\r\n".
+                "LAST-MODIFIED:" . $cr_date_rn .
+                "DTSTAMP:" . $cr_date_rn .
+                "SEQUENCE:1\r\n" .
+                "CATEGORIES:" . BackendUtils::APPT_CAT . $rn .
+                "CREATED:" . $cr_date_rn . "UID:", // UID goes here
+            '2_before_dts' => $rn . "DTSTART".$tz_id.":", // DTSTART goes here
+            '3_before_dte' => $tz_Z.$rn . "DTEND".$tz_id.":", // DTEND goes here
+            '4_last' => $tz_Z.$rn .$this->chunk_split_unicode("ORGANIZER;SCHEDULE-AGENT=CLIENT;CN=".$name.":mailto:".$email,75,"\r\n ").$rn . $this->chunk_split_unicode("LOCATION:".$addr,75,"\r\n "). $rn. "END:VEVENT\r\n".$tz_data."END:VCALENDAR\r\n"
+        ];
+    }
+
+    private function chunk_split_unicode($str, $l = 76, $e = "\r\n") {
+        $tmp = array_chunk(
+            preg_split("//u", $str, -1, PREG_SPLIT_NO_EMPTY), $l);
+        $str = "";
+        foreach ($tmp as $t) {
+            $str .= join("", $t) . $e;
+        }
+        return trim($str);
+    }
+
     /**
      * @param $userId
      * @param \OCP\IConfig $config
@@ -624,7 +830,6 @@ class BackendUtils{
         return $tz;
     }
 
-
     /**
      * @param \DateTimeImmutable $date
      * @param string $tzi Timezone info [UF][+-]\d{4} Ex: U+0300 @see dataSetAttendee() or [UF](valid timezone name) Ex: UAmerica/New_York
@@ -634,7 +839,7 @@ class BackendUtils{
      */
     function getDateTimeString($date, $tzi, $short_dt=false){
 
-        $l10N=\OC::$server->getL10N(Application::APP_ID);
+        $l10N=\OC::$server->getL10N($this->appName);
         if($tzi[0]==="F"){
             $d=$date->format('Ymd\THis');
             if($short_dt){
@@ -709,6 +914,38 @@ class BackendUtils{
             OPENSSL_RAW_DATA,
             substr($s1,0,$ivlen));
         return $t===false?'':$t;
+    }
+
+
+    /**
+     * @param string $token
+     * @param bool $embed
+     * @return string
+     */
+    function pubPrx($token,$embed){
+        return $embed ? 'embed/'.$token.'/' : 'pub/'.$token.'/';
+    }
+
+
+    function getPublicWebBase(){
+        return \OC::$server->getURLGenerator()->getBaseUrl().'/index.php/apps/appointments';
+    }
+
+    /**
+     * @param string $userId
+     * @param string $appName
+     * @return string
+     * @throws \ErrorException
+     */
+    function getToken($userId){
+        $config=\OC::$server->getConfig();
+        $key=hex2bin($config->getAppValue($this->appName, 'hk'));
+        $iv=hex2bin($config->getAppValue($this->appName, 'tiv'));
+        if(empty($key) || empty($iv)){
+            throw new \ErrorException("Can't find key");
+        }
+        $tkn=$this->encrypt(hash ( 'adler32' , $userId,true).$userId,$key,$iv);
+        return urlencode(str_replace("/","_",$tkn));
     }
 
 }

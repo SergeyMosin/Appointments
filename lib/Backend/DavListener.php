@@ -87,18 +87,14 @@ class DavListener {
             $userId = str_replace(BackendManager::PRINCIPAL_PREFIX, "", $event['calendarData']['principaluri']);
         }
 
-        $cal_id=$config->getUserValue($userId,$this->appName,"cal_id");
+        $dstId='-1'; // manual mode only
+        $cal_id=$utils->getMainCalId($userId,$dstId);
 
+        // Check cal IDs. (manual mode only might have non "-1" value in $dstId @see BackendUtils->getMainCalId)
         // $event['calendarData']['id'] can be a string or an int
-        if($cal_id!=$event['calendarData']['id']){
-            // Check dest calendar
-            $cls=$utils->getUserSettings(
-                BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-                $userId ,$this->appName);
-            if($cls[BackendUtils::CLS_DEST_ID]!=$event['calendarData']['id']){
-                // Not this user's calendar
-                return;
-            }
+        if($cal_id!=$event['calendarData']['id'] && $dstId!=$event['calendarData']['id']){
+            // Not this user's calendar
+            return;
         }
 
         $hash=$utils->getApptHash($evt->UID->getValue());
@@ -332,8 +328,7 @@ class DavListener {
         $tmpl->addBodyText($this->l10N->t("Thank you"));
 
         // cancellation link for confirmation emails
-        // TODO: enable when translations are finished...
-        if(!empty($cnl_lnk_url) && 1===2){
+        if(!empty($cnl_lnk_url)){
             $tmpl->addBodyText(
                 '<div style="font-size: 80%;color: #989898">' .
                 // TRANSLATORS This is a part of an email message. %1$s Cancel Appointment %2$s is a link to the cancellation page (HTML format).

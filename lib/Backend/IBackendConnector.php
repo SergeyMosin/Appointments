@@ -17,10 +17,10 @@ interface IBackendConnector{
      * @param string $calId
      * @param \DateTime $start should have user's timezone
      * @param \DateTime $end should have user's timezone
-     * @param bool $no_uri (optional)
+     * @param string $mode 1char(mode)+userId or 'no_url'
      * @return string|null
      */
-    function queryRange($calId,$start,$end,$no_uri=false);
+    function queryRange($calId,$start,$end,$mode);
 
     /**
      * @param string $calId

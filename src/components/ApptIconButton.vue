@@ -1,8 +1,9 @@
 <template>
     <div @click="doClick" class="appt_icon_button_cont">
+    <label class="aib_top_label">{{topLabel}}</label>
     <div role="button"
          :class="['appt_icon_button',{'disabled':disabled}]">
-        <span :class="['aib_icon_wrap',icon,{'icon-loading':loading}]"></span><span class="aib_text_span">{{text}}</span>
+        <span :class="['aib_icon_wrap',icon,{'icon-loading':loading},{'aib_icon_wrap_scale':iconScale}]"></span><span class="aib_text_span">{{text}}</span>
     </div>
     <div class="aib_actions_slot">
         <slot name="actions"/>
@@ -31,6 +32,15 @@
                 type: Boolean,
                 default: false
             },
+            iconScale: {
+                type: Boolean,
+                default: true
+            },
+            topLabel: {
+                type: String,
+                default: ''
+            },
+
         },
         methods:{
             doClick(){
@@ -50,7 +60,8 @@
         position: absolute;
         right: 1em;
         top: 0;
-        height: 100%;    }
+        height: 100%;
+    }
 }
 .appt_icon_button{
     display: inline-block;
@@ -79,7 +90,7 @@
     }
 
     &:hover {
-        .aib_icon_wrap {
+        .aib_icon_wrap_scale {
             opacity: 1;
             transform: scale(1.1);
             transform-origin: center;
@@ -90,5 +101,13 @@
         pointer-events: none;
         opacity: .75;
     };
+    .aib_top_label{
+        display: block;
+        position: absolute;
+        top: .1em;
+        line-height: 0;
+        height: 0;
+        font-size: 80%;
+    }
 }
 </style>

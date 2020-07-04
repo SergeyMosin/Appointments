@@ -3,17 +3,22 @@
 
 namespace OCA\Appointments\Backend;
 
+
+use OCA\Appointments\IntervalTree\AVLIntervalTree;
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCP\IConfig;
 use Sabre\CalDAV\Backend\BackendInterface;
 use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Xml\Service as XmlService;
+use Sabre\VObject\Recur\EventIterator;
+use Sabre\VObject\Recur\NoInstancesException;
 use Sabre\Xml\ParseException;
 use Sabre\VObject\Reader;
 
 class BCSabreImpl implements IBackendConnector{
 
     const TIME_FORMAT="Ymd\THis\Z";
+    const TIME_FORMAT_NO_Z="Ymd\THis";
 
     private $backend;
     private $config;
@@ -39,6 +44,7 @@ class BCSabreImpl implements IBackendConnector{
 
         $cc=count($calIds);
         if($cc===0){
+
             return "0";
         }
 
@@ -49,7 +55,7 @@ class BCSabreImpl implements IBackendConnector{
         $end->setTimestamp($ots+50400);
 
         try {
-            $result = $parser->parse($this->makeDavReport(null,$end,$only_empty===true?"TENTATIVE":null));
+            $result = $parser->parse($this::makeDavReport(null,$end,$only_empty===true?"TENTATIVE":null));
         } catch (ParseException $e) {
             \OC::$server->getLogger()->error($e);
             return null;
@@ -64,6 +70,18 @@ class BCSabreImpl implements IBackendConnector{
             $ses->set(
                 BackendUtils::APPT_SES_KEY_HINT,
                 BackendUtils::APPT_SES_SKIP);
+
+            // Cleanup hash table
+            if($only_empty===false) {
+                $cutoff_str = $end->modify('-35 days')->format(BackendUtils::FLOAT_TIME_FORMAT);
+                $db = \OC::$server->getDatabaseConnection();
+                $query = $db->getQueryBuilder();
+
+                $query->delete(BackendUtils::HASH_TABLE_NAME)
+                    ->where($query->expr()->lt('hash',
+                        $query->createNamedParameter($cutoff_str)))
+                    ->execute();
+            }
         }
 
         for($i=0;$i<$cc;$i++) {
@@ -86,10 +104,252 @@ class BCSabreImpl implements IBackendConnector{
     }
 
     /**
+     * @param int $start_ts UTC
+     * @param int $end_ts UTC
+     * @param string $calId
+     * @param \DateTimeZone $utz user's timezone
+     * @return int 0=no events, 1=at least 1
+     * @noinspection PhpDocMissingThrowsInspection
+     */
+    private function checkRangeTR($start_ts,$end_ts,$calId, $utz){
+
+        // Because of floating timezones...
+        // 50400 = 14 hours
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $dt=new \DateTime('@'.($start_ts-50400),$utz);
+        $r_start=$dt->format(self::TIME_FORMAT);
+        $dt->setTimestamp($end_ts+50400);
+        $r_end=$dt->format(self::TIME_FORMAT);
+
+        $parser=new XmlService();
+        $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
+        try {
+            $result = $parser->parse($this::makeTrBookedDavReport($r_start,$r_end));
+        } catch (ParseException $e) {
+            \OC::$server->getLogger()->error($e);
+            return -1;
+        }
+
+        $urls=$this->backend->calendarQuery($calId,$result->filters);
+        $objs = $this->backend->getMultipleCalendarObjects($calId, $urls);
+
+        $c=0;
+        foreach ($objs as $obj) {
+
+            /** @var \Sabre\VObject\Component\VCalendar $vo */
+            $vo = Reader::read($obj['calendardata']);
+            if (!isset($vo->VEVENT) || !$vo->VEVENT->DTSTART->hasTime() || !isset($vo->VEVENT->DTEND)) {
+                $vo->destroy();
+                continue;
+            }
+            /** @var \Sabre\VObject\Component\VEvent $evt */
+            $evt = $vo->VEVENT;
+
+            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+            $s_ts = $evt->DTSTART->getDateTime($utz)->getTimestamp();
+            if($s_ts<$end_ts){
+                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+                $e_ts=$evt->DTEND->getDateTime($utz)->getTimestamp();
+                if($e_ts>$start_ts){
+                    $c=1;
+                    break;
+                }
+            }
+            $vo->destroy();
+        }
+        return $c;
+    }
+
+
+    /**
+     * @param string $calIds dstCal(main)+chr(31)+srcCal(free spots)
+     * @param \DateTime $start should have user's timezone
+     * @param \DateTime $end should have user's timezone
+     * @param $key
+     * @param $userId
+     * @return string|null
+     * @noinspection PhpDocMissingThrowsInspection
+     * @noinspection PhpPossiblePolymorphicInvocationInspection
+     */
+    private function queryRangeTR($calIds, $start, $end,$key,$userId){
+
+        // user's timezone
+        $utz=$start->getTimezone();
+        $utz_offset=$start->getOffset();
+
+        $start_ts=$start->getTimestamp();
+        $end_ts=$end->getTimestamp();
+
+        // We need to adjust for floating timezones and filter
+        $rep_start=clone $start;
+        $rep_start->modify('-14 hours');
+        $rep_end=clone $end;
+        $rep_end->modify('+14 hours');
+
+        $start_str=$rep_start->format(self::TIME_FORMAT);
+        $end_str=$rep_end->format(self::TIME_FORMAT);
+
+        // parse calIds
+        $sp=strpos($calIds,chr(31));
+        if($sp===false){
+            return null;
+        }
+        $srcId=substr($calIds,$sp+1);
+        $dstId=substr($calIds,0,$sp);
+
+        $parser=new XmlService();
+        $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
+
+        try {
+            $result = $parser->parse($this::makeTrBookedDavReport($start_str,$end_str));
+        } catch (ParseException $e) {
+            \OC::$server->getLogger()->error($e);
+            return null;
+        }
+
+        // Get booked spots
+        $urls=$this->backend->calendarQuery($dstId,$result->filters);
+        $booked_tree=null;
+
+        if(count($urls)>0) {
+            $itc=new AVLIntervalTree();
+            $objs = $this->backend->getMultipleCalendarObjects($dstId, $urls);
+            foreach ($objs as $obj) {
+
+                /** @var \Sabre\VObject\Component\VCalendar $vo */
+                $vo = Reader::read($obj['calendardata']);
+                if (!isset($vo->VEVENT) || !$vo->VEVENT->DTSTART->hasTime()) {
+                    $vo->destroy();
+                    continue;
+                }
+                /** @var \Sabre\VObject\Component\VEvent $evt */
+                $evt = $vo->VEVENT;
+
+                /** @var \Sabre\VObject\Property\ICalendar\DateTime $dt_start */
+                $dt_start = $evt->DTSTART;
+                $start_date_time = $dt_start->getDateTime($utz);
+                $s_ts = $start_date_time->getTimestamp();
+
+
+                if ($s_ts > $start_ts && $s_ts < $end_ts) {
+
+                    // Get end_timestamp
+                    if (isset($evt->DTEND)) {
+                        $e_ts = $evt->DTEND->getDateTime($utz)->getTimeStamp();
+                    } elseif (isset($evt->DURATION)) {
+                        $e_ts = $start_date_time->add($evt->DURATION->getDateInterval())->getTimeStamp();
+                    } else {
+                        $vo->destroy();
+                        continue;
+                    }
+
+                    $itc->insert($booked_tree, $s_ts, $e_ts);
+                }
+                $vo->destroy();
+            }
+        }
+
+
+        try {
+            $result = $parser->parse($this::makeTrDavReport($start_str,$end_str,'TRANSPARENT'));
+        } catch (ParseException $e) {
+            \OC::$server->getLogger()->error($e);
+            return null;
+        }
+
+        // Get free/available spots
+        $urls=$this->backend->calendarQuery($srcId,$result->filters);
+        $objs=$this->backend->getMultipleCalendarObjects($srcId,$urls);
+
+        $str_out='';
+        // '_'ts_mode(1byte)ses_time(4bytes)dates(8bytes)uri(no extension)
+        $ses_info='_1'.pack("L",time());
+        foreach ($objs as $obj) {
+
+            /** @var \Sabre\VObject\Component\VCalendar $vo */
+            $vo = Reader::read($obj['calendardata']);
+            if (!isset($vo->VEVENT) || !$vo->VEVENT->DTSTART->hasTime()) {
+                // not an event or all day
+                $vo->destroy();
+                continue;
+            }
+
+            /** @var \Sabre\VObject\Component\VEvent $evt */
+            $evt = $vo->VEVENT;
+
+            $ts_pref = 'U';
+            $ts_offset = 0;
+            if ($evt->DTSTART->isFloating()) {
+                $ts_pref = 'F';
+                $ts_offset = $utz_offset;
+            }
+
+//            $ts_pref=$evt->DTSTART->isFloating()?'F':'U';
+
+            if (isset($evt->RRULE)) {
+
+                try {
+                    $it = new EventIterator([$evt], null, $utz);
+                } catch (NoInstancesException $e) {
+                    // This event is recurring, but it doesn't have a single instance. We are skipping this event from the output entirely.
+                    continue;
+                }
+
+                $it->fastForward($start);
+                $skip_count = $it->key();
+            } else {
+                $it=new FakeIterator($evt,$utz);
+                $skip_count=0;
+            }
+
+            $c = 0;
+            while ($it->valid()) {
+
+                $s_ts = $it->getDTStart()->getTimestamp();
+
+                if ($s_ts >= $end_ts || $c > 96) {
+                    break;
+                }
+                if ($s_ts > $start_ts) {
+                    $e_ts = $it->getDTEnd()->getTimestamp();
+
+                    if (AVLIntervalTree::lookUp($booked_tree,
+                            $s_ts, $e_ts) === null) {
+
+                        $str_out.=$ts_pref.($s_ts + $ts_offset)
+                            .':'.$this->utils->encrypt($ses_info.pack("LL",$s_ts,$e_ts).substr($obj['uri'],0,-4),$key).',';
+                    }
+                }
+                $c++;
+                $it->next();
+            }
+
+            if ($skip_count > 14 && $this->utils->getUserSettings(
+                    BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
+                    $userId,$this->appName)[BackendUtils::CLS_XTM_PUSH_REC]===true) {
+                // Optimize recurrence
+                $it->rewind();
+                $skip_until = $skip_count - 7;
+                while ($it->valid() && $it->key() < $skip_until) {
+                    $it->next();
+                }
+                $this->utils->optimizeRecurrence($it->getDtStart(), $it->getDtEnd(), $skip_until, $vo);
+                $this->updateObject($srcId, $obj['uri'], $vo->serialize());
+            }
+
+            $vo->destroy();
+        }
+        return $str_out!==''?substr($str_out,0,-1):null;
+    }
+
+
+
+    /**
      * @inheritDoc
      */
-    function queryRange($calId, $start, $end,$no_uri=false){
+    function queryRange($calId, $start, $end, $mode){
 
+        $no_uri=($mode==='no_url');
         if($no_uri){
             $key=''; // @see BackendUtils->encodeCalendarData
         }else {
@@ -99,6 +359,14 @@ class BCSabreImpl implements IBackendConnector{
                 return null;
             }
         }
+
+        if($mode[0]==="1"){
+            // external mode
+            // $calId = dstCal(main)+chr(31)+srcCal(free spots) @see PageController->showForm()
+            return $this->queryRangeTR($calId, $start, $end, $key, substr($mode,1));
+        }
+
+
 
         $f_start=$start->getTimestamp();
         $f_end=$end->getTimestamp();
@@ -112,7 +380,7 @@ class BCSabreImpl implements IBackendConnector{
         $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
         try {
             //$no_url(do not filter status) request is for the schedule generator @see grid.js::addPastAppts()
-            $result = $parser->parse($this->makeDavReport($start,$end,$no_uri===false?"TENTATIVE":null));
+            $result = $parser->parse($this::makeDavReport($start,$end,$no_uri===false?"TENTATIVE":null));
         } catch (ParseException $e) {
             \OC::$server->getLogger()->error($e);
             return null;
@@ -137,6 +405,8 @@ class BCSabreImpl implements IBackendConnector{
             if($ts>$f_start && $ts<$f_end) {
                 $ret.=$out;
             }
+
+            $vo->destroy();
         }
 
         return $ret!==''?substr($ret,0,-1):null;
@@ -229,66 +499,182 @@ class BCSabreImpl implements IBackendConnector{
      */
     function setAttendee($userId, $calId, $uri, $info)
     {
-        $err='';
-        $ec=1;
-        $d=$this->getObjectData($calId,$uri);
-        if($d===null){
-            $err="Object does not exist: ".$uri;
-            $ec=2;
-        }else{
-            $es=strpos($d,"BEGIN:VEVENT")+14;
-            $us=strpos($d,"\r\nUID:",$es);
-            if($us!==false){
-                $us+=6;
-                $uid=substr($d,$us,strpos($d,"\r\n",$us)-$us);
+        $cls=$this->utils->getUserSettings(
+            BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
+            $userId,$this->appName);
+        $ts_mode=$cls[BackendUtils::CLS_TS_MODE];
 
-                $db=\OC::$server->getDatabaseConnection();
-                // Ugly locking to avoid booking the same appointment twice...
-                $db->lockTable(BackendUtils::HASH_TABLE_NAME);
-
-                $hash=$this->utils->getApptHash($uid);
-                if($hash===null){
-                    // It is safe to take this time slot
-                    $query = $db->getQueryBuilder();
-                    $query->insert(BackendUtils::HASH_TABLE_NAME)
-                        ->values([
-                            'uid' => $query->createNamedParameter($uid),
-                            'hash' => $query->createNamedParameter('00000000.0000000000000000000000')
-                        ])->execute();
-                    $db->unlockTable();
-
-                    $newData=$this->utils->dataSetAttendee($d,$info,$userId);
-                    if($newData==="1"){
-                        // $ec=1;
-                        $err="Bad appointment status, [select different time]";
-                    }elseif($newData==="2"){
-                        $err="Can not set attendee data";
-                        $ec=3;
-                    }else{
-                        if($this->updateObject($calId,$uri,$newData)===false){
-                            $err="Can not update object: ".$uri;
-                            $ec=4;
-                        }else{
-                            // Object Update: SUCCESS
-                            $ec=0;
-                        }
-                    }
-                }else{
-                    $db->unlockTable();
-                    // $ec=1;
-                    $err="Bad appointment status, [select different time]";
-                }
-            }else{
-                $err="Bad object data for ".$uri;
-                $ec=5;
+        if($ts_mode==='1'){
+            // external mode...
+            // ... query source cal for source uri
+            $srcId=$cls[BackendUtils::CLS_XTM_SRC_ID];
+            $srcUri=$info['ext_src_uri'];
+            $src_data = $this->getObjectData($srcId, $srcUri);
+            if($src_data===null){
+                $this->logErr("Source object does not exist - mode: ".$ts_mode.", cal: ".$srcId.", uri: ".$srcUri);
+                return 1;
             }
+
+            /** @var \Sabre\VObject\Component\VCalendar $vo */
+            $vo = Reader::read($src_data);
+            if (!isset($vo->VEVENT) || !$vo->VEVENT->DTSTART->hasTime()) {
+                $vo->destroy();
+                $this->logErr("Bad source data - calId: " . $srcId . ", uri: " . $srcUri);
+                return 2;
+            }
+
+            /** @var \Sabre\VObject\Component\VEvent $evt */
+            $evt = $vo->VEVENT;
+
+            /** @var \Sabre\VObject\Property\ICalendar\DateTime $dt_start */
+            $dt_start = $evt->DTSTART;
+
+            if ($dt_start->isFloating()) {
+                $tzi = "L";
+            }elseif(isset($dt_start->parameters['TZID']) && isset($vo->VTIMEZONE)){
+                $tzi=$vo->VTIMEZONE->serialize();
+            }elseif(strpos($dt_start->getValue(), 'Z') !== false){
+                $tzi='UTC';
+            }else{
+                $this->logErr("bad timezone info - calId: " . $srcId . ", uri: " . $srcUri);
+                return 3;
+            }
+
+            /** @noinspection PhpUnhandledExceptionInspection */
+            $parts=$this->utils->makeAppointmentParts(
+                $userId,$this->appName,$tzi,
+                (new \DateTime('now',new \DateTimeZone('UTC')))->format(self::TIME_FORMAT));
+            if(isset($parts['err'])) {
+                $this->logErr($parts['err']." - calId: " . $srcId . ", uri: " . $srcUri);
+                return 4;
+            }
+
+            // make UID
+            $h=hash("tiger128,4",$uri.rand().$tzi.$srcUri.$srcId);
+            $uid=substr($h,0,7)."-".
+                substr($h,7,6)."-".
+                substr($h,13,6)."-".
+                substr($h,19,6)."-aa".
+                substr($h,25);
+
+
+            $utz=$this->utils->getUserTimezone($userId,$this->config);
+            $dt=$dt_start->getDateTime($utz);
+            // Insert the UID, start and end
+            $d= $parts['1_before_uid'].$uid.
+                $parts['2_before_dts'].$dt->setTimestamp($info['ext_start'])->format(self::TIME_FORMAT_NO_Z).
+                $parts['3_before_dte'].$dt->setTimestamp($info['ext_end'])->format(self::TIME_FORMAT_NO_Z).
+                $parts['4_last'];
+
+            // Special "lock" uid
+            $lock_uid="LOCK_".hash("tiger128,4",$info['ext_start'].$info['ext_end'].$info['ext_src_uri']);
+
+        }else{
+            // manual mode
+            $d=$this->getObjectData($calId,$uri);
+            if($d===null){
+                $this->logErr("Object does not exist - mode: 0, cal: ".$calId.", uri: ".$uri);
+                return 1;
+            }
+
+            // extract uid
+            $us = strpos($d, "\r\nUID:", strpos($d, "BEGIN:VEVENT") + 12);
+            if($us === false) {
+                $this->logErr("Bad object data for " . $uri);
+                return 5;
+            }
+
+            $us+=6;
+            $lock_uid=$uid=substr($d,$us,strpos($d,"\r\n",$us)-$us);
         }
 
-        if($err!==''){
-            \OC::$server->getLogger()->error($err);
+        $err='';
+        $db = \OC::$server->getDatabaseConnection();
+
+        // Ugly locking to avoid a race condition and booking the same appointment twice...
+        $ec=0;
+        $query = $db->getQueryBuilder();
+        try {
+            $query->insert(BackendUtils::HASH_TABLE_NAME)
+                ->values([
+                    'uid' => $query->createNamedParameter($lock_uid),
+                    'hash' => $query->createNamedParameter('99999999.0000000000000000000000')
+                ])->execute();
+        }catch (\Exception $e){
+            // uid already exists
+            $ec=1;
+        }
+
+        if ($ec === 0) {
+            // It is SAFE (for manual made) to take this time slot
+
+            if($ts_mode==="1"){
+                // for external mode we need to re-check the time range and update the lock_uid to "real" uid or delete the lock_uid if the time range is "taken"
+
+
+                /** @noinspection PhpUndefinedVariableInspection */
+                $trc=$this->checkRangeTR($info['ext_start'],$info['ext_end'],$calId,$utz);
+
+                if($trc===0){
+                    // the time range is good, create new object...
+                    if($this->createObject($calId,$uri,$d)!==false){
+                        // new object OK, set real uid hash
+                        $query = $db->getQueryBuilder();
+                        $query->insert(BackendUtils::HASH_TABLE_NAME)
+                            ->values([
+                                'uid' => $query->createNamedParameter($uid),
+                                'hash' => $query->createNamedParameter('99999999.0000000000000000000000')
+                            ])->execute();
+                    }else{
+                        $err="Can not create object - mode: ".$ts_mode.", cal: ".$calId.", uri: ".$uri;
+                        $ec=6;
+                    }
+
+                }else if($trc>0){
+                    // spot busy
+                   $ec=1;
+                }
+
+                // "release" the "lock"
+                $this->utils->deleteApptHashByUID($db,$lock_uid);
+            }
+            if($ec===0) {
+                $newData = $this->utils->dataSetAttendee($d, $info, $userId);
+                if ($newData === "1") {
+                    $ec = 1;
+                    $err = "Bad appointment status, [select different time]";
+                } elseif ($newData === "2") {
+                    $err = "Can not set attendee data";
+                    $ec = 7;
+                } else {
+                    if ($this->updateObject($calId, $uri, $newData) === false) {
+                        $err = "Can not update object: " . $uri;
+                        $ec = 8;
+                    } else {
+                        // Object Update: SUCCESS
+                        $ec = 0;
+                    }
+                }
+            }
+
+            if($ec!==0){
+                $this->utils->deleteApptHashByUID($db,$uid);
+                if(!empty($err)){
+                    $this->logErr($err);
+                }
+            }
+
+        } else {
+            // uid is already in the hash table
+            $this->logErr("Select different time");
+            // $ec=1
         }
 
         return $ec;
+    }
+
+    private function logErr($err){
+        \OC::$server->getLogger()->error($err);
     }
 
     /**
@@ -309,25 +695,16 @@ class BCSabreImpl implements IBackendConnector{
         $ret=[1,null];
         $err='';
 
-        // check if we have destination calendar
-        $cls = $this->utils->getUserSettings(
-            BackendUtils::KEY_CLS, BackendUtils::CLS_DEF,
-            $userId, $this->appName);
-        $dcl_id = $cls[BackendUtils::CLS_DEST_ID];
-
-        if ($dcl_id != "-1" && $this->getCalendarById($dcl_id, $userId) === null) {
-            \OC::$server->getLogger()->error("WARNING: bad CLS_DEST_ID calendar with ID " . $dcl_id . " not found");
-            $dcl_id = "-1";
-        }
-
-        //correct cal_id for cancellations should be "calculated" in the page controller
+        // for manual mode:
+        //  if confirming:
+        //      pending appointments are always in the main calendar
+        //      might need to be moved to BackendUtils::CLS_DEST_ID is set
+        //  if cancelling:
+        //      calId is "pre-calculated" in the PageController
+        //
+        // for external mode:
+        //  pending appointments are always in the main calendar
         $d=$this->getObjectData($calId,$uri);
-
-        if($d===null && $do_confirm && $dcl_id!=="-1"){
-            // check dest calendar
-            $d=$this->getObjectData($dcl_id,$uri);
-            // if d!==null then appointment is in the dest calendar and it is probably already confirmed, but we still need the date.
-        }
 
         if($d===null){
             $err="Object does not exist: ".$uri;
@@ -344,9 +721,14 @@ class BCSabreImpl implements IBackendConnector{
                 $ret=[0,$date];
             }else{
 
-                if($do_confirm && $dcl_id!="-1"){
-                    // different destination calendar
-                    // ONLY for confirmations (cal_id for cancellations should be "calculated" in the page controller)
+                $cls = $this->utils->getUserSettings(
+                    BackendUtils::KEY_CLS, BackendUtils::CLS_DEF,
+                    $userId, $this->appName);
+
+                if($do_confirm && $cls[BackendUtils::CLS_TS_MODE]==='0'
+                    && $cls[BackendUtils::CLS_DEST_ID]!=="-1"){
+                    // confirming in regular mode into different calendar
+                    $dcl_id=$cls[BackendUtils::CLS_DEST_ID];
 
                     // 1. delete from original calendar
                     $ra=$this->deleteCalendarObject($userId,$calId,$uri);
@@ -416,7 +798,6 @@ class BCSabreImpl implements IBackendConnector{
         return false;
     }
 
-
     private function transformCalInfo($c){
         // Do not use read only calendars
         if(isset($c['{http://owncloud.org/ns}read-only']) && $c['{http://owncloud.org/ns}read-only']===true){
@@ -424,7 +805,7 @@ class BCSabreImpl implements IBackendConnector{
         }
 
         $a=[];
-        $a['id']=$c["id"];
+        $a['id']=(string)$c["id"];
         $a['displayName']=isset($c['{DAV:}displayname'])?$c['{DAV:}displayname']:"Calendar";
         $a['color']=isset($c['{http://apple.com/ns/ical/}calendar-color'])?$c['{http://apple.com/ns/ical/}calendar-color']:"#000000";
         $a['uri']=$c['uri'];
@@ -440,39 +821,37 @@ class BCSabreImpl implements IBackendConnector{
      * @return string
      */
     public static function makeDavReport($start,$end,$status){
-//        return '<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop xmlns:D="DAV:"><C:calendar-data/></D:prop><C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:time-range '.($start!==null?('start="'.$start->format(self::TIME_FORMAT).'"' ):'').' end="'.$end->format(self::TIME_FORMAT).'"/></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="CATEGORIES"><C:text-match>'.BackendUtils::APPT_CAT.'</C:text-match></C:prop-filter>'
-//            .($status!==null?'<C:prop-filter name="STATUS"><C:text-match>'.$status.'</C:text-match></C:prop-filter>':'').
-//            '<C:prop-filter name="RRULE"><C:is-not-defined/></C:prop-filter></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
-
-        return '
-<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav">
-    <D:prop xmlns:D="DAV:">
-        <C:calendar-data/>
-    </D:prop>
-    <C:filter>
-        <C:comp-filter name="VCALENDAR">
-            <C:comp-filter name="VEVENT">
-                <C:prop-filter name="CATEGORIES">
-                    <C:text-match>'.BackendUtils::APPT_CAT.'</C:text-match>
-                </C:prop-filter>
-            </C:comp-filter>'
-                .($status!==null?'
-            <C:comp-filter name="VEVENT">
-                <C:prop-filter name="STATUS">
-                    <C:text-match>'.$status.'</C:text-match>
-                </C:prop-filter>
-            </C:comp-filter>':'').
-            '<C:comp-filter name="VEVENT">
-                <C:prop-filter name="RRULE">
-                    <C:is-not-defined/>
-                </C:prop-filter>
-            </C:comp-filter>
-            <C:comp-filter name="VEVENT">    
-                <C:time-range '.($start!==null?('start="'.$start->format(self::TIME_FORMAT).'"' ):'').' end="'.$end->format(self::TIME_FORMAT).'"/>
-            </C:comp-filter>    
-        </C:comp-filter>
-    </C:filter>
-</C:calendar-query>';
+        return '<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop xmlns:D="DAV:"><C:calendar-data/></D:prop><C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="CATEGORIES"><C:text-match>'.BackendUtils::APPT_CAT.'</C:text-match></C:prop-filter></C:comp-filter>'.($status!==null?'<C:comp-filter name="VEVENT"><C:prop-filter name="STATUS"><C:text-match>'.$status.'</C:text-match></C:prop-filter></C:comp-filter>':'').'<C:comp-filter name="VEVENT"><C:prop-filter name="RRULE"><C:is-not-defined/></C:prop-filter></C:comp-filter><C:comp-filter name="VEVENT"><C:time-range '.($start!==null?('start="'.$start->format(self::TIME_FORMAT).'"' ):'').' end="'.$end->format(self::TIME_FORMAT).'"/></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
     }
+
+    /**
+     * @param string $start
+     * @param string $end
+     * @param string $transp TRANSPARENT or OPAQUE
+     * @return string
+     */
+    public static function makeTrDavReport($start,$end,$transp){
+        return '<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop xmlns:D="DAV:"><C:calendar-data/></D:prop><C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="CATEGORIES"><C:text-match>'.BackendUtils::APPT_CAT.'</C:text-match></C:prop-filter></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="TRANSP"><C:text-match>'.$transp.'</C:text-match></C:prop-filter></C:comp-filter><C:comp-filter name="VEVENT"><C:time-range start="'.$start.'" end="'.$end.'"/></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
+    }
+
+    /**
+     * @param string $start
+     * @param string $end
+     * @return string
+     */
+    public static function makeTrBookedDavReport($start,$end){
+        return '<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop xmlns:D="DAV:"><C:calendar-data/></D:prop><C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="CATEGORIES"><C:text-match>'.BackendUtils::APPT_CAT.'</C:text-match></C:prop-filter></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="RRULE"><C:is-not-defined/></C:prop-filter></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="ORGANIZER"/></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="ATTENDEE"/></C:comp-filter><C:comp-filter name="VEVENT"><C:time-range start="'.$start.'" end="'.$end.'"/></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
+    }
+
+//<C:comp-filter name="VEVENT">
+//<C:prop-filter name="STATUS">
+//<C:text-match>CONFIRMED</C:text-match>
+//</C:prop-filter>
+//</C:comp-filter>
+//<C:comp-filter name="VEVENT">
+//<C:prop-filter name="TRANSP">
+//<C:text-match>OPAQUE</C:text-match>
+//</C:prop-filter>
+//</C:comp-filter>
 
 }
