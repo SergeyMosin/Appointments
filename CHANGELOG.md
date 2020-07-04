@@ -1,3 +1,12 @@
+## 1.6.0 - 2020-07-04
+### Added
+- External Mode to timeslot management
+- Cancellation link to confirmation emails
+### Changed
+- "Sunday" is red now
+### Fixed
+- Hash table cleanup when deleting old appointments.
+
 ## 1.5.2 - 2020-06-15
 ### Added
 - Text to "Public Page URL" dialog buttons
