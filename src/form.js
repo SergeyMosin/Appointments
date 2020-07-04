@@ -163,16 +163,22 @@
     }
 
     function prevNextDPU(e) {
-        const p=e.target.parentElement
-        if(e.target.id==="srgdev-dpu_bf-back"){
-            if(p.curDP>0) p.curDP--
-        }else{
-            if(p.curDP<p.maxDP) p.curDP++
-            if(p.curDP===p.maxDP){
-                e.target.setAttribute('disabled','')
-            }else{
-                e.target.removeAttribute('disabled')
+        let p
+        // e.target===undefined when we do initial "scroll" @see makeDpu()
+        if(e.target!==undefined) {
+            p = e.target.parentElement
+            if (e.target.id === "srgdev-dpu_bf-back") {
+                if (p.curDP > 0) p.curDP--
+            } else {
+                if (p.curDP < p.maxDP) p.curDP++
+                if (p.curDP === p.maxDP) {
+                    e.target.setAttribute('disabled', '')
+                } else {
+                    e.target.removeAttribute('disabled')
+                }
             }
+        }else{
+            p=e;
         }
         if(p.curDP===0){
             p.firstElementChild.setAttribute('disabled','')
@@ -559,18 +565,27 @@
             }
         }
 
+
         // Make empty time cont
-        lcdBF=document.createElement('div')
-        lcdBF.id="srgdev-dpu_tce"
-        lcdBF.className='srgdev-dpu-time-cont'
-        lcdBF.appendChild(document.createTextNode(dpuTrNA))
-        lcTime.appendChild(lcdBF)
+        let te=document.createElement('div')
+        te.id="srgdev-dpu_tce"
+        te.className='srgdev-dpu-time-cont'
+        te.appendChild(document.createTextNode(dpuTrNA))
+        lcTime.appendChild(te)
 
         lcTime.firstElementChild.setAttribute('data-active','')
         lcd.curActive=an.toString()
 
         cont.addEventListener("click", timeClick)
         document.getElementById('srgdev-ncfp_sel_cont').appendChild(cont)
+
+        // let's make sure correct date square is shown...
+        // ... 5 is the number of available slots per pagination page
+        let ti=Math.floor(an/5)
+        if(ti>0) {
+            lcdBF.curDP=ti
+            prevNextDPU(lcdBF)
+        }
     }
 
 })()
