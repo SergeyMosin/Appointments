@@ -1,13 +1,12 @@
 OC.L10N.register(
     "appointments",
     {
+    "Available" : "در دسترس",
     "Confirm" : "تائید",
     "Cancel" : "لغو",
     "Info" : "اطلاعات",
-    "Available" : "در دسترس",
     "Close" : "بستن",
     "Remove" : "حذف",
-    "Copy public link" : "پیوند عمومی را کپی کنید",
     "Start" : "شروع کنید",
     "Apply" : "اعمال",
     "Deleted" : "حذف شده",

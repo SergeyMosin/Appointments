@@ -6,7 +6,6 @@ OC.L10N.register(
     "Info" : "Info",
     "Close" : "Luk",
     "Remove" : "Fjern",
-    "Copy public link" : "Kopier offentligt link",
     "Start" : "Start",
     "Apply" : "Anvend",
     "Deleted" : "Slettet",

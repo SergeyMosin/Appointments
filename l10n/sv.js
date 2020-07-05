@@ -1,6 +1,7 @@
 OC.L10N.register(
     "appointments",
     {
+    "Available" : "Tillgänglig",
     "Dear %s," : "Bäste%s,",
     "The %1$s appointment scheduled for %2$s is awaiting your confirmation." : "%1$s-mötet inbokat den%2$s väntar på din bekräftelse.",
     "Confirm" : "Bekräfta",
@@ -15,7 +16,6 @@ OC.L10N.register(
     "Almost done..." : "Nästan klart...",
     "We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request" : "Vi har skickat ett mejl till %s. Var snäll och öppna det och klicka på bekräftelselänken för att slutföra din mötesbegäran",
     "Book Your Appointment" : "Boka in ditt möte",
-    "Available" : "Tillgänglig",
     "Appointments" : "Möten",
     "Book appointments into your calendar via secure online form." : "Boka in möten i din kalender via ett säkert onlineformulär.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Boka in möten i din kalender via ett säkert onlineformulär. Deltagare kan bekräfta eller ställa in möten via en e-postlänk.",
@@ -33,7 +33,6 @@ OC.L10N.register(
     "Copy to Next" : "Kopiera till nästa",
     "Adding appointment to {calendarName} calendar..." : "Lägger till möte i kalendern {calendarName}...",
     "Public Page Preview" : "Förhandsgranska publik sida",
-    "Copy public link" : "Kopiera publik länk",
     "New Settings Applied." : "Nya inställningar tillämpade.",
     "Select Dates:" : "Välj datum:",
     "Select Dates" : "Välj datum",

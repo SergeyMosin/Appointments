@@ -1,16 +1,18 @@
 OC.L10N.register(
     "appointments",
     {
+    "Available" : "متوفرة",
     "Confirm" : "تأكيد",
     "Cancel" : "إلغاء",
     "Info" : "Info",
-    "Available" : "متوفرة",
     "Close" : "إغلاق",
     "Remove" : "حذف",
+    "Warning" : "تحذير",
     "Deleted" : "تم حذفه",
     "Confirmed" : "مؤكَّد",
     "close" : "إغلاق",
     "Advanced Settings" : "الإعدادات المتقدمة",
+    "Error" : "خطأ",
     "Location:" : "المكان :",
     "Back" : "العودة",
     "Next" : "التالي"

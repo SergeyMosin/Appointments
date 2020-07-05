@@ -31,7 +31,6 @@ OC.L10N.register(
     "Remove All" : "Gỡ bỏ tất cả",
     "Copy to Next" : "Sao chép tới Tiếp theo",
     "Public Page Preview" : "Xem trước Trang Công Khai",
-    "Copy public link" : "Sao chép liên kết công khai",
     "New Settings Applied." : "Các thiết lập mới đã được áp dụng.",
     "Select Dates:" : "Chọn ngày:",
     "Select Dates" : "Chọn ngày",

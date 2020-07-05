@@ -1,10 +1,10 @@
 OC.L10N.register(
     "appointments",
     {
+    "Available" : "Pieejams",
     "Confirm" : "Apstiprināt",
     "Cancel" : "Atcelt",
     "Info" : "Info",
-    "Available" : "Pieejams",
     "Close" : "Aizvērt",
     "Remove" : "Noņemt",
     "Start" : "Sākt",
