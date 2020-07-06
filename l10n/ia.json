@@ -3,10 +3,12 @@
     "Cancel" : "Cancellar",
     "Info" : "Info",
     "Close" : "Clauder",
+    "Warning" : "Aviso",
     "Start" : "Initio",
     "Apply" : "Applicar",
     "Deleted" : "Delite",
     "Confirmed" : "Confirmate",
+    "Error" : "Error",
     "Back" : "Retro",
     "Next" : "Sequente"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

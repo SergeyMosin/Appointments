@@ -5,10 +5,12 @@ OC.L10N.register(
     "Info" : "Info",
     "Close" : "Lukk",
     "Remove" : "Fjern",
+    "Warning" : "Åtvaring",
     "Start" : "Start",
     "Apply" : "Anvend",
     "Deleted" : "Sletta",
     "Confirmed" : "Stadfesta",
+    "Error" : "Feil",
     "Back" : "Tilbake",
     "Next" : "Neste",
     "An error has occurred" : "Ein feil har oppstått"
