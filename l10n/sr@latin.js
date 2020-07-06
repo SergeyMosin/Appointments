@@ -5,8 +5,10 @@ OC.L10N.register(
     "Info" : "Info",
     "Close" : "Zatvori",
     "Remove" : "Ukloni",
+    "Warning" : "Upozorenje",
     "Deleted" : "Obrisano",
     "close" : "zatvori",
+    "Error" : "Error",
     "Location:" : "Lokacija:",
     "Back" : "Nazad"
 },

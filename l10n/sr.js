@@ -1,12 +1,13 @@
 OC.L10N.register(
     "appointments",
     {
+    "Available" : "Доступно",
     "Confirm" : "Потврди",
     "Cancel" : "Одустани",
     "Info" : "Инфо",
-    "Available" : "Доступно",
     "Close" : "Затвори",
     "Remove" : "Уклони",
+    "Warning" : "Упозорење",
     "Start" : "Почетак",
     "Apply" : "Примени",
     "Deleted" : "Обрисано",
@@ -14,6 +15,8 @@ OC.L10N.register(
     "Canceled" : "Отказано",
     "close" : "затвори",
     "Advanced Settings" : "Напредне поставке",
+    "Simple" : "Просто",
+    "Error" : "Грешка",
     "Name:" : "Име:",
     "Location:" : "Локација:",
     "Back" : "Назад",

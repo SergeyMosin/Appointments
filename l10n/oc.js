@@ -5,8 +5,11 @@ OC.L10N.register(
     "Info" : "Info",
     "Close" : "Tampar",
     "Remove" : "Suprimir",
+    "Warning" : "Atencion",
     "Apply" : "Aplicar",
     "Deleted" : "Suprimit",
+    "Simple" : "Simpla",
+    "Error" : "Error",
     "Location:" : "Localizacion :",
     "Back" : "Retorn",
     "Next" : "Seguent"

@@ -1,18 +1,20 @@
 OC.L10N.register(
     "appointments",
     {
+    "Available" : "Disponeblaj",
     "Confirm" : "Konfirmi",
     "Cancel" : "Nuligi",
     "Info" : "Info",
-    "Available" : "Disponeblaj",
     "Close" : "Malfermi",
     "Remove" : "Forigi",
+    "Warning" : "Averto",
     "Start" : "Komenco",
     "Apply" : "Validigi",
     "Deleted" : "Forigita",
     "Confirmed" : "Konfirmita",
     "Canceled" : "Nuligita",
     "Advanced Settings" : "Detalaj agordoj",
+    "Error" : "Eraro",
     "Location:" : "Loko:",
     "Back" : "Antaŭen",
     "Next" : "Sekva"
