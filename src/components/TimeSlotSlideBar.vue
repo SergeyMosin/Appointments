@@ -121,6 +121,15 @@
                             style="right: 9%"
                             @click="$root.$emit('helpWanted','push_rec_nr')"></a>
                     </div>
+                    <div class="srgdev-appt-info-lcont srgdev-appt-sb-chb-cont" style="margin-top: 1.25em"><input
+                            type="checkbox"
+                            v-model="calInfo.nrRequireCat"
+                            id="appt_tsb-require-cat"
+                            class="checkbox"><label for="appt_tsb-require-cat">{{t('appointments','Require "Appointment" category')}}</label><a
+                            class="icon-info srgdev-appt-info-link"
+                            style="right: 9%"
+                            @click="$root.$emit('helpWanted','require_cat_nr')"></a>
+                    </div>
                     <button
                             @click="applyNRSettings"
                             class="primary srgdev-appt-sb-genbtn">{{t('appointments','Apply')}}
@@ -248,6 +257,7 @@
                         nrSrcCalId:"-1",
                         nrDstCalId:"-1",
                         nrPushRec:true,
+                        nrRequireCat:false,
                         tsMode:"0",
                     }
                 },

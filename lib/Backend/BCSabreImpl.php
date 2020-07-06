@@ -108,10 +108,11 @@ class BCSabreImpl implements IBackendConnector{
      * @param int $end_ts UTC
      * @param string $calId
      * @param \DateTimeZone $utz user's timezone
+     * @param bool $cat_required
      * @return int 0=no events, 1=at least 1
      * @noinspection PhpDocMissingThrowsInspection
      */
-    private function checkRangeTR($start_ts,$end_ts,$calId, $utz){
+    private function checkRangeTR($start_ts, $end_ts, $calId, $utz, $cat_required){
 
         // Because of floating timezones...
         // 50400 = 14 hours
@@ -124,7 +125,8 @@ class BCSabreImpl implements IBackendConnector{
         $parser=new XmlService();
         $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
         try {
-            $result = $parser->parse($this::makeTrBookedDavReport($r_start,$r_end));
+//            $result = $parser->parse($this::makeTrBookedDavReport($r_start,$r_end));
+            $result = $parser->parse($this::makeTrDavReport($r_start,$r_end,$cat_required));
         } catch (ParseException $e) {
             \OC::$server->getLogger()->error($e);
             return -1;
@@ -136,14 +138,26 @@ class BCSabreImpl implements IBackendConnector{
         $c=0;
         foreach ($objs as $obj) {
 
+            if(strpos($obj['calendardata'],"\r\nTRANSP:TRANSPARENT\r\n",22)!==false){
+                continue;
+            }
+
             /** @var \Sabre\VObject\Component\VCalendar $vo */
             $vo = Reader::read($obj['calendardata']);
-            if (!isset($vo->VEVENT) || !$vo->VEVENT->DTSTART->hasTime() || !isset($vo->VEVENT->DTEND)) {
+            if (!isset($vo->VEVENT)) {
                 $vo->destroy();
                 continue;
             }
             /** @var \Sabre\VObject\Component\VEvent $evt */
             $evt = $vo->VEVENT;
+
+            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+            if(isset($evt->RRULE) || !$evt->DTSTART->hasTime()
+                || !isset($evt->DTEND)
+                || (isset($evt->CLASS) && $evt->CLASS->getValue()!=='PUBLIC')){
+                $vo->destroy();
+                continue;
+            }
 
             /** @noinspection PhpPossiblePolymorphicInvocationInspection */
             $s_ts = $evt->DTSTART->getDateTime($utz)->getTimestamp();
@@ -197,11 +211,16 @@ class BCSabreImpl implements IBackendConnector{
         $srcId=substr($calIds,$sp+1);
         $dstId=substr($calIds,0,$sp);
 
+        $cls=$this->utils->getUserSettings(
+            BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
+            $userId,$this->appName);
+
         $parser=new XmlService();
         $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
 
         try {
-            $result = $parser->parse($this::makeTrBookedDavReport($start_str,$end_str));
+//            $result = $parser->parse($this::makeTrBookedDavReport($start_str,$end_str));
+            $result = $parser->parse($this::makeTrDavReport($start_str,$end_str,$cls[BackendUtils::CLS_XTM_REQ_CAT]));
         } catch (ParseException $e) {
             \OC::$server->getLogger()->error($e);
             return null;
@@ -216,14 +235,24 @@ class BCSabreImpl implements IBackendConnector{
             $objs = $this->backend->getMultipleCalendarObjects($dstId, $urls);
             foreach ($objs as $obj) {
 
+                if(strpos($obj['calendardata'],"\r\nTRANSP:TRANSPARENT\r\n",22)!==false){
+                    continue;
+                }
+
                 /** @var \Sabre\VObject\Component\VCalendar $vo */
                 $vo = Reader::read($obj['calendardata']);
-                if (!isset($vo->VEVENT) || !$vo->VEVENT->DTSTART->hasTime()) {
+                if (!isset($vo->VEVENT)) {
                     $vo->destroy();
                     continue;
                 }
                 /** @var \Sabre\VObject\Component\VEvent $evt */
                 $evt = $vo->VEVENT;
+                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+                if(isset($evt->RRULE) || !$evt->DTSTART->hasTime()
+                    || (isset($evt->CLASS) && $evt->CLASS->getValue()!=='PUBLIC')){
+                    $vo->destroy();
+                    continue;
+                }
 
                 /** @var \Sabre\VObject\Property\ICalendar\DateTime $dt_start */
                 $dt_start = $evt->DTSTART;
@@ -249,9 +278,8 @@ class BCSabreImpl implements IBackendConnector{
             }
         }
 
-
         try {
-            $result = $parser->parse($this::makeTrDavReport($start_str,$end_str,'TRANSPARENT'));
+            $result = $parser->parse($this::makeTrDavReport($start_str,$end_str,$cls[BackendUtils::CLS_XTM_REQ_CAT]));
         } catch (ParseException $e) {
             \OC::$server->getLogger()->error($e);
             return null;
@@ -266,9 +294,14 @@ class BCSabreImpl implements IBackendConnector{
         $ses_info='_1'.pack("L",time());
         foreach ($objs as $obj) {
 
+            if(strpos($obj['calendardata'],"\r\nTRANSP:TRANSPARENT\r\n",22)===false){
+                // must be "Free" aka TRANSPARENT
+                continue;
+            }
+
             /** @var \Sabre\VObject\Component\VCalendar $vo */
             $vo = Reader::read($obj['calendardata']);
-            if (!isset($vo->VEVENT) || !$vo->VEVENT->DTSTART->hasTime()) {
+            if (!isset($vo->VEVENT)) {
                 // not an event or all day
                 $vo->destroy();
                 continue;
@@ -277,14 +310,18 @@ class BCSabreImpl implements IBackendConnector{
             /** @var \Sabre\VObject\Component\VEvent $evt */
             $evt = $vo->VEVENT;
 
+            if(!$evt->DTSTART->hasTime()
+                || (isset($evt->CLASS) && $evt->CLASS->getValue()!=='PUBLIC')){
+                $vo->destroy();
+                continue;
+            }
+
             $ts_pref = 'U';
             $ts_offset = 0;
             if ($evt->DTSTART->isFloating()) {
                 $ts_pref = 'F';
                 $ts_offset = $utz_offset;
             }
-
-//            $ts_pref=$evt->DTSTART->isFloating()?'F':'U';
 
             if (isset($evt->RRULE)) {
 
@@ -324,9 +361,7 @@ class BCSabreImpl implements IBackendConnector{
                 $it->next();
             }
 
-            if ($skip_count > 14 && $this->utils->getUserSettings(
-                    BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-                    $userId,$this->appName)[BackendUtils::CLS_XTM_PUSH_REC]===true) {
+            if ($skip_count > 14 && $cls[BackendUtils::CLS_XTM_PUSH_REC]===true) {
                 // Optimize recurrence
                 $it->rewind();
                 $skip_until = $skip_count - 7;
@@ -613,7 +648,7 @@ class BCSabreImpl implements IBackendConnector{
 
 
                 /** @noinspection PhpUndefinedVariableInspection */
-                $trc=$this->checkRangeTR($info['ext_start'],$info['ext_end'],$calId,$utz);
+                $trc=$this->checkRangeTR($info['ext_start'],$info['ext_end'],$calId,$utz,$cls[BackendUtils::CLS_XTM_REQ_CAT]);
 
                 if($trc===0){
                     // the time range is good, create new object...
@@ -827,21 +862,22 @@ class BCSabreImpl implements IBackendConnector{
     /**
      * @param string $start
      * @param string $end
-     * @param string $transp TRANSPARENT or OPAQUE
+     * @param bool $cat_required
      * @return string
      */
-    public static function makeTrDavReport($start,$end,$transp){
-        return '<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop xmlns:D="DAV:"><C:calendar-data/></D:prop><C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="CATEGORIES"><C:text-match>'.BackendUtils::APPT_CAT.'</C:text-match></C:prop-filter></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="TRANSP"><C:text-match>'.$transp.'</C:text-match></C:prop-filter></C:comp-filter><C:comp-filter name="VEVENT"><C:time-range start="'.$start.'" end="'.$end.'"/></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
+    public static function makeTrDavReport($start, $end, $cat_required){
+        return '<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop xmlns:D="DAV:"><C:calendar-data/></D:prop><C:filter><C:comp-filter name="VCALENDAR">'.($cat_required?'<C:comp-filter name="VEVENT"><C:prop-filter name="CATEGORIES"><C:text-match>'.BackendUtils::APPT_CAT.'</C:text-match></C:prop-filter></C:comp-filter>':'').'<C:comp-filter name="VEVENT"><C:time-range start="'.$start.'" end="'.$end.'"/></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
     }
 
-    /**
-     * @param string $start
-     * @param string $end
-     * @return string
-     */
-    public static function makeTrBookedDavReport($start,$end){
-        return '<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop xmlns:D="DAV:"><C:calendar-data/></D:prop><C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="CATEGORIES"><C:text-match>'.BackendUtils::APPT_CAT.'</C:text-match></C:prop-filter></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="RRULE"><C:is-not-defined/></C:prop-filter></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="ORGANIZER"/></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="ATTENDEE"/></C:comp-filter><C:comp-filter name="VEVENT"><C:time-range start="'.$start.'" end="'.$end.'"/></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
-    }
+
+//    /**
+//     * @param string $start
+//     * @param string $end
+//     * @return string
+//     */
+//    public static function makeTrBookedDavReport($start,$end){
+//        return '<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop xmlns:D="DAV:"><C:calendar-data/></D:prop><C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="CATEGORIES"><C:text-match>'.BackendUtils::APPT_CAT.'</C:text-match></C:prop-filter></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="RRULE"><C:is-not-defined/></C:prop-filter></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="ORGANIZER"/></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="ATTENDEE"/></C:comp-filter><C:comp-filter name="VEVENT"><C:time-range start="'.$start.'" end="'.$end.'"/></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
+//    }
 
 //<C:comp-filter name="VEVENT">
 //<C:prop-filter name="STATUS">
