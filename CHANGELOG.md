@@ -1,3 +1,7 @@
+## 1.6.1 - 2020-07-06
+### Changed
+- "Appointment" category is optional in "External Mode"
+
 ## 1.6.0 - 2020-07-04
 ### Added
 - External Mode to timeslot management
