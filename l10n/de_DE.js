@@ -152,7 +152,7 @@ OC.L10N.register(
     "Source calendar is required" : "Ein Quellen-Kalender ist erforderlich",
     "Destination calendar is required" : "Ein Ziel-Kalender ist erforderlich",
     "Source and Destination calendars must be different" : "Quell- und Zielkalender müssen unterschiedlich sein",
-    "Time slot mode has changed. Public page is going offline…" : "Der Zeitfenstermodus hat sich geändert. Die öffentliche geht offline…",
+    "Time slot mode has changed. Public page is going offline…" : "Der Zeitfenstermodus hat sich geändert. Die öffentliche Seite geht offline…",
     "Your Contact Information" : "Ihre Kontaktinformationen",
     "Form header and event organizer settings" : "Formularkopf- und Ereigniseinstellungen",
     "Name:" : "Name:",

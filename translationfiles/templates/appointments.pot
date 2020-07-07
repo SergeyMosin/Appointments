@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2020-07-06 03:17+0000\n"
+"POT-Creation-Date: 2020-07-07 03:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,21 +17,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: /app/lib/Backend/BackendUtils.php:757
+#: /app/lib/Backend/BackendUtils.php:759
 msgid "Your email address is required for this operation."
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:761
+#: /app/lib/Backend/BackendUtils.php:763
 msgid ""
 "A location, address or URL is required for this operation. Check User/"
 "Organization settings."
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:773
+#: /app/lib/Backend/BackendUtils.php:775
 msgid "Can't find your name. Check User/Organization settings."
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:782
+#: /app/lib/Backend/BackendUtils.php:784
 msgid "Available"
 msgstr ""
 
@@ -412,7 +412,7 @@ msgid "Copy Error"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:43
-#: /app/specialVueFakeDummyForL10nScript.js:120
+#: /app/specialVueFakeDummyForL10nScript.js:121
 msgid "Warning"
 msgstr ""
 
@@ -528,9 +528,9 @@ msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:70
 #: /app/specialVueFakeDummyForL10nScript.js:83
-#: /app/specialVueFakeDummyForL10nScript.js:103
-#: /app/specialVueFakeDummyForL10nScript.js:112
-#: /app/specialVueFakeDummyForL10nScript.js:127
+#: /app/specialVueFakeDummyForL10nScript.js:104
+#: /app/specialVueFakeDummyForL10nScript.js:113
+#: /app/specialVueFakeDummyForL10nScript.js:128
 msgid "Apply"
 msgstr ""
 
@@ -635,87 +635,91 @@ msgstr ""
 msgid "Optimize recurrence"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:104
-msgid "Advanced Settings"
+#: /app/specialVueFakeDummyForL10nScript.js:103
+msgid "Require \"Appointment\" category"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:105
-msgid "When Attendee Cancels"
+msgid "Advanced Settings"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:106
-msgid "Mark the appointment as canceled"
+msgid "When Attendee Cancels"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:107
-msgid "Reset (make the timeslot available)"
+msgid "Mark the appointment as canceled"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:108
-msgid "Calendar for booked appointments"
+msgid "Reset (make the timeslot available)"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:109
-msgid "Time slot mode"
+msgid "Calendar for booked appointments"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:110
-msgid "Simple"
+msgid "Time slot mode"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:111
+msgid "Simple"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:112
 msgid "External"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:113
+#: /app/specialVueFakeDummyForL10nScript.js:114
 msgid "Select Calendar"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:114
-#: /app/specialVueFakeDummyForL10nScript.js:116
-#: /app/specialVueFakeDummyForL10nScript.js:118
+#: /app/specialVueFakeDummyForL10nScript.js:115
+#: /app/specialVueFakeDummyForL10nScript.js:117
+#: /app/specialVueFakeDummyForL10nScript.js:119
 msgid "Error"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:115
+#: /app/specialVueFakeDummyForL10nScript.js:116
 msgid "Source calendar is required"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:117
+#: /app/specialVueFakeDummyForL10nScript.js:118
 msgid "Destination calendar is required"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:119
+#: /app/specialVueFakeDummyForL10nScript.js:120
 msgid "Source and Destination calendars must be different"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:121
+#: /app/specialVueFakeDummyForL10nScript.js:122
 msgid "Time slot mode has changed. Public page is going offline…"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:122
+#: /app/specialVueFakeDummyForL10nScript.js:123
 msgid "Your Contact Information"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:122
+#: /app/specialVueFakeDummyForL10nScript.js:123
 msgid "Form header and event organizer settings"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:123
+#: /app/specialVueFakeDummyForL10nScript.js:124
 #: /app/templates/public/form.php:35
 msgid "Name:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:124
+#: /app/specialVueFakeDummyForL10nScript.js:125
 #: /app/templates/public/form.php:37
 msgid "Email:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:125
+#: /app/specialVueFakeDummyForL10nScript.js:126
 msgid "Location:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:126
+#: /app/specialVueFakeDummyForL10nScript.js:127
 #: /app/templates/public/form.php:41
 msgid "Phone:"
 msgstr ""
