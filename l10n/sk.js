@@ -139,6 +139,7 @@ OC.L10N.register(
     "Calendar Required" : "Vyžaduje sa kalendár",
     "Destination Calendar (Booked)" : "Cieľový kalendár (rezervované)",
     "Optimize recurrence" : "Optimalizovať opakovanie",
+    "Require \"Appointment\" category" : "Vyžadovať kategóriu „schôdzka“",
     "Advanced Settings" : "Rozšírené nastavenia",
     "When Attendee Cancels" : "Keď účastník zruší",
     "Mark the appointment as canceled" : "Označte stretnutie ako zrušené",

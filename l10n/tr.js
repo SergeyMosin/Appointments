@@ -139,6 +139,7 @@ OC.L10N.register(
     "Calendar Required" : "Zorunlu Takvim",
     "Destination Calendar (Booked)" : "Hedef Takvim (Ayırtılmış)",
     "Optimize recurrence" : "Yinelemeyi iyileştir",
+    "Require \"Appointment\" category" : "\"Randevu\" kategorisi zorunlu olsun",
     "Advanced Settings" : "Gelişmiş Ayarlar",
     "When Attendee Cancels" : "Katılımcı İptal Ettiğinde",
     "Mark the appointment as canceled" : "Randevu iptal edilmiş olarak işaretlensin",
