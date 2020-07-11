@@ -8,6 +8,7 @@ OC.L10N.register(
     "Warning" : "Kemenadenn",
     "Deleted" : "Lamet",
     "Error" : "Fazi",
+    "Location:" : "c'h :",
     "Email is required." : "Un email eo ret kaout",
     "Back" : "Distro"
 },
