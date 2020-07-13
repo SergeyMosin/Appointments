@@ -66,6 +66,7 @@ class BackendUtils{
     public const CLS_XTM_DST_ID= 'nrDstCalId';
     public const CLS_XTM_PUSH_REC= 'nrPushRec';
     public const CLS_XTM_REQ_CAT= 'nrRequireCat';
+    public const CLS_XTM_AUTO_FIX= 'nrAutoFix';
     public const CLS_ON_CANCEL = 'whenCanceled';
     public const CLS_TS_MODE = 'tsMode';
     const CLS_DEF=array(
@@ -74,9 +75,11 @@ class BackendUtils{
         self::CLS_XTM_DST_ID=>'-1',
         self::CLS_XTM_PUSH_REC=>true,
         self::CLS_XTM_REQ_CAT=>false,
+        self::CLS_XTM_AUTO_FIX=>false,
         self::CLS_ON_CANCEL=>'mark',
         self::CLS_TS_MODE=>'0' // 0=simple/manual, 1=external/XTM, (2=template)
     );
+
     public const KEY_PSN = "page_options";
     public const PSN_PAGE_TITLE = "pageTitle";
     public const PSN_FNED = "startFNED";
@@ -680,7 +683,6 @@ class BackendUtils{
         $config->setUserValue($userId,$appName,$key,$js);
         return true;
     }
-
 
     /**
      * @param string $userId

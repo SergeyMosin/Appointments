@@ -4,6 +4,7 @@ namespace OCA\Appointments\Controller;
 
 use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
+use OCA\Appointments\Backend\ExternalModeSabrePlugin;
 use OCA\Appointments\SendDataResponse;
 use OCP\AppFramework\Controller;
 use OCP\IConfig;
@@ -283,14 +284,32 @@ class StateController extends Controller{
                         $value, BackendUtils::CLS_DEF,
                         $this->userId,$this->appName)===true
                 ){
-                    // Disable page if ts_mode has changed...
-                    if($ts_mode!==$this->utils->getUserSettings(
-                            BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-                            $this->userId ,$this->appName)[BackendUtils::CLS_TS_MODE]){
+                    $cls=$this->utils->getUserSettings(
+                        BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
+                        $this->userId ,$this->appName);
+
+
+                    // Set ExternalModeSabrePlugin::AUTO_FIX_URI
+                    $af_uri="";
+                    if($ts_mode==="1" && $cls[BackendUtils::CLS_XTM_SRC_ID]!=="-1" && $cls[BackendUtils::CLS_XTM_AUTO_FIX]===true){
+                        $ci=$this->bc->getCalendarById(
+                            $cls[BackendUtils::CLS_XTM_SRC_ID],
+                            $this->userId);
+                        if($ci!==null){
+                            $af_uri="/".$this->userId."/".$ci["uri"]."/";
+                        }
+                    }
+
+                    $this->config->setUserValue($this->userId, $this->appName,
+                        ExternalModeSabrePlugin::AUTO_FIX_URI,$af_uri);
+
+                    if($ts_mode!==$cls[BackendUtils::CLS_TS_MODE]){
+                        // ts_mode changed - disable page...
                         $this->config->setUserValue(
                             $this->userId, $this->appName,
                             'page_enabled','0');
                     }
+
                     $r->setStatus(200);
 
                 }else{

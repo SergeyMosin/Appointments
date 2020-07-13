@@ -44,4 +44,9 @@
             <route>appointments.page.index</route>
         </navigation>
     </navigations>
+    <sabre>
+        <plugins>
+            <plugin>OCA\Appointments\Backend\ExternalModeSabrePlugin</plugin>
+        </plugins>
+    </sabre>
 </info>

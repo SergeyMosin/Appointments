@@ -5,7 +5,6 @@ namespace OCA\Appointments\Controller;
 
 use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
-use OCA\Appointments\SendDataResponse;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\RedirectResponse;
@@ -16,6 +15,7 @@ use OCP\IRequest;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Controller;
 use OCP\Mail\IMailer;
+use OCP\Util;
 
 class PageController extends Controller {
     const RND_SPS = 'abcdefghijklmnopqrstuvwxyz1234567890';
@@ -931,10 +931,11 @@ class PageController extends Controller {
 
         if($pps[BackendUtils::PSN_META_NO_INDEX]===true) {
             // https://support.google.com/webmasters/answer/93710?hl=en
-            \OC_Util::addHeader("meta", ['name' => 'robots', 'content' => 'noindex']);
+            Util::addHeader("meta", ['name' => 'robots', 'content' => 'noindex']);
         }
 
-        \OC_Util::addStyle($this->appName,"form-xl-screen");
+        Util::addStyle($this->appName,"form-xl-screen");
+
 
         return $tr;
     }

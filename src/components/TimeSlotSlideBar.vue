@@ -130,6 +130,15 @@
                             style="right: 9%"
                             @click="$root.$emit('helpWanted','require_cat_nr')"></a>
                     </div>
+                    <div class="srgdev-appt-info-lcont srgdev-appt-sb-chb-cont" style="margin-top: 1.25em"><input
+                            type="checkbox"
+                            v-model="calInfo.nrAutoFix"
+                            id="appt_tsb-nr-auto-fix"
+                            class="checkbox"><label for="appt_tsb-nr-auto-fix">{{t('appointments','Auto-fix "Source" timeslots')}}</label><a
+                            class="icon-info srgdev-appt-info-link"
+                            style="right: 9%"
+                            @click="$root.$emit('helpWanted','auto_fix_nr')"></a>
+                    </div>
                     <button
                             @click="applyNRSettings"
                             class="primary srgdev-appt-sb-genbtn">{{t('appointments','Apply')}}
@@ -258,6 +267,7 @@
                         nrDstCalId:"-1",
                         nrPushRec:true,
                         nrRequireCat:false,
+                        nrAutoFix:false,
                         tsMode:"0",
                     }
                 },
