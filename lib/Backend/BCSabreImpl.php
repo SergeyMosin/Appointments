@@ -326,7 +326,7 @@ class BCSabreImpl implements IBackendConnector{
             if (isset($evt->RRULE)) {
 
                 try {
-                    $it = new EventIterator([$evt], null, $utz);
+                    $it = new EventIterator($vo->getByUID($evt->UID->getValue()), null, $utz);
                 } catch (NoInstancesException $e) {
                     // This event is recurring, but it doesn't have a single instance. We are skipping this event from the output entirely.
                     continue;
