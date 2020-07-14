@@ -158,12 +158,12 @@
                     <label
                             class="tsb-label"
                             for="appt_tsb-appt-prep-time">
-                        {{t('appointments','Minimum prep time')}}:</label>
+                        {{t('appointments','Minimum lead time')}}:</label>
                     <select
                             v-model="calInfo.prepTime"
                             class="tsb-input"
                             id="appt_tsb-appt-prep-time">
-                        <option value="0">{{t('appointments','No prep time')}}</option>
+                        <option value="0">{{t('appointments','No lead time')}}</option>
                         <option value="15">{{t('appointments','15 Minutes')}}</option>
                         <option value="30">{{t('appointments','30 Minutes')}}</option>
                         <option value="60">{{t('appointments','1 Hour')}}</option>
