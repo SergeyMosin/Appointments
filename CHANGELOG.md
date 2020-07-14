@@ -1,3 +1,7 @@
+## 1.6.3 - 2020-07-14
+### Fixed
+- Stale calendar info
+
 ## 1.6.2 - 2020-07-14
 ### Added
 - "Auto-fix" option for "External Mode"
