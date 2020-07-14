@@ -1,3 +1,9 @@
+## 1.6.2 - 2020-07-14
+### Added
+- "Auto-fix" option for "External Mode"
+- Ability to show appointment's title in the form
+- Minimum prep/lead time
+
 ## 1.6.1 - 2020-07-06
 ### Changed
 - "Appointment" category is optional in "External Mode"
