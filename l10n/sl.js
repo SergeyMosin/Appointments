@@ -133,6 +133,7 @@ OC.L10N.register(
     "Scheduled before" : "Načrtovano pred",
     "Remove empty slots only" : "Odstrani le prazne možnosti",
     "Remove empty and booked" : "Odstrani prazne in že izbrane",
+    "Destination Calendar (Booked)" : "Ciljni koledar (zabeležen)",
     "Advanced Settings" : "Napredne nastavitve",
     "When Attendee Cancels" : "Ko udeleženec prekliče izbor",
     "Mark the appointment as canceled" : "Označi sestanek kot preklican",

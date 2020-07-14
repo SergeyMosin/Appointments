@@ -139,6 +139,7 @@ OC.L10N.register(
     "Calendar Required" : "Calendario richiesto",
     "Destination Calendar (Booked)" : "Calendario di destinazione (Prenotato)",
     "Optimize recurrence" : "Ottimizza ricorrenza",
+    "Require \"Appointment\" category" : "Richiedi categoria \"Appuntamento\"",
     "Advanced Settings" : "Impostazioni avanzate",
     "When Attendee Cancels" : "Quando i partecipanti annullano",
     "Mark the appointment as canceled" : "Marca l'appuntamento come annullato",

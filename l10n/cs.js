@@ -139,6 +139,7 @@ OC.L10N.register(
     "Calendar Required" : "Kalendář je povinný",
     "Destination Calendar (Booked)" : "Cílový kalendář (zarezervováno)",
     "Optimize recurrence" : "Optimalizovat opakovanost",
+    "Require \"Appointment\" category" : "Vyžadovat kategorii „Schůzka“",
     "Advanced Settings" : "Pokročilá nastavení",
     "When Attendee Cancels" : "Když účastník zruší",
     "Mark the appointment as canceled" : "Označit schůzku jako zrušenou",
