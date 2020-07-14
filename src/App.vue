@@ -338,34 +338,7 @@
         computed: {
         },
         beforeMount() {
-            this.resetCurCal()
-            this.curCal.isCalLoading=true
-
-            // TODO: this just gets curCal + enabled??? ... migrate to calInfo
-            axios.post('state', {
-                a: 'get'
-            })
-            .then(response=>{
-                if(response.status===200) {
-                    const rda = response.data.split(String.fromCharCode(31))
-                    if(rda.length===2){
-                        const t=rda[0].split(String.fromCharCode(30))
-                        if(t.length===3){
-                            this.setCurCal({
-                                name: t[0],
-                                clr: detectColor(t[1]),
-                                url: t[2]
-                            })
-                        }
-                        this.pageEnabled=rda[1]
-                    }
-                }
-                this.curCal.isCalLoading=false
-            })
-            .catch(error=> {
-                this.curCal.isCalLoading=false
-                console.log(error);
-            });
+            this.getCurCal()
         },
 
         mounted() {
@@ -376,6 +349,39 @@
             this.$root.$off('helpWanted', this.helpWantedHandler)
         },
         methods: {
+
+            // for simple mode...
+            getCurCal(){
+                this.resetCurCal()
+                this.curCal.isCalLoading=true
+
+                // TODO: this just gets curCal + enabled??? ... migrate to calInfo
+                axios.post('state', {
+                    a: 'get'
+                })
+                    .then(response=>{
+                        if(response.status===200) {
+                            const rda = response.data.split(String.fromCharCode(31))
+                            if(rda.length===2){
+                                const t=rda[0].split(String.fromCharCode(30))
+                                if(t.length===3){
+                                    this.setCurCal({
+                                        name: t[0],
+                                        clr: detectColor(t[1]),
+                                        url: t[2]
+                                    })
+                                }
+                                this.pageEnabled=rda[1]
+                            }
+                        }
+                        this.curCal.isCalLoading=false
+                    })
+                    .catch(error=> {
+                        this.curCal.isCalLoading=false
+                        console.log(error);
+                    });
+
+            },
 
 
             removeOldAppointments(){
@@ -532,6 +538,7 @@
 
 
             getCalInfo(ebn){
+                this.getCurCal()
                 this.openSlideBar(-(ebn+1),'get_cls',this.calInfo)
             },
 
@@ -620,6 +627,10 @@
                     if(response.status===200) {
                         this.getFormData()
                         OCP.Toast.success(this.t('appointments','New Settings Applied.'))
+                        if(action==='set_cls'){
+                            // Refresh curCal:{}, needed when changing ts_mode
+                            this.getCurCal()
+                        }
                     }
                 }).catch((error) => {
                     this.stateInProgress=false

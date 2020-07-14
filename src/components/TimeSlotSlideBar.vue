@@ -329,7 +329,7 @@
                 const expId=nid*-1-1
                 this.expLoading=-1
                 if(expId<this.expando.length) {
-                    // NR and Adv. Settings should not be opemed at the same time
+                    // NR and Adv. Settings should not be opened at the same time
                     if(expId===3){
                         if(this.expando[1]===1){
                             this.toggleExpando(1)
