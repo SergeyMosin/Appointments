@@ -733,12 +733,15 @@ class PageController extends Controller {
         $params['appt_state']='2';
 
         $nw=intval($pps[BackendUtils::PSN_NWEEKS]);
-//        $nw++; // for alignment in the form <- TODO: <- not needed right ???
+
+        $cls=$this->utils->getUserSettings(
+            BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
+            $uid,$this->appName);
 
         // Because of floating timezones...
         $utz=$this->utils->getUserTimezone($uid,$this->c);
         try {
-            $t_start = new \DateTime('now', $utz);
+            $t_start = new \DateTime('now +'.$cls[BackendUtils::CLS_PREP_TIME]."mins", $utz);
         } catch (\Exception $e) {
             \OC::$server->getLogger()->error($e->getMessage().", timezone: ".$utz->getName());
             $params['appt_state']='6';
@@ -750,10 +753,6 @@ class PageController extends Controller {
         $t_end->setTimestamp($t_start->getTimestamp()+(7*$nw*86400));
         $t_end->setTime(0,0);
 
-
-        $cls=$this->utils->getUserSettings(
-            BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-            $uid,$this->appName);
         $ts_mode=$cls[BackendUtils::CLS_TS_MODE];
         if($ts_mode==="1"){
             // external mode

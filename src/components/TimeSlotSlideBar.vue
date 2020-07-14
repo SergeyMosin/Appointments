@@ -157,6 +157,20 @@
                 <div :data-expand="expando[1]" class="srgdev-appt_expando_cont">
                     <label
                             class="tsb-label"
+                            for="appt_tsb-appt-prep-time">
+                        {{t('appointments','Minimum prep time')}}:</label>
+                    <select
+                            v-model="calInfo.prepTime"
+                            class="tsb-input"
+                            id="appt_tsb-appt-prep-time">
+                        <option value="0">{{t('appointments','No prep time')}}</option>
+                        <option value="15">{{t('appointments','15 Minutes')}}</option>
+                        <option value="30">{{t('appointments','30 Minutes')}}</option>
+                        <option value="60">{{t('appointments','1 Hour')}}</option>
+                        <option value="120">{{t('appointments','2 Hours')}}</option>
+                    </select>
+                    <label
+                            class="tsb-label"
                             for="appt_tsb-appt-reset">
                         {{t('appointments','When Attendee Cancels')}}:</label>
                     <select
@@ -261,6 +275,7 @@
                 type: Object,
                 default: function () {
                     return {
+                        prepTime:"0",
                         whenCanceled:"mark",
                         destCalId:"-1",
                         nrSrcCalId:"-1",

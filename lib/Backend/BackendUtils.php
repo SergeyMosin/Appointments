@@ -67,6 +67,7 @@ class BackendUtils{
     public const CLS_XTM_PUSH_REC= 'nrPushRec';
     public const CLS_XTM_REQ_CAT= 'nrRequireCat';
     public const CLS_XTM_AUTO_FIX= 'nrAutoFix';
+    public const CLS_PREP_TIME = 'prepTime';
     public const CLS_ON_CANCEL = 'whenCanceled';
     public const CLS_TS_MODE = 'tsMode';
     const CLS_DEF=array(
@@ -76,6 +77,7 @@ class BackendUtils{
         self::CLS_XTM_PUSH_REC=>true,
         self::CLS_XTM_REQ_CAT=>false,
         self::CLS_XTM_AUTO_FIX=>false,
+        self::CLS_PREP_TIME=>"0",
         self::CLS_ON_CANCEL=>'mark',
         self::CLS_TS_MODE=>'0' // 0=simple/manual, 1=external/XTM, (2=template)
     );
