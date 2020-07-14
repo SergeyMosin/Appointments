@@ -25,7 +25,9 @@
 <code class="srgdev-appt-hs-code">
 &lt;label for=&quot;appt_gdpr_id&quot;&gt;Some text &lt;/label&gt;&lt;a href=&quot;PRIVACY_POLCY_URL&quot;&gt;Privacy Policy&lt;/a&gt;&lt;label for=&quot;appt_gdpr_id&quot;&gt; some more text.&lt;/label&gt;
 </code>
-    <p class="srgdev-appt-hs-p"><strong id="srgdev-sec_style">Style Override</strong></p>
+    <p class="srgdev-appt-hs-p-h"><strong>Appointment's Title</strong></p>
+    <p class="srgdev-appt-hs-p">If an event's title/summary starts with an "_" character then the title will be displayed next or below the time in the form. For example: <code class="srgdev-appt-hs-code_short" style="padding-top: .1em; padding-bottom: .1em"><strong>_</strong>Language Lessons</code> will be displayed as "Language Lessons"</p>
+    <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_style">Style Override</strong></p>
     <p class="srgdev-appt-hs-p">Insert custom <code>&lt;style&gt;&lt;/style&gt;</code> element to override default page style. Try something like this for example:</p>
 <code style="white-space: pre;" class="srgdev-appt-hs-code">&lt;style&gt;
 #header{
@@ -61,6 +63,7 @@ form{
     <p style="margin-left: 1em" class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_destcal_nr">Destination Calendar (External mode)</strong> - Booked appointments will be placed in here. In addition to booked appointments, any events in this calendar marked as "<strong>Busy</strong>" will prevent conflicting timeslots in the "Source Calendar" from appearing in the public form. Also see <span style="font-style: italic">Require "Appointment" category.</span></p>
     <p style="margin-left: 1em" class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_push_rec_nr">Optimize recurrence (External mode)</strong> - If recurrent events are used in the "Source Calendar" the start (DTSTART) date will be pushed forward once in a while in order to improve performance.</p>
     <p style="margin-left: 1em" class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_require_cat_nr">Require "Appointment" category (External mode)</strong> - When this option is set only events with with "Category" set to "<strong>Appointment</strong>" (in Engilsh) will be considered.</p>
+    <p style="margin-left: 1em" class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_auto_fix_nr">Auto-fix "Source" timeslots (External mode)</strong> - Some calendar apps do not allow users to set Free/Busy parameter, resulting in timeslots not being available for booking. If this option is enabled <strong>AND the first character of the Description/Notes is "_"</strong> then the Free/Busy will be set to "Free" and "Appointment" category will be added automatically when a new event is created in the "Source" calendar.</p>
     <h2 class="srgdev-appt-hs-h1">9. iFrame/Embedding</h2>
     <div class="srgdev-appt-hs-p">
         1. If the iframe is under a different domain use <strong>occ</strong> to set allowed Frame Ancestor Domain:

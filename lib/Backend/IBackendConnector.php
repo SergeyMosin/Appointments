@@ -112,11 +112,12 @@ interface IBackendConnector{
     function cancelAttendee($userId, $calId, $uri);
 
     /**
-     * Returns array [int, string, string|null, string]
+     * Returns array [int, string, string|null, string, string]
      *              Status: 0=OK,1=Error
-     *              Localized DateTime string, can be empty
-     *              see PageController:addAppointments $ds param, can be empty
+     *              Localized DateTime string, can be empt see PageController:addAppointments
+     *              $ds param, can be empty
      *              $tz_data for new appointment can be one of: VTIMEZONE data, 'L' = floating or 'UTC'
+     *              $title might be needed when the appointment is reset
      *
      * @param $userId
      * @param $calId

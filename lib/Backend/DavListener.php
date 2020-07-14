@@ -74,9 +74,12 @@ class DavListener {
 
         if(isset($evt->{BackendUtils::XAD_PROP})){
             // New: shared calendar support
-            $userId=$utils->decrypt(
+
+            // @see BackendUtils->dataSetAttendee for BackendUtils::XAD_PROP
+            $xad=explode(chr(31),$utils->decrypt(
                 $evt->{BackendUtils::XAD_PROP}->getValue(),
-                $evt->UID->getValue());
+                $evt->UID->getValue()));
+            $userId=$xad[0];
         }else {
             // fallback: might not work with shared calendars
             // TODO: remove this in the next major release

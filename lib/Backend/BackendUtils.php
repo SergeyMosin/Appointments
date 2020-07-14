@@ -143,54 +143,6 @@ class BackendUtils{
         }
     }
 
-
-    /**
-     * @param \Sabre\VObject\Document $vo
-     * @param string $ses_info Session start(time()).'|'.object uri
-     * @param string $key Encryption key...
-     *                    if key==="" return end_time instead of uri
-     * @param int $my_offset user's timezone offset from UTC
-     * @param bool $my_tz_is_floating
-     * @return string[]
-     *          0: timestamp in user's time,
-     *          1: Encoded string - the separator ',' is always appended to the end
-     */
-    function encodeCalendarData($vo, $ses_info, $key, $my_offset, $my_tz_is_floating){
-
-        /**
-         * @var  \Sabre\VObject\Property\ICalendar\DateTime $dtstart
-         */
-        $dtstart=$vo->VEVENT->DTSTART;
-        $start_date_time=$dtstart->getDateTime();
-        $evt_offset=$start_date_time->getOffset();
-        $ts=$start_date_time->getTimestamp();
-
-        $is_floating=$dtstart->isFloating();
-        // strlen($dt_value)===15 when not UTC
-        if($is_floating || ($my_tz_is_floating && strlen($dt_value=$dtstart->getValue())===15 && $evt_offset===$my_offset)
-        ){
-            // we want local time - no matter timezone
-            $ts_out="F".($ts+$evt_offset);
-            if($is_floating) $ts-=$my_offset;
-
-            $t=":F";
-        }else{
-            // utc timestamp
-            $ts_out="U".$ts;
-
-            $t=":U";
-            $evt_offset=0;
-        }
-
-        if($key!==""){
-            $ts_out.=":".$this->encrypt($ses_info,$key).",";
-        }else{
-            $ts_out.=$t.($vo->VEVENT->DTEND->getDateTime()->getTimestamp()+$evt_offset).',';
-        }
-
-        return [$ts,$ts_out];
-    }
-
     /**
      * @param $data
      * @param $info
@@ -226,7 +178,13 @@ class BackendUtils{
         $a['PARTSTAT']="NEEDS-ACTION";
         $a['SCHEDULE-AGENT']="CLIENT";
 
-        if(!isset($evt->SUMMARY)) $evt->add('SUMMARY');
+        $title="";
+        if(!isset($evt->SUMMARY)){
+            $evt->add('SUMMARY');
+        }else{
+            $t=$evt->SUMMARY->getValue();
+            if($t[0]==="_") $title=$t;
+        }
         $evt->SUMMARY->setValue("⌛ ".$info['name']);
 
         if(!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
@@ -242,10 +200,9 @@ class BackendUtils{
         if(!isset($evt->{self::TZI_PROP})) $evt->add(self::TZI_PROP);
         $evt->{self::TZI_PROP}->setValue($info['tzi']);
 
-        // Additional Appointment info (userId for now)
-        // ... this is a way to pass data to DavListener
+        // Additional Appointment info: userId (for DavListener) + _title if available (used for reset)
         if(!isset($evt->{self::XAD_PROP})) $evt->add(self::XAD_PROP);
-        $evt->{self::XAD_PROP}->setValue($this->encrypt($userId,$evt->UID));
+        $evt->{self::XAD_PROP}->setValue($this->encrypt($userId.chr(31).$title,$evt->UID));
 
         $this->setSEQ($evt);
 
@@ -369,6 +326,7 @@ class BackendUtils{
      *                  VTIMEZONE data,
      *                  'L' = floating (default)
      *                  'UTC' for UTC/GMT
+     *          $title the title might need to be reset to original when the appointment is canceled (can be empty)
      * ]
      * @param string $data
      * @return string[]
@@ -400,10 +358,18 @@ class BackendUtils{
             $dt="";
         }
 
+        $title="";
+        $xad=explode(chr(31),$this->decrypt(
+            $evt->{BackendUtils::XAD_PROP}->getValue(),
+            $evt->UID->getValue()));
+        if(count($xad)>1){
+            $title=$xad[1];
+        }
+
         return [$this->getDateTimeString(
             $evt->DTSTART->getDateTime(),
             $evt->{self::TZI_PROP}->getValue()
-        ),$dt,$f];
+        ),$dt,$f,$title];
     }
 
     /**
@@ -729,9 +695,10 @@ class BackendUtils{
      * @param string $appName
      * @param string $tz_data_str Can be VTIMEZONE data, 'L' = floating or 'UTC'
      * @param string $cr_date 20200414T073008Z must be UTC (ends with Z),
+     * @param string $title title is used when the appointment is being reset
      * @return string[] ['1_before_uid'=>'string...','2_before_dts'=>'string...','3_before_dte'=>'string...','4_last'=>'string...'] or ['err'=>'Error text...']
      */
-    function makeAppointmentParts($userId, $appName, $tz_data_str, $cr_date){
+    function makeAppointmentParts($userId, $appName, $tz_data_str, $cr_date,$title=""){
 
         $config=\OC::$server->getConfig();
         $l10n=\OC::$server->getL10N($appName);
@@ -777,13 +744,20 @@ class BackendUtils{
             return ['err'=>$l10n->t("Can't find your name. Check User/Organization settings.")];
         }
 
+        if(empty($title)){
+            $summary=\OC::$server->getL10N($appName)->t("Available");
+        }else{
+            $summary=$title;
+        }
+
+
         return [
             '1_before_uid'=>"BEGIN:VCALENDAR\r\n" .
                 "PRODID:-//IDN nextcloud.com//Appointment App | srgdev.com//EN\r\n" .
                 "CALSCALE:GREGORIAN\r\n" .
                 "VERSION:2.0\r\n" .
                 "BEGIN:VEVENT\r\n" .
-                "SUMMARY:".\OC::$server->getL10N($appName)->t("Available") .$rn.
+                "SUMMARY:".$summary.$rn.
                 "STATUS:TENTATIVE\r\n" .
                 "TRANSP:TRANSPARENT\r\n".
                 "LAST-MODIFIED:" . $cr_date_rn .

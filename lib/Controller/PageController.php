@@ -327,13 +327,13 @@ class PageController extends Controller {
             }else{
 
                 // Delete and Reset ($date_time can be an empty string here)
-                list($sts, $date_time, $dt_info, $tz_data) = $this->bc->deleteCalendarObject($userId, $r_cal_id, $uri);
+                list($sts, $date_time, $dt_info, $tz_data,$title) = $this->bc->deleteCalendarObject($userId, $r_cal_id, $uri);
 
                 if(empty($dt_info)){
                     \OC::$server->getLogger()->error('can not re-create appointment, no dt_info');
                 }else if($cls[BackendUtils::CLS_TS_MODE]==='0'){
-                    // this only needed in manual mode
-                    $cr=$this->addAppointments($userId,$dt_info,$tz_data);
+                    // this only needed in simple/manual mode
+                    $cr=$this->addAppointments($userId,$dt_info,$tz_data,$title);
                     if($cr[0]!=='0'){
                         \OC::$server->getLogger()->error('addAppointments() failed '.$cr);
                     }
@@ -819,9 +819,10 @@ class PageController extends Controller {
      *      dttsamp: 20200414T073008Z must be UTC (ends with Z),
      *      dtstart/dtend: 20200414T073008
      * @param string $tz_data_str Can be VTIMEZONE data, 'L' = floating or 'UTC'
+     * @param string $title title is used when the appointment is being reset
      * @return string
      */
-    private function addAppointments($userId,$ds,$tz_data_str){
+    private function addAppointments($userId,$ds,$tz_data_str,$title=""){
 
         if(empty($ds)) return '1:No Data';
         $data=explode(',',$ds);
@@ -838,7 +839,7 @@ class PageController extends Controller {
         if($cal===null) return '1:'.$this->l->t("Selected calendar not found");
 
         $evt_parts=$this->utils->makeAppointmentParts(
-            $this->userId,$this->appName,$tz_data_str,$data[0]);
+            $this->userId,$this->appName,$tz_data_str,$data[0],$title);
         if(isset($evt_parts['err'])){
             return '1:'.$evt_parts['err'];
         }

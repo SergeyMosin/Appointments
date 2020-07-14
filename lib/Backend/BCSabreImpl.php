@@ -323,6 +323,14 @@ class BCSabreImpl implements IBackendConnector{
                 $ts_offset = $utz_offset;
             }
 
+            $atl=':';
+            if(isset($evt->SUMMARY)){
+                $s=$evt->SUMMARY->getValue();
+                if($s[0]==="_"){
+                    $atl.=$s;
+                }
+            }
+
             if (isset($evt->RRULE)) {
 
                 try {
@@ -354,7 +362,7 @@ class BCSabreImpl implements IBackendConnector{
                             $s_ts, $e_ts) === null) {
 
                         $str_out.=$ts_pref.($s_ts + $ts_offset)
-                            .':'.$this->utils->encrypt($ses_info.pack("LL",$s_ts,$e_ts).substr($obj['uri'],0,-4),$key).',';
+                            .':'.$this->utils->encrypt($ses_info.pack("LL",$s_ts,$e_ts).substr($obj['uri'],0,-4),$key).$atl.',';
                     }
                 }
                 $c++;
@@ -386,7 +394,7 @@ class BCSabreImpl implements IBackendConnector{
 
         $no_uri=($mode==='no_url');
         if($no_uri){
-            $key=''; // @see BackendUtils->encodeCalendarData
+            $key=''; // add end_time instead of uri
         }else {
             $key = hex2bin($this->config->getAppValue($this->appName, 'hk'));
             if (empty($key)) {
@@ -401,7 +409,7 @@ class BCSabreImpl implements IBackendConnector{
             return $this->queryRangeTR($calId, $start, $end, $key, substr($mode,1));
         }
 
-
+        // Simple Mode...
 
         $f_start=$start->getTimestamp();
         $f_end=$end->getTimestamp();
@@ -427,19 +435,52 @@ class BCSabreImpl implements IBackendConnector{
         $ses_start=time().'|';
         $ret='';
 
-        $offset=$start->getOffset();
+        $utz_offset=$start->getOffset();
+        $utz=$start->getTimezone();
+        $start_ts=$f_start;
 
-        $use_my_float=false;
         foreach ($objs as $obj){
 
             $vo=Reader::read($obj['calendardata']);
 
-            list($ts,$out) = $this->utils->encodeCalendarData(
-                $vo,$ses_start.$obj['uri'],$key,$offset,$use_my_float);
+            /** @var  \Sabre\VObject\Property\ICalendar\DateTime $dt_start */
+            $dt_start=$vo->VEVENT->DTSTART;
+            $s_ts=$dt_start->getDateTime($utz)->getTimestamp();
 
-            if($ts>$f_start && $ts<$f_end) {
-                $ret.=$out;
+            if($s_ts>$start_ts){
+
+                $ts_pref = 'U';
+                $ts_offset = 0;
+                if ($dt_start->isFloating()) {
+                    $ts_pref = 'F';
+                    $ts_offset = $utz_offset;
+                }
+
+                if($key!==""){
+
+                    $atl=':';
+                    if(isset($vo->VEVENT->SUMMARY)){
+                        $s=$vo->VEVENT->SUMMARY->getValue();
+                        if($s[0]==="_"){
+                            $atl.=$s;
+                        }
+                    }
+
+
+                    $ret.=$ts_pref.($s_ts + $ts_offset)
+                        .':'.$this->utils->encrypt($ses_start.$obj['uri'],$key)
+                        .$atl.',';
+                }else{
+                    // add end_time instead of uri
+                    $ret.=$ts_pref.($s_ts + $ts_offset).':'.$ts_pref.($vo->VEVENT->DTEND->getDateTime($utz)->getTimestamp()+$ts_offset).',';
+                }
             }
+//            list($ts,$out) = $this->utils->encodeCalendarData(
+//                $vo,$ses_start.$obj['uri'],$key,$offset,$use_my_float);
+//
+//            if($ts>$f_start && $ts<$f_end) {
+//                $ret.=$out;
+//            }
 
             $vo->destroy();
         }
@@ -804,13 +845,14 @@ class BCSabreImpl implements IBackendConnector{
      * @inheritDoc
      */
     function deleteCalendarObject($userId, $calId, $uri){
-        $ret=[0,'','','L'];
+        $ret=[0,'','','L',''];
         $d=$this->getObjectData($calId,$uri);
         if($d!==null){
             $ra=$this->utils->dataDeleteAppt($d);
             $ret[1]=$ra[0];
             $ret[2]=$ra[1];
             $ret[3]=$ra[2];
+            $ret[4]=$ra[3];
             $this->backend->deleteCalendarObject($calId, $uri);
         }
         return $ret;

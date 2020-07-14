@@ -152,8 +152,13 @@
 
     function timeClick(e) {
         let t=e.target
+
+        if(t.parentElement.dpuClickID!==undefined){
+            t=t.parentElement;
+        }
+
         if(t.dpuClickID!==undefined){
-            document.getElementById('srgdev-ncfp_sel-dummy').value=t.parentElement.getAttribute('data-dm')+' - '+t.textContent;
+            document.getElementById('srgdev-ncfp_sel-dummy').value=t.parentElement.getAttribute('data-dm')+' - '+t.childNodes[0].textContent;
             let elm=document.getElementById('srgdev-ncfp_sel-hidden')
             elm.selectedIndex=t.dpuClickID
             elm.value=elm.dataRef[t.dpuClickID].d
@@ -220,7 +225,7 @@
             console.log("data-state: ",s.getAttribute("data-state"))
             return
         }
-        // There is a proble with js translations without Vue, so just get it from PHP for now
+        // There is a problem with js translations without Vue, so just get it from PHP for now
         const dpuTrHdr=s.getAttribute("data-hdr")
         const dpuTrBack=s.getAttribute("data-tr-back")
         const dpuTrNext=s.getAttribute("data-tr-next")
@@ -332,15 +337,18 @@
                 tzi=t+(tzo>0?'-':'+')+(h<10?'0'+h:h)+(m<10?'0'+m:m)
             }
 
+            sp++
+            let sp2=ds.indexOf(":",sp)
             dta[i] = {
                 rts: md.getTime(),
-                d: ds.substr(sp+1),
+                d: ds.substr(sp,sp2-sp),
+                t: ds.substr(sp2+2), // +2 is for ":_"
                 tzi:tzi
             }
         }
 
         dta.sort((a, b) => (a.rts > b.rts) ? 1 : -1)
-        dta.push({rts:0,d:"",tzi:""}) //last option to finalize the loop
+        dta.push({rts:0,d:"",t:"",tzi:""}) //last option to finalize the loop
 
         s.dataRef=dta
 
@@ -455,7 +463,7 @@
             tu_class='srgdev-dpu-time-unit'
         }
 
-        for(let ts,ti,ets,tts,te,pe,i=0;i<l;i++){
+        for(let tl,ts,ti,ets,tts,te,pe,i=0;i<l;i++){
             ts= dta[i].rts
             if(ts===0) break
             d.setTime(ts)
@@ -531,6 +539,12 @@
             te.className=tu_class
             te.dpuClickID=i
             te.appendChild(document.createTextNode(tf(d)))
+            if(dta[i].t!=="") {
+                tl = document.createElement("span")
+                tl.className = "srgdev-dpu-appt-title"
+                tl.appendChild(document.createTextNode(dta[i].t))
+                te.appendChild(tl)
+            }
             pe.appendChild(te)
         }
 

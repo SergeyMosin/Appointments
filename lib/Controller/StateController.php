@@ -291,7 +291,7 @@ class StateController extends Controller{
 
                     // Set ExternalModeSabrePlugin::AUTO_FIX_URI
                     $af_uri="";
-                    if($ts_mode==="1" && $cls[BackendUtils::CLS_XTM_SRC_ID]!=="-1" && $cls[BackendUtils::CLS_XTM_AUTO_FIX]===true){
+                    if($cls[BackendUtils::CLS_TS_MODE]==="1" && $cls[BackendUtils::CLS_XTM_SRC_ID]!=="-1" && $cls[BackendUtils::CLS_XTM_AUTO_FIX]===true){
                         $ci=$this->bc->getCalendarById(
                             $cls[BackendUtils::CLS_XTM_SRC_ID],
                             $this->userId);
