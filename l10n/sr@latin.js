@@ -8,6 +8,10 @@ OC.L10N.register(
     "Warning" : "Upozorenje",
     "Deleted" : "Obrisano",
     "close" : "zatvori",
+    "15 Minutes" : "15 minuta",
+    "30 Minutes" : "30 minuta",
+    "1 Hour" : "1 sat",
+    "2 Hours" : "2 sata",
     "Error" : "Error",
     "Location:" : "Lokacija:",
     "Back" : "Nazad"
