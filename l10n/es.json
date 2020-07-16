@@ -139,6 +139,8 @@
     "Optimize recurrence" : "Optimizar la repetición",
     "Require \"Appointment\" category" : "Necesita una categoría de \"Cita\"",
     "Advanced Settings" : "Configuración avanzada",
+    "Minimum lead time" : "Plazo de ejecución mínimo",
+    "No lead time" : "Sin plazo de entrega",
     "15 Minutes" : "15 Minutos",
     "30 Minutes" : "30 minutos",
     "1 Hour" : "1 Hora",
