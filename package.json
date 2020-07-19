@@ -35,7 +35,7 @@
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.2",
     "file-loader": "^5.0.2",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "regenerator-runtime": "^0.13.3",
     "sass": "^1.22.10",
     "sass-loader": "^8.0.2",
