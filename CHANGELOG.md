@@ -1,3 +1,8 @@
+## 1.6.4 - 2020-07-20
+### Fixed
+- Lodash security update
+- issue #111
+
 ## 1.6.3 - 2020-07-14
 ### Fixed
 - Stale calendar info
