@@ -1,3 +1,7 @@
+## 1.6.5 - 2020-07-20
+### Fixed
+- finalize issue #111
+
 ## 1.6.4 - 2020-07-20
 ### Fixed
 - Lodash security update
