@@ -589,23 +589,6 @@ class BackendUtils{
 
         $config=\OC::$server->getConfig();
 
-        // TODO: remove in future versions
-        if($key===self::KEY_CLS && empty($config->getUserValue($userId,$appName,self::KEY_CLS))){
-            // First time access need to transfer...
-            // PageController::PSN_ON_CANCEL -> BackendUtils::CLS_ON_CANCEL
-            $a=$this->getUserSettings(
-                self::KEY_PSN,
-                self::PSN_DEF,
-                $userId,$appName);
-
-            $vs='{"'. self::PSN_ON_CANCEL .'":"'.$a[self::PSN_ON_CANCEL].'"}';
-
-            $this->setUserSettings(
-                self::KEY_CLS,
-                $vs, self::CLS_DEF,
-                $userId,$appName);
-        }
-
         $sa=json_decode(
             $config->getUserValue($userId,$appName,$key),
             true);
