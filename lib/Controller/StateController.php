@@ -49,6 +49,7 @@ class StateController extends Controller{
         if($action==="get"){
             // TODO: this just gets curCal + enabled??? ... migrate to calInfo
             //
+            // TODO: this caused wrong calendar display for simple mode
             $cal_id=$this->utils->getMainCalId($this->userId);
 
             $enabled=$this->config->getUserValue(
@@ -59,7 +60,7 @@ class StateController extends Controller{
 
             $cls=$this->utils->getUserSettings(
                 BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-                $this->userId ,$this->userId);
+                $this->userId ,$this->appName);
             $ts_mode=$cls[BackendUtils::CLS_TS_MODE];
 
             if($ts_mode==="0"){
