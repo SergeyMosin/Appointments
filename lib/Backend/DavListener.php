@@ -81,13 +81,8 @@ class DavListener {
                 $evt->UID->getValue()));
             $userId=$xad[0];
         }else {
-            // fallback: might not work with shared calendars
-            // TODO: remove this in the next major release
-            if(!isset($event['calendarData']['principaluri'])){
-                \OC::$server->getLogger()->error("calendarData not available");
-                return;
-            }
-            $userId = str_replace(BackendManager::PRINCIPAL_PREFIX, "", $event['calendarData']['principaluri']);
+            \OC::$server->getLogger()->error("XAD_PROP not found");
+            return;
         }
 
         $dstId='-1'; // manual mode only

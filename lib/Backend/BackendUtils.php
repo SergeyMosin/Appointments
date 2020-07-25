@@ -93,7 +93,6 @@ class BackendUtils{
     public const PSN_WEEKEND = "showWeekends";
     public const PSN_PAGE_SUB_TITLE = "pageSubTitle";
     public const PSN_NWEEKS = "nbrWeeks";
-    public const PSN_ON_CANCEL = "whenCanceled"; // <- TODO: this is in CLS_... now
     public const PSN_TIME2 = "time2Cols";
     public const PSN_HIDE_TEL = "hidePhone";
 
@@ -106,7 +105,6 @@ class BackendUtils{
         self::PSN_TIME2 => false,
         self::PSN_HIDE_TEL => false,
         self::PSN_GDPR => "",
-        self::PSN_ON_CANCEL => "mark", // <- TODO: this is in CLS_... now
         self::PSN_PAGE_TITLE => "",
         self::PSN_PAGE_SUB_TITLE => "",
         self::PSN_META_NO_INDEX => false,
