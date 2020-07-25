@@ -20,13 +20,16 @@ class UpdateHook implements IRepairStep {
     private $c;
     private $um;
     private $appName;
+    private $utils;
 
     public function __construct($AppName,
                         IConfig $config,
-                        Manager $userManager){
+                        Manager $userManager,
+                        BackendUtils $utils){
         $this->c=$config;
         $this->um=$userManager;
         $this->appName=$AppName;
+        $this->utils=$utils;
     }
 
     public function getName(){
@@ -37,7 +40,9 @@ class UpdateHook implements IRepairStep {
     {
 
         $nb_key = "new_backend";
-        if ($this->c->getAppValue($this->appName, $nb_key) !== '2') {
+        $nb_val=intval($this->c->getAppValue($this->appName, $nb_key,'0'));
+
+        if ($nb_val < 3) {
 
             $users = $this->um->search('', 2000);
             $output->info("running appointments UpdateHook for " . count($users) . " users");
@@ -46,16 +51,36 @@ class UpdateHook implements IRepairStep {
                 if ($user->getLastLogin() !== 0) {
                     $userId = $user->getUID();
 
-                    // Fix #111 regression
-                    if (!empty($this->c->getUserValue($userId, $userId, BackendUtils::KEY_CLS))) {
-                        $this->c->deleteUserValue($userId, $userId, BackendUtils::KEY_CLS);
+                    if($nb_val<2) {
+                        // TODO: remove soon
+                        // this is previous fix (version skipped)
+                        // Fix #111 regression
+                        if (!empty($this->c->getUserValue($userId, $userId, BackendUtils::KEY_CLS))) {
+                            $this->c->deleteUserValue($userId, $userId, BackendUtils::KEY_CLS);
+                        }
                     }
+                    // new update
 
-                    $this->c->setAppValue($this->appName, $nb_key, "2");
+                    $cal_id=$this->c->getUserValue($userId, $this->appName, 'cal_id');
+                    if (!empty($cal_id)){
+
+                        $this->c->deleteUserValue($userId, $this->appName, 'cal_id');
+
+                        $cls=$this->utils->getUserSettings(
+                            BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
+                            $userId ,$this->appName);
+                        $cls[BackendUtils::CLS_MAIN_ID]=strval($cal_id);
+
+                        $js=json_encode($cls);
+                        if($js!==false){
+                            /** @noinspection PhpUnhandledExceptionInspection */
+                            $this->c->setUserValue($userId,$this->appName,BackendUtils::KEY_CLS,$js);
+                        }
+                    }
                 }
             }
-
-            $output->info("appointments UpdateHook finished");
+            $this->c->setAppValue($this->appName, $nb_key, "3");
         }
+        $output->info("appointments UpdateHook finished");
     }
 }

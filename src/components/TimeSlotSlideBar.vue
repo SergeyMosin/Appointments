@@ -2,13 +2,92 @@
     <SlideBar :title="t('appointments','Calendars and Schedule')" :subtitle="t('appointments','Manage appointments and calendar settings')" @close="close">
         <template slot="main-area">
             <div class="srgdev-appt-sb-main-cont">
-
-                <template v-if="calInfo.tsMode!=='1'">
-                <NavAccountItem
-                        v-on="$listeners"
-                        :curCal="curCal"></NavAccountItem>
                 <ApptIconButton
-                        :disabled="curCal.url===''"
+                        :loading="expLoading===4"
+                        @click="openCalListSettings"
+                        :text="t('appointments','Calendars')"
+                        icon="icon-calendar-dark">
+                    <Actions v-show="expando[4]===1" slot="actions">
+                        <ActionButton @click.stop="toggleExpando(4)" icon="icon-triangle-n"></ActionButton>
+                    </Actions>
+                </ApptIconButton>
+                <div :data-expand="expando[4]" class="srgdev-appt_expando_cont">
+                <template v-if="calInfo.tsMode==='0'">
+                    <div class="srgdev-appt-info-lcont">
+                        <label
+                                class="tsb-label"
+                                for="appt_tsb-main-cal-id">
+                            {{t('appointments','Main calendar')}}:</label><a
+                            style="right: 9%"
+                            class="icon-info srgdev-appt-info-link"
+                            @click="$root.$emit('helpWanted','maincal')"></a>
+                    </div>
+                    <select
+                            v-model="calInfo.mainCalId"
+                            class="tsb-input"
+                            id="appt_tsb-main-cal-id">
+                        <option value="-1">{{t('appointments','Calendar Required')}}</option>
+                        <option v-for="cal in cals" :value="cal.id">{{cal.name}}</option>
+                    </select>
+                    <div class="srgdev-appt-info-lcont">
+                        <label
+                                class="tsb-label"
+                                for="appt_tsb-dest-cal-id">
+                            {{t('appointments','Calendar for booked appointments')}}:</label><a
+                            style="right: 9%"
+                            class="icon-info srgdev-appt-info-link"
+                            @click="$root.$emit('helpWanted','destcal')"></a>
+                    </div>
+                    <select
+                            v-model="calInfo.destCalId"
+                            class="tsb-input"
+                            id="appt_tsb-dest-cal-id">
+                        <option value="-1">{{t('appointments','Use the Main calendar')}}</option>
+                        <option v-for="cal in cals" :value="cal.id">{{cal.name}}</option>
+                    </select>
+                </template>
+                <template v-if="calInfo.tsMode==='1'">
+                    <div class="srgdev-appt-info-lcont">
+                        <label
+                                class="tsb-label"
+                                for="appt_tsb-srcm2-cal-id">
+                            {{t('appointments','Source Calendar (Free Slots)')}}:</label><a
+                            style="right: 9%"
+                            class="icon-info srgdev-appt-info-link"
+                            @click="$root.$emit('helpWanted','sourcecal_nr')"></a>
+                    </div>
+                    <select
+                            v-model="calInfo.nrSrcCalId"
+                            class="tsb-input"
+                            id="appt_tsb-srcm2-cal-id">
+                        <option value="-1">{{t('appointments','Calendar Required')}}</option>
+                        <option v-for="cal in cals" :value="cal.id">{{cal.name}}</option>
+                    </select>
+                    <div class="srgdev-appt-info-lcont">
+                        <label
+                                class="tsb-label"
+                                for="appt_tsb-destm2-cal-id">
+                            {{t('appointments','Destination Calendar (Booked)')}}:</label><a
+                            style="right: 9%"
+                            class="icon-info srgdev-appt-info-link"
+                            @click="$root.$emit('helpWanted','destcal_nr')"></a>
+                    </div>
+                    <select
+                            v-model="calInfo.nrDstCalId"
+                            class="tsb-input"
+                            id="appt_tsb-destm2-cal-id">
+                        <option value="-1">{{t('appointments','Calendar Required')}}</option>
+                        <option v-for="cal in cals" :value="cal.id">{{cal.name}}</option>
+                    </select>
+                </template>
+                <button
+                        @click="applyCalListSettings"
+                        class="primary srgdev-appt-sb-genbtn">{{t('appointments','Apply')}}
+                </button>
+                </div>
+                <template v-if="calInfo.tsMode!=='1'">
+                <ApptIconButton
+                        :disabled="calInfo.mainCalId==='-1'"
                         :loading="tzLoading"
                         @click="openAddAppts"
                         :text="t('appointments','Add Appointment Slots')"
@@ -29,7 +108,7 @@
                     </AddApptSection>
                 </div>
                 <ApptIconButton
-                        :disabled="curCal.url===''"
+                        :disabled="calInfo.mainCalId==='-1'"
                         :loading="expLoading===0"
                         @click="openRemOld"
                         :text="t('appointments','Remove Old Appointments')"
@@ -80,38 +159,6 @@
                         </Actions>
                     </ApptIconButton>
                     <div :data-expand="expando[3]" class="srgdev-appt_expando_cont">
-                    <div class="srgdev-appt-info-lcont">
-                        <label
-                                class="tsb-label"
-                                for="appt_tsb-srcm2-cal-id">
-                            {{t('appointments','Source Calendar (Free Slots)')}}:</label><a
-                            style="right: 9%"
-                            class="icon-info srgdev-appt-info-link"
-                            @click="$root.$emit('helpWanted','sourcecal_nr')"></a>
-                    </div>
-                    <select
-                            v-model="calInfo.nrSrcCalId"
-                            class="tsb-input"
-                            id="appt_tsb-srcm2-cal-id">
-                        <option value="-1">{{t('appointments','Calendar Required')}}</option>
-                        <option v-for="cal in cals" :value="cal.id">{{cal.name}}</option>
-                    </select>
-                    <div class="srgdev-appt-info-lcont">
-                        <label
-                                class="tsb-label"
-                                for="appt_tsb-destm2-cal-id">
-                            {{t('appointments','Destination Calendar (Booked)')}}:</label><a
-                            style="right: 9%"
-                            class="icon-info srgdev-appt-info-link"
-                            @click="$root.$emit('helpWanted','destcal_nr')"></a>
-                    </div>
-                    <select
-                            v-model="calInfo.nrDstCalId"
-                            class="tsb-input"
-                            id="appt_tsb-destm2-cal-id">
-                        <option value="-1">{{t('appointments','Calendar Required')}}</option>
-                        <option v-for="cal in cals" :value="cal.id">{{cal.name}}</option>
-                    </select>
                     <div class="srgdev-appt-info-lcont srgdev-appt-sb-chb-cont" style="margin-top: 1.5em"><input
                             type="checkbox"
                             v-model="calInfo.nrPushRec"
@@ -140,7 +187,7 @@
                             @click="$root.$emit('helpWanted','auto_fix_nr')"></a>
                     </div>
                     <button
-                            @click="applyNRSettings"
+                            @click="applyCalSettings"
                             class="primary srgdev-appt-sb-genbtn">{{t('appointments','Apply')}}
                     </button>
                     </div>
@@ -180,24 +227,6 @@
                         <option value="mark">{{t('appointments','Mark the appointment as canceled')}}</option>
                         <option value="reset">{{t('appointments','Reset (make the timeslot available)')}}</option>
                     </select>
-                    <template v-if="calInfo.tsMode==='0'">
-                        <div class="srgdev-appt-info-lcont">
-                            <label
-                                    class="tsb-label"
-                                    for="appt_tsb-dest-cal-id">
-                                {{t('appointments','Calendar for booked appointments')}}:</label><a
-                                style="right: 9%"
-                                class="icon-info srgdev-appt-info-link"
-                                @click="$root.$emit('helpWanted','destcal')"></a>
-                        </div>
-                        <select
-                                v-model="calInfo.destCalId"
-                                class="tsb-input"
-                                id="appt_tsb-dest-cal-id">
-                            <option value="-1">{{curCal.name}}</option>
-                            <option v-for="cal in cals" v-if="!cal.isCur" :value="cal.id">{{cal.name}}</option>
-                        </select>
-                    </template>
                     <div class="srgdev-appt-info-lcont">
                         <label
                                 class="tsb-label"
@@ -228,7 +257,6 @@
 <script>
     import SlideBar from "./SlideBar.vue"
     import ApptIconButton from "./ApptIconButton";
-    import NavAccountItem from "./NavAccountItem";
     import AddApptSection from "./AddApptSection";
 
     import{
@@ -243,11 +271,11 @@
     import {linkTo} from '@nextcloud/router'
 
     export default {
+
         name: "TimeSlotSlideBar",
         components: {
             SlideBar,
             ApptIconButton,
-            NavAccountItem,
             VueSlider,
             Actions,
             ActionButton,
@@ -258,25 +286,13 @@
                 type: Boolean,
                 default: false
             },
-            curCal:{
-                type: Object,
-                default: function () {
-                    return {
-                        icon: "icon-calendar-dark",
-                        name: this.t('appointments','Select Calendar'),
-                        url: "", //url is id
-                        rIcon: "",
-                        clr: "",
-                        isCalLoading:false
-                    }
-                }
-            },
             calInfo: {
                 type: Object,
                 default: function () {
                     return {
                         prepTime:"0",
                         whenCanceled:"mark",
+                        mainCalId:"-1",
                         destCalId:"-1",
                         nrSrcCalId:"-1",
                         nrDstCalId:"-1",
@@ -302,12 +318,12 @@
                     58:w,
                     100:y,
                 }
-            }
+            },
         },
 
         data: function() {
             return {
-                expando:[0,0,0,0],
+                expando:[0,0,0,0,0],
                 expLoading:-1,
 
                 rsValue:58,
@@ -320,7 +336,7 @@
                 setStateInProgress:false,
 
                 cals:[],
-                calsAll:[]
+                calsAll:[],
             };
         },
 
@@ -329,17 +345,12 @@
                 const expId=nid*-1-1
                 this.expLoading=-1
                 if(expId<this.expando.length) {
-                    // NR and Adv. Settings should not be opened at the same time
-                    if(expId===3){
-                        if(this.expando[1]===1){
-                            this.toggleExpando(1)
-                        }
-                    }else if(expId===1){
-                        if(this.expando[3]===1){
-                            this.toggleExpando(3)
+                    // Two settings should not be opened at the same time
+                    for(let i=0;i<this.expando.length;i++){
+                        if(i!==expId && this.expando[i]===1){
+                            this.toggleExpando(i)
                         }
                     }
-
                     this.toggleExpando(expId)
                 }
             },
@@ -358,23 +369,35 @@
                 }
             },
 
-            applyNRSettings(){
-                if(this.calInfo.nrSrcCalId==='-1') {
-                    this.$emit("showModal",[
-                        this.t('appointments','Error'),
-                        this.t('appointments','Source calendar is required')])
-                }else if(this.calInfo.nrDstCalId==='-1') {
-                    this.$emit("showModal",[
-                        this.t('appointments','Error'),
-                        this.t('appointments','Destination calendar is required')])
-                }else if(this.calInfo.nrSrcCalId===this.calInfo.nrDstCalId) {
-                    this.$emit("showModal",[
-                        this.t('appointments','Error'),
-                        this.t('appointments','Source and Destination calendars must be different')])
-                }else{
-                    this.applyCalSettings()
+            applyCalListSettings(){
+                if(this.calInfo.tsMode==="0") {
+                    if (this.calInfo.mainCalId === '-1') {
+                        this.$emit("showModal", [
+                            this.t('appointments', 'Error'),
+                            this.t('appointments', 'Main calendar is required')])
+                    } else{
+                        if(this.calInfo.mainCalId === this.calInfo.destCalId){
+                            this.calInfo.destCalId="-1"
+                        }
+                        this.applyCalSettings()
+                    }
+                }else if(this.calInfo.tsMode==="1") {
+                    if (this.calInfo.nrSrcCalId === '-1') {
+                        this.$emit("showModal", [
+                            this.t('appointments', 'Error'),
+                            this.t('appointments', 'Source calendar is required')])
+                    } else if (this.calInfo.nrDstCalId === '-1') {
+                        this.$emit("showModal", [
+                            this.t('appointments', 'Error'),
+                            this.t('appointments', 'Destination calendar is required')])
+                    } else if (this.calInfo.nrSrcCalId === this.calInfo.nrDstCalId) {
+                        this.$emit("showModal", [
+                            this.t('appointments', 'Error'),
+                            this.t('appointments', 'Source and Destination calendars must be different')])
+                    } else {
+                        this.applyCalSettings()
+                    }
                 }
-
             },
 
             tsModeChanged(){
@@ -387,12 +410,25 @@
                 this.applyCalSettings()
                 this.$emit("showModal",[
                     this.t('appointments','Warning'),
-                    this.t('appointments','Time slot mode has changed. Public page is going offline…')])
-
+                    this.t('appointments','Time slot mode has changed. Public page is going offline…'),
+                    this.openCalListSettings])
             },
             applyCalSettings(){
                 this.$emit('setCalInfo',this.calInfo)
             },
+
+            openCalListSettings(){
+                if(this.expando[4]===1){
+                    // just close
+                    this.toggleExpando(4)
+                }else{
+                    this.expLoading=4
+                    this.getCalList()
+                    this.$emit('getCalInfo',4)
+                    // expando open is triggered in via getCalInfo event
+                }
+            },
+
 
             openNRSettings(){
                 if(this.expando[3]===1){
@@ -401,7 +437,7 @@
                 }else{
                     this.expLoading=3
                     this.$emit('getCalInfo',3)
-                    this.getCalList()
+                    // expando open is triggered in via getCalInfo event
                 }
             },
 
@@ -412,7 +448,6 @@
                 }else{
                     this.expLoading=1
                     this.$emit('getCalInfo',1)
-                    this.getCalList()
                     // expando open is triggered in via getCalInfo event
                 }
             },
@@ -422,13 +457,11 @@
                 axios.get('callist')
                     .then(response=>{
                         let cals=response.data.split(String.fromCharCode(31))
-                        const curCalId=this.curCal.url // url is id
                         for(let i=0,l=cals.length;i<l;i++){
                             let cal=cals[i].split(String.fromCharCode(30))
                             this.cals.push({
                                 name: cal[0],
                                 id: cal[2],
-                                isCur: (curCalId===cal[2])
                             })
                         }
                     })
@@ -446,6 +479,9 @@
 
                 this.tzLoading=true
 
+                // 999 won't trigger slideBar toggle
+                this.$emit('getCalInfo', 999)
+
                 if(!this.isGridReady){
                     this.$emit('setupGrid')
                 }
@@ -453,6 +489,8 @@
                 this.tzName="UTC"
                 this.tzData="UTC"
 
+                // TODO: new version of zone.json available + issue #112
+                // https://hg.mozilla.org/comm-central/file/tip/calendar/timezones/zones.json
                 this.$parent.$parent.getState("get_tz").then(res=>{
                     if(res!==null && res.toLowerCase()!=='utc') {
                         let url=linkTo('appointments','ajax/zones.json')
@@ -480,6 +518,13 @@
                         })
                     }else return Promise.resolve(null)
                 }).then((r)=>{
+                    // close all expandos
+                    for(let i=0;i<this.expando.length;i++){
+                        if(this.expando[i]===1){
+                            this.toggleExpando(i)
+                        }
+                    }
+
                     if(r===null || !Array.isArray(r) || r.length!==2 || r[1]===""){
                         console.error("can't get timezone data")
                     }else{
@@ -490,6 +535,13 @@
                     this.tzLoading=false;
                     this.toggleExpando(2)
                 }).catch(err=>{
+                    // close all expandos
+                    for(let i=0;i<this.expando.length;i++){
+                        if(this.expando[i]===1){
+                            this.toggleExpando(i)
+                        }
+                    }
+
                     console.log(err)
                     this.tzLoading=false;
                     this.toggleExpando(2)

@@ -61,7 +61,10 @@ class BackendUtils{
 
     // Calendar Settings
     public const KEY_CLS = 'calendar_settings';
+    // simple mode
+    public const CLS_MAIN_ID= 'mainCalId'; // this cal_id now
     public const CLS_DEST_ID= 'destCalId';
+    // external mode
     public const CLS_XTM_SRC_ID= 'nrSrcCalId';
     public const CLS_XTM_DST_ID= 'nrDstCalId';
     public const CLS_XTM_PUSH_REC= 'nrPushRec';
@@ -71,6 +74,7 @@ class BackendUtils{
     public const CLS_ON_CANCEL = 'whenCanceled';
     public const CLS_TS_MODE = 'tsMode';
     const CLS_DEF=array(
+        self::CLS_MAIN_ID=>'-1',
         self::CLS_DEST_ID=>'-1',
         self::CLS_XTM_SRC_ID=>'-1',
         self::CLS_XTM_DST_ID=>'-1',
@@ -634,13 +638,21 @@ class BackendUtils{
     }
 
     /**
+     * For simple mode:
+     *  Main = CLS_MAIN_ID
+     *  Other = CLS_DEST_ID
+     *
+     * For external mode:
+     *  Main = XTM_DST_ID (destination calendar)
+     *  Other = XTM_SRC_ID (source calendar)
+     *
      * @param string $userId
-     * @param string $otherCal get the ID of the other calendar (destination CalId) for manual mode ONLY.
+     * @param string $otherCal get the ID of the other calendar.
      * @return string calendar Id or "-1" = no main cal
      */
     function getMainCalId($userId,&$otherCal=null){
 
-        $config=\OC::$server->getConfig();
+        // TODO: check is cals actually exist...
 
         // What mode are we in ??
         $cls=$this->getUserSettings(
@@ -649,17 +661,17 @@ class BackendUtils{
         $ts_mode=$cls[self::CLS_TS_MODE];
         if ($ts_mode==="1"){
             // External mode - main calendar is destination calendar
-            if($cls[BackendUtils::CLS_XTM_SRC_ID] === "-1"
-            || $cls[BackendUtils::CLS_XTM_DST_ID] === "-1"
-            || $cls[BackendUtils::CLS_XTM_SRC_ID] === $cls[BackendUtils::CLS_XTM_DST_ID]){
-//                if(isset($otherCal)){
-//                    $otherCal='-1';
-//                }
+            if($cls[self::CLS_XTM_SRC_ID] === "-1"
+            || $cls[self::CLS_XTM_DST_ID] === "-1"
+            || $cls[self::CLS_XTM_SRC_ID] === $cls[self::CLS_XTM_DST_ID]){
+                if(isset($otherCal)){
+                    $otherCal='-1';
+                }
                 return "-1";
             }else{
-//                if(isset($otherCal)){
-//                    $otherCal=$cls[self::CLS_XTM_SRC_ID];
-//                }
+                if(isset($otherCal)){
+                    $otherCal=$cls[self::CLS_XTM_SRC_ID];
+                }
                 return $cls[self::CLS_XTM_DST_ID];
             }
         }else{
@@ -667,9 +679,7 @@ class BackendUtils{
             if(isset($otherCal)){
                 $otherCal=$cls[self::CLS_DEST_ID];
             }
-            return $config->getUserValue(
-                $userId,$this->appName, 'cal_id', '-1'
-            );
+            return $cls[self::CLS_MAIN_ID];
         }
     }
 

@@ -828,11 +828,8 @@ class PageController extends Controller {
         $c=count($data);
         if($c<3) return '1:'.$this->l->t("Please add time slots first.")." [DL = ".$c."]";
 
-        $cal_id=$this->c->getUserValue(
-            $userId,
-            $this->appName,
-            'cal_id');
-        if(empty($cal_id)) return '1:'.$this->l->t("Please select a calendar first");
+        $cal_id=$this->utils->getMainCalId($userId);
+        if($cal_id==="-1") return '1:'.$this->l->t("Please select a calendar first");
 
         $cal=$this->bc->getCalendarById($cal_id,$userId);
         if($cal===null) return '1:'.$this->l->t("Selected calendar not found");

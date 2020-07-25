@@ -10,7 +10,8 @@
                         :t('appointments','Public Page [Disabled]'))"
                     :icon="pageEnabled==='1'
                         ?'icon-screen'
-                        :'icon-screen-off'">
+                        :'icon-screen-off'"
+                    :loading="pageInfoLoading===1">
                 <template slot="actions">
                     <ActionButton :disabled="pageEnabled==='1'" @click="togglePageEnabled('1')" icon="icon-checkmark-color" closeAfterClick>
                         {{t('appointments','Share Online')}}
@@ -170,10 +171,10 @@
             <Modal v-if="evtGridModal!==0" :canClose="false">
                 <div class="srgdev-appt-modal_content">
                     <div v-if="evtGridModal===1" class="srgdev-appt-modal-lbl">
-                        {{t('appointments', 'Adding appointment to {calendarName} calendar...', {calendarName:curCal.name})}}
+                        {{t('appointments', 'Adding appointment to {calendarName} calendar...', {calendarName:calInfo.curCal_name})}}
                     </div>
                     <div v-if="evtGridModal===2" class="srgdev-appt-modal-lbl">
-                        {{t('appointments', 'All appointments have been added to {calendarName} calendar.', {calendarName:curCal.name})}}
+                        {{t('appointments', 'All appointments have been added to {calendarName} calendar.', {calendarName:calInfo.curCal_name})}}
                     </div>
                     <div v-if="evtGridModal===3" class="srgdev-appt-modal-lbl">
                         <span v-show="modalErrTxt!==''">{{modalErrTxt}}</span>
@@ -217,14 +218,12 @@
                 v-show="sbShow===4" @close="sbShow=0"/>
         <TimeSlotSlideBar
                 ref="tsbRef"
-                :cur-cal="curCal"
                 :cal-info="calInfo"
                 :is-grid-ready="isGridReady"
                 v-show="sbShow===6"
                 @pageOffline="setPageState('0')"
                 @showModal="showSimpleGeneralModal($event)"
                 @remOldAppts="countOldAppointments"
-                @calSelected="setCalendar"
                 @agDataReady="makePreviewGrid"
                 @setupGrid="gridSetup"
                 @setCalInfo="setState('set_cls',$event)"
@@ -237,18 +236,17 @@
 
 <script>
     // noinspection ES6CheckImport
-    import{
+    import {
+        ActionButton,
+        ActionCheckbox,
+        Actions,
+        AppContent,
         AppNavigation,
+        AppNavigationIconBullet,
         AppNavigationItem,
         AppNavigationSpacer,
-        ActionButton,
-        AppContent,
-        ActionCheckbox,
-        AppNavigationIconBullet,
         Modal,
-        Actions,
     } from '@nextcloud/vue'
-    import {detectColor} from "./utils.js";
 
     import ActionInput from "./components/ActionInputExt.vue";
     import NavAccountItem from "./components/NavAccountItem.vue";
@@ -290,9 +288,8 @@
                 // mainForm:'',
                 pubPage:'',
 
-                curCal:{},
-
                 pageEnabled:'0',
+                pageInfoLoading:0,
 
                 value: null, // <-???
                 navOpen:false,
@@ -323,9 +320,10 @@
                 generalModalLoadingTxt:"",
                 generalModalPop:0,
                 generalModalPopTxt:"",
+                generalModalCallback:undefined,
 
                 // SlideBars...
-                calInfo:{}, // <- calendar settings (NOT curCal)
+                calInfo:{},
                 ppsInfo:{},
                 uciInfo:{},
                 emlInfo:{},
@@ -338,7 +336,8 @@
         computed: {
         },
         beforeMount() {
-            this.getCurCal()
+            this.resetCalInfo()
+            this.getPages()
         },
 
         mounted() {
@@ -351,38 +350,20 @@
         methods: {
 
             // for simple mode...
-            getCurCal(){
-                this.resetCurCal()
-                this.curCal.isCalLoading=true
-
-                // TODO: this just gets curCal + enabled??? ... migrate to calInfo
-                axios.post('state', {
-                    a: 'get'
+            getPages(){
+                this.pageInfoLoading=1
+                axios.post('state', { a: 'get' })
+                .then(response=>{
+                    if(response.status===200) {
+                        this.pageEnabled=response.data.toString()
+                    }
+                    this.pageInfoLoading=0
                 })
-                    .then(response=>{
-                        if(response.status===200) {
-                            const rda = response.data.split(String.fromCharCode(31))
-                            if(rda.length===2){
-                                const t=rda[0].split(String.fromCharCode(30))
-                                if(t.length===3){
-                                    this.setCurCal({
-                                        name: t[0],
-                                        clr: detectColor(t[1]),
-                                        url: t[2]
-                                    })
-                                }
-                                this.pageEnabled=rda[1]
-                            }
-                        }
-                        this.curCal.isCalLoading=false
-                    })
-                    .catch(error=> {
-                        this.curCal.isCalLoading=false
-                        console.log(error);
-                    });
-
+                .catch(error=> {
+                    this.pageInfoLoading=0
+                    console.log(error);
+                });
             },
-
 
             removeOldAppointments(){
                 if(this.roaData===""){
@@ -517,7 +498,7 @@
                     this.gridApptLen=10
                 }
 
-                gridMaker.addAppt(0,this.gridApptLen,nbr,cID,this.curCal.clr)
+                gridMaker.addAppt(0,this.gridApptLen,nbr,cID,this.calInfo.curCal_color)
                 hd.hasAppts=true
             },
 
@@ -527,7 +508,7 @@
             },
 
             gridApptsCopy(cID){
-                gridMaker.cloneColumns(cID,cID+1,this.curCal.clr)
+                gridMaker.cloneColumns(cID,cID+1,this.calInfo.curCal_color)
                 this.gridHeader[cID+1].hasAppts=true
             },
 
@@ -536,9 +517,8 @@
                 this.isGridReady=true
             },
 
-
             getCalInfo(ebn){
-                this.getCurCal()
+                // TimeSlotSlideBars are negative, Ex: 4 is -5
                 this.openSlideBar(-(ebn+1),'get_cls',this.calInfo)
             },
 
@@ -563,7 +543,6 @@
                     return
                 }
 
-
                 this.getState(action).then(res => {
                     if (res !== null) {
                         for (let key in res) {
@@ -574,7 +553,7 @@
 
                         if(sbn>-1){
                             this.toggleSlideBar(sbn)
-                        }else{
+                        }else if(sbn>-999){
                             // Open setting only after they are fetched from the server
                             this.$refs["tsbRef"].stateDataReady(sbn)
                         }
@@ -627,10 +606,6 @@
                     if(response.status===200) {
                         this.getFormData()
                         OCP.Toast.success(this.t('appointments','New Settings Applied.'))
-                        if(action==='set_cls'){
-                            // Refresh curCal:{}, needed when changing ts_mode
-                            this.getCurCal()
-                        }
                     }
                 }).catch((error) => {
                     this.stateInProgress=false
@@ -652,8 +627,6 @@
                     elm.dispatchEvent(new Event('click'))
                 }
             },
-
-
 
             helpWantedHandler(section){
                 this.toggleSlideBar(0)
@@ -794,11 +767,16 @@
 
                 if(this.pageEnabled===enable) return
 
+
                 // Check settings... Org name, address and email are needed...
                 if(enable==='1') {
 
+                    this.pageInfoLoading='1'
+
                     this.getState("get_uci").then(res=>{
                         //organization: "", email: "", address: ""
+
+                        this.pageInfoLoading='0'
 
                         if(res===null) return null
 
@@ -817,14 +795,16 @@
                             OC.Notification.showTemporary(this.t('appointments',"Error: {fieldName} empty, check settings",{fieldName:fn})+"\xa0\xa0\xa0\xa0",{timeout:8,type:'error'})
                             return null
                         }else{
+                            this.pageInfoLoading='1'
                             return this.getState("get_cls")
                         }
                     }).then(res=>{
 
+                        this.pageInfoLoading='0'
                         if(res===null) return
 
                         if(res.tsMode==="0"){
-                            if(this.curCal.url === "" || this.curCal.url === "-1"){
+                            if(res.mainCalId === "-1"){
                                 this.noCalSet()
                             }else{
                                 this.setPageState(enable)
@@ -844,8 +824,8 @@
                 }
             },
 
-
             setPageState(enable){
+                this.pageInfoLoading=1
                 axios.post('state', {
                     a: 'enable',
                     v: enable
@@ -858,47 +838,7 @@
                     OC.Notification.showTemporary(this.t('appointments',"Page enable error. Check console")+"\xa0\xa0\xa0\xa0",{timeout:4,type:'error'})
                 }).then(()=>{
                     // always executed
-                    this.getFormData()
-                });
-            },
-
-            setCalendar:function(c){
-                // clr: "#795AAB"
-                // icon: "http://127.0.0.1:8080/svg/aptgo/circ?color=795AAB"
-                // name: "Personal"
-                // url: "5" // -1 = non
-
-                this.pageEnabled=0
-
-                this.showSimpleGeneralModal([
-                    this.t('appointments','Warning'),
-                    this.t('appointments','Main calendar is changed. Public page is going offline…')])
-
-                axios.post('state', {
-                    a: 'set',
-                    url: c.url
-                }).then(response => {
-                    if(response.status===200) {
-                        if(c.url!=="-1") {
-                            this.setCurCal(c)
-                        }else{
-                            this.resetCurCal()
-                        }
-
-                        // The dest cal is reset on the backend, so propagate changes to the frontend
-                        if(this.calInfo.destCalId!=="-1") {
-                            OC.Notification.showTemporary(this.t('appointments', "Calendar for booked appointments is reset") + "\xa0\xa0\xa0\xa0")
-                        }
-
-                        // 999 does not trigger slide bar expandos open
-                        this.getCalInfo(999)
-                        this.$refs["tsbRef"].getCalList()
-                    }
-                }).catch((error) => {
-                    this.resetCurCal()
-                    console.log(error)
-                }).then(()=>{
-                    // always executed
+                    this.pageInfoLoading=0
                     this.getFormData()
                 });
             },
@@ -956,7 +896,7 @@
                 }).then(response=>{
                     if(response.status===200) {
                         if(response.data!==""){
-                            gridMaker.addPastAppts(response.data,this.curCal.clr)
+                            gridMaker.addPastAppts(response.data,this.calInfo.curCal_color)
                         }
                     }
                 }).catch(error=>{
@@ -1007,12 +947,15 @@
             },
 
             /**
-             * @param {string[]} txt 0=header, 1=text
+             * @param {Array} txt 0=header, 1=text, 2=optional callBack
              */
             showSimpleGeneralModal(txt){
                 this.openGeneralModal(3)
                 this.$set(this.generalModalTxt,0,txt[0])
                 this.$set(this.generalModalTxt,1,txt[1])
+                if(txt.length===3){
+                    this.generalModalCallback=txt[2]
+                }
             },
 
             openGeneralModal(id){
@@ -1023,6 +966,10 @@
 
 
             closeGeneralModal(){
+                if(this.generalModalCallback!==undefined){
+                    this.generalModalCallback()
+                    this.generalModalCallback=undefined
+                }
                 this.visibleSection=0
                 this.generalModal=0
                 this.generalModalLoadingTxt=""
@@ -1032,6 +979,7 @@
             clearGeneralModal(){
                 this.$set(this.generalModalTxt,0,"")
                 this.$set(this.generalModalTxt,1,"")
+                this.generalModalCallback=undefined
                 this.generalModalPopTxt=""
                 if(this.generalModalPop!==0){
                     clearTimeout(this.generalModalPop)
@@ -1039,22 +987,9 @@
                 this.generalModalPop=0
             },
 
-            resetCurCal(){
-                this.curCal={
-                    icon:"icon-appt-calendar",
-                    name:"Select Calendar",
-                    url:"",
-                    rIcon:"",
-                    clr:"",
-                    isCalLoading:false
-                }
-            },
-            setCurCal(c){
-                this.curCal.icon='icon-appt-calendar'
-                this.curCal.name=c.name
-                this.curCal.url=c.url
-                this.curCal.rIcon="--srgdev-dot-img: url("+OC.webroot+"/index.php/svg/appointments/appt-calendar?color="+c.clr.substr(1)+")"
-                this.curCal.clr=c.clr
+            resetCalInfo(){
+                this.$set(this.calInfo,"curCal_color","#000000")
+                this.$set(this.calInfo,"curCal_name",t('appointments',"Select a calendar"))
             },
 
             noCalSet(){

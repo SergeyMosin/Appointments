@@ -73,23 +73,15 @@ class CalendarsController extends Controller{
 
         $cals=[];
 
-        $cal_id=$this->config->getUserValue(
-            $this->userId,
-            $this->appName,
-            'cal_id');
-        if(!empty($cal_id) && $this->bc->getCalendarById($cal_id,$this->userId)!==null){
-            $cals[]=$cal_id;
-        }
+        $dst_cal_id="-1";
+        $main_cal_id=$this->utils->getMainCalId($this->userId,$dst_cal_id);
 
-        if($jo->type==="both") {
-            // dest calendar
-            $cls = $this->utils->getUserSettings(
-                BackendUtils::KEY_CLS, BackendUtils::CLS_DEF,
-                $this->userId, $this->appName);
-            $dcl_id = $cls[BackendUtils::CLS_DEST_ID];
-            if ($dcl_id !== "-1" && $this->bc->getCalendarById($dcl_id, $this->userId) !== null) {
-                $cals[]=$dcl_id;
-            }
+        if($main_cal_id!=="-1"){
+            $cals[]=$main_cal_id;
+        }
+        // dest calendar
+        if($jo->type==="both" && $dst_cal_id !== "-1") {
+            $cals[]=$dst_cal_id;
         }
 
         $ots=$end->getTimestamp();

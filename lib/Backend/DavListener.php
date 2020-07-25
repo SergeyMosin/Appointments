@@ -73,8 +73,6 @@ class DavListener {
         $config=\OC::$server->getConfig();
 
         if(isset($evt->{BackendUtils::XAD_PROP})){
-            // New: shared calendar support
-
             // @see BackendUtils->dataSetAttendee for BackendUtils::XAD_PROP
             $xad=explode(chr(31),$utils->decrypt(
                 $evt->{BackendUtils::XAD_PROP}->getValue(),
@@ -85,12 +83,22 @@ class DavListener {
             return;
         }
 
-        $dstId='-1'; // manual mode only
-        $cal_id=$utils->getMainCalId($userId,$dstId);
 
-        // Check cal IDs. (manual mode only might have non "-1" value in $dstId @see BackendUtils->getMainCalId)
+        $other_cal='-1';
+        $cal_id=$utils->getMainCalId($userId,$other_cal);
+
+        if($other_cal!=='-1'){
+            // only allowed in simple
+            if($utils->getUserSettings(
+                BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
+                $userId ,$this->appName)[BackendUtils::CLS_TS_MODE]!=='0'){
+                $other_cal='-1';
+            }
+        }
+
+        // Check cal IDs.
         // $event['calendarData']['id'] can be a string or an int
-        if($cal_id!=$event['calendarData']['id'] && $dstId!=$event['calendarData']['id']){
+        if($cal_id!=$event['calendarData']['id'] && $other_cal!=$event['calendarData']['id']){
             // Not this user's calendar
             return;
         }
