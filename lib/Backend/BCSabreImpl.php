@@ -771,6 +771,8 @@ class BCSabreImpl implements IBackendConnector{
         $ret=[1,null];
         $err='';
 
+        // TODO: when simple mode has destination calendar confirm page reload shows error ...
+
         // for manual mode:
         //  if confirming:
         //      pending appointments are always in the main calendar

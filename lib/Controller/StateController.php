@@ -62,7 +62,7 @@ class StateController extends Controller{
             if($enabled==="1"){
                 // JUST IN CASE: check if calendars are set
                 $other_cal="-1";
-                $main_cal=$this->utils->getMainCalId($this->userId,$other_cal);
+                $main_cal=$this->utils->getMainCalId($this->userId,$this->bc,$other_cal);
 
                 $cls=$this->utils->getUserSettings(
                     BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
@@ -93,7 +93,7 @@ class StateController extends Controller{
                 $u=$this->userId;
                 $a=$this->appName;
                 $other_cal="-1";
-                $main_cal=$this->utils->getMainCalId($u,$other_cal);
+                $main_cal=$this->utils->getMainCalId($u,$this->bc,$other_cal);
 
                 $cls=$this->utils->getUserSettings(
                     BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,

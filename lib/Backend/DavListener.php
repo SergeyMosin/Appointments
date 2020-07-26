@@ -49,7 +49,6 @@ class DavListener {
             return;
         }
 
-
         $vObject=Reader::read($cd);
         if(!isset($vObject->VEVENT)){
             // Not a VEVENT
@@ -83,9 +82,8 @@ class DavListener {
             return;
         }
 
-
         $other_cal='-1';
-        $cal_id=$utils->getMainCalId($userId,$other_cal);
+        $cal_id=$utils->getMainCalId($userId,null,$other_cal);
 
         if($other_cal!=='-1'){
             // only allowed in simple

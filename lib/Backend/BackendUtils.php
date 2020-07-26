@@ -647,12 +647,11 @@ class BackendUtils{
      *  Other = XTM_SRC_ID (source calendar)
      *
      * @param string $userId
-     * @param string $otherCal get the ID of the other calendar.
+     * @param IBackendConnector|null $bc checks backend if provided
+     * @param string $otherCal get the ID of the other calendar "-1"=not found
      * @return string calendar Id or "-1" = no main cal
      */
-    function getMainCalId($userId,&$otherCal=null){
-
-        // TODO: check is cals actually exist...
+    function getMainCalId($userId,$bc,&$otherCal=null){
 
         // What mode are we in ??
         $cls=$this->getUserSettings(
@@ -660,26 +659,28 @@ class BackendUtils{
             $userId ,$this->appName);
         $ts_mode=$cls[self::CLS_TS_MODE];
         if ($ts_mode==="1"){
+            $dst=$cls[self::CLS_XTM_DST_ID];
+            $src=$cls[self::CLS_XTM_SRC_ID];
             // External mode - main calendar is destination calendar
-            if($cls[self::CLS_XTM_SRC_ID] === "-1"
-            || $cls[self::CLS_XTM_DST_ID] === "-1"
-            || $cls[self::CLS_XTM_SRC_ID] === $cls[self::CLS_XTM_DST_ID]){
+            if($src === "-1" || $dst === "-1" || $src === $dst){
                 if(isset($otherCal)){
                     $otherCal='-1';
                 }
                 return "-1";
             }else{
                 if(isset($otherCal)){
-                    $otherCal=$cls[self::CLS_XTM_SRC_ID];
+                    $otherCal=($bc!==null && $bc->getCalendarById($src,$userId)===null)?'-1':$src;
                 }
-                return $cls[self::CLS_XTM_DST_ID];
+                return ($bc!==null && $bc->getCalendarById($dst,$userId)===null)?"-1":$dst;
             }
         }else{
             // Manual $ts_mode==="0"
             if(isset($otherCal)){
-                $otherCal=$cls[self::CLS_DEST_ID];
+                $dst=$cls[self::CLS_DEST_ID];
+                $otherCal=($bc!==null && $bc->getCalendarById($dst,$userId)===null)?'-1':$dst;
             }
-            return $cls[self::CLS_MAIN_ID];
+            $src=$cls[self::CLS_MAIN_ID];
+            return ($bc!==null && $bc->getCalendarById($src,$userId)===null)?'-1':$src;
         }
     }
 
@@ -920,3 +921,4 @@ class BackendUtils{
     }
 
 }
+

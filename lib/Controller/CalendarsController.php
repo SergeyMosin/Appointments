@@ -74,7 +74,7 @@ class CalendarsController extends Controller{
         $cals=[];
 
         $dst_cal_id="-1";
-        $main_cal_id=$this->utils->getMainCalId($this->userId,$dst_cal_id);
+        $main_cal_id=$this->utils->getMainCalId($this->userId,$this->bc,$dst_cal_id);
 
         if($main_cal_id!=="-1"){
             $cals[]=$main_cal_id;
@@ -149,8 +149,8 @@ class CalendarsController extends Controller{
         }
 
         $dcl_id='-1';
-        $cal_id=$this->utils->getMainCalId($this->userId,$dcl_id);
-        if($cal_id==="-1" || $this->bc->getCalendarById($cal_id,$this->userId)===null){
+        $cal_id=$this->utils->getMainCalId($this->userId,$this->bc,$dcl_id);
+        if($cal_id==="-1"){
             $r->setStatus(400);
             return $r;
         }
@@ -170,11 +170,9 @@ class CalendarsController extends Controller{
         // check dest calendar
         if($dcl_id!=="-1"){
             $dc=$this->bc->getCalendarById($dcl_id, $this->userId);
-            if($dc!==null){
-                $out=$this->bc->queryRange($dcl_id,$t_start,$t_end,'no_url');
-                if($out!==null){
-                    $data_out.=chr(31).$dc['color'].chr(30).$out;
-                }
+            $out=$this->bc->queryRange($dcl_id,$t_start,$t_end,'no_url');
+            if($out!==null){
+                $data_out.=chr(31).$dc['color'].chr(30).$out;
             }
         }
 

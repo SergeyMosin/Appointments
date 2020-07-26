@@ -233,7 +233,7 @@ class PageController extends Controller {
         }
 
         $otherCalId="-1";
-        $cal_id=$this->utils->getMainCalId($userId,$otherCalId);
+        $cal_id=$this->utils->getMainCalId($userId,$this->bc,$otherCalId);
         if($cal_id==='-1') {
             return $this->pubErrResponse($userId,$embed);
         }
@@ -310,15 +310,16 @@ class PageController extends Controller {
 
             $r_cal_id=$cal_id;
 
-            // The appointment can be in the destination calendar (manual mode)
-            // this needs to be done here just in case we need to 'reset'
-            if($otherCalId!=="-1" && $this->bc->getObjectData($otherCalId,$uri)!==null){
-                $r_cal_id=$otherCalId;
-            }
-
             $cls=$this->utils->getUserSettings(
                 BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
                 $userId ,$this->appName);
+
+            // The appointment can be in the destination calendar (manual mode)
+            // this needs to be done here just in case we need to 'reset'
+            if($cls[BackendUtils::CLS_TS_MODE]==='0' && $otherCalId!=="-1"){
+                $r_cal_id=$otherCalId;
+            }
+
             // This can be 'mark' or 'reset'
             $mr=$cls[BackendUtils::CLS_ON_CANCEL];
             if($mr==='mark') {
@@ -487,8 +488,8 @@ class PageController extends Controller {
         $post['name']=htmlspecialchars($post['name'], ENT_QUOTES, 'UTF-8');
         // Input seems OK...
 
-        $cal_id=$this->utils->getMainCalId($userId);
-        if($cal_id==="-1" || $this->bc->getCalendarById($cal_id,$userId)===null) {
+        $cal_id=$this->utils->getMainCalId($userId,$this->bc);
+        if($cal_id==="-1") {
             $rr=new RedirectResponse($server_err_url);
             $rr->setStatus(303);
             return $rr;
@@ -717,8 +718,8 @@ class PageController extends Controller {
             return $tr;
         }
 
-        $cid=$this->utils->getMainCalId($uid);
-        if($cid==="-1" || $this->bc->getCalendarById($cid,$uid)===null){
+        $cid=$this->utils->getMainCalId($uid,$this->bc);
+        if($cid==="-1"){
             $tr->setParams($params);
             return $tr;
         }
@@ -828,7 +829,7 @@ class PageController extends Controller {
         $c=count($data);
         if($c<3) return '1:'.$this->l->t("Please add time slots first.")." [DL = ".$c."]";
 
-        $cal_id=$this->utils->getMainCalId($userId);
+        $cal_id=$this->utils->getMainCalId($userId,$this->bc);
         if($cal_id==="-1") return '1:'.$this->l->t("Please select a calendar first");
 
         $cal=$this->bc->getCalendarById($cal_id,$userId);

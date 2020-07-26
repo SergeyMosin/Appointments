@@ -42,7 +42,7 @@
                             v-model="calInfo.destCalId"
                             class="tsb-input"
                             id="appt_tsb-dest-cal-id">
-                        <option value="-1">{{t('appointments','Use the Main calendar')}}</option>
+                        <option value="-1">{{t('appointments','Use Main calendar')}}</option>
                         <option v-for="cal in cals" :value="cal.id">{{cal.name}}</option>
                     </select>
                 </template>
