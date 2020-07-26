@@ -392,3 +392,12 @@
   color: var(--color-primary);
   text-decoration: underline;
 }
+
+@media screen and (max-width: 479px) {
+  .srgdev-ncfp-wrap {
+    font-size: 110%;
+  }
+  .srgdev-ncfp-form{
+    border: none;
+  }
+}

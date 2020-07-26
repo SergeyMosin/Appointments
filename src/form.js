@@ -201,7 +201,50 @@
 
         document.getElementById("srgdev-dpu_main-date").style.left="-"+(p.curDP*5*4.6)+"em"
     }
-    
+
+    function addSwipe(cont,bfc) {
+        cont.touchInfo={x:0,y:0,id:-1}
+        cont.bfNav=bfc
+        cont.addEventListener("touchstart",swipeStart)
+        cont.addEventListener("touchend", swipeEnd)
+
+    }
+    /** @param {TouchEvent} e */
+    function swipeStart(e) {
+        if(e.changedTouches!==undefined && e.changedTouches.length>0){
+            const cc=e.changedTouches[0]
+            const ti=this.touchInfo
+            ti.x=cc.clientX
+            ti.y=cc.clientY
+            ti.id=cc.identifier
+        }
+    }
+    /** @param {TouchEvent} e */
+    function swipeEnd(e) {
+        if(e.changedTouches!==undefined && e.changedTouches.length>0){
+            const cc=e.changedTouches[0]
+            const ti=this.touchInfo
+            if(cc.identifier===ti.id) {
+                const dx=(cc.clientX-ti.x)|0
+                const dy=(cc.clientY-ti.y)|0
+                let t = dx>>31
+                let dx_abc=((dx + t) ^ t)
+                t = dy>>31
+                if( dx_abc > ((dy + t) ^ t) && dx_abc>50 ){
+                    if(dx<0){
+                        // swipe left - push next
+                        this.bfNav.lastElementChild.click()
+                    }else{
+                        // swipe right - push prev
+                        this.bfNav.firstElementChild.click()
+                    }
+                }
+            }
+            ti.id=-1
+        }
+    }
+
+
     
     function makeDpu(pps) {
 
@@ -391,6 +434,7 @@
         lcd.id="srgdev-dpu_main-date"
         lcd.className="srgdev-dpu-bkr-cls"
         lcd.style.left="0em"
+        addSwipe(lcd,lcdBF)
         cont.appendChild(lcd)
 
         let lcTime=document.createElement('div')
@@ -593,7 +637,7 @@
         cont.addEventListener("click", timeClick)
         document.getElementById('srgdev-ncfp_sel_cont').appendChild(cont)
 
-        // let's make sure correct date square is shown...
+        // let's make sure the correct date square is shown...
         // ... 5 is the number of available slots per pagination page
         let ti=Math.floor(an/5)
         if(ti>0) {
