@@ -1,7 +1,8 @@
 <div class="srgdev-appt-hs-inner">
     <h2 class="srgdev-appt-hs-h1">1. Select a Calendar (Simple Mode)</h2>
-    <p class="srgdev-appt-hs-p"><code class="srgdev-appt-hs-code_short">Manage Appointment Slots &gt; Select a Calendar</code><br>It is recommended to create a separate calendar.</p>
-    <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_destcal">Calendar for booked appointments</strong> - if this calendar is different from the main calendar, confirmed/finalized appointments will be moved here. <em style="font-style: italic;">This calendar is reset every time the main calendar is changed.</em></p>
+    <p class="srgdev-appt-hs-p"><code class="srgdev-appt-hs-code_short">Manage Appointment Slots &gt; Calendars > Main Calendar</code></p>
+    <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_maincal">Main Calendar</strong> - when you create new appointments they are placed here are shown in the your public page. It is recommended to create a separate calendar.</p>
+    <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_destcal">Calendar for booked appointments</strong> - if this calendar is different from the main calendar, confirmed/finalized appointments will be moved here.</p>
     <h2 class="srgdev-appt-hs-h1">2. Enter Organization Info</h2>
     <p class="srgdev-appt-hs-p">See the "User/Organization Info" section for required Name, Location and Email Address settings.</p>
     <h2 class="srgdev-appt-hs-h1">3. Add Appointments</h2>
@@ -15,10 +16,10 @@
     <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_timezone">Timezone Options:</strong></p>
     <p class="srgdev-appt-hs-p"><span style="text-decoration: underline">Local (floating)</span> - this option should be used if you are booking appointments for a real location, like an office or a store. "Floating" values are not bound to any time zone in particular, and will represent the same hour, minute, and second value regardless of which time zone is currently being observed.</p>
     <p class="srgdev-appt-hs-p srgdev-appt-hs-p_t">Example: 12:00PM <strong>floating</strong> time appointment based in New York</p>
-    <img class="srgdev-appt-hs-tz-img" src="<?php print_unescaped(image_path('appointments', 'floating_timezone.jpg')); ?>" />
+    <img alt="floating timezone" class="srgdev-appt-hs-tz-img" src="<?php print_unescaped(image_path('appointments', 'floating_timezone.jpg')); ?>" />
     <p class="srgdev-appt-hs-p"><span style="text-decoration: underline">Calendar Timezone</span> - your calendar's timezone will be used. This option should be used if you are booking events where people participate from different locations(timezones), like phone calls or video conferences. <strong>Appointment time is "casted" to visitors local time.</strong></p>
     <p class="srgdev-appt-hs-p srgdev-appt-hs-p_t">Example: 12:00PM <strong>America/New_York timezone</strong>  appointment based in New York</p>
-    <img class="srgdev-appt-hs-tz-img" src="<?php print_unescaped(image_path('appointments', 'actual_timezone.jpg')); ?>" />
+    <img alt="local timezone" class="srgdev-appt-hs-tz-img" src="<?php print_unescaped(image_path('appointments', 'actual_timezone.jpg')); ?>" />
     <h2 class="srgdev-appt-hs-h1">4. Customize Public Page</h2>
     <p class="srgdev-appt-hs-p"><strong id="srgdev-sec_gdpr">GDPR Compliance</strong></p>
     <p class="srgdev-appt-hs-p">Any text in the "GDPR Compliance" field will trigger display of the "GDPR" check box. Plain text (no html) will work as is, but if you need to add a link to a privacy policy please read on... For the link to work properly you should separate it from the &lt;label&gt; element, and the &lt;label&gt;'s <strong>"for"</strong> attribute MUST be set to <strong>"appt_gdpr_id"</strong>, example:</p>
@@ -68,7 +69,7 @@ form{
     <div class="srgdev-appt-hs-p">
         1. If the iframe is under a different domain use <strong>occ</strong> to set allowed Frame Ancestor Domain:
         <code style="white-space: pre" class="srgdev-appt-hs-code">php occ config:app:set appointments "emb_afad_YourUserName" --value "your.domain.com"</code>
-    2. Email confirm/cancel buttons need to be redirected. (If email validation step is skipped then this is not needed).<br>Use <strong>occ</strong> to set base URL for the host page with <strong>a query parameter available at the end of the URL</strong>:
+    2. Email confirm/cancel buttons need to be redirected.<br>Use <strong>occ</strong> to set base URL for the host page with <strong>a query parameter available at the end of the URL</strong>:
         <code style="white-space: pre" class="srgdev-appt-hs-code">php occ config:app:set appointments "emb_cncf_YourUserName" --value "your.domain.com/page_url?some_param_name="</code>
 
 Example using PHP:
