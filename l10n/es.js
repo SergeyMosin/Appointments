@@ -140,6 +140,7 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "Calendario de destino (Reservado)",
     "Optimize recurrence" : "Optimizar la repetición",
     "Require \"Appointment\" category" : "Necesita una categoría de \"Cita\"",
+    "Auto-fix \"Source\" timeslots" : "Auto ajustar tiempos \"Source\"",
     "Advanced Settings" : "Configuración avanzada",
     "Minimum lead time" : "Plazo de ejecución mínimo",
     "No lead time" : "Sin plazo de entrega",
