@@ -489,11 +489,9 @@
                 this.tzName="UTC"
                 this.tzData="UTC"
 
-                // TODO: new version of zone.json available + issue #112
-                // https://hg.mozilla.org/comm-central/file/tip/calendar/timezones/zones.json
                 this.$parent.$parent.getState("get_tz").then(res=>{
                     if(res!==null && res.toLowerCase()!=='utc') {
-                        let url=linkTo('appointments','ajax/zones.json')
+                        let url=linkTo('appointments','ajax/zones.js')
                         return axios.get(url).then(tzr=>{
                             if(tzr.status===200) {
                                 let tzd=tzr.data
