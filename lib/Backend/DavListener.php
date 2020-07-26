@@ -182,15 +182,13 @@ class DavListener {
             $evt->{BackendUtils::TZI_PROP}->getValue()
         );
 
-        $org_name=$config->getUserValue(
-            $userId, $this->appName,
-            BackendUtils::KEY_O_NAME);
-        $org_email=$config->getUserValue(
-            $userId, $this->appName,
-            BackendUtils::KEY_O_EMAIL);
-        $org_phone=$config->getUserValue(
-            $userId, $this->appName,
-            BackendUtils::KEY_O_PHONE);
+        $org=$utils->getUserSettings(
+            BackendUtils::KEY_ORG,BackendUtils::ORG_DEF,
+            $userId ,$this->appName);
+
+        $org_name=$org[BackendUtils::ORG_NAME];
+        $org_email=$org[BackendUtils::ORG_EMAIL];
+        $org_phone=$org[BackendUtils::ORG_PHONE];
 
         $is_cancelled=false;
 
@@ -372,12 +370,9 @@ class DavListener {
             if(!$is_cancelled){
                 $method='PUBLISH';
 
-                $tel=$config->getUserValue(
-                    $userId, $this->appName,
-                    BackendUtils::KEY_O_PHONE);
-                if(!empty($tel)){
+                if(!empty($org_phone)){
                     if (!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
-                    $evt->DESCRIPTION->setValue($org_name."\n".$tel);
+                    $evt->DESCRIPTION->setValue($org_name."\n".$org_phone);
                 }else {
                     if (isset($evt->DESCRIPTION)) {
                         $evt->remove($evt->DESCRIPTION);

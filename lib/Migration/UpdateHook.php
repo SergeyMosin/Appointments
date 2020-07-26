@@ -17,6 +17,11 @@ use OCP\PreConditionNotMetException;
 
 class UpdateHook implements IRepairStep {
 
+    private const KEY_U_NAME = 'organization';
+    private const KEY_U_EMAIL = 'email';
+    private const KEY_U_ADDR = 'address';
+    private const KEY_U_PHONE = 'phone';
+
     private $c;
     private $um;
     private $appName;
@@ -76,6 +81,28 @@ class UpdateHook implements IRepairStep {
                             /** @noinspection PhpUnhandledExceptionInspection */
                             $this->c->setUserValue($userId,$this->appName,BackendUtils::KEY_CLS,$js);
                         }
+                    }
+
+                    // org info
+                    $org_name=$this->c->getUserValue($userId, $this->appName, self::KEY_U_NAME,null);
+                    if($org_name!==null){
+
+                        $a=array(
+                            BackendUtils::ORG_NAME=>$org_name,
+                            BackendUtils::ORG_EMAIL=>$this->c->getUserValue($userId, $this->appName, self::KEY_U_EMAIL),
+                            BackendUtils::ORG_ADDR=>$this->c->getUserValue($userId, $this->appName, self::KEY_U_ADDR),
+                            BackendUtils::ORG_PHONE=>$this->c->getUserValue($userId, $this->appName, self::KEY_U_PHONE)
+                        );
+                        $js=json_encode($a);
+                        if($js!==false){
+                            /** @noinspection PhpUnhandledExceptionInspection */
+                            $this->c->setUserValue($userId,$this->appName,BackendUtils::KEY_ORG,$js);
+                        }
+
+                        $this->c->deleteUserValue($userId, $this->appName,self::KEY_U_NAME);
+                        $this->c->deleteUserValue($userId, $this->appName,self::KEY_U_EMAIL);
+                        $this->c->deleteUserValue($userId, $this->appName,self::KEY_U_ADDR);
+                        $this->c->deleteUserValue($userId, $this->appName,self::KEY_U_PHONE);
                     }
                 }
             }

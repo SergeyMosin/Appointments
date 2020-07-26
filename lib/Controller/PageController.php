@@ -363,9 +363,10 @@ class PageController extends Controller {
         } else {
             // Error
             // TODO: add phone number to "contact us ..."
-            $org_email = $this->c->getUserValue(
-                $userId, $this->appName,
-                BackendUtils::KEY_O_EMAIL);
+            $org_email=$this->utils->getUserSettings(
+                BackendUtils::KEY_ORG,BackendUtils::ORG_DEF,
+                $userId ,$this->appName)[BackendUtils::ORG_EMAIL];
+
 
             if($sts!==2) {
                 // general error
@@ -625,8 +626,9 @@ class PageController extends Controller {
             if($this->request->getParam('r')==='1'){
                 $param['appt_e_rc']='1';
             }elseif ($em==='1'){
-                $param['appt_e_ne']=$this->c->getUserValue(
-                    $uid,$this->appName, BackendUtils::KEY_O_EMAIL);
+                $param['appt_e_ne']=$this->utils->getUserSettings(
+                    BackendUtils::KEY_ORG,BackendUtils::ORG_DEF,
+                    $uid ,$this->appName)[BackendUtils::ORG_EMAIL];
             }
         }elseif($sts==='0') {
             $key=hex2bin($this->c->getAppValue($this->appName, 'hk'));
@@ -677,18 +679,20 @@ class PageController extends Controller {
         $pps=$this->utils->getUserSettings(
             BackendUtils::KEY_PSN, BackendUtils::PSN_DEF,
             $uid,$this->appName);
+        $org=$this->utils->getUserSettings(
+            BackendUtils::KEY_ORG,BackendUtils::ORG_DEF,
+            $uid ,$this->appName);
 
         $ft=$pps[BackendUtils::PSN_FORM_TITLE];
-        $org_name=$this->c->getUserValue(
-            $uid,$this->appName, BackendUtils::KEY_O_NAME);
+        $org_name=$org[BackendUtils::ORG_NAME];
+
+        $addr=!empty($org[BackendUtils::ORG_ADDR])?$org[BackendUtils::ORG_ADDR]:"123 Main Street\nNew York, NY 45678";
 
         $params=[
             'appt_sel_opts'=>'',
             'appt_state'=>'0',
             'appt_org_name'=>!empty($org_name)?$org_name:'Organization Name',
-            'appt_org_addr'=>str_replace(array("\r\n","\n","\r"),'<br>',$this->c->getUserValue(
-                $uid, $this->appName, BackendUtils::KEY_O_ADDR,
-                "123 Main Street\nNew York, NY 45678")),
+            'appt_org_addr'=>str_replace(array("\r\n","\n","\r"),'<br>',$addr),
             'appt_form_title'=>!empty($ft)?$ft:$this->l->t('Book Your Appointment'),
             'appt_pps'=>'',
             'appt_gdpr'=>'',
@@ -711,9 +715,7 @@ class PageController extends Controller {
             return $tr;
         }
 
-        if(empty($org_name) || empty($this->c->getUserValue(
-            $uid, $this->appName, BackendUtils::KEY_O_EMAIL))
-        ){
+        if(empty($org_name) || empty($org[BackendUtils::ORG_EMAIL])){
             $params['appt_state']='7';
             $tr->setParams($params);
             return $tr;
@@ -756,15 +758,7 @@ class PageController extends Controller {
         $t_end->setTime(0,0);
 
         $ts_mode=$cls[BackendUtils::CLS_TS_MODE];
-        if($ts_mode==="1"){
-            // external mode
-            if($cls[BackendUtils::CLS_XTM_SRC_ID]==="-1"){
-                // just in case
-                \OC::$server->getLogger()->error("Bad calInfo, mode: ".$ts_mode.", srcCalId: ".$cls[BackendUtils::CLS_XTM_SRC_ID]);
-                $params['appt_state']='8';
-                $tr->setParams($params);
-                return $tr;
-            }
+        if($ts_mode==="1"){ // external mode
             // @see BCSabreImpl->queryRange()
             $cid.=chr(31).$cls[BackendUtils::CLS_XTM_SRC_ID];
         }

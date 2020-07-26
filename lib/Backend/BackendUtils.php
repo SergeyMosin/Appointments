@@ -28,11 +28,17 @@ class BackendUtils{
     public const APPT_SES_CANCEL = "2";
     public const APPT_SES_SKIP = "3";
 
-    // TODO: convert to JSON storage
-    public const KEY_O_NAME = 'organization';
-    public const KEY_O_EMAIL = 'email';
-    public const KEY_O_ADDR = 'address';
-    public const KEY_O_PHONE = 'phone';
+    public const KEY_ORG = 'org_info';
+    public const ORG_NAME = 'organization';
+    public const ORG_EMAIL = 'email';
+    public const ORG_ADDR = 'address';
+    public const ORG_PHONE = 'phone';
+
+    const ORG_DEF=array(
+        self::ORG_NAME=>"",
+        self::ORG_EMAIL=>"",
+        self::ORG_ADDR=>"",
+        self::ORG_PHONE=>"");
 
     public const KEY_USE_DEF_EMAIL = 'useDefaultEmail';
 
@@ -694,7 +700,6 @@ class BackendUtils{
      */
     function makeAppointmentParts($userId, $appName, $tz_data_str, $cr_date,$title=""){
 
-        $config=\OC::$server->getConfig();
         $l10n=\OC::$server->getL10N($appName);
         $iUser=\OC::$server->getUserManager()->get($userId);
         if($iUser===null){
@@ -716,12 +721,16 @@ class BackendUtils{
             }
         }
 
-        $email=$config->getUserValue($userId,$appName, BackendUtils::KEY_O_EMAIL);
+        $org=$this->getUserSettings(
+            self::KEY_ORG,self::ORG_DEF,
+            $userId ,$this->appName);
+
+        $email=$org[self::ORG_EMAIL];
         if(empty($email)) $email=$iUser->getEMailAddress();
         if(empty($email)){
             return ['err'=>$l10n->t("Your email address is required for this operation.")];
         }
-        $addr=$config->getUserValue($userId,$appName, BackendUtils::KEY_O_ADDR);
+        $addr=$org[self::ORG_ADDR];
         if(empty($addr)){
             return ['err'=>$l10n->t("A location, address or URL is required for this operation. Check User/Organization settings.")];
         }
@@ -731,8 +740,7 @@ class BackendUtils{
 
         $name=trim($iUser->getDisplayName());
         if(empty($name)){
-            $name=trim($config->getUserValue($userId, $appName,
-                BackendUtils::KEY_O_NAME));
+            $name=$org[self::ORG_NAME];
         }
         if(empty($name)){
             return ['err'=>$l10n->t("Can't find your name. Check User/Organization settings.")];

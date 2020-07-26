@@ -30,10 +30,7 @@ class StateController extends Controller{
         $this->utils=$utils;
         /** @noinspection PhpUnhandledExceptionInspection */
         $this->bc=$backendManager->getConnector();
-        
-        
     }
-
 
     /**
      * @NoAdminRequired
@@ -89,23 +86,23 @@ class StateController extends Controller{
 
             $r->setStatus(200);
             if($v==='1'){
-                $c=$this->config;
-                $u=$this->userId;
-                $a=$this->appName;
                 $other_cal="-1";
-                $main_cal=$this->utils->getMainCalId($u,$this->bc,$other_cal);
+                $main_cal=$this->utils->getMainCalId($this->userId,$this->bc,$other_cal);
 
                 $cls=$this->utils->getUserSettings(
                     BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
                     $this->userId ,$this->appName);
                 $ts_mode=$cls[BackendUtils::CLS_TS_MODE];
 
+                $org=$this->utils->getUserSettings(
+                    BackendUtils::KEY_ORG,BackendUtils::ORG_DEF,
+                    $this->userId ,$this->appName);
+
                 if(($ts_mode==="0" && $main_cal==="-1") ||
                     ($ts_mode==="1" && ($main_cal==="-1" || $other_cal==="-1"))
-
-                    || empty($c->getUserValue($u,$a, BackendUtils::KEY_O_NAME))
-                    || empty($c->getUserValue($u,$a, BackendUtils::KEY_O_ADDR))
-                    || empty($c->getUserValue($u,$a, BackendUtils::KEY_O_EMAIL))
+                    || empty($org[BackendUtils::ORG_NAME])
+                    || empty($org[BackendUtils::ORG_ADDR])
+                    || empty($org[BackendUtils::ORG_EMAIL])
                 ){
                     $r->setStatus(412);
                     $v="0";
@@ -156,37 +153,28 @@ class StateController extends Controller{
                 $r->setStatus(500);
             }
         }else if($action==="get_uci") {
-            $o = $this->getStateKeys('uci');
-            foreach ($o as $k => $v) {
-                $o[$k] = $this->config->getUserValue($this->userId, $this->appName, $k);
-            }
-            $o[BackendUtils::KEY_USE_DEF_EMAIL]=$this->config->getAppValue(
-                $this->appName,BackendUtils::KEY_USE_DEF_EMAIL,'yes');
-            $j = json_encode($o);
-            if ($j !== false) {
+            $a=$this->utils->getUserSettings(
+                BackendUtils::KEY_ORG,
+                BackendUtils::ORG_DEF,
+                $this->userId,$this->appName);
+            $j=json_encode($a);
+            if($j!==false){
                 $r->setData($j);
                 $r->setStatus(200);
-            } else {
+            }else{
                 $r->setStatus(500);
             }
         }else if($action==="set_uci"){
             $d=$this->request->getParam("d");
             if($d!==null && strlen($d)<512) {
-                /** @noinspection PhpComposerExtensionStubsInspection */
-                $dvo = json_decode($d);
-                if ($dvo !== null) {
-                    $o = $this->getStateKeys('uci');
-                    foreach ($o as $k=>$v){
-                        if(isset($dvo->{$k})){
-                            $dv=$dvo->{$k};
-                        }else{
-                            $dv="";
-                        }
-                        $this->config->setUserValue(
-                            $this->userId,$this->appName,
-                            $k,$dv);
-                    }
+                if($this->utils->setUserSettings(
+                        BackendUtils::KEY_ORG,
+                        $d, BackendUtils::ORG_DEF,
+                        $this->userId,$this->appName)===true
+                ){
                     $r->setStatus(200);
+                }else{
+                    $r->setStatus(500);
                 }
             }
         }else if($action==="get_eml") {
@@ -288,18 +276,4 @@ class StateController extends Controller{
         }
         return $r;
     }
-
-    function getStateKeys($s){
-        $o=[];
-        if($s==='uci'){
-            $o = [BackendUtils::KEY_O_NAME => "",
-                BackendUtils::KEY_O_EMAIL => "",
-                BackendUtils::KEY_O_ADDR => "",
-                BackendUtils::KEY_O_PHONE => ""];
-        }
-        return $o;
-    }
-
-
-
 }
