@@ -578,7 +578,7 @@ class PageController extends Controller {
 
         if($r>0){
             // &r=1 means there was a race and someone else has booked that slot
-            $rr=new RedirectResponse($server_err_url.($r===1?"&r=1":"")."&eml=".urlencode($post['email']));
+            $rr=new RedirectResponse($server_err_url.($r===1?"&r=1":"")."&eml=1");
             $rr->setStatus(303);
             return $rr;
         }
@@ -624,8 +624,9 @@ class PageController extends Controller {
             $em=$this->request->getParam('eml');
             if($this->request->getParam('r')==='1'){
                 $param['appt_e_rc']='1';
-            }elseif ($em!==null && $this->mailer->validateMailAddress($em)!==false){
-                $param['appt_e_ne']=$em;
+            }elseif ($em==='1'){
+                $param['appt_e_ne']=$this->c->getUserValue(
+                    $uid,$this->appName, BackendUtils::KEY_O_EMAIL);
             }
         }elseif($sts==='0') {
             $key=hex2bin($this->c->getAppValue($this->appName, 'hk'));
