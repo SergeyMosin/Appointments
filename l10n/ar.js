@@ -7,7 +7,6 @@ OC.L10N.register(
     "Info" : "Info",
     "Close" : "إغلاق",
     "Remove" : "حذف",
-    "Warning" : "تحذير",
     "Deleted" : "تم حذفه",
     "Confirmed" : "مؤكَّد",
     "close" : "إغلاق",
@@ -17,6 +16,7 @@ OC.L10N.register(
     "1 Hour" : "ساعة",
     "2 Hours" : "ساعتين",
     "Error" : "خطأ",
+    "Warning" : "تحذير",
     "Location:" : "المكان :",
     "Back" : "العودة",
     "Next" : "التالي"

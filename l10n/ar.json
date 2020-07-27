@@ -5,7 +5,6 @@
     "Info" : "Info",
     "Close" : "إغلاق",
     "Remove" : "حذف",
-    "Warning" : "تحذير",
     "Deleted" : "تم حذفه",
     "Confirmed" : "مؤكَّد",
     "close" : "إغلاق",
@@ -15,6 +14,7 @@
     "1 Hour" : "ساعة",
     "2 Hours" : "ساعتين",
     "Error" : "خطأ",
+    "Warning" : "تحذير",
     "Location:" : "المكان :",
     "Back" : "العودة",
     "Next" : "التالي"

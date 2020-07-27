@@ -5,7 +5,6 @@ OC.L10N.register(
     "Info" : "Info",
     "Close" : "Tampar",
     "Remove" : "Suprimir",
-    "Warning" : "Atencion",
     "Apply" : "Aplicar",
     "Deleted" : "Suprimit",
     "15 Minutes" : "15 Minutas",
@@ -14,6 +13,7 @@ OC.L10N.register(
     "2 Hours" : "2 Oras",
     "Simple" : "Simpla",
     "Error" : "Error",
+    "Warning" : "Atencion",
     "Location:" : "Localizacion :",
     "Back" : "Retorn",
     "Next" : "Seguent"

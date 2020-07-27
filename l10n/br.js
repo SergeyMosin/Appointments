@@ -5,9 +5,9 @@ OC.L10N.register(
     "Cancel" : "Arrest",
     "Close" : "Serriñ",
     "Remove" : "Lemel",
-    "Warning" : "Kemenadenn",
     "Deleted" : "Lamet",
     "Error" : "Fazi",
+    "Warning" : "Kemenadenn",
     "Location:" : "c'h :",
     "Email is required." : "Un email eo ret kaout",
     "Back" : "Distro"

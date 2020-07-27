@@ -7,7 +7,6 @@ OC.L10N.register(
     "Info" : "اطلاعات",
     "Close" : "بستن",
     "Remove" : "حذف",
-    "Warning" : "هشدار",
     "Start" : "شروع کنید",
     "Apply" : "اعمال",
     "Deleted" : "حذف شده",
@@ -19,6 +18,7 @@ OC.L10N.register(
     "2 Hours" : "۲ ساعت",
     "Simple" : "ساده",
     "Error" : "خطا",
+    "Warning" : "هشدار",
     "Location:" : "مکان:",
     "Back" : "بازگشت",
     "Next" : "بعدی"

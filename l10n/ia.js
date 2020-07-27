@@ -5,12 +5,12 @@ OC.L10N.register(
     "Cancel" : "Cancellar",
     "Info" : "Info",
     "Close" : "Clauder",
-    "Warning" : "Aviso",
     "Start" : "Initio",
     "Apply" : "Applicar",
     "Deleted" : "Delite",
     "Confirmed" : "Confirmate",
     "Error" : "Error",
+    "Warning" : "Aviso",
     "Back" : "Retro",
     "Next" : "Sequente"
 },

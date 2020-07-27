@@ -5,7 +5,6 @@ OC.L10N.register(
     "Info" : "Info",
     "Close" : "ปิด",
     "Remove" : "ลบออก",
-    "Warning" : "คำเตือน",
     "Apply" : "นำไปใช้",
     "Deleted" : "ลบแล้ว",
     "Confirmed" : "ได้รับการยืนยันแล้ว",
@@ -15,6 +14,7 @@ OC.L10N.register(
     "2 Hours" : "2 ชั่วโมง",
     "Simple" : "ปกติ",
     "Error" : "ข้อผิดพลาด",
+    "Warning" : "คำเตือน",
     "Location:" : "สถานที่ตั้ง:",
     "Back" : "ย้อนกลับ",
     "Next" : "ถัดไป"

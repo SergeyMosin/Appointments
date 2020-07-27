@@ -7,7 +7,6 @@ OC.L10N.register(
     "Info" : "Info",
     "Close" : "Malfermi",
     "Remove" : "Forigi",
-    "Warning" : "Averto",
     "Start" : "Komenco",
     "Apply" : "Validigi",
     "Deleted" : "Forigita",
@@ -15,6 +14,7 @@ OC.L10N.register(
     "Canceled" : "Nuligita",
     "Advanced Settings" : "Detalaj agordoj",
     "Error" : "Eraro",
+    "Warning" : "Averto",
     "Location:" : "Loko:",
     "Back" : "Antaŭen",
     "Next" : "Sekva"
