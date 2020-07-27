@@ -1,6 +1,6 @@
 ## 1.6.6 - 2020-07-26
 ### Added
-- swipe and modile style to the public page
+- swipe and mobile style to the public page
 ### Changed
 - moved calendar selectors to "Calendars" section
 - internal code cleanup and optimization
