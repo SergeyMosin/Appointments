@@ -128,6 +128,7 @@ OC.L10N.register(
     "close" : "Fermer",
     "Calendars and Schedule" : "Agendas et Planification",
     "Manage appointments and calendar settings" : "Gérer les rendez-vous et les paramètres de l’agenda",
+    "Calendars" : "Calendriers",
     "Calendar Required" : "Agenda obligatoire",
     "Calendar for booked appointments" : "Agenda des rendez-vous confirmés",
     "Source Calendar (Free Slots)" : "Agenda source (Créneaux Horaires Libres)",
