@@ -45,7 +45,7 @@ class StateController extends Controller{
 
         // TODO: multiple pages per user:
         //  get_page + set_page:
-        //      index,uri,enabled,nickname,etc...
+        //      index,uri,enabled,nickname,etc... custom uri ?
 
         if($action==="get"){ // should be replaced with "get_page"
             // for now just get enabled
