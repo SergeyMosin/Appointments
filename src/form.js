@@ -369,7 +369,7 @@
             if(typeof tzn!=="string") tzn=undefined
         }
 
-        for(let md=new Date(),tzo,tzi,t,tStr,atStr,sp,sp2,
+        for(let md=new Date(),tzo,tzi,t,tStr,atStr,sp,sp2,ti,
                 ts,endTime=pso[PPS_END_TIME],showTZ=pso[PPS_SHOWTZ],
                 ia=s.getAttribute("data-info").split(','),
                 l=ia.length,i=0,ds;i<l;i++){
@@ -380,10 +380,11 @@
             tzo=md.getTimezoneOffset()
             t=ds.charAt(0)
 
+            ti=0
             if(t==="F"){
-                md.setTime(md.getTime()+(tzo*60000))
+                ti=(tzo*60000)
+                md.setTime(md.getTime()+ti)
                 tStr=atStr=tf(md)
-                ts=md.getTime()
             }else{
                 if(showTZ===0){
                     tStr=atStr=tf(md)
@@ -394,8 +395,8 @@
                     }
 
                 }
-                ts=md.getTime()
             }
+            ts=md.getTime()
 
             if(endTime===1){
                 sp2=sp+1
@@ -404,7 +405,7 @@
                 // sp2 is end time
                 sp2=+ds.substr(sp2,sp-sp2)*1000
 
-                md.setTime(ts+(sp2-ts))
+                md.setTime(ts+((sp2+ti)-ts))
                 if(t==='F' || showTZ===0){
                     tStr+=' - '+tf(md)
                 }else{

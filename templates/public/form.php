@@ -44,10 +44,10 @@ style('appointments', 'form');
             echo '<div class="srgdev-ncfp-chb-cont"><input class="checkbox" type="checkbox" id="appt_gdpr_id"/>'.(strpos($_['appt_gdpr'],'appt_gdpr_id')===false?'<label for="appt_gdpr_id">'.$_['appt_gdpr'].'</label>':$_['appt_gdpr']).'</div>';
         }
         ?>
-        <button id="srgdev-ncfp_fbtn" <?php echo $disabled ?>class="primary srgdev-ncfp-form-btn"><?php
+        <button id="srgdev-ncfp_fbtn" <?php echo $disabled ?>class="primary srgdev-ncfp-form-btn"><span><?php
             // TRANSLATORS This is the text for the "Book Now" button, on the appointment form.
             p($l->t("Book Now"));
-            ?></button>
+            ?></span><span id="srgdev-ncfp_fbtn-spinner"></span></button>
     </div>
     </form>
 
