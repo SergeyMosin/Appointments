@@ -4,7 +4,7 @@
 - "Show timezone" option
 - spinner to "Book now" button
 ### Fixed
-- pending appointments are not cancelled in simple mode with dual calendars.
+- pending appointments are not cancelled in "simple mode" with dual calendars
 
 ## 1.6.6 - 2020-07-26
 ### Added
