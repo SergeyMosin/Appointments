@@ -1,6 +1,6 @@
 ## 1.6.7 - 2020-07-29
 ### Added
-- "Show end time" option
+- "Show end-time" option
 - "Show timezone" option
 - spinner to "Book now" button
 ### Fixed
