@@ -23,30 +23,41 @@
                     <option value="4">{{t('appointments','Four Weeks')}}</option>
                     <option value="5">{{t('appointments','Five Weeks')}}</option>
                 </select>
-                <input
+                <div class="srgdev-appt-sb-chb-cont"><input
                         v-model="ppsInfo.showEmpty"
                         type="checkbox"
                         id="srgdev-appt_pps-show-empty"
                         class="checkbox">
-                <label for="srgdev-appt_pps-show-empty">{{t('appointments','Show Empty Days')}}</label><br>
+                    <label for="srgdev-appt_pps-show-empty">{{t('appointments','Show Empty Days')}}</label></div>
                 <div class="pps-indent"
                         v-show="ppsInfo.showEmpty===true">
-                    <input
+                    <div style="margin-top: .25em" class="srgdev-appt-sb-chb-cont"><input
                             v-model="ppsInfo.startFNED"
                             type="checkbox"
                             id="srgdev-appt_pps-start-mon"
-                            class="checkbox"><label for="srgdev-appt_pps-start-mon">{{t('appointments','Start on current day instead of Monday')}}</label><br>
-                    <input
+                            class="checkbox"><label for="srgdev-appt_pps-start-mon">{{t('appointments','Start on current day instead of Monday')}}</label></div>
+                    <div class="srgdev-appt-sb-chb-cont"><input
                             v-model="ppsInfo.showWeekends"
                             type="checkbox"
                             id="srgdev-appt_pps-show-weekends"
-                            class="checkbox"><label for="srgdev-appt_pps-show-weekends">{{t('appointments','Show Empty Weekends')}}</label><br>
+                            class="checkbox"><label for="srgdev-appt_pps-show-weekends">{{t('appointments','Show Empty Weekends')}}</label></div>
                 </div>
-                <input
+                <div class="srgdev-appt-sb-chb-cont"><input
                         v-model="ppsInfo.time2Cols"
                         type="checkbox"
+                        :disabled="ppsInfo.endTime===true"
                         id="srgdev-appt_pps-time-cols"
-                        class="checkbox"><label for="srgdev-appt_pps-time-cols">{{t('appointments','Show time in two columns')}}</label><br><br>
+                        class="checkbox"><label for="srgdev-appt_pps-time-cols">{{t('appointments','Show time in two columns')}}</label></div>
+                <div class="srgdev-appt-sb-chb-cont"><input
+                        v-model="ppsInfo.endTime"
+                        type="checkbox"
+                        @change="function() {
+                          if(ppsInfo.endTime===true && ppsInfo.time2Cols===true){
+                              ppsInfo.time2Cols=false
+                          }
+                        }"
+                        id="srgdev-appt_pps-end-time"
+                        class="checkbox"><label for="srgdev-appt_pps-end-time">{{t('appointments','Show end time')}}</label></div><br>
                 <ApptAccordion
                     title="Advanced Settings"
                     :open="false">
@@ -68,6 +79,11 @@
                                 type="checkbox"
                                 id="srgdev-appt_pps-hide-phone"
                                 class="checkbox"><label for="srgdev-appt_pps-hide-phone">{{t('appointments','Hide phone number field')}}</label></div>
+                        <div class="srgdev-appt-sb-chb-cont"><input
+                                v-model="ppsInfo.showTZ"
+                                type="checkbox"
+                                id="srgdev-appt_pps-show-tz"
+                                class="checkbox"><label for="srgdev-appt_pps-show-tz">{{t('appointments','Show timezone')}}</label></div>
                         <div class="srgdev-appt-info-lcont srgdev-appt-sb-chb-cont"><input
                                 v-model="ppsInfo.metaNoIndex"
                                 type="checkbox"
@@ -135,9 +151,11 @@
                         startFNED: false,
                         showWeekends: false,
                         time2Cols: false,
+                        endTime: false,
                         gdpr: "",
                         whenCanceled:"mark",
                         hidePhone:false,
+                        showTZ:false,
                         pageTitle:"",
                         pageSubTitle:"",
                         metaNoIndex:false,

@@ -108,7 +108,7 @@
             e.stopPropagation()
             return false
         }
-
+        document.getElementById("srgdev-ncfp_fbtn-spinner").style.display="inline-block"
         el=document.createElement("input")
         el.type="hidden"
         el.name="tzi"
@@ -158,7 +158,7 @@
         }
 
         if(t.dpuClickID!==undefined){
-            document.getElementById('srgdev-ncfp_sel-dummy').value=t.parentElement.getAttribute('data-dm')+' - '+t.childNodes[0].textContent;
+            document.getElementById('srgdev-ncfp_sel-dummy').value=t.parentElement.getAttribute('data-dm')+' - '+t.timeAt;
             let elm=document.getElementById('srgdev-ncfp_sel-hidden')
             elm.selectedIndex=t.dpuClickID
             elm.value=elm.dataRef[t.dpuClickID].d
@@ -252,7 +252,9 @@
         const PPS_EMPTY="showEmpty";
         const PPS_FNED="startFNED";
         const PPS_WEEKEND="showWeekends";
+        const PPS_SHOWTZ="showTZ";
         const PPS_TIME2="time2Cols";
+        const PPS_END_TIME="endTime";
 
         let pso={}
         let ta=pps.split('.')
@@ -273,7 +275,6 @@
         const dpuTrBack=s.getAttribute("data-tr-back")
         const dpuTrNext=s.getAttribute("data-tr-next")
         const dpuTrNA=s.getAttribute("data-tr-not-available")
-
 
         let mn
         let dn
@@ -301,6 +302,18 @@
                 return d.toLocaleTimeString()
             }
         }
+
+        let tfz
+        if(has_intl) {
+            let f = new Intl.DateTimeFormat([],
+                {hour: "numeric", minute: "2-digit", timeZoneName:"short"})
+            tfz=f.format
+        }else{
+            tfz=function (d) {
+                return d.toLocaleTimeString()
+            }
+        }
+
         let df
         if(has_intl) {
             let f = new Intl.DateTimeFormat([],
@@ -345,7 +358,6 @@
             }
         }
 
-
         let dta=[]
         let tzn=undefined
         if(has_intl){
@@ -357,17 +369,48 @@
             if(typeof tzn!=="string") tzn=undefined
         }
 
-        for(let md=new Date(),tzo,tzi,t,
+        for(let md=new Date(),tzo,tzi,t,tStr,atStr,sp,sp2,
+                ts,endTime=pso[PPS_END_TIME],showTZ=pso[PPS_SHOWTZ],
                 ia=s.getAttribute("data-info").split(','),
                 l=ia.length,i=0,ds;i<l;i++){
             ds=ia[i]
 
-            let sp=ds.indexOf(":",8);
+            sp=ds.indexOf(":",8);
             md.setTime(+ds.substr(1,sp-1)*1000)
             tzo=md.getTimezoneOffset()
             t=ds.charAt(0)
 
-            if(t==="F") md.setTime(md.getTime()+(tzo*60000))
+            if(t==="F"){
+                md.setTime(md.getTime()+(tzo*60000))
+                tStr=atStr=tf(md)
+                ts=md.getTime()
+            }else{
+                if(showTZ===0){
+                    tStr=atStr=tf(md)
+                }else{
+                    tStr=atStr=tfz(md)
+                    if(endTime===1){
+                        tStr=tf(md) // no tz override
+                    }
+
+                }
+                ts=md.getTime()
+            }
+
+            if(endTime===1){
+                sp2=sp+1
+                // sp must be the pos of the last used ':'
+                sp=ds.indexOf(":",sp2)
+                // sp2 is end time
+                sp2=+ds.substr(sp2,sp-sp2)*1000
+
+                md.setTime(ts+(sp2-ts))
+                if(t==='F' || showTZ===0){
+                    tStr+=' - '+tf(md)
+                }else{
+                    tStr+=' - '+tfz(md)
+                }
+            }
 
             if(tzn!==undefined){
                 tzi=t+tzn
@@ -381,17 +424,19 @@
             }
 
             sp++
-            let sp2=ds.indexOf(":",sp)
+            sp2=ds.indexOf(":",sp)
             dta[i] = {
-                rts: md.getTime(),
+                rts: ts,
                 d: ds.substr(sp,sp2-sp),
                 t: ds.substr(sp2+2), // +2 is for ":_"
-                tzi:tzi
+                tzi:tzi,
+                time:tStr,
+                timeAt:atStr
             }
         }
 
         dta.sort((a, b) => (a.rts > b.rts) ? 1 : -1)
-        dta.push({rts:0,d:"",t:"",tzi:""}) //last option to finalize the loop
+        dta.push({rts:0,d:"",t:"",tzi:"",time:""}) //last option to finalize the loop
 
         s.dataRef=dta
 
@@ -501,14 +546,16 @@
 
         let tu_class
         // Time columns
-        if(pso[PPS_TIME2]===1){
-            tu_class='srgdev-dpu-time-unit2'
+        if(pso[PPS_TIME2]===0 || pso[PPS_END_TIME]===1){
+            tu_class='srgdev-dpu-time-unit'+
+                (pso[PPS_END_TIME]===1?"_tn":"")
         }else{
-            tu_class='srgdev-dpu-time-unit'
+            tu_class='srgdev-dpu-time-unit2'
         }
 
-        for(let tl,ts,ti,ets,tts,te,pe,i=0;i<l;i++){
-            ts= dta[i].rts
+        for(let tl,ts,ti,ets,tts,te,pe,dto,i=0;i<l;i++){
+            dto=dta[i]
+            ts= dto.rts
             if(ts===0) break
             d.setTime(ts)
 
@@ -582,11 +629,13 @@
             te=document.createElement("span")
             te.className=tu_class
             te.dpuClickID=i
-            te.appendChild(document.createTextNode(tf(d)))
-            if(dta[i].t!=="") {
+            te.timeAt=dto.timeAt
+            // te.appendChild(document.createTextNode(tf(d)))
+            te.appendChild(document.createTextNode(dto.time))
+            if(dto.t!=="") {
                 tl = document.createElement("span")
                 tl.className = "srgdev-dpu-appt-title"
-                tl.appendChild(document.createTextNode(dta[i].t))
+                tl.appendChild(document.createTextNode(dto.t))
                 te.appendChild(tl)
             }
             pe.appendChild(te)

@@ -62,8 +62,7 @@ class StateController extends Controller{
                 $main_cal=$this->utils->getMainCalId($this->userId,$this->bc,$other_cal);
 
                 $cls=$this->utils->getUserSettings(
-                    BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-                    $this->userId ,$this->appName);
+                    BackendUtils::KEY_CLS, $this->userId);
                 $ts_mode=$cls[BackendUtils::CLS_TS_MODE];
 
                 if(($ts_mode==="0" && $main_cal==="-1") ||
@@ -90,13 +89,11 @@ class StateController extends Controller{
                 $main_cal=$this->utils->getMainCalId($this->userId,$this->bc,$other_cal);
 
                 $cls=$this->utils->getUserSettings(
-                    BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-                    $this->userId ,$this->appName);
+                    BackendUtils::KEY_CLS, $this->userId);
                 $ts_mode=$cls[BackendUtils::CLS_TS_MODE];
 
                 $org=$this->utils->getUserSettings(
-                    BackendUtils::KEY_ORG,BackendUtils::ORG_DEF,
-                    $this->userId ,$this->appName);
+                    BackendUtils::KEY_ORG, $this->userId);
 
                 if(($ts_mode==="0" && $main_cal==="-1") ||
                     ($ts_mode==="1" && ($main_cal==="-1" || $other_cal==="-1"))
@@ -142,9 +139,7 @@ class StateController extends Controller{
             }
         }elseif ($action==="get_pps"){
             $a=$this->utils->getUserSettings(
-                BackendUtils::KEY_PSN,
-                BackendUtils::PSN_DEF,
-                $this->userId,$this->appName);
+                BackendUtils::KEY_PSN, $this->userId);
             $j=json_encode($a);
             if($j!==false){
                 $r->setData($j);
@@ -154,9 +149,7 @@ class StateController extends Controller{
             }
         }else if($action==="get_uci") {
             $a=$this->utils->getUserSettings(
-                BackendUtils::KEY_ORG,
-                BackendUtils::ORG_DEF,
-                $this->userId,$this->appName);
+                BackendUtils::KEY_ORG, $this->userId);
             $j=json_encode($a);
             if($j!==false){
                 $r->setData($j);
@@ -179,9 +172,7 @@ class StateController extends Controller{
             }
         }else if($action==="get_eml") {
             $a=$this->utils->getUserSettings(
-                BackendUtils::KEY_EML,
-                BackendUtils::EML_DEF,
-                $this->userId,$this->appName);
+                BackendUtils::KEY_EML, $this->userId);
             $j=json_encode($a);
             if($j!==false){
                 $r->setData($j);
@@ -209,9 +200,7 @@ class StateController extends Controller{
 
         }else if($action==="get_cls") {
             $a=$this->utils->getUserSettings(
-                BackendUtils::KEY_CLS,
-                BackendUtils::CLS_DEF,
-                $this->userId,$this->appName);
+                BackendUtils::KEY_CLS, $this->userId);
 
             if($a[BackendUtils::CLS_TS_MODE]==="0"
                 && $a[BackendUtils::CLS_MAIN_ID]!=="-1"){
@@ -235,8 +224,7 @@ class StateController extends Controller{
             $value=$this->request->getParam("d");
             if($value!==null) {
                 $ts_mode=$this->utils->getUserSettings(
-                    BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-                    $this->userId ,$this->appName)[BackendUtils::CLS_TS_MODE];
+                    BackendUtils::KEY_CLS,$this->userId)[BackendUtils::CLS_TS_MODE];
 
                 if($this->utils->setUserSettings(
                         BackendUtils::KEY_CLS,
@@ -244,8 +232,7 @@ class StateController extends Controller{
                         $this->userId,$this->appName)===true
                 ){
                     $cls=$this->utils->getUserSettings(
-                        BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-                        $this->userId ,$this->appName);
+                        BackendUtils::KEY_CLS,$this->userId);
 
                     // Set ExternalModeSabrePlugin::AUTO_FIX_URI
                     $af_uri="";

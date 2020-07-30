@@ -111,9 +111,7 @@ class CalendarsController extends Controller{
 
 
         $cls=$this->utils->getUserSettings(
-            BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-            $this->userId ,$this->appName);
-
+            BackendUtils::KEY_CLS,$this->userId);
         if($cls[BackendUtils::CLS_TS_MODE]!=="0"){
             // only for manual mode
             $r=new SendDataResponse();

@@ -125,7 +125,6 @@ class BCSabreImpl implements IBackendConnector{
         $parser=new XmlService();
         $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
         try {
-//            $result = $parser->parse($this::makeTrBookedDavReport($r_start,$r_end));
             $result = $parser->parse($this::makeTrDavReport($r_start,$r_end,$cat_required));
         } catch (ParseException $e) {
             \OC::$server->getLogger()->error($e);
@@ -212,14 +211,12 @@ class BCSabreImpl implements IBackendConnector{
         $dstId=substr($calIds,0,$sp);
 
         $cls=$this->utils->getUserSettings(
-            BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-            $userId,$this->appName);
+            BackendUtils::KEY_CLS,$userId);
 
         $parser=new XmlService();
         $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
 
         try {
-//            $result = $parser->parse($this::makeTrBookedDavReport($start_str,$end_str));
             $result = $parser->parse($this::makeTrDavReport($start_str,$end_str,$cls[BackendUtils::CLS_XTM_REQ_CAT]));
         } catch (ParseException $e) {
             \OC::$server->getLogger()->error($e);
@@ -292,6 +289,8 @@ class BCSabreImpl implements IBackendConnector{
         $str_out='';
         // '_'ts_mode(1byte)ses_time(4bytes)dates(8bytes)uri(no extension)
         $ses_info='_1'.pack("L",time());
+
+        $showET=$this->utils->getUserSettings(BackendUtils::KEY_PSN,$userId)[BackendUtils::PSN_END_TIME];
         foreach ($objs as $obj) {
 
             if(strpos($obj['calendardata'],"\r\nTRANSP:TRANSPARENT\r\n",22)===false){
@@ -343,6 +342,7 @@ class BCSabreImpl implements IBackendConnector{
                 $it->fastForward($start);
                 $skip_count = $it->key();
             } else {
+                // TODO: reuse FakeIterator
                 $it=new FakeIterator($evt,$utz);
                 $skip_count=0;
             }
@@ -362,6 +362,7 @@ class BCSabreImpl implements IBackendConnector{
                             $s_ts, $e_ts) === null) {
 
                         $str_out.=$ts_pref.($s_ts + $ts_offset)
+                            .($showET?":".($e_ts + $ts_offset):"")
                             .':'.$this->utils->encrypt($ses_info.pack("LL",$s_ts,$e_ts).substr($obj['uri'],0,-4),$key).$atl.',';
                     }
                 }
@@ -403,10 +404,11 @@ class BCSabreImpl implements IBackendConnector{
             }
         }
 
+        $userId=substr($mode,1);
         if($mode[0]==="1"){
             // external mode
             // $calId = dstCal(main)+chr(31)+srcCal(free spots) @see PageController->showForm()
-            return $this->queryRangeTR($calId, $start, $end, $key, substr($mode,1));
+            return $this->queryRangeTR($calId, $start, $end, $key, $userId);
         }
 
         // Simple Mode...
@@ -439,6 +441,8 @@ class BCSabreImpl implements IBackendConnector{
         $utz=$start->getTimezone();
         $start_ts=$f_start;
 
+        $showET=$this->utils->getUserSettings(BackendUtils::KEY_PSN,$userId)[BackendUtils::PSN_END_TIME];
+
         foreach ($objs as $obj){
 
             $vo=Reader::read($obj['calendardata']);
@@ -449,11 +453,15 @@ class BCSabreImpl implements IBackendConnector{
 
             if($s_ts>$start_ts){
 
+                $e_ts=$vo->VEVENT->DTEND->getDateTime($utz)->getTimestamp();
+
                 $ts_pref = 'U';
-                $ts_offset = 0;
+//                $ts_offset = 0;
                 if ($dt_start->isFloating()) {
                     $ts_pref = 'F';
-                    $ts_offset = $utz_offset;
+//                    $ts_offset = $utz_offset;
+                    $s_ts+=$utz_offset;
+                    $e_ts+=$utz_offset;
                 }
 
                 if($key!==""){
@@ -466,22 +474,15 @@ class BCSabreImpl implements IBackendConnector{
                         }
                     }
 
-
-                    $ret.=$ts_pref.($s_ts + $ts_offset)
+                    $ret.=$ts_pref.$s_ts
+                        .($showET? ":".$e_ts :"")
                         .':'.$this->utils->encrypt($ses_start.$obj['uri'],$key)
                         .$atl.',';
                 }else{
                     // add end_time instead of uri
-                    $ret.=$ts_pref.($s_ts + $ts_offset).':'.$ts_pref.($vo->VEVENT->DTEND->getDateTime($utz)->getTimestamp()+$ts_offset).',';
+                    $ret.=$ts_pref.$s_ts.':'.$ts_pref.$e_ts.',';
                 }
             }
-//            list($ts,$out) = $this->utils->encodeCalendarData(
-//                $vo,$ses_start.$obj['uri'],$key,$offset,$use_my_float);
-//
-//            if($ts>$f_start && $ts<$f_end) {
-//                $ret.=$out;
-//            }
-
             $vo->destroy();
         }
 
@@ -576,8 +577,7 @@ class BCSabreImpl implements IBackendConnector{
     function setAttendee($userId, $calId, $uri, $info)
     {
         $cls=$this->utils->getUserSettings(
-            BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-            $userId,$this->appName);
+            BackendUtils::KEY_CLS,$userId);
         $ts_mode=$cls[BackendUtils::CLS_TS_MODE];
 
         if($ts_mode==='1'){
@@ -776,7 +776,7 @@ class BCSabreImpl implements IBackendConnector{
         // for manual mode:
         //  if confirming:
         //      pending appointments are always in the main calendar
-        //      might need to be moved to BackendUtils::CLS_DEST_ID is set
+        //      might need to be moved to BackendUtils::CLS_DEST_ID if set
         //  if cancelling:
         //      calId is "pre-calculated" in the PageController
         //
@@ -800,8 +800,7 @@ class BCSabreImpl implements IBackendConnector{
             }else{
 
                 $cls = $this->utils->getUserSettings(
-                    BackendUtils::KEY_CLS, BackendUtils::CLS_DEF,
-                    $userId, $this->appName);
+                    BackendUtils::KEY_CLS,$userId);
 
                 if($do_confirm && $cls[BackendUtils::CLS_TS_MODE]==='0'
                     && $cls[BackendUtils::CLS_DEST_ID]!=="-1"){

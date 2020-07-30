@@ -105,6 +105,8 @@ class BackendUtils{
     public const PSN_NWEEKS = "nbrWeeks";
     public const PSN_TIME2 = "time2Cols";
     public const PSN_HIDE_TEL = "hidePhone";
+    public const PSN_END_TIME = "endTime";
+    public const PSN_SHOW_TZ = "showTZ";
 
     public const PSN_DEF = array(
         self::PSN_FORM_TITLE => "",
@@ -113,7 +115,9 @@ class BackendUtils{
         self::PSN_FNED => false, // start at first not empty day
         self::PSN_WEEKEND => false,
         self::PSN_TIME2 => false,
+        self::PSN_END_TIME => false,
         self::PSN_HIDE_TEL => false,
+        self::PSN_SHOW_TZ => false,
         self::PSN_GDPR => "",
         self::PSN_PAGE_TITLE => "",
         self::PSN_PAGE_SUB_TITLE => "",
@@ -345,7 +349,7 @@ class BackendUtils{
     function dataDeleteAppt($data){
         $f="L";
         $vo=$this->getAppointment($data,'CONFIRMED');
-        if($vo===null) return ['','',$f];
+        if($vo===null) return ['','',$f,''];
 
         /** @var \Sabre\VObject\Component\VEvent $evt*/
         $evt=$vo->VEVENT;
@@ -372,7 +376,7 @@ class BackendUtils{
         $xad=explode(chr(31),$this->decrypt(
             $evt->{BackendUtils::XAD_PROP}->getValue(),
             $evt->UID->getValue()));
-        if(count($xad)>1){
+        if(count($xad)>1 && $xad[1][0]==='_'){
             $title=$xad[1];
         }
 
@@ -588,27 +592,39 @@ class BackendUtils{
 
     /**
      * @param string $key
-     * @param array $default
      * @param string $userId
-     * @param string $appName
      * @return array
      */
-    function getUserSettings($key,$default,$userId,$appName){
+     function getUserSettings($key,$userId){
 
-        $config=\OC::$server->getConfig();
+         if($key===self::KEY_CLS){
+             $default=self::CLS_DEF;
+         }else if($key===self::KEY_ORG){
+             $default=self::ORG_DEF;
+         }else if($key===self::KEY_PSN){
+             $default=self::PSN_DEF;
+         }else if($key===self::KEY_EML){
+             $default=self::EML_DEF;
+         }else{
+             // this should never happen
+             return null;
+         }
 
-        $sa=json_decode(
-            $config->getUserValue($userId,$appName,$key),
-            true);
-        if($sa===null){
-            return $default;
-        }
-        foreach ($default as $k => $v){
-            if(!isset($sa[$k])){
-                $sa[$k]=$v;
-            }
-        }
-        return $sa;
+         $config = \OC::$server->getConfig();
+         $sa = json_decode(
+             $config->getUserValue($userId, $this->appName, $key),
+             true);
+         if ($sa === null) {
+             return $default;
+         }
+
+         foreach ($default as $k => $v) {
+             if (!isset($sa[$k])) {
+                 $sa[$k] = $v;
+             }
+
+         }
+         return $sa;
     }
     /**
      * @param string $key
@@ -660,9 +676,7 @@ class BackendUtils{
     function getMainCalId($userId,$bc,&$otherCal=null){
 
         // What mode are we in ??
-        $cls=$this->getUserSettings(
-            self::KEY_CLS,self::CLS_DEF,
-            $userId ,$this->appName);
+        $cls=$this->getUserSettings(self::KEY_CLS,$userId);
         $ts_mode=$cls[self::CLS_TS_MODE];
         if ($ts_mode==="1"){
             $dst=$cls[self::CLS_XTM_DST_ID];
@@ -721,9 +735,7 @@ class BackendUtils{
             }
         }
 
-        $org=$this->getUserSettings(
-            self::KEY_ORG,self::ORG_DEF,
-            $userId ,$this->appName);
+        $org=$this->getUserSettings(self::KEY_ORG,$userId);
 
         $email=$org[self::ORG_EMAIL];
         if(empty($email)) $email=$iUser->getEMailAddress();

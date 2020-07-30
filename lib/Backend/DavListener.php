@@ -88,8 +88,7 @@ class DavListener {
         if($other_cal!=='-1'){
             // only allowed in simple
             if($utils->getUserSettings(
-                BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-                $userId ,$this->appName)[BackendUtils::CLS_TS_MODE]!=='0'){
+                BackendUtils::KEY_CLS,$userId)[BackendUtils::CLS_TS_MODE]!=='0'){
                 $other_cal='-1';
             }
         }
@@ -137,9 +136,7 @@ class DavListener {
         $hash_ch=$utils->getHashChanges($hash,$evt);
 
         $eml_settings=$utils->getUserSettings(
-            BackendUtils::KEY_EML,
-            BackendUtils::EML_DEF,
-            $userId,$this->appName);
+            BackendUtils::KEY_EML,$userId);
 
         /** @var \Sabre\VObject\Property $att */
         $att=$evt->ATTENDEE[0];
@@ -183,8 +180,7 @@ class DavListener {
         );
 
         $org=$utils->getUserSettings(
-            BackendUtils::KEY_ORG,BackendUtils::ORG_DEF,
-            $userId ,$this->appName);
+            BackendUtils::KEY_ORG,$userId);
 
         $org_name=$org[BackendUtils::ORG_NAME];
         $org_email=$org[BackendUtils::ORG_EMAIL];

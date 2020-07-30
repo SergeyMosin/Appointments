@@ -5,15 +5,10 @@ namespace OCA\Appointments\Migration;
 
 
 use OC\User\Manager;
-use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
-use OCA\Appointments\Controller\PageController;
-use OCA\DAV\CalDAV\CalDavBackend;
-use OCP\AppFramework\QueryException;
 use OCP\IConfig;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
-use OCP\PreConditionNotMetException;
 
 class UpdateHook implements IRepairStep {
 
@@ -72,8 +67,7 @@ class UpdateHook implements IRepairStep {
                         $this->c->deleteUserValue($userId, $this->appName, 'cal_id');
 
                         $cls=$this->utils->getUserSettings(
-                            BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-                            $userId ,$this->appName);
+                            BackendUtils::KEY_CLS,$userId);
                         $cls[BackendUtils::CLS_MAIN_ID]=strval($cal_id);
 
                         $js=json_encode($cls);

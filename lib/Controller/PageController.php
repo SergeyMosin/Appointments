@@ -308,16 +308,19 @@ class PageController extends Controller {
                 BackendUtils::APPT_SES_KEY_HINT,
                 BackendUtils::APPT_SES_CANCEL);
 
-            $r_cal_id=$cal_id;
-
             $cls=$this->utils->getUserSettings(
-                BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-                $userId ,$this->appName);
+                BackendUtils::KEY_CLS, $userId);
 
             // The appointment can be in the destination calendar (manual mode)
             // this needs to be done here just in case we need to 'reset'
+            $r_cal_id=$cal_id;
             if($cls[BackendUtils::CLS_TS_MODE]==='0' && $otherCalId!=="-1"){
-                $r_cal_id=$otherCalId;
+                // !! Pending appointments are in the MAIN calendar
+                // !! Confirmed appointments are in the DEST ($otherCalId)
+                if($this->bc->getObjectData($otherCalId,$uri)!==null){
+                    // The appointment has previously been confirmed and moved to the DEST calendar
+                    $r_cal_id=$otherCalId;
+                } // else the appointment is still pending in the MAIN calendar
             }
 
             // This can be 'mark' or 'reset'
@@ -364,9 +367,7 @@ class PageController extends Controller {
             // Error
             // TODO: add phone number to "contact us ..."
             $org_email=$this->utils->getUserSettings(
-                BackendUtils::KEY_ORG,BackendUtils::ORG_DEF,
-                $userId ,$this->appName)[BackendUtils::ORG_EMAIL];
-
+                BackendUtils::KEY_ORG,$userId)[BackendUtils::ORG_EMAIL];
 
             if($sts!==2) {
                 // general error
@@ -454,8 +455,7 @@ class PageController extends Controller {
         }
 
         $pps=$this->utils->getUserSettings(
-            BackendUtils::KEY_PSN, BackendUtils::PSN_DEF,
-            $userId,$this->appName);
+            BackendUtils::KEY_PSN,$userId);
         $hide_phone=$pps[BackendUtils::PSN_HIDE_TEL];
 
         $post=$this->request->getParams();
@@ -545,8 +545,7 @@ class PageController extends Controller {
         }
 
         $eml_settings=$this->utils->getUserSettings(
-            BackendUtils::KEY_EML, BackendUtils::EML_DEF,
-            $userId,$this->appName);
+            BackendUtils::KEY_EML, $userId);
         $skip_evs=$eml_settings[BackendUtils::EML_SKIP_EVS];
 
         // TODO: make sure that the appointment time is within the actual range
@@ -627,8 +626,7 @@ class PageController extends Controller {
                 $param['appt_e_rc']='1';
             }elseif ($em==='1'){
                 $param['appt_e_ne']=$this->utils->getUserSettings(
-                    BackendUtils::KEY_ORG,BackendUtils::ORG_DEF,
-                    $uid ,$this->appName)[BackendUtils::ORG_EMAIL];
+                    BackendUtils::KEY_ORG,$uid)[BackendUtils::ORG_EMAIL];
             }
         }elseif($sts==='0') {
             $key=hex2bin($this->c->getAppValue($this->appName, 'hk'));
@@ -677,11 +675,9 @@ class PageController extends Controller {
         }
 
         $pps=$this->utils->getUserSettings(
-            BackendUtils::KEY_PSN, BackendUtils::PSN_DEF,
-            $uid,$this->appName);
+            BackendUtils::KEY_PSN,$uid);
         $org=$this->utils->getUserSettings(
-            BackendUtils::KEY_ORG,BackendUtils::ORG_DEF,
-            $uid ,$this->appName);
+            BackendUtils::KEY_ORG,$uid);
 
         $ft=$pps[BackendUtils::PSN_FORM_TITLE];
         $org_name=$org[BackendUtils::ORG_NAME];
@@ -739,8 +735,7 @@ class PageController extends Controller {
         $nw=intval($pps[BackendUtils::PSN_NWEEKS]);
 
         $cls=$this->utils->getUserSettings(
-            BackendUtils::KEY_CLS,BackendUtils::CLS_DEF,
-            $uid,$this->appName);
+            BackendUtils::KEY_CLS,$uid);
 
         // Because of floating timezones...
         $utz=$this->utils->getUserTimezone($uid,$this->c);
@@ -771,11 +766,14 @@ class PageController extends Controller {
 
         $params['appt_sel_opts'] = $out;
 
-        $params['appt_pps']= BackendUtils::PSN_NWEEKS .":".$pps[BackendUtils::PSN_NWEEKS].'.'.
+        $params['appt_pps']=
+            BackendUtils::PSN_NWEEKS .":".$pps[BackendUtils::PSN_NWEEKS].'.'.
             BackendUtils::PSN_EMPTY .":".($pps[BackendUtils::PSN_EMPTY]?"1":"0").'.'.
             BackendUtils::PSN_FNED .":".($pps[BackendUtils::PSN_FNED]?"1":"0").'.'.
             BackendUtils::PSN_WEEKEND .":".($pps[BackendUtils::PSN_WEEKEND]?"1":"0").'.'.
-            BackendUtils::PSN_TIME2 .":".($pps[BackendUtils::PSN_TIME2]?"1":"0");
+            BackendUtils::PSN_SHOW_TZ .":".($pps[BackendUtils::PSN_SHOW_TZ]?"1":"0").'.'.
+            BackendUtils::PSN_TIME2 .":".($pps[BackendUtils::PSN_TIME2]?"1":"0").'.'.
+            BackendUtils::PSN_END_TIME .":".($pps[BackendUtils::PSN_END_TIME]?"1":"0");
 
         // GDPR
         $params['appt_gdpr']=$pps[BackendUtils::PSN_GDPR];
@@ -907,8 +905,7 @@ class PageController extends Controller {
      */
     private function getPublicTemplate($templateName,$userId){
         $pps=$this->utils->getUserSettings(
-            BackendUtils::KEY_PSN, BackendUtils::PSN_DEF,
-            $userId,$this->appName);
+            BackendUtils::KEY_PSN,$userId);
         $tr = new PublicTemplateResponse($this->appName,$templateName, []);
         if(!empty($pps[BackendUtils::PSN_PAGE_TITLE])) {
             $tr->setHeaderTitle($pps[BackendUtils::PSN_PAGE_TITLE]);

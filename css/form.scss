@@ -91,6 +91,41 @@
 .srgdev-ncfp-form-btn[shade]{
   opacity: .5;
 }
+.srgdev-ncfp-form-btn span{
+  display: inline-block;
+  vertical-align: top;
+  height: 1.5em;
+  line-height: 1.5em;
+}
+#srgdev-ncfp_fbtn-spinner{
+  display: none;
+  margin-top: 0;
+  width: 1.5em;
+  height: 1.5em;
+  margin-left: 1em;
+}
+#srgdev-ncfp_fbtn-spinner:after {
+  content: " ";
+  display: block;
+  width: 1em;
+  height: 1em;
+  //margin: 8px;
+  border-radius: 50%;
+  border: .25em solid $color-primary-text;
+  border-color: $color-primary-text transparent $color-primary-text transparent;
+  border: .25em solid var(--color-primary-text);
+  border-color: var(--color-primary-text) transparent var(--color-primary-text) transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 #srgdev-ncfp_sel-dummy{
   cursor: pointer;
   background: var(--icon-triangle-s-000) no-repeat right 4px center;
@@ -318,7 +353,7 @@
   position: absolute;
   text-align: center;
 }
-
+.srgdev-dpu-time-unit_tn,
 .srgdev-dpu-time-unit2,
 .srgdev-dpu-time-unit{
   text-align: center;
@@ -333,7 +368,8 @@
   color: $color-main-text;
   color: var(--color-main-text);
 }
-.srgdev-dpu-time-unit{
+.srgdev-dpu-time-unit,
+.srgdev-dpu-time-unit_tn{
   display: inline-block;
   min-width: 51%;
   max-width: 92%;
@@ -347,15 +383,23 @@
 .srgdev-dpu-time-unit .srgdev-dpu-appt-title:before{
   content: " ";
 }
+
 .srgdev-dpu-time-unit2{
   display: inline-block;
   width: 41%;
   margin: .25em 3%;
   vertical-align: middle;
-  line-height: 1.2;
   padding: .4em 0;
 }
-.srgdev-dpu-time-unit2 .srgdev-dpu-appt-title{
+.srgdev-dpu-time-unit2,
+.srgdev-dpu-time-unit_tn{
+  line-height: 1.2;
+  padding-top: .4em;
+  padding-bottom: .4em;
+}
+
+.srgdev-dpu-time-unit2 .srgdev-dpu-appt-title,
+.srgdev-dpu-time-unit_tn .srgdev-dpu-appt-title{
   display: block;
   font-size: 90%;
   padding: 0 1em;
@@ -363,8 +407,13 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.srgdev-dpu-time-unit_tn .srgdev-dpu-appt-title {
+  padding: 0;
+}
+
 .srgdev-dpu-time-unit:hover,
-.srgdev-dpu-time-unit2:hover{
+.srgdev-dpu-time-unit2:hover,
+.srgdev-dpu-time-unit_tn:hover{
   color: $color-primary;
   color: var(--color-primary);
   border-color: $color-border-dark;
@@ -398,6 +447,9 @@
     font-size: 110%;
   }
   .srgdev-ncfp-form{
+    border: none;
+  }
+  .srgdev-appt-info-cont{
     border: none;
   }
 }
