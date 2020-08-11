@@ -137,8 +137,7 @@ class DavListener {
         $eml_settings=$utils->getUserSettings(
             BackendUtils::KEY_EML,$userId);
 
-        /** @noinspection PhpParamsInspection */
-        $att=$utils->getAttendee($evt->ATTENDEE);
+        $att=$utils->getAttendee($evt);
         if($att===null
             || ($hint===null
                 && ($att->parameters['PARTSTAT']->getValue()==='DECLINED'
@@ -161,7 +160,8 @@ class DavListener {
 
         $mailer=\OC::$server->getMailer();
 
-        $to_email=substr($att->getValue(),5);
+        $att_v=$att->getValue();
+        $to_email=substr($att_v,strpos($att_v,":")+1);
         if($mailer->validateMailAddress($to_email)===false){
             \OC::$server->getLogger()->error("invalid attendee email");
             return;

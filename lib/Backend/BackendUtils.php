@@ -239,8 +239,7 @@ class BackendUtils{
         /** @var \Sabre\VObject\Component\VEvent $evt*/
         $evt=$vo->VEVENT;
 
-        /** @noinspection PhpParamsInspection */
-        $a=$this->getAttendee($evt->ATTENDEE);
+        $a=$this->getAttendee($evt);
         if ($a===null) {
             return [null,null];
         }
@@ -286,8 +285,7 @@ class BackendUtils{
             return [null,null];
         }
 
-        /** @noinspection PhpParamsInspection */
-        $a=$this->getAttendee($evt->ATTENDEE);
+        $a=$this->getAttendee($evt);
         if ($a===null) {
             return [null,null];
         }
@@ -319,8 +317,7 @@ class BackendUtils{
      */
     function evtCancelAttendee(&$evt){
 
-        /** @noinspection PhpParamsInspection */
-        $a=$this->getAttendee($evt->ATTENDEE);
+        $a=$this->getAttendee($evt);
         if ($a===null) {
             \OC::$server->getLogger()->error("evtCancelAttendee() bad attendee");
             return;
@@ -396,15 +393,35 @@ class BackendUtils{
     }
 
     /**
-     * @param \Sabre\VObject\Property[] $aa
+     * @param \Sabre\VObject\Component\VEvent $evt
      * @return \Sabre\VObject\Property|null
      */
-    function getAttendee($aa){
+    function getAttendee($evt){
         $r=null;
+
+
+        $ov=$evt->ORGANIZER->getValue();
+        $nov="mailto:".substr($ov,strpos($ov,":")+1);
+
+        $aa=$evt->ATTENDEE;
         $c=count($aa);
         for($i=0;$i<$c;$i++){
             $a=$aa[$i];
             $v=$a->getValue();
+
+            // TODO: this is for backwards compatibility, remove soon...
+            if(
+                isset($a->parameters['SCHEDULE-AGENT'])
+                && $a->parameters['SCHEDULE-AGENT']->getValue()==='CLIENT'
+                && strpos($v,"mailto:")===0
+                && isset($a->parameters['CN'])
+                && isset($a->parameters['PARTSTAT'])
+                && $nov!==$v
+            ){
+                $r=$a;
+                break;
+            }
+
             if(strpos($v,"acct:")===0
                 && isset($a->parameters['CN'])
                 && isset($a->parameters['PARTSTAT'])
@@ -609,8 +626,7 @@ class BackendUtils{
             return null;
         }
 
-        /** @noinspection PhpParamsInspection */
-        if ($this->getAttendee($evt->ATTENDEE)===null) {
+        if ($this->getAttendee($evt)===null) {
             \OC::$server->getLogger()->error("Bad ATTENDEE attribute");
             return null;
         }
@@ -699,7 +715,7 @@ class BackendUtils{
      *
      * @param string $userId
      * @param IBackendConnector|null $bc checks backend if provided
-     * @param string $otherCal get the ID of the other calendar "-1"=not found
+     * @param string|null $otherCal get the ID of the other calendar "-1"=not found
      * @return string calendar Id or "-1" = no main cal
      */
     function getMainCalId($userId,$bc,&$otherCal=null){
