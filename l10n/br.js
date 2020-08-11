@@ -5,6 +5,7 @@ OC.L10N.register(
     "Cancel" : "Arrest",
     "Close" : "Serriñ",
     "Remove" : "Lemel",
+    "Apply" : "Lakaat",
     "Deleted" : "Lamet",
     "Error" : "Fazi",
     "Warning" : "Kemenadenn",

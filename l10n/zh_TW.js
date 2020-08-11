@@ -1,8 +1,13 @@
 OC.L10N.register(
     "appointments",
     {
+    "Available" : "可用",
+    "%s appointment (action needed)" : "%s 預約 (需要操作)",
+    "Dear %s," : "親愛的 %s,",
+    "The %1$s appointment scheduled for %2$s is awaiting your confirmation." : "與  %1$s 的預約已安排到 %2$s ，等待您的確認。",
     "Confirm" : "確認",
     "Cancel" : "取消",
+    "%s Appointment is confirmed" : "%s 預約已確認",
     "Info" : "資訊",
     "Close" : "關閉",
     "Remove" : "移除",
