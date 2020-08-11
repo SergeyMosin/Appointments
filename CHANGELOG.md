@@ -1,3 +1,7 @@
+## 1.6.8 - 2020-08-11
+### Fixed
+- issue #116
+
 ## 1.6.7 - 2020-07-29
 ### Added
 - "Show end time" option
