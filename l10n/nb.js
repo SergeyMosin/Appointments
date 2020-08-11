@@ -10,6 +10,7 @@ OC.L10N.register(
     "Apply" : "Bruk",
     "Deleted" : "Slettet",
     "Confirmed" : "Bekreftet",
+    "Canceled" : "Avbrutt",
     "close" : "lukk",
     "Advanced Settings" : "Avanserte innstillinger",
     "15 Minutes" : "15 minutter",
