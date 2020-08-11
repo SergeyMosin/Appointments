@@ -106,12 +106,11 @@ class DavListener {
         }
 
         if($hash===null
-            || !isset($evt->ATTENDEE) || $evt->ATTENDEE->count()!==1
+            || !isset($evt->ATTENDEE)
             || !isset($evt->STATUS)
             || !isset($evt->DTEND)
             || !isset($evt->ORGANIZER)
-            || !isset($evt->ORGANIZER->parameters['SCHEDULE-AGENT'])
-            || $evt->ORGANIZER->parameters['SCHEDULE-AGENT']->getValue()!=='CLIENT'){
+        ){
             // Bad data
             return;
         }
@@ -138,15 +137,9 @@ class DavListener {
         $eml_settings=$utils->getUserSettings(
             BackendUtils::KEY_EML,$userId);
 
-        /** @var \Sabre\VObject\Property $att */
-        $att=$evt->ATTENDEE[0];
-        $att_v=$att->getValue();
-        if(strlen($att_v)<11
-            || strpos($att_v,"mailto:")!==0
-            || !isset($att->parameters['CN'])
-            || !isset($att->parameters['PARTSTAT'])
-            || !isset($att->parameters['SCHEDULE-AGENT'])
-            || $att->parameters['SCHEDULE-AGENT']->getValue()!=='CLIENT'
+        /** @noinspection PhpParamsInspection */
+        $att=$utils->getAttendee($evt->ATTENDEE);
+        if($att===null
             || ($hint===null
                 && ($att->parameters['PARTSTAT']->getValue()==='DECLINED'
                     || ($hash_ch===null && $eventName!==self::DEL_EVT_NAME)
@@ -168,7 +161,7 @@ class DavListener {
 
         $mailer=\OC::$server->getMailer();
 
-        $to_email=substr($att_v,7);
+        $to_email=substr($att->getValue(),5);
         if($mailer->validateMailAddress($to_email)===false){
             \OC::$server->getLogger()->error("invalid attendee email");
             return;
@@ -383,7 +376,6 @@ class DavListener {
                         $evt->STATUS->setValue('CANCELLED');
                     }else {
                         $utils->evtCancelAttendee($evt);
-                        $att = $evt->ATTENDEE[0]; // ??
                     }
                     $utils->setSEQ($evt);
                 }
@@ -400,13 +392,13 @@ class DavListener {
             // Servers MUST NOT include this parameter in any scheduling messages sent as the result of a scheduling operation.
             // Clients MUST NOT include this parameter in any scheduling messages that they themselves send.
 
-            if (isset($att->parameters['SCHEDULE-AGENT'])) {
-                unset($att->parameters['SCHEDULE-AGENT']);
-            }
+//            if (isset($att->parameters['SCHEDULE-AGENT'])) {
+//                unset($att->parameters['SCHEDULE-AGENT']);
+//            }
 
-            if(isset($evt->ORGANIZER->parameters['SCHEDULE-AGENT'])){
-                unset($evt->ORGANIZER->parameters['SCHEDULE-AGENT']);
-            }
+//            if(isset($evt->ORGANIZER->parameters['SCHEDULE-AGENT'])){
+//                unset($evt->ORGANIZER->parameters['SCHEDULE-AGENT']);
+//            }
 
             if(!isset($vObject->METHOD)) $vObject->add('METHOD');
             $vObject->METHOD->setValue($method);

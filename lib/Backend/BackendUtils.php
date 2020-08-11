@@ -187,10 +187,10 @@ class BackendUtils{
             return "2";
         }
 
-        $a=$evt->add('ATTENDEE',"mailto:".$info['email']);
+        // "acct" scheme: @see issue #116 https://github.com/SergeyMosin/Appointments/issues/116
+        $a=$evt->add('ATTENDEE',"acct:".$info['email']);
         $a['CN']=$info['name'];
         $a['PARTSTAT']="NEEDS-ACTION";
-        $a['SCHEDULE-AGENT']="CLIENT";
 
         $title="";
         if(!isset($evt->SUMMARY)){
@@ -239,8 +239,12 @@ class BackendUtils{
         /** @var \Sabre\VObject\Component\VEvent $evt*/
         $evt=$vo->VEVENT;
 
-        /** @var  \Sabre\VObject\Property $a*/
-        $a=$evt->ATTENDEE[0];
+        /** @noinspection PhpParamsInspection */
+        $a=$this->getAttendee($evt->ATTENDEE);
+        if ($a===null) {
+            return [null,null];
+        }
+
 
         $dts=$this->getDateTimeString(
             $evt->DTSTART->getDateTime(),
@@ -282,10 +286,11 @@ class BackendUtils{
             return [null,null];
         }
 
-
-
-        /** @var  \Sabre\VObject\Property $a*/
-        $a=$evt->ATTENDEE[0];
+        /** @noinspection PhpParamsInspection */
+        $a=$this->getAttendee($evt->ATTENDEE);
+        if ($a===null) {
+            return [null,null];
+        }
 
         $dts=$this->getDateTimeString(
             $evt->DTSTART->getDateTime(),
@@ -314,8 +319,12 @@ class BackendUtils{
      */
     function evtCancelAttendee(&$evt){
 
-        /** @var  \Sabre\VObject\Property $a*/
-        $a=$evt->ATTENDEE[0];
+        /** @noinspection PhpParamsInspection */
+        $a=$this->getAttendee($evt->ATTENDEE);
+        if ($a===null) {
+            \OC::$server->getLogger()->error("evtCancelAttendee() bad attendee");
+            return;
+        }
 
         $a->parameters['PARTSTAT']->setValue('DECLINED');
 
@@ -384,6 +393,27 @@ class BackendUtils{
             $evt->DTSTART->getDateTime(),
             $evt->{self::TZI_PROP}->getValue()
         ),$dt,$f,$title];
+    }
+
+    /**
+     * @param \Sabre\VObject\Property[] $aa
+     * @return \Sabre\VObject\Property|null
+     */
+    function getAttendee($aa){
+        $r=null;
+        $c=count($aa);
+        for($i=0;$i<$c;$i++){
+            $a=$aa[$i];
+            $v=$a->getValue();
+            if(strpos($v,"acct:")===0
+                && isset($a->parameters['CN'])
+                && isset($a->parameters['PARTSTAT'])
+            ){
+                $r=$a;
+                break;
+            }
+        }
+        return $r;
     }
 
     /**
@@ -579,9 +609,8 @@ class BackendUtils{
             return null;
         }
 
-        if (!isset($evt->ATTENDEE) || $evt->ATTENDEE->count() !== 1
-            || !isset($evt->ATTENDEE[0]->parameters['PARTSTAT'])
-            || !isset($evt->ATTENDEE[0]->parameters['CN'])) {
+        /** @noinspection PhpParamsInspection */
+        if ($this->getAttendee($evt->ATTENDEE)===null) {
             \OC::$server->getLogger()->error("Bad ATTENDEE attribute");
             return null;
         }
@@ -781,7 +810,7 @@ class BackendUtils{
                 "CREATED:" . $cr_date_rn . "UID:", // UID goes here
             '2_before_dts' => $rn . "DTSTART".$tz_id.":", // DTSTART goes here
             '3_before_dte' => $tz_Z.$rn . "DTEND".$tz_id.":", // DTEND goes here
-            '4_last' => $tz_Z.$rn .$this->chunk_split_unicode("ORGANIZER;SCHEDULE-AGENT=CLIENT;CN=".$name.":mailto:".$email,75,"\r\n ").$rn . $this->chunk_split_unicode("LOCATION:".$addr,75,"\r\n "). $rn. "END:VEVENT\r\n".$tz_data."END:VCALENDAR\r\n"
+            '4_last' => $tz_Z.$rn .$this->chunk_split_unicode("ORGANIZER;CN=".$name.":mailto:".$email,75,"\r\n ").$rn . $this->chunk_split_unicode("LOCATION:".$addr,75,"\r\n "). $rn. "END:VEVENT\r\n".$tz_data."END:VCALENDAR\r\n"
         ];
     }
 
