@@ -43,79 +43,116 @@ class StateController extends Controller{
         $r=new SendDataResponse();
         $r->setStatus(400);
 
-        // TODO: multiple pages per user:
-        //  get_page + set_page:
-        //      index,uri,enabled,nickname,etc... custom uri ?
-
-        if($action==="get"){ // should be replaced with "get_page"
-            // for now just get enabled
-
-            $enabled=$this->config->getUserValue(
-                $this->userId,
-                $this->appName,
-                'page_enabled',
-                '0');
-
-            if($enabled==="1"){
+        if ($action==='get_pages') {
+            $a = $this->utils->getUserSettings(
+                BackendUtils::KEY_PAGES, $this->userId);
+            $changed = false;
+            foreach ($a as $page => $v) {
                 // JUST IN CASE: check if calendars are set
-                $other_cal="-1";
-                $main_cal=$this->utils->getMainCalId($this->userId,$this->bc,$other_cal);
+                if ($v[BackendUtils::PAGES_ENABLED] === 1) {
+                    if ($page === 'p0') {
+                        // main page
+                        $other_cal = "-1";
+                        $main_cal = $this->utils->getMainCalId($this->userId, $this->bc, $other_cal);
 
-                $cls=$this->utils->getUserSettings(
-                    BackendUtils::KEY_CLS, $this->userId);
-                $ts_mode=$cls[BackendUtils::CLS_TS_MODE];
+                        $cls = $this->utils->getUserSettings(
+                            BackendUtils::KEY_CLS, $this->userId);
+                        $ts_mode = $cls[BackendUtils::CLS_TS_MODE];
 
-                if(($ts_mode==="0" && $main_cal==="-1") ||
-                    ($ts_mode==="1" && ($main_cal==="-1" || $other_cal==="-1"))
-                ){
-                    $enabled="0";
+                        if (($ts_mode === "0" && $main_cal === "-1") ||
+                            ($ts_mode === "1" && ($main_cal === "-1" || $other_cal === "-1"))
+                        ) {
+                            $a[$page][BackendUtils::PAGES_ENABLED] = 0;
+                            $changed = true;
+                        }
+                    } else {
+                        // additional pages
+                        // TODO...
+                    }
+                }
+            }
+            $j = json_encode($a);
+            if ($j !== false) {
+                if ($changed === true) {
                     $this->config->setUserValue(
-                        $this->userId,
-                        $this->appName,
-                        'page_enabled',
-                        $enabled);
+                        $this->userId, $this->appName,
+                        BackendUtils::KEY_PAGES, $j);
                 }
+                $r->setData($j);
+                $r->setStatus(200);
+            } else {
+                $r->setStatus(500);
             }
 
-            $r->setData($enabled);
-            $r->setStatus(200);
-
-        }elseif($action==="enable"){
+        } elseif ($action==='set_pages'){
+            $p=$this->request->getParam("p");
             $v=$this->request->getParam("v");
+            if($p!==null && $v!==null){
+                $vo=json_decode($v,true);
+                if($vo!==null) {
+                    $sts=200;
+                    $cur = $this->utils->getUserSettings(
+                        BackendUtils::KEY_PAGES, $this->userId);
+                    if (isset($cur[$p])) {
+                        // updating existing
 
-            $r->setStatus(200);
-            if($v==='1'){
-                $other_cal="-1";
-                $main_cal=$this->utils->getMainCalId($this->userId,$this->bc,$other_cal);
+                        // JUST IN CASE: check if email & calendars are set
+                        if($vo[BackendUtils::PAGES_ENABLED]===1) {
+                            if ($p === 'p0') {
+                                // main page
+                                $other_cal="-1";
+                                $main_cal=$this->utils->getMainCalId($this->userId,$this->bc,$other_cal);
 
-                $cls=$this->utils->getUserSettings(
-                    BackendUtils::KEY_CLS, $this->userId);
-                $ts_mode=$cls[BackendUtils::CLS_TS_MODE];
+                                $cls=$this->utils->getUserSettings(
+                                    BackendUtils::KEY_CLS, $this->userId);
+                                $ts_mode=$cls[BackendUtils::CLS_TS_MODE];
 
-                $org=$this->utils->getUserSettings(
-                    BackendUtils::KEY_ORG, $this->userId);
+                                $org=$this->utils->getUserSettings(
+                                    BackendUtils::KEY_ORG, $this->userId);
 
-                if(($ts_mode==="0" && $main_cal==="-1") ||
-                    ($ts_mode==="1" && ($main_cal==="-1" || $other_cal==="-1"))
-                    || empty($org[BackendUtils::ORG_NAME])
-                    || empty($org[BackendUtils::ORG_ADDR])
-                    || empty($org[BackendUtils::ORG_EMAIL])
-                ){
-                    $r->setStatus(412);
-                    $v="0";
+                                if(($ts_mode==="0" && $main_cal==="-1") ||
+                                    ($ts_mode==="1" && ($main_cal==="-1" || $other_cal==="-1"))
+                                    || empty($org[BackendUtils::ORG_EMAIL])
+                                ){
+                                    $sts=412;
+                                    $vo[BackendUtils::PAGES_ENABLED]=0;
+                                }
+                            } else {
+                                // additional pages
+                                // TODO:...
+                            }
+                        }
+                    } else {
+                        // creating new
+                        // TODO:... check count, etc...
+                    }
+
+                    if($sts===200) {
+                        // filter
+                        $sa=[];
+                        foreach (BackendUtils::PAGES_VAL_DEF as $k=>$v){
+                            if(isset($vo[$k]) && gettype($vo[$k])===gettype($v)){
+                                $sa[$k]=$vo[$k];
+                            }else{
+                                $sa[$k]=$v;
+                            }
+                        }
+
+                        $cur[$p]=$sa;
+
+                        if (!$this->utils->setUserSettings(
+                                BackendUtils::KEY_PAGES,
+                                "", $cur,
+                                $this->userId, $this->appName) === true
+                        ) {
+                            $sts=500;
+                        }
+                    }
+
+                    $r->setStatus($sts);
                 }
-            }else{
-                $v='0';
             }
-
-            /** @noinspection PhpUnhandledExceptionInspection */
-            $this->config->setUserValue(
-                $this->userId,
-                $this->appName,
-                'page_enabled',
-                $v);
-
-        }elseif ($action==='get_puburi'){ // TODO: this should be a part of "get_page"
+        } elseif ($action==='get_puburi'){
             $pb=$this->utils->getPublicWebBase();
             $tkn=$this->utils->getToken($this->userId);
 
@@ -249,10 +286,20 @@ class StateController extends Controller{
                         ExternalModeSabrePlugin::AUTO_FIX_URI,$af_uri);
 
                     if($ts_mode!==$cls[BackendUtils::CLS_TS_MODE]){
-                        // ts_mode changed - disable page...
-                        $this->config->setUserValue(
-                            $this->userId, $this->appName,
-                            'page_enabled','0');
+                        // ts_mode changed - disable all pages...
+
+                        $a = $this->utils->getUserSettings(
+                            BackendUtils::KEY_PAGES, $this->userId);
+                        foreach ($a as $page => $v) {
+                            if ($v[BackendUtils::PAGES_ENABLED] === 1) {
+                                $a[$page][BackendUtils::PAGES_ENABLED]=0;
+                            }
+                        }
+
+                        $this->utils->setUserSettings(
+                            BackendUtils::KEY_PAGES,
+                            "", $a,
+                            $this->userId, $this->appName);
                     }
 
                     $r->setStatus(200);

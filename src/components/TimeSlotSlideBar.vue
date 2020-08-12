@@ -401,20 +401,18 @@
             },
 
             tsModeChanged(){
-                // this.calInfo.nrSrcCalId="-1"
-                // this.calInfo.nrDstCalId="-1"
-                // this.calInfo.destCalId="-1"
-                // this.$emit('calSelected',{url:"-1"})
-
-                this.$emit('pageOffline');
-                this.applyCalSettings()
+                this.applyCalSettings(true)
                 this.$emit("showModal",[
                     this.t('appointments','Warning'),
                     this.t('appointments','Time slot mode has changed. Public page is going offline…'),
                     this.openCalListSettings])
             },
-            applyCalSettings(){
-                this.$emit('setCalInfo',this.calInfo)
+            applyCalSettings(reloadPages=false){
+              if(!reloadPages) {
+                this.$emit('setCalInfo', this.calInfo)
+              }else{
+                this.$emit('setCalInfo_r', this.calInfo)
+              }
             },
 
             openCalListSettings(){

@@ -98,6 +98,7 @@ class BackendUtils{
     public const PSN_PAGE_STYLE = "pageStyle";
     public const PSN_GDPR = "gdpr";
     public const PSN_FORM_TITLE = "formTitle";
+    public const PSN_FORM_SUB_TITLE = "formSubTitle";
     public const PSN_META_NO_INDEX = "metaNoIndex";
     public const PSN_EMPTY = "showEmpty";
     public const PSN_WEEKEND = "showWeekends";
@@ -110,6 +111,7 @@ class BackendUtils{
 
     public const PSN_DEF = array(
         self::PSN_FORM_TITLE => "",
+        self::PSN_FORM_SUB_TITLE => "",
         self::PSN_NWEEKS => "1",
         self::PSN_EMPTY => true,
         self::PSN_FNED => false, // start at first not empty day
@@ -124,6 +126,37 @@ class BackendUtils{
         self::PSN_META_NO_INDEX => false,
         self::PSN_PAGE_STYLE => ""
     );
+
+    public const KEY_MPS = "more_pages_";
+    public const MPS_SRC_ID="mpsSrcId";
+    public const MPS_DST_ID="mpsDstId";
+    public const MPS_TITLE="mpsTitle";
+    public const MPS_SUB_TITLE="mpsSubTitle";
+    public const MPS_LOCATION="mpsLocation";
+    public const MPS_PHONE="mpsPhone";
+    public const MPS_DEF=array(
+        self::MPS_SRC_ID=>"-1",
+        self::MPS_DST_ID=>"-1",
+        self::MPS_TITLE=>"",
+        self::MPS_SUB_TITLE=>"",
+        self::MPS_LOCATION=>"",
+        self::MPS_PHONE=>"",
+    );
+
+    public const KEY_PAGES="pages";
+    public const PAGES_ENABLED="enabled";
+    public const PAGES_LABEL="label";
+
+    public const PAGES_VAL_DEF=array(
+        self::PAGES_ENABLED=>0,
+        self::PAGES_LABEL=>""
+    );
+
+    public const PAGES_DEF=array(
+        'p0'=>self::PAGES_VAL_DEF
+    );
+
+
 
     private $appName=Application::APP_ID;
 
@@ -642,8 +675,27 @@ class BackendUtils{
      */
      function getUserSettings($key,$userId){
 
+         $config = \OC::$server->getConfig();
+
          if($key===self::KEY_CLS){
              $default=self::CLS_DEF;
+         }else if($key===self::KEY_PAGES){
+
+             $default=self::PAGES_DEF;
+
+             // TODO: migration, remove soon...
+             $old_enabled=$config->getUserValue(
+                 $userId, $this->appName, 'page_enabled');
+             if($old_enabled!==''){
+                 $config->deleteUserValue(
+                     $userId, $this->appName, 'page_enabled');
+                 $default['p0'][self::PAGES_ENABLED]=intval($old_enabled);
+                 $js=json_encode($default);
+                 if($js!==false){
+                     $config->setUserValue($userId,$this->appName,$key,$js);
+                 }
+             }
+
          }else if($key===self::KEY_ORG){
              $default=self::ORG_DEF;
          }else if($key===self::KEY_PSN){
@@ -655,7 +707,6 @@ class BackendUtils{
              return null;
          }
 
-         $config = \OC::$server->getConfig();
          $sa = json_decode(
              $config->getUserValue($userId, $this->appName, $key),
              true);
@@ -674,23 +725,28 @@ class BackendUtils{
     /**
      * @param string $key
      * @param string $value JSON String
-     * @param array $default
+     * @param array $default this is value when $key===self::KEY_PAGES
      * @param string $userId
      * @param string $appName
      * @return bool
      * @noinspection PhpDocMissingThrowsInspection
      */
     function setUserSettings($key,$value,$default,$userId,$appName){
-        $va=json_decode($value,true);
-        if($va===null){
-            return false;
-        }
-        $sa=[];
-        foreach ($default as $k=>$v){
-            if(isset($va[$k]) && gettype($va[$k])===gettype($v)){
-                $sa[$k]=$va[$k];
-            }else{
-                $sa[$k]=$v;
+        if($key===self::KEY_PAGES){
+            // already filtered object @see StateController:set_pages
+            $sa=$default;
+        }else {
+            $va = json_decode($value, true);
+            if ($va === null) {
+                return false;
+            }
+            $sa = [];
+            foreach ($default as $k => $v) {
+                if (isset($va[$k]) && gettype($va[$k]) === gettype($v)) {
+                    $sa[$k] = $va[$k];
+                } else {
+                    $sa[$k] = $v;
+                }
             }
         }
         $js=json_encode($sa);

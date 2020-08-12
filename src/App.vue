@@ -5,23 +5,30 @@
             <AppNavigationItem
                     @click="getFormData"
                     class="srgdev-pubpage-nav-item"
-                    :title="(pageEnabled==='1'
-                        ?t('appointments','Public Page [Online]')
-                        :t('appointments','Public Page [Disabled]'))"
-                    :icon="pageEnabled==='1'
+                    :title="(
+                        (page0.label===''
+                          ?t('appointments','Public Page')
+                          :page0.label)+' '+
+                        (page0.enabled===1
+                          ?t('appointments','[Online]')
+                          :t('appointments','[Disabled]'))
+                        )"
+                    :icon="page0.enabled===1
                         ?'icon-screen'
                         :'icon-screen-off'"
                     :loading="pageInfoLoading===1">
                 <template slot="actions">
-                    <ActionButton :disabled="pageEnabled==='1'" @click="togglePageEnabled('1')" icon="icon-checkmark-color" closeAfterClick>
+                    <ActionButton :disabled="page0.enabled===1" @click="setPageEnabled('p0',1)" icon="icon-checkmark-color" closeAfterClick>
                         {{t('appointments','Share Online')}}
                     </ActionButton>
-                    <ActionButton :disabled="pageEnabled==='0'" @click="togglePageEnabled('0')" icon="icon-category-disabled" closeAfterClick>
+                    <ActionButton :disabled="page0.enabled===0" @click="setPageEnabled('p0',0)" icon="icon-category-disabled" closeAfterClick>
                         {{t('appointments','Stop Sharing')}}
                     </ActionButton>
                     <ActionButton @click="showPubLink" icon="icon-public" closeAfterClick>
                         {{t('appointments','Show URL/link')}}
                     </ActionButton>
+                    <ActionSeparator/>
+                  <ActionInput data-pid="p0" @change="setPageLabel" icon="icon-rename" :value="page0.label" >{{t('appointments','Public Page')}}</ActionInput>
                 </template>
             </AppNavigationItem>
             <AppNavigationSpacer/>
@@ -221,12 +228,12 @@
                 :cal-info="calInfo"
                 :is-grid-ready="isGridReady"
                 v-show="sbShow===6"
-                @pageOffline="setPageState('0')"
                 @showModal="showSimpleGeneralModal($event)"
                 @remOldAppts="countOldAppointments"
                 @agDataReady="makePreviewGrid"
                 @setupGrid="gridSetup"
                 @setCalInfo="setState('set_cls',$event)"
+                @setCalInfo_r="setState('set_cls',$event,true)"
                 @getCalInfo="getCalInfo($event)"
                 @close="sbShow=0"/>
             </div>
@@ -246,6 +253,7 @@
         AppNavigationItem,
         AppNavigationSpacer,
         Modal,
+        ActionSeparator,
     } from '@nextcloud/vue'
 
     import ActionInput from "./components/ActionInputExt.vue";
@@ -281,12 +289,18 @@
             UserStnSlideBar,
             MailStnSlideBar,
             ApptAccordion,
+            ActionSeparator,
         },
         data: function() {
             return {
 
                 // mainForm:'',
                 pubPage:'',
+
+                page0:{
+                  enabled:0,
+                  label:""
+                },
 
                 pageEnabled:'0',
                 pageInfoLoading:0,
@@ -349,13 +363,18 @@
         },
         methods: {
 
-            // for simple mode...
             getPages(){
                 this.pageInfoLoading=1
-                axios.post('state', { a: 'get' })
+                axios.post('state', { a: 'get_pages' })
                 .then(response=>{
                     if(response.status===200) {
-                        this.pageEnabled=response.data.toString()
+                        for (const prop in response.data) {
+                            if (response.data.hasOwnProperty(prop)) {
+                                if(prop==='p0'){
+                                  this.page0 = Object.assign({}, this.page0, response.data['p0'])
+                                }
+                            }
+                        }
                     }
                     this.pageInfoLoading=0
                 })
@@ -364,6 +383,96 @@
                     console.log(error);
                 });
             },
+
+
+          setPages(p,v){
+            this.pageInfoLoading=1
+            let ji=""
+            try {
+              ji=JSON.stringify(v)
+            }catch (e) {
+              this.pageInfoLoading=0
+              console.log(e)
+              OC.Notification.showTemporary(this.t('appointments',"Can't apply settings"),{timeout:4,type:'error'})
+            }
+
+            axios.post('state', {
+              a: 'set_pages',
+              p: p,
+              v: ji
+            }).then(response => {
+              if(response.status===200) {
+                this.getPages()
+              }
+            }).catch((error) => {
+              console.log(error)
+              OC.Notification.showTemporary(this.t('appointments',"Page settings error. Check console")+"\xa0\xa0\xa0\xa0",{timeout:4,type:'error'})
+            }).then(()=>{
+              // always executed
+              this.pageInfoLoading=0
+              this.getFormData()
+            });
+          },
+
+          setPageLabel(evt){
+            evt.preventDefault()
+            const t=evt.target
+            const page=t.getAttribute("data-pid")
+            let co
+            if(page==='p0'){
+              co=Object.assign({},this.page0)
+            }
+            co.label=t.value
+            this.setPages(page,co)
+          },
+
+          setPageEnabled(page,enable){
+
+            let p
+            if(page==='p0'){
+              p=Object.assign({},this.page0)
+            }
+
+
+            if(p.enabled===enable) return
+
+            // Check settings... Org name, address and email are needed...
+            if(enable===1) {
+
+              this.pageInfoLoading='1'
+
+              this.getState("get_uci")
+               .then(res=>{
+                  //organization: "", email: "", address: ""
+                  this.pageInfoLoading='0'
+
+                  if(res===null) return null
+
+                  let n=-1
+                  let pa=["organization","email","address"];
+                  for(let v,i=0,l=pa.length;i<l;i++){
+                    v=pa[i]
+                    if(!res.hasOwnProperty(v) || res[v].length<2){
+                      n=i
+                      break
+                    }
+
+                  }
+                  if(n!==-1){
+                    let fn=["'Name'","'Email'","'Location'"][n]
+                    OC.Notification.showTemporary(this.t('appointments',"Error: {fieldName} empty, check settings",{fieldName:fn})+"\xa0\xa0\xa0\xa0",{timeout:8,type:'error'})
+                  }else{
+                    p.enabled=1
+                    this.setPages(page,p)
+                  }
+                })
+
+            }else{
+              p.enabled=0
+              this.setPages(page,p)
+            }
+          },
+
 
             removeOldAppointments(){
                 if(this.roaData===""){
@@ -587,8 +696,9 @@
             /**
              * @param {string} action
              * @param {Object} value
+             * @param {boolean} getPages
              */
-            setState(action,value){
+            setState(action,value,getPages=false){
                 let ji=""
                 this.stateInProgress=true
                 try {
@@ -606,6 +716,7 @@
                     if(response.status===200) {
                         this.getFormData()
                         OCP.Toast.success(this.t('appointments','New Settings Applied.'))
+                      if(getPages) this.getPages()
                     }
                 }).catch((error) => {
                     this.stateInProgress=false
@@ -761,86 +872,6 @@
             getFormData(){
                 this.pubPage='form?v='+Date.now();
                 this.visibleSection=0
-            },
-
-            togglePageEnabled: async function(enable) {
-
-                if(this.pageEnabled===enable) return
-
-
-                // Check settings... Org name, address and email are needed...
-                if(enable==='1') {
-
-                    this.pageInfoLoading='1'
-
-                    this.getState("get_uci").then(res=>{
-                        //organization: "", email: "", address: ""
-
-                        this.pageInfoLoading='0'
-
-                        if(res===null) return null
-
-                        let n=-1
-                        let pa=["organization","email","address"];
-                        for(let v,i=0,l=pa.length;i<l;i++){
-                            v=pa[i]
-                            if(!res.hasOwnProperty(v) || res[v].length<2){
-                                n=i
-                                break
-                            }
-
-                        }
-                        if(n!==-1){
-                            let fn=["'Name'","'Email'","'Location'"][n]
-                            OC.Notification.showTemporary(this.t('appointments',"Error: {fieldName} empty, check settings",{fieldName:fn})+"\xa0\xa0\xa0\xa0",{timeout:8,type:'error'})
-                            return null
-                        }else{
-                            this.pageInfoLoading='1'
-                            return this.getState("get_cls")
-                        }
-                    }).then(res=>{
-
-                        this.pageInfoLoading='0'
-                        if(res===null) return
-
-                        if(res.tsMode==="0"){
-                            if(res.mainCalId === "-1"){
-                                this.noCalSet()
-                            }else{
-                                this.setPageState(enable)
-                            }
-                        }else if(res.tsMode==="1"){
-                            if(res.nrDstCalId==="-1"
-                                || res.nrSrcCalId==="-1"
-                                || res.nrDstCalId===res.nrSrcCalId){
-                                this.noCalSet()
-                            }else{
-                                this.setPageState(enable)
-                            }
-                        }
-                    })
-                }else{
-                    this.setPageState(enable)
-                }
-            },
-
-            setPageState(enable){
-                this.pageInfoLoading=1
-                axios.post('state', {
-                    a: 'enable',
-                    v: enable
-                }).then(response => {
-                    if(response.status===200) {
-                        this.pageEnabled=enable
-                    }
-                }).catch((error) => {
-                    console.log(error)
-                    OC.Notification.showTemporary(this.t('appointments',"Page enable error. Check console")+"\xa0\xa0\xa0\xa0",{timeout:4,type:'error'})
-                }).then(()=>{
-                    // always executed
-                    this.pageInfoLoading=0
-                    this.getFormData()
-                });
             },
 
             makePreviewGrid(d){

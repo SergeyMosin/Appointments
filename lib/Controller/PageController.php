@@ -700,12 +700,10 @@ class PageController extends Controller {
         // 'jsfiles'=>['https://www.google.com/recaptcha/api.js']
         //        $tr->getContentSecurityPolicy()->addAllowedScriptDomain('https://www.google.com/recaptcha/')->addAllowedScriptDomain('https://www.gstatic.com/recaptcha/')->addAllowedFrameDomain('https://www.google.com/recaptcha/');
 
-        if($this->c->getUserValue(
-            $uid,
-            $this->appName,
-            'page_enabled',
-            '0')!=='1'){
+        $pages=$this->utils->getUserSettings(
+            BackendUtils::KEY_PAGES,$uid);
 
+        if($pages['p0'][BackendUtils::PAGES_ENABLED]===0){
             $params['appt_state']='4';
             $tr->setParams($params);
             return $tr;
