@@ -36,16 +36,16 @@ class CalendarsController extends Controller{
     }
 
 
-
     /**
      * @param string $t JSON string {
      *      "type": "empty|both" ,
      *      "before": 1|7,
      *      ["delete":boolean]
      * }
+     * @param string $pageId
      * @return SendDataResponse
      */
-    function calGetOld($t){
+    function calGetOld($t,$pageId){
 
         $r=new SendDataResponse();
 
@@ -74,7 +74,7 @@ class CalendarsController extends Controller{
         $cals=[];
 
         $dst_cal_id="-1";
-        $main_cal_id=$this->utils->getMainCalId($this->userId,$this->bc,$dst_cal_id);
+        $main_cal_id=$this->utils->getMainCalId($this->userId,$pageId,$this->bc,$dst_cal_id);
 
         if($main_cal_id!=="-1"){
             $cals[]=$main_cal_id;
@@ -109,22 +109,25 @@ class CalendarsController extends Controller{
     public function calgetweek(){
         // t must be d[d]-mm-yyyy
 
+        $pageId = $this->request->getParam("p",null);
 
         $cls=$this->utils->getUserSettings(
             BackendUtils::KEY_CLS,$this->userId);
-        if($cls[BackendUtils::CLS_TS_MODE]!=="0"){
-            // only for manual mode
+        $pgs=$this->utils->getUserSettings(
+            BackendUtils::KEY_PAGES,$this->userId);
+
+        if($pageId===null || $cls[BackendUtils::CLS_TS_MODE]!=="0"
+            || (!empty($pageId) && !isset($pgs[$pageId])) ){
             $r=new SendDataResponse();
             $r->setStatus(400);
             return $r;
         }
 
-        // TODO: t needs $pageId...
         $t = $this->request->getParam("t","");
 
         //Reusing the url for deleting old appointments
         if(strpos($t,"before")!==false){
-            return $this->calGetOld($t);
+            return $this->calGetOld($t,$pageId);
         }
 
 
@@ -147,7 +150,7 @@ class CalendarsController extends Controller{
         }
 
         $dcl_id='-1';
-        $cal_id=$this->utils->getMainCalId($this->userId,$this->bc,$dcl_id);
+        $cal_id=$this->utils->getMainCalId($this->userId,$pageId,$this->bc,$dcl_id);
         if($cal_id==="-1"){
             $r->setStatus(400);
             return $r;

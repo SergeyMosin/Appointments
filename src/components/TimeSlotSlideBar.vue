@@ -88,26 +88,10 @@
         </div>
         <template v-if="calInfo.tsMode!=='1'">
           <ApptIconButton
-              :disabled="calInfo.mainCalId==='-1'"
-              :loading="tzLoading"
-              @click="openAddAppts"
+              @click="$emit('gotoAddAppt','p0')"
               :text="t('appointments','Add Appointment Slots')"
               icon="icon-add">
-            <Actions v-show="expando[2]===1" slot="actions">
-              <ActionButton @click.stop="toggleExpando(2)" icon="icon-triangle-n"></ActionButton>
-            </Actions>
           </ApptIconButton>
-          <div :data-expand="expando[2]" class="srgdev-appt_expando_cont">
-            <AddApptSection
-                v-on="$listeners"
-                @agDataReady="function() {
-                            toggleExpando(2)
-                            close()
-                        }"
-                :tz-data="tzData"
-                :tz-name="tzName">
-            </AddApptSection>
-          </div>
           <ApptIconButton
               :disabled="calInfo.mainCalId==='-1'"
               :loading="expLoading===0"
@@ -271,7 +255,6 @@ import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
 
 import axios from '@nextcloud/axios'
-import {linkTo} from '@nextcloud/router'
 
 export default {
 
@@ -326,6 +309,7 @@ export default {
 
   data: function () {
     return {
+      // expando 2 is unused
       expando: [0, 0, 0, 0, 0],
       expLoading: -1,
 
@@ -430,7 +414,6 @@ export default {
       }
     },
 
-
     openNRSettings() {
       if (this.expando[3] === 1) {
         // just close
@@ -469,82 +452,6 @@ export default {
           .catch(function (error) {
             console.log(error);
           })
-    },
-
-    openAddAppts: function () {
-
-      if (this.expando[2] === 1) {
-        this.toggleExpando(2)
-        return;
-      }
-
-      this.tzLoading = true
-
-      // 999 won't trigger slideBar toggle
-      this.$emit('getCalInfo', 999)
-
-      if (!this.isGridReady) {
-        this.$emit('setupGrid')
-      }
-
-      this.tzName = "UTC"
-      this.tzData = "UTC"
-
-      this.$parent.$parent.getState("get_tz").then(res => {
-        if (res !== null && res.toLowerCase() !== 'utc') {
-          let url = linkTo('appointments', 'ajax/zones.js')
-          return axios.get(url).then(tzr => {
-            if (tzr.status === 200) {
-              let tzd = tzr.data
-              if (typeof tzd === "object"
-                  && tzd.hasOwnProperty('aliases')
-                  && tzd.hasOwnProperty('zones')
-              ) {
-                let tzs = ""
-                if (tzd.zones[res] !== undefined) {
-                  tzs = tzd.zones[res].ics.join("\r\n")
-                } else if (tzd.aliases[res] !== undefined) {
-                  let alias = tzd.aliases[res].aliasTo
-                  if (tzd.zones[alias] !== undefined) {
-                    res = alias
-                    tzs = tzd.zones[alias].ics.join("\r\n")
-                  }
-                }
-                return [res, tzs]
-              }
-            }
-            return null
-          })
-        } else return Promise.resolve(null)
-      }).then((r) => {
-        // close all expandos
-        for (let i = 0; i < this.expando.length; i++) {
-          if (this.expando[i] === 1) {
-            this.toggleExpando(i)
-          }
-        }
-
-        if (r === null || !Array.isArray(r) || r.length !== 2 || r[1] === "") {
-          console.error("can't get timezone data")
-        } else {
-          this.tzName = r[0]
-          this.tzData = "BEGIN:VTIMEZONE\r\nTZID:"
-              + r[0].trim() + "\r\n" + r[1].trim() + "\r\nEND:VTIMEZONE"
-        }
-        this.tzLoading = false;
-        this.toggleExpando(2)
-      }).catch(err => {
-        // close all expandos
-        for (let i = 0; i < this.expando.length; i++) {
-          if (this.expando[i] === 1) {
-            this.toggleExpando(i)
-          }
-        }
-
-        console.log(err)
-        this.tzLoading = false;
-        this.toggleExpando(2)
-      })
     },
 
     toggleExpando(expId) {

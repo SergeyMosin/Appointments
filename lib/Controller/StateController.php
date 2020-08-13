@@ -344,6 +344,25 @@ class StateController extends Controller{
                     $r->setStatus(500);
                 }
             }
+        }else if($action==="get_mps") {
+            $p=$this->request->getParam("p");
+            if($p!==null || null!==$this->config->getUserValue(
+                    $this->userId,$this->appName,
+                    BackendUtils::KEY_MPS.$p,null)){
+                $a=$this->utils->getUserSettings(
+                    BackendUtils::KEY_MPS.$p, $this->userId);
+
+                // TODO: mainCal color and name needed see get cls
+
+                $j=json_encode($a);
+                if($j!==false){
+                    $r->setData($j);
+                    $r->setStatus(200);
+                }else{
+                    $r->setStatus(500);
+                }
+            }
+
         }
         return $r;
     }

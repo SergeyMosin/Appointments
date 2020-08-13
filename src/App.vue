@@ -286,27 +286,31 @@
         <FormStnSlideBar
             :pps-info="ppsInfo"
             @apply="setState('set_pps',$event)"
-            v-show="sbShow===2" @close="sbShow=0"/>
+            v-if="sbShow===2" @close="sbShow=0"/>
         <UserStnSlideBar
             :uci-info="uciInfo"
             @apply="setState('set_uci',$event)"
-            v-show="sbShow===3" @close="sbShow=0"/>
+            v-if="sbShow===3" @close="sbShow=0"/>
         <MailStnSlideBar
             :eml-info="emlInfo"
             @apply="setState('set_eml',$event)"
-            v-show="sbShow===4" @close="sbShow=0"/>
+            v-if="sbShow===4" @close="sbShow=0"/>
         <TimeSlotSlideBar
             ref="tsbRef"
             :cal-info="calInfo"
-            :is-grid-ready="isGridReady"
             v-show="sbShow===6"
+            @gotoAddAppt="openAddAppt"
             @showModal="showSimpleGeneralModal($event)"
             @remOldAppts="countOldAppointments"
-            @agDataReady="makePreviewGrid"
-            @setupGrid="gridSetup"
             @setCalInfo="setState('set_cls',$event)"
             @setCalInfo_r="setState('set_cls',$event,true)"
             @getCalInfo="getCalInfo($event)"
+            @close="sbShow=0"/>
+        <AddApptSlideBar
+            v-show="sbShow===7"
+            :is-grid-ready="isGridReady"
+            @setupGrid="gridSetup"
+            @agDataReady="makePreviewGrid"
             @close="sbShow=0"/>
       </div>
     </AppContent>
@@ -328,6 +332,7 @@ import {
   ActionSeparator,
 } from '@nextcloud/vue'
 
+import AddApptSlideBar from "./components/AddApptSlideBar";
 import ActionInput from "./components/ActionInputExt.vue";
 import NavAccountItem from "./components/NavAccountItem.vue";
 import ScheduleSlideBar from "./components/ScheduleSlideBar.vue";
@@ -362,6 +367,7 @@ export default {
     MailStnSlideBar,
     ApptAccordion,
     ActionSeparator,
+    AddApptSlideBar,
   },
   data: function () {
     return {
@@ -435,6 +441,20 @@ export default {
     this.$root.$off('helpWanted', this.helpWantedHandler)
   },
   methods: {
+
+
+    openAddAppt(evt){
+      let o
+      if(evt==="p0"){
+        o={
+          enabled:this.page0.enabled,
+          label:this.page0.label===''?t('appointments','Public Page') :this.page0.label,
+          key:'p0'
+        }
+      }
+      this.sbShow=7
+      this.$root.$emit('add-appt-start', o)
+    },
 
     getPages(idx) {
       this.pageInfoLoading = idx
@@ -808,10 +828,10 @@ export default {
     },
 
     /** @return {Promise<JSON|string|null>} */
-    async getState(action) {
+    async getState(action,p="") {
       this.stateInProgress = true
       try {
-        const res = await axios.post('state', {a: action})
+        const res = await axios.post('state', {a: action,p: p})
         this.stateInProgress = false
         if (res.status === 200) {
           return res.data
@@ -1076,10 +1096,14 @@ export default {
 
       this.visibleSection = 1
 
+      this.$set(this.calInfo, "curCal_color", d.calColor)
+      this.$set(this.calInfo, "curCal_name", d.calName)
+
       // dd-mm-yyyy
       axios.get('calgetweek', {
         params: {
-          t: pd
+          t: pd,
+          p: (d.pageId==='p0'?'':d.pageId)
         }
       }).then(response => {
         if (response.status === 200) {
