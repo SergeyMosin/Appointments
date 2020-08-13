@@ -71,11 +71,11 @@ class PageController extends Controller {
 
     /**
      * @param $token
-     * @return string|false user name on success, false=not verified
+     * @return string[]|null[] [useId,pageId] on success, [null,null]=not verified
      * @throws \ErrorException
      */
     private function verifyToken($token){
-        if(empty($token) || strlen($token)>256) return false;
+        if(empty($token) || strlen($token)>256) return [null,null];
         $token=str_replace("_","/",$token);
         $key=hex2bin($this->c->getAppValue($this->appName, 'hk'));
         $iv=hex2bin($this->c->getAppValue($this->appName, 'tiv'));
@@ -84,9 +84,14 @@ class PageController extends Controller {
         }
         $td=$this->utils->decrypt($token,$key,$iv);
         if(strlen($td)>4 && substr($td,0,4)===hash( 'adler32', substr($td,4),true)){
-            return substr($td,4);
+            $u=substr($td,4);
+            if($u[0]===chr(31)){
+                return [substr($u,1,-2),substr($u,-2)];
+            }else{
+                return [$u,""];
+            }
         }else{
-            return false;
+            return [null,null];
         }
     }
 
@@ -101,19 +106,19 @@ class PageController extends Controller {
      * @throws \ErrorException
      */
     public function formEmb(){
-        $uid=$this->verifyToken($this->request->getParam("token"));
-        if($uid===false){
+        list($userId,$pageId)=$this->verifyToken($this->request->getParam("token"));
+        if($userId===null){
             $tr=new TemplateResponse($this->appName,"public/r404", [],"base");
             $tr->setStatus(404);
             return $tr;
         }
 
         if($this->request->getParam("sts")!==null) {
-            $tr=$this->showFinish('base',$uid);
+            $tr=$this->showFinish('base',$userId);
         }else{
-            $tr=$this->showForm('base',$uid);
+            $tr=$this->showForm('base',$userId);
         }
-        $this->setEmbCsp($tr,$uid);
+        $this->setEmbCsp($tr,$userId);
         return $tr;
     }
 
@@ -127,13 +132,13 @@ class PageController extends Controller {
      * @noinspection PhpUnused
      */
     public function formPostEmb(){
-        $uid=$this->verifyToken($this->request->getParam("token"));
-        if($uid===false){
+        list($userId,$pageId)=$this->verifyToken($this->request->getParam("token"));
+        if($userId===null){
             $tr=new TemplateResponse($this->appName,"public/r404", [],"base");
             $tr->setStatus(404);
         }
-        $tr=$this->showFormPost($uid,true);
-        $this->setEmbCsp($tr,$uid);
+        $tr=$this->showFormPost($userId,true);
+        $this->setEmbCsp($tr,$userId);
         return $tr;
     }
 
@@ -146,13 +151,13 @@ class PageController extends Controller {
      * @noinspection PhpUnused
      */
     public function cncfEmb(){
-        $uid=$this->verifyToken($this->request->getParam("token"));
-        if($uid===false){
+        list($userId) = $this->verifyToken($this->request->getParam("token"));
+        if($userId===null){
             $tr=new TemplateResponse($this->appName,"public/r404", [],"base");
             $tr->setStatus(404);
         }
         $tr=$this->cncf(true);
-        $this->setEmbCsp($tr,$uid);
+        $this->setEmbCsp($tr,$userId);
         return $tr;
     }
 
@@ -181,15 +186,15 @@ class PageController extends Controller {
      * @throws \ErrorException
      */
     public function form(){
-        $uid=$this->verifyToken($this->request->getParam("token"));
-        if($uid===false){
+        list($userId,$pageId)=$this->verifyToken($this->request->getParam("token"));
+        if($userId===null){
             return new NotFoundResponse();
         }
 
         if($this->request->getParam("sts")!==null) {
-            $tr=$this->showFinish('public',$uid);
+            $tr=$this->showFinish('public',$userId);
         }else{
-            $tr=$this->showForm('public',$uid);
+            $tr=$this->showForm('public',$userId);
         }
         return $tr;
     }
@@ -202,11 +207,11 @@ class PageController extends Controller {
      * @noinspection PhpUnused
      */
     public function formPost(){
-        $uid=$this->verifyToken($this->request->getParam("token"));
-        if($uid===false){
+        list($userId,$pageId)=$this->verifyToken($this->request->getParam("token"));
+        if($userId===null){
             return new NotFoundResponse();
         }
-        return $this->showFormPost($uid);
+        return $this->showFormPost($userId);
     }
 
     /**
@@ -219,9 +224,9 @@ class PageController extends Controller {
      * @throws \ErrorException
      */
     public function cncf($embed=false){
-        $userId=$this->verifyToken($this->request->getParam("token"));
+        list($userId,$pageId) = $this->verifyToken($this->request->getParam("token"));
         $pd=$this->request->getParam("d");
-        if($userId===false || $pd===null || strlen($pd)>512
+        if($userId===null || $pd===null || strlen($pd)>512
             || (($a=substr($pd,0,1))!=='0') && $a!=='1' && $a!=='2'){
             return new NotFoundResponse();
         }
