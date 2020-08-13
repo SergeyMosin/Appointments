@@ -700,6 +700,8 @@ class BackendUtils{
              $default=self::ORG_DEF;
          }else if($key===self::KEY_PSN){
              $default=self::PSN_DEF;
+         }else if(strpos($key,self::KEY_MPS)===0){
+             $default=self::MPS_DEF;
          }else if($key===self::KEY_EML){
              $default=self::EML_DEF;
          }else{
@@ -718,7 +720,6 @@ class BackendUtils{
              if (!isset($sa[$k])) {
                  $sa[$k] = $v;
              }
-
          }
          return $sa;
     }
@@ -1026,18 +1027,19 @@ class BackendUtils{
 
     /**
      * @param string $userId
-     * @param string $appName
+     * @param string $pageId (optional)
      * @return string
      * @throws \ErrorException
      */
-    function getToken($userId){
+    function getToken($userId,$pageId=""){
         $config=\OC::$server->getConfig();
         $key=hex2bin($config->getAppValue($this->appName, 'hk'));
         $iv=hex2bin($config->getAppValue($this->appName, 'tiv'));
         if(empty($key) || empty($iv)){
             throw new \ErrorException("Can't find key");
         }
-        $tkn=$this->encrypt(hash ( 'adler32' , $userId,true).$userId,$key,$iv);
+        $upi=($pageId===""?$userId:chr(31).$userId.$pageId);
+        $tkn=$this->encrypt(hash ( 'adler32' , $upi,true).$upi,$key,$iv);
         return urlencode(str_replace("/","_",$tkn));
     }
 

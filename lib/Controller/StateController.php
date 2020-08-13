@@ -8,6 +8,7 @@ use OCA\Appointments\Backend\ExternalModeSabrePlugin;
 use OCA\Appointments\SendDataResponse;
 use OCP\AppFramework\Controller;
 use OCP\IConfig;
+use OCP\IL10N;
 use OCP\IRequest;
 
 class StateController extends Controller{
@@ -16,17 +17,20 @@ class StateController extends Controller{
     private $config;
     private $utils;
     private $bc;
+    private $l;
 
     public function __construct($AppName,
                                 IRequest $request,
                                 $UserId,
                                 IConfig $config,
+                                IL10N $l,
                                 BackendUtils $utils,
                                 BackendManager $backendManager){
         parent::__construct($AppName, $request);
         
         $this->userId=$UserId;
         $this->config=$config;
+        $this->l=$l;
         $this->utils=$utils;
         /** @noinspection PhpUnhandledExceptionInspection */
         $this->bc=$backendManager->getConnector();
@@ -122,23 +126,46 @@ class StateController extends Controller{
                                 // TODO:...
                             }
                         }
-                    } else {
+                    } else if($p==="new") {
                         // creating new
-                        // TODO:... check count, etc...
+//                        $r->setData('{"contrib":"'.$this->l->t("More than 2 additional pages (10 maximum)").'"}');
+//                        $sts=202;
+
+                        $i=1;
+                        for(;$i<10;$i++){
+                            $k="p".$i;
+                            if(!isset($cur[$k])){
+                                $p=$k;
+                                break;
+                            }
+                        }
+                        // TODO: check for contributors $i>2
+                        if($p==='new'){
+                            // more than 10 spots
+                            $sts=202;
+                            $r->setData('{"info":"'.$this->l->t("Page not added: 10 pages maximum").'"}');
+                        }
+                    }else if($p==="delete" && $vo["page"]!=="p0"){
+                        $page=$vo["page"];
+                        unset($cur[$page]);
+                        $this->config->deleteUserValue(
+                            $this->userId,$this->appName,
+                            BackendUtils::KEY_MPS.$page);
                     }
 
                     if($sts===200) {
                         // filter
-                        $sa=[];
-                        foreach (BackendUtils::PAGES_VAL_DEF as $k=>$v){
-                            if(isset($vo[$k]) && gettype($vo[$k])===gettype($v)){
-                                $sa[$k]=$vo[$k];
-                            }else{
-                                $sa[$k]=$v;
+                        if($p!=="delete") {
+                            $sa = [];
+                            foreach (BackendUtils::PAGES_VAL_DEF as $k => $v) {
+                                if (isset($vo[$k]) && gettype($vo[$k]) === gettype($v)) {
+                                    $sa[$k] = $vo[$k];
+                                } else {
+                                    $sa[$k] = $v;
+                                }
                             }
+                            $cur[$p] = $sa;
                         }
-
-                        $cur[$p]=$sa;
 
                         if (!$this->utils->setUserSettings(
                                 BackendUtils::KEY_PAGES,
@@ -153,14 +180,23 @@ class StateController extends Controller{
                 }
             }
         } elseif ($action==='get_puburi'){
-            $pb=$this->utils->getPublicWebBase();
-            $tkn=$this->utils->getToken($this->userId);
+            $p=$this->request->getParam("p");
+            if($p!==null) {
+                $pgs=$this->utils->getUserSettings(
+                            BackendUtils::KEY_PAGES, $this->userId);
+                if($p==='p0' || isset($pgs[$p])) {
 
-            $u=$pb.'/' .$this->utils->pubPrx($tkn,false).'form'.chr(31)
-                .$pb.'/' .$this->utils->pubPrx($tkn,true).'form';
+                    $pb = $this->utils->getPublicWebBase();
+                    $tkn = $this->utils->getToken(
+                        $this->userId,($p==="p0"?"":$p));
 
-            $r->setData($u);
-            $r->setStatus(200);
+                    $u = $pb . '/' . $this->utils->pubPrx($tkn, false) . 'form' . chr(31)
+                        . $pb . '/' . $this->utils->pubPrx($tkn, true) . 'form';
+
+                    $r->setData($u);
+                    $r->setStatus(200);
+                }
+            }
         }elseif ($action==="set_pps"){
             $value=$this->request->getParam("d");
             if($value!==null) {

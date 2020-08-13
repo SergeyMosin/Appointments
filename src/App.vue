@@ -18,21 +18,65 @@
                         :'icon-screen-off'"
             :loading="pageInfoLoading===1">
           <template slot="actions">
-            <ActionButton :disabled="page0.enabled===1" @click="setPageEnabled('p0',1)" icon="icon-checkmark-color"
-                          closeAfterClick>
+            <ActionButton
+                :disabled="page0.enabled===1"
+                @click="setPageEnabled('p0',1)"
+                icon="icon-checkmark-color"
+                closeAfterClick>
               {{ t('appointments', 'Share Online') }}
             </ActionButton>
             <ActionButton :disabled="page0.enabled===0" @click="setPageEnabled('p0',0)" icon="icon-category-disabled"
                           closeAfterClick>
               {{ t('appointments', 'Stop Sharing') }}
             </ActionButton>
-            <ActionButton @click="showPubLink" icon="icon-public" closeAfterClick>
+            <ActionButton @click="showPubLink('p0')" icon="icon-public" closeAfterClick>
               {{ t('appointments', 'Show URL/link') }}
             </ActionButton>
-            <ActionSeparator/>
             <ActionInput data-pid="p0" @change="setPageLabel" icon="icon-rename" :value="page0.label">
               {{ t('appointments', 'Public Page') }}
             </ActionInput>
+            <ActionButton
+                @click="addNewPage()"
+                icon="icon-add"
+                closeAfterClick>
+              {{ t('appointments', 'Add New Page') }}
+            </ActionButton>
+          </template>
+        </AppNavigationItem>
+        <AppNavigationItem
+            v-for="(page,idx) in morePages"
+            class="srgdev-pubpage-nav-item"
+            :title="(
+              (page.label===''
+                ?t('appointments','Public Page')
+                :page.label)+' '+
+              (page.enabled===1
+                ?t('appointments','[Online]')
+                :t('appointments','[Disabled]'))
+              )"
+            :icon="page.enabled===1
+              ?'icon-screen'
+              :'icon-screen-off'"
+            :loading="pageInfoLoading===idx+2"
+            :key="page.key">
+          <template slot="actions">
+            <ActionButton :disabled="page.enabled===1" @click="setPageEnabled(page.key,1)" icon="icon-checkmark-color"
+                          closeAfterClick>
+              {{ t('appointments', 'Share Online') }}
+            </ActionButton>
+            <ActionButton :disabled="page.enabled===0" @click="setPageEnabled(page.key,0)" icon="icon-category-disabled"
+                          closeAfterClick>
+              {{ t('appointments', 'Stop Sharing') }}
+            </ActionButton>
+            <ActionButton @click="showPubLink(page.key)" icon="icon-public" closeAfterClick>
+              {{ t('appointments', 'Show URL/link') }}
+            </ActionButton>
+            <ActionInput :data-pid="page.key" @change="setPageLabel" icon="icon-rename" :value="page.label">
+              {{ t('appointments', 'Public Page') }}
+            </ActionInput>
+            <ActionButton @click="deletePage(page.key)" icon="icon-delete" closeAfterClick>
+              {{ t('appointments', 'Delete') }}
+            </ActionButton>
           </template>
         </AppNavigationItem>
         <AppNavigationSpacer/>
@@ -71,7 +115,7 @@
             <span :data-pop="generalModalPop" class="srgdev-appt-modal_pop_txt">{{ generalModalPopTxt }}</span>
           </div>
           <div v-if="generalModal===1" class="srgdev-appt-modal_content">
-            <div class="srgdev-appt-modal-header">{{ t('appointments', 'Public Page URL') }}</div>
+            <div class="srgdev-appt-modal-header">{{ t('appointments', 'Public Page URL') + (generalModalBtnTxt!==""?(" - "+generalModalBtnTxt):"")}}</div>
             <div v-if="generalModal===1 && generalModalLoadingTxt===''">
               <div class="srgdev-appt-modal-lbl" style="user-select: text; cursor: text;">
                 <span
@@ -144,7 +188,11 @@
             </div>
             <button
                 @click="closeGeneralModal"
-                class="primary srgdev-appt-modal-btn">{{ t('appointments', 'Close') }}
+                class="primary srgdev-appt-modal-btn">{{
+                    generalModalBtnTxt===""
+                        ?t('appointments', 'Close')
+                        :generalModalBtnTxt
+                }}
             </button>
           </div>
         </Modal>
@@ -326,6 +374,9 @@ export default {
       },
       pageInfoLoading: 0,
 
+      /** @type {{enabled:number,label:string,key:string}[]} */
+      morePages:[],
+
       value: null, // <-???
       navOpen: false,
       sbShow: 0,
@@ -356,6 +407,7 @@ export default {
       generalModalPop: 0,
       generalModalPopTxt: "",
       generalModalCallback: undefined,
+      generalModalBtnTxt:"",
 
       // SlideBars...
       calInfo: {},
@@ -371,7 +423,7 @@ export default {
   computed: {},
   beforeMount() {
     this.resetCalInfo()
-    this.getPages()
+    this.getPages(1)
   },
 
   mounted() {
@@ -383,18 +435,29 @@ export default {
   },
   methods: {
 
-    getPages() {
-      this.pageInfoLoading = 1
+    getPages(idx) {
+      this.pageInfoLoading = idx
       axios.post('state', {a: 'get_pages'})
           .then(response => {
             if (response.status === 200) {
-              for (const prop in response.data) {
-                if (response.data.hasOwnProperty(prop)) {
+              const ap=[]
+              const d=response.data
+              let c=0
+              for (const prop in d) {
+                if (d.hasOwnProperty(prop)) {
                   if (prop === 'p0') {
-                    this.page0 = Object.assign({}, this.page0, response.data['p0'])
+                    this.page0 = Object.assign({}, this.page0, d['p0'])
+                  }else{
+                    ap[c]=d[prop]
+                    ap[c]['key']=prop
+                    // this.$set(this.morePages,c,d[prop])
+                    c++
                   }
                 }
               }
+
+              this.morePages=ap;
+              console.log(this.morePages)
             }
             this.pageInfoLoading = 0
           })
@@ -405,8 +468,8 @@ export default {
     },
 
 
-    setPages(p, v) {
-      this.pageInfoLoading = 1
+    setPages(p, v,idx) {
+      this.pageInfoLoading = idx
       let ji = ""
       try {
         ji = JSON.stringify(v)
@@ -422,7 +485,9 @@ export default {
         v: ji
       }).then(response => {
         if (response.status === 200) {
-          this.getPages()
+          this.getPages(idx)
+        }else if(response.status===202){
+          this.handle202(response.data)
         }
       }).catch((error) => {
         console.log(error)
@@ -442,32 +507,48 @@ export default {
       const t = evt.target
       const page = t.getAttribute("data-pid")
       let co
+      let idx=1
       if (page === 'p0') {
         co = Object.assign({}, this.page0)
+      }else{
+        for(let i=0,pgs=this.morePages,l=pgs.length;i<l;i++){
+          if(pgs[i].key===page){
+            co = Object.assign({}, pgs[i])
+            idx=i+2
+            break
+          }
+        }
       }
       co.label = t.value
-      this.setPages(page, co)
+      this.setPages(page, co,idx)
     },
 
     setPageEnabled(page, enable) {
-
       let p
+      let idx=1
       if (page === 'p0') {
         p = Object.assign({}, this.page0)
+      }else{
+        for(let i=0,pgs=this.morePages,l=pgs.length;i<l;i++){
+          if(pgs[i].key===page){
+            p = Object.assign({}, pgs[i])
+            idx=i+2
+            break
+          }
+        }
       }
-
 
       if (p.enabled === enable) return
 
       // Check settings... Org name, address and email are needed...
       if (enable === 1) {
 
-        this.pageInfoLoading = '1'
+        this.pageInfoLoading = idx
 
         this.getState("get_uci")
             .then(res => {
               //organization: "", email: "", address: ""
-              this.pageInfoLoading = '0'
+              this.pageInfoLoading = 0
 
               if (res === null) return null
 
@@ -489,13 +570,36 @@ export default {
                 })
               } else {
                 p.enabled = 1
-                this.setPages(page, p)
+                this.setPages(page, p,idx)
               }
             })
 
       } else {
         p.enabled = 0
-        this.setPages(page, p)
+        this.setPages(page, p,idx)
+      }
+    },
+
+    addNewPage(){
+      this.setPages("new", {enabled:0,label:"New Page"},1)
+    },
+
+    deletePage(page){
+      let i=0
+      for(const pgs=this.morePages,l=pgs.length;i<l;i++){
+        if(pgs[i].key===page){
+          break
+        }
+      }
+      i+=2
+      this.setPages("delete", {page:page},i)
+    },
+
+    handle202(o) {
+      if (o['contrib'] !== undefined) {
+        this.showCModal(o['contrib'])
+      }else if(o['info'] !== undefined) {
+        this.showIModal(o['info'])
       }
     },
 
@@ -752,7 +856,7 @@ export default {
         if (response.status === 200) {
           this.getFormData()
           OCP.Toast.success(this.t('appointments', 'New Settings Applied.'))
-          if (getPages) this.getPages()
+          if (getPages) this.getPages(0)
         }
       }).catch((error) => {
         this.stateInProgress = false
@@ -782,6 +886,7 @@ export default {
     },
 
     showHelp(sec) {
+
       if (typeof sec !== "string" && this.visibleSection === 3) {
         this.visibleSection = 0
         return
@@ -789,7 +894,7 @@ export default {
 
       this.visibleSection = 3
 
-      axios.get('help')
+     axios.get('help')
           .then(response => {
             if (response.status === 200) {
               this.helpContent = response.data
@@ -813,12 +918,22 @@ export default {
           })
     },
 
-    showPubLink() {
-
+    showPubLink(page) {
       this.openGeneralModal(1)
       this.generalModalLoadingTxt = this.t('appointments', 'Fetching URL from the server...')
+      for(let i=0,pgs=this.morePages,l=pgs.length;i<l;i++){
+        if(pgs[i].key===page){
+          // this is actually the header text for this dialog
+          this.generalModalBtnTxt=pgs[i].label
+          break
+        }
+      }
+
+
+
       axios.post('state', {
-        a: 'get_puburi'
+        a: 'get_puburi',
+        p: page
       }).then(response => {
         if (response.status === 200) {
           const ua = response.data.split(String.fromCharCode(31))
@@ -1014,7 +1129,24 @@ export default {
       this.evtGridModal = 0
     },
 
-    /**
+
+    showCModal(txt){
+      this.openGeneralModal(3)
+      this.$set(this.generalModalTxt, 0, t('appointments', "Contributor only feature"))
+      this.$set(this.generalModalTxt, 1, txt)
+      // TODO: showHelp anchor...
+      this.generalModalCallback = function (){this.showHelp('auto_fix_nr')}
+      this.generalModalBtnTxt=t('appointments', "More Info")
+    },
+
+
+    showIModal(txt) {
+      this.openGeneralModal(3)
+      this.$set(this.generalModalTxt, 0, t('appointments', "Warning"))
+      this.$set(this.generalModalTxt, 1, txt)
+    },
+
+      /**
      * @param {Array} txt 0=header, 1=text, 2=optional callBack
      */
     showSimpleGeneralModal(txt) {
@@ -1034,13 +1166,13 @@ export default {
 
 
     closeGeneralModal() {
+      this.visibleSection = 0
+      this.generalModal = 0
+      this.generalModalLoadingTxt = ""
       if (this.generalModalCallback !== undefined) {
         this.generalModalCallback()
         this.generalModalCallback = undefined
       }
-      this.visibleSection = 0
-      this.generalModal = 0
-      this.generalModalLoadingTxt = ""
       this.clearGeneralModal()
     },
 
@@ -1049,6 +1181,7 @@ export default {
       this.$set(this.generalModalTxt, 1, "")
       this.generalModalCallback = undefined
       this.generalModalPopTxt = ""
+      this.generalModalBtnTxt = ""
       if (this.generalModalPop !== 0) {
         clearTimeout(this.generalModalPop)
       }
