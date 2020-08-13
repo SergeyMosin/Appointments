@@ -46,6 +46,7 @@
         <AppNavigationItem
             v-for="(page,idx) in morePages"
             class="srgdev-pubpage-nav-item"
+            @click="getFormData(page.key)"
             :title="(
               (page.label===''
                 ?t('appointments','Public Page')
@@ -1021,8 +1022,12 @@ export default {
     //     this.evtGridModal=4
     // },
 
-    getFormData() {
-      this.pubPage = 'form?v=' + Date.now();
+    getFormData(p) {
+      if(typeof p !== "string") {
+        this.pubPage = 'form?v=' + Date.now();
+      }else{
+        this.pubPage = 'form?p='+p+'&v=' + Date.now();
+      }
       this.visibleSection = 0
     },
 

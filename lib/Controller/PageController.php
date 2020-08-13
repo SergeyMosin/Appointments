@@ -116,7 +116,7 @@ class PageController extends Controller {
         if($this->request->getParam("sts")!==null) {
             $tr=$this->showFinish('base',$userId);
         }else{
-            $tr=$this->showForm('base',$userId);
+            $tr=$this->showForm('base',$userId,$pageId);
         }
         $this->setEmbCsp($tr,$userId);
         return $tr;
@@ -137,7 +137,7 @@ class PageController extends Controller {
             $tr=new TemplateResponse($this->appName,"public/r404", [],"base");
             $tr->setStatus(404);
         }
-        $tr=$this->showFormPost($userId,true);
+        $tr=$this->showFormPost($userId,$pageId,true);
         $this->setEmbCsp($tr,$userId);
         return $tr;
     }
@@ -194,7 +194,7 @@ class PageController extends Controller {
         if($this->request->getParam("sts")!==null) {
             $tr=$this->showFinish('public',$userId);
         }else{
-            $tr=$this->showForm('public',$userId);
+            $tr=$this->showForm('public',$userId,$pageId);
         }
         return $tr;
     }
@@ -211,7 +211,7 @@ class PageController extends Controller {
         if($userId===null){
             return new NotFoundResponse();
         }
-        return $this->showFormPost($userId);
+        return $this->showFormPost($userId,$pageId);
     }
 
     /**
@@ -238,7 +238,7 @@ class PageController extends Controller {
         }
 
         $otherCalId="-1";
-        $cal_id=$this->utils->getMainCalId($userId,$this->bc,$otherCalId);
+        $cal_id=$this->utils->getMainCalId($userId,$pageId,$this->bc,$otherCalId);
         if($cal_id==='-1') {
             return $this->pubErrResponse($userId,$embed);
         }
@@ -342,7 +342,7 @@ class PageController extends Controller {
                     \OC::$server->getLogger()->error('can not re-create appointment, no dt_info');
                 }else if($cls[BackendUtils::CLS_TS_MODE]==='0'){
                     // this only needed in simple/manual mode
-                    $cr=$this->addAppointments($userId,$dt_info,$tz_data,$title);
+                    $cr=$this->addAppointments($userId,$pageId,$dt_info,$tz_data,$title);
                     if($cr[0]!=='0'){
                         \OC::$server->getLogger()->error('addAppointments() failed '.$cr);
                     }
@@ -421,10 +421,16 @@ class PageController extends Controller {
      * @noinspection PhpUnused
      */
     public function formBase(){
+        $pageId=$this->request->getParam("p","");
+        if(!empty($pageId) && !isset($this->utils->getUserSettings(
+                BackendUtils::KEY_PAGES, $this->userId)[$pageId])){
+            return new NotFoundResponse();
+        }
+
         if($this->request->getParam("sts")!==null) {
             $tr=$this->showFinish('base',$this->userId);
         }else{
-            $tr=$this->showForm('base',$this->userId);
+            $tr=$this->showForm('base',$this->userId,$pageId);
         }
         return $tr;
     }
@@ -436,16 +442,22 @@ class PageController extends Controller {
      * @noinspection PhpUnused
      */
     public function formBasePost(){
-        return $this->showFormPost($this->userId);
+        $pageId=$this->request->getParam("p","");
+        if(!empty($pageId) && !isset($this->utils->getUserSettings(
+                    BackendUtils::KEY_PAGES, $this->userId)[$pageId])){
+            return new NotFoundResponse();
+        }
+        return $this->showFormPost($this->userId,$pageId);
     }
 
     /**
-     * @param $userId
+     * @param string $userId
+     * @param string $pageId
      * @param bool $embed
      * @return RedirectResponse
      * @throws \ErrorException
      */
-    public function showFormPost($userId, $embed=false){
+    public function showFormPost($userId,$pageId, $embed=false){
 
         // sts: 0=OK, 1=bad input, 2=server error
         $ok_uri="form?sts=0";
@@ -494,7 +506,7 @@ class PageController extends Controller {
         $post['name']=htmlspecialchars($post['name'], ENT_QUOTES, 'UTF-8');
         // Input seems OK...
 
-        $cal_id=$this->utils->getMainCalId($userId,$this->bc);
+        $cal_id=$this->utils->getMainCalId($userId,$pageId,$this->bc);
         if($cal_id==="-1") {
             $rr=new RedirectResponse($server_err_url);
             $rr->setStatus(303);
@@ -578,6 +590,7 @@ class PageController extends Controller {
             urlencode($this->utils->encrypt($raw_btkn,$key))
         );
 
+        $post['_page_id']=$pageId;
         // Update/create appointment data
         $r = $this->bc->setAttendee($userId, $cal_id, $evt_uri, $post);
 
@@ -668,10 +681,11 @@ class PageController extends Controller {
 
     /**
      * @param $render
-     * @param $uid
+     * @param string $uid
+     * @param string $pageId
      * @return TemplateResponse
      */
-    public function showForm($render,$uid){
+    public function showForm($render,$uid,$pageId){
         $templateName='public/form';
         if($render==="public"){
             $tr = $this->getPublicTemplate($templateName,$uid);
@@ -698,8 +712,10 @@ class PageController extends Controller {
             'appt_pps'=>'',
             'appt_gdpr'=>'',
             'appt_inline_style'=>$pps[BackendUtils::PSN_PAGE_STYLE],
-            'appt_hide_phone'=>$pps[BackendUtils::PSN_HIDE_TEL]
+            'appt_hide_phone'=>$pps[BackendUtils::PSN_HIDE_TEL],
         ];
+
+
 
         // google recaptcha
         // 'jsfiles'=>['https://www.google.com/recaptcha/api.js']
@@ -720,7 +736,7 @@ class PageController extends Controller {
             return $tr;
         }
 
-        $cid=$this->utils->getMainCalId($uid,$this->bc);
+        $cid=$this->utils->getMainCalId($uid,$pageId,$this->bc);
         if($cid==="-1"){
             $tr->setParams($params);
             return $tr;
@@ -801,8 +817,15 @@ class PageController extends Controller {
      * @noinspection PhpUnused
      */
     public function caladd(){
+        // TODO: test this with a $pageId
+        $pageId=$this->request->getParam("p","");
+        if(!empty($pageId) && !isset($this->utils->getUserSettings(
+                    BackendUtils::KEY_PAGES, $this->userId)[$pageId])){
+            return new NotFoundResponse();
+        }
         return $this->addAppointments(
             $this->userId,
+            $pageId,
             $this->request->getParam("d"),
             $this->request->getParam("tz")
         );
@@ -810,6 +833,7 @@ class PageController extends Controller {
 
     /**
      * @param string $userId
+     * @param string $pageId
      * @param string|null $ds
      *      dtstamp,dtstart,dtend [,dtstart,dtend,...] -
      *      dttsamp: 20200414T073008Z must be UTC (ends with Z),
@@ -818,14 +842,14 @@ class PageController extends Controller {
      * @param string $title title is used when the appointment is being reset
      * @return string
      */
-    private function addAppointments($userId,$ds,$tz_data_str,$title=""){
+    private function addAppointments($userId,$pageId,$ds,$tz_data_str,$title=""){
 
         if(empty($ds)) return '1:No Data';
         $data=explode(',',$ds);
         $c=count($data);
         if($c<3) return '1:'.$this->l->t("Please add time slots first.")." [DL = ".$c."]";
 
-        $cal_id=$this->utils->getMainCalId($userId,$this->bc);
+        $cal_id=$this->utils->getMainCalId($userId,$pageId,$this->bc);
         if($cal_id==="-1") return '1:'.$this->l->t("Please select a calendar first");
 
         $cal=$this->bc->getCalendarById($cal_id,$userId);

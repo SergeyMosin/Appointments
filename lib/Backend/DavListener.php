@@ -77,13 +77,14 @@ class DavListener {
                 $evt->{BackendUtils::XAD_PROP}->getValue(),
                 $evt->UID->getValue()));
             $userId=$xad[0];
+            $pageId=$xad[2];
         }else {
             \OC::$server->getLogger()->error("XAD_PROP not found");
             return;
         }
 
         $other_cal='-1';
-        $cal_id=$utils->getMainCalId($userId,null,$other_cal);
+        $cal_id=$utils->getMainCalId($userId,$pageId,null,$other_cal);
 
         if($other_cal!=='-1'){
             // only allowed in simple

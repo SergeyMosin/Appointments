@@ -119,7 +119,7 @@ class CalendarsController extends Controller{
             return $r;
         }
 
-
+        // TODO: t needs $pageId...
         $t = $this->request->getParam("t","");
 
         //Reusing the url for deleting old appointments

@@ -57,7 +57,7 @@ class StateController extends Controller{
                     if ($page === 'p0') {
                         // main page
                         $other_cal = "-1";
-                        $main_cal = $this->utils->getMainCalId($this->userId, $this->bc, $other_cal);
+                        $main_cal = $this->utils->getMainCalId($this->userId,'', $this->bc, $other_cal);
 
                         $cls = $this->utils->getUserSettings(
                             BackendUtils::KEY_CLS, $this->userId);
@@ -105,7 +105,7 @@ class StateController extends Controller{
                             if ($p === 'p0') {
                                 // main page
                                 $other_cal="-1";
-                                $main_cal=$this->utils->getMainCalId($this->userId,$this->bc,$other_cal);
+                                $main_cal=$this->utils->getMainCalId($this->userId,'',$this->bc,$other_cal);
 
                                 $cls=$this->utils->getUserSettings(
                                     BackendUtils::KEY_CLS, $this->userId);
@@ -307,6 +307,7 @@ class StateController extends Controller{
                     $cls=$this->utils->getUserSettings(
                         BackendUtils::KEY_CLS,$this->userId);
 
+                    // TODO: autofix for additional calendars...
                     // Set ExternalModeSabrePlugin::AUTO_FIX_URI
                     $af_uri="";
                     if($cls[BackendUtils::CLS_TS_MODE]==="1" && $cls[BackendUtils::CLS_XTM_SRC_ID]!=="-1" && $cls[BackendUtils::CLS_XTM_AUTO_FIX]===true){

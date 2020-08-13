@@ -128,15 +128,16 @@ class BackendUtils{
     );
 
     public const KEY_MPS = "more_pages_";
-    public const MPS_SRC_ID="mpsSrcId";
-    public const MPS_DST_ID="mpsDstId";
     public const MPS_TITLE="mpsTitle";
     public const MPS_SUB_TITLE="mpsSubTitle";
     public const MPS_LOCATION="mpsLocation";
     public const MPS_PHONE="mpsPhone";
     public const MPS_DEF=array(
-        self::MPS_SRC_ID=>"-1",
-        self::MPS_DST_ID=>"-1",
+        self::CLS_MAIN_ID=>'-1',
+        self::CLS_DEST_ID=>'-1',
+        self::CLS_XTM_SRC_ID=>'-1',
+        self::CLS_XTM_DST_ID=>'-1',
+        self::CLS_TS_MODE=>'0', // 0=simple/manual, 1=external/XTM, (2=template)
         self::MPS_TITLE=>"",
         self::MPS_SUB_TITLE=>"",
         self::MPS_LOCATION=>"",
@@ -247,9 +248,9 @@ class BackendUtils{
         if(!isset($evt->{self::TZI_PROP})) $evt->add(self::TZI_PROP);
         $evt->{self::TZI_PROP}->setValue($info['tzi']);
 
-        // Additional Appointment info: userId (for DavListener) + _title if available (used for reset)
+        // Additional Appointment info: userId (for DavListener) + _title if available (used for reset) + pageId
         if(!isset($evt->{self::XAD_PROP})) $evt->add(self::XAD_PROP);
-        $evt->{self::XAD_PROP}->setValue($this->encrypt($userId.chr(31).$title,$evt->UID));
+        $evt->{self::XAD_PROP}->setValue($this->encrypt($userId.chr(31).$title.chr(31).$info['_page_id'],$evt->UID));
 
         $this->setSEQ($evt);
 
@@ -771,18 +772,26 @@ class BackendUtils{
      *  Other = XTM_SRC_ID (source calendar)
      *
      * @param string $userId
+     * @param string $pageId
      * @param IBackendConnector|null $bc checks backend if provided
      * @param string|null $otherCal get the ID of the other calendar "-1"=not found
      * @return string calendar Id or "-1" = no main cal
      */
-    function getMainCalId($userId,$bc,&$otherCal=null){
+    function getMainCalId($userId,$pageId,$bc,&$otherCal=null){
+
+        if(empty($pageId)){
+            // main calendar is privider
+            $csProvider=$this->getUserSettings(self::KEY_CLS,$userId);
+        }else{
+            // more_pages_ holds $dst/$src cals
+            $csProvider=$this->getUserSettings(self::KEY_MPS.$pageId,$userId);
+        }
 
         // What mode are we in ??
-        $cls=$this->getUserSettings(self::KEY_CLS,$userId);
-        $ts_mode=$cls[self::CLS_TS_MODE];
+        $ts_mode=$csProvider[self::CLS_TS_MODE];
         if ($ts_mode==="1"){
-            $dst=$cls[self::CLS_XTM_DST_ID];
-            $src=$cls[self::CLS_XTM_SRC_ID];
+            $dst=$csProvider[self::CLS_XTM_DST_ID];
+            $src=$csProvider[self::CLS_XTM_SRC_ID];
             // External mode - main calendar is destination calendar
             if($src === "-1" || $dst === "-1" || $src === $dst){
                 if(isset($otherCal)){
@@ -798,10 +807,10 @@ class BackendUtils{
         }else{
             // Manual $ts_mode==="0"
             if(isset($otherCal)){
-                $dst=$cls[self::CLS_DEST_ID];
+                $dst=$csProvider[self::CLS_DEST_ID];
                 $otherCal=($bc!==null && $bc->getCalendarById($dst,$userId)===null)?'-1':$dst;
             }
-            $src=$cls[self::CLS_MAIN_ID];
+            $src=$csProvider[self::CLS_MAIN_ID];
             return ($bc!==null && $bc->getCalendarById($src,$userId)===null)?'-1':$src;
         }
     }
