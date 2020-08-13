@@ -5610,6 +5610,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 // noinspection ES6CheckImport
 
 
@@ -6340,8 +6341,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     //     this.modalText=txt
     //     this.evtGridModal=4
     // },
-    getFormData: function getFormData() {
-      this.pubPage = 'form?v=' + Date.now();
+    getFormData: function getFormData(p) {
+      if (typeof p !== "string") {
+        this.pubPage = 'form?v=' + Date.now();
+      } else {
+        this.pubPage = 'form?p=' + p + '&v=' + Date.now();
+      }
+
       this.visibleSection = 0;
     },
     makePreviewGrid: function makePreviewGrid(d) {
@@ -49325,6 +49331,11 @@ var render = function() {
                     icon:
                       page.enabled === 1 ? "icon-screen" : "icon-screen-off",
                     loading: _vm.pageInfoLoading === idx + 2
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.getFormData(page.key)
+                    }
                   }
                 },
                 [
