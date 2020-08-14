@@ -118,7 +118,7 @@
     "Email Attendee when the appointment is:" : "Erstelle eine E-Mail an Teilnehmer, wenn der Termin stattfindet:",
     "Modified (Time, Status, Location)" : "Geändert (Zeit, Status, Ort)",
     "Deleted" : "Gelöscht",
-    "Email Me when an appointment is:" : "Erstelle eine E-Mail an mich, wenn Termin ist:",
+    "Email Me when an appointment is:" : "Sende eine E-Mail an mich wenn der Termin beginnt:",
     "Requested" : "Angefordert",
     "Confirmed" : "Bestätigt",
     "Canceled" : "Abgesagt",

@@ -166,7 +166,7 @@ OC.L10N.register(
     "Warning" : "Warnung",
     "Time slot mode has changed. Public page is going offline…" : "Der Zeitfenstermodus hat sich geändert. Die öffentliche Seite geht offline…",
     "Your Contact Information" : "Deine Kontaktinformationen",
-    "Form header and event organizer settings" : "Einstellungen für Formularkopfzeile und Veranstalter",
+    "Form header and event organizer settings" : "Formularkopf- und Ereigniseinstellungen",
     "Name:" : "Name:",
     "Email:" : "E-Mail:",
     "Location:" : "Ort:",
