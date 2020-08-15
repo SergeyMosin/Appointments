@@ -148,8 +148,26 @@ $appt_grid_ml:6em;
 	cursor: grab;
 }
 
-
-
+.sb_loading_cont{
+	margin: 4em auto;
+}
+.sb_loading_icon_cont{
+	width: 3em;
+	height: 3em;
+	display: block;
+	margin: 0 auto;
+}
+.sb_loading_icon_cont:after{
+	width: 3em;
+	height: 3em;
+	margin: -1.5em 0 0 -1.5em;
+}
+.sb_loading_text{
+	display: block;
+	height: 3em;
+	line-height: 3em;
+	color: var(--color-text-lighter);
+}
 
 
 //.srgdev-appt-cal-view-col{

@@ -107,7 +107,6 @@ class CalendarsController extends Controller{
      * @noinspection PhpUnused
      */
     public function calgetweek(){
-        // t must be d[d]-mm-yyyy
 
         $pageId = $this->request->getParam("p",null);
 
@@ -123,6 +122,7 @@ class CalendarsController extends Controller{
             return $r;
         }
 
+        // t must be d[d]-mm-yyyy
         $t = $this->request->getParam("t","");
 
         //Reusing the url for deleting old appointments

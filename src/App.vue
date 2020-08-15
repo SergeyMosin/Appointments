@@ -1,7 +1,7 @@
 <template>
   <div id="content">
     <AppNavigation>
-      <ul>
+      <ul :class="{'sb_disable':stateInProgress}">
         <AppNavigationItem
             @click="getFormData"
             class="srgdev-pubpage-nav-item"
@@ -158,7 +158,7 @@
                 <div :class="{'srgdev-appt-modal-lbl_dim':generalModalTxt[0]!==''}">{{ generalModalTxt[1] }}</div>
               </div>
               <button
-                  @click="removeOldAppointments"
+                  @click="generalModalActionCallback();generalModalActionCallback=undefined"
                   v-show="generalModalTxt[0]!==''"
                   style="margin-right: 3em"
                   class="primary srgdev-appt-modal-btn">{{ t('appointments', 'Remove') }}
@@ -299,19 +299,27 @@
             ref="tsbRef"
             :cal-info="calInfo"
             v-show="sbShow===6"
-            @gotoAddAppt="openAddAppt"
+            @gotoAddAppt="curPageKey=$event;sbShow=7;sbGotoBack=6"
+            @gotoDelAppt="curPageKey=$event;sbShow=8;sbGotoBack=6"
             @showModal="showSimpleGeneralModal($event)"
-            @remOldAppts="countOldAppointments"
             @setCalInfo="setState('set_cls',$event)"
             @setCalInfo_r="setState('set_cls',$event,true)"
             @getCalInfo="getCalInfo($event)"
             @close="sbShow=0"/>
         <AddApptSlideBar
-            v-show="sbShow===7"
+            v-if="sbShow===7"
+            :cur-page-data="curPageData"
             :is-grid-ready="isGridReady"
             @setupGrid="gridSetup"
             @agDataReady="makePreviewGrid"
-            @close="sbShow=0"/>
+            @close="sbShow=sbGotoBack;sbGotoBack=0"/>
+        <DelApptSlideBar
+            v-if="sbShow===8"
+            :cur-page-data="curPageData"
+            @openGM="openGeneralModal"
+            @closeGM="closeGeneralModal"
+            @updateGM="updateGeneralModal"
+            @close="sbShow=sbGotoBack;sbGotoBack=0"/>
       </div>
     </AppContent>
   </div>
@@ -332,6 +340,7 @@ import {
   ActionSeparator,
 } from '@nextcloud/vue'
 
+import DelApptSlideBar from "./components/DelApptSlideBar";
 import AddApptSlideBar from "./components/AddApptSlideBar";
 import ActionInput from "./components/ActionInputExt.vue";
 import NavAccountItem from "./components/NavAccountItem.vue";
@@ -368,25 +377,31 @@ export default {
     ApptAccordion,
     ActionSeparator,
     AddApptSlideBar,
+    DelApptSlideBar,
   },
+
   data: function () {
+
     return {
 
-      // mainForm:'',
       pubPage: '',
 
       page0: {
         enabled: 0,
         label: ""
       },
+
+      // this us used to compute curPageData to pass to settings, etc..
+      curPageKey:"",
+
       pageInfoLoading: 0,
 
       /** @type {{enabled:number,label:string,key:string}[]} */
       morePages:[],
 
-      value: null, // <-???
       navOpen: false,
       sbShow: 0,
+      sbGotoBack:0,
       sbLoading: 0,
 
       visibleSection: 0,
@@ -400,6 +415,7 @@ export default {
       helpContent: "",
 
       isGridReady: false,
+
       /**
        * @type {{ts:number,txt:string,w:string,n:number,hasAppts:boolean}[]}
        */
@@ -413,7 +429,8 @@ export default {
       generalModalLoadingTxt: "",
       generalModalPop: 0,
       generalModalPopTxt: "",
-      generalModalCallback: undefined,
+      generalModalCloseCallback: undefined,
+      generalModalActionCallback: undefined,
       generalModalBtnTxt:"",
 
       // SlideBars...
@@ -422,12 +439,39 @@ export default {
       uciInfo: {},
       emlInfo: {},
 
-      roaData: "",
-
       stateInProgress: false
     };
   },
-  computed: {},
+  computed: {
+    curPageData:function (){
+      if(this.curPageKey==='p0'){
+        return {
+          enabled:this.page0.enabled,
+          label:this.page0.label===''
+                  ?t('appointments','Public Page')
+                  :this.page0.label,
+          key:'p0',
+          action:"get_cls",
+          pageId:''
+        }
+      }else{
+        let r={}
+        for(let i=0,pgs=this.morePages,l=pgs.length;i<l;i++){
+          if(pgs[i].key===this.curPageKey){
+            r={
+              enabled:pgs[i].enabled,
+              label:pgs[i].label,
+              key:pgs[i].key,
+              action:"get_mps",
+              pageId:pgs[i].key,
+            }
+            break
+          }
+        }
+        return r
+      }
+    }
+  },
   beforeMount() {
     this.resetCalInfo()
     this.getPages(1)
@@ -440,52 +484,47 @@ export default {
   beforeDestroy() {
     this.$root.$off('helpWanted', this.helpWantedHandler)
   },
+  provide: function () {
+    return {
+      getState: this.getState
+    }
+  },
+
+
   methods: {
-
-
-    openAddAppt(evt){
-      let o
-      if(evt==="p0"){
-        o={
-          enabled:this.page0.enabled,
-          label:this.page0.label===''?t('appointments','Public Page') :this.page0.label,
-          key:'p0'
-        }
-      }
-      this.sbShow=7
-      this.$root.$emit('add-appt-start', o)
-    },
 
     getPages(idx) {
       this.pageInfoLoading = idx
+      this.stateInProgress = true
       axios.post('state', {a: 'get_pages'})
-          .then(response => {
-            if (response.status === 200) {
-              const ap=[]
-              const d=response.data
-              let c=0
-              for (const prop in d) {
-                if (d.hasOwnProperty(prop)) {
-                  if (prop === 'p0') {
-                    this.page0 = Object.assign({}, this.page0, d['p0'])
-                  }else{
-                    ap[c]=d[prop]
-                    ap[c]['key']=prop
-                    // this.$set(this.morePages,c,d[prop])
-                    c++
-                  }
+        .then(response => {
+          if (response.status === 200) {
+            const ap=[]
+            const d=response.data
+            let c=0
+            for (const prop in d) {
+              if (d.hasOwnProperty(prop)) {
+                if (prop === 'p0') {
+                  this.page0 = Object.assign({}, this.page0, d['p0'])
+                }else{
+                  ap[c]=d[prop]
+                  ap[c]['key']=prop
+                  c++
                 }
               }
-
-              this.morePages=ap;
-              console.log(this.morePages)
             }
-            this.pageInfoLoading = 0
-          })
-          .catch(error => {
-            this.pageInfoLoading = 0
-            console.log(error);
-          });
+
+            this.morePages=ap;
+            console.log(this.morePages)
+          }
+          this.pageInfoLoading = 0
+          this.stateInProgress = false
+        })
+        .catch(error => {
+          this.stateInProgress = false
+          this.pageInfoLoading = 0
+          console.log(error);
+        });
     },
 
 
@@ -622,132 +661,6 @@ export default {
       }else if(o['info'] !== undefined) {
         this.showIModal(o['info'])
       }
-    },
-
-
-    removeOldAppointments() {
-      if (this.roaData === "") {
-        OC.Notification.showTemporary('Can not remove appointments: bad info', {timeout: 4, type: 'error'})
-      }
-
-
-      if (!confirm(this.t('appointments', 'This action can NOT be undone. Continue?'))) return;
-
-      this.generalModalLoadingTxt = this.t('appointments', 'Removing Appointment Slots') + "..."
-
-      this.openGeneralModal(2)
-
-      const errTxt = this.t('appointments', 'Can not delete old appointments/slots') + "\xa0\xa0\xa0\xa0"
-
-      const str = this.roaData.slice(0, -1) + ',"delete":true}';
-      this.roaData = ""
-
-      axios.get('calgetweek', {
-        params: {
-          t: str
-        }
-      }).then(response => {
-        if (response.status === 200) {
-          const ua = response.data.split("|")
-          if (ua[0] !== "0") {
-            const dt = new Date()
-            dt.setTime(ua[1] * 1000)
-
-            let txt
-            let dts = dt.toLocaleDateString(undefined, {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })
-
-            if (str.indexOf("empty") > -1) {
-              txt = this.t('appointments', 'All empty appointment slots created before {fullDate} are removed', {
-                fullDate: dts
-              })
-            } else {
-              txt = this.t('appointments', 'All empty slots and booked appointments created before {fullDate} are removed', {
-                fullDate: dts
-              })
-            }
-
-            this.$set(this.generalModalTxt, 1, txt)
-          } else {
-            OCP.Toast.error(errTxt)
-          }
-          this.generalModalLoadingTxt = ""
-        }
-      }).catch(error => {
-        this.closeGeneralModal()
-        console.log(error)
-        OCP.Toast.error(errTxt)
-      })
-    },
-
-    countOldAppointments(d) {
-      // {"type": "empty|both" , "before": 1|7}
-
-      let str
-      try {
-        str = JSON.stringify(d)
-      } catch (e) {
-        console.log(e)
-        OC.Notification.showTemporary(this.t('appointments', "Can not request data"), {timeout: 4, type: 'error'})
-        return
-      }
-
-      this.generalModalLoadingTxt = this.t('appointments', 'Gathering calendar information') + "..."
-      this.openGeneralModal(2)
-
-
-      this.roaData = ""
-
-      axios.get('calgetweek', {
-        params: {
-          t: str
-        }
-      }).then(response => {
-        if (response.status === 200) {
-          const ua = response.data.split("|")
-          if (ua[0] !== "0") {
-
-            const dt = new Date()
-            dt.setTime(ua[1] * 1000)
-
-            let txt
-            let dts = dt.toLocaleDateString(undefined, {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })
-            if (d.type === "empty") {
-              txt = this.t('appointments', 'Remove empty appointment slots created before {fullDate} ?', {
-                fullDate: dts
-              })
-            } else {
-              txt = this.t('appointments', 'Remove empty slots and booked appointments created before {fullDate} ?', {
-                fullDate: dts
-              })
-            }
-            this.$set(this.generalModalTxt, 0, txt)
-            this.roaData = str
-          }
-
-          let att = ""
-          if (ua[0] !== "0" && d.type === "both" && this.calInfo.destCalId !== undefined
-              && this.calInfo.destCalId !== "-1") {
-            att = " [ " + this.t('appointments', 'two calendars affected') + " ]"
-          }
-
-
-          this.$set(this.generalModalTxt, 1, this.t('appointments', 'Number of expired appointments/slots: ') + ua[0] + att)
-
-          this.generalModalLoadingTxt = ""
-        }
-      }).catch(error => {
-        this.closeGeneralModal()
-        console.log(error)
-        OCP.Toast.error(this.t('appointments', 'Can not get calendar data') + "\xa0\xa0\xa0\xa0")
-      })
     },
 
     gridApptsAdd(cID, event) {
@@ -942,15 +855,18 @@ export default {
     showPubLink(page) {
       this.openGeneralModal(1)
       this.generalModalLoadingTxt = this.t('appointments', 'Fetching URL from the server...')
-      for(let i=0,pgs=this.morePages,l=pgs.length;i<l;i++){
-        if(pgs[i].key===page){
-          // this is actually the header text for this dialog
-          this.generalModalBtnTxt=pgs[i].label
-          break
+      if(page==='p0'){
+        // this is actually the header text for this dialog
+        this.generalModalBtnTxt = this.page0.label
+      }else {
+        for (let i = 0, pgs = this.morePages, l = pgs.length; i < l; i++) {
+          if (pgs[i].key === page) {
+            // this is actually the header text for this dialog
+            this.generalModalBtnTxt = pgs[i].label
+            break
+          }
         }
       }
-
-
 
       axios.post('state', {
         a: 'get_puburi',
@@ -1023,25 +939,6 @@ export default {
       }
     },
 
-    showGeneralModalPop(txt) {
-      const ctx = this
-      if (this.generalModalPop !== 0) {
-        clearTimeout(this.generalModalPop)
-      }
-
-      this.generalModalPopTxt = txt
-      this.generalModalPop = setTimeout(function () {
-        ctx.generalModalPop = 0
-      }, 2000)
-    },
-
-
-    // showModal(title,txt){
-    //     this.modalHeader=title
-    //     this.modalText=txt
-    //     this.evtGridModal=4
-    // },
-
     getFormData(p) {
       if(typeof p !== "string") {
         this.pubPage = 'form?v=' + Date.now();
@@ -1074,7 +971,6 @@ export default {
 
       let pd = td.getDate() + "-" + (td.getMonth() + 1) + "-" + td.getFullYear()
 
-
       // Same formula as @see grid.js#makeColumns(n)
       let w = Math.floor((100 - 1) / NBR_DAYS) + "%"
 
@@ -1100,11 +996,9 @@ export default {
       this.$set(this.calInfo, "curCal_name", d.calName)
 
       // dd-mm-yyyy
-      axios.get('calgetweek', {
-        params: {
+      axios.post('calgetweek', {
           t: pd,
-          p: (d.pageId==='p0'?'':d.pageId)
-        }
+          p: d.pageId
       }).then(response => {
         if (response.status === 200) {
           if (response.data !== "") {
@@ -1164,7 +1058,7 @@ export default {
       this.$set(this.generalModalTxt, 0, t('appointments', "Contributor only feature"))
       this.$set(this.generalModalTxt, 1, txt)
       // TODO: showHelp anchor...
-      this.generalModalCallback = function (){this.showHelp('auto_fix_nr')}
+      this.generalModalCloseCallback = function (){this.showHelp('auto_fix_nr')}
       this.generalModalBtnTxt=t('appointments', "More Info")
     },
 
@@ -1175,7 +1069,7 @@ export default {
       this.$set(this.generalModalTxt, 1, txt)
     },
 
-      /**
+    /**
      * @param {Array} txt 0=header, 1=text, 2=optional callBack
      */
     showSimpleGeneralModal(txt) {
@@ -1183,32 +1077,60 @@ export default {
       this.$set(this.generalModalTxt, 0, txt[0])
       this.$set(this.generalModalTxt, 1, txt[1])
       if (txt.length === 3) {
-        this.generalModalCallback = txt[2]
+        this.generalModalCloseCallback = txt[2]
       }
+    },
+
+    /** @param {Object} o */
+    updateGeneralModal(o){
+      for (const prop in o){
+        if (o.hasOwnProperty(prop) && prop.indexOf('generalModal')===0) {
+          if(prop==='generalModalTxt') {
+            if(o[prop][0]!==undefined){
+              this.$set(this.generalModalTxt, 0, o[prop][0])
+            }
+            if(o[prop][1]!==undefined){
+              this.$set(this.generalModalTxt, 1, o[prop][1])
+            }
+          }
+          this[prop]=o[prop]
+        }
+      }
+    },
+
+    showGeneralModalPop(txt) {
+      const ctx = this
+      if (this.generalModalPop !== 0) {
+        clearTimeout(this.generalModalPop)
+      }
+      this.generalModalPopTxt = txt
+      this.generalModalPop = setTimeout(function () {
+        ctx.generalModalPop = 0
+      }, 2000)
     },
 
     openGeneralModal(id) {
       this.generalModal = id
       this.visibleSection = 2
-      this.clearGeneralModal()
+      this._clearGeneralModal()
     },
-
 
     closeGeneralModal() {
       this.visibleSection = 0
       this.generalModal = 0
       this.generalModalLoadingTxt = ""
-      if (this.generalModalCallback !== undefined) {
-        this.generalModalCallback()
-        this.generalModalCallback = undefined
+      if (this.generalModalCloseCallback !== undefined) {
+        this.generalModalCloseCallback()
+        this.generalModalCloseCallback = undefined
       }
-      this.clearGeneralModal()
+      this._clearGeneralModal()
     },
 
-    clearGeneralModal() {
+    _clearGeneralModal() {
       this.$set(this.generalModalTxt, 0, "")
       this.$set(this.generalModalTxt, 1, "")
-      this.generalModalCallback = undefined
+      this.generalModalCloseCallback = undefined
+      this.generalModalActionCallback = undefined
       this.generalModalPopTxt = ""
       this.generalModalBtnTxt = ""
       if (this.generalModalPop !== 0) {

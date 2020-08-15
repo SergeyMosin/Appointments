@@ -1,7 +1,11 @@
 <template>
-  <SlideBar :title="barTitle" :subtitle="t('appointments','Add Appointment Slots')" @close="close">
+  <SlideBar :title="curPageData.label" :subtitle="t('appointments','Add Appointment Slots')" @close="close">
     <template slot="main-area">
-      <div class="srgdev-appt-sb-main-cont">
+      <div v-show="isLoading===true" class="sb_loading_cont">
+        <span class="icon-loading sb_loading_icon_cont"></span>
+        <span class="sb_loading_text">{{t('appointments','Loading')}}</span>
+      </div>
+      <div v-show="isLoading===false" class="srgdev-appt-sb-main-cont">
         <div class="srgdev-appt-sb-narrow">
         <label class="datepicker-label">{{t('appointments','Select Dates:')}}</label>
         <DatePicker
@@ -68,6 +72,7 @@ export default {
     DatePicker
   },
   props:{
+    curPageData:{},
     isGridReady: {
       type: Boolean,
       default: false
@@ -75,11 +80,12 @@ export default {
     title:'',
     subtitle:'',
   },
-  created: function () {
-    this.$root.$on('add-appt-start', this.start)
-  },
-  beforeDestroy: function () {
-    this.$root.$off('add-appt-start', this.start)
+  inject: [
+    'getState'
+  ],
+  mounted: function () {
+    this.isLoading=true
+    this.start()
   },
   computed:{
     lang: function(){
@@ -126,11 +132,12 @@ export default {
 
   data: function () {
     return {
-      barTitle:this.title,
-      pageId: '',
+
+      isLoading:true,
       tzName: '',
       tzData: '',
-      // calInfo:{},
+
+      calInfo:{},
 
       apptWeek:null,
 
@@ -148,7 +155,7 @@ export default {
         stringify: (date,fmt) => {
 
           if(date){
-            const ts=date.getTime() + 5 * 86400000;
+            const ts=date.getTime() + 6 * 86400000;
             if(window.Intl && typeof window.Intl === "object") {
               let f = new Intl.DateTimeFormat([],
                   {month: "short", day: "2-digit",})
@@ -159,42 +166,25 @@ export default {
           }else return ''
         }
       },
-
-
     }
   },
 
   methods: {
 
-    /**
-     * @param {{enabled:number,label:string,key:string}} data
-     */
-    start(data){
-      this.barTitle=data.label
-      this.pageId=data.key
-      this.getInfo(data)
-    },
-
-    /**
-     * @param {{enabled:number,label:string,key:string}} data
-     */
-    async getInfo(data){
-      let action
-      if(data.key==='p0'){
-        action='get_cls'
-      }else{
-        action='get_mps'
-      }
+    async start(){
+      this.isLoading=true
 
       if (!this.isGridReady) {
         this.$emit('setupGrid')
       }
 
       try{
-        this.calInfo=await this.$parent.$parent.getState(action,data.key)
+        const data=this.curPageData
+        this.calInfo=await this.getState(data.action,data.key)
       }catch (e){
         console.log(e)
-        //TODO: show error popup
+        this.isLoading=false
+        OC.Notification.showTemporary(this.t('appointments', "Can not request data"), {timeout: 4, type: 'error'})
         return
       }
 
@@ -226,6 +216,8 @@ export default {
 
               this.tzName = res
               this.tzData = "BEGIN:VTIMEZONE\r\nTZID:" + res.trim() + "\r\n" + tzs.trim() + "\r\nEND:VTIMEZONE"
+
+              this.isLoading=false
             }else{
               throw new Error("Bad tzr.data")
             }
@@ -236,9 +228,10 @@ export default {
           throw new Error("Can't get_tz")
         }
       }catch (e){
-        //TODO: show error popup
+        this.isLoading=false
         console.error("Can't get timezone")
         console.log(e)
+        OC.Notification.showTemporary(this.t('appointments', "Can't load timezones"), {timeout: 4, type: 'error'})
       }
     },
 
@@ -280,7 +273,7 @@ export default {
         tz: this.apptTZ==="C"?this.tzData:"L",
         week:(this.apptWeek.getTime()),
         dur:this.apptDur,
-        pageId:this.pageId,
+        pageId:this.curPageData.pageId,
         calColor:this.calInfo['curCal_color'],
         calName:this.calInfo['curCal_name']
       }
@@ -302,10 +295,7 @@ export default {
   width: 85%;
   margin: 0 0 0 2%;
 }
-/*.appt-gen-wrap{*/
-/*  text-align: left;*/
-/*  display: inline-block;*/
-/*}*/
+
 .datepicker-label,
 .select-label{
   display: block;
@@ -325,9 +315,5 @@ export default {
   width: 100%;
   padding: 0 0 0 .25em;
 }
-/*.appt-genbtn{*/
-/*    min-width: 80%;*/
-/*    margin: 2.5em auto 0;*/
-/*    display: block;*/
-/*}*/
+
 </style>

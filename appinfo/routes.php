@@ -17,7 +17,7 @@ return [
 
         ['name' => 'state#index', 'url' => '/state', 'verb' => 'POST'],
 
-        ['name' => 'calendars#calgetweek', 'url' => '/calgetweek', 'verb' => 'GET'],
+        ['name' => 'calendars#calgetweek', 'url' => '/calgetweek', 'verb' => 'POST'],
         ['name' => 'calendars#callist', 'url' => '/callist', 'verb' => 'GET'],
 
     ]

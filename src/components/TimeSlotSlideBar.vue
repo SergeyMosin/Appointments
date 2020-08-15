@@ -90,48 +90,11 @@
           <ApptIconButton
               @click="$emit('gotoAddAppt','p0')"
               :text="t('appointments','Add Appointment Slots')"
-              icon="icon-add">
-          </ApptIconButton>
+              icon="icon-add"/>
           <ApptIconButton
-              :disabled="calInfo.mainCalId==='-1'"
-              :loading="expLoading===0"
-              @click="openRemOld"
+              @click="$emit('gotoDelAppt','p0')"
               :text="t('appointments','Remove Old Appointments')"
-              icon="icon-delete">
-            <Actions v-show="expando[0]===1" slot="actions">
-              <ActionButton @click.stop="toggleExpando(0)" icon='icon-triangle-n'></ActionButton>
-            </Actions>
-          </ApptIconButton>
-          <div :data-expand="expando[0]" class="srgdev-appt_expando_cont">
-            <label for="appt_tsb-rem-slider">{{ t('appointments', 'Scheduled before') }}:</label>
-            <vue-slider
-                v-model="rsValue"
-                :marks="rsMarks"
-                :process="true"
-                :included="true"
-                :lazy="true"
-                tooltip="none"
-                @change="checkRsMin"
-                id="appt_tsb-rem-slider"
-                class="appt-slider"></vue-slider>
-            <input type="radio"
-                   value="empty"
-                   v-model="remType"
-                   id="appt_tsb-rem-empty"
-                   class="radio"
-                   checked="checked">
-            <label for="appt_tsb-rem-empty">{{ t('appointments', 'Remove empty slots only') }}</label><br>
-            <input type="radio"
-                   value="both"
-                   v-model="remType"
-                   id="appt_tsb-rem-both"
-                   class="radio">
-            <label for="appt_tsb-rem-both">{{ t('appointments', 'Remove empty and booked') }}</label><br>
-            <button
-                @click="removeOld"
-                class="primary srgdev-appt-sb-genbtn">{{ t('appointments', 'Start') }}
-            </button>
-          </div>
+              icon="icon-delete"/>
         </template>
         <template v-if="calInfo.tsMode==='1'">
           <ApptIconButton
@@ -291,30 +254,11 @@ export default {
     },
   },
 
-  computed: {
-    rsMarks: function () {
-      const options = {month: 'short', day: '2-digit'};
-      let d = new Date()
-      d.setTime(Date.now() - 86400000)
-      const y = d.toLocaleString(undefined, options)
-      d.setTime(d.getTime() - 86400000 * 6)
-      const w = d.toLocaleString(undefined, options)
-      return {
-        0: '-∞',
-        58: w,
-        100: y,
-      }
-    },
-  },
-
   data: function () {
     return {
-      // expando 2 is unused
+      // expando 0 & 2 are unused
       expando: [0, 0, 0, 0, 0],
       expLoading: -1,
-
-      rsValue: 58,
-      remType: "empty",
 
       tzName: '',
       tzData: '',
@@ -339,20 +283,6 @@ export default {
           }
         }
         this.toggleExpando(expId)
-      }
-    },
-
-
-    removeOld() {
-      this.$emit("remOldAppts", {type: this.remType, before: this.rsValue === "100" ? 1 : 7})
-    },
-    openRemOld() {
-      if (this.expando[0] === 1) {
-        this.toggleExpando(0)
-      } else {
-        // this is need to fetch calInfo
-        this.expLoading = 0
-        this.$emit('getCalInfo', 0)
       }
     },
 
@@ -457,9 +387,7 @@ export default {
     toggleExpando(expId) {
       this.expando.splice(expId, 1, this.expando[expId] ^ 1)
     },
-    checkRsMin() {
-      if (+this.rsValue < 58) this.rsValue = "58"
-    },
+
     close() {
       this.$emit('close')
     },
