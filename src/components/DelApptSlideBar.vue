@@ -1,5 +1,5 @@
 <template>
-  <SlideBar :title="curPageData.label" :subtitle="t('appointments','Remove Old Appointments')" @close="close">
+  <SlideBar :title="curPageData.label" :subtitle="t('appointments','Remove Old Appointments')" icon="icon-appt-go-back" @close="close">
     <template slot="main-area">
       <div v-show="isLoading===true" class="sb_loading_cont">
         <span class="icon-loading sb_loading_icon_cont"></span>

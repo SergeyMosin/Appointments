@@ -1,5 +1,5 @@
 <template>
-  <SlideBar :title="curPageData.label" :subtitle="t('appointments','Add Appointment Slots')" @close="close">
+  <SlideBar :title="curPageData.label" :subtitle="t('appointments','Add Appointment Slots')" icon="icon-appt-go-back" @close="close">
     <template slot="main-area">
       <div v-show="isLoading===true" class="sb_loading_cont">
         <span class="icon-loading sb_loading_icon_cont"></span>
@@ -268,7 +268,7 @@ export default {
       this.apptDur=30
     },
     goApptGen(){
-      this.close()
+      this.close(true)
       let r={
         tz: this.apptTZ==="C"?this.tzData:"L",
         week:(this.apptWeek.getTime()),
@@ -281,8 +281,11 @@ export default {
       this.$emit("agDataReady",r)
     },
 
-    close(){
-      this.$emit('close')
+    /**
+     * @param hard - hard close will close the slidebar instead of going back to the "parent"
+     */
+    close(hard){
+      this.$emit('close',hard)
     }
   }
 }

@@ -1,7 +1,14 @@
 <template>
-    <SlideBar :title="t('appointments','Emails and Notifications')" :subtitle="t('appointments','Control when emails and notifications are sent')" @close="close">
+    <SlideBar :title="t('appointments','Emails and Notifications')" :subtitle="t('appointments','Control when emails and notifications are sent')" icon="icon-appt-go-back" @close="close">
         <template slot="main-area">
-            <div class="srgdev-appt-sb-main-cont">
+          <div v-show="isLoading===true" class="sb_loading_cont">
+            <span class="icon-loading sb_loading_icon_cont"></span>
+            <span class="sb_loading_text">{{t('appointments','Loading')}}</span>
+          </div>
+            <div
+                v-show="isLoading===false"
+                :class="{'sb_disable':isSending}"
+                class="srgdev-appt-sb-main-cont">
                 <input
                         v-model="emlInfo.icsFile"
                         type="checkbox"
@@ -81,11 +88,11 @@
                         class="srgdev-appt-sb-textarea"
                         id="srgdev-appt_emn-cnf-note"
                 ></textarea>
-                <button
-                        @click="apply"
-                        class="primary srgdev-appt-sb-genbtn">{{t('appointments','Apply')}}
-                </button>
-
+              <button
+                  @click="apply"
+                  class="primary srgdev-appt-sb-genbtn"
+                  :class="{'appt-btn-loading':isSending}">{{t('appointments','Apply')}}
+              </button>
             </div>
         </template>
     </SlideBar>
@@ -99,29 +106,50 @@
         components: {
             SlideBar
         },
-        props:{
-            title:'',
-            subtitle:'',
-            emlInfo: {
-                type: Object,
-                default: function () {
-                    return {
-                        icsFile: false,
-                        skipEVS: false,
-                        attMod: false,
-                        attDel: false,
-                        meReq: false,
-                        meConfirm: false,
-                        meCancel: false,
-                        vldNote: "",
-                        cnfNote: ""
-                    }
-                }
-            }
-        },
-        methods: {
-            apply(){
-                this.$emit('apply',this.emlInfo)
+      props:{
+        title:'',
+        subtitle:'',
+      },
+      mounted: function () {
+        this.isLoading=true
+        this.start()
+      },
+      inject: ['getState', 'setState'],
+      data: function (){
+        return {
+          isLoading:true,
+          isSending:false,
+          emlInfo: {
+            icsFile: false,
+            skipEVS: false,
+            attMod: false,
+            attDel: false,
+            meReq: false,
+            meConfirm: false,
+            meCancel: false,
+            vldNote: "",
+            cnfNote: ""
+          }
+        }
+      },
+       methods: {
+         async start() {
+           this.isLoading=true
+           try {
+             this.emlInfo = await this.getState("get_eml", "")
+             this.isLoading=false
+           } catch (e) {
+             this.isLoading=false
+             console.log(e)
+             OC.Notification.showTemporary(this.t('appointments', "Can not request data"), {timeout: 4, type: 'error'})
+           }
+         },
+
+         apply(){
+           this.isSending=true
+           this.setState('set_eml',this.emlInfo).then(()=>{
+             this.isSending=false
+           })
             },
             close(){
                 this.$emit('close')

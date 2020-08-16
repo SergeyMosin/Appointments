@@ -19,14 +19,17 @@
             :loading="pageInfoLoading===1">
           <template slot="actions">
             <ActionButton
-                :disabled="page0.enabled===1"
+                v-show="page0.enabled===0"
                 @click="setPageEnabled('p0',1)"
                 icon="icon-checkmark-color"
                 closeAfterClick>
               {{ t('appointments', 'Share Online') }}
             </ActionButton>
-            <ActionButton :disabled="page0.enabled===0" @click="setPageEnabled('p0',0)" icon="icon-category-disabled"
-                          closeAfterClick>
+            <ActionButton
+                v-show="page0.enabled===1"
+                @click="setPageEnabled('p0',0)"
+                icon="icon-category-disabled"
+                closeAfterClick>
               {{ t('appointments', 'Stop Sharing') }}
             </ActionButton>
             <ActionButton @click="showPubLink('p0')" icon="icon-public" closeAfterClick>
@@ -61,11 +64,11 @@
             :loading="pageInfoLoading===idx+2"
             :key="page.key">
           <template slot="actions">
-            <ActionButton :disabled="page.enabled===1" @click="setPageEnabled(page.key,1)" icon="icon-checkmark-color"
+            <ActionButton v-show="page.enabled===0" @click="setPageEnabled(page.key,1)" icon="icon-checkmark-color"
                           closeAfterClick>
               {{ t('appointments', 'Share Online') }}
             </ActionButton>
-            <ActionButton :disabled="page.enabled===0" @click="setPageEnabled(page.key,0)" icon="icon-category-disabled"
+            <ActionButton v-show="page.enabled===1" @click="setPageEnabled(page.key,0)" icon="icon-category-disabled"
                           closeAfterClick>
               {{ t('appointments', 'Stop Sharing') }}
             </ActionButton>
@@ -82,31 +85,22 @@
         </AppNavigationItem>
         <AppNavigationSpacer/>
         <AppNavigationItem
-            :loading="sbLoading===6"
-            @click="openSlideBar(6,'get_cls',calInfo)"
+            @click="sbShow===6?sbShow=0:sbShow=6"
             :title="t('appointments','Manage Appointment Slots')"
-            icon="icon-appt-calendar-clock"></AppNavigationItem>
-        <AppNavigationSpacer/>
+            icon="icon-appt-calendar-clock"/>
         <AppNavigationItem
-            :loading="sbLoading===3"
-            @click="openSlideBar(3,'get_uci',uciInfo)"
+            @click="sbShow===3?sbShow=0:sbShow=3"
             :title="t('appointments','User/Organization Info')"
-            icon="icon-user"></AppNavigationItem>
+            icon="icon-user"/>
         <AppNavigationItem
-            :loading="sbLoading===2"
-            @click="openSlideBar(2,'get_pps',ppsInfo)"
-            :title="t('appointments','Customize Public Page')"
-            icon="icon-category-customization"></AppNavigationItem>
-        <AppNavigationItem
-            :loading="sbLoading===4"
-            @click="openSlideBar(4,'get_eml',emlInfo)"
-            :title="t('appointments','Email Settings')"
-            icon="icon-mail"></AppNavigationItem>
+            @click="sbShow===9?sbShow=0:sbShow=9"
+            :title="t('appointments','Settings')"
+            icon="icon-settings"/>
         <AppNavigationItem
             :pinned="true"
             @click="showHelp"
             :title="t('appointments','Help/Tutorial')"
-            icon="icon-info"></AppNavigationItem>
+            icon="icon-info"/>
       </ul>
     </AppNavigation>
     <AppContent style="transition: none;" class="srgdev-app-content" :aria-expanded="navOpen">
@@ -283,36 +277,39 @@
       <div v-show="visibleSection===3" v-html="helpContent" class="srgdev-appt-help-sec">
       </div>
       <div :class="{'sb_disable':stateInProgress}">
-        <FormStnSlideBar
-            :pps-info="ppsInfo"
-            @apply="setState('set_pps',$event)"
-            v-if="sbShow===2" @close="sbShow=0"/>
-        <UserStnSlideBar
-            :uci-info="uciInfo"
-            @apply="setState('set_uci',$event)"
-            v-if="sbShow===3" @close="sbShow=0"/>
-        <MailStnSlideBar
-            :eml-info="emlInfo"
-            @apply="setState('set_eml',$event)"
-            v-if="sbShow===4" @close="sbShow=0"/>
-        <TimeSlotSlideBar
+        <ApptMgrSlideBar
             ref="tsbRef"
-            :cal-info="calInfo"
-            v-show="sbShow===6"
+            v-if="sbShow===6"
             @gotoAddAppt="curPageKey=$event;sbShow=7;sbGotoBack=6"
             @gotoDelAppt="curPageKey=$event;sbShow=8;sbGotoBack=6"
             @showModal="showSimpleGeneralModal($event)"
-            @setCalInfo="setState('set_cls',$event)"
-            @setCalInfo_r="setState('set_cls',$event,true)"
-            @getCalInfo="getCalInfo($event)"
             @close="sbShow=0"/>
+        <UserStnSlideBar
+            v-if="sbShow===3"
+            @close="sbShow=0"/>
+        <SettingsSlideBar
+            v-if="sbShow===9"
+            @gotoPPS="sbShow=2;sbGotoBack=9"
+            @gotoEML="sbShow=4;sbGotoBack=9"
+            @gotoADV="sbShow=10;sbGotoBack=9"
+            :cur-page-data="curPageData"
+            @close="sbShow=0"/>
+        <FormStnSlideBar
+            v-if="sbShow===2"
+            @close="sbShow=sbGotoBack;sbGotoBack=0"/>
+        <MailStnSlideBar
+            v-if="sbShow===4"
+            @close="sbShow=sbGotoBack;sbGotoBack=0"/>
+        <AdvancedSlideBar
+            v-if="sbShow===10"
+            @close="sbShow=sbGotoBack;sbGotoBack=0"/>
         <AddApptSlideBar
             v-if="sbShow===7"
             :cur-page-data="curPageData"
             :is-grid-ready="isGridReady"
             @setupGrid="gridSetup"
             @agDataReady="makePreviewGrid"
-            @close="sbShow=sbGotoBack;sbGotoBack=0"/>
+            @close="sbShow=($event===true?0:sbGotoBack);sbGotoBack=0"/>
         <DelApptSlideBar
             v-if="sbShow===8"
             :cur-page-data="curPageData"
@@ -331,15 +328,16 @@ import {
   ActionButton,
   ActionCheckbox,
   Actions,
+  ActionSeparator,
   AppContent,
   AppNavigation,
   AppNavigationIconBullet,
   AppNavigationItem,
   AppNavigationSpacer,
   Modal,
-  ActionSeparator,
 } from '@nextcloud/vue'
 
+import SettingsSlideBar from "./components/SettingsSlideBar";
 import DelApptSlideBar from "./components/DelApptSlideBar";
 import AddApptSlideBar from "./components/AddApptSlideBar";
 import ActionInput from "./components/ActionInputExt.vue";
@@ -352,13 +350,15 @@ import FormStnSlideBar from "./components/FormStnSlideBar.vue"
 import UserStnSlideBar from "./components/UserStnSlideBar.vue"
 import MailStnSlideBar from "./components/MailStnSlideBar.vue"
 
-import TimeSlotSlideBar from "./components/TimeSlotSlideBar";
+import ApptMgrSlideBar from "./components/ApptMgrSlideBar";
 import ApptAccordion from "./components/ApptAccordion.vue";
+import AdvancedSlideBar from "./components/AdvancedSlideBar";
 
 export default {
   name: 'App',
   components: {
-    TimeSlotSlideBar,
+    AdvancedSlideBar,
+    ApptMgrSlideBar,
     FormStnSlideBar,
     ScheduleSlideBar,
     AppNavigation,
@@ -378,6 +378,7 @@ export default {
     ActionSeparator,
     AddApptSlideBar,
     DelApptSlideBar,
+    SettingsSlideBar,
   },
 
   data: function () {
@@ -402,7 +403,6 @@ export default {
       navOpen: false,
       sbShow: 0,
       sbGotoBack:0,
-      sbLoading: 0,
 
       visibleSection: 0,
 
@@ -433,11 +433,7 @@ export default {
       generalModalActionCallback: undefined,
       generalModalBtnTxt:"",
 
-      // SlideBars...
       calInfo: {},
-      ppsInfo: {},
-      uciInfo: {},
-      emlInfo: {},
 
       stateInProgress: false
     };
@@ -486,7 +482,8 @@ export default {
   },
   provide: function () {
     return {
-      getState: this.getState
+      getState: this.getState,
+      setState: this.setState
     }
   },
 
@@ -772,7 +769,7 @@ export default {
      * @param {Object} value
      * @param {boolean} getPages
      */
-    setState(action, value, getPages = false) {
+    async setState(action, value, getPages = false) {
       let ji = ""
       this.stateInProgress = true
       try {
@@ -781,8 +778,9 @@ export default {
         this.stateInProgress = false
         console.log(e)
         OC.Notification.showTemporary(this.t('appointments', "Can't apply settings"), {timeout: 4, type: 'error'})
+        return false
       }
-      axios.post('state', {
+      return await axios.post('state', {
         a: action,
         d: ji
       }).then(response => {
@@ -791,11 +789,13 @@ export default {
           this.getFormData()
           OCP.Toast.success(this.t('appointments', 'New Settings Applied.'))
           if (getPages) this.getPages(0)
+          return true
         }
       }).catch((error) => {
         this.stateInProgress = false
         console.log(error)
         OC.Notification.showTemporary(this.t('appointments', "Can't apply settings"), {timeout: 4, type: 'error'})
+        return false
       })
     },
 

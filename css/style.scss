@@ -170,6 +170,31 @@ $appt_grid_ml:6em;
 }
 
 
+.appt-btn-loading:after {
+	overflow: hidden;
+	display: inline-block;
+	vertical-align: bottom;
+	-webkit-animation: ellipsis steps(4,end) 900ms infinite;
+	animation: appt-btn-ellipsis steps(4,end) 900ms infinite;
+	content: "\2026"; /* ascii code for the ellipsis character */
+	width: 0;
+	position: absolute;
+	text-align: left;
+}
+
+@keyframes appt-btn-ellipsis {
+	to {
+		width: 1.125em;
+	}
+}
+
+@-webkit-keyframes appt-btn-ellipsis {
+	to {
+		width: 1.125em;
+	}
+}
+
+
 //.srgdev-appt-cal-view-col{
 //	display: inline-block;
 //	vertical-align: top;
@@ -532,6 +557,11 @@ textarea.appt-stn-txt-ta{
 		padding-left: 2em;
 		margin-bottom: 1em;
 		margin-top: .25em;
+	}
+	.srgdev-appt-sb-indent_small{
+		padding-left: .5em;
+		margin-bottom: 2.25em;
+		margin-top: .75em;
 	}
 
 	.srgdev-appt-sb-genbtn{

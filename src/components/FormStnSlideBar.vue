@@ -1,7 +1,14 @@
 <template>
-    <SlideBar :title="t('appointments','Public Page Settings')" :subtitle="t('appointments','Control what your visitors see')" @close="close">
+    <SlideBar :title="t('appointments','Public Page Settings')" :subtitle="t('appointments','Control what your visitors see')" icon="icon-appt-go-back" @close="close">
         <template slot="main-area">
-            <div class="pps-main-cont">
+          <div v-show="isLoading===true" class="sb_loading_cont">
+            <span class="icon-loading sb_loading_icon_cont"></span>
+            <span class="sb_loading_text">{{t('appointments','Loading')}}</span>
+          </div>
+          <div
+              v-show="isLoading===false"
+              :class="{'sb_disable':isSending}"
+              class="pps-main-cont">
                 <label class="pps-txt-label" for="srgdev-appt_pps-form-title">{{t('appointments','Form Title')}}:</label>
                 <input
                         class="pps-text-input"
@@ -120,9 +127,9 @@
                 </ApptAccordion>
                 <button
                         @click="apply"
-                        class="primary pps-genbtn">{{t('appointments','Apply')}}
+                        class="primary pps-genbtn"
+                        :class="{'appt-btn-loading':isSending}">{{t('appointments','Apply')}}
                 </button>
-
             </div>
         </template>
     </SlideBar>
@@ -138,35 +145,56 @@
             SlideBar,
             ApptAccordion
         },
-        props:{
+      mounted: function () {
+        this.isLoading=true
+        this.start()
+      },
+      inject: ['getState', 'setState'],
+      props:{
             title:'',
             subtitle:'',
-            ppsInfo: {
-                type: Object,
-                default: function () {
-                    return {
-                        formTitle:"",
-                        nbrWeeks: "1",
-                        showEmpty: true,
-                        startFNED: false,
-                        showWeekends: false,
-                        time2Cols: false,
-                        endTime: false,
-                        gdpr: "",
-                        whenCanceled:"mark",
-                        hidePhone:false,
-                        showTZ:false,
-                        pageTitle:"",
-                        pageSubTitle:"",
-                        metaNoIndex:false,
-                        pageStyle:""
-                    }
-                }
-            }
         },
+      data: function (){
+        return {
+          isLoading:true,
+          isSending:false,
+          ppsInfo: {
+            formTitle:"",
+            nbrWeeks: "1",
+            showEmpty: true,
+            startFNED: false,
+            showWeekends: false,
+            time2Cols: false,
+            endTime: false,
+            gdpr: "",
+            whenCanceled:"mark",
+            hidePhone:false,
+            showTZ:false,
+            pageTitle:"",
+            pageSubTitle:"",
+            metaNoIndex:false,
+            pageStyle:""
+          }
+
+        }
+      },
         methods: {
+          async start() {
+            this.isLoading=true
+            try {
+              this.ppsInfo = await this.getState("get_pps", "")
+              this.isLoading=false
+            } catch (e) {
+              this.isLoading=false
+              console.log(e)
+              OC.Notification.showTemporary(this.t('appointments', "Can not request data"), {timeout: 4, type: 'error'})
+            }
+          },
             apply(){
-                this.$emit('apply',this.ppsInfo)
+            this.isSending=true
+              this.setState('set_pps',this.ppsInfo).then(()=>{
+                this.isSending=false
+              })
             },
             close(){
                 this.$emit('close')
