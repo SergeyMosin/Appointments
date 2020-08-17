@@ -48,34 +48,33 @@ class StateController extends Controller{
         $r->setStatus(400);
 
         if ($action==='get_pages') {
-            $a = $this->utils->getUserSettings(
+            $pgs = $this->utils->getUserSettings(
                 BackendUtils::KEY_PAGES, $this->userId);
             $changed = false;
-            foreach ($a as $page => $v) {
+            foreach ($pgs as $pageId => $v) {
                 // JUST IN CASE: check if calendars are set
                 if ($v[BackendUtils::PAGES_ENABLED] === 1) {
-                    if ($page === 'p0') {
-                        // main page
-                        $other_cal = "-1";
-                        $main_cal = $this->utils->getMainCalId($this->userId,'', $this->bc, $other_cal);
 
-                        $cls = $this->utils->getUserSettings(
-                            BackendUtils::KEY_CLS, $this->userId);
-                        $ts_mode = $cls[BackendUtils::CLS_TS_MODE];
+                    if($pageId === 'p0'){
+                        $key=BackendUtils::KEY_CLS;
+                    }else{
+                        $key=BackendUtils::KEY_MPS;
+                    }
 
-                        if (($ts_mode === "0" && $main_cal === "-1") ||
-                            ($ts_mode === "1" && ($main_cal === "-1" || $other_cal === "-1"))
-                        ) {
-                            $a[$page][BackendUtils::PAGES_ENABLED] = 0;
-                            $changed = true;
-                        }
-                    } else {
-                        // additional pages
-                        // TODO...
+                    $other_cal = "-1";
+                    $main_cal = $this->utils->getMainCalId($this->userId,$pageId, $this->bc, $other_cal);
+
+                    $ts_mode = $this->utils->getUserSettings($key, $this->userId)[BackendUtils::CLS_TS_MODE];
+
+                    if (($ts_mode === "0" && $main_cal === "-1") ||
+                        ($ts_mode === "1" && ($main_cal === "-1" || $other_cal === "-1"))
+                    ) {
+                        $pgs[$pageId][BackendUtils::PAGES_ENABLED] = 0;
+                        $changed = true;
                     }
                 }
             }
-            $j = json_encode($a);
+            $j = json_encode($pgs);
             if ($j !== false) {
                 if ($changed === true) {
                     $this->config->setUserValue(
@@ -89,87 +88,103 @@ class StateController extends Controller{
             }
 
         } elseif ($action==='set_pages'){
-            $p=$this->request->getParam("p");
+            // pageId can be:
+            //  "new" - create new page
+            //  "delete" - delete the page with Id in $v
+            $pageId=$this->request->getParam("p");
             $v=$this->request->getParam("v");
-            if($p!==null && $v!==null){
+            if(!empty($pageId) && $v!==null){
                 $vo=json_decode($v,true);
                 if($vo!==null) {
                     $sts=200;
-                    $cur = $this->utils->getUserSettings(
+                    $vo_changed=false;
+                    $pgs = $this->utils->getUserSettings(
                         BackendUtils::KEY_PAGES, $this->userId);
-                    if (isset($cur[$p])) {
+                    if (isset($pgs[$pageId])) {
                         // updating existing
 
                         // JUST IN CASE: check if email & calendars are set
                         if($vo[BackendUtils::PAGES_ENABLED]===1) {
-                            if ($p === 'p0') {
-                                // main page
-                                $other_cal="-1";
-                                $main_cal=$this->utils->getMainCalId($this->userId,'',$this->bc,$other_cal);
 
-                                $cls=$this->utils->getUserSettings(
-                                    BackendUtils::KEY_CLS, $this->userId);
-                                $ts_mode=$cls[BackendUtils::CLS_TS_MODE];
+                            if ($pageId === 'p0'){
+                                $key=BackendUtils::KEY_CLS;
+                            }else{
+                                $key=BackendUtils::KEY_MPS;
+                            }
 
-                                $org=$this->utils->getUserSettings(
-                                    BackendUtils::KEY_ORG, $this->userId);
+                            $other_cal="-1";
+                            $main_cal=$this->utils->getMainCalId($this->userId,$pageId,$this->bc,$other_cal);
 
-                                if(($ts_mode==="0" && $main_cal==="-1") ||
-                                    ($ts_mode==="1" && ($main_cal==="-1" || $other_cal==="-1"))
-                                    || empty($org[BackendUtils::ORG_EMAIL])
-                                ){
-                                    $sts=412;
-                                    $vo[BackendUtils::PAGES_ENABLED]=0;
-                                }
-                            } else {
-                                // additional pages
-                                // TODO:...
+                            $ts_mode=$this->utils->getUserSettings(
+                                $key, $this->userId)[BackendUtils::CLS_TS_MODE];
+
+                            $email=$this->utils->getUserSettings(
+                                BackendUtils::KEY_ORG,
+                                $this->userId)[BackendUtils::ORG_EMAIL];
+
+                            if(($ts_mode==="0" && $main_cal==="-1")
+                                || ($ts_mode==="1" && ($main_cal==="-1" || $other_cal==="-1"))
+                                || empty($email)
+                            ){
+                                $sts=202;
+                                $r->setData('{"info":"'.$this->l->t("Action failed. Select calendar(s) first.").'"}');
+
+                                $vo[BackendUtils::PAGES_ENABLED]=0;
+                                $vo_changed=true;
                             }
                         }
-                    } else if($p==="new") {
+                    } else if($pageId==="new") {
                         // creating new
 //                        $r->setData('{"contrib":"'.$this->l->t("More than 2 additional pages (10 maximum)").'"}');
 //                        $sts=202;
 
                         $i=1;
                         for(;$i<10;$i++){
-                            $k="p".$i;
-                            if(!isset($cur[$k])){
-                                $p=$k;
+                            $_pid="p".$i;
+                            if(!isset($pgs[$_pid])){
+                                $pageId=$_pid;
                                 break;
                             }
                         }
                         // TODO: check for contributors $i>2
-                        if($p==='new'){
-                            // more than 10 spots
+                        if($pageId==='new'){
+                            // could not find a free spot (10 max)
                             $sts=202;
                             $r->setData('{"info":"'.$this->l->t("Page not added: 10 pages maximum").'"}');
+                        }else{
+                            // add empty so we can get_mps & set_mps
+                            $this->config->setUserValue(
+                                $this->userId,$this->appName,
+                                BackendUtils::KEY_MPS.$pageId,"");
                         }
-                    }else if($p==="delete" && $vo["page"]!=="p0"){
-                        $page=$vo["page"];
-                        unset($cur[$page]);
+                    }else if($pageId==="delete" && $vo["page"]!=="p0"){
+                        $_pid=$vo["page"];
+                        unset($pgs[$_pid]);
                         $this->config->deleteUserValue(
                             $this->userId,$this->appName,
-                            BackendUtils::KEY_MPS.$page);
+                            BackendUtils::KEY_MPS.$_pid);
+                    }else{
+                        \OC::$server->getLogger()->error("Bad pageId/page_action");
+                        $sts=400;
                     }
 
-                    if($sts===200) {
-                        // filter
-                        if($p!=="delete") {
+                    if($sts===200 || $vo_changed===true) {
+                        if($pageId!=="delete") {
+                            // filter new "arrivals"
                             $sa = [];
-                            foreach (BackendUtils::PAGES_VAL_DEF as $k => $v) {
-                                if (isset($vo[$k]) && gettype($vo[$k]) === gettype($v)) {
-                                    $sa[$k] = $vo[$k];
+                            foreach (BackendUtils::PAGES_VAL_DEF as $_pid => $v) {
+                                if (isset($vo[$_pid]) && gettype($vo[$_pid]) === gettype($v)) {
+                                    $sa[$_pid] = $vo[$_pid];
                                 } else {
-                                    $sa[$k] = $v;
+                                    $sa[$_pid] = $v;
                                 }
                             }
-                            $cur[$p] = $sa;
+                            $pgs[$pageId] = $sa;
                         }
 
                         if (!$this->utils->setUserSettings(
                                 BackendUtils::KEY_PAGES,
-                                "", $cur,
+                                "", $pgs,
                                 $this->userId, $this->appName) === true
                         ) {
                             $sts=500;
@@ -180,22 +195,21 @@ class StateController extends Controller{
                 }
             }
         } elseif ($action==='get_puburi'){
-            $p=$this->request->getParam("p");
-            if($p!==null) {
-                $pgs=$this->utils->getUserSettings(
-                            BackendUtils::KEY_PAGES, $this->userId);
-                if($p==='p0' || isset($pgs[$p])) {
+            $pageId=$this->request->getParam("p",'p0');
+            if(empty($pageId)) $pageId='p0';
 
-                    $pb = $this->utils->getPublicWebBase();
-                    $tkn = $this->utils->getToken(
-                        $this->userId,($p==="p0"?"":$p));
+            $pgs=$this->utils->getUserSettings(
+                        BackendUtils::KEY_PAGES, $this->userId);
+            if(isset($pgs[$pageId])) {
 
-                    $u = $pb . '/' . $this->utils->pubPrx($tkn, false) . 'form' . chr(31)
-                        . $pb . '/' . $this->utils->pubPrx($tkn, true) . 'form';
+                $pb = $this->utils->getPublicWebBase();
+                $tkn = $this->utils->getToken($this->userId,$pageId);
 
-                    $r->setData($u);
-                    $r->setStatus(200);
-                }
+                $u = $pb . '/' . $this->utils->pubPrx($tkn, false) . 'form' . chr(31)
+                    . $pb . '/' . $this->utils->pubPrx($tkn, true) . 'form';
+
+                $r->setData($u);
+                $r->setStatus(200);
             }
         }elseif ($action==="set_pps"){
             $value=$this->request->getParam("d");
@@ -275,18 +289,7 @@ class StateController extends Controller{
             $a=$this->utils->getUserSettings(
                 BackendUtils::KEY_CLS, $this->userId);
 
-            if($a[BackendUtils::CLS_TS_MODE]==="0"
-                && $a[BackendUtils::CLS_MAIN_ID]!=="-1"){
-
-                $cal=$this->bc->getCalendarById(
-                    $a[BackendUtils::CLS_MAIN_ID],$this->userId);
-                if($cal!==null){
-                    $a['curCal_color']=$cal['color'];
-                    $a['curCal_name']=$cal['displayName'];
-                }
-            }
-
-            $j=json_encode($a);
+            $j=json_encode($this->getMoreProps($a));
             if($j!==false){
                 $r->setData($j);
                 $r->setStatus(200);
@@ -296,65 +299,28 @@ class StateController extends Controller{
         }else if($action==="set_cls") {
             $value=$this->request->getParam("d");
             if($value!==null) {
-                $ts_mode=$this->utils->getUserSettings(
-                    BackendUtils::KEY_CLS,$this->userId)[BackendUtils::CLS_TS_MODE];
 
-                if($this->utils->setUserSettings(
+                if($this->setClsMps(
                         BackendUtils::KEY_CLS,
-                        $value, BackendUtils::CLS_DEF,
-                        $this->userId,$this->appName)===true
-                ){
-                    $cls=$this->utils->getUserSettings(
-                        BackendUtils::KEY_CLS,$this->userId);
-
-                    // TODO: autofix for additional calendars...
-                    // Set ExternalModeSabrePlugin::AUTO_FIX_URI
-                    $af_uri="";
-                    if($cls[BackendUtils::CLS_TS_MODE]==="1" && $cls[BackendUtils::CLS_XTM_SRC_ID]!=="-1" && $cls[BackendUtils::CLS_XTM_AUTO_FIX]===true){
-                        $ci=$this->bc->getCalendarById(
-                            $cls[BackendUtils::CLS_XTM_SRC_ID],
-                            $this->userId);
-                        if($ci!==null){
-                            $af_uri="/".$this->userId."/".$ci["uri"]."/";
-                        }
-                    }
-
-                    $this->config->setUserValue($this->userId, $this->appName,
-                        ExternalModeSabrePlugin::AUTO_FIX_URI,$af_uri);
-
-                    if($ts_mode!==$cls[BackendUtils::CLS_TS_MODE]){
-                        // ts_mode changed - disable all pages...
-
-                        $a = $this->utils->getUserSettings(
-                            BackendUtils::KEY_PAGES, $this->userId);
-                        foreach ($a as $page => $v) {
-                            if ($v[BackendUtils::PAGES_ENABLED] === 1) {
-                                $a[$page][BackendUtils::PAGES_ENABLED]=0;
-                            }
-                        }
-
-                        $this->utils->setUserSettings(
-                            BackendUtils::KEY_PAGES,
-                            "", $a,
-                            $this->userId, $this->appName);
-                    }
-
+                        BackendUtils::CLS_DEF,
+                        $value,'p0')===true)
+                {
                     $r->setStatus(200);
                 }else{
                     $r->setStatus(500);
                 }
             }
         }else if($action==="get_mps") {
-            $p=$this->request->getParam("p");
-            if($p!==null || null!==$this->config->getUserValue(
+            $pageId=$this->request->getParam("p");
+            // must have a pageId for this action
+            if(!empty($pageId) && null!==$this->config->getUserValue(
                     $this->userId,$this->appName,
-                    BackendUtils::KEY_MPS.$p,null)){
+                    BackendUtils::KEY_MPS.$pageId,null))
+            {
                 $a=$this->utils->getUserSettings(
-                    BackendUtils::KEY_MPS.$p, $this->userId);
+                    BackendUtils::KEY_MPS.$pageId, $this->userId);
 
-                // TODO: mainCal color and name needed see get cls
-
-                $j=json_encode($a);
+                $j=json_encode($this->getMoreProps($a));
                 if($j!==false){
                     $r->setData($j);
                     $r->setStatus(200);
@@ -363,7 +329,104 @@ class StateController extends Controller{
                 }
             }
 
+        }else if($action==="set_mps") {
+            $pageId=$this->request->getParam("p");
+            $value=$this->request->getParam("d");
+            // must have a pageId for this action
+            if(!empty($pageId) && $value!==null
+                && null!==$this->config->getUserValue(
+                    $this->userId,$this->appName,
+                    BackendUtils::KEY_MPS.$pageId,null))
+            {
+                if($this->setClsMps(
+                    BackendUtils::KEY_MPS.$pageId,
+                    BackendUtils::MPS_DEF,
+                    $value,$pageId)===true)
+                {
+                    $r->setStatus(200);
+                }else{
+                    $r->setStatus(500);
+                }
+            }
         }
+
         return $r;
     }
+
+    /**
+     * @param string $key BackendUtils::KEY_MPS or BackendUtils::KEY_CLS
+     * @param $def
+     * @param $value
+     * @param $pageId
+     * @return bool
+     * @noinspection PhpDocMissingThrowsInspection
+     */
+    function setClsMps($key,$def,$value,$pageId){
+
+        $ts_mode=$this->utils->getUserSettings(
+            $key,$this->userId)[BackendUtils::CLS_TS_MODE];
+
+        if($this->utils->setUserSettings(
+                $key, $value, $def,
+                $this->userId,$this->appName)===true
+        ){
+            // this can be cls or mps
+            $cms=$this->utils->getUserSettings($key,$this->userId);
+
+            // This is needed to get BackendUtils::CLS_XTM_AUTO_FIX
+            $real_cls=$this->utils->getUserSettings(BackendUtils::KEY_CLS,$this->userId);
+
+            // TODO: autofix for additional calendars...
+            // Set ExternalModeSabrePlugin::AUTO_FIX_URI
+            $af_uri="";
+            if($cms[BackendUtils::CLS_TS_MODE]==="1" && $cms[BackendUtils::CLS_XTM_SRC_ID]!=="-1" && $real_cls[BackendUtils::CLS_XTM_AUTO_FIX]===true)
+            {
+                $ci=$this->bc->getCalendarById(
+                    $cms[BackendUtils::CLS_XTM_SRC_ID],
+                    $this->userId);
+                if($ci!==null){
+                    $af_uri="/".$this->userId."/".$ci["uri"]."/";
+                }
+            }
+            $this->config->setUserValue($this->userId, $this->appName,
+                ExternalModeSabrePlugin::AUTO_FIX_URI,$af_uri);
+
+            if($ts_mode!==$cms[BackendUtils::CLS_TS_MODE]){
+                // ts_mode changed - disable the page...
+                $pgs = $this->utils->getUserSettings(
+                    BackendUtils::KEY_PAGES, $this->userId);
+
+                $pgs[$pageId][BackendUtils::PAGES_ENABLED]=0;
+
+                $this->utils->setUserSettings(
+                    BackendUtils::KEY_PAGES,
+                    "", $pgs,
+                    $this->userId, $this->appName);
+            }
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+    /**
+     * @param array $a can be CLS or MPS
+     * @return array
+     */
+    function getMoreProps($a){
+        if($a[BackendUtils::CLS_TS_MODE]==="0"
+            && $a[BackendUtils::CLS_MAIN_ID]!=="-1"){
+
+            $cal=$this->bc->getCalendarById(
+                $a[BackendUtils::CLS_MAIN_ID],$this->userId);
+            if($cal!==null){
+                $a['curCal_color']=$cal['color'];
+                $a['curCal_name']=$cal['displayName'];
+            }
+        }
+        return $a;
+    }
+
+
 }

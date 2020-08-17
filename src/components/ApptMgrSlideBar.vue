@@ -10,14 +10,16 @@
           v-show="isLoading===false"
           :class="{'sb_disable':isSending}"
           class="srgdev-appt-sb-main-cont">
+        <h2 v-show="curPageData.pageCount>1"
+            class="srgdev-appt-sb-lbl-header">{{curPageData.label}}</h2>
           <template v-if="calInfo.tsMode==='0'">
-            <div style="margin: 0 0 2em -.5em">
+            <div v-show="hasMainCal===true" style="margin: 0 0 2em -.5em">
             <ApptIconButton
-                @click="$emit('gotoAddAppt','p0')"
+                @click="$emit('gotoAddAppt',curPageData.pageId)"
                 :text="t('appointments','Add Appointment Slots')"
                 icon="icon-add"/>
             <ApptIconButton
-                @click="$emit('gotoDelAppt','p0')"
+                @click="$emit('gotoDelAppt',curPageData.pageId)"
                 :text="t('appointments','Remove Old Appointments')"
                 icon="icon-delete"/>
             </div>
@@ -118,7 +120,6 @@
 <script>
 import SlideBar from "./SlideBar.vue"
 import ApptIconButton from "./ApptIconButton";
-import AddApptSection from "./AddApptSection";
 
 import {
   ActionButton,
@@ -141,7 +142,11 @@ export default {
     VueSlider,
     Actions,
     ActionButton,
-    AddApptSection,
+  },
+  props:{
+    curPageData:Object,
+    title:'',
+    subtitle:'',
   },
   mounted: function () {
     this.isLoading=true
@@ -160,6 +165,7 @@ export default {
         nrDstCalId: "-1",
         tsMode: "0",
       },
+      hasMainCal:false,
 
       cals: [],
     };
@@ -170,7 +176,11 @@ export default {
     async start() {
       this.isLoading=true
       try {
-        this.calInfo = await this.getState("get_cls", "")
+        const data=this.curPageData
+        this.calInfo = await this.getState("get_"+data.stateAction, data.pageId)
+        if(this.calInfo.tsMode==='0'){
+          this.hasMainCal=this.calInfo.mainCalId!=="-1"
+        }
       } catch (e) {
         this.isLoading=false
         console.log(e)
@@ -202,10 +212,10 @@ export default {
       this.$emit("showModal", [
         this.t('appointments', 'Warning'),
         this.t('appointments', 'Time slot mode has changed. Public page is going offline…'),
-        this.start()])
+        this.start])
     },
 
-    apply(tsModeChanged=false){
+    apply(tsModeChanged){
 
       // No need to check when ts mode is being changed
       if(tsModeChanged!==true) {
@@ -241,11 +251,19 @@ export default {
       }
 
       this.isSending=true
-      // reload page info when tsModeChanged===true
-      this.setState('set_cls',this.calInfo,tsModeChanged).then(()=>{
+      this.setState(
+          "set_"+this.curPageData.stateAction,
+          this.calInfo,
+          this.curPageData.pageId).then(()=>{
+        if(tsModeChanged){
+          // reload pages when tsModeChanged
+          this.$emit("reloadPages")
+        }
+        if(this.calInfo.tsMode==='0'){
+          this.hasMainCal=this.calInfo.mainCalId!=="-1"
+        }
         this.isSending=false
       })
-
     },
 
     close() {

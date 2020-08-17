@@ -108,15 +108,17 @@ class CalendarsController extends Controller{
      */
     public function calgetweek(){
 
-        $pageId = $this->request->getParam("p",null);
+        $pageId = $this->request->getParam("p","p0");
+        if(empty($pageId)) $pageId="p0";
 
-        $cls=$this->utils->getUserSettings(
-            BackendUtils::KEY_CLS,$this->userId);
         $pgs=$this->utils->getUserSettings(
             BackendUtils::KEY_PAGES,$this->userId);
 
-        if($pageId===null || $cls[BackendUtils::CLS_TS_MODE]!=="0"
-            || (!empty($pageId) && !isset($pgs[$pageId])) ){
+        $key=$pageId==='p0'?BackendUtils::KEY_CLS:BackendUtils::KEY_MPS;
+        $cms=$this->utils->getUserSettings($key,$this->userId);
+
+        if($cms[BackendUtils::CLS_TS_MODE]!=="0"
+            || !isset($pgs[$pageId]) ){
             $r=new SendDataResponse();
             $r->setStatus(400);
             return $r;

@@ -5279,23 +5279,49 @@ module.exports = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _nextcloud_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @nextcloud/vue */ "./node_modules/@nextcloud/vue/dist/ncvuecomponents.js");
 /* harmony import */ var _nextcloud_vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _components_ActionInputExt_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/ActionInputExt.vue */ "./src/components/ActionInputExt.vue");
-/* harmony import */ var _components_NavAccountItem_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/NavAccountItem.vue */ "./src/components/NavAccountItem.vue");
-/* harmony import */ var _components_ScheduleSlideBar_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/ScheduleSlideBar.vue */ "./src/components/ScheduleSlideBar.vue");
-/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @nextcloud/axios */ "./node_modules/@nextcloud/axios/dist/index.js");
-/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_axios__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _grid_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./grid.js */ "./src/grid.js");
-/* harmony import */ var _components_FormStnSlideBar_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/FormStnSlideBar.vue */ "./src/components/FormStnSlideBar.vue");
-/* harmony import */ var _components_UserStnSlideBar_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/UserStnSlideBar.vue */ "./src/components/UserStnSlideBar.vue");
-/* harmony import */ var _components_MailStnSlideBar_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/MailStnSlideBar.vue */ "./src/components/MailStnSlideBar.vue");
-/* harmony import */ var _components_TimeSlotSlideBar__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/TimeSlotSlideBar */ "./src/components/TimeSlotSlideBar.vue");
-/* harmony import */ var _components_ApptAccordion_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/ApptAccordion.vue */ "./src/components/ApptAccordion.vue");
+/* harmony import */ var _components_SettingsSlideBar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/SettingsSlideBar */ "./src/components/SettingsSlideBar.vue");
+/* harmony import */ var _components_DelApptSlideBar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/DelApptSlideBar */ "./src/components/DelApptSlideBar.vue");
+/* harmony import */ var _components_AddApptSlideBar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/AddApptSlideBar */ "./src/components/AddApptSlideBar.vue");
+/* harmony import */ var _components_ActionInputExt_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/ActionInputExt.vue */ "./src/components/ActionInputExt.vue");
+/* harmony import */ var _components_NavAccountItem_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/NavAccountItem.vue */ "./src/components/NavAccountItem.vue");
+/* harmony import */ var _components_ScheduleSlideBar_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/ScheduleSlideBar.vue */ "./src/components/ScheduleSlideBar.vue");
+/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @nextcloud/axios */ "./node_modules/@nextcloud/axios/dist/index.js");
+/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_axios__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _grid_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./grid.js */ "./src/grid.js");
+/* harmony import */ var _components_FormStnSlideBar_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/FormStnSlideBar.vue */ "./src/components/FormStnSlideBar.vue");
+/* harmony import */ var _components_UserStnSlideBar_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/UserStnSlideBar.vue */ "./src/components/UserStnSlideBar.vue");
+/* harmony import */ var _components_MailStnSlideBar_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/MailStnSlideBar.vue */ "./src/components/MailStnSlideBar.vue");
+/* harmony import */ var _components_ApptMgrSlideBar__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/ApptMgrSlideBar */ "./src/components/ApptMgrSlideBar.vue");
+/* harmony import */ var _components_ApptAccordion_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/ApptAccordion.vue */ "./src/components/ApptAccordion.vue");
+/* harmony import */ var _components_AdvancedSlideBar__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/AdvancedSlideBar */ "./src/components/AdvancedSlideBar.vue");
+/* harmony import */ var _components_PagePickerSlideBar__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/PagePickerSlideBar */ "./src/components/PagePickerSlideBar.vue");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5623,15 +5649,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+
+
+
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'App',
   components: {
-    TimeSlotSlideBar: _components_TimeSlotSlideBar__WEBPACK_IMPORTED_MODULE_9__["default"],
-    FormStnSlideBar: _components_FormStnSlideBar_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
-    ScheduleSlideBar: _components_ScheduleSlideBar_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    PagePickerSlideBar: _components_PagePickerSlideBar__WEBPACK_IMPORTED_MODULE_15__["default"],
+    AdvancedSlideBar: _components_AdvancedSlideBar__WEBPACK_IMPORTED_MODULE_14__["default"],
+    ApptMgrSlideBar: _components_ApptMgrSlideBar__WEBPACK_IMPORTED_MODULE_12__["default"],
+    FormStnSlideBar: _components_FormStnSlideBar_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
+    ScheduleSlideBar: _components_ScheduleSlideBar_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
     AppNavigation: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_0__["AppNavigation"],
     AppNavigationItem: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_0__["AppNavigationItem"],
-    NavAccountItem: _components_NavAccountItem_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    NavAccountItem: _components_NavAccountItem_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
     AppNavigationSpacer: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_0__["AppNavigationSpacer"],
     ActionButton: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_0__["ActionButton"],
     AppContent: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_0__["AppContent"],
@@ -5639,29 +5672,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     AppNavigationIconBullet: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_0__["AppNavigationIconBullet"],
     Modal: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_0__["Modal"],
     Actions: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_0__["Actions"],
-    ActionInput: _components_ActionInputExt_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    UserStnSlideBar: _components_UserStnSlideBar_vue__WEBPACK_IMPORTED_MODULE_7__["default"],
-    MailStnSlideBar: _components_MailStnSlideBar_vue__WEBPACK_IMPORTED_MODULE_8__["default"],
-    ApptAccordion: _components_ApptAccordion_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
-    ActionSeparator: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_0__["ActionSeparator"]
+    ActionInput: _components_ActionInputExt_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+    UserStnSlideBar: _components_UserStnSlideBar_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
+    MailStnSlideBar: _components_MailStnSlideBar_vue__WEBPACK_IMPORTED_MODULE_11__["default"],
+    ApptAccordion: _components_ApptAccordion_vue__WEBPACK_IMPORTED_MODULE_13__["default"],
+    ActionSeparator: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_0__["ActionSeparator"],
+    AddApptSlideBar: _components_AddApptSlideBar__WEBPACK_IMPORTED_MODULE_3__["default"],
+    DelApptSlideBar: _components_DelApptSlideBar__WEBPACK_IMPORTED_MODULE_2__["default"],
+    SettingsSlideBar: _components_SettingsSlideBar__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
-      // mainForm:'',
       pubPage: '',
       page0: {
         enabled: 0,
         label: ""
       },
+      // this us used to compute curPageData to pass to settings, etc..
+      curPageId: "p0",
       pageInfoLoading: 0,
 
-      /** @type {{enabled:number,label:string,key:string}[]} */
+      /** @type {{enabled:number,label:string,pageId:string}[]} */
       morePages: [],
-      value: null,
-      // <-???
       navOpen: false,
       sbShow: 0,
-      sbLoading: 0,
+      sbGotoBack: 0,
+      pagePickerTitle: "",
       visibleSection: 0,
       evtGridData: [],
       evtGridModal: 0,
@@ -5683,18 +5719,47 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       generalModalLoadingTxt: "",
       generalModalPop: 0,
       generalModalPopTxt: "",
-      generalModalCallback: undefined,
+      generalModalCloseCallback: undefined,
+      generalModalActionCallback: undefined,
       generalModalBtnTxt: "",
-      // SlideBars...
       calInfo: {},
-      ppsInfo: {},
-      uciInfo: {},
-      emlInfo: {},
-      roaData: "",
       stateInProgress: false
     };
   },
-  computed: {},
+  computed: {
+    curPageData: function curPageData() {
+      var ml = this.morePages.length;
+
+      if (this.curPageId === 'p0') {
+        return {
+          enabled: this.page0.enabled,
+          label: this.page0.label === '' ? t('appointments', 'Public Page') : this.page0.label,
+          stateAction: "cls",
+          uciAction: "uci",
+          pageId: 'p0',
+          pageCount: 1 + ml
+        };
+      } else {
+        var r = {};
+
+        for (var i = 0, pgs = this.morePages; i < ml; i++) {
+          if (pgs[i].pageId === this.curPageId) {
+            r = {
+              enabled: pgs[i].enabled,
+              label: pgs[i].label,
+              stateAction: "mps",
+              uciAction: "mps",
+              pageId: pgs[i].pageId,
+              pageCount: 1 + ml
+            };
+            break;
+          }
+        }
+
+        return r;
+      }
+    }
+  },
   beforeMount: function beforeMount() {
     this.resetCalInfo();
     this.getPages(1);
@@ -5706,12 +5771,50 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   beforeDestroy: function beforeDestroy() {
     this.$root.$off('helpWanted', this.helpWantedHandler);
   },
+  provide: function provide() {
+    return {
+      getState: this.getState,
+      setState: this.setState
+    };
+  },
   methods: {
+    openViaPicker: function openViaPicker(sbn, evt) {
+      if (this.sbShow === 11 && this.sbGotoBack === sbn) {
+        // picker fro THIS slideBar is showing... close it
+        this.sbShow = 0;
+        return;
+      }
+
+      if (sbn === this.sbShow) {
+        // the slideBar is showing
+        if (this.morePages.length > 0) {
+          // multiple pages are available...
+          // ... open the pagePicker instead of just closing the slideBar
+          this.pagePickerTitle = evt.currentTarget.textContent.trim();
+          this.sbShow = 11;
+          this.sbGotoBack = sbn;
+        } else {
+          // single page, just close it
+          this.sbShow = 0;
+        }
+      } else {
+        if (this.morePages.length === 0) {
+          this.curPageId = 'p0';
+          this.sbShow = sbn;
+        } else {
+          // open the pagePicker
+          this.pagePickerTitle = evt.currentTarget.textContent.trim();
+          this.sbShow = 11;
+          this.sbGotoBack = sbn;
+        }
+      }
+    },
     getPages: function getPages(idx) {
       var _this = this;
 
       this.pageInfoLoading = idx;
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_4___default.a.post('state', {
+      this.stateInProgress = true;
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7___default.a.post('state', {
         a: 'get_pages'
       }).then(function (response) {
         if (response.status === 200) {
@@ -5725,19 +5828,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.page0 = Object.assign({}, _this.page0, d['p0']);
               } else {
                 ap[c] = d[prop];
-                ap[c]['key'] = prop; // this.$set(this.morePages,c,d[prop])
-
+                ap[c]['pageId'] = prop;
                 c++;
               }
             }
           }
 
           _this.morePages = ap;
-          console.log(_this.morePages);
         }
 
         _this.pageInfoLoading = 0;
+        _this.stateInProgress = false;
       })["catch"](function (error) {
+        _this.stateInProgress = false;
         _this.pageInfoLoading = 0;
         console.log(error);
       });
@@ -5759,7 +5862,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         });
       }
 
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_4___default.a.post('state', {
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7___default.a.post('state', {
         a: 'set_pages',
         p: p,
         v: ji
@@ -5793,7 +5896,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         co = Object.assign({}, this.page0);
       } else {
         for (var i = 0, pgs = this.morePages, l = pgs.length; i < l; i++) {
-          if (pgs[i].key === page) {
+          if (pgs[i].pageId === page) {
             co = Object.assign({}, pgs[i]);
             idx = i + 2;
             break;
@@ -5814,7 +5917,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         p = Object.assign({}, this.page0);
       } else {
         for (var i = 0, pgs = this.morePages, l = pgs.length; i < l; i++) {
-          if (pgs[i].key === page) {
+          if (pgs[i].pageId === page) {
             p = Object.assign({}, pgs[i]);
             idx = i + 2;
             break;
@@ -5827,9 +5930,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (enable === 1) {
         this.pageInfoLoading = idx;
         this.getState("get_uci").then(function (res) {
-          //organization: "", email: "", address: ""
-          _this3.pageInfoLoading = 0;
-          if (res === null) return null;
+          if (res === null) {
+            _this3.pageInfoLoading = 0;
+            return null;
+          } //organization: "", email: "", address: ""
+
+
           var n = -1;
           var pa = ["organization", "email", "address"];
 
@@ -5850,6 +5956,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               timeout: 8,
               type: 'error'
             });
+            _this3.pageInfoLoading = 0;
           } else {
             p.enabled = 1;
 
@@ -5871,12 +5978,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var i = 0;
 
       for (var pgs = this.morePages, l = pgs.length; i < l; i++) {
-        if (pgs[i].key === page) {
+        if (pgs[i].pageId === page) {
           break;
         }
       }
 
       i += 2;
+      this.sbShow = 0;
       this.setPages("delete", {
         page: page
       }, i);
@@ -5888,134 +5996,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.showIModal(o['info']);
       }
     },
-    removeOldAppointments: function removeOldAppointments() {
-      var _this4 = this;
-
-      if (this.roaData === "") {
-        OC.Notification.showTemporary('Can not remove appointments: bad info', {
-          timeout: 4,
-          type: 'error'
-        });
-      }
-
-      if (!confirm(this.t('appointments', 'This action can NOT be undone. Continue?'))) return;
-      this.generalModalLoadingTxt = this.t('appointments', 'Removing Appointment Slots') + "...";
-      this.openGeneralModal(2);
-      var errTxt = this.t('appointments', 'Can not delete old appointments/slots') + "\xa0\xa0\xa0\xa0";
-      var str = this.roaData.slice(0, -1) + ',"delete":true}';
-      this.roaData = "";
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_4___default.a.get('calgetweek', {
-        params: {
-          t: str
-        }
-      }).then(function (response) {
-        if (response.status === 200) {
-          var ua = response.data.split("|");
-
-          if (ua[0] !== "0") {
-            var dt = new Date();
-            dt.setTime(ua[1] * 1000);
-            var txt;
-            var dts = dt.toLocaleDateString(undefined, {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            });
-
-            if (str.indexOf("empty") > -1) {
-              txt = _this4.t('appointments', 'All empty appointment slots created before {fullDate} are removed', {
-                fullDate: dts
-              });
-            } else {
-              txt = _this4.t('appointments', 'All empty slots and booked appointments created before {fullDate} are removed', {
-                fullDate: dts
-              });
-            }
-
-            _this4.$set(_this4.generalModalTxt, 1, txt);
-          } else {
-            OCP.Toast.error(errTxt);
-          }
-
-          _this4.generalModalLoadingTxt = "";
-        }
-      })["catch"](function (error) {
-        _this4.closeGeneralModal();
-
-        console.log(error);
-        OCP.Toast.error(errTxt);
-      });
-    },
-    countOldAppointments: function countOldAppointments(d) {
-      var _this5 = this;
-
-      // {"type": "empty|both" , "before": 1|7}
-      var str;
-
-      try {
-        str = JSON.stringify(d);
-      } catch (e) {
-        console.log(e);
-        OC.Notification.showTemporary(this.t('appointments', "Can not request data"), {
-          timeout: 4,
-          type: 'error'
-        });
-        return;
-      }
-
-      this.generalModalLoadingTxt = this.t('appointments', 'Gathering calendar information') + "...";
-      this.openGeneralModal(2);
-      this.roaData = "";
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_4___default.a.get('calgetweek', {
-        params: {
-          t: str
-        }
-      }).then(function (response) {
-        if (response.status === 200) {
-          var ua = response.data.split("|");
-
-          if (ua[0] !== "0") {
-            var dt = new Date();
-            dt.setTime(ua[1] * 1000);
-            var txt;
-            var dts = dt.toLocaleDateString(undefined, {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            });
-
-            if (d.type === "empty") {
-              txt = _this5.t('appointments', 'Remove empty appointment slots created before {fullDate} ?', {
-                fullDate: dts
-              });
-            } else {
-              txt = _this5.t('appointments', 'Remove empty slots and booked appointments created before {fullDate} ?', {
-                fullDate: dts
-              });
-            }
-
-            _this5.$set(_this5.generalModalTxt, 0, txt);
-
-            _this5.roaData = str;
-          }
-
-          var att = "";
-
-          if (ua[0] !== "0" && d.type === "both" && _this5.calInfo.destCalId !== undefined && _this5.calInfo.destCalId !== "-1") {
-            att = " [ " + _this5.t('appointments', 'two calendars affected') + " ]";
-          }
-
-          _this5.$set(_this5.generalModalTxt, 1, _this5.t('appointments', 'Number of expired appointments/slots: ') + ua[0] + att);
-
-          _this5.generalModalLoadingTxt = "";
-        }
-      })["catch"](function (error) {
-        _this5.closeGeneralModal();
-
-        console.log(error);
-        OCP.Toast.error(_this5.t('appointments', 'Can not get calendar data') + "\xa0\xa0\xa0\xa0");
-      });
-    },
     gridApptsAdd: function gridApptsAdd(cID, event) {
       var hd = this.gridHeader[cID];
       hd.n = event.target.querySelector('input[type=number]').value;
@@ -6026,19 +6006,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.gridApptLen = 10;
       }
 
-      _grid_js__WEBPACK_IMPORTED_MODULE_5__["default"].addAppt(0, this.gridApptLen, nbr, cID, this.calInfo.curCal_color);
+      _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].addAppt(0, this.gridApptLen, nbr, cID, this.calInfo.curCal_color);
       hd.hasAppts = true;
     },
     gridApptsDel: function gridApptsDel(cID) {
-      _grid_js__WEBPACK_IMPORTED_MODULE_5__["default"].resetColumn(cID);
+      _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].resetColumn(cID);
       this.gridHeader[cID].hasAppts = false;
     },
     gridApptsCopy: function gridApptsCopy(cID) {
-      _grid_js__WEBPACK_IMPORTED_MODULE_5__["default"].cloneColumns(cID, cID + 1, this.calInfo.curCal_color);
+      _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].cloneColumns(cID, cID + 1, this.calInfo.curCal_color);
       this.gridHeader[cID + 1].hasAppts = true;
     },
     gridSetup: function gridSetup() {
-      _grid_js__WEBPACK_IMPORTED_MODULE_5__["default"].setup(this.$refs["grid_cont"], 6, "srgdev-appt-grd-");
+      _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].setup(this.$refs["grid_cont"], 6, "srgdev-appt-grd-");
       this.isGridReady = true;
     },
     getCalInfo: function getCalInfo(ebn) {
@@ -6052,7 +6032,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
      * @param {Object|null} props props/info object for the slide bar
      */
     openSlideBar: function openSlideBar(sbn, action, props) {
-      var _this6 = this;
+      var _this4 = this;
 
       if (sbn > -1) {
         if (this.sbShow === sbn) {
@@ -6074,51 +6054,54 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         if (res !== null) {
           for (var key in res) {
             if (res.hasOwnProperty(key)) {
-              _this6.$set(props, key, res[key]);
+              _this4.$set(props, key, res[key]);
             }
           }
 
           if (sbn > -1) {
-            _this6.toggleSlideBar(sbn);
+            _this4.toggleSlideBar(sbn);
           } else if (sbn > -999) {
             // Open setting only after they are fetched from the server
-            _this6.$refs["tsbRef"].stateDataReady(sbn);
+            _this4.$refs["tsbRef"].stateDataReady(sbn);
           }
         }
 
-        _this6.sbLoading = 0;
+        _this4.sbLoading = 0;
       });
     },
 
     /** @return {Promise<JSON|string|null>} */
     getState: function getState(action) {
-      var _this7 = this;
+      var _arguments = arguments,
+          _this5 = this;
 
       return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var res;
+        var p, res;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _this7.stateInProgress = true;
-                _context.prev = 1;
-                _context.next = 4;
-                return _nextcloud_axios__WEBPACK_IMPORTED_MODULE_4___default.a.post('state', {
-                  a: action
+                p = _arguments.length > 1 && _arguments[1] !== undefined ? _arguments[1] : "";
+                _this5.stateInProgress = true;
+                _context.prev = 2;
+                _context.next = 5;
+                return _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7___default.a.post('state', {
+                  a: action,
+                  p: p
                 });
 
-              case 4:
+              case 5:
                 res = _context.sent;
-                _this7.stateInProgress = false;
+                _this5.stateInProgress = false;
 
                 if (!(res.status === 200)) {
-                  _context.next = 10;
+                  _context.next = 11;
                   break;
                 }
 
                 return _context.abrupt("return", res.data);
 
-              case 10:
+              case 11:
                 console.log(res);
                 OC.Notification.showTemporary(t('appointments', "Can't get Settings. Check console") + "\xa0\xa0\xa0\xa0", {
                   timeout: 8,
@@ -6126,14 +6109,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
                 return _context.abrupt("return", null);
 
-              case 13:
-                _context.next = 21;
+              case 14:
+                _context.next = 22;
                 break;
 
-              case 15:
-                _context.prev = 15;
-                _context.t0 = _context["catch"](1);
-                _this7.stateInProgress = false;
+              case 16:
+                _context.prev = 16;
+                _context.t0 = _context["catch"](2);
+                _this5.stateInProgress = false;
                 console.log(_context.t0);
                 OC.Notification.showTemporary(t('appointments', "Can't get Settings. Check console") + "\xa0\xa0\xa0\xa0", {
                   timeout: 8,
@@ -6141,58 +6124,84 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
                 return _context.abrupt("return", null);
 
-              case 21:
+              case 22:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[1, 15]]);
+        }, _callee, null, [[2, 16]]);
       }))();
     },
 
     /**
      * @param {string} action
      * @param {Object} value
-     * @param {boolean} getPages
+     * @param {string} pageId
      */
     setState: function setState(action, value) {
-      var _this8 = this;
+      var _arguments2 = arguments,
+          _this6 = this;
 
-      var getPages = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      var ji = "";
-      this.stateInProgress = true;
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        var pageId, ji;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                pageId = _arguments2.length > 2 && _arguments2[2] !== undefined ? _arguments2[2] : '';
+                ji = "";
+                _this6.stateInProgress = true;
+                _context2.prev = 3;
+                ji = JSON.stringify(value);
+                _context2.next = 13;
+                break;
 
-      try {
-        ji = JSON.stringify(value);
-      } catch (e) {
-        this.stateInProgress = false;
-        console.log(e);
-        OC.Notification.showTemporary(this.t('appointments', "Can't apply settings"), {
-          timeout: 4,
-          type: 'error'
-        });
-      }
+              case 7:
+                _context2.prev = 7;
+                _context2.t0 = _context2["catch"](3);
+                _this6.stateInProgress = false;
+                console.log(_context2.t0);
+                OC.Notification.showTemporary(_this6.t('appointments', "Can't apply settings"), {
+                  timeout: 4,
+                  type: 'error'
+                });
+                return _context2.abrupt("return", false);
 
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_4___default.a.post('state', {
-        a: action,
-        d: ji
-      }).then(function (response) {
-        _this8.stateInProgress = false;
+              case 13:
+                _context2.next = 15;
+                return _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7___default.a.post('state', {
+                  a: action,
+                  d: ji,
+                  p: pageId
+                }).then(function (response) {
+                  _this6.stateInProgress = false;
 
-        if (response.status === 200) {
-          _this8.getFormData();
+                  if (response.status === 200) {
+                    _this6.getFormData();
 
-          OCP.Toast.success(_this8.t('appointments', 'New Settings Applied.'));
-          if (getPages) _this8.getPages(0);
-        }
-      })["catch"](function (error) {
-        _this8.stateInProgress = false;
-        console.log(error);
-        OC.Notification.showTemporary(_this8.t('appointments', "Can't apply settings"), {
-          timeout: 4,
-          type: 'error'
-        });
-      });
+                    OCP.Toast.success(_this6.t('appointments', 'New Settings Applied.'));
+                    return true;
+                  }
+                })["catch"](function (error) {
+                  _this6.stateInProgress = false;
+                  console.log(error);
+                  OC.Notification.showTemporary(_this6.t('appointments', "Can't apply settings"), {
+                    timeout: 4,
+                    type: 'error'
+                  });
+                  return false;
+                });
+
+              case 15:
+                return _context2.abrupt("return", _context2.sent);
+
+              case 16:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[3, 7]]);
+      }))();
     },
     toggleSlideBar: function toggleSlideBar(sbn) {
       this.closeNav();
@@ -6210,7 +6219,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.showHelp(section); // document.getElementById("sec_"+section).scrollIntoView()
     },
     showHelp: function showHelp(sec) {
-      var _this9 = this;
+      var _this7 = this;
 
       if (typeof sec !== "string" && this.visibleSection === 3) {
         this.visibleSection = 0;
@@ -6218,12 +6227,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       this.visibleSection = 3;
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_4___default.a.get('help').then(function (response) {
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7___default.a.get('help').then(function (response) {
         if (response.status === 200) {
-          _this9.helpContent = response.data;
+          _this7.helpContent = response.data;
 
           if (sec !== undefined) {
-            _this9.$nextTick(function () {
+            _this7.$nextTick(function () {
               var elm = document.getElementById("srgdev-sec_" + sec);
 
               if (elm !== null) {
@@ -6240,40 +6249,45 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       })["catch"](function (error) {
         console.log(error);
-        _this9.helpContent = '';
+        _this7.helpContent = '';
       });
     },
     showPubLink: function showPubLink(page) {
-      var _this10 = this;
+      var _this8 = this;
 
       this.openGeneralModal(1);
       this.generalModalLoadingTxt = this.t('appointments', 'Fetching URL from the server...');
 
-      for (var i = 0, pgs = this.morePages, l = pgs.length; i < l; i++) {
-        if (pgs[i].key === page) {
-          // this is actually the header text for this dialog
-          this.generalModalBtnTxt = pgs[i].label;
-          break;
+      if (page === 'p0') {
+        // this is actually the header text for this dialog
+        this.generalModalBtnTxt = this.page0.label;
+      } else {
+        for (var i = 0, pgs = this.morePages, l = pgs.length; i < l; i++) {
+          if (pgs[i].pageId === page) {
+            // this is actually the header text for this dialog
+            this.generalModalBtnTxt = pgs[i].label;
+            break;
+          }
         }
       }
 
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_4___default.a.post('state', {
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7___default.a.post('state', {
         a: 'get_puburi',
         p: page
       }).then(function (response) {
         if (response.status === 200) {
           var ua = response.data.split(String.fromCharCode(31));
-          _this10.generalModalLoadingTxt = "";
+          _this8.generalModalLoadingTxt = "";
 
-          _this10.$set(_this10.generalModalTxt, 0, ua[0]);
+          _this8.$set(_this8.generalModalTxt, 0, ua[0]);
 
-          _this10.$set(_this10.generalModalTxt, 1, ua[1]);
+          _this8.$set(_this8.generalModalTxt, 1, ua[1]);
         }
       })["catch"](function (error) {
-        _this10.closeGeneralModal();
+        _this8.closeGeneralModal();
 
         console.log(error);
-        OCP.Toast.error(_this10.t('appointments', 'Can not get public URL from server') + "\xa0\xa0\xa0\xa0");
+        OCP.Toast.error(_this8.t('appointments', 'Can not get public URL from server') + "\xa0\xa0\xa0\xa0");
       });
     },
     doCopyPubLink: function doCopyPubLink() {
@@ -6324,36 +6338,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       }
     },
-    showGeneralModalPop: function showGeneralModalPop(txt) {
-      var ctx = this;
-
-      if (this.generalModalPop !== 0) {
-        clearTimeout(this.generalModalPop);
-      }
-
-      this.generalModalPopTxt = txt;
-      this.generalModalPop = setTimeout(function () {
-        ctx.generalModalPop = 0;
-      }, 2000);
-    },
-    // showModal(title,txt){
-    //     this.modalHeader=title
-    //     this.modalText=txt
-    //     this.evtGridModal=4
-    // },
-    getFormData: function getFormData(p) {
-      if (typeof p !== "string") {
+    // TODO: make sure all calls have proper pageId
+    getFormData: function getFormData(pageId) {
+      if (typeof pageId !== "string") {
         this.pubPage = 'form?v=' + Date.now();
       } else {
-        this.pubPage = 'form?p=' + p + '&v=' + Date.now();
+        this.pubPage = 'form?p=' + pageId + '&v=' + Date.now();
       }
 
       this.visibleSection = 0;
     },
     makePreviewGrid: function makePreviewGrid(d) {
-      var _this11 = this;
+      var _this9 = this;
 
-      _grid_js__WEBPACK_IMPORTED_MODULE_5__["default"].resetAllColumns();
+      console.log("makePreviewGrid", d);
+      _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].resetAllColumns();
       var NBR_DAYS = 6; // Generate local names for days and month(s)
 
       var tff;
@@ -6394,28 +6393,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.gridApptLen = d.dur;
       this.gridApptTs = d.week;
       this.gridApptTZ = d.tz;
-      this.visibleSection = 1; // dd-mm-yyyy
+      this.visibleSection = 1;
+      this.$set(this.calInfo, "curCal_color", d.calColor);
+      this.$set(this.calInfo, "curCal_name", d.calName); // dd-mm-yyyy
 
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_4___default.a.get('calgetweek', {
-        params: {
-          t: pd
-        }
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7___default.a.post('calgetweek', {
+        t: pd,
+        p: d.pageId
       }).then(function (response) {
         if (response.status === 200) {
           if (response.data !== "") {
-            _grid_js__WEBPACK_IMPORTED_MODULE_5__["default"].addPastAppts(response.data, _this11.calInfo.curCal_color);
+            _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].addPastAppts(response.data, _this9.calInfo.curCal_color);
           }
         }
       })["catch"](function (error) {
+        _this9.modalErrTxt = t('appointments', "Bad calendar data. Check selected calendars.");
+        _this9.evtGridModal = 3;
         console.log(error);
       });
     },
     addScheduleToCalendar: function addScheduleToCalendar() {
-      var _this12 = this;
+      var _this10 = this;
 
-      var tsa = _grid_js__WEBPACK_IMPORTED_MODULE_5__["default"].getStarEnds(this.gridApptTs, this.gridApptTZ === 'UTC');
-      this.evtGridModal = 1;
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_4___default.a.post('caladd', {
+      var tsa = _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].getStarEnds(this.gridApptTs, this.gridApptTZ === 'UTC');
+      this.evtGridModal = 1; // TODO: pageId is needed
+
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7___default.a.post('caladd', {
         d: tsa.join(','),
         tz: this.gridApptTZ
       }).then(function (response) {
@@ -6425,19 +6428,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             console.log(response.data);
 
             if (response.data.length > 6) {
-              _this12.modalErrTxt = response.data.substr(2);
+              _this10.modalErrTxt = response.data.substr(2);
             }
 
-            _this12.evtGridModal = 3;
+            _this10.evtGridModal = 3;
           } else {
             // good
-            _this12.evtGridModal = 2;
+            _this10.evtGridModal = 2;
           }
         }
       })["catch"](function (error) {
         // What text can we get from the error ???
-        _this12.modalErrTxt = "";
-        _this12.evtGridModal = 3;
+        _this10.modalErrTxt = "";
+        _this10.evtGridModal = 3;
         console.log(error);
       }); //     .finally(()=>{
       //     this.closePreviewGrid()
@@ -6456,7 +6459,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.$set(this.generalModalTxt, 0, t('appointments', "Contributor only feature"));
       this.$set(this.generalModalTxt, 1, txt); // TODO: showHelp anchor...
 
-      this.generalModalCallback = function () {
+      this.generalModalCloseCallback = function () {
         this.showHelp('auto_fix_nr');
       };
 
@@ -6469,38 +6472,71 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
 
     /**
-    * @param {Array} txt 0=header, 1=text, 2=optional callBack
-    */
+     * @param {Array} txt 0=header, 1=text, 2=optional callBack
+     */
     showSimpleGeneralModal: function showSimpleGeneralModal(txt) {
       this.openGeneralModal(3);
       this.$set(this.generalModalTxt, 0, txt[0]);
       this.$set(this.generalModalTxt, 1, txt[1]);
 
       if (txt.length === 3) {
-        this.generalModalCallback = txt[2];
+        this.generalModalCloseCallback = txt[2];
       }
+    },
+
+    /** @param {Object} o */
+    updateGeneralModal: function updateGeneralModal(o) {
+      for (var prop in o) {
+        if (o.hasOwnProperty(prop) && prop.indexOf('generalModal') === 0) {
+          if (prop === 'generalModalTxt') {
+            if (o[prop][0] !== undefined) {
+              this.$set(this.generalModalTxt, 0, o[prop][0]);
+            }
+
+            if (o[prop][1] !== undefined) {
+              this.$set(this.generalModalTxt, 1, o[prop][1]);
+            }
+          }
+
+          this[prop] = o[prop];
+        }
+      }
+    },
+    showGeneralModalPop: function showGeneralModalPop(txt) {
+      var ctx = this;
+
+      if (this.generalModalPop !== 0) {
+        clearTimeout(this.generalModalPop);
+      }
+
+      this.generalModalPopTxt = txt;
+      this.generalModalPop = setTimeout(function () {
+        ctx.generalModalPop = 0;
+      }, 2000);
     },
     openGeneralModal: function openGeneralModal(id) {
       this.generalModal = id;
       this.visibleSection = 2;
-      this.clearGeneralModal();
+
+      this._clearGeneralModal();
     },
     closeGeneralModal: function closeGeneralModal() {
       this.visibleSection = 0;
       this.generalModal = 0;
       this.generalModalLoadingTxt = "";
 
-      if (this.generalModalCallback !== undefined) {
-        this.generalModalCallback();
-        this.generalModalCallback = undefined;
+      if (this.generalModalCloseCallback !== undefined) {
+        this.generalModalCloseCallback();
+        this.generalModalCloseCallback = undefined;
       }
 
-      this.clearGeneralModal();
+      this._clearGeneralModal();
     },
-    clearGeneralModal: function clearGeneralModal() {
+    _clearGeneralModal: function _clearGeneralModal() {
       this.$set(this.generalModalTxt, 0, "");
       this.$set(this.generalModalTxt, 1, "");
-      this.generalModalCallback = undefined;
+      this.generalModalCloseCallback = undefined;
+      this.generalModalActionCallback = undefined;
       this.generalModalPopTxt = "";
       this.generalModalBtnTxt = "";
 
@@ -6556,22 +6592,31 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/AddApptSection.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AddApptSection.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/AddApptSlideBar.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AddApptSlideBar.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue2_datepicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue2-datepicker */ "./node_modules/vue2-datepicker/index.esm.js");
-/* harmony import */ var _css_datepicker_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../css/datepicker.css */ "./css/datepicker.css");
-/* harmony import */ var _css_datepicker_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_css_datepicker_css__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-slider-component */ "./node_modules/vue-slider-component/dist/vue-slider-component.umd.min.js");
-/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-slider-component/theme/default.css */ "./node_modules/vue-slider-component/theme/default.css");
-/* harmony import */ var vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SlideBar.vue */ "./src/components/SlideBar.vue");
+/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @nextcloud/axios */ "./node_modules/@nextcloud/axios/dist/index.js");
+/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _nextcloud_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @nextcloud/router */ "./node_modules/@nextcloud/router/dist/index.js");
+/* harmony import */ var _nextcloud_router__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_router__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vue2_datepicker__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue2-datepicker */ "./node_modules/vue2-datepicker/index.esm.js");
+/* harmony import */ var _css_datepicker_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../css/datepicker.css */ "./css/datepicker.css");
+/* harmony import */ var _css_datepicker_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_css_datepicker_css__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-slider-component */ "./node_modules/vue-slider-component/dist/vue-slider-component.umd.min.js");
+/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-slider-component/theme/default.css */ "./node_modules/vue-slider-component/theme/default.css");
+/* harmony import */ var vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_6__);
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 //
@@ -6618,19 +6663,43 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "AddApptSection",
+  name: "AddApptSlideBar",
   components: {
-    VueSlider: vue_slider_component__WEBPACK_IMPORTED_MODULE_2___default.a,
-    DatePicker: vue2_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"]
+    SlideBar: _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    VueSlider: vue_slider_component__WEBPACK_IMPORTED_MODULE_5___default.a,
+    DatePicker: vue2_datepicker__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   props: {
-    tzName: '',
-    tzData: ''
+    curPageData: {},
+    isGridReady: {
+      type: Boolean,
+      "default": false
+    },
+    title: '',
+    subtitle: ''
+  },
+  inject: ['getState'],
+  mounted: function mounted() {
+    this.isLoading = true;
+    this.start();
   },
   computed: {
     lang: function lang() {
@@ -6686,7 +6755,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   },
   data: function data() {
     return {
-      /** @type {Date} */
+      isLoading: true,
+      tzName: '',
+      tzData: '',
+      calInfo: {},
       apptWeek: null,
       apptDur: 30,
       apptTZ: "C",
@@ -6699,7 +6771,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         // Date to String
         stringify: function stringify(date, fmt) {
           if (date) {
-            var ts = date.getTime() + 5 * 86400000;
+            var ts = date.getTime() + 6 * 86400000;
 
             if (window.Intl && _typeof(window.Intl) === "object") {
               var f = new Intl.DateTimeFormat([], {
@@ -6716,6 +6788,135 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     };
   },
   methods: {
+    start: function start() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var data, res, url, tzr, tzd, tzs, alias;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _this.isLoading = true;
+
+                if (!_this.isGridReady) {
+                  _this.$emit('setupGrid');
+                }
+
+                _context.prev = 2;
+                data = _this.curPageData;
+                _context.next = 6;
+                return _this.getState("get_" + data.stateAction, data.pageId);
+
+              case 6:
+                _this.calInfo = _context.sent;
+                _context.next = 15;
+                break;
+
+              case 9:
+                _context.prev = 9;
+                _context.t0 = _context["catch"](2);
+                console.log(_context.t0);
+                _this.isLoading = false;
+                OC.Notification.showTemporary(_this.t('appointments', "Can not request data"), {
+                  timeout: 4,
+                  type: 'error'
+                });
+                return _context.abrupt("return");
+
+              case 15:
+                _this.tzName = "UTC";
+                _this.tzData = "UTC";
+                _context.prev = 17;
+                _context.next = 20;
+                return _this.getState("get_tz");
+
+              case 20:
+                res = _context.sent;
+
+                if (!(res !== null && res.toLowerCase() !== 'utc')) {
+                  _context.next = 42;
+                  break;
+                }
+
+                url = Object(_nextcloud_router__WEBPACK_IMPORTED_MODULE_2__["linkTo"])('appointments', 'ajax/zones.js');
+                _context.next = 25;
+                return _nextcloud_axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(url);
+
+              case 25:
+                tzr = _context.sent;
+
+                if (!(tzr.status === 200)) {
+                  _context.next = 39;
+                  break;
+                }
+
+                tzd = tzr.data;
+
+                if (!(_typeof(tzd) === "object" && tzd.hasOwnProperty('aliases') && tzd.hasOwnProperty('zones'))) {
+                  _context.next = 36;
+                  break;
+                }
+
+                tzs = "";
+
+                if (tzd.zones[res] !== undefined) {
+                  tzs = tzd.zones[res].ics.join("\r\n");
+                } else if (tzd.aliases[res] !== undefined) {
+                  alias = tzd.aliases[res].aliasTo;
+
+                  if (tzd.zones[alias] !== undefined) {
+                    res = alias;
+                    tzs = tzd.zones[alias].ics.join("\r\n");
+                  }
+                }
+
+                _this.tzName = res;
+                _this.tzData = "BEGIN:VTIMEZONE\r\nTZID:" + res.trim() + "\r\n" + tzs.trim() + "\r\nEND:VTIMEZONE";
+                _this.isLoading = false;
+                _context.next = 37;
+                break;
+
+              case 36:
+                throw new Error("Bad tzr.data");
+
+              case 37:
+                _context.next = 40;
+                break;
+
+              case 39:
+                throw new Error("Bad status: " + tzr.status);
+
+              case 40:
+                _context.next = 43;
+                break;
+
+              case 42:
+                throw new Error("Can't get_tz");
+
+              case 43:
+                _context.next = 51;
+                break;
+
+              case 45:
+                _context.prev = 45;
+                _context.t1 = _context["catch"](17);
+                _this.isLoading = false;
+                console.error("Can't get timezone");
+                console.log(_context.t1);
+                OC.Notification.showTemporary(_this.t('appointments', "Can't load timezones"), {
+                  timeout: 4,
+                  type: 'error'
+                });
+
+              case 51:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[2, 9], [17, 45]]);
+      }))();
+    },
     getTimeFormat: function getTimeFormat() {
       var date = new Date(0);
 
@@ -6750,13 +6951,209 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       this.apptDur = 30;
     },
     goApptGen: function goApptGen() {
+      this.close(true);
       var r = {
         tz: this.apptTZ === "C" ? this.tzData : "L",
         week: this.apptWeek.getTime(),
-        dur: this.apptDur
+        dur: this.apptDur,
+        pageId: this.curPageData.pageId,
+        calColor: this.calInfo['curCal_color'],
+        calName: this.calInfo['curCal_name']
       };
       this.resetAppt();
       this.$emit("agDataReady", r);
+    },
+
+    /**
+     * @param hard - hard close will close the slidebar instead of going back to the "parent"
+     */
+    close: function close(hard) {
+      this.$emit('close', hard);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/AdvancedSlideBar.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AdvancedSlideBar.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SlideBar.vue */ "./src/components/SlideBar.vue");
+/* harmony import */ var _ApptIconLabel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ApptIconLabel */ "./src/components/ApptIconLabel.vue");
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "AdvancedSlideBar",
+  components: {
+    ApptIconLabel: _ApptIconLabel__WEBPACK_IMPORTED_MODULE_1__["default"],
+    SlideBar: _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  props: {
+    title: '',
+    subtitle: ''
+  },
+  mounted: function mounted() {
+    this.isLoading = true;
+    this.start();
+  },
+  inject: ['getState', 'setState'],
+  data: function data() {
+    return {
+      isLoading: true,
+      isSending: false,
+      calInfo: {
+        prepTime: "0",
+        whenCanceled: "mark",
+        nrPushRec: true,
+        nrRequireCat: false,
+        nrAutoFix: false
+      }
+    };
+  },
+  methods: {
+    start: function start() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _this.isLoading = true;
+                _context.prev = 1;
+                _context.next = 4;
+                return _this.getState("get_cls", "");
+
+              case 4:
+                _this.calInfo = _context.sent;
+                _this.isLoading = false;
+                _context.next = 13;
+                break;
+
+              case 8:
+                _context.prev = 8;
+                _context.t0 = _context["catch"](1);
+                _this.isLoading = false;
+                console.log(_context.t0);
+                OC.Notification.showTemporary(_this.t('appointments', "Can not request data"), {
+                  timeout: 4,
+                  type: 'error'
+                });
+
+              case 13:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[1, 8]]);
+      }))();
+    },
+    apply: function apply() {
+      var _this2 = this;
+
+      this.isSending = true;
+      this.setState('set_cls', this.calInfo).then(function () {
+        _this2.isSending = false;
+      });
+    },
+    close: function close() {
+      this.$emit('close');
     }
   }
 });
@@ -6874,6 +7271,662 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/ApptIconLabel.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ApptIconLabel.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "ApptIconLabel",
+  props: {
+    text: {
+      type: String,
+      "default": '',
+      required: true
+    },
+    icon: {
+      type: String,
+      "default": ''
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/ApptMgrSlideBar.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ApptMgrSlideBar.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SlideBar.vue */ "./src/components/SlideBar.vue");
+/* harmony import */ var _ApptIconButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ApptIconButton */ "./src/components/ApptIconButton.vue");
+/* harmony import */ var _nextcloud_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @nextcloud/vue */ "./node_modules/@nextcloud/vue/dist/ncvuecomponents.js");
+/* harmony import */ var _nextcloud_vue__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_vue__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-slider-component */ "./node_modules/vue-slider-component/dist/vue-slider-component.umd.min.js");
+/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-slider-component/theme/default.css */ "./node_modules/vue-slider-component/theme/default.css");
+/* harmony import */ var vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @nextcloud/axios */ "./node_modules/@nextcloud/axios/dist/index.js");
+/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_axios__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _ApptIconLabel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ApptIconLabel */ "./src/components/ApptIconLabel.vue");
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "ApptMgrSlideBar",
+  components: {
+    ApptIconLabel: _ApptIconLabel__WEBPACK_IMPORTED_MODULE_6__["default"],
+    SlideBar: _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    ApptIconButton: _ApptIconButton__WEBPACK_IMPORTED_MODULE_1__["default"],
+    VueSlider: vue_slider_component__WEBPACK_IMPORTED_MODULE_3___default.a,
+    Actions: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_2__["Actions"],
+    ActionButton: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_2__["ActionButton"]
+  },
+  props: {
+    curPageData: Object,
+    title: '',
+    subtitle: ''
+  },
+  mounted: function mounted() {
+    this.isLoading = true;
+    this.start();
+  },
+  inject: ['getState', 'setState'],
+  data: function data() {
+    return {
+      isLoading: true,
+      isSending: false,
+      calInfo: {
+        mainCalId: "-1",
+        destCalId: "-1",
+        nrSrcCalId: "-1",
+        nrDstCalId: "-1",
+        tsMode: "0"
+      },
+      hasMainCal: false,
+      cals: []
+    };
+  },
+  methods: {
+    start: function start() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var data, res, cals, i, l, cal;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _this.isLoading = true;
+                _context.prev = 1;
+                data = _this.curPageData;
+                _context.next = 5;
+                return _this.getState("get_" + data.stateAction, data.pageId);
+
+              case 5:
+                _this.calInfo = _context.sent;
+
+                if (_this.calInfo.tsMode === '0') {
+                  _this.hasMainCal = _this.calInfo.mainCalId !== "-1";
+                }
+
+                _context.next = 15;
+                break;
+
+              case 9:
+                _context.prev = 9;
+                _context.t0 = _context["catch"](1);
+                _this.isLoading = false;
+                console.log(_context.t0);
+                OC.Notification.showTemporary(_this.t('appointments', "Can not request data"), {
+                  timeout: 4,
+                  type: 'error'
+                });
+                return _context.abrupt("return");
+
+              case 15:
+                _this.cals.splice(0, _this.cals.length);
+
+                _context.prev = 16;
+                _context.next = 19;
+                return _nextcloud_axios__WEBPACK_IMPORTED_MODULE_5___default.a.get('callist');
+
+              case 19:
+                res = _context.sent;
+                cals = res.data.split(String.fromCharCode(31));
+
+                for (i = 0, l = cals.length; i < l; i++) {
+                  cal = cals[i].split(String.fromCharCode(30));
+
+                  _this.cals.push({
+                    name: cal[0],
+                    id: cal[2]
+                  });
+                }
+
+                _this.isLoading = false;
+                _context.next = 30;
+                break;
+
+              case 25:
+                _context.prev = 25;
+                _context.t1 = _context["catch"](16);
+                _this.isLoading = false;
+                console.log(_context.t1);
+                OC.Notification.showTemporary(_this.t('appointments', "Can not load calendars"), {
+                  timeout: 4,
+                  type: 'error'
+                });
+
+              case 30:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[1, 9], [16, 25]]);
+      }))();
+    },
+    tsModeChanged: function tsModeChanged() {
+      this.apply(true);
+      this.$emit("showModal", [this.t('appointments', 'Warning'), this.t('appointments', 'Time slot mode has changed. Public page is going offline…'), this.start]);
+    },
+    apply: function apply(tsModeChanged) {
+      var _this2 = this;
+
+      // No need to check when ts mode is being changed
+      if (tsModeChanged !== true) {
+        if (this.calInfo.tsMode === "0") {
+          if (this.calInfo.mainCalId === '-1') {
+            this.$emit("showModal", [this.t('appointments', 'Error'), this.t('appointments', 'Main calendar is required')]);
+            return;
+          } else {
+            if (this.calInfo.mainCalId === this.calInfo.destCalId) {
+              this.calInfo.destCalId = "-1";
+            }
+          }
+        } else if (this.calInfo.tsMode === "1") {
+          if (this.calInfo.nrSrcCalId === '-1') {
+            this.$emit("showModal", [this.t('appointments', 'Error'), this.t('appointments', 'Source calendar is required')]);
+            return;
+          } else if (this.calInfo.nrDstCalId === '-1') {
+            this.$emit("showModal", [this.t('appointments', 'Error'), this.t('appointments', 'Destination calendar is required')]);
+            return;
+          } else if (this.calInfo.nrSrcCalId === this.calInfo.nrDstCalId) {
+            this.$emit("showModal", [this.t('appointments', 'Error'), this.t('appointments', 'Source and Destination calendars must be different')]);
+            return;
+          }
+        }
+      }
+
+      this.isSending = true;
+      this.setState("set_" + this.curPageData.stateAction, this.calInfo, this.curPageData.pageId).then(function () {
+        if (tsModeChanged) {
+          // reload pages when tsModeChanged
+          _this2.$emit("reloadPages");
+        }
+
+        if (_this2.calInfo.tsMode === '0') {
+          _this2.hasMainCal = _this2.calInfo.mainCalId !== "-1";
+        }
+
+        _this2.isSending = false;
+      });
+    },
+    close: function close() {
+      this.$emit('close');
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/DelApptSlideBar.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DelApptSlideBar.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SlideBar.vue */ "./src/components/SlideBar.vue");
+/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @nextcloud/axios */ "./node_modules/@nextcloud/axios/dist/index.js");
+/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-slider-component */ "./node_modules/vue-slider-component/dist/vue-slider-component.umd.min.js");
+/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-slider-component/theme/default.css */ "./node_modules/vue-slider-component/theme/default.css");
+/* harmony import */ var vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_3__);
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "AddApptSlideBar",
+  components: {
+    SlideBar: _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    VueSlider: vue_slider_component__WEBPACK_IMPORTED_MODULE_2___default.a
+  },
+  props: {
+    curPageData: {},
+    title: '',
+    subtitle: ''
+  },
+  inject: ['getState'],
+  mounted: function mounted() {
+    this.isLoading = true;
+    this.start();
+  },
+  computed: {
+    rsMarks: function rsMarks() {
+      var options = {
+        month: 'short',
+        day: '2-digit'
+      };
+      var d = new Date();
+      d.setTime(Date.now() - 86400000);
+      var y = d.toLocaleString(undefined, options);
+      d.setTime(d.getTime() - 86400000 * 6);
+      var w = d.toLocaleString(undefined, options);
+      return {
+        0: '-∞',
+        58: w,
+        100: y
+      };
+    }
+  },
+  data: function data() {
+    return {
+      isLoading: true,
+      calInfo: undefined,
+      rsValue: 58,
+      remType: "empty",
+      roaData: {
+        str: "",
+        pageId: undefined
+      }
+    };
+  },
+  methods: {
+    start: function start() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var data;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _this.isLoading = true;
+                _context.prev = 1;
+                data = _this.curPageData;
+                _context.next = 5;
+                return _this.getState("get_" + data.stateAction, data.pageId);
+
+              case 5:
+                _this.calInfo = _context.sent;
+                _this.isLoading = false;
+                _context.next = 14;
+                break;
+
+              case 9:
+                _context.prev = 9;
+                _context.t0 = _context["catch"](1);
+                _this.isLoading = false;
+                console.log(_context.t0);
+                OC.Notification.showTemporary(_this.t('appointments', "Can not request data"), {
+                  timeout: 4,
+                  type: 'error'
+                });
+
+              case 14:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[1, 9]]);
+      }))();
+    },
+    removeOld: function removeOld() {
+      var _this2 = this;
+
+      var d = {
+        ri: {
+          type: this.remType,
+          before: this.rsValue === "100" ? 1 : 7
+        },
+        pageId: this.curPageData.pageId
+      };
+      var str;
+
+      try {
+        str = JSON.stringify(d.ri);
+      } catch (e) {
+        console.log(e);
+        OC.Notification.showTemporary(this.t('appointments', "Can not request data"), {
+          timeout: 4,
+          type: 'error'
+        });
+        return;
+      }
+
+      this.$emit('openGM', 2);
+      this.$emit('updateGM', {
+        generalModalLoadingTxt: this.t('appointments', 'Gathering calendar information') + "..."
+      });
+      this.roaData.pageId = d.pageId;
+      this.roaData.str = "";
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('calgetweek', {
+        t: str,
+        p: d.pageId
+      }).then(function (response) {
+        if (response.status === 200) {
+          var ua = response.data.split("|");
+          var txt = "";
+
+          if (ua[0] !== "0") {
+            var dt = new Date();
+            dt.setTime(ua[1] * 1000);
+            var dts = dt.toLocaleDateString(undefined, {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            });
+
+            if (d.ri.type === "empty") {
+              txt = _this2.t('appointments', 'Remove empty appointment slots created before {fullDate} ?', {
+                fullDate: dts
+              });
+            } else {
+              txt = _this2.t('appointments', 'Remove empty slots and booked appointments created before {fullDate} ?', {
+                fullDate: dts
+              });
+            }
+
+            _this2.roaData.str = str;
+          }
+
+          var att = "";
+
+          if (ua[0] !== "0" && d.ri.type === "both" && _this2.calInfo.destCalId !== undefined && _this2.calInfo.destCalId !== "-1") {
+            att = " [ " + _this2.t('appointments', 'two calendars affected') + " ]";
+          }
+
+          _this2.$emit('updateGM', {
+            generalModalTxt: [txt, _this2.t('appointments', 'Number of expired appointments/slots: ') + ua[0] + att],
+            generalModalLoadingTxt: "",
+            generalModalActionCallback: _this2.removeOldAppointments
+          });
+        }
+      })["catch"](function (error) {
+        _this2.$emit('closeGM');
+
+        console.log(error);
+        OCP.Toast.error(_this2.t('appointments', 'Can not get calendar data') + "\xa0\xa0\xa0\xa0");
+      });
+    },
+    removeOldAppointments: function removeOldAppointments() {
+      var _this3 = this;
+
+      if (this.roaData.str === "" || this.roaData.pageId === undefined) {
+        OC.Notification.showTemporary('Can not remove appointments: bad info', {
+          timeout: 4,
+          type: 'error'
+        });
+      }
+
+      if (!confirm(this.t('appointments', 'This action can NOT be undone. Continue?'))) return;
+      this.$emit('openGM', 2);
+      this.$emit('updateGM', {
+        generalModalLoadingTxt: this.t('appointments', 'Removing Appointment Slots') + "..."
+      });
+      var errTxt = this.t('appointments', 'Can not delete old appointments/slots') + "\xa0\xa0\xa0\xa0";
+      var str = this.roaData.str.slice(0, -1) + ',"delete":true}';
+      var pageId = this.roaData.pageId;
+      this.roaData.str = "";
+      this.roaData.pageId = undefined;
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('calgetweek', {
+        t: str,
+        p: pageId
+      }).then(function (response) {
+        if (response.status === 200) {
+          var ua = response.data.split("|");
+
+          if (ua[0] !== "0") {
+            var dt = new Date();
+            dt.setTime(ua[1] * 1000);
+            var txt;
+            var dts = dt.toLocaleDateString(undefined, {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            });
+
+            if (str.indexOf("empty") > -1) {
+              txt = _this3.t('appointments', 'All empty appointment slots created before {fullDate} are removed', {
+                fullDate: dts
+              });
+            } else {
+              txt = _this3.t('appointments', 'All empty slots and booked appointments created before {fullDate} are removed', {
+                fullDate: dts
+              });
+            }
+
+            _this3.$emit('updateGM', {
+              generalModalTxt: ["", txt]
+            });
+          } else {
+            OCP.Toast.error(errTxt);
+          }
+
+          _this3.$emit('updateGM', {
+            generalModalLoadingTxt: ""
+          });
+        }
+      })["catch"](function (error) {
+        _this3.$emit('closeGM');
+
+        console.log(error);
+        OCP.Toast.error(errTxt);
+      });
+    },
+    checkRsMin: function checkRsMin() {
+      if (+this.rsValue < 58) this.rsValue = "58";
+    },
+    close: function close() {
+      this.$emit('close');
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/FormStnSlideBar.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./src/components/FormStnSlideBar.vue?vue&type=script&lang=js& ***!
@@ -6885,6 +7938,17 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SlideBar.vue */ "./src/components/SlideBar.vue");
 /* harmony import */ var _ApptAccordion_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ApptAccordion.vue */ "./src/components/ApptAccordion.vue");
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -7023,35 +8087,83 @@ __webpack_require__.r(__webpack_exports__);
     SlideBar: _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     ApptAccordion: _ApptAccordion_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
+  mounted: function mounted() {
+    this.isLoading = true;
+    this.start();
+  },
+  inject: ['getState', 'setState'],
   props: {
     title: '',
-    subtitle: '',
-    ppsInfo: {
-      type: Object,
-      "default": function _default() {
-        return {
-          formTitle: "",
-          nbrWeeks: "1",
-          showEmpty: true,
-          startFNED: false,
-          showWeekends: false,
-          time2Cols: false,
-          endTime: false,
-          gdpr: "",
-          whenCanceled: "mark",
-          hidePhone: false,
-          showTZ: false,
-          pageTitle: "",
-          pageSubTitle: "",
-          metaNoIndex: false,
-          pageStyle: ""
-        };
+    subtitle: ''
+  },
+  data: function data() {
+    return {
+      isLoading: true,
+      isSending: false,
+      ppsInfo: {
+        formTitle: "",
+        nbrWeeks: "1",
+        showEmpty: true,
+        startFNED: false,
+        showWeekends: false,
+        time2Cols: false,
+        endTime: false,
+        gdpr: "",
+        whenCanceled: "mark",
+        hidePhone: false,
+        showTZ: false,
+        pageTitle: "",
+        pageSubTitle: "",
+        metaNoIndex: false,
+        pageStyle: ""
       }
-    }
+    };
   },
   methods: {
+    start: function start() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _this.isLoading = true;
+                _context.prev = 1;
+                _context.next = 4;
+                return _this.getState("get_pps", "");
+
+              case 4:
+                _this.ppsInfo = _context.sent;
+                _this.isLoading = false;
+                _context.next = 13;
+                break;
+
+              case 8:
+                _context.prev = 8;
+                _context.t0 = _context["catch"](1);
+                _this.isLoading = false;
+                console.log(_context.t0);
+                OC.Notification.showTemporary(_this.t('appointments', "Can not request data"), {
+                  timeout: 4,
+                  type: 'error'
+                });
+
+              case 13:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[1, 8]]);
+      }))();
+    },
     apply: function apply() {
-      this.$emit('apply', this.ppsInfo);
+      var _this2 = this;
+
+      this.isSending = true;
+      this.setState('set_pps', this.ppsInfo).then(function () {
+        _this2.isSending = false;
+      });
     },
     close: function close() {
       this.$emit('close');
@@ -7071,6 +8183,17 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SlideBar.vue */ "./src/components/SlideBar.vue");
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -7172,27 +8295,75 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: {
     title: '',
-    subtitle: '',
-    emlInfo: {
-      type: Object,
-      "default": function _default() {
-        return {
-          icsFile: false,
-          skipEVS: false,
-          attMod: false,
-          attDel: false,
-          meReq: false,
-          meConfirm: false,
-          meCancel: false,
-          vldNote: "",
-          cnfNote: ""
-        };
+    subtitle: ''
+  },
+  mounted: function mounted() {
+    this.isLoading = true;
+    this.start();
+  },
+  inject: ['getState', 'setState'],
+  data: function data() {
+    return {
+      isLoading: true,
+      isSending: false,
+      emlInfo: {
+        icsFile: false,
+        skipEVS: false,
+        attMod: false,
+        attDel: false,
+        meReq: false,
+        meConfirm: false,
+        meCancel: false,
+        vldNote: "",
+        cnfNote: ""
       }
-    }
+    };
   },
   methods: {
+    start: function start() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _this.isLoading = true;
+                _context.prev = 1;
+                _context.next = 4;
+                return _this.getState("get_eml", "");
+
+              case 4:
+                _this.emlInfo = _context.sent;
+                _this.isLoading = false;
+                _context.next = 13;
+                break;
+
+              case 8:
+                _context.prev = 8;
+                _context.t0 = _context["catch"](1);
+                _this.isLoading = false;
+                console.log(_context.t0);
+                OC.Notification.showTemporary(_this.t('appointments', "Can not request data"), {
+                  timeout: 4,
+                  type: 'error'
+                });
+
+              case 13:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[1, 8]]);
+      }))();
+    },
     apply: function apply() {
-      this.$emit('apply', this.emlInfo);
+      var _this2 = this;
+
+      this.isSending = true;
+      this.setState('set_eml', this.emlInfo).then(function () {
+        _this2.isSending = false;
+      });
     },
     close: function close() {
       this.$emit('close');
@@ -7328,6 +8499,70 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     setCalendarFromIndex: function setCalendarFromIndex(idx) {
       var c = this.calendars[idx];
       this.$emit('calSelected', c);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/PagePickerSlideBar.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./src/components/PagePickerSlideBar.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SlideBar.vue */ "./src/components/SlideBar.vue");
+/* harmony import */ var _ApptIconLabel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ApptIconLabel */ "./src/components/ApptIconLabel.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "PagePickerSlideBar",
+  components: {
+    ApptIconLabel: _ApptIconLabel__WEBPACK_IMPORTED_MODULE_1__["default"],
+    SlideBar: _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  props: {
+    title: '',
+    subtitle: '',
+    page0: Object,
+    morePages: Array
+  },
+  methods: {
+    pageSelected: function pageSelected(pageId) {
+      this.$emit('pageSelected', pageId);
+    },
+    close: function close() {
+      this.$emit('close');
     }
   }
 });
@@ -7553,6 +8788,58 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/SettingsSlideBar.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SettingsSlideBar.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SlideBar.vue */ "./src/components/SlideBar.vue");
+/* harmony import */ var _nextcloud_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @nextcloud/vue */ "./node_modules/@nextcloud/vue/dist/ncvuecomponents.js");
+/* harmony import */ var _nextcloud_vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_vue__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "SettingsSlideBar",
+  components: {
+    SlideBar: _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    AppNavigationItem: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_1__["AppNavigationItem"]
+  },
+  props: {
+    title: '',
+    subtitle: ''
+  },
+  methods: {
+    close: function close() {
+      this.$emit('close');
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/SlideBar.vue?vue&type=script&lang=js&":
 /*!********************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SlideBar.vue?vue&type=script&lang=js& ***!
@@ -7661,565 +8948,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/TimeSlotSlideBar.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TimeSlotSlideBar.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SlideBar.vue */ "./src/components/SlideBar.vue");
-/* harmony import */ var _ApptIconButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ApptIconButton */ "./src/components/ApptIconButton.vue");
-/* harmony import */ var _AddApptSection__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AddApptSection */ "./src/components/AddApptSection.vue");
-/* harmony import */ var _nextcloud_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @nextcloud/vue */ "./node_modules/@nextcloud/vue/dist/ncvuecomponents.js");
-/* harmony import */ var _nextcloud_vue__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_vue__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-slider-component */ "./node_modules/vue-slider-component/dist/vue-slider-component.umd.min.js");
-/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-slider-component/theme/default.css */ "./node_modules/vue-slider-component/theme/default.css");
-/* harmony import */ var vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @nextcloud/axios */ "./node_modules/@nextcloud/axios/dist/index.js");
-/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_axios__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _nextcloud_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @nextcloud/router */ "./node_modules/@nextcloud/router/dist/index.js");
-/* harmony import */ var _nextcloud_router__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_router__WEBPACK_IMPORTED_MODULE_7__);
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "TimeSlotSlideBar",
-  components: {
-    SlideBar: _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    ApptIconButton: _ApptIconButton__WEBPACK_IMPORTED_MODULE_1__["default"],
-    VueSlider: vue_slider_component__WEBPACK_IMPORTED_MODULE_4___default.a,
-    Actions: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_3__["Actions"],
-    ActionButton: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_3__["ActionButton"],
-    AddApptSection: _AddApptSection__WEBPACK_IMPORTED_MODULE_2__["default"]
-  },
-  props: {
-    isGridReady: {
-      type: Boolean,
-      "default": false
-    },
-    calInfo: {
-      type: Object,
-      "default": function _default() {
-        return {
-          prepTime: "0",
-          whenCanceled: "mark",
-          mainCalId: "-1",
-          destCalId: "-1",
-          nrSrcCalId: "-1",
-          nrDstCalId: "-1",
-          nrPushRec: true,
-          nrRequireCat: false,
-          nrAutoFix: false,
-          tsMode: "0"
-        };
-      }
-    }
-  },
-  computed: {
-    rsMarks: function rsMarks() {
-      var options = {
-        month: 'short',
-        day: '2-digit'
-      };
-      var d = new Date();
-      d.setTime(Date.now() - 86400000);
-      var y = d.toLocaleString(undefined, options);
-      d.setTime(d.getTime() - 86400000 * 6);
-      var w = d.toLocaleString(undefined, options);
-      return {
-        0: '-∞',
-        58: w,
-        100: y
-      };
-    }
-  },
-  data: function data() {
-    return {
-      expando: [0, 0, 0, 0, 0],
-      expLoading: -1,
-      rsValue: 58,
-      remType: "empty",
-      tzName: '',
-      tzData: '',
-      tzLoading: false,
-      setStateInProgress: false,
-      cals: [],
-      calsAll: []
-    };
-  },
-  methods: {
-    stateDataReady: function stateDataReady(nid) {
-      var expId = nid * -1 - 1;
-      this.expLoading = -1;
-
-      if (expId < this.expando.length) {
-        // Two settings should not be opened at the same time
-        for (var i = 0; i < this.expando.length; i++) {
-          if (i !== expId && this.expando[i] === 1) {
-            this.toggleExpando(i);
-          }
-        }
-
-        this.toggleExpando(expId);
-      }
-    },
-    removeOld: function removeOld() {
-      this.$emit("remOldAppts", {
-        type: this.remType,
-        before: this.rsValue === "100" ? 1 : 7
-      });
-    },
-    openRemOld: function openRemOld() {
-      if (this.expando[0] === 1) {
-        this.toggleExpando(0);
-      } else {
-        // this is need to fetch calInfo
-        this.expLoading = 0;
-        this.$emit('getCalInfo', 0);
-      }
-    },
-    applyCalListSettings: function applyCalListSettings() {
-      if (this.calInfo.tsMode === "0") {
-        if (this.calInfo.mainCalId === '-1') {
-          this.$emit("showModal", [this.t('appointments', 'Error'), this.t('appointments', 'Main calendar is required')]);
-        } else {
-          if (this.calInfo.mainCalId === this.calInfo.destCalId) {
-            this.calInfo.destCalId = "-1";
-          }
-
-          this.applyCalSettings();
-        }
-      } else if (this.calInfo.tsMode === "1") {
-        if (this.calInfo.nrSrcCalId === '-1') {
-          this.$emit("showModal", [this.t('appointments', 'Error'), this.t('appointments', 'Source calendar is required')]);
-        } else if (this.calInfo.nrDstCalId === '-1') {
-          this.$emit("showModal", [this.t('appointments', 'Error'), this.t('appointments', 'Destination calendar is required')]);
-        } else if (this.calInfo.nrSrcCalId === this.calInfo.nrDstCalId) {
-          this.$emit("showModal", [this.t('appointments', 'Error'), this.t('appointments', 'Source and Destination calendars must be different')]);
-        } else {
-          this.applyCalSettings();
-        }
-      }
-    },
-    tsModeChanged: function tsModeChanged() {
-      this.applyCalSettings(true);
-      this.$emit("showModal", [this.t('appointments', 'Warning'), this.t('appointments', 'Time slot mode has changed. Public page is going offline…'), this.openCalListSettings]);
-    },
-    applyCalSettings: function applyCalSettings() {
-      var reloadPages = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
-      if (!reloadPages) {
-        this.$emit('setCalInfo', this.calInfo);
-      } else {
-        this.$emit('setCalInfo_r', this.calInfo);
-      }
-    },
-    openCalListSettings: function openCalListSettings() {
-      if (this.expando[4] === 1) {
-        // just close
-        this.toggleExpando(4);
-      } else {
-        this.expLoading = 4;
-        this.getCalList();
-        this.$emit('getCalInfo', 4); // expando open is triggered in via getCalInfo event
-      }
-    },
-    openNRSettings: function openNRSettings() {
-      if (this.expando[3] === 1) {
-        // just close
-        this.toggleExpando(3);
-      } else {
-        this.expLoading = 3;
-        this.$emit('getCalInfo', 3); // expando open is triggered in via getCalInfo event
-      }
-    },
-    openCalSettings: function openCalSettings() {
-      if (this.expando[1] === 1) {
-        // just close
-        this.toggleExpando(1);
-      } else {
-        this.expLoading = 1;
-        this.$emit('getCalInfo', 1); // expando open is triggered in via getCalInfo event
-      }
-    },
-    getCalList: function getCalList() {
-      var _this = this;
-
-      this.cals.splice(0, this.cals.length);
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_6___default.a.get('callist').then(function (response) {
-        var cals = response.data.split(String.fromCharCode(31));
-
-        for (var i = 0, l = cals.length; i < l; i++) {
-          var cal = cals[i].split(String.fromCharCode(30));
-
-          _this.cals.push({
-            name: cal[0],
-            id: cal[2]
-          });
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    openAddAppts: function openAddAppts() {
-      var _this2 = this;
-
-      if (this.expando[2] === 1) {
-        this.toggleExpando(2);
-        return;
-      }
-
-      this.tzLoading = true; // 999 won't trigger slideBar toggle
-
-      this.$emit('getCalInfo', 999);
-
-      if (!this.isGridReady) {
-        this.$emit('setupGrid');
-      }
-
-      this.tzName = "UTC";
-      this.tzData = "UTC";
-      this.$parent.$parent.getState("get_tz").then(function (res) {
-        if (res !== null && res.toLowerCase() !== 'utc') {
-          var url = Object(_nextcloud_router__WEBPACK_IMPORTED_MODULE_7__["linkTo"])('appointments', 'ajax/zones.js');
-          return _nextcloud_axios__WEBPACK_IMPORTED_MODULE_6___default.a.get(url).then(function (tzr) {
-            if (tzr.status === 200) {
-              var tzd = tzr.data;
-
-              if (_typeof(tzd) === "object" && tzd.hasOwnProperty('aliases') && tzd.hasOwnProperty('zones')) {
-                var tzs = "";
-
-                if (tzd.zones[res] !== undefined) {
-                  tzs = tzd.zones[res].ics.join("\r\n");
-                } else if (tzd.aliases[res] !== undefined) {
-                  var alias = tzd.aliases[res].aliasTo;
-
-                  if (tzd.zones[alias] !== undefined) {
-                    res = alias;
-                    tzs = tzd.zones[alias].ics.join("\r\n");
-                  }
-                }
-
-                return [res, tzs];
-              }
-            }
-
-            return null;
-          });
-        } else return Promise.resolve(null);
-      }).then(function (r) {
-        // close all expandos
-        for (var i = 0; i < _this2.expando.length; i++) {
-          if (_this2.expando[i] === 1) {
-            _this2.toggleExpando(i);
-          }
-        }
-
-        if (r === null || !Array.isArray(r) || r.length !== 2 || r[1] === "") {
-          console.error("can't get timezone data");
-        } else {
-          _this2.tzName = r[0];
-          _this2.tzData = "BEGIN:VTIMEZONE\r\nTZID:" + r[0].trim() + "\r\n" + r[1].trim() + "\r\nEND:VTIMEZONE";
-        }
-
-        _this2.tzLoading = false;
-
-        _this2.toggleExpando(2);
-      })["catch"](function (err) {
-        // close all expandos
-        for (var i = 0; i < _this2.expando.length; i++) {
-          if (_this2.expando[i] === 1) {
-            _this2.toggleExpando(i);
-          }
-        }
-
-        console.log(err);
-        _this2.tzLoading = false;
-
-        _this2.toggleExpando(2);
-      });
-    },
-    toggleExpando: function toggleExpando(expId) {
-      this.expando.splice(expId, 1, this.expando[expId] ^ 1);
-    },
-    checkRsMin: function checkRsMin() {
-      if (+this.rsValue < 58) this.rsValue = "58";
-    },
-    close: function close() {
-      this.$emit('close');
-    }
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/UserStnSlideBar.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./src/components/UserStnSlideBar.vue?vue&type=script&lang=js& ***!
@@ -8230,6 +8958,35 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SlideBar.vue */ "./src/components/SlideBar.vue");
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -8291,22 +9048,121 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     title: '',
     subtitle: '',
-    uciInfo: {
-      type: Object,
-      "default": function _default() {
-        return {
-          organization: "",
-          email: "",
-          address: "",
-          phone: "",
-          useDefaultEmail: "yes"
-        };
-      }
-    }
+    curPageData: Object
+  },
+  mounted: function mounted() {
+    this.isLoading = true;
+    this.start();
+  },
+  inject: ['getState', 'setState'],
+  data: function data() {
+    return {
+      isLoading: true,
+      isSending: false,
+      uciInfo: {
+        organization: "",
+        email: "",
+        address: "",
+        phone: "",
+        useDefaultEmail: "yes",
+        // Secondary pages only (same as ppsInfo.formTitle for the main)
+        formTitle: ""
+      },
+      ph_org: "",
+      ph_addr: "",
+      ph_phn: ""
+    };
   },
   methods: {
+    start: function start() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var data, _uciInfo;
+
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _this.isLoading = true;
+                data = _this.curPageData; // if requesting not main page the _uciInfo will be used as placeholders because...
+                // ... EMPTY SECONDARY uciInfo DEFAULTS TO MAIN uciInfo
+
+                _context.prev = 2;
+                _context.next = 5;
+                return _this.getState("get_uci");
+
+              case 5:
+                _uciInfo = _context.sent;
+                _context.next = 14;
+                break;
+
+              case 8:
+                _context.prev = 8;
+                _context.t0 = _context["catch"](2);
+                _this.isLoading = false;
+                console.log(_context.t0);
+                OC.Notification.showTemporary(_this.t('appointments', "Can not request data"), {
+                  timeout: 4,
+                  type: 'error'
+                });
+                return _context.abrupt("return");
+
+              case 14:
+                if (!(data.pageId === 'p0')) {
+                  _context.next = 18;
+                  break;
+                }
+
+                _this.uciInfo = _uciInfo;
+                _this.isLoading = false;
+                return _context.abrupt("return");
+
+              case 18:
+                // Secondary page...
+                _this.ph_org = _uciInfo.organization;
+                _this.ph_addr = _uciInfo.address;
+                _this.ph_phn = _uciInfo.phone;
+                _context.prev = 21;
+                _context.next = 24;
+                return _this.getState("get_" + data.uciAction, data.pageId);
+
+              case 24:
+                _this.uciInfo = _context.sent;
+
+                _this.$set(_this.uciInfo, 'email', _uciInfo.email);
+
+                _this.$set(_this.uciInfo, 'useDefaultEmail', _uciInfo.useDefaultEmail);
+
+                _this.isLoading = false;
+                _context.next = 35;
+                break;
+
+              case 30:
+                _context.prev = 30;
+                _context.t1 = _context["catch"](21);
+                _this.isLoading = false;
+                console.log(_context.t1);
+                OC.Notification.showTemporary(_this.t('appointments', "Can not request data"), {
+                  timeout: 4,
+                  type: 'error'
+                });
+
+              case 35:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[2, 8], [21, 30]]);
+      }))();
+    },
     apply: function apply() {
-      this.$emit('apply', this.uciInfo);
+      var _this2 = this;
+
+      this.isSending = true;
+      this.setState('set_' + this.curPageData.uciAction, this.uciInfo, this.curPageData.pageId).then(function () {
+        _this2.isSending = false;
+      });
     },
     close: function close() {
       this.$emit('close');
@@ -16276,6 +17132,24 @@ module.exports = exports;
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/dist/cjs.js!./node_modules/vue-loader/lib/index.js?!./src/components/ApptIconLabel.vue?vue&type=style&index=0&id=5ff6fcc8&scoped=true&lang=scss&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/dist/cjs.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ApptIconLabel.vue?vue&type=style&index=0&id=5ff6fcc8&scoped=true&lang=scss& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Imports
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+exports = ___CSS_LOADER_API_IMPORT___(false);
+// Module
+exports.push([module.i, ".appt_icon_label_cont[data-v-5ff6fcc8] {\n  margin: .25em 0;\n}\n.appt_icon_label_cont .aib_icon_wrap[data-v-5ff6fcc8],\n  .appt_icon_label_cont .aib_text_span[data-v-5ff6fcc8] {\n    display: inline-block;\n    vertical-align: middle;\n}\n.appt_icon_label_cont .aib_icon_wrap[data-v-5ff6fcc8] {\n    width: 1.5em;\n    height: 1.5em;\n    opacity: .6;\n    cursor: inherit;\n}\n.appt_icon_label_cont .aib_text_span[data-v-5ff6fcc8] {\n    margin-left: .75em;\n    color: var(--color-text-light);\n    height: 2em;\n    line-height: 2em;\n    cursor: inherit;\n}\n", ""]);
+// Exports
+module.exports = exports;
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/dist/cjs.js!./node_modules/vue-loader/lib/index.js?!./src/components/SlideBar.vue?vue&type=style&index=0&id=55cbc85c&lang=scss&scoped=true&":
 /*!***************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/dist/cjs.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SlideBar.vue?vue&type=style&index=0&id=55cbc85c&lang=scss&scoped=true& ***!
@@ -16294,10 +17168,10 @@ module.exports = exports;
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/AddApptSection.vue?vue&type=style&index=0&id=fa52797e&scoped=true&lang=css&":
-/*!*****************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AddApptSection.vue?vue&type=style&index=0&id=fa52797e&scoped=true&lang=css& ***!
-  \*****************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/AddApptSlideBar.vue?vue&type=style&index=0&id=6125aa76&scoped=true&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AddApptSlideBar.vue?vue&type=style&index=0&id=6125aa76&scoped=true&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -16305,7 +17179,25 @@ module.exports = exports;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "\n.appt-gen-wrap[data-v-fa52797e]{\n    text-align: left;\n    display: inline-block;\n}\n.datepicker-label[data-v-fa52797e],\n.select-label[data-v-fa52797e]{\n    display: block;\n    margin-top: 1em;\n}\n.datepicker-label[data-v-fa52797e]{\n    margin-top: 0;\n}\n.select-label[data-v-fa52797e]{\n    margin-bottom: .25em;\n}\n.appt-slider[data-v-fa52797e]{\n    margin-bottom: 3em;\n}\n.appt-select[data-v-fa52797e] {\n    margin: 0;\n    width: 100%;\n    padding: 0 0 0 .25em;\n}\n/*.appt-genbtn{*/\n/*    min-width: 80%;*/\n/*    margin: 2.5em auto 0;*/\n/*    display: block;*/\n/*}*/\n", ""]);
+exports.push([module.i, "\n.srgdev-appt-sb-narrow[data-v-6125aa76]{\n  width: 85%;\n  margin: 0 0 0 2%;\n}\n.datepicker-label[data-v-6125aa76],\n.select-label[data-v-6125aa76]{\n  display: block;\n  margin-top: 1em;\n}\n.datepicker-label[data-v-6125aa76]{\n  margin-top: 0;\n}\n.select-label[data-v-6125aa76]{\n  margin-bottom: .25em;\n}\n.appt-slider[data-v-6125aa76]{\n  margin-bottom: 3em;\n}\n.appt-select[data-v-6125aa76] {\n  margin: 0;\n  width: 100%;\n  padding: 0 0 0 .25em;\n}\n\n", ""]);
+// Exports
+module.exports = exports;
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/AdvancedSlideBar.vue?vue&type=style&index=0&id=5706c5d8&scoped=true&lang=css&":
+/*!*******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AdvancedSlideBar.vue?vue&type=style&index=0&id=5706c5d8&scoped=true&lang=css& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Imports
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+exports = ___CSS_LOADER_API_IMPORT___(false);
+// Module
+exports.push([module.i, "\n.tsb-label[data-v-5706c5d8] {\n  display: block;\n}\n.tsb-input[data-v-5706c5d8] {\n  margin-top: 0;\n  display: block;\n  min-width: 80%;\n  margin-bottom: 1em;\n  color: var(--color-text-lighter);\n}\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -16324,6 +17216,42 @@ var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
 exports.push([module.i, "\n.appt-accordion-title[data-v-ba97c4d6]{\n    margin-bottom: .25em;\n    cursor: pointer;\n    background-position: left center;\n    padding-left: 1.75em;\n    background-size: 1.5em;\n    margin-left: -.5em;\n}\n.appt-accordion-content[data-v-ba97c4d6]{\n    padding-left: 1.25em;\n}\n", ""]);
+// Exports
+module.exports = exports;
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/ApptMgrSlideBar.vue?vue&type=style&index=0&id=393034e7&scoped=true&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ApptMgrSlideBar.vue?vue&type=style&index=0&id=393034e7&scoped=true&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Imports
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+exports = ___CSS_LOADER_API_IMPORT___(false);
+// Module
+exports.push([module.i, "\n.tsb-label[data-v-393034e7] {\n  display: block;\n}\n.tsb-input[data-v-393034e7] {\n  margin-top: 0;\n  display: block;\n  min-width: 80%;\n  margin-bottom: 1em;\n  color: var(--color-text-lighter);\n}\n\n\n", ""]);
+// Exports
+module.exports = exports;
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/DelApptSlideBar.vue?vue&type=style&index=0&id=1405a1e0&scoped=true&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DelApptSlideBar.vue?vue&type=style&index=0&id=1405a1e0&scoped=true&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Imports
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+exports = ___CSS_LOADER_API_IMPORT___(false);
+// Module
+exports.push([module.i, "\n.srgdev-appt-sb-narrow[data-v-1405a1e0] {\n  width: 85%;\n  margin: 0 0 0 2%;\n}\n.appt-slider[data-v-1405a1e0] {\n  margin-bottom: 3em;\n}\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -16360,24 +17288,6 @@ var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
 exports.push([module.i, "\n.appt-gen-wrap[data-v-702ec009]{\n    text-align: left;\n    display: inline-block;\n    margin-top: -20px;\n}\n.datepicker-label[data-v-702ec009],\n.select-label[data-v-702ec009]{\n    display: block;\n    margin-top: 1em;\n}\n.datepicker-label[data-v-702ec009]{\n    margin-top: 0;\n}\n.select-label[data-v-702ec009]{\n    margin-bottom: .25em;\n}\n.appt-slider[data-v-702ec009]{\n    margin-bottom: 3em;\n}\n.appt-select[data-v-702ec009] {\n    margin: 0;\n    width: 100%;\n    padding: 0 0 0 .25em;\n}\n.appt-genbtn[data-v-702ec009]{\n    min-width: 80%;\n    margin: 2.5em auto 0;\n    display: block;\n}\n", ""]);
-// Exports
-module.exports = exports;
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/TimeSlotSlideBar.vue?vue&type=style&index=0&id=7c8891dd&scoped=true&lang=css&":
-/*!*******************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TimeSlotSlideBar.vue?vue&type=style&index=0&id=7c8891dd&scoped=true&lang=css& ***!
-  \*******************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-// Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
-exports = ___CSS_LOADER_API_IMPORT___(false);
-// Module
-exports.push([module.i, "\n#appt_tsb-rem-slider[data-v-7c8891dd]{\n    margin: .25em 4.5em 3.25em 0;\n}\n.tsb-label[data-v-7c8891dd]{\n    display: block;\n}\n.tsb-input[data-v-7c8891dd]{\n    margin-top: 0;\n    display: block;\n    min-width: 80%;\n    margin-bottom: 1em;\n    color: var(--color-text-lighter);\n}\n\n\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -49179,6 +50089,7 @@ var render = function() {
       _c("AppNavigation", [
         _c(
           "ul",
+          { class: { sb_disable: _vm.stateInProgress } },
           [
             _c(
               "AppNavigationItem",
@@ -49194,7 +50105,11 @@ var render = function() {
                       ? _vm.t("appointments", "[Online]")
                       : _vm.t("appointments", "[Disabled]")),
                   icon:
-                    _vm.page0.enabled === 1 ? "icon-screen" : "icon-screen-off",
+                    _vm.pageInfoLoading !== 1
+                      ? _vm.page0.enabled === 1
+                        ? "icon-screen"
+                        : "icon-screen-off"
+                      : "",
                   loading: _vm.pageInfoLoading === 1
                 },
                 on: { click: _vm.getFormData }
@@ -49207,8 +50122,15 @@ var render = function() {
                     _c(
                       "ActionButton",
                       {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.page0.enabled === 0,
+                            expression: "page0.enabled===0"
+                          }
+                        ],
                         attrs: {
-                          disabled: _vm.page0.enabled === 1,
                           icon: "icon-checkmark-color",
                           closeAfterClick: ""
                         },
@@ -49230,8 +50152,15 @@ var render = function() {
                     _c(
                       "ActionButton",
                       {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.page0.enabled === 1,
+                            expression: "page0.enabled===1"
+                          }
+                        ],
                         attrs: {
-                          disabled: _vm.page0.enabled === 0,
                           icon: "icon-category-disabled",
                           closeAfterClick: ""
                         },
@@ -49317,7 +50246,7 @@ var render = function() {
               return _c(
                 "AppNavigationItem",
                 {
-                  key: page.key,
+                  key: page.pageId,
                   staticClass: "srgdev-pubpage-nav-item",
                   attrs: {
                     title:
@@ -49329,12 +50258,16 @@ var render = function() {
                         ? _vm.t("appointments", "[Online]")
                         : _vm.t("appointments", "[Disabled]")),
                     icon:
-                      page.enabled === 1 ? "icon-screen" : "icon-screen-off",
+                      _vm.pageInfoLoading !== idx + 2
+                        ? page.enabled === 1
+                          ? "icon-screen"
+                          : "icon-screen-off"
+                        : "",
                     loading: _vm.pageInfoLoading === idx + 2
                   },
                   on: {
                     click: function($event) {
-                      return _vm.getFormData(page.key)
+                      return _vm.getFormData(page.pageId)
                     }
                   }
                 },
@@ -49346,14 +50279,21 @@ var render = function() {
                       _c(
                         "ActionButton",
                         {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: page.enabled === 0,
+                              expression: "page.enabled===0"
+                            }
+                          ],
                           attrs: {
-                            disabled: page.enabled === 1,
                             icon: "icon-checkmark-color",
                             closeAfterClick: ""
                           },
                           on: {
                             click: function($event) {
-                              return _vm.setPageEnabled(page.key, 1)
+                              return _vm.setPageEnabled(page.pageId, 1)
                             }
                           }
                         },
@@ -49369,14 +50309,21 @@ var render = function() {
                       _c(
                         "ActionButton",
                         {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: page.enabled === 1,
+                              expression: "page.enabled===1"
+                            }
+                          ],
                           attrs: {
-                            disabled: page.enabled === 0,
                             icon: "icon-category-disabled",
                             closeAfterClick: ""
                           },
                           on: {
                             click: function($event) {
-                              return _vm.setPageEnabled(page.key, 0)
+                              return _vm.setPageEnabled(page.pageId, 0)
                             }
                           }
                         },
@@ -49395,7 +50342,7 @@ var render = function() {
                           attrs: { icon: "icon-public", closeAfterClick: "" },
                           on: {
                             click: function($event) {
-                              return _vm.showPubLink(page.key)
+                              return _vm.showPubLink(page.pageId)
                             }
                           }
                         },
@@ -49412,7 +50359,7 @@ var render = function() {
                         "ActionInput",
                         {
                           attrs: {
-                            "data-pid": page.key,
+                            "data-pid": page.pageId,
                             icon: "icon-rename",
                             value: page.label
                           },
@@ -49433,7 +50380,7 @@ var render = function() {
                           attrs: { icon: "icon-delete", closeAfterClick: "" },
                           on: {
                             click: function($event) {
-                              return _vm.deletePage(page.key)
+                              return _vm.deletePage(page.pageId)
                             }
                           }
                         },
@@ -49457,54 +50404,36 @@ var render = function() {
             _vm._v(" "),
             _c("AppNavigationItem", {
               attrs: {
-                loading: _vm.sbLoading === 6,
                 title: _vm.t("appointments", "Manage Appointment Slots"),
                 icon: "icon-appt-calendar-clock"
               },
               on: {
                 click: function($event) {
-                  return _vm.openSlideBar(6, "get_cls", _vm.calInfo)
+                  return _vm.openViaPicker(6, $event)
                 }
               }
             }),
             _vm._v(" "),
-            _c("AppNavigationSpacer"),
-            _vm._v(" "),
             _c("AppNavigationItem", {
               attrs: {
-                loading: _vm.sbLoading === 3,
                 title: _vm.t("appointments", "User/Organization Info"),
                 icon: "icon-user"
               },
               on: {
                 click: function($event) {
-                  return _vm.openSlideBar(3, "get_uci", _vm.uciInfo)
+                  return _vm.openViaPicker(3, $event)
                 }
               }
             }),
             _vm._v(" "),
             _c("AppNavigationItem", {
               attrs: {
-                loading: _vm.sbLoading === 2,
-                title: _vm.t("appointments", "Customize Public Page"),
-                icon: "icon-category-customization"
+                title: _vm.t("appointments", "Settings"),
+                icon: "icon-settings"
               },
               on: {
                 click: function($event) {
-                  return _vm.openSlideBar(2, "get_pps", _vm.ppsInfo)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c("AppNavigationItem", {
-              attrs: {
-                loading: _vm.sbLoading === 4,
-                title: _vm.t("appointments", "Email Settings"),
-                icon: "icon-mail"
-              },
-              on: {
-                click: function($event) {
-                  return _vm.openSlideBar(4, "get_eml", _vm.emlInfo)
+                  _vm.sbShow === 9 ? (_vm.sbShow = 0) : (_vm.sbShow = 9)
                 }
               }
             }),
@@ -49797,7 +50726,12 @@ var render = function() {
                                       staticClass:
                                         "primary srgdev-appt-modal-btn",
                                       staticStyle: { "margin-right": "3em" },
-                                      on: { click: _vm.removeOldAppointments }
+                                      on: {
+                                        click: function($event) {
+                                          _vm.generalModalActionCallback()
+                                          _vm.generalModalActionCallback = undefined
+                                        }
+                                      }
                                     },
                                     [
                                       _vm._v(
@@ -50282,101 +51216,152 @@ var render = function() {
             "div",
             { class: { sb_disable: _vm.stateInProgress } },
             [
-              _c("FormStnSlideBar", {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.sbShow === 2,
-                    expression: "sbShow===2"
-                  }
-                ],
-                attrs: { "pps-info": _vm.ppsInfo },
-                on: {
-                  apply: function($event) {
-                    return _vm.setState("set_pps", $event)
-                  },
-                  close: function($event) {
-                    _vm.sbShow = 0
-                  }
-                }
-              }),
+              _vm.sbShow === 11
+                ? _c("PagePickerSlideBar", {
+                    attrs: {
+                      page0: _vm.page0,
+                      title: _vm.pagePickerTitle,
+                      "more-pages": _vm.morePages
+                    },
+                    on: {
+                      pageSelected: function($event) {
+                        _vm.curPageId = $event
+                        _vm.sbShow = _vm.sbGotoBack
+                        _vm.sbGotoBack = 0
+                      },
+                      close: function($event) {
+                        _vm.sbShow = 0
+                      }
+                    }
+                  })
+                : _vm._e(),
               _vm._v(" "),
-              _c("UserStnSlideBar", {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.sbShow === 3,
-                    expression: "sbShow===3"
-                  }
-                ],
-                attrs: { "uci-info": _vm.uciInfo },
-                on: {
-                  apply: function($event) {
-                    return _vm.setState("set_uci", $event)
-                  },
-                  close: function($event) {
-                    _vm.sbShow = 0
-                  }
-                }
-              }),
+              _vm.sbShow === 6
+                ? _c("ApptMgrSlideBar", {
+                    ref: "tsbRef",
+                    attrs: { "cur-page-data": _vm.curPageData },
+                    on: {
+                      gotoAddAppt: function($event) {
+                        _vm.curPageId = $event
+                        _vm.sbShow = 7
+                        _vm.sbGotoBack = 6
+                      },
+                      gotoDelAppt: function($event) {
+                        _vm.curPageId = $event
+                        _vm.sbShow = 8
+                        _vm.sbGotoBack = 6
+                      },
+                      showModal: function($event) {
+                        return _vm.showSimpleGeneralModal($event)
+                      },
+                      reloadPages: function($event) {
+                        return _vm.getPages(0)
+                      },
+                      close: function($event) {
+                        _vm.sbShow = 0
+                      }
+                    }
+                  })
+                : _vm._e(),
               _vm._v(" "),
-              _c("MailStnSlideBar", {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.sbShow === 4,
-                    expression: "sbShow===4"
-                  }
-                ],
-                attrs: { "eml-info": _vm.emlInfo },
-                on: {
-                  apply: function($event) {
-                    return _vm.setState("set_eml", $event)
-                  },
-                  close: function($event) {
-                    _vm.sbShow = 0
-                  }
-                }
-              }),
+              _vm.sbShow === 3
+                ? _c("UserStnSlideBar", {
+                    attrs: { "cur-page-data": _vm.curPageData },
+                    on: {
+                      close: function($event) {
+                        _vm.sbShow = 0
+                      }
+                    }
+                  })
+                : _vm._e(),
               _vm._v(" "),
-              _c("TimeSlotSlideBar", {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.sbShow === 6,
-                    expression: "sbShow===6"
-                  }
-                ],
-                ref: "tsbRef",
-                attrs: {
-                  "cal-info": _vm.calInfo,
-                  "is-grid-ready": _vm.isGridReady
-                },
-                on: {
-                  showModal: function($event) {
-                    return _vm.showSimpleGeneralModal($event)
-                  },
-                  remOldAppts: _vm.countOldAppointments,
-                  agDataReady: _vm.makePreviewGrid,
-                  setupGrid: _vm.gridSetup,
-                  setCalInfo: function($event) {
-                    return _vm.setState("set_cls", $event)
-                  },
-                  setCalInfo_r: function($event) {
-                    return _vm.setState("set_cls", $event, true)
-                  },
-                  getCalInfo: function($event) {
-                    return _vm.getCalInfo($event)
-                  },
-                  close: function($event) {
-                    _vm.sbShow = 0
-                  }
-                }
-              })
+              _vm.sbShow === 9
+                ? _c("SettingsSlideBar", {
+                    attrs: { "cur-page-data": _vm.curPageData },
+                    on: {
+                      gotoPPS: function($event) {
+                        _vm.sbShow = 2
+                        _vm.sbGotoBack = 9
+                      },
+                      gotoEML: function($event) {
+                        _vm.sbShow = 4
+                        _vm.sbGotoBack = 9
+                      },
+                      gotoADV: function($event) {
+                        _vm.sbShow = 10
+                        _vm.sbGotoBack = 9
+                      },
+                      close: function($event) {
+                        _vm.sbShow = 0
+                      }
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.sbShow === 2
+                ? _c("FormStnSlideBar", {
+                    on: {
+                      close: function($event) {
+                        _vm.sbShow = _vm.sbGotoBack
+                        _vm.sbGotoBack = 0
+                      }
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.sbShow === 4
+                ? _c("MailStnSlideBar", {
+                    on: {
+                      close: function($event) {
+                        _vm.sbShow = _vm.sbGotoBack
+                        _vm.sbGotoBack = 0
+                      }
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.sbShow === 10
+                ? _c("AdvancedSlideBar", {
+                    on: {
+                      close: function($event) {
+                        _vm.sbShow = _vm.sbGotoBack
+                        _vm.sbGotoBack = 0
+                      }
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.sbShow === 7
+                ? _c("AddApptSlideBar", {
+                    attrs: {
+                      "cur-page-data": _vm.curPageData,
+                      "is-grid-ready": _vm.isGridReady
+                    },
+                    on: {
+                      setupGrid: _vm.gridSetup,
+                      agDataReady: _vm.makePreviewGrid,
+                      close: function($event) {
+                        _vm.sbShow = $event === true ? 0 : _vm.sbGotoBack
+                        _vm.sbGotoBack = 0
+                      }
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.sbShow === 8
+                ? _c("DelApptSlideBar", {
+                    attrs: { "cur-page-data": _vm.curPageData },
+                    on: {
+                      openGM: _vm.openGeneralModal,
+                      closeGM: _vm.closeGeneralModal,
+                      updateGM: _vm.updateGeneralModal,
+                      close: function($event) {
+                        _vm.sbShow = _vm.sbGotoBack
+                        _vm.sbGotoBack = 0
+                      }
+                    }
+                  })
+                : _vm._e()
             ],
             1
           )
@@ -50393,10 +51378,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/AddApptSection.vue?vue&type=template&id=fa52797e&scoped=true&":
-/*!********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AddApptSection.vue?vue&type=template&id=fa52797e&scoped=true& ***!
-  \********************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/AddApptSlideBar.vue?vue&type=template&id=6125aa76&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AddApptSlideBar.vue?vue&type=template&id=6125aa76&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -50409,129 +51394,657 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
-    { staticClass: "appt-gen-wrap" },
+    "SlideBar",
+    {
+      attrs: {
+        title: _vm.curPageData.label,
+        subtitle: _vm.t("appointments", "Add Appointment Slots"),
+        icon: "icon-appt-go-back"
+      },
+      on: { close: _vm.close }
+    },
     [
-      _c("label", { staticClass: "datepicker-label" }, [
-        _vm._v(_vm._s(_vm.t("appointments", "Select Dates:")))
-      ]),
-      _vm._v(" "),
-      _c("DatePicker", {
-        staticStyle: { width: "100%" },
-        attrs: {
-          editable: false,
-          "disabled-date": _vm.compNotBefore,
-          appendToBody: false,
-          "popup-style": _vm.datePickerPopupStyle,
-          placeholder: _vm.t("appointments", "Select Dates"),
-          lang: _vm.lang,
-          format: _vm.weekFormat,
-          type: "week"
-        },
-        on: { input: _vm.setToStartOfWeek },
-        model: {
-          value: _vm.apptWeek,
-          callback: function($$v) {
-            _vm.apptWeek = $$v
-          },
-          expression: "apptWeek"
-        }
-      }),
-      _vm._v(" "),
-      _c(
-        "label",
-        { staticClass: "select-label", attrs: { for: "appt_dur-select" } },
-        [_vm._v(_vm._s(_vm.t("appointments", "Appointment Duration:")))]
-      ),
-      _vm._v(" "),
-      _c("vue-slider", {
-        staticClass: "appt-slider",
-        attrs: {
-          min: 10,
-          max: 120,
-          interval: 5,
-          tooltip: "always",
-          tooltipPlacement: "bottom",
-          "tooltip-formatter": "{value} Min",
-          id: "appt_dur-select"
-        },
-        model: {
-          value: _vm.apptDur,
-          callback: function($$v) {
-            _vm.apptDur = $$v
-          },
-          expression: "apptDur"
-        }
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
+      _c("template", { slot: "main-area" }, [
         _c(
-          "label",
-          { staticClass: "select-label", attrs: { for: "appt_tz-select" } },
-          [_vm._v(_vm._s(_vm.t("appointments", "Timezone:")))]
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isLoading === true,
+                expression: "isLoading===true"
+              }
+            ],
+            staticClass: "sb_loading_cont"
+          },
+          [
+            _c("span", { staticClass: "icon-loading sb_loading_icon_cont" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "sb_loading_text" }, [
+              _vm._v(_vm._s(_vm.t("appointments", "Loading")))
+            ])
+          ]
         ),
         _vm._v(" "),
         _c(
-          "a",
+          "div",
           {
-            staticClass: "icon-info srgdev-appt-info-link",
-            on: {
-              click: function($event) {
-                return _vm.$root.$emit("helpWanted", "timezone")
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isLoading === false,
+                expression: "isLoading===false"
               }
-            }
+            ],
+            staticClass: "srgdev-appt-sb-main-cont"
           },
-          [_c("span", [_vm._v("Please read")])]
+          [
+            _c(
+              "div",
+              { staticClass: "srgdev-appt-sb-narrow" },
+              [
+                _c("label", { staticClass: "datepicker-label" }, [
+                  _vm._v(_vm._s(_vm.t("appointments", "Select Dates:")))
+                ]),
+                _vm._v(" "),
+                _c("DatePicker", {
+                  staticStyle: { width: "100%" },
+                  attrs: {
+                    editable: false,
+                    "disabled-date": _vm.compNotBefore,
+                    appendToBody: false,
+                    "popup-style": _vm.datePickerPopupStyle,
+                    placeholder: _vm.t("appointments", "Select Dates"),
+                    lang: _vm.lang,
+                    format: _vm.weekFormat,
+                    type: "week"
+                  },
+                  on: { input: _vm.setToStartOfWeek },
+                  model: {
+                    value: _vm.apptWeek,
+                    callback: function($$v) {
+                      _vm.apptWeek = $$v
+                    },
+                    expression: "apptWeek"
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "select-label",
+                    attrs: { for: "appt_dur-select" }
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(_vm.t("appointments", "Appointment Duration:"))
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("vue-slider", {
+                  staticClass: "appt-slider",
+                  attrs: {
+                    min: 10,
+                    max: 120,
+                    interval: 5,
+                    tooltip: "always",
+                    tooltipPlacement: "bottom",
+                    "tooltip-formatter": "{value} Min",
+                    id: "appt_dur-select"
+                  },
+                  model: {
+                    value: _vm.apptDur,
+                    callback: function($$v) {
+                      _vm.apptDur = $$v
+                    },
+                    expression: "apptDur"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "select-label",
+                      attrs: { for: "appt_tz-select" }
+                    },
+                    [_vm._v(_vm._s(_vm.t("appointments", "Timezone:")))]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "icon-info srgdev-appt-info-link",
+                      on: {
+                        click: function($event) {
+                          return _vm.$root.$emit("helpWanted", "timezone")
+                        }
+                      }
+                    },
+                    [_c("span", [_vm._v("Please read")])]
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.apptTZ,
+                        expression: "apptTZ"
+                      }
+                    ],
+                    staticClass: "appt-select",
+                    attrs: { id: "appt_tz-select" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.apptTZ = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "L" } }, [
+                      _vm._v("Local (floating)")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "C" } }, [
+                      _vm._v(_vm._s(_vm.tzName))
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "primary srgdev-appt-sb-genbtn",
+                    attrs: { disabled: _vm.apptWeek === null },
+                    on: { click: _vm.goApptGen }
+                  },
+                  [_vm._v(_vm._s(_vm.t("appointments", "Start")) + "\n      ")]
+                )
+              ],
+              1
+            )
+          ]
         )
-      ]),
-      _vm._v(" "),
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.apptTZ,
-              expression: "apptTZ"
-            }
-          ],
-          staticClass: "appt-select",
-          attrs: { id: "appt_tz-select" },
-          on: {
-            change: function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.apptTZ = $event.target.multiple
-                ? $$selectedVal
-                : $$selectedVal[0]
-            }
-          }
-        },
-        [
-          _c("option", { attrs: { value: "L" } }, [_vm._v("Local (floating)")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "C" } }, [_vm._v(_vm._s(_vm.tzName))])
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "primary srgdev-appt-sb-genbtn",
-          attrs: { disabled: _vm.apptWeek === null },
-          on: { click: _vm.goApptGen }
-        },
-        [_vm._v(_vm._s(_vm.t("appointments", "Start")) + "\n    ")]
-      )
+      ])
     ],
-    1
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/AdvancedSlideBar.vue?vue&type=template&id=5706c5d8&scoped=true&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AdvancedSlideBar.vue?vue&type=template&id=5706c5d8&scoped=true& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "SlideBar",
+    {
+      attrs: {
+        title: _vm.t("appointments", "Advanced Settings"),
+        subtitle: _vm.t("appointments", "These settings affect all pages"),
+        icon: "icon-appt-go-back"
+      },
+      on: { close: _vm.close }
+    },
+    [
+      _c("template", { slot: "main-area" }, [
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isLoading === true,
+                expression: "isLoading===true"
+              }
+            ],
+            staticClass: "sb_loading_cont"
+          },
+          [
+            _c("span", { staticClass: "icon-loading sb_loading_icon_cont" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "sb_loading_text" }, [
+              _vm._v(_vm._s(_vm.t("appointments", "Loading")))
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isLoading === false,
+                expression: "isLoading===false"
+              }
+            ],
+            staticClass: "srgdev-appt-sb-main-cont",
+            class: { sb_disable: _vm.isSending },
+            staticStyle: { "padding-left": "1%" }
+          },
+          [
+            _c("ApptIconLabel", {
+              attrs: {
+                text: _vm.t("appointments", "Time Slot Settings"),
+                icon: "icon-appt-timeslot-settings"
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "srgdev-appt-sb-indent_small" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "tsb-label",
+                  attrs: { for: "appt_tsb-appt-prep-time" }
+                },
+                [
+                  _vm._v(
+                    "\n          " +
+                      _vm._s(_vm.t("appointments", "Minimum lead time")) +
+                      ":"
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.calInfo.prepTime,
+                      expression: "calInfo.prepTime"
+                    }
+                  ],
+                  staticClass: "tsb-input",
+                  attrs: { id: "appt_tsb-appt-prep-time" },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.calInfo,
+                        "prepTime",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "0" } }, [
+                    _vm._v(_vm._s(_vm.t("appointments", "No lead time")))
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "15" } }, [
+                    _vm._v(_vm._s(_vm.t("appointments", "15 Minutes")))
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "30" } }, [
+                    _vm._v(_vm._s(_vm.t("appointments", "30 Minutes")))
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "60" } }, [
+                    _vm._v(_vm._s(_vm.t("appointments", "1 Hour")))
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "120" } }, [
+                    _vm._v(_vm._s(_vm.t("appointments", "2 Hours")))
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "label",
+                {
+                  staticClass: "tsb-label",
+                  attrs: { for: "appt_tsb-appt-reset" }
+                },
+                [
+                  _vm._v(
+                    "\n          " +
+                      _vm._s(_vm.t("appointments", "When Attendee Cancels")) +
+                      ":"
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.calInfo.whenCanceled,
+                      expression: "calInfo.whenCanceled"
+                    }
+                  ],
+                  staticClass: "tsb-input",
+                  attrs: { id: "appt_tsb-appt-reset" },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.calInfo,
+                        "whenCanceled",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "mark" } }, [
+                    _vm._v(
+                      _vm._s(
+                        _vm.t(
+                          "appointments",
+                          "Mark the appointment as canceled"
+                        )
+                      )
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "reset" } }, [
+                    _vm._v(
+                      _vm._s(
+                        _vm.t(
+                          "appointments",
+                          "Reset (make the timeslot available)"
+                        )
+                      )
+                    )
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("ApptIconLabel", {
+              attrs: {
+                text: _vm.t("appointments", "External Mode Settings"),
+                icon: "icon-sched-mode"
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "srgdev-appt-sb-indent_small" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "srgdev-appt-info-lcont srgdev-appt-sb-chb-cont",
+                  staticStyle: { "margin-top": "1em" }
+                },
+                [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.calInfo.nrPushRec,
+                        expression: "calInfo.nrPushRec"
+                      }
+                    ],
+                    staticClass: "checkbox",
+                    attrs: { type: "checkbox", id: "appt_tsb-push-recur" },
+                    domProps: {
+                      checked: Array.isArray(_vm.calInfo.nrPushRec)
+                        ? _vm._i(_vm.calInfo.nrPushRec, null) > -1
+                        : _vm.calInfo.nrPushRec
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = _vm.calInfo.nrPushRec,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = null,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 &&
+                              _vm.$set(
+                                _vm.calInfo,
+                                "nrPushRec",
+                                $$a.concat([$$v])
+                              )
+                          } else {
+                            $$i > -1 &&
+                              _vm.$set(
+                                _vm.calInfo,
+                                "nrPushRec",
+                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                              )
+                          }
+                        } else {
+                          _vm.$set(_vm.calInfo, "nrPushRec", $$c)
+                        }
+                      }
+                    }
+                  }),
+                  _c("label", { attrs: { for: "appt_tsb-push-recur" } }, [
+                    _vm._v(_vm._s(_vm.t("appointments", "Optimize recurrence")))
+                  ]),
+                  _c("a", {
+                    staticClass: "icon-info srgdev-appt-info-link",
+                    staticStyle: { right: "9%" },
+                    on: {
+                      click: function($event) {
+                        return _vm.$root.$emit("helpWanted", "push_rec_nr")
+                      }
+                    }
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "srgdev-appt-info-lcont srgdev-appt-sb-chb-cont",
+                  staticStyle: { "margin-top": "1.25em" }
+                },
+                [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.calInfo.nrRequireCat,
+                        expression: "calInfo.nrRequireCat"
+                      }
+                    ],
+                    staticClass: "checkbox",
+                    attrs: { type: "checkbox", id: "appt_tsb-require-cat" },
+                    domProps: {
+                      checked: Array.isArray(_vm.calInfo.nrRequireCat)
+                        ? _vm._i(_vm.calInfo.nrRequireCat, null) > -1
+                        : _vm.calInfo.nrRequireCat
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = _vm.calInfo.nrRequireCat,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = null,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 &&
+                              _vm.$set(
+                                _vm.calInfo,
+                                "nrRequireCat",
+                                $$a.concat([$$v])
+                              )
+                          } else {
+                            $$i > -1 &&
+                              _vm.$set(
+                                _vm.calInfo,
+                                "nrRequireCat",
+                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                              )
+                          }
+                        } else {
+                          _vm.$set(_vm.calInfo, "nrRequireCat", $$c)
+                        }
+                      }
+                    }
+                  }),
+                  _c("label", { attrs: { for: "appt_tsb-require-cat" } }, [
+                    _vm._v(
+                      _vm._s(
+                        _vm.t("appointments", 'Require "Appointment" category')
+                      )
+                    )
+                  ]),
+                  _c("a", {
+                    staticClass: "icon-info srgdev-appt-info-link",
+                    staticStyle: { right: "9%" },
+                    on: {
+                      click: function($event) {
+                        return _vm.$root.$emit("helpWanted", "require_cat_nr")
+                      }
+                    }
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "srgdev-appt-info-lcont srgdev-appt-sb-chb-cont",
+                  staticStyle: { "margin-top": "1.25em" }
+                },
+                [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.calInfo.nrAutoFix,
+                        expression: "calInfo.nrAutoFix"
+                      }
+                    ],
+                    staticClass: "checkbox",
+                    attrs: { type: "checkbox", id: "appt_tsb-nr-auto-fix" },
+                    domProps: {
+                      checked: Array.isArray(_vm.calInfo.nrAutoFix)
+                        ? _vm._i(_vm.calInfo.nrAutoFix, null) > -1
+                        : _vm.calInfo.nrAutoFix
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = _vm.calInfo.nrAutoFix,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = null,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 &&
+                              _vm.$set(
+                                _vm.calInfo,
+                                "nrAutoFix",
+                                $$a.concat([$$v])
+                              )
+                          } else {
+                            $$i > -1 &&
+                              _vm.$set(
+                                _vm.calInfo,
+                                "nrAutoFix",
+                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                              )
+                          }
+                        } else {
+                          _vm.$set(_vm.calInfo, "nrAutoFix", $$c)
+                        }
+                      }
+                    }
+                  }),
+                  _c("label", { attrs: { for: "appt_tsb-nr-auto-fix" } }, [
+                    _vm._v(
+                      _vm._s(
+                        _vm.t("appointments", 'Auto-fix "Source" timeslots')
+                      )
+                    )
+                  ]),
+                  _c("a", {
+                    staticClass: "icon-info srgdev-appt-info-link",
+                    staticStyle: { right: "9%" },
+                    on: {
+                      click: function($event) {
+                        return _vm.$root.$emit("helpWanted", "auto_fix_nr")
+                      }
+                    }
+                  })
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "primary srgdev-appt-sb-genbtn",
+                class: { "appt-btn-loading": _vm.isSending },
+                on: { click: _vm.apply }
+              },
+              [_vm._v(_vm._s(_vm.t("appointments", "Apply")) + "\n      ")]
+            )
+          ],
+          1
+        )
+      ])
+    ],
+    2
   )
 }
 var staticRenderFns = []
@@ -50649,6 +52162,768 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/ApptIconLabel.vue?vue&type=template&id=5ff6fcc8&scoped=true&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ApptIconLabel.vue?vue&type=template&id=5ff6fcc8&scoped=true& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "appt_icon_label_cont" }, [
+    _c("span", { class: ["aib_icon_wrap", _vm.icon] }),
+    _c("span", { staticClass: "aib_text_span" }, [_vm._v(_vm._s(_vm.text))])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/ApptMgrSlideBar.vue?vue&type=template&id=393034e7&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ApptMgrSlideBar.vue?vue&type=template&id=393034e7&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "SlideBar",
+    {
+      attrs: {
+        title: _vm.t("appointments", "Calendars and Schedule"),
+        subtitle: _vm.t(
+          "appointments",
+          "Manage appointments and calendar settings"
+        )
+      },
+      on: { close: _vm.close }
+    },
+    [
+      _c("template", { slot: "main-area" }, [
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isLoading === true,
+                expression: "isLoading===true"
+              }
+            ],
+            staticClass: "sb_loading_cont"
+          },
+          [
+            _c("span", { staticClass: "icon-loading sb_loading_icon_cont" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "sb_loading_text" }, [
+              _vm._v(_vm._s(_vm.t("appointments", "Loading")))
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isLoading === false,
+                expression: "isLoading===false"
+              }
+            ],
+            staticClass: "srgdev-appt-sb-main-cont",
+            class: { sb_disable: _vm.isSending }
+          },
+          [
+            _c(
+              "h2",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.curPageData.pageCount > 1,
+                    expression: "curPageData.pageCount>1"
+                  }
+                ],
+                staticClass: "srgdev-appt-sb-lbl-header"
+              },
+              [_vm._v(_vm._s(_vm.curPageData.label))]
+            ),
+            _vm._v(" "),
+            _vm.calInfo.tsMode === "0"
+              ? [
+                  _c(
+                    "div",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.hasMainCal === true,
+                          expression: "hasMainCal===true"
+                        }
+                      ],
+                      staticStyle: { margin: "0 0 2em -.5em" }
+                    },
+                    [
+                      _c("ApptIconButton", {
+                        attrs: {
+                          text: _vm.t("appointments", "Add Appointment Slots"),
+                          icon: "icon-add"
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.$emit(
+                              "gotoAddAppt",
+                              _vm.curPageData.pageId
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("ApptIconButton", {
+                        attrs: {
+                          text: _vm.t(
+                            "appointments",
+                            "Remove Old Appointments"
+                          ),
+                          icon: "icon-delete"
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.$emit(
+                              "gotoDelAppt",
+                              _vm.curPageData.pageId
+                            )
+                          }
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "tsb-label",
+                        attrs: { for: "appt_tsb-main-cal-id" }
+                      },
+                      [
+                        _vm._v(
+                          "\n              " +
+                            _vm._s(_vm.t("appointments", "Main calendar")) +
+                            ":"
+                        )
+                      ]
+                    ),
+                    _c("a", {
+                      staticClass: "icon-info srgdev-appt-info-link",
+                      staticStyle: { right: "9%" },
+                      on: {
+                        click: function($event) {
+                          return _vm.$root.$emit("helpWanted", "maincal")
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.calInfo.mainCalId,
+                          expression: "calInfo.mainCalId"
+                        }
+                      ],
+                      staticClass: "tsb-input",
+                      attrs: { id: "appt_tsb-main-cal-id" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.calInfo,
+                            "mainCalId",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "-1" } }, [
+                        _vm._v(
+                          _vm._s(_vm.t("appointments", "Calendar Required"))
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.cals, function(cal) {
+                        return _c("option", { domProps: { value: cal.id } }, [
+                          _vm._v(_vm._s(cal.name))
+                        ])
+                      })
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "tsb-label",
+                        attrs: { for: "appt_tsb-dest-cal-id" }
+                      },
+                      [
+                        _vm._v(
+                          "\n              " +
+                            _vm._s(
+                              _vm.t(
+                                "appointments",
+                                "Calendar for booked appointments"
+                              )
+                            ) +
+                            ":"
+                        )
+                      ]
+                    ),
+                    _c("a", {
+                      staticClass: "icon-info srgdev-appt-info-link",
+                      staticStyle: { right: "9%" },
+                      on: {
+                        click: function($event) {
+                          return _vm.$root.$emit("helpWanted", "destcal")
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.calInfo.destCalId,
+                          expression: "calInfo.destCalId"
+                        }
+                      ],
+                      staticClass: "tsb-input",
+                      attrs: { id: "appt_tsb-dest-cal-id" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.calInfo,
+                            "destCalId",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "-1" } }, [
+                        _vm._v(
+                          _vm._s(_vm.t("appointments", "Use Main calendar"))
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.cals, function(cal) {
+                        return _c("option", { domProps: { value: cal.id } }, [
+                          _vm._v(_vm._s(cal.name))
+                        ])
+                      })
+                    ],
+                    2
+                  )
+                ]
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.calInfo.tsMode === "1"
+              ? [
+                  _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "tsb-label",
+                        attrs: { for: "appt_tsb-srcm2-cal-id" }
+                      },
+                      [
+                        _vm._v(
+                          "\n              " +
+                            _vm._s(
+                              _vm.t(
+                                "appointments",
+                                "Source Calendar (Free Slots)"
+                              )
+                            ) +
+                            ":"
+                        )
+                      ]
+                    ),
+                    _c("a", {
+                      staticClass: "icon-info srgdev-appt-info-link",
+                      staticStyle: { right: "9%" },
+                      on: {
+                        click: function($event) {
+                          return _vm.$root.$emit("helpWanted", "sourcecal_nr")
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.calInfo.nrSrcCalId,
+                          expression: "calInfo.nrSrcCalId"
+                        }
+                      ],
+                      staticClass: "tsb-input",
+                      attrs: { id: "appt_tsb-srcm2-cal-id" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.calInfo,
+                            "nrSrcCalId",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "-1" } }, [
+                        _vm._v(
+                          _vm._s(_vm.t("appointments", "Calendar Required"))
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.cals, function(cal) {
+                        return _c("option", { domProps: { value: cal.id } }, [
+                          _vm._v(_vm._s(cal.name))
+                        ])
+                      })
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "tsb-label",
+                        attrs: { for: "appt_tsb-destm2-cal-id" }
+                      },
+                      [
+                        _vm._v(
+                          "\n              " +
+                            _vm._s(
+                              _vm.t(
+                                "appointments",
+                                "Destination Calendar (Booked)"
+                              )
+                            ) +
+                            ":"
+                        )
+                      ]
+                    ),
+                    _c("a", {
+                      staticClass: "icon-info srgdev-appt-info-link",
+                      staticStyle: { right: "9%" },
+                      on: {
+                        click: function($event) {
+                          return _vm.$root.$emit("helpWanted", "destcal_nr")
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.calInfo.nrDstCalId,
+                          expression: "calInfo.nrDstCalId"
+                        }
+                      ],
+                      staticClass: "tsb-input",
+                      attrs: { id: "appt_tsb-destm2-cal-id" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.calInfo,
+                            "nrDstCalId",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "-1" } }, [
+                        _vm._v(
+                          _vm._s(_vm.t("appointments", "Calendar Required"))
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.cals, function(cal) {
+                        return _c("option", { domProps: { value: cal.id } }, [
+                          _vm._v(_vm._s(cal.name))
+                        ])
+                      })
+                    ],
+                    2
+                  )
+                ]
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "tsb-label",
+                  attrs: { for: "appt_tsb-ts-mode" }
+                },
+                [
+                  _vm._v(
+                    "\n            " +
+                      _vm._s(_vm.t("appointments", "Time slot mode")) +
+                      ":"
+                  )
+                ]
+              ),
+              _c("a", {
+                staticClass: "icon-info srgdev-appt-info-link",
+                staticStyle: { right: "9%" },
+                on: {
+                  click: function($event) {
+                    return _vm.$root.$emit("helpWanted", "ts_mode")
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.calInfo.tsMode,
+                    expression: "calInfo.tsMode"
+                  }
+                ],
+                staticClass: "tsb-input",
+                attrs: { id: "appt_tsb-ts-mode" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.calInfo,
+                        "tsMode",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    },
+                    _vm.tsModeChanged
+                  ]
+                }
+              },
+              [
+                _c("option", { attrs: { value: "0" } }, [
+                  _vm._v(_vm._s(_vm.t("appointments", "Simple")))
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "1" } }, [
+                  _vm._v(_vm._s(_vm.t("appointments", "External")))
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "primary srgdev-appt-sb-genbtn",
+                class: { "appt-btn-loading": _vm.isSending },
+                on: { click: _vm.apply }
+              },
+              [_vm._v(_vm._s(_vm.t("appointments", "Apply")) + "\n        ")]
+            )
+          ],
+          2
+        )
+      ])
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/DelApptSlideBar.vue?vue&type=template&id=1405a1e0&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DelApptSlideBar.vue?vue&type=template&id=1405a1e0&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "SlideBar",
+    {
+      attrs: {
+        title: _vm.curPageData.label,
+        subtitle: _vm.t("appointments", "Remove Old Appointments"),
+        icon: "icon-appt-go-back"
+      },
+      on: { close: _vm.close }
+    },
+    [
+      _c("template", { slot: "main-area" }, [
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isLoading === true,
+                expression: "isLoading===true"
+              }
+            ],
+            staticClass: "sb_loading_cont"
+          },
+          [
+            _c("span", { staticClass: "icon-loading sb_loading_icon_cont" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "sb_loading_text" }, [
+              _vm._v(_vm._s(_vm.t("appointments", "Loading")))
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isLoading === false,
+                expression: "isLoading===false"
+              }
+            ],
+            staticClass: "srgdev-appt-sb-main-cont"
+          },
+          [
+            _c(
+              "div",
+              { staticClass: "srgdev-appt-sb-narrow" },
+              [
+                _c("label", { attrs: { for: "appt_tsb-rem-slider" } }, [
+                  _vm._v(
+                    _vm._s(_vm.t("appointments", "Scheduled before")) + ":"
+                  )
+                ]),
+                _vm._v(" "),
+                _c("vue-slider", {
+                  staticClass: "appt-slider",
+                  attrs: {
+                    marks: _vm.rsMarks,
+                    process: true,
+                    included: true,
+                    lazy: true,
+                    tooltip: "none",
+                    id: "appt_tsb-rem-slider"
+                  },
+                  on: { change: _vm.checkRsMin },
+                  model: {
+                    value: _vm.rsValue,
+                    callback: function($$v) {
+                      _vm.rsValue = $$v
+                    },
+                    expression: "rsValue"
+                  }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.remType,
+                      expression: "remType"
+                    }
+                  ],
+                  staticClass: "radio",
+                  attrs: {
+                    type: "radio",
+                    value: "empty",
+                    id: "appt_tsb-rem-empty",
+                    checked: "checked"
+                  },
+                  domProps: { checked: _vm._q(_vm.remType, "empty") },
+                  on: {
+                    change: function($event) {
+                      _vm.remType = "empty"
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("label", { attrs: { for: "appt_tsb-rem-empty" } }, [
+                  _vm._v(
+                    _vm._s(_vm.t("appointments", "Remove empty slots only"))
+                  )
+                ]),
+                _c("br"),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.remType,
+                      expression: "remType"
+                    }
+                  ],
+                  staticClass: "radio",
+                  attrs: {
+                    type: "radio",
+                    value: "both",
+                    id: "appt_tsb-rem-both"
+                  },
+                  domProps: { checked: _vm._q(_vm.remType, "both") },
+                  on: {
+                    change: function($event) {
+                      _vm.remType = "both"
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("label", { attrs: { for: "appt_tsb-rem-both" } }, [
+                  _vm._v(
+                    _vm._s(_vm.t("appointments", "Remove empty and booked"))
+                  )
+                ]),
+                _c("br"),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "primary srgdev-appt-sb-genbtn",
+                    on: { click: _vm.removeOld }
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(_vm.t("appointments", "Start")) + "\n        "
+                    )
+                  ]
+                )
+              ],
+              1
+            )
+          ]
+        )
+      ])
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/FormStnSlideBar.vue?vue&type=template&id=6eb6f1ea&scoped=true&":
 /*!*********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/components/FormStnSlideBar.vue?vue&type=template&id=6eb6f1ea&scoped=true& ***!
@@ -50669,7 +52944,8 @@ var render = function() {
     {
       attrs: {
         title: _vm.t("appointments", "Public Page Settings"),
-        subtitle: _vm.t("appointments", "Control what your visitors see")
+        subtitle: _vm.t("appointments", "Control what your visitors see"),
+        icon: "icon-appt-go-back"
       },
       on: { close: _vm.close }
     },
@@ -50677,7 +52953,40 @@ var render = function() {
       _c("template", { slot: "main-area" }, [
         _c(
           "div",
-          { staticClass: "pps-main-cont" },
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isLoading === true,
+                expression: "isLoading===true"
+              }
+            ],
+            staticClass: "sb_loading_cont"
+          },
+          [
+            _c("span", { staticClass: "icon-loading sb_loading_icon_cont" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "sb_loading_text" }, [
+              _vm._v(_vm._s(_vm.t("appointments", "Loading")))
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isLoading === false,
+                expression: "isLoading===false"
+              }
+            ],
+            staticClass: "pps-main-cont",
+            class: { sb_disable: _vm.isSending }
+          },
           [
             _c(
               "label",
@@ -51469,7 +53778,11 @@ var render = function() {
             _vm._v(" "),
             _c(
               "button",
-              { staticClass: "primary pps-genbtn", on: { click: _vm.apply } },
+              {
+                staticClass: "primary pps-genbtn",
+                class: { "appt-btn-loading": _vm.isSending },
+                on: { click: _vm.apply }
+              },
               [
                 _vm._v(
                   _vm._s(_vm.t("appointments", "Apply")) + "\n            "
@@ -51514,116 +53827,69 @@ var render = function() {
         subtitle: _vm.t(
           "appointments",
           "Control when emails and notifications are sent"
-        )
+        ),
+        icon: "icon-appt-go-back"
       },
       on: { close: _vm.close }
     },
     [
       _c("template", { slot: "main-area" }, [
-        _c("div", { staticClass: "srgdev-appt-sb-main-cont" }, [
-          _c("input", {
+        _c(
+          "div",
+          {
             directives: [
               {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.emlInfo.icsFile,
-                expression: "emlInfo.icsFile"
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isLoading === true,
+                expression: "isLoading===true"
               }
             ],
-            staticClass: "checkbox",
-            attrs: { type: "checkbox", id: "srgdev-appt_emn-ics-file" },
-            domProps: {
-              checked: Array.isArray(_vm.emlInfo.icsFile)
-                ? _vm._i(_vm.emlInfo.icsFile, null) > -1
-                : _vm.emlInfo.icsFile
-            },
-            on: {
-              change: function($event) {
-                var $$a = _vm.emlInfo.icsFile,
-                  $$el = $event.target,
-                  $$c = $$el.checked ? true : false
-                if (Array.isArray($$a)) {
-                  var $$v = null,
-                    $$i = _vm._i($$a, $$v)
-                  if ($$el.checked) {
-                    $$i < 0 &&
-                      _vm.$set(_vm.emlInfo, "icsFile", $$a.concat([$$v]))
-                  } else {
-                    $$i > -1 &&
-                      _vm.$set(
-                        _vm.emlInfo,
-                        "icsFile",
-                        $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                      )
-                  }
-                } else {
-                  _vm.$set(_vm.emlInfo, "icsFile", $$c)
-                }
+            staticClass: "sb_loading_cont"
+          },
+          [
+            _c("span", { staticClass: "icon-loading sb_loading_icon_cont" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "sb_loading_text" }, [
+              _vm._v(_vm._s(_vm.t("appointments", "Loading")))
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isLoading === false,
+                expression: "isLoading===false"
               }
-            }
-          }),
-          _c(
-            "label",
-            {
-              staticClass: "srgdev-appt-sb-label-inline",
-              staticStyle: { "margin-left": "-3px" },
-              attrs: { for: "srgdev-appt_emn-ics-file" }
-            },
-            [
-              _vm._v(
-                _vm._s(
-                  _vm.t(
-                    "appointments",
-                    "Attach .ics file to confirm/cancel emails"
-                  )
-                )
-              )
-            ]
-          ),
-          _c("br"),
-          _c("br"),
-          _vm._v(" "),
-          _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
-            _c("span", { staticClass: "srgdev-appt-sb-label" }, [
-              _vm._v(
-                _vm._s(
-                  _vm.t(
-                    "appointments",
-                    "Email Attendee when the appointment is:"
-                  )
-                )
-              )
-            ]),
-            _c("a", {
-              staticClass: "icon-info srgdev-appt-info-link",
-              on: {
-                click: function($event) {
-                  return _vm.$root.$emit("helpWanted", "emailatt")
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "srgdev-appt-sb-indent" }, [
+            ],
+            staticClass: "srgdev-appt-sb-main-cont",
+            class: { sb_disable: _vm.isSending }
+          },
+          [
             _c("input", {
               directives: [
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.emlInfo.attMod,
-                  expression: "emlInfo.attMod"
+                  value: _vm.emlInfo.icsFile,
+                  expression: "emlInfo.icsFile"
                 }
               ],
               staticClass: "checkbox",
-              attrs: { type: "checkbox", id: "srgdev-appt_emn-att-modified" },
+              attrs: { type: "checkbox", id: "srgdev-appt_emn-ics-file" },
               domProps: {
-                checked: Array.isArray(_vm.emlInfo.attMod)
-                  ? _vm._i(_vm.emlInfo.attMod, null) > -1
-                  : _vm.emlInfo.attMod
+                checked: Array.isArray(_vm.emlInfo.icsFile)
+                  ? _vm._i(_vm.emlInfo.icsFile, null) > -1
+                  : _vm.emlInfo.icsFile
               },
               on: {
                 change: function($event) {
-                  var $$a = _vm.emlInfo.attMod,
+                  var $$a = _vm.emlInfo.icsFile,
                     $$el = $event.target,
                     $$c = $$el.checked ? true : false
                   if (Array.isArray($$a)) {
@@ -51631,17 +53897,17 @@ var render = function() {
                       $$i = _vm._i($$a, $$v)
                     if ($$el.checked) {
                       $$i < 0 &&
-                        _vm.$set(_vm.emlInfo, "attMod", $$a.concat([$$v]))
+                        _vm.$set(_vm.emlInfo, "icsFile", $$a.concat([$$v]))
                     } else {
                       $$i > -1 &&
                         _vm.$set(
                           _vm.emlInfo,
-                          "attMod",
+                          "icsFile",
                           $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                         )
                     }
                   } else {
-                    _vm.$set(_vm.emlInfo, "attMod", $$c)
+                    _vm.$set(_vm.emlInfo, "icsFile", $$c)
                   }
                 }
               }
@@ -51650,269 +53916,64 @@ var render = function() {
               "label",
               {
                 staticClass: "srgdev-appt-sb-label-inline",
-                attrs: { for: "srgdev-appt_emn-att-modified" }
+                staticStyle: { "margin-left": "-3px" },
+                attrs: { for: "srgdev-appt_emn-ics-file" }
               },
               [
                 _vm._v(
                   _vm._s(
-                    _vm.t("appointments", "Modified (Time, Status, Location)")
+                    _vm.t(
+                      "appointments",
+                      "Attach .ics file to confirm/cancel emails"
+                    )
                   )
                 )
               ]
             ),
             _c("br"),
+            _c("br"),
             _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.emlInfo.attDel,
-                  expression: "emlInfo.attDel"
-                }
-              ],
-              staticClass: "checkbox",
-              attrs: { type: "checkbox", id: "srgdev-appt_emn-att-deleted" },
-              domProps: {
-                checked: Array.isArray(_vm.emlInfo.attDel)
-                  ? _vm._i(_vm.emlInfo.attDel, null) > -1
-                  : _vm.emlInfo.attDel
-              },
-              on: {
-                change: function($event) {
-                  var $$a = _vm.emlInfo.attDel,
-                    $$el = $event.target,
-                    $$c = $$el.checked ? true : false
-                  if (Array.isArray($$a)) {
-                    var $$v = null,
-                      $$i = _vm._i($$a, $$v)
-                    if ($$el.checked) {
-                      $$i < 0 &&
-                        _vm.$set(_vm.emlInfo, "attDel", $$a.concat([$$v]))
-                    } else {
-                      $$i > -1 &&
-                        _vm.$set(
-                          _vm.emlInfo,
-                          "attDel",
-                          $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                        )
-                    }
-                  } else {
-                    _vm.$set(_vm.emlInfo, "attDel", $$c)
-                  }
-                }
-              }
-            }),
-            _c(
-              "label",
-              {
-                staticClass: "srgdev-appt-sb-label-inline",
-                attrs: { for: "srgdev-appt_emn-att-deleted" }
-              },
-              [_vm._v(_vm._s(_vm.t("appointments", "Deleted")))]
-            ),
-            _c("br")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
-            _c("span", { staticClass: "srgdev-appt-sb-label" }, [
-              _vm._v(
-                _vm._s(
-                  _vm.t("appointments", "Email Me when an appointment is:")
+            _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
+              _c("span", { staticClass: "srgdev-appt-sb-label" }, [
+                _vm._v(
+                  _vm._s(
+                    _vm.t(
+                      "appointments",
+                      "Email Attendee when the appointment is:"
+                    )
+                  )
                 )
-              )
+              ]),
+              _c("a", {
+                staticClass: "icon-info srgdev-appt-info-link",
+                on: {
+                  click: function($event) {
+                    return _vm.$root.$emit("helpWanted", "emailatt")
+                  }
+                }
+              })
             ]),
-            _c("a", {
-              staticClass: "icon-info srgdev-appt-info-link",
-              on: {
-                click: function($event) {
-                  return _vm.$root.$emit("helpWanted", "emailme")
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "srgdev-appt-sb-indent" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.emlInfo.meReq,
-                  expression: "emlInfo.meReq"
-                }
-              ],
-              staticClass: "checkbox",
-              attrs: { type: "checkbox", id: "srgdev-appt_emn-me-request" },
-              domProps: {
-                checked: Array.isArray(_vm.emlInfo.meReq)
-                  ? _vm._i(_vm.emlInfo.meReq, null) > -1
-                  : _vm.emlInfo.meReq
-              },
-              on: {
-                change: function($event) {
-                  var $$a = _vm.emlInfo.meReq,
-                    $$el = $event.target,
-                    $$c = $$el.checked ? true : false
-                  if (Array.isArray($$a)) {
-                    var $$v = null,
-                      $$i = _vm._i($$a, $$v)
-                    if ($$el.checked) {
-                      $$i < 0 &&
-                        _vm.$set(_vm.emlInfo, "meReq", $$a.concat([$$v]))
-                    } else {
-                      $$i > -1 &&
-                        _vm.$set(
-                          _vm.emlInfo,
-                          "meReq",
-                          $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                        )
-                    }
-                  } else {
-                    _vm.$set(_vm.emlInfo, "meReq", $$c)
-                  }
-                }
-              }
-            }),
-            _c(
-              "label",
-              {
-                staticClass: "srgdev-appt-sb-label-inline",
-                attrs: { for: "srgdev-appt_emn-me-request" }
-              },
-              [_vm._v(_vm._s(_vm.t("appointments", "Requested")))]
-            ),
-            _c("br"),
             _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.emlInfo.meConfirm,
-                  expression: "emlInfo.meConfirm"
-                }
-              ],
-              staticClass: "checkbox",
-              attrs: { type: "checkbox", id: "srgdev-appt_emn-me-confirm" },
-              domProps: {
-                checked: Array.isArray(_vm.emlInfo.meConfirm)
-                  ? _vm._i(_vm.emlInfo.meConfirm, null) > -1
-                  : _vm.emlInfo.meConfirm
-              },
-              on: {
-                change: function($event) {
-                  var $$a = _vm.emlInfo.meConfirm,
-                    $$el = $event.target,
-                    $$c = $$el.checked ? true : false
-                  if (Array.isArray($$a)) {
-                    var $$v = null,
-                      $$i = _vm._i($$a, $$v)
-                    if ($$el.checked) {
-                      $$i < 0 &&
-                        _vm.$set(_vm.emlInfo, "meConfirm", $$a.concat([$$v]))
-                    } else {
-                      $$i > -1 &&
-                        _vm.$set(
-                          _vm.emlInfo,
-                          "meConfirm",
-                          $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                        )
-                    }
-                  } else {
-                    _vm.$set(_vm.emlInfo, "meConfirm", $$c)
-                  }
-                }
-              }
-            }),
-            _c(
-              "label",
-              {
-                staticClass: "srgdev-appt-sb-label-inline",
-                attrs: { for: "srgdev-appt_emn-me-confirm" }
-              },
-              [_vm._v(_vm._s(_vm.t("appointments", "Confirmed")))]
-            ),
-            _c("br"),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.emlInfo.meCancel,
-                  expression: "emlInfo.meCancel"
-                }
-              ],
-              staticClass: "checkbox",
-              attrs: { type: "checkbox", id: "srgdev-appt_emn-me-cancel" },
-              domProps: {
-                checked: Array.isArray(_vm.emlInfo.meCancel)
-                  ? _vm._i(_vm.emlInfo.meCancel, null) > -1
-                  : _vm.emlInfo.meCancel
-              },
-              on: {
-                change: function($event) {
-                  var $$a = _vm.emlInfo.meCancel,
-                    $$el = $event.target,
-                    $$c = $$el.checked ? true : false
-                  if (Array.isArray($$a)) {
-                    var $$v = null,
-                      $$i = _vm._i($$a, $$v)
-                    if ($$el.checked) {
-                      $$i < 0 &&
-                        _vm.$set(_vm.emlInfo, "meCancel", $$a.concat([$$v]))
-                    } else {
-                      $$i > -1 &&
-                        _vm.$set(
-                          _vm.emlInfo,
-                          "meCancel",
-                          $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                        )
-                    }
-                  } else {
-                    _vm.$set(_vm.emlInfo, "meCancel", $$c)
-                  }
-                }
-              }
-            }),
-            _c(
-              "label",
-              {
-                staticClass: "srgdev-appt-sb-label-inline",
-                attrs: { for: "srgdev-appt_emn-me-cancel" }
-              },
-              [_vm._v(_vm._s(_vm.t("appointments", "Canceled")))]
-            ),
-            _c("br")
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "srgdev-appt-info-lcont",
-              staticStyle: { "margin-bottom": ".75em" }
-            },
-            [
+            _c("div", { staticClass: "srgdev-appt-sb-indent" }, [
               _c("input", {
                 directives: [
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.emlInfo.skipEVS,
-                    expression: "emlInfo.skipEVS"
+                    value: _vm.emlInfo.attMod,
+                    expression: "emlInfo.attMod"
                   }
                 ],
                 staticClass: "checkbox",
-                attrs: { type: "checkbox", id: "srgdev-appt_emn-skip-evs" },
+                attrs: { type: "checkbox", id: "srgdev-appt_emn-att-modified" },
                 domProps: {
-                  checked: Array.isArray(_vm.emlInfo.skipEVS)
-                    ? _vm._i(_vm.emlInfo.skipEVS, null) > -1
-                    : _vm.emlInfo.skipEVS
+                  checked: Array.isArray(_vm.emlInfo.attMod)
+                    ? _vm._i(_vm.emlInfo.attMod, null) > -1
+                    : _vm.emlInfo.attMod
                 },
                 on: {
                   change: function($event) {
-                    var $$a = _vm.emlInfo.skipEVS,
+                    var $$a = _vm.emlInfo.attMod,
                       $$el = $event.target,
                       $$c = $$el.checked ? true : false
                     if (Array.isArray($$a)) {
@@ -51920,17 +53981,17 @@ var render = function() {
                         $$i = _vm._i($$a, $$v)
                       if ($$el.checked) {
                         $$i < 0 &&
-                          _vm.$set(_vm.emlInfo, "skipEVS", $$a.concat([$$v]))
+                          _vm.$set(_vm.emlInfo, "attMod", $$a.concat([$$v]))
                       } else {
                         $$i > -1 &&
                           _vm.$set(
                             _vm.emlInfo,
-                            "skipEVS",
+                            "attMod",
                             $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                           )
                       }
                     } else {
-                      _vm.$set(_vm.emlInfo, "skipEVS", $$c)
+                      _vm.$set(_vm.emlInfo, "attMod", $$c)
                     }
                   }
                 }
@@ -51939,12 +54000,385 @@ var render = function() {
                 "label",
                 {
                   staticClass: "srgdev-appt-sb-label-inline",
-                  staticStyle: { "margin-left": "-3px" },
-                  attrs: { for: "srgdev-appt_emn-skip-evs" }
+                  attrs: { for: "srgdev-appt_emn-att-modified" }
                 },
                 [
                   _vm._v(
-                    _vm._s(_vm.t("appointments", "Skip email validation step"))
+                    _vm._s(
+                      _vm.t("appointments", "Modified (Time, Status, Location)")
+                    )
+                  )
+                ]
+              ),
+              _c("br"),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.emlInfo.attDel,
+                    expression: "emlInfo.attDel"
+                  }
+                ],
+                staticClass: "checkbox",
+                attrs: { type: "checkbox", id: "srgdev-appt_emn-att-deleted" },
+                domProps: {
+                  checked: Array.isArray(_vm.emlInfo.attDel)
+                    ? _vm._i(_vm.emlInfo.attDel, null) > -1
+                    : _vm.emlInfo.attDel
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.emlInfo.attDel,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(_vm.emlInfo, "attDel", $$a.concat([$$v]))
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.emlInfo,
+                            "attDel",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.emlInfo, "attDel", $$c)
+                    }
+                  }
+                }
+              }),
+              _c(
+                "label",
+                {
+                  staticClass: "srgdev-appt-sb-label-inline",
+                  attrs: { for: "srgdev-appt_emn-att-deleted" }
+                },
+                [_vm._v(_vm._s(_vm.t("appointments", "Deleted")))]
+              ),
+              _c("br")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
+              _c("span", { staticClass: "srgdev-appt-sb-label" }, [
+                _vm._v(
+                  _vm._s(
+                    _vm.t("appointments", "Email Me when an appointment is:")
+                  )
+                )
+              ]),
+              _c("a", {
+                staticClass: "icon-info srgdev-appt-info-link",
+                on: {
+                  click: function($event) {
+                    return _vm.$root.$emit("helpWanted", "emailme")
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "srgdev-appt-sb-indent" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.emlInfo.meReq,
+                    expression: "emlInfo.meReq"
+                  }
+                ],
+                staticClass: "checkbox",
+                attrs: { type: "checkbox", id: "srgdev-appt_emn-me-request" },
+                domProps: {
+                  checked: Array.isArray(_vm.emlInfo.meReq)
+                    ? _vm._i(_vm.emlInfo.meReq, null) > -1
+                    : _vm.emlInfo.meReq
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.emlInfo.meReq,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(_vm.emlInfo, "meReq", $$a.concat([$$v]))
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.emlInfo,
+                            "meReq",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.emlInfo, "meReq", $$c)
+                    }
+                  }
+                }
+              }),
+              _c(
+                "label",
+                {
+                  staticClass: "srgdev-appt-sb-label-inline",
+                  attrs: { for: "srgdev-appt_emn-me-request" }
+                },
+                [_vm._v(_vm._s(_vm.t("appointments", "Requested")))]
+              ),
+              _c("br"),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.emlInfo.meConfirm,
+                    expression: "emlInfo.meConfirm"
+                  }
+                ],
+                staticClass: "checkbox",
+                attrs: { type: "checkbox", id: "srgdev-appt_emn-me-confirm" },
+                domProps: {
+                  checked: Array.isArray(_vm.emlInfo.meConfirm)
+                    ? _vm._i(_vm.emlInfo.meConfirm, null) > -1
+                    : _vm.emlInfo.meConfirm
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.emlInfo.meConfirm,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(_vm.emlInfo, "meConfirm", $$a.concat([$$v]))
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.emlInfo,
+                            "meConfirm",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.emlInfo, "meConfirm", $$c)
+                    }
+                  }
+                }
+              }),
+              _c(
+                "label",
+                {
+                  staticClass: "srgdev-appt-sb-label-inline",
+                  attrs: { for: "srgdev-appt_emn-me-confirm" }
+                },
+                [_vm._v(_vm._s(_vm.t("appointments", "Confirmed")))]
+              ),
+              _c("br"),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.emlInfo.meCancel,
+                    expression: "emlInfo.meCancel"
+                  }
+                ],
+                staticClass: "checkbox",
+                attrs: { type: "checkbox", id: "srgdev-appt_emn-me-cancel" },
+                domProps: {
+                  checked: Array.isArray(_vm.emlInfo.meCancel)
+                    ? _vm._i(_vm.emlInfo.meCancel, null) > -1
+                    : _vm.emlInfo.meCancel
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.emlInfo.meCancel,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(_vm.emlInfo, "meCancel", $$a.concat([$$v]))
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.emlInfo,
+                            "meCancel",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.emlInfo, "meCancel", $$c)
+                    }
+                  }
+                }
+              }),
+              _c(
+                "label",
+                {
+                  staticClass: "srgdev-appt-sb-label-inline",
+                  attrs: { for: "srgdev-appt_emn-me-cancel" }
+                },
+                [_vm._v(_vm._s(_vm.t("appointments", "Canceled")))]
+              ),
+              _c("br")
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "srgdev-appt-info-lcont",
+                staticStyle: { "margin-bottom": ".75em" }
+              },
+              [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.emlInfo.skipEVS,
+                      expression: "emlInfo.skipEVS"
+                    }
+                  ],
+                  staticClass: "checkbox",
+                  attrs: { type: "checkbox", id: "srgdev-appt_emn-skip-evs" },
+                  domProps: {
+                    checked: Array.isArray(_vm.emlInfo.skipEVS)
+                      ? _vm._i(_vm.emlInfo.skipEVS, null) > -1
+                      : _vm.emlInfo.skipEVS
+                  },
+                  on: {
+                    change: function($event) {
+                      var $$a = _vm.emlInfo.skipEVS,
+                        $$el = $event.target,
+                        $$c = $$el.checked ? true : false
+                      if (Array.isArray($$a)) {
+                        var $$v = null,
+                          $$i = _vm._i($$a, $$v)
+                        if ($$el.checked) {
+                          $$i < 0 &&
+                            _vm.$set(_vm.emlInfo, "skipEVS", $$a.concat([$$v]))
+                        } else {
+                          $$i > -1 &&
+                            _vm.$set(
+                              _vm.emlInfo,
+                              "skipEVS",
+                              $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                            )
+                        }
+                      } else {
+                        _vm.$set(_vm.emlInfo, "skipEVS", $$c)
+                      }
+                    }
+                  }
+                }),
+                _c(
+                  "label",
+                  {
+                    staticClass: "srgdev-appt-sb-label-inline",
+                    staticStyle: { "margin-left": "-3px" },
+                    attrs: { for: "srgdev-appt_emn-skip-evs" }
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm.t("appointments", "Skip email validation step")
+                      )
+                    )
+                  ]
+                ),
+                _c("a", {
+                  staticClass: "icon-info srgdev-appt-info-link",
+                  on: {
+                    click: function($event) {
+                      return _vm.$root.$emit("helpWanted", "emailskipevs")
+                    }
+                  }
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.emlInfo.skipEVS === false,
+                    expression: "emlInfo.skipEVS===false"
+                  }
+                ],
+                staticClass: "srgdev-appt-sb-label-inline",
+                attrs: { for: "srgdev-appt_emn-vld-note" }
+              },
+              [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(
+                      _vm.t("appointments", "Additional VALIDATION email text:")
+                    )
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.emlInfo.skipEVS === false,
+                  expression: "emlInfo.skipEVS===false"
+                },
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.emlInfo.vldNote,
+                  expression: "emlInfo.vldNote"
+                }
+              ],
+              staticClass: "srgdev-appt-sb-textarea",
+              attrs: { id: "srgdev-appt_emn-vld-note" },
+              domProps: { value: _vm.emlInfo.vldNote },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.emlInfo, "vldNote", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "srgdev-appt-sb-label-inline",
+                  attrs: { for: "srgdev-appt_emn-cnf-note" }
+                },
+                [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(
+                        _vm.t(
+                          "appointments",
+                          "Additional CONFIRMATION email text:"
+                        )
+                      )
                   )
                 ]
               ),
@@ -51952,125 +54386,45 @@ var render = function() {
                 staticClass: "icon-info srgdev-appt-info-link",
                 on: {
                   click: function($event) {
-                    return _vm.$root.$emit("helpWanted", "emailskipevs")
+                    return _vm.$root.$emit("helpWanted", "emailmoretext")
                   }
                 }
               })
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
+            ]),
+            _vm._v(" "),
+            _c("textarea", {
               directives: [
                 {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.emlInfo.skipEVS === false,
-                  expression: "emlInfo.skipEVS===false"
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.emlInfo.cnfNote,
+                  expression: "emlInfo.cnfNote"
                 }
               ],
-              staticClass: "srgdev-appt-sb-label-inline",
-              attrs: { for: "srgdev-appt_emn-vld-note" }
-            },
-            [
-              _vm._v(
-                "\n                " +
-                  _vm._s(
-                    _vm.t("appointments", "Additional VALIDATION email text:")
-                  )
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c("textarea", {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.emlInfo.skipEVS === false,
-                expression: "emlInfo.skipEVS===false"
-              },
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.emlInfo.vldNote,
-                expression: "emlInfo.vldNote"
-              }
-            ],
-            staticClass: "srgdev-appt-sb-textarea",
-            attrs: { id: "srgdev-appt_emn-vld-note" },
-            domProps: { value: _vm.emlInfo.vldNote },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.emlInfo, "vldNote", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
-            _c(
-              "label",
-              {
-                staticClass: "srgdev-appt-sb-label-inline",
-                attrs: { for: "srgdev-appt_emn-cnf-note" }
-              },
-              [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(
-                      _vm.t(
-                        "appointments",
-                        "Additional CONFIRMATION email text:"
-                      )
-                    )
-                )
-              ]
-            ),
-            _c("a", {
-              staticClass: "icon-info srgdev-appt-info-link",
+              staticClass: "srgdev-appt-sb-textarea",
+              attrs: { id: "srgdev-appt_emn-cnf-note" },
+              domProps: { value: _vm.emlInfo.cnfNote },
               on: {
-                click: function($event) {
-                  return _vm.$root.$emit("helpWanted", "emailmoretext")
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.emlInfo, "cnfNote", $event.target.value)
                 }
               }
-            })
-          ]),
-          _vm._v(" "),
-          _c("textarea", {
-            directives: [
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
               {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.emlInfo.cnfNote,
-                expression: "emlInfo.cnfNote"
-              }
-            ],
-            staticClass: "srgdev-appt-sb-textarea",
-            attrs: { id: "srgdev-appt_emn-cnf-note" },
-            domProps: { value: _vm.emlInfo.cnfNote },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.emlInfo, "cnfNote", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "primary srgdev-appt-sb-genbtn",
-              on: { click: _vm.apply }
-            },
-            [_vm._v(_vm._s(_vm.t("appointments", "Apply")) + "\n            ")]
-          )
-        ])
+                staticClass: "primary srgdev-appt-sb-genbtn",
+                class: { "appt-btn-loading": _vm.isSending },
+                on: { click: _vm.apply }
+              },
+              [_vm._v(_vm._s(_vm.t("appointments", "Apply")) + "\n          ")]
+            )
+          ]
+        )
       ])
     ],
     2
@@ -52140,6 +54494,112 @@ var render = function() {
       )
     ],
     1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/PagePickerSlideBar.vue?vue&type=template&id=cedba322&":
+/*!************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/components/PagePickerSlideBar.vue?vue&type=template&id=cedba322& ***!
+  \************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "SlideBar",
+    {
+      attrs: {
+        title: _vm.title,
+        subtitle: _vm.t("appointments", "Multiple public pages available")
+      },
+      on: { close: _vm.close }
+    },
+    [
+      _c("template", { slot: "main-area" }, [
+        _c(
+          "div",
+          { staticClass: "srgdev-appt-sb-main-cont" },
+          [
+            _c("ApptIconLabel", {
+              attrs: {
+                text: _vm.t("appointments", "Main page"),
+                icon: "icon-appt-public-page"
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "srgdev-sqr-btn",
+                attrs: { role: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.pageSelected("p0")
+                  }
+                }
+              },
+              [
+                _c("span", { staticClass: "srgdev-sqr-btn_text" }, [
+                  _vm._v(
+                    _vm._s(
+                      _vm.page0.label !== ""
+                        ? _vm.page0.label
+                        : _vm.t("appointments", "Public Page")
+                    )
+                  )
+                ]),
+                _c("span", { staticClass: "icon-confirm srgdev-sqr-btn_icon" })
+              ]
+            ),
+            _vm._v(" "),
+            _c("ApptIconLabel", {
+              attrs: {
+                text: _vm.t("appointments", "Additional pages"),
+                icon: "icon-appt-public-pages"
+              }
+            }),
+            _vm._v(" "),
+            _vm._l(_vm.morePages, function(page) {
+              return _c(
+                "div",
+                {
+                  staticClass: "srgdev-sqr-btn",
+                  attrs: { role: "button" },
+                  on: {
+                    click: function($event) {
+                      return _vm.pageSelected(page.pageId)
+                    }
+                  }
+                },
+                [
+                  _c("span", { staticClass: "srgdev-sqr-btn_text" }, [
+                    _vm._v(_vm._s(page.label))
+                  ]),
+                  _c("span", {
+                    staticClass: "icon-confirm srgdev-sqr-btn_icon"
+                  })
+                ]
+              )
+            })
+          ],
+          2
+        )
+      ])
+    ],
+    2
   )
 }
 var staticRenderFns = []
@@ -52327,6 +54787,84 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/SettingsSlideBar.vue?vue&type=template&id=de0610d6&":
+/*!**********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SettingsSlideBar.vue?vue&type=template&id=de0610d6& ***!
+  \**********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "SlideBar",
+    {
+      attrs: {
+        title: _vm.t("appointments", "Additional Settings"),
+        subtitle: _vm.t("appointments", "Customize and configure the app")
+      },
+      on: { close: _vm.close }
+    },
+    [
+      _c(
+        "template",
+        { slot: "main-area" },
+        [
+          _c("AppNavigationItem", {
+            attrs: {
+              title: _vm.t("appointments", "Customize Public Page"),
+              icon: "icon-category-customization"
+            },
+            on: {
+              click: function($event) {
+                return _vm.$emit("gotoPPS")
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("AppNavigationItem", {
+            attrs: {
+              title: _vm.t("appointments", "Email Settings"),
+              icon: "icon-mail"
+            },
+            on: {
+              click: function($event) {
+                return _vm.$emit("gotoEML")
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("AppNavigationItem", {
+            attrs: {
+              title: _vm.t("appointments", "Advanced Settings"),
+              icon: "icon-settings"
+            },
+            on: {
+              click: function($event) {
+                return _vm.$emit("gotoADV")
+              }
+            }
+          })
+        ],
+        1
+      )
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/SlideBar.vue?vue&type=template&id=55cbc85c&scoped=true&":
 /*!**************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SlideBar.vue?vue&type=template&id=55cbc85c&scoped=true& ***!
@@ -52435,1296 +54973,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/TimeSlotSlideBar.vue?vue&type=template&id=7c8891dd&scoped=true&":
-/*!**********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TimeSlotSlideBar.vue?vue&type=template&id=7c8891dd&scoped=true& ***!
-  \**********************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "SlideBar",
-    {
-      attrs: {
-        title: _vm.t("appointments", "Calendars and Schedule"),
-        subtitle: _vm.t(
-          "appointments",
-          "Manage appointments and calendar settings"
-        )
-      },
-      on: { close: _vm.close }
-    },
-    [
-      _c("template", { slot: "main-area" }, [
-        _c(
-          "div",
-          { staticClass: "srgdev-appt-sb-main-cont" },
-          [
-            _c(
-              "ApptIconButton",
-              {
-                attrs: {
-                  loading: _vm.expLoading === 4,
-                  text: _vm.t("appointments", "Calendars"),
-                  icon: "icon-calendar-dark"
-                },
-                on: { click: _vm.openCalListSettings }
-              },
-              [
-                _c(
-                  "Actions",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.expando[4] === 1,
-                        expression: "expando[4]===1"
-                      }
-                    ],
-                    attrs: { slot: "actions" },
-                    slot: "actions"
-                  },
-                  [
-                    _c("ActionButton", {
-                      attrs: { icon: "icon-triangle-n" },
-                      on: {
-                        click: function($event) {
-                          $event.stopPropagation()
-                          return _vm.toggleExpando(4)
-                        }
-                      }
-                    })
-                  ],
-                  1
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "srgdev-appt_expando_cont",
-                attrs: { "data-expand": _vm.expando[4] }
-              },
-              [
-                _vm.calInfo.tsMode === "0"
-                  ? [
-                      _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "tsb-label",
-                            attrs: { for: "appt_tsb-main-cal-id" }
-                          },
-                          [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(_vm.t("appointments", "Main calendar")) +
-                                ":"
-                            )
-                          ]
-                        ),
-                        _c("a", {
-                          staticClass: "icon-info srgdev-appt-info-link",
-                          staticStyle: { right: "9%" },
-                          on: {
-                            click: function($event) {
-                              return _vm.$root.$emit("helpWanted", "maincal")
-                            }
-                          }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.calInfo.mainCalId,
-                              expression: "calInfo.mainCalId"
-                            }
-                          ],
-                          staticClass: "tsb-input",
-                          attrs: { id: "appt_tsb-main-cal-id" },
-                          on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.calInfo,
-                                "mainCalId",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            }
-                          }
-                        },
-                        [
-                          _c("option", { attrs: { value: "-1" } }, [
-                            _vm._v(
-                              _vm._s(_vm.t("appointments", "Calendar Required"))
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _vm._l(_vm.cals, function(cal) {
-                            return _c(
-                              "option",
-                              { domProps: { value: cal.id } },
-                              [_vm._v(_vm._s(cal.name))]
-                            )
-                          })
-                        ],
-                        2
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "tsb-label",
-                            attrs: { for: "appt_tsb-dest-cal-id" }
-                          },
-                          [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(
-                                  _vm.t(
-                                    "appointments",
-                                    "Calendar for booked appointments"
-                                  )
-                                ) +
-                                ":"
-                            )
-                          ]
-                        ),
-                        _c("a", {
-                          staticClass: "icon-info srgdev-appt-info-link",
-                          staticStyle: { right: "9%" },
-                          on: {
-                            click: function($event) {
-                              return _vm.$root.$emit("helpWanted", "destcal")
-                            }
-                          }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.calInfo.destCalId,
-                              expression: "calInfo.destCalId"
-                            }
-                          ],
-                          staticClass: "tsb-input",
-                          attrs: { id: "appt_tsb-dest-cal-id" },
-                          on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.calInfo,
-                                "destCalId",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            }
-                          }
-                        },
-                        [
-                          _c("option", { attrs: { value: "-1" } }, [
-                            _vm._v(
-                              _vm._s(_vm.t("appointments", "Use Main calendar"))
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _vm._l(_vm.cals, function(cal) {
-                            return _c(
-                              "option",
-                              { domProps: { value: cal.id } },
-                              [_vm._v(_vm._s(cal.name))]
-                            )
-                          })
-                        ],
-                        2
-                      )
-                    ]
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.calInfo.tsMode === "1"
-                  ? [
-                      _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "tsb-label",
-                            attrs: { for: "appt_tsb-srcm2-cal-id" }
-                          },
-                          [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(
-                                  _vm.t(
-                                    "appointments",
-                                    "Source Calendar (Free Slots)"
-                                  )
-                                ) +
-                                ":"
-                            )
-                          ]
-                        ),
-                        _c("a", {
-                          staticClass: "icon-info srgdev-appt-info-link",
-                          staticStyle: { right: "9%" },
-                          on: {
-                            click: function($event) {
-                              return _vm.$root.$emit(
-                                "helpWanted",
-                                "sourcecal_nr"
-                              )
-                            }
-                          }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.calInfo.nrSrcCalId,
-                              expression: "calInfo.nrSrcCalId"
-                            }
-                          ],
-                          staticClass: "tsb-input",
-                          attrs: { id: "appt_tsb-srcm2-cal-id" },
-                          on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.calInfo,
-                                "nrSrcCalId",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            }
-                          }
-                        },
-                        [
-                          _c("option", { attrs: { value: "-1" } }, [
-                            _vm._v(
-                              _vm._s(_vm.t("appointments", "Calendar Required"))
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _vm._l(_vm.cals, function(cal) {
-                            return _c(
-                              "option",
-                              { domProps: { value: cal.id } },
-                              [_vm._v(_vm._s(cal.name))]
-                            )
-                          })
-                        ],
-                        2
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "tsb-label",
-                            attrs: { for: "appt_tsb-destm2-cal-id" }
-                          },
-                          [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(
-                                  _vm.t(
-                                    "appointments",
-                                    "Destination Calendar (Booked)"
-                                  )
-                                ) +
-                                ":"
-                            )
-                          ]
-                        ),
-                        _c("a", {
-                          staticClass: "icon-info srgdev-appt-info-link",
-                          staticStyle: { right: "9%" },
-                          on: {
-                            click: function($event) {
-                              return _vm.$root.$emit("helpWanted", "destcal_nr")
-                            }
-                          }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.calInfo.nrDstCalId,
-                              expression: "calInfo.nrDstCalId"
-                            }
-                          ],
-                          staticClass: "tsb-input",
-                          attrs: { id: "appt_tsb-destm2-cal-id" },
-                          on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.calInfo,
-                                "nrDstCalId",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            }
-                          }
-                        },
-                        [
-                          _c("option", { attrs: { value: "-1" } }, [
-                            _vm._v(
-                              _vm._s(_vm.t("appointments", "Calendar Required"))
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _vm._l(_vm.cals, function(cal) {
-                            return _c(
-                              "option",
-                              { domProps: { value: cal.id } },
-                              [_vm._v(_vm._s(cal.name))]
-                            )
-                          })
-                        ],
-                        2
-                      )
-                    ]
-                  : _vm._e(),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "primary srgdev-appt-sb-genbtn",
-                    on: { click: _vm.applyCalListSettings }
-                  },
-                  [
-                    _vm._v(
-                      _vm._s(_vm.t("appointments", "Apply")) + "\n            "
-                    )
-                  ]
-                )
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _vm.calInfo.tsMode !== "1"
-              ? [
-                  _c(
-                    "ApptIconButton",
-                    {
-                      attrs: {
-                        disabled: _vm.calInfo.mainCalId === "-1",
-                        loading: _vm.tzLoading,
-                        text: _vm.t("appointments", "Add Appointment Slots"),
-                        icon: "icon-add"
-                      },
-                      on: { click: _vm.openAddAppts }
-                    },
-                    [
-                      _c(
-                        "Actions",
-                        {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.expando[2] === 1,
-                              expression: "expando[2]===1"
-                            }
-                          ],
-                          attrs: { slot: "actions" },
-                          slot: "actions"
-                        },
-                        [
-                          _c("ActionButton", {
-                            attrs: { icon: "icon-triangle-n" },
-                            on: {
-                              click: function($event) {
-                                $event.stopPropagation()
-                                return _vm.toggleExpando(2)
-                              }
-                            }
-                          })
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "srgdev-appt_expando_cont",
-                      attrs: { "data-expand": _vm.expando[2] }
-                    },
-                    [
-                      _c(
-                        "AddApptSection",
-                        _vm._g(
-                          {
-                            attrs: {
-                              "tz-data": _vm.tzData,
-                              "tz-name": _vm.tzName
-                            },
-                            on: {
-                              agDataReady: function() {
-                                _vm.toggleExpando(2)
-                                _vm.close()
-                              }
-                            }
-                          },
-                          _vm.$listeners
-                        )
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "ApptIconButton",
-                    {
-                      attrs: {
-                        disabled: _vm.calInfo.mainCalId === "-1",
-                        loading: _vm.expLoading === 0,
-                        text: _vm.t("appointments", "Remove Old Appointments"),
-                        icon: "icon-delete"
-                      },
-                      on: { click: _vm.openRemOld }
-                    },
-                    [
-                      _c(
-                        "Actions",
-                        {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.expando[0] === 1,
-                              expression: "expando[0]===1"
-                            }
-                          ],
-                          attrs: { slot: "actions" },
-                          slot: "actions"
-                        },
-                        [
-                          _c("ActionButton", {
-                            attrs: { icon: "icon-triangle-n" },
-                            on: {
-                              click: function($event) {
-                                $event.stopPropagation()
-                                return _vm.toggleExpando(0)
-                              }
-                            }
-                          })
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "srgdev-appt_expando_cont",
-                      attrs: { "data-expand": _vm.expando[0] }
-                    },
-                    [
-                      _c("label", { attrs: { for: "appt_tsb-rem-slider" } }, [
-                        _vm._v(
-                          _vm._s(_vm.t("appointments", "Scheduled before")) +
-                            ":"
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("vue-slider", {
-                        staticClass: "appt-slider",
-                        attrs: {
-                          marks: _vm.rsMarks,
-                          process: true,
-                          included: true,
-                          lazy: true,
-                          tooltip: "none",
-                          id: "appt_tsb-rem-slider"
-                        },
-                        on: { change: _vm.checkRsMin },
-                        model: {
-                          value: _vm.rsValue,
-                          callback: function($$v) {
-                            _vm.rsValue = $$v
-                          },
-                          expression: "rsValue"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.remType,
-                            expression: "remType"
-                          }
-                        ],
-                        staticClass: "radio",
-                        attrs: {
-                          type: "radio",
-                          value: "empty",
-                          id: "appt_tsb-rem-empty",
-                          checked: "checked"
-                        },
-                        domProps: { checked: _vm._q(_vm.remType, "empty") },
-                        on: {
-                          change: function($event) {
-                            _vm.remType = "empty"
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "appt_tsb-rem-empty" } }, [
-                        _vm._v(
-                          _vm._s(
-                            _vm.t("appointments", "Remove empty slots only")
-                          )
-                        )
-                      ]),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.remType,
-                            expression: "remType"
-                          }
-                        ],
-                        staticClass: "radio",
-                        attrs: {
-                          type: "radio",
-                          value: "both",
-                          id: "appt_tsb-rem-both"
-                        },
-                        domProps: { checked: _vm._q(_vm.remType, "both") },
-                        on: {
-                          change: function($event) {
-                            _vm.remType = "both"
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "appt_tsb-rem-both" } }, [
-                        _vm._v(
-                          _vm._s(
-                            _vm.t("appointments", "Remove empty and booked")
-                          )
-                        )
-                      ]),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "primary srgdev-appt-sb-genbtn",
-                          on: { click: _vm.removeOld }
-                        },
-                        [
-                          _vm._v(
-                            _vm._s(_vm.t("appointments", "Start")) +
-                              "\n                "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  )
-                ]
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.calInfo.tsMode === "1"
-              ? [
-                  _c(
-                    "ApptIconButton",
-                    {
-                      attrs: {
-                        loading: _vm.expLoading === 3,
-                        text: _vm.t("appointments", "External Mode Settings"),
-                        icon: "icon-sched-mode"
-                      },
-                      on: { click: _vm.openNRSettings }
-                    },
-                    [
-                      _c(
-                        "Actions",
-                        {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.expando[3] === 1,
-                              expression: "expando[3]===1"
-                            }
-                          ],
-                          attrs: { slot: "actions" },
-                          slot: "actions"
-                        },
-                        [
-                          _c("ActionButton", {
-                            attrs: { icon: "icon-triangle-n" },
-                            on: {
-                              click: function($event) {
-                                $event.stopPropagation()
-                                return _vm.toggleExpando(3)
-                              }
-                            }
-                          })
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "srgdev-appt_expando_cont",
-                      attrs: { "data-expand": _vm.expando[3] }
-                    },
-                    [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "srgdev-appt-info-lcont srgdev-appt-sb-chb-cont",
-                          staticStyle: { "margin-top": "1.5em" }
-                        },
-                        [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.calInfo.nrPushRec,
-                                expression: "calInfo.nrPushRec"
-                              }
-                            ],
-                            staticClass: "checkbox",
-                            attrs: {
-                              type: "checkbox",
-                              id: "appt_tsb-push-recur"
-                            },
-                            domProps: {
-                              checked: Array.isArray(_vm.calInfo.nrPushRec)
-                                ? _vm._i(_vm.calInfo.nrPushRec, null) > -1
-                                : _vm.calInfo.nrPushRec
-                            },
-                            on: {
-                              change: function($event) {
-                                var $$a = _vm.calInfo.nrPushRec,
-                                  $$el = $event.target,
-                                  $$c = $$el.checked ? true : false
-                                if (Array.isArray($$a)) {
-                                  var $$v = null,
-                                    $$i = _vm._i($$a, $$v)
-                                  if ($$el.checked) {
-                                    $$i < 0 &&
-                                      _vm.$set(
-                                        _vm.calInfo,
-                                        "nrPushRec",
-                                        $$a.concat([$$v])
-                                      )
-                                  } else {
-                                    $$i > -1 &&
-                                      _vm.$set(
-                                        _vm.calInfo,
-                                        "nrPushRec",
-                                        $$a
-                                          .slice(0, $$i)
-                                          .concat($$a.slice($$i + 1))
-                                      )
-                                  }
-                                } else {
-                                  _vm.$set(_vm.calInfo, "nrPushRec", $$c)
-                                }
-                              }
-                            }
-                          }),
-                          _c(
-                            "label",
-                            { attrs: { for: "appt_tsb-push-recur" } },
-                            [
-                              _vm._v(
-                                _vm._s(
-                                  _vm.t("appointments", "Optimize recurrence")
-                                )
-                              )
-                            ]
-                          ),
-                          _c("a", {
-                            staticClass: "icon-info srgdev-appt-info-link",
-                            staticStyle: { right: "9%" },
-                            on: {
-                              click: function($event) {
-                                return _vm.$root.$emit(
-                                  "helpWanted",
-                                  "push_rec_nr"
-                                )
-                              }
-                            }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "srgdev-appt-info-lcont srgdev-appt-sb-chb-cont",
-                          staticStyle: { "margin-top": "1.25em" }
-                        },
-                        [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.calInfo.nrRequireCat,
-                                expression: "calInfo.nrRequireCat"
-                              }
-                            ],
-                            staticClass: "checkbox",
-                            attrs: {
-                              type: "checkbox",
-                              id: "appt_tsb-require-cat"
-                            },
-                            domProps: {
-                              checked: Array.isArray(_vm.calInfo.nrRequireCat)
-                                ? _vm._i(_vm.calInfo.nrRequireCat, null) > -1
-                                : _vm.calInfo.nrRequireCat
-                            },
-                            on: {
-                              change: function($event) {
-                                var $$a = _vm.calInfo.nrRequireCat,
-                                  $$el = $event.target,
-                                  $$c = $$el.checked ? true : false
-                                if (Array.isArray($$a)) {
-                                  var $$v = null,
-                                    $$i = _vm._i($$a, $$v)
-                                  if ($$el.checked) {
-                                    $$i < 0 &&
-                                      _vm.$set(
-                                        _vm.calInfo,
-                                        "nrRequireCat",
-                                        $$a.concat([$$v])
-                                      )
-                                  } else {
-                                    $$i > -1 &&
-                                      _vm.$set(
-                                        _vm.calInfo,
-                                        "nrRequireCat",
-                                        $$a
-                                          .slice(0, $$i)
-                                          .concat($$a.slice($$i + 1))
-                                      )
-                                  }
-                                } else {
-                                  _vm.$set(_vm.calInfo, "nrRequireCat", $$c)
-                                }
-                              }
-                            }
-                          }),
-                          _c(
-                            "label",
-                            { attrs: { for: "appt_tsb-require-cat" } },
-                            [
-                              _vm._v(
-                                _vm._s(
-                                  _vm.t(
-                                    "appointments",
-                                    'Require "Appointment" category'
-                                  )
-                                )
-                              )
-                            ]
-                          ),
-                          _c("a", {
-                            staticClass: "icon-info srgdev-appt-info-link",
-                            staticStyle: { right: "9%" },
-                            on: {
-                              click: function($event) {
-                                return _vm.$root.$emit(
-                                  "helpWanted",
-                                  "require_cat_nr"
-                                )
-                              }
-                            }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "srgdev-appt-info-lcont srgdev-appt-sb-chb-cont",
-                          staticStyle: { "margin-top": "1.25em" }
-                        },
-                        [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.calInfo.nrAutoFix,
-                                expression: "calInfo.nrAutoFix"
-                              }
-                            ],
-                            staticClass: "checkbox",
-                            attrs: {
-                              type: "checkbox",
-                              id: "appt_tsb-nr-auto-fix"
-                            },
-                            domProps: {
-                              checked: Array.isArray(_vm.calInfo.nrAutoFix)
-                                ? _vm._i(_vm.calInfo.nrAutoFix, null) > -1
-                                : _vm.calInfo.nrAutoFix
-                            },
-                            on: {
-                              change: function($event) {
-                                var $$a = _vm.calInfo.nrAutoFix,
-                                  $$el = $event.target,
-                                  $$c = $$el.checked ? true : false
-                                if (Array.isArray($$a)) {
-                                  var $$v = null,
-                                    $$i = _vm._i($$a, $$v)
-                                  if ($$el.checked) {
-                                    $$i < 0 &&
-                                      _vm.$set(
-                                        _vm.calInfo,
-                                        "nrAutoFix",
-                                        $$a.concat([$$v])
-                                      )
-                                  } else {
-                                    $$i > -1 &&
-                                      _vm.$set(
-                                        _vm.calInfo,
-                                        "nrAutoFix",
-                                        $$a
-                                          .slice(0, $$i)
-                                          .concat($$a.slice($$i + 1))
-                                      )
-                                  }
-                                } else {
-                                  _vm.$set(_vm.calInfo, "nrAutoFix", $$c)
-                                }
-                              }
-                            }
-                          }),
-                          _c(
-                            "label",
-                            { attrs: { for: "appt_tsb-nr-auto-fix" } },
-                            [
-                              _vm._v(
-                                _vm._s(
-                                  _vm.t(
-                                    "appointments",
-                                    'Auto-fix "Source" timeslots'
-                                  )
-                                )
-                              )
-                            ]
-                          ),
-                          _c("a", {
-                            staticClass: "icon-info srgdev-appt-info-link",
-                            staticStyle: { right: "9%" },
-                            on: {
-                              click: function($event) {
-                                return _vm.$root.$emit(
-                                  "helpWanted",
-                                  "auto_fix_nr"
-                                )
-                              }
-                            }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "primary srgdev-appt-sb-genbtn",
-                          on: { click: _vm.applyCalSettings }
-                        },
-                        [
-                          _vm._v(
-                            _vm._s(_vm.t("appointments", "Apply")) +
-                              "\n                "
-                          )
-                        ]
-                      )
-                    ]
-                  )
-                ]
-              : _vm._e(),
-            _vm._v(" "),
-            _c(
-              "ApptIconButton",
-              {
-                attrs: {
-                  loading: _vm.expLoading === 1,
-                  text: _vm.t("appointments", "Advanced Settings"),
-                  icon: "icon-settings"
-                },
-                on: { click: _vm.openCalSettings }
-              },
-              [
-                _c(
-                  "Actions",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.expando[1] === 1,
-                        expression: "expando[1]===1"
-                      }
-                    ],
-                    attrs: { slot: "actions" },
-                    slot: "actions"
-                  },
-                  [
-                    _c("ActionButton", {
-                      attrs: { icon: "icon-triangle-n" },
-                      on: {
-                        click: function($event) {
-                          $event.stopPropagation()
-                          return _vm.toggleExpando(1)
-                        }
-                      }
-                    })
-                  ],
-                  1
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "srgdev-appt_expando_cont",
-                attrs: { "data-expand": _vm.expando[1] }
-              },
-              [
-                _c(
-                  "label",
-                  {
-                    staticClass: "tsb-label",
-                    attrs: { for: "appt_tsb-appt-prep-time" }
-                  },
-                  [
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(_vm.t("appointments", "Minimum lead time")) +
-                        ":"
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.calInfo.prepTime,
-                        expression: "calInfo.prepTime"
-                      }
-                    ],
-                    staticClass: "tsb-input",
-                    attrs: { id: "appt_tsb-appt-prep-time" },
-                    on: {
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.$set(
-                          _vm.calInfo,
-                          "prepTime",
-                          $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        )
-                      }
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { value: "0" } }, [
-                      _vm._v(_vm._s(_vm.t("appointments", "No lead time")))
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "15" } }, [
-                      _vm._v(_vm._s(_vm.t("appointments", "15 Minutes")))
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "30" } }, [
-                      _vm._v(_vm._s(_vm.t("appointments", "30 Minutes")))
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "60" } }, [
-                      _vm._v(_vm._s(_vm.t("appointments", "1 Hour")))
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "120" } }, [
-                      _vm._v(_vm._s(_vm.t("appointments", "2 Hours")))
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "label",
-                  {
-                    staticClass: "tsb-label",
-                    attrs: { for: "appt_tsb-appt-reset" }
-                  },
-                  [
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(_vm.t("appointments", "When Attendee Cancels")) +
-                        ":"
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.calInfo.whenCanceled,
-                        expression: "calInfo.whenCanceled"
-                      }
-                    ],
-                    staticClass: "tsb-input",
-                    attrs: { id: "appt_tsb-appt-reset" },
-                    on: {
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.$set(
-                          _vm.calInfo,
-                          "whenCanceled",
-                          $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        )
-                      }
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { value: "mark" } }, [
-                      _vm._v(
-                        _vm._s(
-                          _vm.t(
-                            "appointments",
-                            "Mark the appointment as canceled"
-                          )
-                        )
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "reset" } }, [
-                      _vm._v(
-                        _vm._s(
-                          _vm.t(
-                            "appointments",
-                            "Reset (make the timeslot available)"
-                          )
-                        )
-                      )
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "tsb-label",
-                      attrs: { for: "appt_tsb-ts-mode" }
-                    },
-                    [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(_vm.t("appointments", "Time slot mode")) +
-                          ":"
-                      )
-                    ]
-                  ),
-                  _c("a", {
-                    staticClass: "icon-info srgdev-appt-info-link",
-                    staticStyle: { right: "9%" },
-                    on: {
-                      click: function($event) {
-                        return _vm.$root.$emit("helpWanted", "ts_mode")
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.calInfo.tsMode,
-                        expression: "calInfo.tsMode"
-                      }
-                    ],
-                    staticClass: "tsb-input",
-                    attrs: { id: "appt_tsb-ts-mode" },
-                    on: {
-                      change: [
-                        function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.$set(
-                            _vm.calInfo,
-                            "tsMode",
-                            $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          )
-                        },
-                        _vm.tsModeChanged
-                      ]
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { value: "0" } }, [
-                      _vm._v(_vm._s(_vm.t("appointments", "Simple")))
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "1" } }, [
-                      _vm._v(_vm._s(_vm.t("appointments", "External")))
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "primary srgdev-appt-sb-genbtn",
-                    on: { click: _vm.applyCalSettings }
-                  },
-                  [
-                    _vm._v(
-                      _vm._s(_vm.t("appointments", "Apply")) +
-                        "\n                "
-                    )
-                  ]
-                )
-              ]
-            )
-          ],
-          2
-        )
-      ])
-    ],
-    2
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/UserStnSlideBar.vue?vue&type=template&id=3720d924&":
 /*!*********************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/components/UserStnSlideBar.vue?vue&type=template&id=3720d924& ***!
@@ -53754,180 +55002,294 @@ var render = function() {
     },
     [
       _c("template", { slot: "main-area" }, [
-        _c("div", { staticClass: "srgdev-appt-sb-main-cont" }, [
-          _c(
-            "label",
-            {
-              staticClass: "srgdev-appt-sb-label",
-              attrs: { for: "srgdev-appt_uci-org-name" }
-            },
-            [
-              _vm._v(
-                "\n                " + _vm._s(_vm.t("appointments", "Name:"))
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c("input", {
+        _c(
+          "div",
+          {
             directives: [
               {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.uciInfo.organization,
-                expression: "uciInfo.organization"
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isLoading === true,
+                expression: "isLoading===true"
               }
             ],
-            staticClass: "srgdev-appt-sb-input-text",
-            attrs: { id: "srgdev-appt_uci-org-name", type: "text" },
-            domProps: { value: _vm.uciInfo.organization },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.uciInfo, "organization", $event.target.value)
+            staticClass: "sb_loading_cont"
+          },
+          [
+            _c("span", { staticClass: "icon-loading sb_loading_icon_cont" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "sb_loading_text" }, [
+              _vm._v(_vm._s(_vm.t("appointments", "Loading")))
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isLoading === false,
+                expression: "isLoading===false"
               }
-            }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
+            ],
+            staticClass: "srgdev-appt-sb-main-cont",
+            class: { sb_disable: _vm.isSending }
+          },
+          [
+            _c(
+              "h2",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.curPageData.pageCount > 1,
+                    expression: "curPageData.pageCount>1"
+                  }
+                ],
+                staticClass: "srgdev-appt-sb-lbl-header"
+              },
+              [_vm._v(_vm._s(_vm.curPageData.label))]
+            ),
+            _vm._v(" "),
             _c(
               "label",
               {
                 staticClass: "srgdev-appt-sb-label",
-                attrs: { for: "srgdev-appt_uci-org-email" }
-              },
-              [_vm._v(_vm._s(_vm.t("appointments", "Email:")))]
-            ),
-            _c(
-              "a",
-              {
-                staticClass: "icon-info srgdev-appt-info-link",
-                staticStyle: { right: "4%" },
-                on: {
-                  click: function($event) {
-                    return _vm.$root.$emit("helpWanted", "emaildef")
-                  }
-                }
+                attrs: { for: "srgdev-appt_uci-org-name" }
               },
               [
-                _c("span", [
-                  _vm._v(
-                    _vm._s(
-                      _vm.uciInfo.useDefaultEmail === "yes"
-                        ? "useDefaultEmail=yes"
-                        : ""
-                    )
-                  )
-                ])
+                _vm._v(
+                  "\n                " + _vm._s(_vm.t("appointments", "Name:"))
+                )
               ]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.uciInfo.organization,
+                  expression: "uciInfo.organization"
+                }
+              ],
+              staticClass: "srgdev-appt-sb-input-text",
+              attrs: {
+                placeholder: _vm.ph_org,
+                id: "srgdev-appt_uci-org-name",
+                type: "text"
+              },
+              domProps: { value: _vm.uciInfo.organization },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.uciInfo, "organization", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "srgdev-appt-sb-label",
+                  attrs: { for: "srgdev-appt_uci-org-email" }
+                },
+                [_vm._v(_vm._s(_vm.t("appointments", "Email:")))]
+              ),
+              _c(
+                "a",
+                {
+                  staticClass: "icon-info srgdev-appt-info-link",
+                  staticStyle: { right: "4%" },
+                  on: {
+                    click: function($event) {
+                      return _vm.$root.$emit("helpWanted", "emaildef")
+                    }
+                  }
+                },
+                [
+                  _c("span", [
+                    _vm._v(
+                      _vm._s(
+                        _vm.uciInfo.useDefaultEmail === "yes"
+                          ? "useDefaultEmail=yes"
+                          : ""
+                      )
+                    )
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.uciInfo.email,
+                  expression: "uciInfo.email"
+                }
+              ],
+              staticClass: "srgdev-appt-sb-input-text",
+              attrs: {
+                disabled: _vm.curPageData.pageId !== "p0",
+                id: "srgdev-appt_uci-org-email",
+                type: "email"
+              },
+              domProps: { value: _vm.uciInfo.email },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.uciInfo, "email", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "srgdev-appt-sb-label",
+                attrs: { for: "srgdev-appt_uci-org-address" }
+              },
+              [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.t("appointments", "Location:"))
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.uciInfo.address,
+                  expression: "uciInfo.address"
+                }
+              ],
+              staticClass: "srgdev-appt-sb-textarea",
+              staticStyle: { overflow: "auto", resize: "none" },
+              attrs: {
+                placeholder: _vm.ph_addr,
+                id: "srgdev-appt_uci-org-address"
+              },
+              domProps: { value: _vm.uciInfo.address },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.uciInfo, "address", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            [
+              _c(
+                "label",
+                {
+                  staticClass: "srgdev-appt-sb-label",
+                  attrs: { for: "srgdev-appt_uci-form-title" }
+                },
+                [_vm._v(_vm._s(_vm.t("appointments", "Form Title")) + ":")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.uciInfo.formTitle,
+                    expression: "uciInfo.formTitle"
+                  }
+                ],
+                staticClass: "srgdev-appt-sb-input-text",
+                attrs: {
+                  id: "srgdev-appt_uci-form-title",
+                  type: "text",
+                  placeholder: _vm.t("appointments", "Book Your Appointment")
+                },
+                domProps: { value: _vm.uciInfo.formTitle },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.uciInfo, "formTitle", $event.target.value)
+                  }
+                }
+              })
+            ],
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "srgdev-appt-sb-label",
+                attrs: { for: "srgdev-appt_uci-org-phone" }
+              },
+              [
+                _vm._v(
+                  "\n                " + _vm._s(_vm.t("appointments", "Phone:"))
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.uciInfo.phone,
+                  expression: "uciInfo.phone"
+                }
+              ],
+              staticClass: "srgdev-appt-sb-input-text",
+              staticStyle: { "max-width": "20em" },
+              attrs: {
+                placeholder: _vm.ph_phn,
+                id: "srgdev-appt_uci-org-phone",
+                type: "tel"
+              },
+              domProps: { value: _vm.uciInfo.phone },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.uciInfo, "phone", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "primary srgdev-appt-sb-genbtn",
+                class: { "appt-btn-loading": _vm.isSending },
+                attrs: {
+                  disabled:
+                    _vm.curPageData.pageId === "p0" &&
+                    (_vm.uciInfo.email === "" ||
+                      _vm.uciInfo.organization === "" ||
+                      _vm.uciInfo.address === "")
+                },
+                on: { click: _vm.apply }
+              },
+              [_vm._v(_vm._s(_vm.t("appointments", "Apply")) + "\n        ")]
             )
-          ]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.uciInfo.email,
-                expression: "uciInfo.email"
-              }
-            ],
-            staticClass: "srgdev-appt-sb-input-text",
-            attrs: { id: "srgdev-appt_uci-org-email", type: "email" },
-            domProps: { value: _vm.uciInfo.email },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.uciInfo, "email", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "srgdev-appt-sb-label",
-              attrs: { for: "srgdev-appt_uci-org-address" }
-            },
-            [
-              _vm._v(
-                "\n                " +
-                  _vm._s(_vm.t("appointments", "Location:"))
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c("textarea", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.uciInfo.address,
-                expression: "uciInfo.address"
-              }
-            ],
-            staticClass: "srgdev-appt-sb-textarea",
-            staticStyle: { overflow: "auto", resize: "none" },
-            attrs: { id: "srgdev-appt_uci-org-address" },
-            domProps: { value: _vm.uciInfo.address },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.uciInfo, "address", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "srgdev-appt-sb-label",
-              attrs: { for: "srgdev-appt_uci-org-phone" }
-            },
-            [
-              _vm._v(
-                "\n                " + _vm._s(_vm.t("appointments", "Phone:"))
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.uciInfo.phone,
-                expression: "uciInfo.phone"
-              }
-            ],
-            staticClass: "srgdev-appt-sb-input-text",
-            staticStyle: { "max-width": "20em" },
-            attrs: { id: "srgdev-appt_uci-org-phone", type: "tel" },
-            domProps: { value: _vm.uciInfo.phone },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.uciInfo, "phone", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "primary srgdev-appt-sb-genbtn",
-              on: { click: _vm.apply }
-            },
-            [_vm._v(_vm._s(_vm.t("appointments", "Apply")) + "\n            ")]
-          )
-        ])
+          ],
+          2
+        )
       ])
     ],
     2
@@ -54248,6 +55610,27 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/dist/cjs.js!./node_modules/vue-loader/lib/index.js?!./src/components/ApptIconLabel.vue?vue&type=style&index=0&id=5ff6fcc8&scoped=true&lang=scss&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-style-loader!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/dist/cjs.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ApptIconLabel.vue?vue&type=style&index=0&id=5ff6fcc8&scoped=true&lang=scss& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/sass-loader/dist/cjs.js!../../node_modules/vue-loader/lib??vue-loader-options!./ApptIconLabel.vue?vue&type=style&index=0&id=5ff6fcc8&scoped=true&lang=scss& */ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/dist/cjs.js!./node_modules/vue-loader/lib/index.js?!./src/components/ApptIconLabel.vue?vue&type=style&index=0&id=5ff6fcc8&scoped=true&lang=scss&");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var add = __webpack_require__(/*! ../../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js").default
+var update = add("ba4b6002", content, false, {});
+// Hot Module Replacement
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/dist/cjs.js!./node_modules/vue-loader/lib/index.js?!./src/components/SlideBar.vue?vue&type=style&index=0&id=55cbc85c&lang=scss&scoped=true&":
 /*!***********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-style-loader!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/dist/cjs.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SlideBar.vue?vue&type=style&index=0&id=55cbc85c&lang=scss&scoped=true& ***!
@@ -54269,22 +55652,43 @@ if(false) {}
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/AddApptSection.vue?vue&type=style&index=0&id=fa52797e&scoped=true&lang=css&":
-/*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-style-loader!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AddApptSection.vue?vue&type=style&index=0&id=fa52797e&scoped=true&lang=css& ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/AddApptSlideBar.vue?vue&type=style&index=0&id=6125aa76&scoped=true&lang=css&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-style-loader!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AddApptSlideBar.vue?vue&type=style&index=0&id=6125aa76&scoped=true&lang=css& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/vue-loader/lib??vue-loader-options!./AddApptSection.vue?vue&type=style&index=0&id=fa52797e&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/AddApptSection.vue?vue&type=style&index=0&id=fa52797e&scoped=true&lang=css&");
+var content = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/vue-loader/lib??vue-loader-options!./AddApptSlideBar.vue?vue&type=style&index=0&id=6125aa76&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/AddApptSlideBar.vue?vue&type=style&index=0&id=6125aa76&scoped=true&lang=css&");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
 var add = __webpack_require__(/*! ../../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js").default
-var update = add("cbd34a78", content, false, {});
+var update = add("e1d76ede", content, false, {});
+// Hot Module Replacement
+if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/AdvancedSlideBar.vue?vue&type=style&index=0&id=5706c5d8&scoped=true&lang=css&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-style-loader!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AdvancedSlideBar.vue?vue&type=style&index=0&id=5706c5d8&scoped=true&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/vue-loader/lib??vue-loader-options!./AdvancedSlideBar.vue?vue&type=style&index=0&id=5706c5d8&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/AdvancedSlideBar.vue?vue&type=style&index=0&id=5706c5d8&scoped=true&lang=css&");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var add = __webpack_require__(/*! ../../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js").default
+var update = add("60c6438a", content, false, {});
 // Hot Module Replacement
 if(false) {}
 
@@ -54306,6 +55710,48 @@ if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
 var add = __webpack_require__(/*! ../../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js").default
 var update = add("6a363de8", content, false, {});
+// Hot Module Replacement
+if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/ApptMgrSlideBar.vue?vue&type=style&index=0&id=393034e7&scoped=true&lang=css&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-style-loader!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ApptMgrSlideBar.vue?vue&type=style&index=0&id=393034e7&scoped=true&lang=css& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/vue-loader/lib??vue-loader-options!./ApptMgrSlideBar.vue?vue&type=style&index=0&id=393034e7&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/ApptMgrSlideBar.vue?vue&type=style&index=0&id=393034e7&scoped=true&lang=css&");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var add = __webpack_require__(/*! ../../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js").default
+var update = add("a183200c", content, false, {});
+// Hot Module Replacement
+if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/DelApptSlideBar.vue?vue&type=style&index=0&id=1405a1e0&scoped=true&lang=css&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-style-loader!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DelApptSlideBar.vue?vue&type=style&index=0&id=1405a1e0&scoped=true&lang=css& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/vue-loader/lib??vue-loader-options!./DelApptSlideBar.vue?vue&type=style&index=0&id=1405a1e0&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/DelApptSlideBar.vue?vue&type=style&index=0&id=1405a1e0&scoped=true&lang=css&");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var add = __webpack_require__(/*! ../../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js").default
+var update = add("4955fac2", content, false, {});
 // Hot Module Replacement
 if(false) {}
 
@@ -54348,27 +55794,6 @@ if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
 var add = __webpack_require__(/*! ../../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js").default
 var update = add("d995b984", content, false, {});
-// Hot Module Replacement
-if(false) {}
-
-/***/ }),
-
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/TimeSlotSlideBar.vue?vue&type=style&index=0&id=7c8891dd&scoped=true&lang=css&":
-/*!***************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-style-loader!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TimeSlotSlideBar.vue?vue&type=style&index=0&id=7c8891dd&scoped=true&lang=css& ***!
-  \***************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/vue-loader/lib??vue-loader-options!./TimeSlotSlideBar.vue?vue&type=style&index=0&id=7c8891dd&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/TimeSlotSlideBar.vue?vue&type=style&index=0&id=7c8891dd&scoped=true&lang=css&");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var add = __webpack_require__(/*! ../../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js").default
-var update = add("9f4b1540", content, false, {});
 // Hot Module Replacement
 if(false) {}
 
@@ -67448,18 +68873,18 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/components/AddApptSection.vue":
-/*!*******************************************!*\
-  !*** ./src/components/AddApptSection.vue ***!
-  \*******************************************/
+/***/ "./src/components/AddApptSlideBar.vue":
+/*!********************************************!*\
+  !*** ./src/components/AddApptSlideBar.vue ***!
+  \********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _AddApptSection_vue_vue_type_template_id_fa52797e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AddApptSection.vue?vue&type=template&id=fa52797e&scoped=true& */ "./src/components/AddApptSection.vue?vue&type=template&id=fa52797e&scoped=true&");
-/* harmony import */ var _AddApptSection_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AddApptSection.vue?vue&type=script&lang=js& */ "./src/components/AddApptSection.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _AddApptSection_vue_vue_type_style_index_0_id_fa52797e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AddApptSection.vue?vue&type=style&index=0&id=fa52797e&scoped=true&lang=css& */ "./src/components/AddApptSection.vue?vue&type=style&index=0&id=fa52797e&scoped=true&lang=css&");
+/* harmony import */ var _AddApptSlideBar_vue_vue_type_template_id_6125aa76_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AddApptSlideBar.vue?vue&type=template&id=6125aa76&scoped=true& */ "./src/components/AddApptSlideBar.vue?vue&type=template&id=6125aa76&scoped=true&");
+/* harmony import */ var _AddApptSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AddApptSlideBar.vue?vue&type=script&lang=js& */ "./src/components/AddApptSlideBar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _AddApptSlideBar_vue_vue_type_style_index_0_id_6125aa76_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AddApptSlideBar.vue?vue&type=style&index=0&id=6125aa76&scoped=true&lang=css& */ "./src/components/AddApptSlideBar.vue?vue&type=style&index=0&id=6125aa76&scoped=true&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -67470,66 +68895,153 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
-  _AddApptSection_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _AddApptSection_vue_vue_type_template_id_fa52797e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _AddApptSection_vue_vue_type_template_id_fa52797e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _AddApptSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AddApptSlideBar_vue_vue_type_template_id_6125aa76_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AddApptSlideBar_vue_vue_type_template_id_6125aa76_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "fa52797e",
+  "6125aa76",
   null
   
 )
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "src/components/AddApptSection.vue"
+component.options.__file = "src/components/AddApptSlideBar.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./src/components/AddApptSection.vue?vue&type=script&lang=js&":
-/*!********************************************************************!*\
-  !*** ./src/components/AddApptSection.vue?vue&type=script&lang=js& ***!
-  \********************************************************************/
+/***/ "./src/components/AddApptSlideBar.vue?vue&type=script&lang=js&":
+/*!*********************************************************************!*\
+  !*** ./src/components/AddApptSlideBar.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSection_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib??ref--3!../../node_modules/vue-loader/lib??vue-loader-options!./AddApptSection.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/AddApptSection.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSection_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib??ref--3!../../node_modules/vue-loader/lib??vue-loader-options!./AddApptSlideBar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/AddApptSlideBar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./src/components/AddApptSection.vue?vue&type=style&index=0&id=fa52797e&scoped=true&lang=css&":
-/*!****************************************************************************************************!*\
-  !*** ./src/components/AddApptSection.vue?vue&type=style&index=0&id=fa52797e&scoped=true&lang=css& ***!
-  \****************************************************************************************************/
+/***/ "./src/components/AddApptSlideBar.vue?vue&type=style&index=0&id=6125aa76&scoped=true&lang=css&":
+/*!*****************************************************************************************************!*\
+  !*** ./src/components/AddApptSlideBar.vue?vue&type=style&index=0&id=6125aa76&scoped=true&lang=css& ***!
+  \*****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSection_vue_vue_type_style_index_0_id_fa52797e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-style-loader!../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/vue-loader/lib??vue-loader-options!./AddApptSection.vue?vue&type=style&index=0&id=fa52797e&scoped=true&lang=css& */ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/AddApptSection.vue?vue&type=style&index=0&id=fa52797e&scoped=true&lang=css&");
-/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSection_vue_vue_type_style_index_0_id_fa52797e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSection_vue_vue_type_style_index_0_id_fa52797e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSection_vue_vue_type_style_index_0_id_fa52797e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSection_vue_vue_type_style_index_0_id_fa52797e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSection_vue_vue_type_style_index_0_id_fa52797e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSlideBar_vue_vue_type_style_index_0_id_6125aa76_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-style-loader!../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/vue-loader/lib??vue-loader-options!./AddApptSlideBar.vue?vue&type=style&index=0&id=6125aa76&scoped=true&lang=css& */ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/AddApptSlideBar.vue?vue&type=style&index=0&id=6125aa76&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSlideBar_vue_vue_type_style_index_0_id_6125aa76_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSlideBar_vue_vue_type_style_index_0_id_6125aa76_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSlideBar_vue_vue_type_style_index_0_id_6125aa76_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSlideBar_vue_vue_type_style_index_0_id_6125aa76_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSlideBar_vue_vue_type_style_index_0_id_6125aa76_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
-/***/ "./src/components/AddApptSection.vue?vue&type=template&id=fa52797e&scoped=true&":
-/*!**************************************************************************************!*\
-  !*** ./src/components/AddApptSection.vue?vue&type=template&id=fa52797e&scoped=true& ***!
-  \**************************************************************************************/
+/***/ "./src/components/AddApptSlideBar.vue?vue&type=template&id=6125aa76&scoped=true&":
+/*!***************************************************************************************!*\
+  !*** ./src/components/AddApptSlideBar.vue?vue&type=template&id=6125aa76&scoped=true& ***!
+  \***************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSection_vue_vue_type_template_id_fa52797e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../node_modules/vue-loader/lib??vue-loader-options!./AddApptSection.vue?vue&type=template&id=fa52797e&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/AddApptSection.vue?vue&type=template&id=fa52797e&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSection_vue_vue_type_template_id_fa52797e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSlideBar_vue_vue_type_template_id_6125aa76_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../node_modules/vue-loader/lib??vue-loader-options!./AddApptSlideBar.vue?vue&type=template&id=6125aa76&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/AddApptSlideBar.vue?vue&type=template&id=6125aa76&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSlideBar_vue_vue_type_template_id_6125aa76_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSection_vue_vue_type_template_id_fa52797e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddApptSlideBar_vue_vue_type_template_id_6125aa76_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./src/components/AdvancedSlideBar.vue":
+/*!*********************************************!*\
+  !*** ./src/components/AdvancedSlideBar.vue ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AdvancedSlideBar_vue_vue_type_template_id_5706c5d8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AdvancedSlideBar.vue?vue&type=template&id=5706c5d8&scoped=true& */ "./src/components/AdvancedSlideBar.vue?vue&type=template&id=5706c5d8&scoped=true&");
+/* harmony import */ var _AdvancedSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AdvancedSlideBar.vue?vue&type=script&lang=js& */ "./src/components/AdvancedSlideBar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _AdvancedSlideBar_vue_vue_type_style_index_0_id_5706c5d8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AdvancedSlideBar.vue?vue&type=style&index=0&id=5706c5d8&scoped=true&lang=css& */ "./src/components/AdvancedSlideBar.vue?vue&type=style&index=0&id=5706c5d8&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _AdvancedSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AdvancedSlideBar_vue_vue_type_template_id_5706c5d8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AdvancedSlideBar_vue_vue_type_template_id_5706c5d8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "5706c5d8",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "src/components/AdvancedSlideBar.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./src/components/AdvancedSlideBar.vue?vue&type=script&lang=js&":
+/*!**********************************************************************!*\
+  !*** ./src/components/AdvancedSlideBar.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_AdvancedSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib??ref--3!../../node_modules/vue-loader/lib??vue-loader-options!./AdvancedSlideBar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/AdvancedSlideBar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_AdvancedSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./src/components/AdvancedSlideBar.vue?vue&type=style&index=0&id=5706c5d8&scoped=true&lang=css&":
+/*!******************************************************************************************************!*\
+  !*** ./src/components/AdvancedSlideBar.vue?vue&type=style&index=0&id=5706c5d8&scoped=true&lang=css& ***!
+  \******************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_AdvancedSlideBar_vue_vue_type_style_index_0_id_5706c5d8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-style-loader!../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/vue-loader/lib??vue-loader-options!./AdvancedSlideBar.vue?vue&type=style&index=0&id=5706c5d8&scoped=true&lang=css& */ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/AdvancedSlideBar.vue?vue&type=style&index=0&id=5706c5d8&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_AdvancedSlideBar_vue_vue_type_style_index_0_id_5706c5d8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_AdvancedSlideBar_vue_vue_type_style_index_0_id_5706c5d8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_AdvancedSlideBar_vue_vue_type_style_index_0_id_5706c5d8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_AdvancedSlideBar_vue_vue_type_style_index_0_id_5706c5d8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_AdvancedSlideBar_vue_vue_type_style_index_0_id_5706c5d8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./src/components/AdvancedSlideBar.vue?vue&type=template&id=5706c5d8&scoped=true&":
+/*!****************************************************************************************!*\
+  !*** ./src/components/AdvancedSlideBar.vue?vue&type=template&id=5706c5d8&scoped=true& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdvancedSlideBar_vue_vue_type_template_id_5706c5d8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../node_modules/vue-loader/lib??vue-loader-options!./AdvancedSlideBar.vue?vue&type=template&id=5706c5d8&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/AdvancedSlideBar.vue?vue&type=template&id=5706c5d8&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdvancedSlideBar_vue_vue_type_template_id_5706c5d8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdvancedSlideBar_vue_vue_type_template_id_5706c5d8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -67704,6 +69216,267 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptIconButton_vue_vue_type_template_id_1939330e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptIconButton_vue_vue_type_template_id_1939330e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./src/components/ApptIconLabel.vue":
+/*!******************************************!*\
+  !*** ./src/components/ApptIconLabel.vue ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ApptIconLabel_vue_vue_type_template_id_5ff6fcc8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ApptIconLabel.vue?vue&type=template&id=5ff6fcc8&scoped=true& */ "./src/components/ApptIconLabel.vue?vue&type=template&id=5ff6fcc8&scoped=true&");
+/* harmony import */ var _ApptIconLabel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ApptIconLabel.vue?vue&type=script&lang=js& */ "./src/components/ApptIconLabel.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _ApptIconLabel_vue_vue_type_style_index_0_id_5ff6fcc8_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ApptIconLabel.vue?vue&type=style&index=0&id=5ff6fcc8&scoped=true&lang=scss& */ "./src/components/ApptIconLabel.vue?vue&type=style&index=0&id=5ff6fcc8&scoped=true&lang=scss&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _ApptIconLabel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ApptIconLabel_vue_vue_type_template_id_5ff6fcc8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ApptIconLabel_vue_vue_type_template_id_5ff6fcc8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "5ff6fcc8",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "src/components/ApptIconLabel.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./src/components/ApptIconLabel.vue?vue&type=script&lang=js&":
+/*!*******************************************************************!*\
+  !*** ./src/components/ApptIconLabel.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptIconLabel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib??ref--3!../../node_modules/vue-loader/lib??vue-loader-options!./ApptIconLabel.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/ApptIconLabel.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptIconLabel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./src/components/ApptIconLabel.vue?vue&type=style&index=0&id=5ff6fcc8&scoped=true&lang=scss&":
+/*!****************************************************************************************************!*\
+  !*** ./src/components/ApptIconLabel.vue?vue&type=style&index=0&id=5ff6fcc8&scoped=true&lang=scss& ***!
+  \****************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_dist_cjs_js_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptIconLabel_vue_vue_type_style_index_0_id_5ff6fcc8_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-style-loader!../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/sass-loader/dist/cjs.js!../../node_modules/vue-loader/lib??vue-loader-options!./ApptIconLabel.vue?vue&type=style&index=0&id=5ff6fcc8&scoped=true&lang=scss& */ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/dist/cjs.js!./node_modules/vue-loader/lib/index.js?!./src/components/ApptIconLabel.vue?vue&type=style&index=0&id=5ff6fcc8&scoped=true&lang=scss&");
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_dist_cjs_js_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptIconLabel_vue_vue_type_style_index_0_id_5ff6fcc8_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_dist_cjs_js_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptIconLabel_vue_vue_type_style_index_0_id_5ff6fcc8_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_dist_cjs_js_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptIconLabel_vue_vue_type_style_index_0_id_5ff6fcc8_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_dist_cjs_js_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptIconLabel_vue_vue_type_style_index_0_id_5ff6fcc8_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_dist_cjs_js_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptIconLabel_vue_vue_type_style_index_0_id_5ff6fcc8_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./src/components/ApptIconLabel.vue?vue&type=template&id=5ff6fcc8&scoped=true&":
+/*!*************************************************************************************!*\
+  !*** ./src/components/ApptIconLabel.vue?vue&type=template&id=5ff6fcc8&scoped=true& ***!
+  \*************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptIconLabel_vue_vue_type_template_id_5ff6fcc8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../node_modules/vue-loader/lib??vue-loader-options!./ApptIconLabel.vue?vue&type=template&id=5ff6fcc8&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/ApptIconLabel.vue?vue&type=template&id=5ff6fcc8&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptIconLabel_vue_vue_type_template_id_5ff6fcc8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptIconLabel_vue_vue_type_template_id_5ff6fcc8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./src/components/ApptMgrSlideBar.vue":
+/*!********************************************!*\
+  !*** ./src/components/ApptMgrSlideBar.vue ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ApptMgrSlideBar_vue_vue_type_template_id_393034e7_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ApptMgrSlideBar.vue?vue&type=template&id=393034e7&scoped=true& */ "./src/components/ApptMgrSlideBar.vue?vue&type=template&id=393034e7&scoped=true&");
+/* harmony import */ var _ApptMgrSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ApptMgrSlideBar.vue?vue&type=script&lang=js& */ "./src/components/ApptMgrSlideBar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _ApptMgrSlideBar_vue_vue_type_style_index_0_id_393034e7_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ApptMgrSlideBar.vue?vue&type=style&index=0&id=393034e7&scoped=true&lang=css& */ "./src/components/ApptMgrSlideBar.vue?vue&type=style&index=0&id=393034e7&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _ApptMgrSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ApptMgrSlideBar_vue_vue_type_template_id_393034e7_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ApptMgrSlideBar_vue_vue_type_template_id_393034e7_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "393034e7",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "src/components/ApptMgrSlideBar.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./src/components/ApptMgrSlideBar.vue?vue&type=script&lang=js&":
+/*!*********************************************************************!*\
+  !*** ./src/components/ApptMgrSlideBar.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptMgrSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib??ref--3!../../node_modules/vue-loader/lib??vue-loader-options!./ApptMgrSlideBar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/ApptMgrSlideBar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptMgrSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./src/components/ApptMgrSlideBar.vue?vue&type=style&index=0&id=393034e7&scoped=true&lang=css&":
+/*!*****************************************************************************************************!*\
+  !*** ./src/components/ApptMgrSlideBar.vue?vue&type=style&index=0&id=393034e7&scoped=true&lang=css& ***!
+  \*****************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptMgrSlideBar_vue_vue_type_style_index_0_id_393034e7_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-style-loader!../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/vue-loader/lib??vue-loader-options!./ApptMgrSlideBar.vue?vue&type=style&index=0&id=393034e7&scoped=true&lang=css& */ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/ApptMgrSlideBar.vue?vue&type=style&index=0&id=393034e7&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptMgrSlideBar_vue_vue_type_style_index_0_id_393034e7_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptMgrSlideBar_vue_vue_type_style_index_0_id_393034e7_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptMgrSlideBar_vue_vue_type_style_index_0_id_393034e7_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptMgrSlideBar_vue_vue_type_style_index_0_id_393034e7_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptMgrSlideBar_vue_vue_type_style_index_0_id_393034e7_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./src/components/ApptMgrSlideBar.vue?vue&type=template&id=393034e7&scoped=true&":
+/*!***************************************************************************************!*\
+  !*** ./src/components/ApptMgrSlideBar.vue?vue&type=template&id=393034e7&scoped=true& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptMgrSlideBar_vue_vue_type_template_id_393034e7_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../node_modules/vue-loader/lib??vue-loader-options!./ApptMgrSlideBar.vue?vue&type=template&id=393034e7&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/ApptMgrSlideBar.vue?vue&type=template&id=393034e7&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptMgrSlideBar_vue_vue_type_template_id_393034e7_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ApptMgrSlideBar_vue_vue_type_template_id_393034e7_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./src/components/DelApptSlideBar.vue":
+/*!********************************************!*\
+  !*** ./src/components/DelApptSlideBar.vue ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _DelApptSlideBar_vue_vue_type_template_id_1405a1e0_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DelApptSlideBar.vue?vue&type=template&id=1405a1e0&scoped=true& */ "./src/components/DelApptSlideBar.vue?vue&type=template&id=1405a1e0&scoped=true&");
+/* harmony import */ var _DelApptSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DelApptSlideBar.vue?vue&type=script&lang=js& */ "./src/components/DelApptSlideBar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _DelApptSlideBar_vue_vue_type_style_index_0_id_1405a1e0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DelApptSlideBar.vue?vue&type=style&index=0&id=1405a1e0&scoped=true&lang=css& */ "./src/components/DelApptSlideBar.vue?vue&type=style&index=0&id=1405a1e0&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _DelApptSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _DelApptSlideBar_vue_vue_type_template_id_1405a1e0_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _DelApptSlideBar_vue_vue_type_template_id_1405a1e0_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "1405a1e0",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "src/components/DelApptSlideBar.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./src/components/DelApptSlideBar.vue?vue&type=script&lang=js&":
+/*!*********************************************************************!*\
+  !*** ./src/components/DelApptSlideBar.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_DelApptSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib??ref--3!../../node_modules/vue-loader/lib??vue-loader-options!./DelApptSlideBar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/DelApptSlideBar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_DelApptSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./src/components/DelApptSlideBar.vue?vue&type=style&index=0&id=1405a1e0&scoped=true&lang=css&":
+/*!*****************************************************************************************************!*\
+  !*** ./src/components/DelApptSlideBar.vue?vue&type=style&index=0&id=1405a1e0&scoped=true&lang=css& ***!
+  \*****************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_DelApptSlideBar_vue_vue_type_style_index_0_id_1405a1e0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-style-loader!../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/vue-loader/lib??vue-loader-options!./DelApptSlideBar.vue?vue&type=style&index=0&id=1405a1e0&scoped=true&lang=css& */ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/DelApptSlideBar.vue?vue&type=style&index=0&id=1405a1e0&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_DelApptSlideBar_vue_vue_type_style_index_0_id_1405a1e0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_DelApptSlideBar_vue_vue_type_style_index_0_id_1405a1e0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_DelApptSlideBar_vue_vue_type_style_index_0_id_1405a1e0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_DelApptSlideBar_vue_vue_type_style_index_0_id_1405a1e0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_DelApptSlideBar_vue_vue_type_style_index_0_id_1405a1e0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./src/components/DelApptSlideBar.vue?vue&type=template&id=1405a1e0&scoped=true&":
+/*!***************************************************************************************!*\
+  !*** ./src/components/DelApptSlideBar.vue?vue&type=template&id=1405a1e0&scoped=true& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DelApptSlideBar_vue_vue_type_template_id_1405a1e0_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../node_modules/vue-loader/lib??vue-loader-options!./DelApptSlideBar.vue?vue&type=template&id=1405a1e0&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/DelApptSlideBar.vue?vue&type=template&id=1405a1e0&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DelApptSlideBar_vue_vue_type_template_id_1405a1e0_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DelApptSlideBar_vue_vue_type_template_id_1405a1e0_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -67934,6 +69707,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/components/PagePickerSlideBar.vue":
+/*!***********************************************!*\
+  !*** ./src/components/PagePickerSlideBar.vue ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PagePickerSlideBar_vue_vue_type_template_id_cedba322___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PagePickerSlideBar.vue?vue&type=template&id=cedba322& */ "./src/components/PagePickerSlideBar.vue?vue&type=template&id=cedba322&");
+/* harmony import */ var _PagePickerSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PagePickerSlideBar.vue?vue&type=script&lang=js& */ "./src/components/PagePickerSlideBar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _PagePickerSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PagePickerSlideBar_vue_vue_type_template_id_cedba322___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PagePickerSlideBar_vue_vue_type_template_id_cedba322___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "src/components/PagePickerSlideBar.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./src/components/PagePickerSlideBar.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./src/components/PagePickerSlideBar.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PagePickerSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib??ref--3!../../node_modules/vue-loader/lib??vue-loader-options!./PagePickerSlideBar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/PagePickerSlideBar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PagePickerSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./src/components/PagePickerSlideBar.vue?vue&type=template&id=cedba322&":
+/*!******************************************************************************!*\
+  !*** ./src/components/PagePickerSlideBar.vue?vue&type=template&id=cedba322& ***!
+  \******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PagePickerSlideBar_vue_vue_type_template_id_cedba322___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../node_modules/vue-loader/lib??vue-loader-options!./PagePickerSlideBar.vue?vue&type=template&id=cedba322& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/PagePickerSlideBar.vue?vue&type=template&id=cedba322&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PagePickerSlideBar_vue_vue_type_template_id_cedba322___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PagePickerSlideBar_vue_vue_type_template_id_cedba322___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./src/components/ScheduleSlideBar.vue":
 /*!*********************************************!*\
   !*** ./src/components/ScheduleSlideBar.vue ***!
@@ -68021,6 +69863,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/components/SettingsSlideBar.vue":
+/*!*********************************************!*\
+  !*** ./src/components/SettingsSlideBar.vue ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SettingsSlideBar_vue_vue_type_template_id_de0610d6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SettingsSlideBar.vue?vue&type=template&id=de0610d6& */ "./src/components/SettingsSlideBar.vue?vue&type=template&id=de0610d6&");
+/* harmony import */ var _SettingsSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SettingsSlideBar.vue?vue&type=script&lang=js& */ "./src/components/SettingsSlideBar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SettingsSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SettingsSlideBar_vue_vue_type_template_id_de0610d6___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SettingsSlideBar_vue_vue_type_template_id_de0610d6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "src/components/SettingsSlideBar.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./src/components/SettingsSlideBar.vue?vue&type=script&lang=js&":
+/*!**********************************************************************!*\
+  !*** ./src/components/SettingsSlideBar.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_SettingsSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib??ref--3!../../node_modules/vue-loader/lib??vue-loader-options!./SettingsSlideBar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/SettingsSlideBar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_SettingsSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./src/components/SettingsSlideBar.vue?vue&type=template&id=de0610d6&":
+/*!****************************************************************************!*\
+  !*** ./src/components/SettingsSlideBar.vue?vue&type=template&id=de0610d6& ***!
+  \****************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SettingsSlideBar_vue_vue_type_template_id_de0610d6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../node_modules/vue-loader/lib??vue-loader-options!./SettingsSlideBar.vue?vue&type=template&id=de0610d6& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/SettingsSlideBar.vue?vue&type=template&id=de0610d6&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SettingsSlideBar_vue_vue_type_template_id_de0610d6___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SettingsSlideBar_vue_vue_type_template_id_de0610d6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./src/components/SlideBar.vue":
 /*!*************************************!*\
   !*** ./src/components/SlideBar.vue ***!
@@ -68103,93 +70014,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SlideBar_vue_vue_type_template_id_55cbc85c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SlideBar_vue_vue_type_template_id_55cbc85c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./src/components/TimeSlotSlideBar.vue":
-/*!*********************************************!*\
-  !*** ./src/components/TimeSlotSlideBar.vue ***!
-  \*********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _TimeSlotSlideBar_vue_vue_type_template_id_7c8891dd_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TimeSlotSlideBar.vue?vue&type=template&id=7c8891dd&scoped=true& */ "./src/components/TimeSlotSlideBar.vue?vue&type=template&id=7c8891dd&scoped=true&");
-/* harmony import */ var _TimeSlotSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TimeSlotSlideBar.vue?vue&type=script&lang=js& */ "./src/components/TimeSlotSlideBar.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _TimeSlotSlideBar_vue_vue_type_style_index_0_id_7c8891dd_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TimeSlotSlideBar.vue?vue&type=style&index=0&id=7c8891dd&scoped=true&lang=css& */ "./src/components/TimeSlotSlideBar.vue?vue&type=style&index=0&id=7c8891dd&scoped=true&lang=css&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
-  _TimeSlotSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _TimeSlotSlideBar_vue_vue_type_template_id_7c8891dd_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _TimeSlotSlideBar_vue_vue_type_template_id_7c8891dd_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  "7c8891dd",
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "src/components/TimeSlotSlideBar.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./src/components/TimeSlotSlideBar.vue?vue&type=script&lang=js&":
-/*!**********************************************************************!*\
-  !*** ./src/components/TimeSlotSlideBar.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_TimeSlotSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib??ref--3!../../node_modules/vue-loader/lib??vue-loader-options!./TimeSlotSlideBar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/TimeSlotSlideBar.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_TimeSlotSlideBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./src/components/TimeSlotSlideBar.vue?vue&type=style&index=0&id=7c8891dd&scoped=true&lang=css&":
-/*!******************************************************************************************************!*\
-  !*** ./src/components/TimeSlotSlideBar.vue?vue&type=style&index=0&id=7c8891dd&scoped=true&lang=css& ***!
-  \******************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TimeSlotSlideBar_vue_vue_type_style_index_0_id_7c8891dd_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-style-loader!../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/vue-loader/lib??vue-loader-options!./TimeSlotSlideBar.vue?vue&type=style&index=0&id=7c8891dd&scoped=true&lang=css& */ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/TimeSlotSlideBar.vue?vue&type=style&index=0&id=7c8891dd&scoped=true&lang=css&");
-/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TimeSlotSlideBar_vue_vue_type_style_index_0_id_7c8891dd_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TimeSlotSlideBar_vue_vue_type_style_index_0_id_7c8891dd_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TimeSlotSlideBar_vue_vue_type_style_index_0_id_7c8891dd_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TimeSlotSlideBar_vue_vue_type_style_index_0_id_7c8891dd_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TimeSlotSlideBar_vue_vue_type_style_index_0_id_7c8891dd_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
-/***/ "./src/components/TimeSlotSlideBar.vue?vue&type=template&id=7c8891dd&scoped=true&":
-/*!****************************************************************************************!*\
-  !*** ./src/components/TimeSlotSlideBar.vue?vue&type=template&id=7c8891dd&scoped=true& ***!
-  \****************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TimeSlotSlideBar_vue_vue_type_template_id_7c8891dd_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../node_modules/vue-loader/lib??vue-loader-options!./TimeSlotSlideBar.vue?vue&type=template&id=7c8891dd&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/TimeSlotSlideBar.vue?vue&type=template&id=7c8891dd&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TimeSlotSlideBar_vue_vue_type_template_id_7c8891dd_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TimeSlotSlideBar_vue_vue_type_template_id_7c8891dd_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

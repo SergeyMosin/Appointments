@@ -515,10 +515,60 @@ textarea.appt-stn-txt-ta{
     padding-left: 4%;
     min-width: 270px;
 }
-
+.srgdev-appt-sb-lbl-header{
+	font-size: 150%;
+	color: var(--color-text-lighter);
+	margin-left: -2%;
+	padding-left: 2%;
+	width: 98%;
+	padding-bottom: .25em;
+	margin-bottom: 1em;
+	border-bottom: thin solid var(--color-border);
+}
 .srgdev-appt-sb-chb-cont{
 	margin-top: .5em;
 	margin-left: -3px;
+}
+
+.srgdev-sqr-btn{
+	cursor: pointer;
+	padding: .45em 0 .5em;
+	border: thin solid var(--color-border);
+	display: block;
+	width: 90%;
+	margin: 0 auto 1em;
+	text-align: center;
+	position: relative;
+
+	&_text{
+		display: inline-block;
+		margin: 0 3em 0 1em;
+		color: var(--color-main-text);
+		height: 2em;
+		line-height: 2em;
+		cursor: inherit;
+	}
+	&_icon{
+		display: block;
+		position: absolute;
+		right: .75em;
+		top: 50%;
+		width: 2em;
+		height: 2em;
+		margin-top: -1em;
+		opacity: .7;
+		cursor: inherit;
+	}
+	&:hover{
+		border-color: var(--color-border-dark);
+	}
+	&:hover &_text{
+		font-weight: bold;
+	}
+	&:hover &_icon{
+		transform: scale(1.1);
+	}
+
 }
 
 .srgdev-appt-sb-main-cont {

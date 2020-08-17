@@ -88,7 +88,8 @@ class PageController extends Controller {
             if($u[0]===chr(31)){
                 return [substr($u,1,-2),substr($u,-2)];
             }else{
-                return [$u,""];
+                // This is the main page ($pageId='p0')
+                return [$u,"p0"];
             }
         }else{
             return [null,null];
@@ -282,7 +283,7 @@ class PageController extends Controller {
                     BackendUtils::APPT_SES_CONFIRM);
 
                 // ... set cancel link info
-                $btn_url=$this->utils->getPublicWebBase().'/' .$this->utils->pubPrx($this->utils->getToken($userId),$embed).'cncf?d=';
+                $btn_url=$this->utils->getPublicWebBase().'/' .$this->utils->pubPrx($this->utils->getToken($userId,$pageId),$embed).'cncf?d=';
                 if($embed) {
                     $btn_url=$this->c->getAppValue(
                         $this->appName,
@@ -313,6 +314,7 @@ class PageController extends Controller {
                 BackendUtils::APPT_SES_KEY_HINT,
                 BackendUtils::APPT_SES_CANCEL);
 
+            // TODO: pageId is needed here
             $cls=$this->utils->getUserSettings(
                 BackendUtils::KEY_CLS, $userId);
 
@@ -421,11 +423,14 @@ class PageController extends Controller {
      * @noinspection PhpUnused
      */
     public function formBase(){
-        $pageId=$this->request->getParam("p","");
-        if(!empty($pageId) && !isset($this->utils->getUserSettings(
-                BackendUtils::KEY_PAGES, $this->userId)[$pageId])){
+        $pageId=$this->request->getParam("p","p0");
+        if(empty($pageId)) $pageId='p0';
+        if(!isset($this->utils->getUserSettings(
+                BackendUtils::KEY_PAGES,
+                $this->userId)[$pageId])){
             return new NotFoundResponse();
         }
+
 
         if($this->request->getParam("sts")!==null) {
             $tr=$this->showFinish('base',$this->userId);
@@ -442,11 +447,14 @@ class PageController extends Controller {
      * @noinspection PhpUnused
      */
     public function formBasePost(){
-        $pageId=$this->request->getParam("p","");
-        if(!empty($pageId) && !isset($this->utils->getUserSettings(
-                    BackendUtils::KEY_PAGES, $this->userId)[$pageId])){
+        $pageId=$this->request->getParam("p","p0");
+        if(empty($pageId)) $pageId='p0';
+        if(!isset($this->utils->getUserSettings(
+                    BackendUtils::KEY_PAGES,
+                    $this->userId)[$pageId])){
             return new NotFoundResponse();
         }
+
         return $this->showFormPost($this->userId,$pageId);
     }
 
@@ -574,7 +582,7 @@ class PageController extends Controller {
             BackendUtils::APPT_SES_KEY_HINT,
             ($skip_evs?BackendUtils::APPT_SES_SKIP:BackendUtils::APPT_SES_BOOK));
 
-        $btn_url=$raw_url=$this->utils->getPublicWebBase().'/' .$this->utils->pubPrx($this->utils->getToken($userId),$embed).'cncf?d=';
+        $btn_url=$raw_url=$this->utils->getPublicWebBase().'/' .$this->utils->pubPrx($this->utils->getToken($userId,$pageId),$embed).'cncf?d=';
         if($embed) {
             $btn_url=$this->c->getAppValue(
                 $this->appName,
@@ -753,6 +761,7 @@ class PageController extends Controller {
 
         $nw=intval($pps[BackendUtils::PSN_NWEEKS]);
 
+        // TODO: pageId is needed here
         $cls=$this->utils->getUserSettings(
             BackendUtils::KEY_CLS,$uid);
 
@@ -818,9 +827,11 @@ class PageController extends Controller {
      */
     public function caladd(){
         // TODO: test this with a $pageId
-        $pageId=$this->request->getParam("p","");
-        if(!empty($pageId) && !isset($this->utils->getUserSettings(
-                    BackendUtils::KEY_PAGES, $this->userId)[$pageId])){
+        $pageId=$this->request->getParam("p","p0");
+        // pageId is required for this
+        if(empty($pageId) || !isset($this->utils->getUserSettings(
+                    BackendUtils::KEY_PAGES,
+                    $this->userId)[$pageId])){
             return new NotFoundResponse();
         }
         return $this->addAppointments(

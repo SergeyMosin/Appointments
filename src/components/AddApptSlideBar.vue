@@ -180,7 +180,7 @@ export default {
 
       try{
         const data=this.curPageData
-        this.calInfo=await this.getState(data.action,data.key)
+        this.calInfo=await this.getState("get_"+data.stateAction,data.pageId)
       }catch (e){
         console.log(e)
         this.isLoading=false
@@ -191,7 +191,7 @@ export default {
       this.tzName = "UTC"
       this.tzData = "UTC"
       try {
-        let res= await this.$parent.$parent.getState("get_tz")
+        let res= await this.getState("get_tz")
         if (res !== null && res.toLowerCase() !== 'utc') {
           let url = linkTo('appointments', 'ajax/zones.js')
           const tzr=await axios.get(url)

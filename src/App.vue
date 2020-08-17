@@ -13,9 +13,10 @@
                 ?t('appointments','[Online]')
                 :t('appointments','[Disabled]'))
               )"
-            :icon="page0.enabled===1
+            :icon="pageInfoLoading!==1?
+                      (page0.enabled===1
                         ?'icon-screen'
-                        :'icon-screen-off'"
+                        :'icon-screen-off'):''"
             :loading="pageInfoLoading===1">
           <template slot="actions">
             <ActionButton
@@ -49,7 +50,7 @@
         <AppNavigationItem
             v-for="(page,idx) in morePages"
             class="srgdev-pubpage-nav-item"
-            @click="getFormData(page.key)"
+            @click="getFormData(page.pageId)"
             :title="(
               (page.label===''
                 ?t('appointments','Public Page')
@@ -58,38 +59,39 @@
                 ?t('appointments','[Online]')
                 :t('appointments','[Disabled]'))
               )"
-            :icon="page.enabled===1
-              ?'icon-screen'
-              :'icon-screen-off'"
+            :icon="pageInfoLoading!==(idx+2)?
+                      (page.enabled===1
+                        ?'icon-screen'
+                        :'icon-screen-off'):''"
             :loading="pageInfoLoading===idx+2"
-            :key="page.key">
+            :key="page.pageId">
           <template slot="actions">
-            <ActionButton v-show="page.enabled===0" @click="setPageEnabled(page.key,1)" icon="icon-checkmark-color"
+            <ActionButton v-show="page.enabled===0" @click="setPageEnabled(page.pageId,1)" icon="icon-checkmark-color"
                           closeAfterClick>
               {{ t('appointments', 'Share Online') }}
             </ActionButton>
-            <ActionButton v-show="page.enabled===1" @click="setPageEnabled(page.key,0)" icon="icon-category-disabled"
+            <ActionButton v-show="page.enabled===1" @click="setPageEnabled(page.pageId,0)" icon="icon-category-disabled"
                           closeAfterClick>
               {{ t('appointments', 'Stop Sharing') }}
             </ActionButton>
-            <ActionButton @click="showPubLink(page.key)" icon="icon-public" closeAfterClick>
+            <ActionButton @click="showPubLink(page.pageId)" icon="icon-public" closeAfterClick>
               {{ t('appointments', 'Show URL/link') }}
             </ActionButton>
-            <ActionInput :data-pid="page.key" @change="setPageLabel" icon="icon-rename" :value="page.label">
+            <ActionInput :data-pid="page.pageId" @change="setPageLabel" icon="icon-rename" :value="page.label">
               {{ t('appointments', 'Public Page') }}
             </ActionInput>
-            <ActionButton @click="deletePage(page.key)" icon="icon-delete" closeAfterClick>
+            <ActionButton @click="deletePage(page.pageId)" icon="icon-delete" closeAfterClick>
               {{ t('appointments', 'Delete') }}
             </ActionButton>
           </template>
         </AppNavigationItem>
         <AppNavigationSpacer/>
         <AppNavigationItem
-            @click="sbShow===6?sbShow=0:sbShow=6"
+            @click="openViaPicker(6,$event)"
             :title="t('appointments','Manage Appointment Slots')"
             icon="icon-appt-calendar-clock"/>
         <AppNavigationItem
-            @click="sbShow===3?sbShow=0:sbShow=3"
+            @click="openViaPicker(3,$event)"
             :title="t('appointments','User/Organization Info')"
             icon="icon-user"/>
         <AppNavigationItem
@@ -277,15 +279,25 @@
       <div v-show="visibleSection===3" v-html="helpContent" class="srgdev-appt-help-sec">
       </div>
       <div :class="{'sb_disable':stateInProgress}">
+        <PagePickerSlideBar
+            v-if="sbShow===11"
+            :page0="page0"
+            :title="pagePickerTitle"
+            :more-pages="morePages"
+            @pageSelected="curPageId=$event;sbShow=sbGotoBack;sbGotoBack=0"
+            @close="sbShow=0"/>
         <ApptMgrSlideBar
             ref="tsbRef"
             v-if="sbShow===6"
-            @gotoAddAppt="curPageKey=$event;sbShow=7;sbGotoBack=6"
-            @gotoDelAppt="curPageKey=$event;sbShow=8;sbGotoBack=6"
+            :cur-page-data="curPageData"
+            @gotoAddAppt="curPageId=$event;sbShow=7;sbGotoBack=6"
+            @gotoDelAppt="curPageId=$event;sbShow=8;sbGotoBack=6"
             @showModal="showSimpleGeneralModal($event)"
+            @reloadPages="getPages(0)"
             @close="sbShow=0"/>
         <UserStnSlideBar
             v-if="sbShow===3"
+            :cur-page-data="curPageData"
             @close="sbShow=0"/>
         <SettingsSlideBar
             v-if="sbShow===9"
@@ -353,10 +365,12 @@ import MailStnSlideBar from "./components/MailStnSlideBar.vue"
 import ApptMgrSlideBar from "./components/ApptMgrSlideBar";
 import ApptAccordion from "./components/ApptAccordion.vue";
 import AdvancedSlideBar from "./components/AdvancedSlideBar";
+import PagePickerSlideBar from "./components/PagePickerSlideBar";
 
 export default {
   name: 'App',
   components: {
+    PagePickerSlideBar,
     AdvancedSlideBar,
     ApptMgrSlideBar,
     FormStnSlideBar,
@@ -382,7 +396,6 @@ export default {
   },
 
   data: function () {
-
     return {
 
       pubPage: '',
@@ -393,16 +406,17 @@ export default {
       },
 
       // this us used to compute curPageData to pass to settings, etc..
-      curPageKey:"",
+      curPageId:"p0",
 
       pageInfoLoading: 0,
 
-      /** @type {{enabled:number,label:string,key:string}[]} */
+      /** @type {{enabled:number,label:string,pageId:string}[]} */
       morePages:[],
 
       navOpen: false,
       sbShow: 0,
       sbGotoBack:0,
+      pagePickerTitle:"",
 
       visibleSection: 0,
 
@@ -440,26 +454,29 @@ export default {
   },
   computed: {
     curPageData:function (){
-      if(this.curPageKey==='p0'){
+      const ml=this.morePages.length
+      if(this.curPageId==='p0'){
         return {
           enabled:this.page0.enabled,
           label:this.page0.label===''
                   ?t('appointments','Public Page')
                   :this.page0.label,
-          key:'p0',
-          action:"get_cls",
-          pageId:''
+          stateAction:"cls",
+          uciAction:"uci",
+          pageId:'p0',
+          pageCount:1+ml
         }
       }else{
         let r={}
-        for(let i=0,pgs=this.morePages,l=pgs.length;i<l;i++){
-          if(pgs[i].key===this.curPageKey){
+        for(let i=0,pgs=this.morePages;i<ml;i++){
+          if(pgs[i].pageId===this.curPageId){
             r={
               enabled:pgs[i].enabled,
               label:pgs[i].label,
-              key:pgs[i].key,
-              action:"get_mps",
-              pageId:pgs[i].key,
+              stateAction:"mps",
+              uciAction:"mps",
+              pageId:pgs[i].pageId,
+              pageCount:1+ml
             }
             break
           }
@@ -490,6 +507,38 @@ export default {
 
   methods: {
 
+    openViaPicker(sbn,evt){
+      if(this.sbShow===11 && this.sbGotoBack===sbn){
+        // picker fro THIS slideBar is showing... close it
+        this.sbShow=0;
+        return
+      }
+
+      if(sbn===this.sbShow){
+        // the slideBar is showing
+        if(this.morePages.length>0){
+          // multiple pages are available...
+          // ... open the pagePicker instead of just closing the slideBar
+          this.pagePickerTitle=evt.currentTarget.textContent.trim()
+          this.sbShow=11
+          this.sbGotoBack=sbn
+        }else{
+          // single page, just close it
+          this.sbShow=0;
+        }
+      }else {
+        if (this.morePages.length === 0) {
+          this.curPageId='p0'
+          this.sbShow = sbn
+        } else {
+          // open the pagePicker
+          this.pagePickerTitle=evt.currentTarget.textContent.trim()
+          this.sbShow = 11
+          this.sbGotoBack = sbn
+        }
+      }
+    },
+
     getPages(idx) {
       this.pageInfoLoading = idx
       this.stateInProgress = true
@@ -505,14 +554,13 @@ export default {
                   this.page0 = Object.assign({}, this.page0, d['p0'])
                 }else{
                   ap[c]=d[prop]
-                  ap[c]['key']=prop
+                  ap[c]['pageId']=prop
                   c++
                 }
               }
             }
 
             this.morePages=ap;
-            console.log(this.morePages)
           }
           this.pageInfoLoading = 0
           this.stateInProgress = false
@@ -523,7 +571,6 @@ export default {
           console.log(error);
         });
     },
-
 
     setPages(p, v,idx) {
       this.pageInfoLoading = idx
@@ -569,7 +616,7 @@ export default {
         co = Object.assign({}, this.page0)
       }else{
         for(let i=0,pgs=this.morePages,l=pgs.length;i<l;i++){
-          if(pgs[i].key===page){
+          if(pgs[i].pageId===page){
             co = Object.assign({}, pgs[i])
             idx=i+2
             break
@@ -587,7 +634,7 @@ export default {
         p = Object.assign({}, this.page0)
       }else{
         for(let i=0,pgs=this.morePages,l=pgs.length;i<l;i++){
-          if(pgs[i].key===page){
+          if(pgs[i].pageId===page){
             p = Object.assign({}, pgs[i])
             idx=i+2
             break
@@ -604,11 +651,12 @@ export default {
 
         this.getState("get_uci")
             .then(res => {
+              if (res === null){
+                this.pageInfoLoading = 0
+                return null
+              }
+
               //organization: "", email: "", address: ""
-              this.pageInfoLoading = 0
-
-              if (res === null) return null
-
               let n = -1
               let pa = ["organization", "email", "address"];
               for (let v, i = 0, l = pa.length; i < l; i++) {
@@ -625,6 +673,7 @@ export default {
                   timeout: 8,
                   type: 'error'
                 })
+                this.pageInfoLoading = 0
               } else {
                 p.enabled = 1
                 this.setPages(page, p,idx)
@@ -644,11 +693,12 @@ export default {
     deletePage(page){
       let i=0
       for(const pgs=this.morePages,l=pgs.length;i<l;i++){
-        if(pgs[i].key===page){
+        if(pgs[i].pageId===page){
           break
         }
       }
       i+=2
+      this.sbShow=0
       this.setPages("delete", {page:page},i)
     },
 
@@ -767,9 +817,9 @@ export default {
     /**
      * @param {string} action
      * @param {Object} value
-     * @param {boolean} getPages
+     * @param {string} pageId
      */
-    async setState(action, value, getPages = false) {
+    async setState(action, value, pageId='') {
       let ji = ""
       this.stateInProgress = true
       try {
@@ -782,13 +832,13 @@ export default {
       }
       return await axios.post('state', {
         a: action,
-        d: ji
+        d: ji,
+        p: pageId
       }).then(response => {
         this.stateInProgress = false
         if (response.status === 200) {
           this.getFormData()
           OCP.Toast.success(this.t('appointments', 'New Settings Applied.'))
-          if (getPages) this.getPages(0)
           return true
         }
       }).catch((error) => {
@@ -860,7 +910,7 @@ export default {
         this.generalModalBtnTxt = this.page0.label
       }else {
         for (let i = 0, pgs = this.morePages, l = pgs.length; i < l; i++) {
-          if (pgs[i].key === page) {
+          if (pgs[i].pageId === page) {
             // this is actually the header text for this dialog
             this.generalModalBtnTxt = pgs[i].label
             break
@@ -939,11 +989,12 @@ export default {
       }
     },
 
-    getFormData(p) {
-      if(typeof p !== "string") {
+    // TODO: make sure all calls have proper pageId
+    getFormData(pageId) {
+      if(typeof pageId !== "string") {
         this.pubPage = 'form?v=' + Date.now();
       }else{
-        this.pubPage = 'form?p='+p+'&v=' + Date.now();
+        this.pubPage = 'form?p='+pageId+'&v=' + Date.now();
       }
       this.visibleSection = 0
     },
@@ -1006,6 +1057,8 @@ export default {
           }
         }
       }).catch(error => {
+        this.modalErrTxt = t('appointments', "Bad calendar data. Check selected calendars.")
+        this.evtGridModal = 3
         console.log(error);
       })
     },
@@ -1014,6 +1067,7 @@ export default {
       const tsa = gridMaker.getStarEnds(this.gridApptTs, this.gridApptTZ === 'UTC')
       this.evtGridModal = 1
 
+      // TODO: pageId is needed
       axios.post('caladd', {
         d: tsa.join(','),
         tz: this.gridApptTZ

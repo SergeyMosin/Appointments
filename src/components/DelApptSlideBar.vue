@@ -105,7 +105,7 @@ export default {
       this.isLoading=true
       try {
         const data = this.curPageData
-        this.calInfo = await this.getState(data.action, data.key)
+        this.calInfo = await this.getState("get_"+data.stateAction, data.pageId)
         this.isLoading=false
       } catch (e) {
         this.isLoading=false

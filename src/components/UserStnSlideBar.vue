@@ -9,11 +9,14 @@
               v-show="isLoading===false"
               :class="{'sb_disable':isSending}"
               class="srgdev-appt-sb-main-cont">
+            <h2 v-show="curPageData.pageCount>1"
+                class="srgdev-appt-sb-lbl-header">{{curPageData.label}}</h2>
                 <label
                         class="srgdev-appt-sb-label"
                         for="srgdev-appt_uci-org-name">
                     {{t('appointments','Name:')}}</label>
                 <input
+                    :placeholder="ph_org"
                         v-model="uciInfo.organization"
                         class="srgdev-appt-sb-input-text"
                         id="srgdev-appt_uci-org-name"
@@ -23,6 +26,7 @@
                         @click="$root.$emit('helpWanted','emaildef')"><span>{{uciInfo.useDefaultEmail==='yes'?'useDefaultEmail=yes':''}}</span></a>
                 </div>
                 <input
+                    :disabled="curPageData.pageId!=='p0'"
                         v-model="uciInfo.email"
                         class="srgdev-appt-sb-input-text"
                         id="srgdev-appt_uci-org-email"
@@ -32,24 +36,37 @@
                         for="srgdev-appt_uci-org-address">
                     {{t('appointments','Location:')}}</label>
                 <textarea
+                    :placeholder="ph_addr"
                         v-model="uciInfo.address"
                         class="srgdev-appt-sb-textarea"
                         id="srgdev-appt_uci-org-address"
                         style="overflow: auto;resize: none"
                 ></textarea>
+            <template v-show="curPageData.pageId!=='p0'">
+            <label
+                class="srgdev-appt-sb-label"
+                for="srgdev-appt_uci-form-title">{{t('appointments','Form Title')}}:</label>
+            <input
+                class="srgdev-appt-sb-input-text"
+                v-model="uciInfo.formTitle"
+                id="srgdev-appt_uci-form-title"
+                type="text"
+                :placeholder="t('appointments','Book Your Appointment')">
+            </template>
                 <label
                         class="srgdev-appt-sb-label"
                         for="srgdev-appt_uci-org-phone">
                     {{t('appointments','Phone:')}}</label>
                 <input
                         v-model="uciInfo.phone"
+                        :placeholder="ph_phn"
                         class="srgdev-appt-sb-input-text"
                         id="srgdev-appt_uci-org-phone"
                         style="max-width: 20em"
                         type="tel">
             <button
                 @click="apply"
-                :disabled="uciInfo.email==='' || uciInfo.organization==='' || uciInfo.address===''"
+                :disabled="curPageData.pageId==='p0' && (uciInfo.email==='' || uciInfo.organization==='' || uciInfo.address==='')"
                 class="primary srgdev-appt-sb-genbtn"
                 :class="{'appt-btn-loading':isSending}">{{t('appointments','Apply')}}
             </button>
@@ -69,6 +86,7 @@
         props:{
             title:'',
             subtitle:'',
+          curPageData:Object,
         },
       mounted: function () {
         this.isLoading=true
@@ -84,16 +102,51 @@
             email: "",
             address: "",
             phone: "",
-            useDefaultEmail:"yes"
-          }
+            useDefaultEmail:"yes",
+            // Secondary pages only (same as ppsInfo.formTitle for the main)
+            formTitle:"",
+          },
+          ph_org:"",
+          ph_addr:"",
+          ph_phn:"",
         }
       },
         methods: {
 
           async start() {
             this.isLoading=true
+            const data=this.curPageData
+
+            // if requesting not main page the _uciInfo will be used as placeholders because...
+            // ... EMPTY SECONDARY uciInfo DEFAULTS TO MAIN uciInfo
+            let _uciInfo
             try {
-              this.uciInfo = await this.getState("get_uci", "")
+              _uciInfo = await this.getState("get_uci")
+            } catch (e) {
+              this.isLoading=false
+              console.log(e)
+              OC.Notification.showTemporary(this.t('appointments', "Can not request data"), {timeout: 4, type: 'error'})
+              return
+            }
+            if(data.pageId==='p0'){
+              this.uciInfo=_uciInfo
+              this.isLoading=false
+              return
+            }
+
+
+            // Secondary page...
+
+            this.ph_org=_uciInfo.organization
+            this.ph_addr=_uciInfo.address
+            this.ph_phn=_uciInfo.phone
+            try {
+              this.uciInfo = await this.getState(
+                  "get_"+data.uciAction, data.pageId)
+              this.$set(this.uciInfo,
+                  'email', _uciInfo.email)
+              this.$set(this.uciInfo,
+                  'useDefaultEmail', _uciInfo.useDefaultEmail)
               this.isLoading=false
             } catch (e) {
               this.isLoading=false
@@ -104,7 +157,11 @@
 
           apply(){
               this.isSending=true
-              this.setState('set_uci',this.uciInfo).then(()=>{
+              this.setState(
+                  'set_'+this.curPageData.uciAction,
+                  this.uciInfo,
+                  this.curPageData.pageId)
+              .then(()=>{
                 this.isSending=false
               })
             },

@@ -576,6 +576,7 @@ class BCSabreImpl implements IBackendConnector{
      */
     function setAttendee($userId, $calId, $uri, $info)
     {
+        // TODO: pageId is needed here
         $cls=$this->utils->getUserSettings(
             BackendUtils::KEY_CLS,$userId);
         $ts_mode=$cls[BackendUtils::CLS_TS_MODE];
@@ -799,6 +800,7 @@ class BCSabreImpl implements IBackendConnector{
                 $ret=[0,$date];
             }else{
 
+                // TODO: pageId is needed here
                 $cls = $this->utils->getUserSettings(
                     BackendUtils::KEY_CLS,$userId);
 

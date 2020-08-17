@@ -88,6 +88,7 @@ class DavListener {
 
         if($other_cal!=='-1'){
             // only allowed in simple
+            // TODO: pageId is needed here
             if($utils->getUserSettings(
                 BackendUtils::KEY_CLS,$userId)[BackendUtils::CLS_TS_MODE]!=='0'){
                 $other_cal='-1';

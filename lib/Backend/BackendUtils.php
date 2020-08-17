@@ -98,7 +98,6 @@ class BackendUtils{
     public const PSN_PAGE_STYLE = "pageStyle";
     public const PSN_GDPR = "gdpr";
     public const PSN_FORM_TITLE = "formTitle";
-    public const PSN_FORM_SUB_TITLE = "formSubTitle";
     public const PSN_META_NO_INDEX = "metaNoIndex";
     public const PSN_EMPTY = "showEmpty";
     public const PSN_WEEKEND = "showWeekends";
@@ -111,7 +110,6 @@ class BackendUtils{
 
     public const PSN_DEF = array(
         self::PSN_FORM_TITLE => "",
-        self::PSN_FORM_SUB_TITLE => "",
         self::PSN_NWEEKS => "1",
         self::PSN_EMPTY => true,
         self::PSN_FNED => false, // start at first not empty day
@@ -128,20 +126,19 @@ class BackendUtils{
     );
 
     public const KEY_MPS = "more_pages_";
-    public const MPS_TITLE="mpsTitle";
-    public const MPS_SUB_TITLE="mpsSubTitle";
-    public const MPS_LOCATION="mpsLocation";
-    public const MPS_PHONE="mpsPhone";
     public const MPS_DEF=array(
         self::CLS_MAIN_ID=>'-1',
         self::CLS_DEST_ID=>'-1',
         self::CLS_XTM_SRC_ID=>'-1',
         self::CLS_XTM_DST_ID=>'-1',
-        self::CLS_TS_MODE=>'0', // 0=simple/manual, 1=external/XTM, (2=template)
-        self::MPS_TITLE=>"",
-        self::MPS_SUB_TITLE=>"",
-        self::MPS_LOCATION=>"",
-        self::MPS_PHONE=>"",
+        self::CLS_TS_MODE=>'0',
+
+        self::ORG_NAME=>"",
+        self::ORG_EMAIL=>"",
+        self::ORG_ADDR=>"",
+        self::ORG_PHONE=>"",
+
+        self::PSN_FORM_TITLE=>"",
     );
 
     public const KEY_PAGES="pages";
@@ -726,24 +723,24 @@ class BackendUtils{
     }
     /**
      * @param string $key
-     * @param string $value JSON String
-     * @param array $default this is value when $key===self::KEY_PAGES
+     * @param string $value_str JSON String
+     * @param array $default_or_pgs this is value when $key===self::KEY_PAGES
      * @param string $userId
      * @param string $appName
      * @return bool
      * @noinspection PhpDocMissingThrowsInspection
      */
-    function setUserSettings($key,$value,$default,$userId,$appName){
+    function setUserSettings($key, $value_str, $default_or_pgs, $userId, $appName){
         if($key===self::KEY_PAGES){
-            // already filtered object @see StateController:set_pages
-            $sa=$default;
+            // already filtered array @see StateController:set_pages
+            $sa=$default_or_pgs;
         }else {
-            $va = json_decode($value, true);
+            $va = json_decode($value_str, true);
             if ($va === null) {
                 return false;
             }
             $sa = [];
-            foreach ($default as $k => $v) {
+            foreach ($default_or_pgs as $k => $v) {
                 if (isset($va[$k]) && gettype($va[$k]) === gettype($v)) {
                     $sa[$k] = $va[$k];
                 } else {
@@ -779,7 +776,7 @@ class BackendUtils{
      */
     function getMainCalId($userId,$pageId,$bc,&$otherCal=null){
 
-        if(empty($pageId)){
+        if($pageId==='p0'){
             // main calendar is privider
             $csProvider=$this->getUserSettings(self::KEY_CLS,$userId);
         }else{
@@ -1040,14 +1037,14 @@ class BackendUtils{
      * @return string
      * @throws \ErrorException
      */
-    function getToken($userId,$pageId=""){
+    function getToken($userId,$pageId="p0"){
         $config=\OC::$server->getConfig();
         $key=hex2bin($config->getAppValue($this->appName, 'hk'));
         $iv=hex2bin($config->getAppValue($this->appName, 'tiv'));
         if(empty($key) || empty($iv)){
             throw new \ErrorException("Can't find key");
         }
-        $upi=($pageId===""?$userId:chr(31).$userId.$pageId);
+        $upi=($pageId==="p0"?$userId:chr(31).$userId.$pageId);
         $tkn=$this->encrypt(hash ( 'adler32' , $upi,true).$upi,$key,$iv);
         return urlencode(str_replace("/","_",$tkn));
     }
