@@ -119,6 +119,7 @@
         return {
           isLoading:true,
           isSending:false,
+          // TODO: email ME modification/update
           emlInfo: {
             icsFile: false,
             skipEVS: false,

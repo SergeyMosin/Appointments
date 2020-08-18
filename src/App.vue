@@ -4,12 +4,10 @@
       <ul :class="{'sb_disable':stateInProgress}">
         <AppNavigationItem
             :class="{'sb_disable_nav-item':sbShow!==0}"
-            @click="getFormData('p0')"
+            @click="curPageId='p0';getFormData('p0')"
             class="srgdev-pubpage-nav-item"
             :title="(
-              (page0.label===''
-                ?t('appointments','Public Page')
-                :page0.label)+' '+
+              checkPageLabel(page0.label)+' '+
               (page0.enabled===1
                 ?t('appointments','[Online]')
                 :t('appointments','[Disabled]'))
@@ -38,7 +36,7 @@
               {{ t('appointments', 'Show URL/link') }}
             </ActionButton>
             <ActionInput data-pid="p0" @change="setPageLabel" icon="icon-rename" :value="page0.label">
-              {{ t('appointments', 'Public Page') }}
+              {{ checkPageLabel("") }}
             </ActionInput>
             <ActionButton
                 @click="addNewPage()"
@@ -52,11 +50,9 @@
             v-for="(page,idx) in morePages"
             class="srgdev-pubpage-nav-item"
             :class="{'sb_disable_nav-item':sbShow!==0}"
-            @click="getFormData(page.pageId)"
+            @click="curPageId=page.pageId;getFormData(page.pageId)"
             :title="(
-              (page.label===''
-                ?t('appointments','Public Page')
-                :page.label)+' '+
+              checkPageLabel(page.label)+' '+
               (page.enabled===1
                 ?t('appointments','[Online]')
                 :t('appointments','[Disabled]'))
@@ -80,7 +76,7 @@
               {{ t('appointments', 'Show URL/link') }}
             </ActionButton>
             <ActionInput :data-pid="page.pageId" @change="setPageLabel" icon="icon-rename" :value="page.label">
-              {{ t('appointments', 'Public Page') }}
+              {{ checkPageLabel("") }}
             </ActionInput>
             <ActionButton @click="deletePage(page.pageId)" icon="icon-delete" closeAfterClick>
               {{ t('appointments', 'Delete') }}
@@ -97,7 +93,7 @@
             :title="t('appointments','User/Organization Info')"
             icon="icon-user"/>
         <AppNavigationItem
-            @click="sbShow===9?sbShow=0:sbShow=9"
+            @click="toggleSlideBar(9)"
             :title="t('appointments','Settings')"
             icon="icon-settings"/>
         <AppNavigationItem
@@ -272,7 +268,7 @@
       </div>
       <div v-show="visibleSection===0" class="srgdev-appt-main-sec">
         <ul class="srgdev-appt-main-info">
-          <li>{{ t('appointments', 'Public Page Preview') }}</li>
+          <li>{{ t('appointments', '{pageLabel} Preview',{pageLabel:pagePreviewLabel}) }}</li>
         </ul>
         <div class="srgdev-appt-main-frame-cont">
           <iframe class="srgdev-appt-main-frame" ref="pubPageRef" :src="pubPage"></iframe>
@@ -286,51 +282,51 @@
             :page0="page0"
             :title="pagePickerTitle"
             :more-pages="morePages"
-            @pageSelected="curPageId=$event;sbShow=sbGotoBack;sbGotoBack=0"
-            @close="sbShow=0"/>
+            @pageSelected="curPageId=$event;toggleSlideBar(sbGotoBack,$event);sbGotoBack=0"
+            @close="toggleSlideBar(0)"/>
         <ApptMgrSlideBar
             ref="tsbRef"
             v-if="sbShow===6"
             :cur-page-data="curPageData"
-            @gotoAddAppt="curPageId=$event;sbShow=7;sbGotoBack=6"
-            @gotoDelAppt="curPageId=$event;sbShow=8;sbGotoBack=6"
+            @gotoAddAppt="curPageId=$event;toggleSlideBar(7);sbGotoBack=6"
+            @gotoDelAppt="curPageId=$event;toggleSlideBar(8);sbGotoBack=6"
             @showModal="showSimpleGeneralModal($event)"
             @reloadPages="getPages(0)"
-            @close="sbShow=0"/>
+            @close="toggleSlideBar(0)"/>
         <UserStnSlideBar
             v-if="sbShow===3"
             :cur-page-data="curPageData"
-            @close="sbShow=0"/>
+            @close="toggleSlideBar(0)"/>
         <SettingsSlideBar
             v-if="sbShow===9"
-            @gotoPPS="sbShow=2;sbGotoBack=9"
-            @gotoEML="sbShow=4;sbGotoBack=9"
-            @gotoADV="sbShow=10;sbGotoBack=9"
+            @gotoPPS="toggleSlideBar(2,'p0');sbGotoBack=9"
+            @gotoEML="toggleSlideBar(4);sbGotoBack=9"
+            @gotoADV="toggleSlideBar(10);sbGotoBack=9"
             :cur-page-data="curPageData"
             @close="sbShow=0"/>
         <FormStnSlideBar
             v-if="sbShow===2"
-            @close="sbShow=sbGotoBack;sbGotoBack=0"/>
+            @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
         <MailStnSlideBar
             v-if="sbShow===4"
-            @close="sbShow=sbGotoBack;sbGotoBack=0"/>
+            @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
         <AdvancedSlideBar
             v-if="sbShow===10"
-            @close="sbShow=sbGotoBack;sbGotoBack=0"/>
+            @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
         <AddApptSlideBar
             v-if="sbShow===7"
             :cur-page-data="curPageData"
             :is-grid-ready="isGridReady"
             @setupGrid="gridSetup"
             @agDataReady="makePreviewGrid"
-            @close="sbShow=($event===true?0:sbGotoBack);sbGotoBack=0"/>
+            @close="toggleSlideBar($event===true?0:sbGotoBack);sbGotoBack=0"/>
         <DelApptSlideBar
             v-if="sbShow===8"
             :cur-page-data="curPageData"
             @openGM="openGeneralModal"
             @closeGM="closeGeneralModal"
             @updateGM="updateGeneralModal"
-            @close="sbShow=sbGotoBack;sbGotoBack=0"/>
+            @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
       </div>
     </AppContent>
   </div>
@@ -409,6 +405,7 @@ export default {
 
       // this us used to compute curPageData to pass to settings, etc..
       curPageId:"p0",
+      pagePreviewLabel: this.checkPageLabel(""),
 
       pageInfoLoading: 0,
 
@@ -461,9 +458,7 @@ export default {
       if(this.curPageId==='p0'){
         return {
           enabled:this.page0.enabled,
-          label:this.page0.label===''
-                  ?t('appointments','Public Page')
-                  :this.page0.label,
+          label:this.checkPageLabel(this.page0.label),
           stateAction:"cls",
           uciAction:"uci",
           pageId:'p0',
@@ -509,13 +504,10 @@ export default {
 
 
   methods: {
-
-    //TODO: make sure that "Page preview" is in sync with settings + add label
-
     openViaPicker(sbn,evt){
       if(this.sbShow===11 && this.sbGotoBack===sbn){
         // picker fro THIS slideBar is showing... close it
-        this.sbShow=0;
+        this.toggleSlideBar(0);
         return
       }
 
@@ -525,20 +517,20 @@ export default {
           // multiple pages are available...
           // ... open the pagePicker instead of just closing the slideBar
           this.pagePickerTitle=evt.currentTarget.textContent.trim()
-          this.sbShow=11
+          this.toggleSlideBar(11)
           this.sbGotoBack=sbn
         }else{
           // single page, just close it
-          this.sbShow=0;
+          this.toggleSlideBar(0);
         }
       }else {
         if (this.morePages.length === 0) {
           this.curPageId='p0'
-          this.sbShow = sbn
+          this.toggleSlideBar(sbn)
         } else {
           // open the pagePicker
           this.pagePickerTitle=evt.currentTarget.textContent.trim()
-          this.sbShow = 11
+          this.toggleSlideBar(11)
           this.sbGotoBack = sbn
         }
       }
@@ -704,7 +696,7 @@ export default {
         }
       }
       i+=2
-      this.sbShow=0
+      this.toggleSlideBar(0)
       this.setPages("delete", {page:page},i)
     },
 
@@ -745,52 +737,6 @@ export default {
     gridSetup() {
       gridMaker.setup(this.$refs["grid_cont"], 6, "srgdev-appt-grd-")
       this.isGridReady = true
-    },
-
-    getCalInfo(ebn) {
-      // TimeSlotSlideBars are negative, Ex: 4 is -5
-      this.openSlideBar(-(ebn + 1), 'get_cls', this.calInfo)
-    },
-
-    /**
-     * @param {number} sbn SlideBar number, -1=just get settings
-     * @param {string} action get_xxx...
-     * @param {Object|null} props props/info object for the slide bar
-     */
-    openSlideBar(sbn, action, props) {
-      if (sbn > -1) {
-        if (this.sbShow === sbn) {
-          // already open, close...
-          this.toggleSlideBar(sbn)
-          return
-        }
-        this.sbLoading = sbn
-      }
-
-      if (action === "") {
-        this.toggleSlideBar(sbn)
-        this.sbLoading = 0
-        return
-      }
-
-      this.getState(action).then(res => {
-        if (res !== null) {
-          for (let key in res) {
-            if (res.hasOwnProperty(key)) {
-              this.$set(props, key, res[key])
-            }
-          }
-
-          if (sbn > -1) {
-            this.toggleSlideBar(sbn)
-          } else if (sbn > -999) {
-            // Open setting only after they are fetched from the server
-            this.$refs["tsbRef"].stateDataReady(sbn)
-          }
-        }
-        this.sbLoading = 0
-      })
-
     },
 
     /** @return {Promise<JSON|string|null>} */
@@ -855,18 +801,22 @@ export default {
       })
     },
 
-    toggleSlideBar(sbn) {
-      this.closeNav()
-      if (this.sbShow === sbn) this.sbShow = 0
-      else this.sbShow = sbn
-    },
+    toggleSlideBar(sbn,pageId) {
 
-    closeNav: function () {
+      // CLose nav
       let elm = document.getElementById("app-navigation-toggle")
       if (elm !== null && elm.hasAttribute('aria-expanded')
           && elm.getAttribute('aria-expanded') === 'true') {
         elm.dispatchEvent(new Event('click'))
       }
+
+      if (this.sbShow === sbn) this.sbShow = 0
+      else this.sbShow = sbn
+
+      if(pageId!==undefined){
+        this.getFormData(pageId)
+      }
+
     },
 
     helpWantedHandler(section) {
@@ -995,16 +945,36 @@ export default {
       }
     },
 
+    checkPageLabel(l){
+      return l===""?t('appointments','Public Page'):l;
+    },
+
     getFormData(pageId) {
+      let lbl=""
       if(typeof pageId !== "string") {
-        this.pubPage = 'form?v=' + Date.now();
+        this.pubPage = 'form?v=' + Date.now()
+        lbl=this.page0.label
       }else{
         if(/^p\d{1}$/.test(pageId)===false){
           // default to the main page
           pageId='p0'
         }
         this.pubPage = 'form?p='+pageId+'&v=' + Date.now();
+
+        if(pageId==='p0'){
+          lbl=this.page0.label
+        }else if(pageId===this.curPageId){
+          lbl=this.curPageData.label
+        }else{
+          for(let i=0,pgs=this.morePages,l=this.morePages.length;i<l;i++) {
+            if (pgs[i].pageId === pageId) {
+              lbl=pgs[i].label
+              break
+            }
+          }
+        }
       }
+      this.pagePreviewLabel=this.checkPageLabel(lbl)
       this.visibleSection = 0
     },
 

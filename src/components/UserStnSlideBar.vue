@@ -65,16 +65,7 @@
                         id="srgdev-appt_uci-org-phone"
                         style="max-width: 20em"
                         type="tel">
-            <template v-if="curPageData.pageId!=='p0'">
-              <label disabled class="srgdev-appt-sb-label" for="srgdev-appt_uci-org-email_dis">{{t('appointments','Email:')}}</label>
-              <input
-                  disabled
-                  v-model="uciInfo.email"
-                  class="srgdev-appt-sb-input-text"
-                  id="srgdev-appt_uci-org-email_dis"
-                  style="max-width: 20em"
-                  type="email">
-            </template>
+            <div v-if="curPageData.pageId!=='p0'" style="color: gray">{{t('appointments','Email:') + " " + uciInfo.email}}</div>
             <button
                 @click="apply"
                 :disabled="curPageData.pageId==='p0' && (uciInfo.email==='' || uciInfo.organization==='' || uciInfo.address==='')"

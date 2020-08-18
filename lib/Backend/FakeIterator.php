@@ -30,6 +30,10 @@ class FakeIterator implements \Iterator{
         return $this->s_dt;
     }
 
+    function getEventObject(){
+        return $this->evt;
+    }
+
     /**
      * This method returns the end date event.
      * @return \DateTimeImmutable

@@ -711,8 +711,6 @@ class PageController extends Controller {
         $org=$this->utils->getUserSettings(
             BackendUtils::KEY_ORG,$uid);
 
-        \OC::$server->getLogger()->error("aaaaaaaaaaaaaaaaaaa_pageId: ".$pageId);
-
         if($pageId==='p0'){
             $ft=$pps[BackendUtils::PSN_FORM_TITLE];
             $org_name=$org[BackendUtils::ORG_NAME];
@@ -741,9 +739,6 @@ class PageController extends Controller {
         if(empty($ft)){
             $ft=$this->l->t('Book Your Appointment');
         }
-
-        \OC::$server->getLogger()->error("aaaaaaaaaaaaaaaaaaa_org_name: ".$org_name);
-
 
         $params=[
             'appt_sel_opts'=>'',
@@ -795,7 +790,7 @@ class PageController extends Controller {
 
         $nw=intval($pps[BackendUtils::PSN_NWEEKS]);
 
-        $cls=$this->utils->getUserSettings(
+        $cms=$cls=$this->utils->getUserSettings(
             BackendUtils::KEY_CLS,$uid);
 
         // Because of floating timezones...
@@ -813,13 +808,12 @@ class PageController extends Controller {
         $t_end->setTimestamp($t_start->getTimestamp()+(7*$nw*86400));
         $t_end->setTime(0,0);
 
-        if($pageId==='0'){
-            $cms=$cls;
-        }else{
+        if($pageId!=='p0'){
             $cms=$mps;
         }
 
         $ts_mode=$cms[BackendUtils::CLS_TS_MODE];
+
         if($ts_mode==="1"){ // external mode
             // @see BCSabreImpl->queryRange()
             $cid.=chr(31).$cms[BackendUtils::CLS_XTM_SRC_ID];

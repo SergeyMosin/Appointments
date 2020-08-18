@@ -137,12 +137,14 @@ class BCSabreImpl implements IBackendConnector{
         $c=0;
         foreach ($objs as $obj) {
 
-            if(strpos($obj['calendardata'],"\r\nTRANSP:TRANSPARENT\r\n",22)!==false){
+            $cd=$obj['calendardata'];
+
+            if(strpos($cd,"\r\nTRANSP:TRANSPARENT\r\n",22)!==false){
                 continue;
             }
 
             /** @var \Sabre\VObject\Component\VCalendar $vo */
-            $vo = Reader::read($obj['calendardata']);
+            $vo = Reader::read($cd);
             if (!isset($vo->VEVENT)) {
                 $vo->destroy();
                 continue;
@@ -294,15 +296,17 @@ class BCSabreImpl implements IBackendConnector{
         $showET=$this->utils->getUserSettings(BackendUtils::KEY_PSN,$userId)[BackendUtils::PSN_END_TIME];
         foreach ($objs as $obj) {
 
-            if(strpos($obj['calendardata'],"\r\nTRANSP:TRANSPARENT\r\n",22)===false){
+            $cd=$obj['calendardata'];
+
+            if(strpos($cd,"\r\nTRANSP:TRANSPARENT\r\n",22)===false){
                 // must be "Free" aka TRANSPARENT
                 continue;
             }
 
             /** @var \Sabre\VObject\Component\VCalendar $vo */
-            $vo = Reader::read($obj['calendardata']);
+            $vo = Reader::read($cd);
             if (!isset($vo->VEVENT)) {
-                // not an event or all day
+                // not an event
                 $vo->destroy();
                 continue;
             }
@@ -343,6 +347,12 @@ class BCSabreImpl implements IBackendConnector{
                 $it->fastForward($start);
                 $skip_count = $it->key();
             } else {
+                if(isset($evt->STATUS)
+                    && $evt->STATUS->getValue()==='CANCELLED'){
+                    // check if CANCELLED early
+                    $vo->destroy();
+                    continue;
+                }
                 // TODO: reuse FakeIterator
                 $it=new FakeIterator($evt,$utz);
                 $skip_count=0;
@@ -350,6 +360,12 @@ class BCSabreImpl implements IBackendConnector{
 
             $c = 0;
             while ($it->valid()) {
+
+                $_evt=$it->getEventObject();
+                if(isset($_evt->STATUS)
+                    && $_evt->STATUS->getValue()==='CANCELLED'){
+                    continue;
+                }
 
                 $s_ts = $it->getDTStart()->getTimestamp();
 

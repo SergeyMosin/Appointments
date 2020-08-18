@@ -334,6 +334,7 @@ class DavListener {
 
         $tmpl->addBodyText($this->l10N->t("Thank you"));
 
+        // TODO: add cancellation link to update emails
         // cancellation link for confirmation emails
         if(!empty($cnl_lnk_url)){
             $tmpl->addBodyText(
