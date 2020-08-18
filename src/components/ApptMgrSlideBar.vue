@@ -107,7 +107,9 @@
             <option value="0">{{ t('appointments', 'Simple') }}</option>
             <option value="1">{{ t('appointments', 'External') }}</option>
           </select>
-<!--        TODO: add link to advanced settings-->
+        <div class="tsb-adv-settings-link">
+          <span @click="gotoEvt('gotoAdvStn')" class="tsb-adv-settings-link_span">{{ t('appointments', 'Advanced Settings') }} &raquo;</span>
+        </div>
           <button
               @click="apply"
               class="primary srgdev-appt-sb-genbtn"
@@ -268,7 +270,8 @@ export default {
     },
 
     gotoEvt(evt){
-      if(this.realCalIDs!==this.calInfo.mainCalId.toString()+this.calInfo.destCalId.toString()
+      if(evt!=='gotoAdvStn' &&
+          this.realCalIDs!==this.calInfo.mainCalId.toString()+this.calInfo.destCalId.toString()
       ){
         OC.Notification.showTemporary(this.t('appointments', "Please apply calendar chages first")+"\xa0\xa0\xa0\xa0", {timeout: 4, type: 'warning'})
       }else {
@@ -294,6 +297,17 @@ export default {
   margin-bottom: 1em;
   color: var(--color-text-lighter);
 }
-
+.tsb-adv-settings-link{
+  margin: 1em 0 0
+}
+.tsb-adv-settings-link_span{
+  font-size: 90%;
+  cursor: pointer;
+  color: var(--color-text-lighter);
+}
+.tsb-adv-settings-link_span:hover{
+  text-decoration: underline;
+  color: var(--color-main-text)
+}
 
 </style>

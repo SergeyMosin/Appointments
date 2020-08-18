@@ -1,5 +1,5 @@
 <template>
-  <SlideBar :title="t('appointments','Advanced Settings')" :subtitle="t('appointments','These settings affect all pages')" icon="icon-appt-go-back" @close="close">
+  <SlideBar :title="t('appointments','Advanced Settings')" :subtitle="t('appointments','These settings affect ALL pages')" icon="icon-appt-go-back" @close="close">
     <template slot="main-area">
       <div v-show="isLoading===true" class="sb_loading_cont">
         <span class="icon-loading sb_loading_icon_cont"></span>

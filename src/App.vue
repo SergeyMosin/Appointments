@@ -290,6 +290,7 @@
             :cur-page-data="curPageData"
             @gotoAddAppt="curPageId=$event;toggleSlideBar(7);sbGotoBack=6"
             @gotoDelAppt="curPageId=$event;toggleSlideBar(8);sbGotoBack=6"
+            @gotoAdvStn="curPageId=$event;toggleSlideBar(10);sbGotoBack=6"
             @showModal="showSimpleGeneralModal($event)"
             @reloadPages="getPages(0)"
             @close="toggleSlideBar(0)"/>
@@ -528,10 +529,13 @@ export default {
           this.curPageId='p0'
           this.toggleSlideBar(sbn)
         } else {
-          // open the pagePicker
+          // the picker can be already open update info forst
           this.pagePickerTitle=evt.currentTarget.textContent.trim()
-          this.toggleSlideBar(11)
           this.sbGotoBack = sbn
+          if(this.sbShow!==11){
+            // the picker is NOT open..., so open it
+            this.toggleSlideBar(11)
+          }
         }
       }
     },
@@ -808,6 +812,11 @@ export default {
       if (elm !== null && elm.hasAttribute('aria-expanded')
           && elm.getAttribute('aria-expanded') === 'true') {
         elm.dispatchEvent(new Event('click'))
+      }
+
+      if(sbn===0){
+        this.sbShow=0
+        return
       }
 
       if (this.sbShow === sbn) this.sbShow = 0
