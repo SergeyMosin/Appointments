@@ -88,9 +88,11 @@ class DavListener {
 
         if($other_cal!=='-1'){
             // only allowed in simple
-            // TODO: pageId is needed here
             if($utils->getUserSettings(
-                BackendUtils::KEY_CLS,$userId)[BackendUtils::CLS_TS_MODE]!=='0'){
+                $pageId==='p0'
+                    ?BackendUtils::KEY_CLS
+                    :BackendUtils::KEY_MPS.$pageId,
+                $userId)[BackendUtils::CLS_TS_MODE]!=='0'){
                 $other_cal='-1';
             }
         }
@@ -177,9 +179,21 @@ class DavListener {
         $org=$utils->getUserSettings(
             BackendUtils::KEY_ORG,$userId);
 
-        $org_name=$org[BackendUtils::ORG_NAME];
         $org_email=$org[BackendUtils::ORG_EMAIL];
+        $org_name=$org[BackendUtils::ORG_NAME];
         $org_phone=$org[BackendUtils::ORG_PHONE];
+
+        if($pageId!=='p0'){
+            $cms=$utils->getUserSettings(
+                BackendUtils::KEY_MPS.$pageId,$userId);
+            if(!empty($cms[BackendUtils::ORG_NAME])){
+                $org_name=$cms[BackendUtils::ORG_NAME];
+            }
+            if(!empty($cms[BackendUtils::ORG_PHONE])){
+                $org_phone=$cms[BackendUtils::ORG_PHONE];
+            }
+        }
+
 
         $is_cancelled=false;
 

@@ -21,16 +21,17 @@
                         class="srgdev-appt-sb-input-text"
                         id="srgdev-appt_uci-org-name"
                         type="text">
+            <template v-if="curPageData.pageId==='p0'">
                 <div class="srgdev-appt-info-lcont">
                     <label class="srgdev-appt-sb-label" for="srgdev-appt_uci-org-email">{{t('appointments','Email:')}}</label><a style="right: 4%" class="icon-info srgdev-appt-info-link"
                         @click="$root.$emit('helpWanted','emaildef')"><span>{{uciInfo.useDefaultEmail==='yes'?'useDefaultEmail=yes':''}}</span></a>
                 </div>
                 <input
-                    :disabled="curPageData.pageId!=='p0'"
                         v-model="uciInfo.email"
                         class="srgdev-appt-sb-input-text"
                         id="srgdev-appt_uci-org-email"
                         type="email">
+            </template>
                 <label
                         class="srgdev-appt-sb-label"
                         for="srgdev-appt_uci-org-address">
@@ -64,6 +65,16 @@
                         id="srgdev-appt_uci-org-phone"
                         style="max-width: 20em"
                         type="tel">
+            <template v-if="curPageData.pageId!=='p0'">
+              <label disabled class="srgdev-appt-sb-label" for="srgdev-appt_uci-org-email_dis">{{t('appointments','Email:')}}</label>
+              <input
+                  disabled
+                  v-model="uciInfo.email"
+                  class="srgdev-appt-sb-input-text"
+                  id="srgdev-appt_uci-org-email_dis"
+                  style="max-width: 20em"
+                  type="email">
+            </template>
             <button
                 @click="apply"
                 :disabled="curPageData.pageId==='p0' && (uciInfo.email==='' || uciInfo.organization==='' || uciInfo.address==='')"

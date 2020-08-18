@@ -188,6 +188,8 @@ export default {
         return
       }
 
+      // TODO: get adn display calendar name
+
       this.tzName = "UTC"
       this.tzData = "UTC"
       try {

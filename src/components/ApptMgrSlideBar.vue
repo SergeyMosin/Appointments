@@ -13,13 +13,13 @@
         <h2 v-show="curPageData.pageCount>1"
             class="srgdev-appt-sb-lbl-header">{{curPageData.label}}</h2>
           <template v-if="calInfo.tsMode==='0'">
-            <div v-show="hasMainCal===true" style="margin: 0 0 2em -.5em">
+            <div v-show="realCalIDs.substr(0,2)!=='-1'" style="margin: 0 0 2em -.5em">
             <ApptIconButton
-                @click="$emit('gotoAddAppt',curPageData.pageId)"
+                @click="gotoEvt('gotoAddAppt')"
                 :text="t('appointments','Add Appointment Slots')"
                 icon="icon-add"/>
             <ApptIconButton
-                @click="$emit('gotoDelAppt',curPageData.pageId)"
+                @click="gotoEvt('gotoDelAppt')"
                 :text="t('appointments','Remove Old Appointments')"
                 icon="icon-delete"/>
             </div>
@@ -107,6 +107,7 @@
             <option value="0">{{ t('appointments', 'Simple') }}</option>
             <option value="1">{{ t('appointments', 'External') }}</option>
           </select>
+<!--        TODO: add link to advanced settings-->
           <button
               @click="apply"
               class="primary srgdev-appt-sb-genbtn"
@@ -165,7 +166,7 @@ export default {
         nrDstCalId: "-1",
         tsMode: "0",
       },
-      hasMainCal:false,
+      realCalIDs:"-1-1",
 
       cals: [],
     };
@@ -179,7 +180,7 @@ export default {
         const data=this.curPageData
         this.calInfo = await this.getState("get_"+data.stateAction, data.pageId)
         if(this.calInfo.tsMode==='0'){
-          this.hasMainCal=this.calInfo.mainCalId!=="-1"
+          this.realCalIDs=this.calInfo.mainCalId.toString()+this.calInfo.destCalId.toString()
         }
       } catch (e) {
         this.isLoading=false
@@ -260,10 +261,19 @@ export default {
           this.$emit("reloadPages")
         }
         if(this.calInfo.tsMode==='0'){
-          this.hasMainCal=this.calInfo.mainCalId!=="-1"
+          this.realCalIDs=this.calInfo.mainCalId.toString()+this.calInfo.destCalId.toString()
         }
         this.isSending=false
       })
+    },
+
+    gotoEvt(evt){
+      if(this.realCalIDs!==this.calInfo.mainCalId.toString()+this.calInfo.destCalId.toString()
+      ){
+        OC.Notification.showTemporary(this.t('appointments', "Please apply calendar chages first")+"\xa0\xa0\xa0\xa0", {timeout: 4, type: 'warning'})
+      }else {
+        this.$emit(evt, this.curPageData.pageId)
+      }
     },
 
     close() {

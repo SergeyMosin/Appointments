@@ -314,14 +314,19 @@ class PageController extends Controller {
                 BackendUtils::APPT_SES_KEY_HINT,
                 BackendUtils::APPT_SES_CANCEL);
 
-            // TODO: pageId is needed here
             $cls=$this->utils->getUserSettings(
                 BackendUtils::KEY_CLS, $userId);
+
+            $cms=$this->utils->getUserSettings(
+                $pageId==='p0'
+                    ?BackendUtils::KEY_CLS
+                    :BackendUtils::KEY_MPS.$pageId,
+                $userId);
 
             // The appointment can be in the destination calendar (manual mode)
             // this needs to be done here just in case we need to 'reset'
             $r_cal_id=$cal_id;
-            if($cls[BackendUtils::CLS_TS_MODE]==='0' && $otherCalId!=="-1"){
+            if($cms[BackendUtils::CLS_TS_MODE]==='0' && $otherCalId!=="-1"){
                 // !! Pending appointments are in the MAIN calendar
                 // !! Confirmed appointments are in the DEST ($otherCalId)
                 if($this->bc->getObjectData($otherCalId,$uri)!==null){
@@ -342,7 +347,7 @@ class PageController extends Controller {
 
                 if(empty($dt_info)){
                     \OC::$server->getLogger()->error('can not re-create appointment, no dt_info');
-                }else if($cls[BackendUtils::CLS_TS_MODE]==='0'){
+                }else if($cms[BackendUtils::CLS_TS_MODE]==='0'){
                     // this only needed in simple/manual mode
                     $cr=$this->addAppointments($userId,$pageId,$dt_info,$tz_data,$title);
                     if($cr[0]!=='0'){
@@ -706,17 +711,46 @@ class PageController extends Controller {
         $org=$this->utils->getUserSettings(
             BackendUtils::KEY_ORG,$uid);
 
-        $ft=$pps[BackendUtils::PSN_FORM_TITLE];
-        $org_name=$org[BackendUtils::ORG_NAME];
+        \OC::$server->getLogger()->error("aaaaaaaaaaaaaaaaaaa_pageId: ".$pageId);
 
-        $addr=!empty($org[BackendUtils::ORG_ADDR])?$org[BackendUtils::ORG_ADDR]:"123 Main Street\nNew York, NY 45678";
+        if($pageId==='p0'){
+            $ft=$pps[BackendUtils::PSN_FORM_TITLE];
+            $org_name=$org[BackendUtils::ORG_NAME];
+            $addr=$org[BackendUtils::ORG_ADDR];
+
+        }else{
+            $mps=$this->utils->getUserSettings(
+                BackendUtils::KEY_MPS.$pageId,$uid);
+            $ft=!empty($mps[BackendUtils::PSN_FORM_TITLE])
+                ?$mps[BackendUtils::PSN_FORM_TITLE]
+                :$pps[BackendUtils::PSN_FORM_TITLE];
+            $org_name=!empty($mps[BackendUtils::ORG_NAME])
+                ?$mps[BackendUtils::ORG_NAME]
+                :$org[BackendUtils::ORG_NAME];
+            $addr=!empty($mps[BackendUtils::ORG_ADDR])
+                ?$mps[BackendUtils::ORG_ADDR]
+                :$org[BackendUtils::ORG_ADDR];
+        }
+
+        if(empty($org_name)){
+            $org_name=$this->l->t('Organization Name');
+        }
+        if(empty($addr)){
+            $addr="123 Main Street\nNew York, NY 45678";
+        }
+        if(empty($ft)){
+            $ft=$this->l->t('Book Your Appointment');
+        }
+
+        \OC::$server->getLogger()->error("aaaaaaaaaaaaaaaaaaa_org_name: ".$org_name);
+
 
         $params=[
             'appt_sel_opts'=>'',
             'appt_state'=>'0',
-            'appt_org_name'=>!empty($org_name)?$org_name:'Organization Name',
+            'appt_org_name'=>$org_name,
             'appt_org_addr'=>str_replace(array("\r\n","\n","\r"),'<br>',$addr),
-            'appt_form_title'=>!empty($ft)?$ft:$this->l->t('Book Your Appointment'),
+            'appt_form_title'=>$ft,
             'appt_pps'=>'',
             'appt_gdpr'=>'',
             'appt_inline_style'=>$pps[BackendUtils::PSN_PAGE_STYLE],
@@ -732,7 +766,7 @@ class PageController extends Controller {
         $pages=$this->utils->getUserSettings(
             BackendUtils::KEY_PAGES,$uid);
 
-        if($pages['p0'][BackendUtils::PAGES_ENABLED]===0){
+        if($pages[$pageId][BackendUtils::PAGES_ENABLED]===0){
             $params['appt_state']='4';
             $tr->setParams($params);
             return $tr;
@@ -761,7 +795,6 @@ class PageController extends Controller {
 
         $nw=intval($pps[BackendUtils::PSN_NWEEKS]);
 
-        // TODO: pageId is needed here
         $cls=$this->utils->getUserSettings(
             BackendUtils::KEY_CLS,$uid);
 
@@ -780,10 +813,16 @@ class PageController extends Controller {
         $t_end->setTimestamp($t_start->getTimestamp()+(7*$nw*86400));
         $t_end->setTime(0,0);
 
-        $ts_mode=$cls[BackendUtils::CLS_TS_MODE];
+        if($pageId==='0'){
+            $cms=$cls;
+        }else{
+            $cms=$mps;
+        }
+
+        $ts_mode=$cms[BackendUtils::CLS_TS_MODE];
         if($ts_mode==="1"){ // external mode
             // @see BCSabreImpl->queryRange()
-            $cid.=chr(31).$cls[BackendUtils::CLS_XTM_SRC_ID];
+            $cid.=chr(31).$cms[BackendUtils::CLS_XTM_SRC_ID];
         }
 
         $out=$this->bc->queryRange($cid,$t_start,$t_end,$ts_mode.$uid);
@@ -826,7 +865,6 @@ class PageController extends Controller {
      * @noinspection PhpUnused
      */
     public function caladd(){
-        // TODO: test this with a $pageId
         $pageId=$this->request->getParam("p","p0");
         // pageId is required for this
         if(empty($pageId) || !isset($this->utils->getUserSettings(

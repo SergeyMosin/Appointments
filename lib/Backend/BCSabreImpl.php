@@ -210,6 +210,7 @@ class BCSabreImpl implements IBackendConnector{
         $srcId=substr($calIds,$sp+1);
         $dstId=substr($calIds,0,$sp);
 
+        // $cls is used for CLS_XTM_REQ_CAT CLS_XTM_PUSH_REC
         $cls=$this->utils->getUserSettings(
             BackendUtils::KEY_CLS,$userId);
 
@@ -576,15 +577,23 @@ class BCSabreImpl implements IBackendConnector{
      */
     function setAttendee($userId, $calId, $uri, $info)
     {
-        // TODO: pageId is needed here
+
+        $pageId=$info['_page_id'];
+
         $cls=$this->utils->getUserSettings(
             BackendUtils::KEY_CLS,$userId);
-        $ts_mode=$cls[BackendUtils::CLS_TS_MODE];
+        $cms=$this->utils->getUserSettings(
+            $pageId==='p0'
+                ?BackendUtils::KEY_CLS
+                :BackendUtils::KEY_MPS.$pageId,
+            $userId);
+
+        $ts_mode=$cms[BackendUtils::CLS_TS_MODE];
 
         if($ts_mode==='1'){
             // external mode...
             // ... query source cal for source uri
-            $srcId=$cls[BackendUtils::CLS_XTM_SRC_ID];
+            $srcId=$cms[BackendUtils::CLS_XTM_SRC_ID];
             $srcUri=$info['ext_src_uri'];
             $src_data = $this->getObjectData($srcId, $srcUri);
             if($src_data===null){
@@ -789,9 +798,9 @@ class BCSabreImpl implements IBackendConnector{
             $err="Object does not exist: ".$uri;
         }else{
             if($do_confirm) {
-                list($newData, $date) = $this->utils->dataConfirmAttendee($d);
+                list($newData, $date, $pageId) = $this->utils->dataConfirmAttendee($d);
             }else{
-                list($newData, $date) = $this->utils->dataCancelAttendee($d);
+                list($newData, $date, $pageId) = $this->utils->dataCancelAttendee($d);
             }
             if($newData===null){
                 $err="Can not set attendee data";
@@ -800,14 +809,16 @@ class BCSabreImpl implements IBackendConnector{
                 $ret=[0,$date];
             }else{
 
-                // TODO: pageId is needed here
-                $cls = $this->utils->getUserSettings(
-                    BackendUtils::KEY_CLS,$userId);
+                $cms=$this->utils->getUserSettings(
+                    $pageId==='p0'
+                        ?BackendUtils::KEY_CLS
+                        :BackendUtils::KEY_MPS.$pageId,
+                    $userId);
 
-                if($do_confirm && $cls[BackendUtils::CLS_TS_MODE]==='0'
-                    && $cls[BackendUtils::CLS_DEST_ID]!=="-1"){
+                if($do_confirm && $cms[BackendUtils::CLS_TS_MODE]==='0'
+                    && $cms[BackendUtils::CLS_DEST_ID]!=="-1"){
                     // confirming in regular mode into different calendar
-                    $dcl_id=$cls[BackendUtils::CLS_DEST_ID];
+                    $dcl_id=$cms[BackendUtils::CLS_DEST_ID];
 
                     // 1. delete from original calendar
                     $ra=$this->deleteCalendarObject($userId,$calId,$uri);

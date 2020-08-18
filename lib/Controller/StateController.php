@@ -58,7 +58,7 @@ class StateController extends Controller{
                     if($pageId === 'p0'){
                         $key=BackendUtils::KEY_CLS;
                     }else{
-                        $key=BackendUtils::KEY_MPS;
+                        $key=BackendUtils::KEY_MPS.$pageId;
                     }
 
                     $other_cal = "-1";
@@ -109,7 +109,7 @@ class StateController extends Controller{
                             if ($pageId === 'p0'){
                                 $key=BackendUtils::KEY_CLS;
                             }else{
-                                $key=BackendUtils::KEY_MPS;
+                                $key=BackendUtils::KEY_MPS.$pageId;
                             }
 
                             $other_cal="-1";

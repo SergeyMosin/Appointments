@@ -258,22 +258,34 @@ class BackendUtils{
 
     /**
      * @param $data
-     * @return array [string|null, string|null]
+     * @return array [string|null, string|null, string|null]
      *                  null=error|""=already confirmed,
      *                  Localized DateTime string
+     *                  $pageId
      */
     function dataConfirmAttendee($data){
 
         $vo=$this->getAppointment($data,'CONFIRMED');
-        if($vo===null) return [null,null];
+        if($vo===null) return [null,null,null];
 
         /** @var \Sabre\VObject\Component\VEvent $evt*/
         $evt=$vo->VEVENT;
 
         $a=$this->getAttendee($evt);
         if ($a===null) {
-            return [null,null];
+            return [null,null,null];
         }
+
+        if(isset($evt->{BackendUtils::XAD_PROP})){
+            // @see BackendUtils->dataSetAttendee for BackendUtils::XAD_PROP
+            $xad=explode(chr(31),$this->decrypt(
+                $evt->{BackendUtils::XAD_PROP}->getValue(),
+                $evt->UID->getValue()));
+            $pageId=$xad[2];
+        }else {
+            return [null,null,null];
+        }
+
 
 
         $dts=$this->getDateTimeString(
@@ -282,7 +294,7 @@ class BackendUtils{
         );
 
         if($a->parameters['PARTSTAT']->getValue()==='ACCEPTED'){
-            return ["",$dts];
+            return ["",$dts,$pageId];
         }
 
         $a->parameters['PARTSTAT']->setValue('ACCEPTED');
@@ -294,31 +306,41 @@ class BackendUtils{
 
         $this->setApptHash($evt);
 
-        return [$vo->serialize(),$dts];
+        return [$vo->serialize(),$dts, $pageId];
     }
 
     /**
      * @param $data
-     * @return array [string|null, string|null]
+     * @return array [string|null, string|null, string|null]
      *                  null=error|""=already canceled
      *                  Localized DateTime string
      */
     function dataCancelAttendee($data){
 
         $vo=$this->getAppointment($data,'*');
-        if($vo===null) return [null,null];
+        if($vo===null) return [null,null,null];
 
         /** @var \Sabre\VObject\Component\VEvent $evt*/
         $evt=$vo->VEVENT;
 
         if($evt->STATUS->getValue()==='TENTATIVE'){
             // Can not cancel tentative appointments
-            return [null,null];
+            return [null,null,null];
         }
 
         $a=$this->getAttendee($evt);
         if ($a===null) {
-            return [null,null];
+            return [null,null,null];
+        }
+
+        if(isset($evt->{BackendUtils::XAD_PROP})){
+            // @see BackendUtils->dataSetAttendee for BackendUtils::XAD_PROP
+            $xad=explode(chr(31),$this->decrypt(
+                $evt->{BackendUtils::XAD_PROP}->getValue(),
+                $evt->UID->getValue()));
+            $pageId=$xad[2];
+        }else {
+            return [null,null,null];
         }
 
         $dts=$this->getDateTimeString(
@@ -329,7 +351,7 @@ class BackendUtils{
         if($a->parameters['PARTSTAT']->getValue()==='DECLINED'
             || $evt->STATUS->getValue()==='CANCELLED' ){
             // Already cancelled
-            return ["",$dts];
+            return ["",$dts,$pageId];
         }
 
         $this->evtCancelAttendee($evt);
@@ -338,7 +360,7 @@ class BackendUtils{
 
         $this->setApptHash($evt);
 
-        return [$vo->serialize(),$dts];
+        return [$vo->serialize(),$dts,$pageId];
     }
 
     /**
@@ -777,7 +799,7 @@ class BackendUtils{
     function getMainCalId($userId,$pageId,$bc,&$otherCal=null){
 
         if($pageId==='p0'){
-            // main calendar is privider
+            // main calendar is provider
             $csProvider=$this->getUserSettings(self::KEY_CLS,$userId);
         }else{
             // more_pages_ holds $dst/$src cals

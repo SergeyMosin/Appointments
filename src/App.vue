@@ -3,7 +3,8 @@
     <AppNavigation>
       <ul :class="{'sb_disable':stateInProgress}">
         <AppNavigationItem
-            @click="getFormData"
+            :class="{'sb_disable_nav-item':sbShow!==0}"
+            @click="getFormData('p0')"
             class="srgdev-pubpage-nav-item"
             :title="(
               (page0.label===''
@@ -50,6 +51,7 @@
         <AppNavigationItem
             v-for="(page,idx) in morePages"
             class="srgdev-pubpage-nav-item"
+            :class="{'sb_disable_nav-item':sbShow!==0}"
             @click="getFormData(page.pageId)"
             :title="(
               (page.label===''
@@ -437,6 +439,7 @@ export default {
       gridApptLen: 0,
       gridApptTs: 0,
       gridApptTZ: "L",
+      gridApptsPageId: "p0",
 
       generalModal: 0,
       generalModalTxt: ["", ""],
@@ -491,7 +494,7 @@ export default {
   },
 
   mounted() {
-    this.getFormData()
+    this.getFormData('p0')
     this.$root.$on('helpWanted', this.helpWantedHandler)
   },
   beforeDestroy() {
@@ -506,6 +509,8 @@ export default {
 
 
   methods: {
+
+    //TODO: make sure that "Page preview" is in sync with settings + add label
 
     openViaPicker(sbn,evt){
       if(this.sbShow===11 && this.sbGotoBack===sbn){
@@ -602,7 +607,8 @@ export default {
       }).then(() => {
         // always executed
         this.pageInfoLoading = 0
-        this.getFormData()
+        // p can be pageId or "new" or "delete
+        this.getFormData(p)
       });
     },
 
@@ -837,7 +843,7 @@ export default {
       }).then(response => {
         this.stateInProgress = false
         if (response.status === 200) {
-          this.getFormData()
+          this.getFormData(pageId)
           OCP.Toast.success(this.t('appointments', 'New Settings Applied.'))
           return true
         }
@@ -989,11 +995,14 @@ export default {
       }
     },
 
-    // TODO: make sure all calls have proper pageId
     getFormData(pageId) {
       if(typeof pageId !== "string") {
         this.pubPage = 'form?v=' + Date.now();
       }else{
+        if(/^p\d{1}$/.test(pageId)===false){
+          // default to the main page
+          pageId='p0'
+        }
         this.pubPage = 'form?p='+pageId+'&v=' + Date.now();
       }
       this.visibleSection = 0
@@ -1040,6 +1049,7 @@ export default {
       this.gridApptLen = d.dur
       this.gridApptTs = d.week
       this.gridApptTZ = d.tz
+      this.gridApptsPageId = d.pageId
 
       this.visibleSection = 1
 
@@ -1067,10 +1077,10 @@ export default {
       const tsa = gridMaker.getStarEnds(this.gridApptTs, this.gridApptTZ === 'UTC')
       this.evtGridModal = 1
 
-      // TODO: pageId is needed
       axios.post('caladd', {
         d: tsa.join(','),
-        tz: this.gridApptTZ
+        tz: this.gridApptTZ,
+        p: this.gridApptsPageId
       }).then(response => {
         if (response.status === 200) {
           if (response.data.substr(0, 1) !== '0') {
@@ -1101,7 +1111,7 @@ export default {
     },
 
     closeEvtModal() {
-      if (this.evtGridModal < 3) this.getFormData()
+      if (this.evtGridModal < 3) this.getFormData(this.gridApptsPageId)
       this.modalErrTxt = ""
       this.evtGridModal = 0
     },

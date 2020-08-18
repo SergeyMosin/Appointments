@@ -114,7 +114,7 @@ class CalendarsController extends Controller{
         $pgs=$this->utils->getUserSettings(
             BackendUtils::KEY_PAGES,$this->userId);
 
-        $key=$pageId==='p0'?BackendUtils::KEY_CLS:BackendUtils::KEY_MPS;
+        $key=$pageId==='p0'?BackendUtils::KEY_CLS:BackendUtils::KEY_MPS.$pageId;
         $cms=$this->utils->getUserSettings($key,$this->userId);
 
         if($cms[BackendUtils::CLS_TS_MODE]!=="0"
