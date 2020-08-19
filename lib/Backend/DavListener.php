@@ -26,7 +26,9 @@ class DavListener {
      */
     public function handle(GenericEvent $event, $eventName): void{
 
-        if(!isset($event['objectData']['calendardata'])){
+        // objectUri
+        if(!isset($event['objectData']['calendardata']) ||
+            !isset($event['objectData']['uri'])){
             return;
         }
         $cd=$event['objectData']['calendardata'];
@@ -77,7 +79,13 @@ class DavListener {
                 $evt->{BackendUtils::XAD_PROP}->getValue(),
                 $evt->UID->getValue()));
             $userId=$xad[0];
-            $pageId=$xad[2];
+            if(count($xad)>2) {
+                $pageId = $xad[2];
+                $embed = $xad[3]==="1";
+            }else{
+                $pageId = 'p0';
+                $embed = false;
+            }
         }else {
             \OC::$server->getLogger()->error("XAD_PROP not found");
             return;
@@ -206,7 +214,10 @@ class DavListener {
             $om_info=$evt->DESCRIPTION->getValue();
         }
 
-        $cnl_lnk_url=""; // cancellation link for confirmation emails
+        // cancellation link for confirmation emails
+        $cnl_lnk_url="";
+        // this is used to stop .ics file attachment on external actions when PARTSTAT:NEEDS-ACTION
+        $no_ics=false;
 
         if($hint === BackendUtils::APPT_SES_BOOK){
             // Just booked, send email to the attendee requesting confirmation...
@@ -219,9 +230,10 @@ class DavListener {
             // TRANSLATORS Main part of email, Ex: The {{Organization Name}} appointment scheduled for {{Date Time}} is awaiting your confirmation.
             $tmpl->addBodyText($this->l10N->t('The %1$s appointment scheduled for %2$s is awaiting your confirmation.',[$org_name,$date_time]));
 
-            // These keys must be set in the page controller
-            $btn_url=$ses->get(BackendUtils::APPT_SES_KEY_BURL);
-            $btn_tkn=$ses->get(BackendUtils::APPT_SES_KEY_BTKN);
+            list($btn_url,$btn_tkn) = $this->makeBtnInfo(
+                $userId,$pageId,$embed,
+                $event['objectData']['uri'],
+                $utils,$config);
 
             $tmpl->addBodyButtonGroup(
                 $this->l10N->t("Confirm"),
@@ -253,8 +265,11 @@ class DavListener {
             }
 
             // add cancellation link
-            // These keys must be set in the page controller
-            $cnl_lnk_url=$ses->get(BackendUtils::APPT_SES_KEY_BURL)."0".$ses->get(BackendUtils::APPT_SES_KEY_BTKN);
+            list($btn_url,$btn_tkn) = $this->makeBtnInfo(
+                $userId,$pageId,$embed,
+                $event['objectData']['uri'],
+                $utils,$config);
+            $cnl_lnk_url=$btn_url."0".$btn_tkn;
 
             if($eml_settings[BackendUtils::EML_MCONF]) {
                 $om_prefix = $this->l10N->t("Appointment confirmed");
@@ -294,6 +309,9 @@ class DavListener {
             // TRANSLATORS Main part of email
             $tmpl->addBodyText($this->l10N->t("Your appointment details have changed. Please review information below."));
 
+
+            $pst = $att->parameters['PARTSTAT']->getValue();
+
             // Add changes details...
             if($hash_ch[0]===true) { // DTSTART changed
                 $tmpl->addBodyListItem($this->l10N->t("Date/Time: %s", [$date_time]));
@@ -305,7 +323,6 @@ class DavListener {
                     $is_cancelled = true;
                 } else {
                     // Non cancelled status is determined by the attendee's PARTSTAT
-                    $pst = $att->parameters['PARTSTAT']->getValue();
                     if ($pst === 'NEEDS-ACTION') {
                         $tmpl->addBodyListItem($this->l10N->t('Status: Pending confirmation'));
                     } elseif ($pst === 'ACCEPTED') {
@@ -318,12 +335,33 @@ class DavListener {
                 $tmpl->addBodyListItem($this->l10N->t("Location: %s", [$evt->LOCATION->getValue()]));
             }
 
+            list($btn_url,$btn_tkn) = $this->makeBtnInfo(
+                $userId,$pageId,$embed,
+                $event['objectData']['uri'],
+                $utils,$config);
+
+            // if NOT cancelled and PARTSTAT:NEEDS-ACTION we ADD BUTTONS before the "If you have any questions..." text
+            if($is_cancelled === false && $pst === 'NEEDS-ACTION'){
+                $no_ics=true;
+                $tmpl->addBodyButtonGroup(
+                    $this->l10N->t("Confirm"),
+                    $btn_url.'1'.$btn_tkn,
+                    $this->l10N->t("Cancel"),
+                    $btn_url.'0'.$btn_tkn
+                );
+            }
+
             if(empty($org_phone)) {
                 // TRANSLATORS Additional part of email - contact information WITHOUT phone number (only email). The last argument is email address.
                 $tmpl->addBodyText($this->l10N->t("If you have any questions please write to %s", [$org_email]));
             }else{
                 // TRANSLATORS Additional part of email - contact information WITH email AND phone number: If you have any questions please feel free to call {123-456-7890} or write to {email@example.com}
                 $tmpl->addBodyText($this->l10N->t('If you have any questions please feel free to call %1$s or write to %2$s', [$org_phone,$org_email]));
+            }
+
+            // if NOT cancelled and PARTSTAT:NEEDS-ACTION we ADD the cancellation at the END
+            if($is_cancelled === false && $pst === 'ACCEPTED'){
+                $cnl_lnk_url=$btn_url."0".$btn_tkn;
             }
 
             // Update hash
@@ -334,7 +372,6 @@ class DavListener {
 
         $tmpl->addBodyText($this->l10N->t("Thank you"));
 
-        // TODO: add cancellation link to update emails
         // cancellation link for confirmation emails
         if(!empty($cnl_lnk_url)){
             $tmpl->addBodyText(
@@ -370,7 +407,9 @@ class DavListener {
         $utz_info=$evt->{BackendUtils::TZI_PROP}->getValue()[0];
 
         // .ics attachment
-        if($hint!== BackendUtils::APPT_SES_BOOK && $eml_settings[BackendUtils::EML_ICS]===true){
+        if($hint!== BackendUtils::APPT_SES_BOOK
+            && $eml_settings[BackendUtils::EML_ICS]===true
+            && $no_ics===false){
 
             // method https://tools.ietf.org/html/rfc5546#section-3.2
             if(!$is_cancelled){
@@ -416,6 +455,16 @@ class DavListener {
 //            if(isset($evt->ORGANIZER->parameters['SCHEDULE-AGENT'])){
 //                unset($evt->ORGANIZER->parameters['SCHEDULE-AGENT']);
 //            }
+
+            // Some external clients set SCHEDULE-STATUS to 3.7 because of the "acct" scheme
+            if(isset($evt->ATTENDEE)) {
+                foreach ($evt->ATTENDEE as $k => $v) {
+                    if (isset($evt->ATTENDEE[$k]->parameters['SCHEDULE-STATUS'])
+                    ){
+                        unset($evt->ATTENDEE[$k]->parameters['SCHEDULE-STATUS']);
+                    }
+                }
+            }
 
             if(!isset($vObject->METHOD)) $vObject->add('METHOD');
             $vObject->METHOD->setValue($method);
@@ -485,5 +534,34 @@ class DavListener {
                 \OC::$server->getLogger()->error("Bad oma count");
             }
         }
+    }
+
+    /**
+     * @param string $userId
+     * @param string $pageId
+     * @param bool $embed
+     * @param string $uri
+     * @param BackendUtils $utils
+     * @param \OCP\IConfig $config
+     * @return string[] - [btn_url,btn_tkn]
+     * @noinspection PhpDocMissingThrowsInspection
+     */
+    private function makeBtnInfo($userId,$pageId,$embed,$uri,$utils,$config){
+        $key=hex2bin($config->getAppValue($this->appName, 'hk'));
+        if(empty($key)) return ["",""];
+
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $btn_url=$raw_url=$utils->getPublicWebBase().'/'
+            .$utils->pubPrx($utils->getToken($userId,$pageId),$embed)
+            .'cncf?d=';
+        if($embed) {
+            $btn_url=$config->getAppValue(
+                $this->appName,
+                'emb_cncf_'.$userId,$btn_url);
+        }
+        return [
+            $btn_url,
+            urlencode($utils->encrypt(substr($uri,0,-4),$key))
+        ];
     }
 }

@@ -30,9 +30,23 @@ class ExternalModeSabrePlugin extends ServerPlugin {
 //    function autoFix($path, \Sabre\DAV\IFile $node, &$data, &$modified){
     function autoFix($path, &$data, \Sabre\DAV\ICollection $parent, &$modified){
 
-        $afu=$this->afx_uri;
-        if(substr($path,-4)===".ics" && ($pos=strpos($path,$afu))!==false){
-            $pos+=strlen($afu);
+        if(substr($path,-4)===".ics"){
+
+            $ua=explode(chr(31),$this->afx_uri);
+            $l=count($ua)-1;
+            $pos=false;
+            for($i=0;$i<$l;$i++){
+                $u=substr($ua[$i],2); // Remove "pX"
+                if(($pos=strpos($path,$u))!==false){
+                    break;
+                }
+            }
+            if($pos===false){
+                // this calendar does not matter
+                return;
+            }
+            $pos+=strlen($u);
+
             if(strpos($path,"/",$pos)===false){
                 // Incoming event belongs to this user...
                 if (is_resource($data)) {

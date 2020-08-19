@@ -20,8 +20,6 @@ class BackendUtils{
     const FLOAT_TIME_FORMAT="Ymd.His";
 
     public const APPT_SES_KEY_HINT = "appointment_hint";
-    public const APPT_SES_KEY_BTKN = "appointment_btkn";
-    public const APPT_SES_KEY_BURL = "appointment_burl";
 
     public const APPT_SES_BOOK = "0";
     public const APPT_SES_CONFIRM = "1";
@@ -245,9 +243,18 @@ class BackendUtils{
         if(!isset($evt->{self::TZI_PROP})) $evt->add(self::TZI_PROP);
         $evt->{self::TZI_PROP}->setValue($info['tzi']);
 
-        // Additional Appointment info: userId (for DavListener) + _title if available (used for reset) + pageId
+        // Additional appointment info (XAD_PROP):
+        //  0: userId
+        //  1: _title
+        //  2: pageId
+        //  3: embed (uri)
         if(!isset($evt->{self::XAD_PROP})) $evt->add(self::XAD_PROP);
-        $evt->{self::XAD_PROP}->setValue($this->encrypt($userId.chr(31).$title.chr(31).$info['_page_id'],$evt->UID));
+        $evt->{self::XAD_PROP}->setValue($this->encrypt(
+            $userId.chr(31)
+            .$title.chr(31)
+            .$info['_page_id'].chr(31)
+            .$info['_embed'].chr(31),
+            $evt->UID));
 
         $this->setSEQ($evt);
 
@@ -281,12 +288,14 @@ class BackendUtils{
             $xad=explode(chr(31),$this->decrypt(
                 $evt->{BackendUtils::XAD_PROP}->getValue(),
                 $evt->UID->getValue()));
-            $pageId=$xad[2];
+            if(count($xad)>2) {
+                $pageId = $xad[2];
+            }else{
+                $pageId = 'p0';
+            }
         }else {
             return [null,null,null];
         }
-
-
 
         $dts=$this->getDateTimeString(
             $evt->DTSTART->getDateTime(),
@@ -338,7 +347,11 @@ class BackendUtils{
             $xad=explode(chr(31),$this->decrypt(
                 $evt->{BackendUtils::XAD_PROP}->getValue(),
                 $evt->UID->getValue()));
-            $pageId=$xad[2];
+            if(count($xad)>2) {
+                $pageId = $xad[2];
+            }else{
+                $pageId = 'p0';
+            }
         }else {
             return [null,null,null];
         }
@@ -479,6 +492,12 @@ class BackendUtils{
                 && isset($a->parameters['CN'])
                 && isset($a->parameters['PARTSTAT'])
             ){
+
+                // Some external clients set SCHEDULE-STATUS to 3.7 because of the "acct" scheme
+                if (isset($a->parameters['SCHEDULE-STATUS'])){
+                    unset($a->parameters['SCHEDULE-STATUS']);
+                }
+
                 $r=$a;
                 break;
             }

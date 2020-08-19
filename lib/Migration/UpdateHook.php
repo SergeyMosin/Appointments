@@ -6,6 +6,7 @@ namespace OCA\Appointments\Migration;
 
 use OC\User\Manager;
 use OCA\Appointments\Backend\BackendUtils;
+use OCA\Appointments\Backend\ExternalModeSabrePlugin;
 use OCP\IConfig;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
@@ -97,6 +98,15 @@ class UpdateHook implements IRepairStep {
                         $this->c->deleteUserValue($userId, $this->appName,self::KEY_U_EMAIL);
                         $this->c->deleteUserValue($userId, $this->appName,self::KEY_U_ADDR);
                         $this->c->deleteUserValue($userId, $this->appName,self::KEY_U_PHONE);
+                    }
+
+                    // autofix fix for multi-page
+                    $afv=$this->c->getUserValue($userId, $this->appName,
+                        ExternalModeSabrePlugin::AUTO_FIX_URI,"");
+                    if(!empty($afv) && $afv[0]==="/"){
+                        $this->c->setUserValue($userId, $this->appName,
+                            ExternalModeSabrePlugin::AUTO_FIX_URI,
+                            'p0'.$afv.chr(31));
                     }
                 }
             }

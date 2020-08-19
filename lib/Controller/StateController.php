@@ -363,8 +363,8 @@ class StateController extends Controller{
      */
     function setClsMps($key,$def,$value,$pageId){
 
-        $ts_mode=$this->utils->getUserSettings(
-            $key,$this->userId)[BackendUtils::CLS_TS_MODE];
+        $o_cms=$this->utils->getUserSettings(
+            $key,$this->userId);
 
         if($this->utils->setUserSettings(
                 $key, $value, $def,
@@ -376,22 +376,48 @@ class StateController extends Controller{
             // This is needed to get BackendUtils::CLS_XTM_AUTO_FIX
             $real_cls=$this->utils->getUserSettings(BackendUtils::KEY_CLS,$this->userId);
 
-            // TODO: autofix for additional calendars...
             // Set ExternalModeSabrePlugin::AUTO_FIX_URI
-            $af_uri="";
-            if($cms[BackendUtils::CLS_TS_MODE]==="1" && $cms[BackendUtils::CLS_XTM_SRC_ID]!=="-1" && $real_cls[BackendUtils::CLS_XTM_AUTO_FIX]===true)
-            {
-                $ci=$this->bc->getCalendarById(
-                    $cms[BackendUtils::CLS_XTM_SRC_ID],
-                    $this->userId);
-                if($ci!==null){
-                    $af_uri="/".$this->userId."/".$ci["uri"]."/";
-                }
-            }
-            $this->config->setUserValue($this->userId, $this->appName,
-                ExternalModeSabrePlugin::AUTO_FIX_URI,$af_uri);
+            if($real_cls[BackendUtils::CLS_XTM_AUTO_FIX]===false){
+                $this->config->setUserValue($this->userId, $this->appName,
+                    ExternalModeSabrePlugin::AUTO_FIX_URI,"");
+            }else{
+                $afu=$this->config->getUserValue(
+                    $this->userId, $this->appName,
+                    ExternalModeSabrePlugin::AUTO_FIX_URI);
 
-            if($ts_mode!==$cms[BackendUtils::CLS_TS_MODE]){
+                $o_calId=$o_cms[BackendUtils::CLS_XTM_SRC_ID];
+                $calId=$cms[BackendUtils::CLS_XTM_SRC_ID];
+
+                $o_cUri="";
+                $cUri="";
+
+                $cals=$this->bc->getCalendarsForUser($this->userId);
+                $l=count($cals);
+                for($i=0;$i<$l;$i++){
+                    $cal=$cals[$i];
+                    if($cal['id']===$o_calId){
+                        $o_cUri=$pageId."/".$this->userId."/".$cal['uri']."/".chr(31);
+                    }
+                    if($cal['id']===$calId){
+                        $cUri=$pageId."/".$this->userId."/".$cal['uri']."/".chr(31);
+                    }
+                }
+//                af_uri="/".$this->userId."/".$ci["uri"]."/";
+
+                if(!empty($o_cUri)){
+                    $afu=str_replace($o_cUri,"",$afu);
+                }
+
+                if(!empty($cUri) && $cms[BackendUtils::CLS_TS_MODE]==="1"){
+                    $afu.=$cUri;
+                }
+
+                $this->config->setUserValue($this->userId, $this->appName,
+                    ExternalModeSabrePlugin::AUTO_FIX_URI,$afu);
+            }
+
+
+            if($o_cms[BackendUtils::CLS_TS_MODE]!==$cms[BackendUtils::CLS_TS_MODE]){
                 // ts_mode changed - disable the page...
                 $pgs = $this->utils->getUserSettings(
                     BackendUtils::KEY_PAGES, $this->userId);
