@@ -1,6 +1,7 @@
 OC.L10N.register(
     "appointments",
     {
+    "Available" : "Vak",
     "Confirm" : "Kadarnañ",
     "Cancel" : "Arrest",
     "Info" : "Titouroù",
