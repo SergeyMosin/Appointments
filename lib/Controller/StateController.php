@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection PhpMissingParamTypeInspection */
+
 /** @noinspection PhpComposerExtensionStubsInspection */
 namespace OCA\Appointments\Controller;
 
@@ -135,30 +136,58 @@ class StateController extends Controller{
                         }
                     } else if($pageId==="new") {
                         // creating new
-//                        $r->setData('{"contrib":"'.$this->l->t("More than 2 additional pages (10 maximum)").'"}');
-//                        $sts=202;
-
-                        $i=1;
-                        for(;$i<10;$i++){
-                            $_pid="p".$i;
-                            if(!isset($pgs[$_pid])){
-                                $pageId=$_pid;
-                                break;
+                        if(count($pgs)>2){
+                            $d=$this->config->getUserValue($this->userId, $this->appName, "c"."nk");
+                            if($d==="" || ((hexdec(substr($d,0,4))>>15)&1)!==((hexdec(substr($d,4,4))>>12)&1) ){
+                                $r->setData('{"contrib":"'.$this->l->t("More than 2 additional pages (10 maximum)").'"}');
+                                $sts=202;
                             }
                         }
-                        // TODO: check for contributors $i>2
-                        if($pageId==='new'){
-                            // could not find a free spot (10 max)
-                            $sts=202;
-                            $r->setData('{"info":"'.$this->l->t("Page not added: 10 pages maximum").'"}');
-                        }else{
-                            // add empty so we can get_mps & set_mps
-                            $this->config->setUserValue(
-                                $this->userId,$this->appName,
-                                BackendUtils::KEY_MPS.$pageId,"");
+                        if($sts!==202) {
+                            $i = 1;
+                            for (; $i < 10; $i++) {
+                                $_pid = "p" . $i;
+                                if (!isset($pgs[$_pid])) {
+                                    $pageId = $_pid;
+                                    break;
+                                }
+                            }
+                            if ($pageId === 'new') {
+                                // could not find a free spot (10 max)
+                                $sts = 202;
+                                $r->setData('{"info":"' . $this->l->t("Page not added: 10 pages maximum") . '"}');
+                            } else {
+                                // add empty so we can get_mps & set_mps
+                                $this->config->setUserValue(
+                                    $this->userId, $this->appName,
+                                    BackendUtils::KEY_MPS . $pageId, "");
+                            }
                         }
                     }else if($pageId==="delete" && $vo["page"]!=="p0"){
                         $_pid=$vo["page"];
+
+                        // check and delete directory page link if url for this page is used
+                        $uca=explode(chr(31),$this->getPubURI($_pid));
+                        $a=$this->utils->getUserSettings(
+                            BackendUtils::KEY_DIR, $this->userId);
+                        $l=count($a);
+                        for($i=0;$i<$l;$i++){
+                            $lu=$a[$i]['url'];
+                            if($lu===$uca[0] || $lu===$uca[1]){
+                                unset($a[$i]);
+                            }
+                        }
+                        if($l!==count($a)){
+                            // array_values = reindex
+                            $dpl=json_encode(array_values($a));
+                            if($dpl!==false) {
+                                $this->config->setUserValue(
+                                    $this->userId, $this->appName,
+                                    BackendUtils::KEY_DIR, $dpl);
+                            }
+                        }
+
+                        // delete the page
                         unset($pgs[$_pid]);
                         $this->config->deleteUserValue(
                             $this->userId,$this->appName,
@@ -201,24 +230,27 @@ class StateController extends Controller{
             $pgs=$this->utils->getUserSettings(
                         BackendUtils::KEY_PAGES, $this->userId);
             if(isset($pgs[$pageId])) {
-
-                $pb = $this->utils->getPublicWebBase();
-                $tkn = $this->utils->getToken($this->userId,$pageId);
-
-                $u = $pb . '/' . $this->utils->pubPrx($tkn, false) . 'form' . chr(31)
-                    . $pb . '/' . $this->utils->pubPrx($tkn, true) . 'form';
-
-                $r->setData($u);
+                $r->setData($this->getPubURI($pageId));
                 $r->setStatus(200);
             }
 
         } elseif ($action==='get_diruri'){
-            $r->setData(
-                $this->utils->getPublicWebBase().'/pub/'
-                // "p0" will return only the encoded username
-                .$this->utils->getToken($this->userId,"p0").'/dir');
-            $r->setStatus(200);
-
+            $gos="sub".'str';$c=$this->config->getUserValue($this->userId, $this->appName, "cn".'k');$go="hexd".'ec';
+            $dir = $this->utils->getUserSettings(
+                BackendUtils::KEY_DIR, $this->userId);
+            if(count($dir)===0){
+                $r->setData('{"info":"'.$this->l->t("Please setup the directory page first.").'"}');
+                $r->setStatus(202);
+            }else if(empty($c)||(($go($gos($c,0,0b100))>>15)&0b1)!==(($go($gos($c,0b100,4))>>0xC) &0b1)){
+                $r->setData('{"contrib":"'.$this->l->t("Directory page").'"}');
+                $r->setStatus(200+2);
+            }else{
+                $r->setData(
+                    $this->utils->getPublicWebBase().'/pub/'
+                    // "p0" will return only the encoded username
+                    .$this->utils->getToken($this->userId,"p0").'/dir'.chr(31)."");
+                $r->setStatus(200);
+            }
         }elseif ($action==="set_pps"){
             $value=$this->request->getParam("d");
             if($value!==null) {
@@ -359,8 +391,7 @@ class StateController extends Controller{
         }else if($action==="get_dir") {
             $a=$this->utils->getUserSettings(
                 BackendUtils::KEY_DIR, $this->userId);
-
-            $j=json_encode($this->getMoreProps($a));
+            $j=json_encode($a);
             if($j!==false){
                 $r->setData($j);
                 $r->setStatus(200);
@@ -375,21 +406,29 @@ class StateController extends Controller{
                 /** @noinspection PhpUnhandledExceptionInspection */
                 $this->config->setUserValue($this->userId, $this->appName,BackendUtils::KEY_DIR,$value);
 
-//
-//                if ($this->utils->setUserSettings(
-//                        BackendUtils::KEY_DIR, $value, BackendUtils::DIR_DEF,
-//                        $this->userId, $this->appName) === true
-//                ) {
-                    $r->setStatus(200);
-//                } else {
-//                    $r->setStatus(500);
-//                }
+                $r->setStatus(200);
             }else{
                 $r->setStatus(500);
             }
+        }else if($action==="set_k") {
+            $value=$this->request->getParam("d");
+            $sts=500;
+            if($value!==null) {
+                $a=json_decode($value,true);
+                if($a!==null && isset($a['k'])){
+                    $k = str_replace("-", "", $a['k']);
+                    if(strlen($k)===20&&((hexdec(substr($k,0,4))>>15)&1)===((hexdec(substr($k,4,4))>>12)&1)){
+                            /** @noinspection PhpUnhandledExceptionInspection */
+                        $this->config->setUserValue($this->userId, $this->appName, "cnk", $k);
+                        $sts=200;
+                    }
+                }
+            }
+            $r->setStatus($sts);
+        }else if($action==="get_k") {
+            $r->setData($this->config->getUserValue($this->userId, $this->appName, "cnk")!==""?"_":"");
+            $r->setStatus(200);
         }
-
-
         return $r;
     }
 
@@ -494,5 +533,11 @@ class StateController extends Controller{
         return $a;
     }
 
+    function getPubURI($pageId){
+        $pb = $this->utils->getPublicWebBase();
+        $tkn = $this->utils->getToken($this->userId,$pageId);
+        return $pb . '/' . $this->utils->pubPrx($tkn, false) . 'form' . chr(31)
+            . $pb . '/' . $this->utils->pubPrx($tkn, true) . 'form';
+    }
 
 }

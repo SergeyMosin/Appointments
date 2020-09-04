@@ -188,7 +188,9 @@ export default {
       this.isEditNew=true
       this.editNumber=this.dirInfo.length-1
       this.$nextTick(()=> {
-        this.$refs["pl_input" + this.editNumber][0].focus()
+        const elm=this.$refs["pl_input" + this.editNumber][0]
+        elm.scrollIntoView({behavior: "smooth"})
+        elm.focus()
       })
     },
 
@@ -201,7 +203,9 @@ export default {
     },
 
     deletePageLink(n){
+      this.editNumber=100
       this.dirInfo.splice(n,1)
+      this.sendToServer()
     },
 
     sendToServer(){

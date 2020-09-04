@@ -69,7 +69,10 @@ $appt_grid_ml:6em;
 	margin-right: .2%;
 }
 
-.srgdev-appt-gh-act1 *{
+.srgdev-appt-gh-act1 label{
+	box-sizing: border-box;
+}
+.srgdev-appt-act-input-ext label{
 	box-sizing: border-box;
 }
 
@@ -316,7 +319,7 @@ $appt_grid_ml:6em;
 .srgdev-appt-icon_txt_btn{
 	width: auto;
 	padding-left: 1.5em;
-	background-position: left center;
+	background-position: left center !important;
 	margin: 1.25em 1em .25em;
 	vertical-align: top;
 }

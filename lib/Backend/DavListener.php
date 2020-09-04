@@ -463,6 +463,11 @@ class DavListener {
                     ){
                         unset($evt->ATTENDEE[$k]->parameters['SCHEDULE-STATUS']);
                     }
+                    $av=$evt->ATTENDEE[$k]->getValue();
+                    if(strpos($av,"acct:")===0){
+                        $av='mailto:'.substr($av,5);
+                    }
+                    $evt->ATTENDEE[$k]->setValue($av);
                 }
             }
 

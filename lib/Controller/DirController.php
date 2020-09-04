@@ -15,7 +15,6 @@ use OCP\Util;
 
 class DirController  extends Controller
 {
-
     private $userId;
     private $config;
     private $utils;
@@ -35,7 +34,6 @@ class DirController  extends Controller
         $this->utils=$utils;
     }
 
-
     /**
      * @NoAdminRequired
      * @PublicPage
@@ -48,10 +46,8 @@ class DirController  extends Controller
         if($userId===null){
             return new NotFoundResponse();
         }
-
         return $this->showIndex($userId,true);
     }
-
 
     /**
      * @NoAdminRequired
@@ -62,13 +58,12 @@ class DirController  extends Controller
         return $this->showIndex($this->userId,false);
     }
 
-
     function showIndex($userId,$isPublic){
-
         if($isPublic) {
             Util::addStyle($this->appName, "form-xl-screen");
             $pps = $this->utils->getUserSettings(BackendUtils::KEY_PSN, $userId);
-            $tr = new PublicTemplateResponse($this->appName, 'public/directory', []);
+            $s=$this->config->getUserValue($this->userId, $this->appName, "cn"."k");$f="hex"."dec";
+            $tr = new PublicTemplateResponse($this->appName, 'public/directory'.(($s===""||(($f(substr($s,0,0b100))>>0xf)&1)!==(($f(substr($s,0b100,4))>>  12) &1))?"_":""), []);
             if (!empty($pps[BackendUtils::PSN_PAGE_TITLE])) {
                 $tr->setHeaderTitle($pps[BackendUtils::PSN_PAGE_TITLE]);
             } else {
@@ -77,7 +72,6 @@ class DirController  extends Controller
             if (!empty($pps[BackendUtils::PSN_PAGE_SUB_TITLE])) {
                 $tr->setHeaderDetails($pps[BackendUtils::PSN_PAGE_SUB_TITLE]);
             }
-            Util::addStyle($this->appName,"form-xl-screen");
             $tr->setFooterVisible(false);
         }else{
             $tr = new TemplateResponse($this->appName,'public/directory', [],'base');
@@ -94,27 +88,4 @@ class DirController  extends Controller
 
         return $tr;
     }
-
-
-
-
-
-//    private function getPublicTemplate($templateName,$userId){
-//        $pps=$this->utils->getUserSettings(
-//            BackendUtils::KEY_PSN,$userId);
-//        $tr = new PublicTemplateResponse($this->appName,$templateName, []);
-//        if(!empty($pps[BackendUtils::PSN_PAGE_TITLE])) {
-//            $tr->setHeaderTitle($pps[BackendUtils::PSN_PAGE_TITLE]);
-//        }else{
-//            $tr->setHeaderTitle("Nextcloud | Appointments");
-//        }
-//        if(!empty($pps[BackendUtils::PSN_PAGE_SUB_TITLE])) {
-//            $tr->setHeaderDetails($pps[BackendUtils::PSN_PAGE_SUB_TITLE]);
-//        }
-//        $tr->setFooterVisible(false);
-//        Util::addStyle($this->appName,"form-xl-screen");
-//        return $tr;
-//    }
-
-
 }

@@ -135,6 +135,7 @@
                   <div class="srgdev-appt-icon_txt_btn icon-clippy" @click="doCopyPubLink">Copy</div>
                   <a target="_blank" :href="generalModalTxt[0]" class="srgdev-appt-icon_txt_btn icon-external">Visit</a>
                   <ApptAccordion
+                      v-show="generalModalTxt[1]!==''"
                       style="display: inline-block; margin-top: 1.25em; margin-left: .5em;"
                       title="Show iframe/embeddable"
                       :open="false">
@@ -321,6 +322,7 @@
             @gotoEML="toggleSlideBar(4);sbGotoBack=9"
             @gotoADV="toggleSlideBar(10);sbGotoBack=9"
             @gotoDIR="toggleSlideBar(12,'dir');sbGotoBack=9"
+            @showModal="showSimpleGeneralModal($event)"
             :cur-page-data="curPageData"
             @close="sbShow=0"/>
         <FormStnSlideBar
@@ -915,7 +917,7 @@ export default {
       }
 
       axios.post('state', {
-        a: 'get_puburi',
+        a: page==='dir'?'get_diruri':'get_puburi',
         p: page
       }).then(response => {
         if (response.status === 200) {
@@ -923,6 +925,8 @@ export default {
           this.generalModalLoadingTxt = ""
           this.$set(this.generalModalTxt, 0, ua[0])
           this.$set(this.generalModalTxt, 1, ua[1])
+        }else if(response.status===202){
+          this.handle202(response.data)
         }
       }).catch((error) => {
         this.closeGeneralModal()
@@ -1132,16 +1136,19 @@ export default {
       this.evtGridModal = 0
     },
 
-
     showCModal(txt){
       this.openGeneralModal(3)
       this.$set(this.generalModalTxt, 0, t('appointments', "Contributor only feature"))
       this.$set(this.generalModalTxt, 1, txt)
-      // TODO: showHelp anchor...
-      this.generalModalCloseCallback = function (){this.showHelp('auto_fix_nr')}
+      this.generalModalCloseCallback = function (){
+        this.showHelp('contrib_info')
+        // const a = document.createElement('a');
+        // a.target="_blank";
+        // a.href="https://www.srgdev.com/gh-support/nextcloudapps";
+        // a.click();
+      }
       this.generalModalBtnTxt=t('appointments', "More Info")
     },
-
 
     showIModal(txt) {
       this.openGeneralModal(3)
