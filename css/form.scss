@@ -442,6 +442,55 @@
   text-decoration: underline;
 }
 
+.appt-dir-lnk{
+  display: block;
+  margin: 1.25em auto;
+  padding: 1em;
+  width: 22em;
+  border: 1px solid $color-border;
+  border: 1px solid var(--color-border);
+}
+.appt-dir-lnk:hover{
+  border: 1px solid $color-border-dark;
+  border: 1px solid var(--color-border-dark);
+  box-shadow: 1px 1px 3px $color-border-dark;
+  box-shadow: 1px 1px 3px var(--color-border-dark);
+}
+.appt-dir-lnk_h1 {
+  font-weight: bold;
+  font-size: 125%;
+  margin: 0;
+  line-height: 1.2;
+  color: $color-main-text;
+  color: var(--color-main-text);
+}
+.appt-dir-lnk_h2 {
+  font-weight: normal;
+  font-size: 110%;
+  margin: .2em 0;
+  line-height: 1.4;
+  color: $color-main-text;
+  color: var(--color-main-text);
+}
+.appt-dir-lnk_p{
+  position: relative;
+  margin: .5em 0 0;
+  padding-top: .5em;
+  color: $color-text-light;
+  color: var(--color-text-light);
+}
+.appt-dir-lnk_p:before{
+  content: "";
+  position: absolute;
+  display: block;
+  width: 60%;
+  height: 0;
+  left: 20%;
+  top: 0;
+  border-bottom: 1px solid $color-border;
+  border-bottom: 1px solid var(--color-border);
+}
+
 @media screen and (max-width: 479px) {
   .srgdev-ncfp-wrap {
     font-size: 110%;

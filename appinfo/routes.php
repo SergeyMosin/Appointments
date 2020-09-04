@@ -20,5 +20,8 @@ return [
         ['name' => 'calendars#calgetweek', 'url' => '/calgetweek', 'verb' => 'POST'],
         ['name' => 'calendars#callist', 'url' => '/callist', 'verb' => 'GET'],
 
+        ['name' => 'dir#index', 'url' => '/pub/{token}/dir', 'verb' => 'GET'],
+        ['name' => 'dir#indexbase', 'url' => '/dir', 'verb' => 'GET'],
+
     ]
 ];

@@ -211,6 +211,14 @@ class StateController extends Controller{
                 $r->setData($u);
                 $r->setStatus(200);
             }
+
+        } elseif ($action==='get_diruri'){
+            $r->setData(
+                $this->utils->getPublicWebBase().'/pub/'
+                // "p0" will return only the encoded username
+                .$this->utils->getToken($this->userId,"p0").'/dir');
+            $r->setStatus(200);
+
         }elseif ($action==="set_pps"){
             $value=$this->request->getParam("d");
             if($value!==null) {
@@ -348,7 +356,39 @@ class StateController extends Controller{
                     $r->setStatus(500);
                 }
             }
+        }else if($action==="get_dir") {
+            $a=$this->utils->getUserSettings(
+                BackendUtils::KEY_DIR, $this->userId);
+
+            $j=json_encode($this->getMoreProps($a));
+            if($j!==false){
+                $r->setData($j);
+                $r->setStatus(200);
+            }else{
+                $r->setStatus(500);
+            }
+
+        }else if($action==="set_dir") {
+            $value=$this->request->getParam("d");
+            if($value!==null) {
+
+                /** @noinspection PhpUnhandledExceptionInspection */
+                $this->config->setUserValue($this->userId, $this->appName,BackendUtils::KEY_DIR,$value);
+
+//
+//                if ($this->utils->setUserSettings(
+//                        BackendUtils::KEY_DIR, $value, BackendUtils::DIR_DEF,
+//                        $this->userId, $this->appName) === true
+//                ) {
+                    $r->setStatus(200);
+//                } else {
+//                    $r->setStatus(500);
+//                }
+            }else{
+                $r->setStatus(500);
+            }
         }
+
 
         return $r;
     }

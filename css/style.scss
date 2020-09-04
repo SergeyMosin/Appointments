@@ -516,7 +516,7 @@ textarea.appt-stn-txt-ta{
     min-width: 270px;
 }
 .srgdev-appt-sb-lbl-header{
-	font-size: 150%;
+	font-size: 125%;
 	color: var(--color-text-lighter);
 	margin-left: -2%;
 	padding-left: 2%;
@@ -570,6 +570,58 @@ textarea.appt-stn-txt-ta{
 	}
 
 }
+.srgdev-icon-btn{
+	background: var(--color-background-hover);
+	cursor: pointer;
+	&_icon,
+	&_text{
+		display: inline-block;
+		cursor: pointer;
+	}
+	&_text{
+		margin-left: .5em;
+	}
+}
+
+.srgdev-appt-dir-pl{
+	padding: 1em 2.75em 1em 1em;
+	margin: 1em .5em;
+	border: 1px solid var(--color-border);
+	position: relative;
+	min-height: 2em;
+	&_title{
+		font-size: 110%;
+		font-weight: bold;
+	}
+	&_actions{
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+
+	&_label{
+		display: block;
+		margin: .5em 0 0;
+	}
+	&_input{
+		display: block;
+		width: 100%;
+	}
+
+	&_combo{
+		padding-right: 2em;
+		position: relative;
+		margin-bottom: 1em;
+	}
+	&_actions_cmb {
+		top: 50%;
+		transform: translate(0, -50%);
+		right: -1.25em;
+	}
+}
+
+
+
 
 .srgdev-appt-sb-main-cont {
 
@@ -678,7 +730,6 @@ textarea.appt-stn-txt-ta{
 .sb_disable_nav-item{
 	pointer-events: none;
 	opacity: .7;
-
 }
 
 

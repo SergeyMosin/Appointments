@@ -83,6 +83,22 @@
             </ActionButton>
           </template>
         </AppNavigationItem>
+        <AppNavigationItem
+            v-show="morePages.length>0"
+            :class="{'sb_disable_nav-item':sbShow!==0}"
+            @click="getFormData('dir')"
+            class="srgdev-pubpage-nav-item"
+            :title="t('appointments','Directory Page')"
+            icon="icon-projects">
+          <template slot="actions">
+            <ActionButton @click="toggleSlideBar(12,'dir');sbGotoBack=0" icon="icon-settings" closeAfterClick>
+              {{ t('appointments', 'Settings') }}
+            </ActionButton>
+            <ActionButton @click="showPubLink('dir')" icon="icon-public" closeAfterClick>
+              {{ t('appointments', 'Show URL/link') }}
+            </ActionButton>
+          </template>
+        </AppNavigationItem>
         <AppNavigationSpacer/>
         <AppNavigationItem
             @click="openViaPicker(6,$event)"
@@ -268,10 +284,10 @@
       </div>
       <div v-show="visibleSection===0" class="srgdev-appt-main-sec">
         <ul class="srgdev-appt-main-info">
-          <li>{{ t('appointments', '{pageLabel} Preview',{pageLabel:pagePreviewLabel}) }}</li>
+          <li>{{ t('appointments', '{pageLabel} Preview',{pageLabel:pagePreviewLabel}) }}<span style="margin-left: 1.25em" v-show="pagePreviewLoading===true" class="icon-loading-small"></span></li>
         </ul>
         <div class="srgdev-appt-main-frame-cont">
-          <iframe class="srgdev-appt-main-frame" ref="pubPageRef" :src="pubPage"></iframe>
+          <iframe class="srgdev-appt-main-frame" @load="pagePreviewLoading=false" ref="pubPageRef" :src="pubPage"></iframe>
         </div>
       </div>
       <div v-show="visibleSection===3" v-html="helpContent" class="srgdev-appt-help-sec">
@@ -300,9 +316,11 @@
             @close="toggleSlideBar(0)"/>
         <SettingsSlideBar
             v-if="sbShow===9"
+            :show-dir-page="morePages.length>0"
             @gotoPPS="toggleSlideBar(2,'p0');sbGotoBack=9"
             @gotoEML="toggleSlideBar(4);sbGotoBack=9"
             @gotoADV="toggleSlideBar(10);sbGotoBack=9"
+            @gotoDIR="toggleSlideBar(12,'dir');sbGotoBack=9"
             :cur-page-data="curPageData"
             @close="sbShow=0"/>
         <FormStnSlideBar
@@ -327,6 +345,13 @@
             @openGM="openGeneralModal"
             @closeGM="closeGeneralModal"
             @updateGM="updateGeneralModal"
+            @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
+        <DirSlideBar
+            v-if="sbShow===12"
+            :page0-label="checkPageLabel(page0.label)"
+            :more-pages="morePages"
+            :icon-go-back="sbGotoBack!==0"
+            @showModal="showSimpleGeneralModal($event)"
             @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
       </div>
     </AppContent>
@@ -365,10 +390,12 @@ import ApptMgrSlideBar from "./components/ApptMgrSlideBar";
 import ApptAccordion from "./components/ApptAccordion.vue";
 import AdvancedSlideBar from "./components/AdvancedSlideBar";
 import PagePickerSlideBar from "./components/PagePickerSlideBar";
+import DirSlideBar from "./components/DirSlideBar";
 
 export default {
   name: 'App',
   components: {
+    DirSlideBar,
     PagePickerSlideBar,
     AdvancedSlideBar,
     ApptMgrSlideBar,
@@ -407,6 +434,7 @@ export default {
       // this us used to compute curPageData to pass to settings, etc..
       curPageId:"p0",
       pagePreviewLabel: this.checkPageLabel(""),
+      pagePreviewLoading: false,
 
       pageInfoLoading: 0,
 
@@ -486,11 +514,11 @@ export default {
   },
   beforeMount() {
     this.resetCalInfo()
-    this.getPages(1)
   },
 
   mounted() {
-    this.getFormData('p0')
+    this.getPages(1,'p0')
+    // this.getFormData('p0')
     this.$root.$on('helpWanted', this.helpWantedHandler)
   },
   beforeDestroy() {
@@ -540,7 +568,7 @@ export default {
       }
     },
 
-    getPages(idx) {
+    getPages(idx,p) {
       this.pageInfoLoading = idx
       this.stateInProgress = true
       axios.post('state', {a: 'get_pages'})
@@ -561,8 +589,9 @@ export default {
               }
             }
 
-            this.morePages=ap;
+            this.morePages=ap
           }
+          this.getFormData(p)
           this.pageInfoLoading = 0
           this.stateInProgress = false
         })
@@ -590,7 +619,8 @@ export default {
         v: ji
       }).then(response => {
         if (response.status === 200) {
-          this.getPages(idx)
+          // this.getFormData(p)
+          this.getPages(idx,p)
         }else if(response.status===202){
           this.handle202(response.data)
         }
@@ -604,7 +634,7 @@ export default {
         // always executed
         this.pageInfoLoading = 0
         // p can be pageId or "new" or "delete
-        this.getFormData(p)
+        // this.getFormData(p)
       });
     },
 
@@ -627,6 +657,7 @@ export default {
       }
       co.label = t.value
       this.setPages(page, co,idx)
+      // this.getFormData(page)
     },
 
     setPageEnabled(page, enable) {
@@ -959,26 +990,32 @@ export default {
     },
 
     getFormData(pageId) {
+      this.pagePreviewLoading=true
       let lbl=""
       if(typeof pageId !== "string") {
         this.pubPage = 'form?v=' + Date.now()
         lbl=this.page0.label
       }else{
-        if(/^p\d{1}$/.test(pageId)===false){
-          // default to the main page
-          pageId='p0'
-        }
-        this.pubPage = 'form?p='+pageId+'&v=' + Date.now();
+        if(pageId==='dir'){
+          this.pubPage = 'dir?v=' + Date.now()
+          lbl=t('appointments','Directory Page')
+        }else {
+          if (/^p\d{1}$/.test(pageId) === false) {
+            // default to the main page
+            pageId = 'p0'
+          }
+          this.pubPage = 'form?p=' + pageId + '&v=' + Date.now()
 
-        if(pageId==='p0'){
-          lbl=this.page0.label
-        }else if(pageId===this.curPageId){
-          lbl=this.curPageData.label
-        }else{
-          for(let i=0,pgs=this.morePages,l=this.morePages.length;i<l;i++) {
-            if (pgs[i].pageId === pageId) {
-              lbl=pgs[i].label
-              break
+          if (pageId === 'p0') {
+            lbl = this.page0.label
+          } else if (pageId === this.curPageId) {
+            lbl = this.curPageData.label
+          } else {
+            for (let i = 0, pgs = this.morePages, l = this.morePages.length; i < l; i++) {
+              if (pgs[i].pageId === pageId) {
+                lbl = pgs[i].label
+                break
+              }
             }
           }
         }

@@ -69,34 +69,6 @@ class PageController extends Controller {
         return  $t;// templates/index.php
     }
 
-    /**
-     * @param $token
-     * @return string[]|null[] [useId,pageId] on success, [null,null]=not verified
-     * @throws \ErrorException
-     */
-    private function verifyToken($token){
-        if(empty($token) || strlen($token)>256) return [null,null];
-        $token=str_replace("_","/",$token);
-        $key=hex2bin($this->c->getAppValue($this->appName, 'hk'));
-        $iv=hex2bin($this->c->getAppValue($this->appName, 'tiv'));
-        if(empty($key) || empty($iv)){
-            throw new \ErrorException("Can't find key");
-        }
-        $td=$this->utils->decrypt($token,$key,$iv);
-        if(strlen($td)>4 && substr($td,0,4)===hash( 'adler32', substr($td,4),true)){
-            $u=substr($td,4);
-            if($u[0]===chr(31)){
-                return [substr($u,1,-2),substr($u,-2)];
-            }else{
-                // This is the main page ($pageId='p0')
-                return [$u,"p0"];
-            }
-        }else{
-            return [null,null];
-        }
-    }
-
-
     // ---- EMBEDDABLE -----
 
     /**
@@ -107,7 +79,7 @@ class PageController extends Controller {
      * @throws \ErrorException
      */
     public function formEmb(){
-        list($userId,$pageId)=$this->verifyToken($this->request->getParam("token"));
+        list($userId,$pageId)=$this->utils->verifyToken($this->request->getParam("token"),$this->c);
         if($userId===null){
             $tr=new TemplateResponse($this->appName,"public/r404", [],"base");
             $tr->setStatus(404);
@@ -133,7 +105,7 @@ class PageController extends Controller {
      * @noinspection PhpUnused
      */
     public function formPostEmb(){
-        list($userId,$pageId)=$this->verifyToken($this->request->getParam("token"));
+        list($userId,$pageId)=$this->utils->verifyToken($this->request->getParam("token"),$this->c);
         if($userId===null){
             $tr=new TemplateResponse($this->appName,"public/r404", [],"base");
             $tr->setStatus(404);
@@ -152,7 +124,7 @@ class PageController extends Controller {
      * @noinspection PhpUnused
      */
     public function cncfEmb(){
-        list($userId) = $this->verifyToken($this->request->getParam("token"));
+        list($userId) = $this->utils->verifyToken($this->request->getParam("token"),$this->c);
         if($userId===null){
             $tr=new TemplateResponse($this->appName,"public/r404", [],"base");
             $tr->setStatus(404);
@@ -187,7 +159,7 @@ class PageController extends Controller {
      * @throws \ErrorException
      */
     public function form(){
-        list($userId,$pageId)=$this->verifyToken($this->request->getParam("token"));
+        list($userId,$pageId)=$this->utils->verifyToken($this->request->getParam("token"),$this->c);
         if($userId===null){
             return new NotFoundResponse();
         }
@@ -208,7 +180,7 @@ class PageController extends Controller {
      * @noinspection PhpUnused
      */
     public function formPost(){
-        list($userId,$pageId)=$this->verifyToken($this->request->getParam("token"));
+        list($userId,$pageId)=$this->utils->verifyToken($this->request->getParam("token"),$this->c);
         if($userId===null){
             return new NotFoundResponse();
         }
@@ -225,7 +197,7 @@ class PageController extends Controller {
      * @throws \ErrorException
      */
     public function cncf($embed=false){
-        list($userId,$pageId) = $this->verifyToken($this->request->getParam("token"));
+        list($userId,$pageId) = $this->utils->verifyToken($this->request->getParam("token"),$this->c);
         $pd=$this->request->getParam("d");
         if($userId===null || $pd===null || strlen($pd)>512
             || (($a=substr($pd,0,1))!=='0') && $a!=='1' && $a!=='2'){

@@ -152,6 +152,9 @@ class BackendUtils{
         'p0'=>self::PAGES_VAL_DEF
     );
 
+    public const KEY_DIR="dir_info";
+    public const DIR_DEF=array();
+
 
 
     private $appName=Application::APP_ID;
@@ -743,6 +746,8 @@ class BackendUtils{
              $default=self::MPS_DEF;
          }else if($key===self::KEY_EML){
              $default=self::EML_DEF;
+         }else if($key===self::KEY_DIR){
+             $default=self::DIR_DEF;
          }else{
              // this should never happen
              return null;
@@ -1032,7 +1037,9 @@ class BackendUtils{
             OPENSSL_RAW_DATA,
             $iv);
 
-        return base64_encode($_iv.$ciphertext_raw);
+        return $_iv!==''
+            ?base64_encode($_iv.$ciphertext_raw)
+            :$_iv.$ciphertext_raw;
     }
 
     /**
@@ -1042,7 +1049,7 @@ class BackendUtils{
      * @return string
      */
     function decrypt(string $data,string $key,$iv=''):string {
-        $s1=base64_decode($data);
+        $s1=$iv===''?base64_decode($data):$data;
         if($s1===false || empty($key)) return '';
 
         $s1=$iv.$s1;
@@ -1072,6 +1079,55 @@ class BackendUtils{
         return \OC::$server->getURLGenerator()->getBaseUrl().'/index.php/apps/appointments';
     }
 
+
+    /**
+     * @param string $token
+     * @param \OCP\IConfig $config
+     * @return string[]|null[] [useId,pageId] on success, [null,null]=not verified
+     * @throws \ErrorException
+     */
+    function verifyToken($token,$config){
+        if(empty($token) || strlen($token)>256) return [null,null];
+        $token=str_replace("_","/",$token);
+        $key=hex2bin($config->getAppValue($this->appName, 'hk'));
+        $iv=hex2bin($config->getAppValue($this->appName, 'tiv'));
+        if(empty($key) || empty($iv)){
+            throw new \ErrorException("Can't find key");
+        }
+
+        $l=strlen($token);
+        if(($l&3)!==0){
+            // not divisible by 4
+            $m=intval($token[$l-1]);
+            $token=substr($token,0,-($m===1?2:1));
+            $token.=str_repeat('=',$m);
+
+            $rc=base64_decode(substr($token,0,-1));
+            if($rc===false) return [null,null];
+
+            $iv[0]=substr($rc,-1);
+            $raw=substr($rc,0,-1);
+            $pageId='';
+        }else{
+            $raw=base64_decode($token);
+            if($raw===false) return [null,null];
+            $pageId="p0";
+        }
+
+        $td=$this->decrypt($raw,$key,$iv);
+        if(strlen($td)>4 && substr($td,0,4)===hash( 'adler32', substr($td,4),true)){
+            $u=substr($td, 4);
+            if($pageId===''){
+                return [substr($u,0,-1),'p'.ord(substr($u,-1))];
+            }else {
+                return [$u, $pageId];
+            }
+        }else{
+            return [null,null];
+        }
+    }
+
+
     /**
      * @param string $userId
      * @param string $pageId (optional)
@@ -1085,9 +1141,38 @@ class BackendUtils{
         if(empty($key) || empty($iv)){
             throw new \ErrorException("Can't find key");
         }
-        $upi=($pageId==="p0"?$userId:chr(31).$userId.$pageId);
-        $tkn=$this->encrypt(hash ( 'adler32' , $upi,true).$upi,$key,$iv);
-        return urlencode(str_replace("/","_",$tkn));
+        if($pageId==="p0"){
+            $m='';
+            $pfx='';
+            $upi=$userId;
+        }else{
+            $pn=intval(substr($pageId,1));
+            if($pn<1 || $pn>14){
+                throw new \ErrorException("Bad page number");
+            }
+            $pfx=($iv[0]^$iv[15])^$iv[$pn];
+
+            $iv=$pfx.substr($iv,1);
+            $upi=$userId.chr($pn);
+        }
+
+        $tkn=$this->encrypt(
+            hash('adler32',$upi,true).$upi, $key, $iv);
+
+
+        if($pfx===''){
+            $bd=base64_encode($tkn);
+        }else{
+            $v=base64_encode($tkn.$pfx);
+            $bd=trim($v,'=');
+            $ld=strlen($v)-strlen($bd);
+            if($ld===1){
+                $bd.="01";
+            }else{
+                $bd.=$ld;
+            }
+        }
+        return urlencode(str_replace("/","_", $bd));
     }
 
 }

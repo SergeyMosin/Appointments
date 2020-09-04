@@ -10,6 +10,11 @@
           @click="$emit('gotoEML')"
           icon="icon-mail"/>
       <AppNavigationItem
+          v-show="showDirPage===true"
+          :title="t('appointments','Directory Page')"
+          @click="$emit('gotoDIR')"
+          icon="icon-projects"/>
+      <AppNavigationItem
           :title="t('appointments','Advanced Settings')"
           @click="$emit('gotoADV')"
           icon="icon-settings"/>
@@ -31,6 +36,7 @@ export default {
   props:{
     title:'',
     subtitle:'',
+    showDirPage:false,
   },
   methods: {
     close(){
