@@ -1,3 +1,7 @@
+## 1.7.1 - 2020-09-05
+### Fixed
+- issue #124 
+
 ## 1.7.0 - 2020-09-05
 ### Added
 - Multi-page support
