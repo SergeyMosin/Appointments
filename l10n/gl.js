@@ -53,7 +53,7 @@ OC.L10N.register(
     "Share Online" : "Compartir en liña",
     "Stop Sharing" : "Deixar de compartir",
     "Show URL/link" : "Amosar URL/ligazón",
-    "Manage Appointment Slots" : "Administrar franxa de citas",
+    "Manage Appointment Slots" : "Xestionar a franxa de citas",
     "User/Organization Info" : "Información de usuario/organización",
     "Customize Public Page" : "Personalizar a páxina pública",
     "Email Settings" : "Axustes do correo",

@@ -144,7 +144,7 @@ OC.L10N.register(
     "External Mode Settings" : "Kanpoko moduaren ezarpenak",
     "Optimize recurrence" : "Optimizatu errepikatzeak",
     "Require \"Appointment\" category" : "Eskatu \"Hitzordu\" kategoria",
-    "Auto-fix \"Source\" timeslots" : "Konpondu automatikoki \"Source\" ordu-tarteak",
+    "Auto-fix \"Source\" timeslots" : "Konpondu automatikoki \"Jatorriko\" ordu-tarteak",
     "Advanced Settings" : "Ezarpen aurreratuak",
     "Minimum lead time" : "Gutxieneko denbora-muga",
     "No lead time" : "Denbora-mugarik ez",

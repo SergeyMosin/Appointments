@@ -77,7 +77,7 @@
     "Remove empty appointment slots created before {fullDate} ?" : "¿Desea eliminar las franjas de las citas creadas antes del {fullDate}?",
     "Remove empty slots and booked appointments created before {fullDate} ?" : "¿Eliminar las franjas vacías y las citas reservadas creadas antes de {fullDate}?",
     "two calendars affected" : "dos calendarios afectados",
-    "Number of expired appointments/slots: " : "Número de citas/franjas expiradas:",
+    "Number of expired appointments/slots: " : "Número de citas/franjas caducadas:",
     "Can not get calendar data" : "No se ha podido obtener los datos de calendario",
     "New Settings Applied." : "Nueva configuración aplicada.",
     "Fetching URL from the server..." : "Obteniendo la URL desde el servidor....",
