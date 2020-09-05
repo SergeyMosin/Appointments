@@ -1,3 +1,11 @@
+## 1.7.0 - 2020-09-05
+### Added
+- Multi-page support
+### Changed
+- Email confirm/cancel buttons depend on an attendee's PARTSTAT parameter
+### Fixed
+- Use "mailto" scheme in .ics attachments instead of "acct" 
+
 ## 1.6.8 - 2020-08-11
 ### Fixed
 - issue #116
