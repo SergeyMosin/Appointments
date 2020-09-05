@@ -62,7 +62,7 @@ class DirController  extends Controller
         if($isPublic) {
             Util::addStyle($this->appName, "form-xl-screen");
             $pps = $this->utils->getUserSettings(BackendUtils::KEY_PSN, $userId);
-            $s=$this->config->getUserValue($this->userId, $this->appName, "cn"."k");$f="hex"."dec";
+            $s=$this->config->getUserValue($userId, $this->appName, "cn"."k");$f="hex"."dec";
             $tr = new PublicTemplateResponse($this->appName, 'public/directory'.(($s===""||(($f(substr($s,0,0b100))>>0xf)&1)!==(($f(substr($s,0b100,4))>>  12) &1))?"_":""), []);
             if (!empty($pps[BackendUtils::PSN_PAGE_TITLE])) {
                 $tr->setHeaderTitle($pps[BackendUtils::PSN_PAGE_TITLE]);
