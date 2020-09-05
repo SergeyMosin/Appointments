@@ -416,7 +416,7 @@ class StateController extends Controller{
             if($value!==null) {
                 $a=json_decode($value,true);
                 if($a!==null && isset($a['k'])){
-                    $k = str_replace("-", "", $a['k']);
+                    $k = str_replace("-", "", trim($a['k']));
                     if(strlen($k)===20&&((hexdec(substr($k,0,4))>>15)&1)===((hexdec(substr($k,4,4))>>12)&1)){
                             /** @noinspection PhpUnhandledExceptionInspection */
                         $this->config->setUserValue($this->userId, $this->appName, "cnk", $k);
