@@ -1102,7 +1102,7 @@ class BackendUtils{
             $token=substr($token,0,-($m===1?2:1));
             $token.=str_repeat('=',$m);
 
-            $rc=base64_decode(substr($token,0,-1));
+            $rc=base64_decode($token);
             if($rc===false) return [null,null];
 
             $iv[0]=substr($rc,-1);
