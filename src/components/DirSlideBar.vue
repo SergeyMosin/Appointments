@@ -39,7 +39,7 @@
                 v-model="pl.title"
                 class="srgdev-appt-dir-pl_input"
                 type="text" id="srgdev-appt-dpl-title">
-            <label class="srgdev-appt-dir-pl_label" for="srgdev-appt-dpl-sub">{{t('appointments','Sub Title')}}</label>
+            <label class="srgdev-appt-dir-pl_label" for="srgdev-appt-dpl-sub">{{t('appointments','Subtitle')}}</label>
             <input
                 v-model="pl.subTitle"
                 class="srgdev-appt-dir-pl_input"
