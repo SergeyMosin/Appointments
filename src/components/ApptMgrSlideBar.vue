@@ -258,14 +258,14 @@ export default {
           "set_"+this.curPageData.stateAction,
           this.calInfo,
           this.curPageData.pageId).then(()=>{
-        if(tsModeChanged){
-          // reload pages when tsModeChanged
-          this.$emit("reloadPages")
-        }
-        if(this.calInfo.tsMode==='0'){
-          this.realCalIDs=this.calInfo.mainCalId.toString()+this.calInfo.destCalId.toString()
-        }
-        this.isSending=false
+            if(tsModeChanged){
+              // reload pages when tsModeChanged
+              this.$emit("reloadPages")
+            }
+            if(this.calInfo.tsMode==='0'){
+              this.realCalIDs=this.calInfo.mainCalId.toString()+this.calInfo.destCalId.toString()
+            }
+            this.isSending=false
       })
     },
 

@@ -309,7 +309,7 @@
             @gotoDelAppt="curPageId=$event;toggleSlideBar(8);sbGotoBack=6"
             @gotoAdvStn="curPageId=$event;toggleSlideBar(10);sbGotoBack=6"
             @showModal="showSimpleGeneralModal($event)"
-            @reloadPages="getPages(0)"
+            @reloadPages="getPages(0,curPageData.pageId)"
             @close="toggleSlideBar(0)"/>
         <UserStnSlideBar
             v-if="sbShow===3"
