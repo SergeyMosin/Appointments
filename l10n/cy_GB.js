@@ -5,10 +5,10 @@ OC.L10N.register(
     "Info" : "Info",
     "Close" : "Cau",
     "Remove" : "Gwaredu",
+    "Warning" : "Rhybudd",
+    "Error" : "Gwall",
     "Deleted" : "Wedi dileu",
     "Confirmed" : "Cadarnhawyd",
-    "Error" : "Gwall",
-    "Warning" : "Rhybudd",
     "Location:" : "Lleoliad:",
     "Back" : "Nôl",
     "Next" : "Nesaf"

@@ -7,10 +7,10 @@ OC.L10N.register(
     "Close" : "Clauder",
     "Start" : "Initio",
     "Apply" : "Applicar",
+    "Warning" : "Aviso",
+    "Error" : "Error",
     "Deleted" : "Delite",
     "Confirmed" : "Confirmate",
-    "Error" : "Error",
-    "Warning" : "Aviso",
     "Back" : "Retro",
     "Next" : "Sequente"
 },

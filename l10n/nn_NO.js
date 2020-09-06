@@ -7,10 +7,10 @@ OC.L10N.register(
     "Remove" : "Fjern",
     "Start" : "Start",
     "Apply" : "Anvend",
+    "Warning" : "Åtvaring",
+    "Error" : "Feil",
     "Deleted" : "Sletta",
     "Confirmed" : "Stadfesta",
-    "Error" : "Feil",
-    "Warning" : "Åtvaring",
     "Back" : "Tilbake",
     "Next" : "Neste",
     "An error has occurred" : "Ein feil har oppstått"
