@@ -1,0 +1,18 @@
+{ "translations": {
+    "Cancel" : "ընդհատել",
+    "Info" : "Info",
+    "Delete" : "հեռացնել",
+    "Settings" : "կարգավորումներ",
+    "Close" : "Փակել",
+    "Loading" : "Loading",
+    "Warning" : "Զգուշացում",
+    "Error" : "Սխալ",
+    "Edit" : "մշակել",
+    "Title" : "Վերնագիր",
+    "URL" : "URL",
+    "Save" : "Պահպանել",
+    "Deleted" : "Ջնջված",
+    "Confirmed" : "Հաստատված",
+    "Next" : "Հաջորդ"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
