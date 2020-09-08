@@ -144,6 +144,7 @@ OC.L10N.register(
     "Add, remove and edit directory page links" : "Hinzufügen, Entfernen und Bearbeiten von Verzeichnisseiten-Links",
     "Edit" : "Bearbeiten",
     "Title" : "Titel",
+    "Subtitle" : "Untertitel",
     "Text" : "Benötigt keine Übersetzung. Für Android wird ausschließlich die formelle Übersetzung (de_DE) verwandt.",
     "URL" : "URL",
     "Save" : "Speichern",

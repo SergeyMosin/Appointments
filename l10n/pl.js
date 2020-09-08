@@ -144,6 +144,7 @@ OC.L10N.register(
     "Add, remove and edit directory page links" : "Dodawaj, usuwaj i edytuj linki do stron katalogu",
     "Edit" : "Edytuj",
     "Title" : "Tytuł",
+    "Subtitle" : "Podtytuł",
     "Text" : "Tekst",
     "URL" : "Adres URL",
     "Save" : "Zapisz",
