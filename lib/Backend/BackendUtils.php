@@ -39,6 +39,7 @@ class BackendUtils{
         self::ORG_PHONE=>"");
 
     public const KEY_USE_DEF_EMAIL = 'useDefaultEmail';
+    public const KEY_EMAIL_FIX = 'emailFixOpt';
 
     // Email Settings
     public const KEY_EML = 'email_options';
@@ -201,26 +202,38 @@ class BackendUtils{
 
         $vo = Reader::read($data);
 
-        if($vo===null || !isset($vo->VEVENT)){
+        if ($vo === null || !isset($vo->VEVENT)) {
             \OC::$server->getLogger()->error("Bad Data: not an event");
             return "2";
         }
 
-        /** @var \Sabre\VObject\Component\VEvent $evt*/
-        $evt=$vo->VEVENT;
+        /** @var \Sabre\VObject\Component\VEvent $evt */
+        $evt = $vo->VEVENT;
 
-        if(!isset($evt->STATUS) || $evt->STATUS->getValue()!=='TENTATIVE'){
+        if (!isset($evt->STATUS) || $evt->STATUS->getValue() !== 'TENTATIVE') {
             \OC::$server->getLogger()->error("Bad Status: must be TENTATIVE");
             return "1";
         }
 
-        if(!isset($evt->CATEGORIES) || $evt->CATEGORIES->getValue()!==BackendUtils::APPT_CAT){
-            \OC::$server->getLogger()->error("Bad Category: not an ".BackendUtils::APPT_CAT);
+        if (!isset($evt->CATEGORIES) || $evt->CATEGORIES->getValue() !== BackendUtils::APPT_CAT) {
+            \OC::$server->getLogger()->error("Bad Category: not an " . BackendUtils::APPT_CAT);
             return "2";
         }
 
-        // "acct" scheme: @see issue #116 https://github.com/SergeyMosin/Appointments/issues/116
-        $a=$evt->add('ATTENDEE',"acct:".$info['email']);
+        $config = \OC::$server->getConfig();
+        // @see issues #120 and #116
+        // Should this be documented ???
+        $e_fix = $config->getUserValue($userId, $this->appName, self::KEY_EMAIL_FIX);
+
+        if ($e_fix === 'none') {
+            $a = $evt->add('ATTENDEE', "mailto:" . $info['email']);
+        }elseif ($e_fix === 'scheme'){
+            $a = $evt->add('ATTENDEE', "acct:" . $info['email']);
+        }else{
+            $a = $evt->add('ATTENDEE', "mailto:" . $info['email']);
+            $a['SCHEDULE-AGENT']="CLIENT";
+        }
+
         $a['CN']=$info['name'];
         $a['PARTSTAT']="NEEDS-ACTION";
 
@@ -468,34 +481,19 @@ class BackendUtils{
     function getAttendee($evt){
         $r=null;
 
-
         $ov=$evt->ORGANIZER->getValue();
-        $nov="mailto:".substr($ov,strpos($ov,":")+1);
+        $ov=trim(substr($ov,strpos($ov,":")+1));
 
         $aa=$evt->ATTENDEE;
         $c=count($aa);
         for($i=0;$i<$c;$i++){
             $a=$aa[$i];
             $v=$a->getValue();
-
-            // TODO: this is for backwards compatibility, remove soon...
-            if(
-                isset($a->parameters['SCHEDULE-AGENT'])
-                && $a->parameters['SCHEDULE-AGENT']->getValue()==='CLIENT'
-                && strpos($v,"mailto:")===0
-                && isset($a->parameters['CN'])
-                && isset($a->parameters['PARTSTAT'])
-                && $nov!==$v
-            ){
-                $r=$a;
-                break;
-            }
-
-            if(strpos($v,"acct:")===0
+            // Some external clients add organizer as attendee so we need to grab the first attendee that does NOT match organizers' email
+            if($ov!==trim(substr($v,strpos($v,":")+1))
                 && isset($a->parameters['CN'])
                 && isset($a->parameters['PARTSTAT'])
             ){
-
                 // Some external clients set SCHEDULE-STATUS to 3.7 because of the "acct" scheme
                 if (isset($a->parameters['SCHEDULE-STATUS'])){
                     unset($a->parameters['SCHEDULE-STATUS']);

@@ -83,8 +83,8 @@ if(isset($_GET['some_param_name'])){
 echo '&lt;iframe src = "'.$src.'"&gt;&lt;/iframe&gt;';
 ?&gt;
 ...</code>
-        Nextcloud <strong>occ</strong>: <a style="color: blue; text-decoration: underline" href="https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html">https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html</a><br>
-        Frame Ancestors: <a style="color: blue; text-decoration: underline" href="https://w3c.github.io/webappsec-csp/#directive-frame-ancestors">https://w3c.github.io/webappsec-csp/#directive-frame-ancestors</a><br>
+        Nextcloud <strong>occ</strong>: <a style="color: blue; text-decoration: underline" target="_blank" href="https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html">https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html</a><br>
+        Frame Ancestors: <a style="color: blue; text-decoration: underline" target="_blank" href="https://w3c.github.io/webappsec-csp/#directive-frame-ancestors">https://w3c.github.io/webappsec-csp/#directive-frame-ancestors</a><br>
     </div>
 
   <h2 id="srgdev-sec_contrib_info" class="srgdev-appt-hs-h1">10. Contributor Features</h2>

@@ -448,10 +448,6 @@ class DavListener {
             // Servers MUST NOT include this parameter in any scheduling messages sent as the result of a scheduling operation.
             // Clients MUST NOT include this parameter in any scheduling messages that they themselves send.
 
-//            if (isset($att->parameters['SCHEDULE-AGENT'])) {
-//                unset($att->parameters['SCHEDULE-AGENT']);
-//            }
-
 //            if(isset($evt->ORGANIZER->parameters['SCHEDULE-AGENT'])){
 //                unset($evt->ORGANIZER->parameters['SCHEDULE-AGENT']);
 //            }
@@ -463,6 +459,10 @@ class DavListener {
                     ){
                         unset($evt->ATTENDEE[$k]->parameters['SCHEDULE-STATUS']);
                     }
+                    if (isset($evt->ATTENDEE[$k]->parameters['SCHEDULE-AGENT'])) {
+                        unset($evt->ATTENDEE[$k]->parameters['SCHEDULE-AGENT']);
+                    }
+                    
                     $av=$evt->ATTENDEE[$k]->getValue();
                     if(strpos($av,"acct:")===0){
                         $av='mailto:'.substr($av,5);
