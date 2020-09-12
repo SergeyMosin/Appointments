@@ -145,7 +145,7 @@ OC.L10N.register(
     "Edit" : "Bearbeiten",
     "Title" : "Titel",
     "Subtitle" : "Untertitel",
-    "Text" : "Benötigt keine Übersetzung. Für Android wird ausschließlich die formelle Übersetzung (de_DE) verwandt.",
+    "Text" : "Text",
     "URL" : "URL",
     "Save" : "Speichern",
     "Add New Link" : "Neuen Link hinzufügen",
