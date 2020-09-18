@@ -144,6 +144,7 @@ OC.L10N.register(
     "Add, remove and edit directory page links" : "Afegir, suprimir i editar enllaços de pàgina de directoris",
     "Edit" : "Edita",
     "Title" : "Títol",
+    "Subtitle" : "Subtítol",
     "Text" : "Text",
     "URL" : "URL",
     "Save" : "Desa",
