@@ -260,6 +260,10 @@ class DavListener {
             // TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now confirmed.
             $tmpl->addBodyText($this->l10N->t('Your %1$s appointment scheduled for %2$s is now confirmed.',[$org_name,$date_time]));
 
+            $talk_link="";
+            // TRANSLATORS This a link to chat/(video)call, Ex: Chat/Call link: https://my_domain.com/call/kzu6e4uv
+            $talk_link_txt=$this->l10N->t("Chat/Call link: %s",[$talk_link]);
+
             if(!empty($eml_settings[BackendUtils::EML_CNF_TXT])){
                 $tmpl->addBodyText($eml_settings[BackendUtils::EML_CNF_TXT]);
             }
