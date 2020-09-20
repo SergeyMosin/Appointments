@@ -13,6 +13,7 @@ OC.L10N.register(
     "Appointment pending" : "Cita pendiente",
     "%s Appointment is confirmed" : "La cita %s está confirmada",
     "Your %1$s appointment scheduled for %2$s is now confirmed." : "Tu cita %1$s programada para %2$sha sido confirmada.",
+    "Chat/Call link: %s" : "Enlace a chat/llamada: %s",
     "Appointment confirmed" : "Cita confirmada",
     "%s Appointment is canceled" : "La cita %s ha sido cancelada",
     "%s appointment status changed" : "El estado de la cita %s ha cambiado",

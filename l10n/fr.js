@@ -13,6 +13,7 @@ OC.L10N.register(
     "Appointment pending" : "Rendez-vous en attente",
     "%s Appointment is confirmed" : "%s Rendez-vous confirmé",
     "Your %1$s appointment scheduled for %2$s is now confirmed." : "Votre rendez-vous avec %1$s prévu pour le %2$s est à présent confirmé.",
+    "Chat/Call link: %s" : "Lien de clavardage/appel : %s",
     "Appointment confirmed" : "Rendez-vous confirmé",
     "%s Appointment is canceled" : "%s Rendez-vous annulé",
     "%s appointment status changed" : "%s statut de rendez-vous modifié",

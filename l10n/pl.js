@@ -13,6 +13,7 @@ OC.L10N.register(
     "Appointment pending" : "Spotkanie w toku",
     "%s Appointment is confirmed" : "Spotkanie %s zostało potwierdzone",
     "Your %1$s appointment scheduled for %2$s is now confirmed." : "Twoje spotkanie %1$s zaplanowane na %2$s jest obecnie potwierdzone.",
+    "Chat/Call link: %s" : "Link do czatu/połączenia: %s",
     "Appointment confirmed" : "Spotkanie potwierdzone",
     "%s Appointment is canceled" : "Spotkanie %s zostało anulowane",
     "%s appointment status changed" : "Status spotkania %s został zmieniony",

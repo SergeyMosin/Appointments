@@ -13,6 +13,7 @@ OC.L10N.register(
     "Appointment pending" : "Schůzka čeká na vyřízení",
     "%s Appointment is confirmed" : "%s schůzka je potvrzena",
     "Your %1$s appointment scheduled for %2$s is now confirmed." : "%1$s schůzka, naplánovaná na %2$s je nyní potvrzena.",
+    "Chat/Call link: %s" : "Odkaz na chat/volání: %s",
     "Appointment confirmed" : "Schůzka schválena",
     "%s Appointment is canceled" : "%s schůzka je zrušena",
     "%s appointment status changed" : "%s stav schůzky změněn",

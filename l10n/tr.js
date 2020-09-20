@@ -13,6 +13,7 @@ OC.L10N.register(
     "Appointment pending" : "Randevu bekliyor",
     "%s Appointment is confirmed" : "%s randevusu Onaylandı",
     "Your %1$s appointment scheduled for %2$s is now confirmed." : "%2$s zamanındaki %1$s randevunuz onaylandı.",
+    "Chat/Call link: %s" : "Görüşme/Çağrı bağlantısı: %s",
     "Appointment confirmed" : "Randevu onaylandı",
     "%s Appointment is canceled" : "%s randevusu iptal edildi",
     "%s appointment status changed" : "%s randevusunun durumu değiştirildi",
