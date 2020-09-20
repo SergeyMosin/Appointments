@@ -428,6 +428,29 @@ class StateController extends Controller{
         }else if($action==="get_k") {
             $r->setData($this->config->getUserValue($this->userId, $this->appName, "cnk")!==""?"_":"");
             $r->setStatus(200);
+        }else if($action==="get_talk") {
+            $a=$this->utils->getUserSettings(
+                BackendUtils::KEY_TALK, $this->userId);
+            $j=json_encode($a);
+            if($j!==false){
+                $r->setData($j);
+                $r->setStatus(200);
+            }else{
+                $r->setStatus(500);
+            }
+        }else if($action==="set_talk") {
+            $value=$this->request->getParam("d");
+            if($value!==null) {
+                if($this->utils->setUserSettings(
+                        BackendUtils::KEY_TALK,
+                        $value, BackendUtils::TALK_DEF,
+                        $this->userId,$this->appName)===true
+                ){
+                    $r->setStatus(200);
+                }else{
+                    $r->setStatus(500);
+                }
+            }
         }
         return $r;
     }

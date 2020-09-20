@@ -814,7 +814,7 @@ class BCSabreImpl implements IBackendConnector{
             $err="Object does not exist: ".$uri;
         }else{
             if($do_confirm) {
-                list($newData, $date, $pageId) = $this->utils->dataConfirmAttendee($d);
+                list($newData, $date, $pageId) = $this->utils->dataConfirmAttendee($d,$userId);
             }else{
                 list($newData, $date, $pageId) = $this->utils->dataCancelAttendee($d);
             }

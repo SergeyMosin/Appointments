@@ -322,6 +322,7 @@
             @gotoEML="toggleSlideBar(4);sbGotoBack=9"
             @gotoADV="toggleSlideBar(10);sbGotoBack=9"
             @gotoDIR="toggleSlideBar(12,'dir');sbGotoBack=9"
+            @gotoTALK="toggleSlideBar(14);sbGotoBack=9"
             @showModal="showSimpleGeneralModal($event)"
             :cur-page-data="curPageData"
             @close="sbShow=0"/>
@@ -330,6 +331,11 @@
             @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
         <MailStnSlideBar
             v-if="sbShow===4"
+            @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
+        <TalkSlideBar
+            v-if="sbShow===14"
+            @showCModal="showCModal"
+            @showModal="showSimpleGeneralModal($event)"
             @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
         <AdvancedSlideBar
             v-if="sbShow===10"
@@ -393,10 +399,12 @@ import ApptAccordion from "./components/ApptAccordion.vue";
 import AdvancedSlideBar from "./components/AdvancedSlideBar";
 import PagePickerSlideBar from "./components/PagePickerSlideBar";
 import DirSlideBar from "./components/DirSlideBar";
+import TalkSlideBar from "./components/TalkSlideBar";
 
 export default {
   name: 'App',
   components: {
+    TalkSlideBar,
     DirSlideBar,
     PagePickerSlideBar,
     AdvancedSlideBar,
@@ -1141,7 +1149,7 @@ export default {
       this.$set(this.generalModalTxt, 0, t('appointments', "Contributor only feature"))
       this.$set(this.generalModalTxt, 1, txt)
       this.generalModalCloseCallback = function (){
-        this.showHelp('contrib_info')
+        this.helpWantedHandler('contrib_info')
         // const a = document.createElement('a');
         // a.target="_blank";
         // a.href="https://www.srgdev.com/gh-support/nextcloudapps";

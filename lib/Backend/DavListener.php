@@ -218,6 +218,7 @@ class DavListener {
         $cnl_lnk_url="";
         // this is used to stop .ics file attachment on external actions when PARTSTAT:NEEDS-ACTION
         $no_ics=false;
+        $talk_link_txt='';
 
         if($hint === BackendUtils::APPT_SES_BOOK){
             // Just booked, send email to the attendee requesting confirmation...
@@ -260,9 +261,12 @@ class DavListener {
             // TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now confirmed.
             $tmpl->addBodyText($this->l10N->t('Your %1$s appointment scheduled for %2$s is now confirmed.',[$org_name,$date_time]));
 
-            $talk_link="";
-            // TRANSLATORS This a link to chat/(video)call, Ex: Chat/Call link: https://my_domain.com/call/kzu6e4uv
-            $talk_link_txt=$this->l10N->t("Chat/Call link: %s",[$talk_link]);
+            if(count($xad)>4 && $xad[4]!=='_') {
+                $tlk=$utils->getUserSettings(BackendUtils::KEY_TALK,$userId);
+                $ti = new TalkIntegration($tlk, $utils);
+                // add talk link info
+                $talk_link_txt=$this->addTalkInfo($tmpl,$xad,$ti,$tlk,$config->getUserValue($userId ,$this->appName, "c" . "nk"));
+            }
 
             if(!empty($eml_settings[BackendUtils::EML_CNF_TXT])){
                 $tmpl->addBodyText($eml_settings[BackendUtils::EML_CNF_TXT]);
@@ -303,6 +307,14 @@ class DavListener {
                 $om_prefix = $this->l10N->t("Appointment canceled");
             }
 
+            if($eventName===self::DEL_EVT_NAME && count($xad)>4 && $xad[4]!=='_') {
+                $tlk = $utils->getUserSettings(BackendUtils::KEY_TALK, $userId);
+                if($tlk[BackendUtils::TALK_DEL_ROOM]===true) {
+                    $ti = new TalkIntegration($tlk, $utils);
+                    $ti->deleteRoom($xad[4]);
+                }
+            }
+
         }elseif($hint === null){
             // Organizer or External Action (something changed...)
 
@@ -316,9 +328,18 @@ class DavListener {
 
             $pst = $att->parameters['PARTSTAT']->getValue();
 
+            $tlk=$utils->getUserSettings(BackendUtils::KEY_TALK,$userId);
+            $ti = new TalkIntegration($tlk, $utils);
+
             // Add changes details...
             if($hash_ch[0]===true) { // DTSTART changed
                 $tmpl->addBodyListItem($this->l10N->t("Date/Time: %s", [$date_time]));
+                // if we have a Talk room we need to update the room's name (and lobby time if implemented)
+                if(count($xad)>4 && $xad[4]!=='_'){
+                    $ti->renameRoom(
+                        $xad[4], $to_name, $evt->DTSTART, $userId
+                    );
+                }
             }
 
             if($hash_ch[1]===true) { //STATUS changed
@@ -355,6 +376,12 @@ class DavListener {
                 );
             }
 
+            // if there is a Talk room - add info...
+            if(count($xad)>4 && $xad[4]!=='_') {
+                // add talk link info
+                $talk_link_txt=$this->addTalkInfo($tmpl,$xad,$ti,$tlk,$config->getUserValue($userId, $this->appName, "c". "nk"));
+            }
+
             if(empty($org_phone)) {
                 // TRANSLATORS Additional part of email - contact information WITHOUT phone number (only email). The last argument is email address.
                 $tmpl->addBodyText($this->l10N->t("If you have any questions please write to %s", [$org_email]));
@@ -363,7 +390,7 @@ class DavListener {
                 $tmpl->addBodyText($this->l10N->t('If you have any questions please feel free to call %1$s or write to %2$s', [$org_phone,$org_email]));
             }
 
-            // if NOT cancelled and PARTSTAT:NEEDS-ACTION we ADD the cancellation at the END
+            // if NOT cancelled and PARTSTAT:ACCEPTED we ADD the cancellation at the END
             if($is_cancelled === false && $pst === 'ACCEPTED'){
                 $cnl_lnk_url=$btn_url."0".$btn_tkn;
             }
@@ -419,13 +446,17 @@ class DavListener {
             if(!$is_cancelled){
                 $method='PUBLISH';
 
-                if(!empty($org_phone)){
-                    if (!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
-                    $evt->DESCRIPTION->setValue($org_name."\n".$org_phone);
-                }else {
+                if(empty($org_phone) && empty($talk_link_txt)){
                     if (isset($evt->DESCRIPTION)) {
                         $evt->remove($evt->DESCRIPTION);
                     }
+                }else{
+                    if (!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
+                    $evt->DESCRIPTION->setValue(
+                        $org_name."\n"
+                        .(!empty($org_phone)?$org_phone."\n":"")
+                        .(!empty($talk_link_txt)?"\n".$talk_link_txt."\n":"")
+                    );
                 }
             }else{
                 $method='CANCEL';
@@ -512,7 +543,7 @@ class DavListener {
             $oma=explode("\n",$om_info);
             // At least two parts (name and email, [phone optional])
             $omc=count($oma);
-            if($omc>1 && $omc<5) {
+            if($omc>1 && $omc<9) {
 
                 $evt_dt=$evt->DTSTART->getDateTime();
                 // Here we need organizer's timezone for getDateTimeString()
@@ -520,12 +551,12 @@ class DavListener {
 
                 $tmpl = $mailer->createEMailTemplate("ID_" . time());
                 $tmpl->setSubject($om_prefix . ": " . $to_name . ", "
-                    . $utils->getDateTimeString($evt_dt,$utz_info,true));
+                    . $utils->getDateTimeString($evt_dt,$utz_info,1));
                 $tmpl->addHeading(" "); // spacer
                 $tmpl->addBodyText($om_prefix);
                 $tmpl->addBodyListItem($utils->getDateTimeString($evt_dt,$utz_info));
                 foreach ($oma as $info){
-                    $tmpl->addBodyListItem($info);
+                    if(strlen($info)>2) $tmpl->addBodyListItem($info);
                 }
 
                 $msg=$mailer->createMessage();
@@ -572,5 +603,52 @@ class DavListener {
             $btn_url,
             urlencode($utils->encrypt(substr($uri,0,-4),$key))
         ];
+    }
+
+    /**
+     * @param \OCP\Mail\IEMailTemplate $tmpl
+     * @param string[] $xad
+     * @param TalkIntegration $ti
+     * @param array $tlk
+     * @param $c
+     * @return string
+     */
+    function addTalkInfo($tmpl,$xad,$ti,$tlk,$c){
+        $url=$ti->getRoomURL($xad[4]);
+        $url_html='<a target="_blank" href="'.$url.'">'.$url.'</a>';
+
+        $eml_txt=$tlk[BackendUtils::TALK_EMAIL_TXT];$s="subs".'tr';
+        if(!empty($eml_txt) && isset($c[3]) && ((hexdec($s($c,0,0b100))>>14)& 1)===((hexdec($s($c,4   ,04))>>  6) & 1)){
+            $talk_link_html=str_replace("\n","<br>",$eml_txt);
+            if(strpos($talk_link_html,"{{url}}")!==false){
+                $talk_link_html=str_replace("{{url}}",$url_html,$talk_link_html);
+            }else{
+                $talk_link_html.=" ".$url_html;
+            }
+
+            if ($xad[5] !== '_') {
+                // we have pass
+                if(strpos($talk_link_html,"{{pass}}")!==false){
+                    $talk_link_html=str_replace("{{pass}}",$xad[5],$talk_link_html);
+                }else{
+                    $talk_link_html.=" ".$this->l10N->t('Password') . ": " . $xad[5];
+                }
+            }else{
+                // no pass, but {{pass}} token
+                if(strpos($talk_link_html,"{{pass}}")!==false){
+                    $talk_link_html=str_replace("{{pass}}",'',$talk_link_html);
+                }
+            }
+        }else {
+            // TRANSLATORS This a link to chat/(video)call, Ex: Chat/Call link: https://my_domain.com/call/kzu6e4uv
+            $talk_link_html = $this->l10N->t("Chat/Call link: %s", [$url_html]);
+            if ($xad[5] !== '_') {
+                // we have pass
+                $talk_link_html .= '<br>' . $this->l10N->t('Password') . ": " . $xad[5];
+            }
+        }
+        $talk_link_txt=strip_tags(str_replace("<br>","\n",$talk_link_html));
+        $tmpl->addBodyText($talk_link_html,$talk_link_txt);
+        return trim($talk_link_txt);
     }
 }

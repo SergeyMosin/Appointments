@@ -10,6 +10,10 @@
           @click="$emit('gotoEML')"
           icon="icon-mail"/>
       <AppNavigationItem
+          :title="t('appointments','Talk Integration')"
+          @click="$emit('gotoTALK')"
+          icon="icon-talk"/>
+      <AppNavigationItem
           v-show="showDirPage===true"
           :title="t('appointments','Directory Page')"
           @click="$emit('gotoDIR')"

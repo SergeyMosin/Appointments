@@ -156,7 +156,22 @@ class BackendUtils{
     public const KEY_DIR="dir_info";
     public const DIR_DEF=array();
 
+    public const KEY_TALK = "appt_talk";
+    public const TALK_ENABLED = "enabled";
+    public const TALK_DEL_ROOM = "delete";
+    public const TALK_EMAIL_TXT = "emailText";
+    public const TALK_LOBBY = "lobby";
+    public const TALK_PASSWORD = "password";
+    public const TALK_NAME_FORMAT = "nameFormat";
 
+    public const TALK_DEF = array(
+        self::TALK_ENABLED => false,
+        self::TALK_DEL_ROOM => false,
+        self::TALK_EMAIL_TXT => "",
+        self::TALK_LOBBY => false,
+        self::TALK_PASSWORD => false,
+        self::TALK_NAME_FORMAT => 0 // 0=Name+DT, 1=DT+Name, 2=Name Only
+    );
 
     private $appName=Application::APP_ID;
 
@@ -264,12 +279,16 @@ class BackendUtils{
         //  1: _title
         //  2: pageId
         //  3: embed (uri)
+        //  4: reserved for Talk link @see $this->dataConfirmAttendee()
+        //  5: reserved for Talk pass @see $this->dataConfirmAttendee()
         if(!isset($evt->{self::XAD_PROP})) $evt->add(self::XAD_PROP);
         $evt->{self::XAD_PROP}->setValue($this->encrypt(
             $userId.chr(31)
             .$title.chr(31)
             .$info['_page_id'].chr(31)
-            .$info['_embed'].chr(31),
+            .$info['_embed'].chr(31)
+            .'_'.chr(31) // talk link
+            .'_', // talk pass
             $evt->UID));
 
         $this->setSEQ($evt);
@@ -281,12 +300,13 @@ class BackendUtils{
 
     /**
      * @param $data
+     * @param string $userId
      * @return array [string|null, string|null, string|null]
      *                  null=error|""=already confirmed,
      *                  Localized DateTime string
      *                  $pageId
      */
-    function dataConfirmAttendee($data){
+    function dataConfirmAttendee($data,$userId){
 
         $vo=$this->getAppointment($data,'CONFIRMED');
         if($vo===null) return [null,null,null];
@@ -326,6 +346,44 @@ class BackendUtils{
 
         if(!isset($evt->SUMMARY)) $evt->add('SUMMARY'); // ???
         $evt->SUMMARY->setValue("✔️ ".$a->parameters['CN']->getValue());
+
+        //Talk link
+        if(count($xad)>4 && $xad[4]==='_'){
+            $tlk=$this->getUserSettings(self::KEY_TALK,$userId);
+            // check if Talk link is needed
+            if($tlk[self::TALK_ENABLED]===true){
+                $ti=new TalkIntegration($tlk,$this);
+                $token=$ti->createRoomForEvent(
+                    $a->parameters['CN']->getValue(),
+                    $evt->DTSTART,
+                    $userId);
+                if(!empty($token)){
+                    if(!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
+                    $l10n=\OC::$server->getL10N($this->appName);
+                    if($token!=="-") {
+                        $pi='';
+                        if(strpos($token,chr(31))===false) {
+                            // just token
+                            $xad[4] = $token;
+                        }else{
+                            // taken + pass
+                            list($xad[4],$xad[5])=explode(chr(31),$token);
+                            $pi="\n".$l10n->t("Guest password:")." ".$xad[5];
+                            $token=$xad[4];
+                        }
+                        $evt->{self::XAD_PROP}->setValue($this->encrypt(
+                            implode(chr(31), $xad), $evt->UID));
+                        $evt->DESCRIPTION->setValue(
+                            $evt->DESCRIPTION->getValue(). "\n\n".
+                            $ti->getRoomURL($token).$pi);
+                    }else{
+                        $evt->DESCRIPTION->setValue(
+                            $evt->DESCRIPTION->getValue()."\n\n".
+                            $l10n->t("Talk integration error: check logs"));
+                    }
+                }
+            }
+        }
 
         $this->setSEQ($evt);
 
@@ -746,6 +804,8 @@ class BackendUtils{
              $default=self::EML_DEF;
          }else if($key===self::KEY_DIR){
              $default=self::DIR_DEF;
+         }else if($key===self::KEY_TALK){
+             $default=self::TALK_DEF;
          }else{
              // this should never happen
              return null;
@@ -977,21 +1037,25 @@ class BackendUtils{
     /**
      * @param \DateTimeImmutable $date
      * @param string $tzi Timezone info [UF][+-]\d{4} Ex: U+0300 @see dataSetAttendee() or [UF](valid timezone name) Ex: UAmerica/New_York
-     * @param bool $short_dt return short format (for email subject)
+     * @param int $short_dt
+     *      0 = long format
+     *      1 = short format (for email subject)
      * @return string
      * @noinspection PhpDocMissingThrowsInspection
      */
-    function getDateTimeString($date, $tzi, $short_dt=false){
+    function getDateTimeString($date, $tzi, $short_dt=0){
 
         $l10N=\OC::$server->getL10N($this->appName);
         if($tzi[0]==="F"){
             $d=$date->format('Ymd\THis');
-            if($short_dt){
-                $date_time =$l10N->l('datetime', $d, ['width' => 'short']);
-            }else {
+            if($short_dt===0){
                 $date_time =
                     $l10N->l('date', $d, ['width' => 'full']) . ', ' .
                     $l10N->l('time', $d, ['width' => 'short']);
+            }else if($short_dt===1) {
+                $date_time =$l10N->l('datetime', $d, ['width' => 'short']);
+            }else{
+                $date_time='';
             }
         }else{
             try {
@@ -1003,12 +1067,14 @@ class BackendUtils{
             }
             $d->setTimestamp($date->getTimestamp());
 
-            if($short_dt){
-                $date_time =$l10N->l('datetime', $d, ['width' => 'short']);
-            }else {
+            if($short_dt===0){
                 $date_time = $l10N->l('date', $d, ['width' => 'full']).', '.
                     str_replace(':00 ', ' ',
                         $l10N->l('time', $d, ['width' => 'long']));
+            }else if($short_dt===1) {
+                $date_time =$l10N->l('datetime', $d, ['width' => 'short']);
+            }else{
+                $date_time='';
             }
         }
 
@@ -1172,6 +1238,5 @@ class BackendUtils{
         }
         return urlencode(str_replace("/","_", $bd));
     }
-
 }
 

@@ -41,6 +41,7 @@
           <option value="L">Local (floating)</option>
           <option value="C">{{tzName}}</option>
         </select>
+          <p style="padding-top: .5em; font-size: 80%">Support for FLOATING timezones is being phased out</p>
         <button
             @click="goApptGen"
             :disabled="apptWeek===null"
