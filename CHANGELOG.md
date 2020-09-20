@@ -1,3 +1,7 @@
+## 1.7.4 - 2020-09-20
+### Added
+- Talk App integration
+
 ## 1.7.3 - 2020-09-11
 ### Fixed
 - issue #120
