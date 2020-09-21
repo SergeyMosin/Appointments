@@ -25,6 +25,7 @@
     "Thank you" : "감사합니다.",
     "Appointment is canceled" : "일정이 취소됐습니다.",
     "%s Appointment" : "%s일정",
+    "Password" : "암호",
     "Your appointment scheduled for %s is confirmed." : "예정된 %s 일정이 확인됐습니다.",
     "Your appointment scheduled for %s is canceled." : "예정된 %s일정이 취소됐습니다.",
     "Your appointment is canceled." : "일정이 취소됐습니다.",

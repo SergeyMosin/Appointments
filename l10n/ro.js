@@ -9,6 +9,7 @@ OC.L10N.register(
     "Your %1$s appointment scheduled for %2$s is now canceled." : "Întâlnirea %1$s programată la ora %2$s a fost anulată.",
     "Thank you" : "Mulțumesc",
     "%s Appointment" : "Întâlnire%s",
+    "Password" : "Parolă",
     "All done." : "Finalizat",
     "Info" : "Info",
     "Link Expired..." : "Link Expirat...",

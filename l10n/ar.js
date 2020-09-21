@@ -4,6 +4,7 @@ OC.L10N.register(
     "Available" : "متوفرة",
     "Confirm" : "تأكيد",
     "Cancel" : "إلغاء",
+    "Password" : "كلمة السر",
     "Info" : "Info",
     "Delete" : "حذف ",
     "Settings" : "الإعدادات",

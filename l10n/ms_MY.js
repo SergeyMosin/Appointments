@@ -2,6 +2,7 @@ OC.L10N.register(
     "appointments",
     {
     "Cancel" : "Batal",
+    "Password" : "Kata laluan",
     "Info" : "Info",
     "Delete" : "Padam",
     "Settings" : "Tetapan",

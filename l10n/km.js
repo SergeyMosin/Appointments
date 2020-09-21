@@ -2,6 +2,7 @@ OC.L10N.register(
     "appointments",
     {
     "Cancel" : "បោះបង់",
+    "Password" : "ពាក្យសម្ងាត់",
     "Info" : "Info",
     "Delete" : "លុប",
     "Settings" : "ការកំណត់",

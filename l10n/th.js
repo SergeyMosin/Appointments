@@ -2,6 +2,7 @@ OC.L10N.register(
     "appointments",
     {
     "Cancel" : "ยกเลิก",
+    "Password" : "รหัสผ่าน",
     "Info" : "Info",
     "Delete" : "ลบ",
     "Settings" : "ตั้งค่า",

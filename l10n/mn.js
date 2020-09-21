@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Confirm" : "Батлах",
     "Cancel" : "болиулах",
+    "Password" : "Нууц үг",
     "Info" : "Info",
     "Delete" : "Устгах",
     "Settings" : "Тохиргоо",

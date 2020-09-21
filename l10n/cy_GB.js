@@ -2,6 +2,7 @@ OC.L10N.register(
     "appointments",
     {
     "Cancel" : "Diddymu",
+    "Password" : "Cyfrinair",
     "Info" : "Info",
     "Delete" : "Dileu",
     "Settings" : "Gosodiadau",

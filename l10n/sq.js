@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Confirm" : "Konfirmo",
     "Cancel" : "Anullo",
+    "Password" : "Fjalëkalim",
     "Info" : "Info",
     "Delete" : "Delete",
     "Settings" : "Rregullimet",
