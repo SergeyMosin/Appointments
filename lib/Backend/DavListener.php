@@ -5,6 +5,7 @@ namespace OCA\Appointments\Backend;
 
 
 use OCA\Appointments\AppInfo\Application;
+use OCA\Appointments\Email\EMailTemplateNC;
 use OCP\AppFramework\QueryException;
 use Sabre\VObject\Reader;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -205,7 +206,15 @@ class DavListener {
 
         $is_cancelled=false;
 
-        $tmpl=$mailer->createEMailTemplate("ID_".time());
+
+//        $tmpl=$mailer->createEMailTemplate("ID_".time());
+        $tmpl=new EMailTemplateNC(
+            new \OCP\Defaults(),
+            \OC::$server->getURLGenerator(),
+            $this->l10N,
+            "ID_".time(),
+            []
+        );
 
         // Message the organizer
         $om_prefix="";
