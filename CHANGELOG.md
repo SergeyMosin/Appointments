@@ -1,3 +1,12 @@
+## 1.7.5 - 2020-09-21
+### Added
+- "Meeting Type" form field for Talk integration
+### Changed
+- Use NC18 email template even on NC19
+### Fixed
+- CSS for dark themes
+
+
 ## 1.7.4 - 2020-09-20
 ### Added
 - Talk App integration
