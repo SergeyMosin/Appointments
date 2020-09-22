@@ -801,8 +801,8 @@ class PageController extends Controller {
                 $params['appt_tlk_type']= '<label for="srgdev-ncfp_talk_type" class="srgdev-ncfp-form-label">'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_LABEL])?$tlk[BackendUtils::TALK_FORM_LABEL]:$tlk[BackendUtils::TALK_FORM_DEF_LABEL]),ENT_QUOTES,'UTF-8').':</label>
 <select name="talk_type" required id="srgdev-ncfp_talk_type" class="srgdev-ncfp-form-input">
     <option value="" disabled selected hidden>'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_PLACEHOLDER])?$tlk[BackendUtils::TALK_FORM_PLACEHOLDER]:$tlk[BackendUtils::TALK_FORM_DEF_PLACEHOLDER]),ENT_QUOTES,'UTF-8').'</option>
-    <option style="font-size: medium" value="0">'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_REAL_TXT])?$tlk[BackendUtils::TALK_FORM_REAL_TXT]:$tlk[BackendUtils::TALK_FORM_DEF_REAL]),ENT_QUOTES,'UTF-8').'</option>
-    <option style="font-size: medium" value="1">'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT])?$tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT]:$tlk[BackendUtils::TALK_FORM_DEF_VIRTUAL]),ENT_QUOTES,'UTF-8').'</option>
+    <option id="srgdev-ncfp_talk_type_op1" style="font-size: medium" value="0">'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_REAL_TXT])?$tlk[BackendUtils::TALK_FORM_REAL_TXT]:$tlk[BackendUtils::TALK_FORM_DEF_REAL]),ENT_QUOTES,'UTF-8').'</option>
+    <option id="srgdev-ncfp_talk_type_op2" style="font-size: medium" value="1">'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT])?$tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT]:$tlk[BackendUtils::TALK_FORM_DEF_VIRTUAL]),ENT_QUOTES,'UTF-8').'</option>
 </select>';
             }
         }

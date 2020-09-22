@@ -94,7 +94,11 @@ $color-placeholder-var:var(--color-text-maxcontrast);
   border-color: $color-primary-element;
   border-color: var(--color-primary-element);
 }
-
+#srgdev-ncfp_talk_type_op1,
+#srgdev-ncfp_talk_type_op2{
+  color: $color-main-text;
+  color: var(--color-main-text);
+}
 .srgdev-ncfp-chb-cont{
   position: relative;
 }

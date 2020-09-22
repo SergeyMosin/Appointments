@@ -1045,8 +1045,9 @@ export default {
       const NBR_DAYS = 6
       // Generate local names for days and month(s)
       let tff
+      const lang=document.documentElement.lang
       if (window.Intl && typeof window.Intl === "object") {
-        let f = new Intl.DateTimeFormat([],
+        let f = new Intl.DateTimeFormat([lang],
             {weekday: "short", month: "2-digit", day: "2-digit"})
         tff = f.format
       } else {

@@ -377,10 +377,10 @@ function _apptGridMaker() {
 
         // Ever 3rd line visible i.e. 15min
         const VS_LINE = 2
-
+        const lang=document.documentElement.lang
        let timeFormat
         if(window.Intl && typeof window.Intl === "object") {
-            let f = new Intl.DateTimeFormat([],
+            let f = new Intl.DateTimeFormat([lang],
                 {hour: "numeric", minute: "2-digit"})
             timeFormat=f.format
         }else{

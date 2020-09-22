@@ -309,10 +309,10 @@
         }
 
         const has_intl=window.Intl && typeof window.Intl === "object"
-
+        const lang=document.documentElement.lang
         let tf
         if(has_intl) {
-            let f = new Intl.DateTimeFormat([],
+            let f = new Intl.DateTimeFormat([lang],
                 {hour: "numeric", minute: "2-digit"})
             tf=f.format
         }else{
@@ -323,7 +323,7 @@
 
         let tfz
         if(has_intl) {
-            let f = new Intl.DateTimeFormat([],
+            let f = new Intl.DateTimeFormat([lang],
                 {hour: "numeric", minute: "2-digit", timeZoneName:"short"})
             tfz=f.format
         }else{
@@ -334,7 +334,7 @@
 
         let df
         if(has_intl) {
-            let f = new Intl.DateTimeFormat([],
+            let f = new Intl.DateTimeFormat([lang],
                 {month: "long"})
             df=f.format
         }else{
@@ -345,7 +345,7 @@
 
         let wf
         if(has_intl) {
-            let f = new Intl.DateTimeFormat([],
+            let f = new Intl.DateTimeFormat([lang],
                 {weekday: "short"})
             wf=f.format
         }else{
@@ -356,7 +356,7 @@
 
         let wft
         if(has_intl) {
-            let f = new Intl.DateTimeFormat([],
+            let f = new Intl.DateTimeFormat([lang],
                 {weekday: "short", month: "long", day: "2-digit"})
             wft=f.format
         }else{
@@ -367,7 +367,7 @@
 
         let wff
         if(has_intl) {
-            let f = new Intl.DateTimeFormat([],
+            let f = new Intl.DateTimeFormat([lang],
                 {weekday: "long", month: "long", day: "numeric", year:"numeric"})
             wff=f.format
         }else{
