@@ -1,3 +1,7 @@
+## 1.7.6 - 2020-09-22
+### Fixed
+- NC19 email template regression
+
 ## 1.7.5 - 2020-09-21
 ### Added
 - "Meeting Type" form field for Talk integration
