@@ -2,6 +2,7 @@ OC.L10N.register(
     "appointments",
     {
     "Cancel" : "ۋاز كەچ",
+    "Password" : "ئىم",
     "Info" : "Info",
     "Delete" : "ئۆچۈر",
     "Settings" : "تەڭشەكلەر",

@@ -4,6 +4,7 @@ OC.L10N.register(
     "Available" : "Налични",
     "Confirm" : "Потвърди",
     "Cancel" : "Отказ",
+    "Password" : "Парола",
     "Info" : "Информация",
     "Delete" : "Изтриване",
     "Settings" : "Настройки",

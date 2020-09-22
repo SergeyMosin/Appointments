@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Confirm" : "Confirmar",
     "Cancel" : "Cancellar",
+    "Password" : "Contrasigno",
     "Info" : "Info",
     "Delete" : "Deler",
     "Settings" : "Configurationes",

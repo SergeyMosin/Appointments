@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Confirm" : "Konfirmasi",
     "Cancel" : "Membatalkan",
+    "Password" : "Kata kunci",
     "Info" : "Info",
     "Delete" : "Hapus",
     "Settings" : "Setelan",

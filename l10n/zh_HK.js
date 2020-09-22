@@ -2,6 +2,7 @@ OC.L10N.register(
     "appointments",
     {
     "Cancel" : "取消",
+    "Password" : "密碼",
     "Info" : "Info",
     "Delete" : "刪除",
     "Settings" : "設定",

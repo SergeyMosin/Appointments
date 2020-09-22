@@ -2,6 +2,7 @@ OC.L10N.register(
     "appointments",
     {
     "Cancel" : "বাতির",
+    "Password" : "কূটশব্দ",
     "Info" : "Info",
     "Delete" : "মুছে",
     "Settings" : "সেটিংস",

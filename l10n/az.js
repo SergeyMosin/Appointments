@@ -2,6 +2,7 @@ OC.L10N.register(
     "appointments",
     {
     "Cancel" : "Dayandır",
+    "Password" : "Şifrə",
     "Info" : "Info",
     "Delete" : "Sil",
     "Settings" : "Quraşdırmalar",

@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Confirm" : "დადასტურება",
     "Cancel" : "უარყოფა",
+    "Password" : "პაროლი",
     "Info" : "ინფორმაცია",
     "Delete" : "წაშლა",
     "Settings" : "პარამეტრები",

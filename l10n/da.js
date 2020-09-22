@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Confirm" : "Bekræft",
     "Cancel" : "Annullér",
+    "Password" : "Adgangskode",
     "Info" : "Info",
     "Delete" : "Slet",
     "Settings" : "Indstillinger",
@@ -26,6 +27,7 @@ OC.L10N.register(
     "Deleted" : "Slettet",
     "Confirmed" : "Bekræftet",
     "close" : "luk",
+    "Enable lobby" : "Aktiver lobby",
     "Location:" : "Sted:",
     "Back" : "Tilbage",
     "Next" : "Næste",

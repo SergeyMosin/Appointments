@@ -2,6 +2,7 @@ OC.L10N.register(
     "appointments",
     {
     "Cancel" : "இரத்து செய்க",
+    "Password" : "கடவுச்சொல்",
     "Info" : "Info",
     "Delete" : "நீக்குக",
     "Settings" : "அமைப்புகள்",

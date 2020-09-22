@@ -23,6 +23,7 @@ OC.L10N.register(
     "Thank you" : "Bestu þakkir",
     "Appointment is canceled" : "Hætt var við stefnumót",
     "%s Appointment" : "%s stefnumót",
+    "Password" : "Lykilorð",
     "Your appointment scheduled for %s is confirmed." : "Stefnumótið þtt sem áætlað er %s er staðfest.",
     "Your appointment scheduled for %s is canceled." : "Stefnumótinu þínu sem áætlað var %s er aflýst.",
     "Your appointment is canceled." : "Stefnumótinu þínu er aflýst.",

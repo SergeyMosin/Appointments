@@ -2,6 +2,7 @@ OC.L10N.register(
     "appointments",
     {
     "Cancel" : "Ofbriechen",
+    "Password" : "Passwuert",
     "Info" : "Info",
     "Delete" : "Läschen",
     "Settings" : "Astellungen",

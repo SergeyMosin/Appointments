@@ -2,6 +2,7 @@ OC.L10N.register(
     "appointments",
     {
     "Cancel" : "Anullar",
+    "Password" : "Senhal",
     "Info" : "Info",
     "Delete" : "Suprimir",
     "Settings" : "Paramètres",

@@ -8,6 +8,7 @@ OC.L10N.register(
     "Confirm" : "確認",
     "Cancel" : "取消",
     "%s Appointment is confirmed" : "%s 預約已確認",
+    "Password" : "密碼",
     "Info" : "資訊",
     "Delete" : "刪除",
     "Settings" : "設定",

@@ -2,6 +2,7 @@ OC.L10N.register(
     "appointments",
     {
     "Cancel" : "Otkaži",
+    "Password" : "Lozinka",
     "Info" : "Info",
     "Delete" : "Obriši",
     "Settings" : "Поставке",
