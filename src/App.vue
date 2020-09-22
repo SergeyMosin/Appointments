@@ -837,6 +837,8 @@ export default {
           this.getFormData(pageId)
           OCP.Toast.success(this.t('appointments', 'New Settings Applied.'))
           return true
+        }else if(response.status===202){
+          this.handle202(response.data)
         }
       }).catch((error) => {
         this.stateInProgress = false

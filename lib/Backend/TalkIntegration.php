@@ -13,6 +13,7 @@ class TalkIntegration{
     private $tlk;
     private $utils;
     private $config;
+    private static $tmClass=\OCA\Talk\Manager::class;
 
     /**
      * @param array $tlk
@@ -30,7 +31,7 @@ class TalkIntegration{
     private function getTalkManager(){
         try {
             /** @type \OCA\Talk\Manager $tm */
-            $tm = \OC::$server->getRegisteredAppContainer($this->appName)->query(\OCA\Talk\Manager::class);
+            $tm = \OC::$server->getRegisteredAppContainer($this->appName)->query(self::$tmClass);
             return $tm;
         } catch (\Exception $e) {
             \OC::$server->getLogger()->error("Talk Manager not found");
@@ -214,4 +215,19 @@ class TalkIntegration{
         }
     }
 
+    static public function canTalk(){
+        try {
+            /** @type \OCA\Talk\Manager $tm */
+            $tm = \OC::$server->getRegisteredAppContainer(Application::APP_ID)->query(self::$tmClass);
+            $r=true;
+            if(!method_exists($tm,'createPublicRoom')){
+                $r=false;
+            }elseif(!method_exists($tm,'getRoomByToken')){
+                $r=false;
+            }
+            return $r;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
 }

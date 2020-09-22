@@ -77,7 +77,23 @@ form{
     Please use this link <span style="color: blue;text-decoration: underline">https://my_domain.com/index.php/call/to6d6y4e</span> to contact me.<br>
     Your password is: dj984jjr
   </code>
-    <h2 class="srgdev-appt-hs-h1">10. iFrame/Embedding</h2>
+  <p class="srgdev-appt-hs-p" style="margin-top: 1em;margin-bottom: .75em"><strong id="srgdev-sec_talkFF">"Meeting Type" form field</strong> - when this option is enabled, a <code class="srgdev-appt-hs-code_short">&lt;select&gt;</code> drop-down similar to the one bellow will be added to the form. If a visitor selects an <span style="white-space: nowrap">'In-person'</span> meeting, a Talk room for this appointment will NOT be created.</p>
+  <style type="text/css">
+      #srgdev-help_demo_talk_type:invalid {
+          border-color: grey;
+          color:#aaa;
+      }
+      #srgdev-help_demo_talk_type:invalid:hover{
+          border-color: #0082C9;
+      }
+  </style>
+  <label for="srgdev-help_demo_talk_type">Meeting Type:</label><br>
+  <select required="" id="srgdev-help_demo_talk_type">
+    <option value="" disabled="" selected="" hidden="">Select meeting type</option>
+    <option style="font-size: medium" value="0">In-person meeting</option>
+    <option style="font-size: medium" value="1">Online (audio/video)</option>
+  </select><br>
+  <h2 class="srgdev-appt-hs-h1">10. iFrame/Embedding</h2>
     <div class="srgdev-appt-hs-p">
         1. If the iframe is under a different domain use <strong>occ</strong> to set allowed Frame Ancestor Domain:
         <code style="white-space: pre" class="srgdev-appt-hs-code">php occ config:app:set appointments "emb_afad_YourUserName" --value "your.domain.com"</code>
@@ -99,7 +115,7 @@ echo '&lt;iframe src = "'.$src.'"&gt;&lt;/iframe&gt;';
         Frame Ancestors: <a style="color: blue; text-decoration: underline" target="_blank" href="https://w3c.github.io/webappsec-csp/#directive-frame-ancestors">https://w3c.github.io/webappsec-csp/#directive-frame-ancestors</a><br>
     </div>
 
-  <h2 id="srgdev-sec_contrib_info" class="srgdev-appt-hs-h1">10. Contributor Features</h2>
+  <h2 id="srgdev-sec_contrib_info" class="srgdev-appt-hs-h1">11. Contributor Features</h2>
   <div class="srgdev-appt-hs-p">
     Contributor feature can be unlocked by obtaining a contributor key in any of the following ways:
     <ol type="a" style="margin: .5em 0 1em 2em">

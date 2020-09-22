@@ -21,8 +21,16 @@
 
         setTimeout(function () {
             let b=document.getElementById("srgdev-ncfp_fbtn")
+            let txt
+            // translations are done on the backend (bug???)
+            if(b.hasAttribute("data-tr-ses-to")){
+                txt=b.getAttribute('data-tr-ses-to')
+            }else{
+                // Back-up ????
+                txt='Session Timeout. Reload.';
+            }
             b.disabled=true;
-            b.textContent="Session Timeout. Reload."
+            b.textContent=txt
         },900000)
     }
 
@@ -73,6 +81,16 @@
             lee=1
         }else{
             tzi=el.dataRef[sdx].tzi
+        }
+
+        el=document.getElementById("srgdev-ncfp_talk_type")
+        if (el!==null){
+            sdx=el.selectedIndex
+            if (sdx!==1 && sdx!==2){
+                el.setAttribute('err','err');
+                el.addEventListener("focus",clearFormErr,false)
+                lee=1
+            }
         }
 
         el=document.getElementById("srgdev-ncfp_fname")

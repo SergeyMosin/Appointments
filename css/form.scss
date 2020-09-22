@@ -1,4 +1,8 @@
 @import "svariables.scss";
+body{
+  background-color: $color-main-background;
+  background-color: var(--color-main-background);
+}
 .srgdev-ncfp-wrap{
   text-align: center;
   width: 100%;
@@ -52,6 +56,45 @@
   padding: .5em .4em !important;
   min-height: 2.55em;
 }
+$color-placeholder:$color-text-maxcontrast;
+$color-placeholder-var:var(--color-text-maxcontrast);
+.srgdev-ncfp-form-input::-webkit-input-placeholder {
+  color:$color-placeholder;
+  color: $color-placeholder-var;
+}
+.srgdev-ncfp-form-input:-moz-placeholder {
+  color:$color-placeholder;
+  color: $color-placeholder-var;
+  opacity:1;
+}
+.srgdev-ncfp-form-input::-moz-placeholder {
+  color:$color-placeholder;
+  color: $color-placeholder-var;
+  opacity:1;
+}
+.srgdev-ncfp-form-input:-ms-input-placeholder {
+  color:$color-placeholder;
+  color: $color-placeholder-var;
+}
+.srgdev-ncfp-form-input::-ms-input-placeholder {
+  color:$color-placeholder;
+  color: $color-placeholder-var;
+}
+.srgdev-ncfp-form-input::placeholder {
+  color:$color-placeholder;
+  color: $color-placeholder-var;
+}
+#srgdev-ncfp_talk_type:invalid {
+  border-color: $color-border-dark;
+  border-color: var(--color-border-dark);
+  color:$color-placeholder !important;
+  color: $color-placeholder-var;
+}
+#srgdev-ncfp_talk_type:invalid:hover{
+  border-color: $color-primary-element;
+  border-color: var(--color-primary-element);
+}
+
 .srgdev-ncfp-chb-cont{
   position: relative;
 }
@@ -86,7 +129,9 @@
   font-size: 94% !important;
   padding: .5em 1em !important;
   min-height: 2.55em;
-
+}
+#srgdev-ncfp_fbtn{
+  margin-top: 2em;
 }
 .srgdev-ncfp-form-btn[shade]{
   opacity: .5;
@@ -96,6 +141,7 @@
   vertical-align: top;
   height: 1.5em;
   line-height: 1.5em;
+  cursor: inherit;
 }
 #srgdev-ncfp_fbtn-spinner{
   display: none;
@@ -133,7 +179,9 @@
   background-color: var(--color-main-background);
 }
 // Because it is a read-only input, the setCustomValidity() does not work
-#srgdev-ncfp_sel-dummy[err]{
+#srgdev-ncfp_sel-dummy[err],
+#srgdev-ncfp_talk_type[err] // because 'invalid' is overridden
+{
   box-shadow: none !important;
   border-color: var(--color-error) !important;
 }
@@ -147,8 +195,10 @@
   top: -6.4em;
   position: absolute;
   //padding-right: ;
-  box-shadow: 1px 1px 3px $color-box-shadow;
-  box-shadow: 1px 1px 3px var(--color-box-shadow);
+  box-shadow: 0 0 6px -2px $color-box-shadow;
+  box-shadow: 0 0 6px -2px var(--color-box-shadow);
+  border: thin solid $color-border;
+  border: thin solid var(--color-border);
   overflow: hidden;
   display: none;
 }

@@ -270,7 +270,7 @@ class DavListener {
             // TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now confirmed.
             $tmpl->addBodyText($this->l10N->t('Your %1$s appointment scheduled for %2$s is now confirmed.',[$org_name,$date_time]));
 
-            if(count($xad)>4 && $xad[4]!=='_') {
+            if(count($xad)>4 && strlen($xad[4])>1) {
                 $tlk=$utils->getUserSettings(BackendUtils::KEY_TALK,$userId);
                 $ti = new TalkIntegration($tlk, $utils);
                 // add talk link info
@@ -316,7 +316,7 @@ class DavListener {
                 $om_prefix = $this->l10N->t("Appointment canceled");
             }
 
-            if($eventName===self::DEL_EVT_NAME && count($xad)>4 && $xad[4]!=='_') {
+            if($eventName===self::DEL_EVT_NAME && count($xad)>4 && strlen($xad[4])>1) {
                 $tlk = $utils->getUserSettings(BackendUtils::KEY_TALK, $userId);
                 if($tlk[BackendUtils::TALK_DEL_ROOM]===true) {
                     $ti = new TalkIntegration($tlk, $utils);
@@ -344,7 +344,7 @@ class DavListener {
             if($hash_ch[0]===true) { // DTSTART changed
                 $tmpl->addBodyListItem($this->l10N->t("Date/Time: %s", [$date_time]));
                 // if we have a Talk room we need to update the room's name (and lobby time if implemented)
-                if(count($xad)>4 && $xad[4]!=='_'){
+                if(count($xad)>4 && strlen($xad[4])>1){
                     $ti->renameRoom(
                         $xad[4], $to_name, $evt->DTSTART, $userId
                     );
@@ -386,7 +386,7 @@ class DavListener {
             }
 
             // if there is a Talk room - add info...
-            if(count($xad)>4 && $xad[4]!=='_') {
+            if(count($xad)>4 && strlen($xad[4])>1) {
                 // add talk link info
                 $talk_link_txt=$this->addTalkInfo($tmpl,$xad,$ti,$tlk,$config->getUserValue($userId, $this->appName, "c". "nk"));
             }
@@ -535,7 +535,6 @@ class DavListener {
                     'text/calendar; method='.$method
                 )
             );
-
         }
 
         try {

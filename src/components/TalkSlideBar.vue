@@ -72,6 +72,57 @@
               class="srgdev-appt-sb-textarea"
               id="srgdev-appt_talk-eml-override"
           ></textarea>
+          <div class="srgdev-appt-info-lcont srgdev-appt-sb-chb-cont  top-margin" style="margin-top: 1.375em"><input
+              v-model="talkInfo.formFieldEnable"
+              :disabled="talkInfo.enabled===false"
+              @click="checkClick('form',$event)"
+              type="checkbox"
+              id="srgdev-appt_talk-formFiled"
+              class="checkbox"><label class="srgdev-appt-sb-label-inline" for="srgdev-appt_talk-formFiled">{{t('appointments','Add "Meeting Type" form field')}}</label><a
+              class="icon-info srgdev-appt-info-link"
+              @click="$root.$emit('helpWanted','talkFF')"></a></div>
+          <div v-show="(talkInfo.formFieldEnable===true && talkInfo.enabled===true)" class="srgdev-appt-sb-indent_small">
+            <label
+                class="srgdev-appt-sb-label"
+                for="srgdev-appt_talk-ff-label">
+              {{t('appointments','Label text:')}}</label>
+            <input
+                :placeholder="talkInfo.formDefLabel"
+                v-model="talkInfo.formLabel"
+                class="srgdev-appt-sb-input-text"
+                id="srgdev-appt_talk-ff-label"
+                type="text">
+            <label
+                class="srgdev-appt-sb-label"
+                for="srgdev-appt_talk-ff-plh">
+              {{t('appointments','Placeholder text:')}}</label>
+            <input
+                :placeholder="talkInfo.formDefPlaceholder"
+                v-model="talkInfo.formPlaceholder"
+                class="srgdev-appt-sb-input-text"
+                id="srgdev-appt_talk-ff-plh"
+                type="text">
+            <label
+                class="srgdev-appt-sb-label"
+                for="srgdev-appt_talk-ff-real">
+              {{t('appointments','"In-person" option text:')}}</label>
+            <input
+                :placeholder="talkInfo.formDefReal"
+                v-model="talkInfo.formTxtReal"
+                class="srgdev-appt-sb-input-text"
+                id="srgdev-appt_talk-ff-real"
+                type="text">
+            <label
+                class="srgdev-appt-sb-label"
+                for="srgdev-appt_talk-ff-virtual">
+              {{t('appointments','"Online" option text:')}}</label>
+            <input
+                :placeholder="talkInfo.formDefVirtual"
+                v-model="talkInfo.formTxtVirtual"
+                class="srgdev-appt-sb-input-text"
+                id="srgdev-appt_talk-ff-virtual"
+                type="text">
+          </div>
         </div>
         <button
             @click="apply"
@@ -110,7 +161,18 @@ export default {
         emailText:"",
         lobby:false,
         password:false,
-        nameFormat:0
+        nameFormat:0,
+
+        formFieldEnable: false,
+        formLabel:"",
+        formPlaceholder:"",
+        formTxtReal:"",
+        formTxtVirtual:"",
+
+        formDefLabel:"",
+        formDefPlaceholder:"",
+        formDefReal:"",
+        formDefVirtual:""
       }
     }
   },
@@ -147,6 +209,9 @@ export default {
           case "email":
             txt=this.t('appointments', "Customize Talk room URL email text.")
             break
+          case "form":
+            txt=this.t('appointments', '"Meeting type" form field.')
+            break
           default:
             txt="New feature"
         }
@@ -174,15 +239,6 @@ export default {
       }
     },
 
-    clearInfo(){
-      if(this.talkInfo.enabled===false){
-        this.talkInfo.delete=false
-        this.talkInfo.emailText=""
-        this.talkInfo.lobby=false
-        this.talkInfo.password=false
-        this.talkInfo.nameFormat=0
-      }
-    },
     apply(){
       this.isSending=true
       this.setState('set_talk',this.talkInfo).then(()=>{

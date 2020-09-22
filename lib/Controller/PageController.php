@@ -473,6 +473,18 @@ class PageController extends Controller {
         }
         if($hide_phone) $post['phone']="";
         $post['name']=htmlspecialchars($post['name'], ENT_QUOTES, 'UTF-8');
+
+        // Talk integration override...
+        if(isset($post['talk_type']) && $post['talk_type']==='0'){
+            // possible request for 'In-person' meeting, instead of virtual,
+            // a.k.a. - no need for Talk room
+            $tlk=$this->utils->getUserSettings(BackendUtils::KEY_TALK,$userId);
+            if($tlk[BackendUtils::TALK_ENABLED] && $tlk[BackendUtils::TALK_FORM_ENABLED]){
+                // This should be passed to BackendUtils->dataSetAttendee()
+                $post['talk_type_real']="1";
+            }
+        }
+
         // Input seems OK...
 
         $cal_id=$this->utils->getMainCalId($userId,$pageId,$this->bc);
@@ -783,6 +795,17 @@ class PageController extends Controller {
         // GDPR
         $params['appt_gdpr']=$pps[BackendUtils::PSN_GDPR];
 
+        if(!empty($this->c->getUserValue($uid ,$this->appName, chr(99)."n".'k'))){
+            $tlk=$this->utils->getUserSettings(BackendUtils::KEY_TALK,$uid);
+            if($tlk[BackendUtils::TALK_ENABLED]===true && $tlk[BackendUtils::TALK_FORM_ENABLED]===true){
+                $params['appt_tlk_type']= '<label for="srgdev-ncfp_talk_type" class="srgdev-ncfp-form-label">'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_LABEL])?$tlk[BackendUtils::TALK_FORM_LABEL]:$tlk[BackendUtils::TALK_FORM_DEF_LABEL]),ENT_QUOTES,'UTF-8').':</label>
+<select name="talk_type" required id="srgdev-ncfp_talk_type" class="srgdev-ncfp-form-input">
+    <option value="" disabled selected hidden>'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_PLACEHOLDER])?$tlk[BackendUtils::TALK_FORM_PLACEHOLDER]:$tlk[BackendUtils::TALK_FORM_DEF_PLACEHOLDER]),ENT_QUOTES,'UTF-8').'</option>
+    <option style="font-size: medium" value="0">'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_REAL_TXT])?$tlk[BackendUtils::TALK_FORM_REAL_TXT]:$tlk[BackendUtils::TALK_FORM_DEF_REAL]),ENT_QUOTES,'UTF-8').'</option>
+    <option style="font-size: medium" value="1">'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT])?$tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT]:$tlk[BackendUtils::TALK_FORM_DEF_VIRTUAL]),ENT_QUOTES,'UTF-8').'</option>
+</select>';
+            }
+        }
         $tr->setParams($params);
 
         //$tr->getContentSecurityPolicy()->addAllowedFrameAncestorDomain('\'self\'');

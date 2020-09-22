@@ -6,6 +6,7 @@ namespace OCA\Appointments\Controller;
 use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
 use OCA\Appointments\Backend\ExternalModeSabrePlugin;
+use OCA\Appointments\Backend\TalkIntegration;
 use OCA\Appointments\SendDataResponse;
 use OCP\AppFramework\Controller;
 use OCP\IConfig;
@@ -441,14 +442,24 @@ class StateController extends Controller{
         }else if($action==="set_talk") {
             $value=$this->request->getParam("d");
             if($value!==null) {
-                if($this->utils->setUserSettings(
-                        BackendUtils::KEY_TALK,
-                        $value, BackendUtils::TALK_DEF,
-                        $this->userId,$this->appName)===true
-                ){
-                    $r->setStatus(200);
-                }else{
-                    $r->setStatus(500);
+                // check if canTalk
+                $va = json_decode($value, true);
+                if ($va !== null) {
+                    if($va[BackendUtils::TALK_ENABLED]===true && TalkIntegration::canTalk()===false){
+                        // Probably Talk is NOT installed or something broken
+                        $r->setData('{"info":"'.$this->l->t("Can't find Talk app. Is it installed and enabled ?").'"}');
+                        $r->setStatus(202);
+                    }else {
+                        if ($this->utils->setUserSettings(
+                                BackendUtils::KEY_TALK,
+                                $value, BackendUtils::TALK_DEF,
+                                $this->userId, $this->appName) === true
+                        ) {
+                            $r->setStatus(200);
+                        } else {
+                            $r->setStatus(500);
+                        }
+                    }
                 }
             }
         }

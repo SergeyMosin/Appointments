@@ -163,6 +163,16 @@ class BackendUtils{
     public const TALK_LOBBY = "lobby";
     public const TALK_PASSWORD = "password";
     public const TALK_NAME_FORMAT = "nameFormat";
+    public const TALK_FORM_ENABLED = "formFieldEnable";
+    public const TALK_FORM_LABEL = "formLabel";
+    public const TALK_FORM_PLACEHOLDER = "formPlaceholder";
+    public const TALK_FORM_REAL_TXT = "formTxtReal";
+    public const TALK_FORM_VIRTUAL_TXT = "formTxtVirtual";
+
+    public const TALK_FORM_DEF_LABEL = "formDefLabel";
+    public const TALK_FORM_DEF_PLACEHOLDER = "formDefPlaceholder";
+    public const TALK_FORM_DEF_REAL = "formDefReal";
+    public const TALK_FORM_DEF_VIRTUAL = "formDefVirtual";
 
     public const TALK_DEF = array(
         self::TALK_ENABLED => false,
@@ -170,7 +180,12 @@ class BackendUtils{
         self::TALK_EMAIL_TXT => "",
         self::TALK_LOBBY => false,
         self::TALK_PASSWORD => false,
-        self::TALK_NAME_FORMAT => 0 // 0=Name+DT, 1=DT+Name, 2=Name Only
+        self::TALK_NAME_FORMAT => 0, // 0=Name+DT, 1=DT+Name, 2=Name Only
+        self::TALK_FORM_ENABLED => false,
+        self::TALK_FORM_LABEL => "",
+        self::TALK_FORM_PLACEHOLDER => "",
+        self::TALK_FORM_REAL_TXT => "",
+        self::TALK_FORM_VIRTUAL_TXT => "",
     );
 
     private $appName=Application::APP_ID;
@@ -274,12 +289,17 @@ class BackendUtils{
         if(!isset($evt->{self::TZI_PROP})) $evt->add(self::TZI_PROP);
         $evt->{self::TZI_PROP}->setValue($info['tzi']);
 
+        // isset($info['talk_type_real']) === No need for Talk room
+
         // Additional appointment info (XAD_PROP):
         //  0: userId
         //  1: _title
         //  2: pageId
         //  3: embed (uri)
         //  4: reserved for Talk link @see $this->dataConfirmAttendee()
+        //      'd' === add self::TALK_FORM_REAL_TXT to description - no need for Talk room
+        //      '_' === check if Talk room is needed
+        //      'f' === finished
         //  5: reserved for Talk pass @see $this->dataConfirmAttendee()
         if(!isset($evt->{self::XAD_PROP})) $evt->add(self::XAD_PROP);
         $evt->{self::XAD_PROP}->setValue($this->encrypt(
@@ -287,7 +307,8 @@ class BackendUtils{
             .$title.chr(31)
             .$info['_page_id'].chr(31)
             .$info['_embed'].chr(31)
-            .'_'.chr(31) // talk link
+            // talk link, if isset($info['talk_type_real']) means no need for talk room, @see PageController->showFormPost()
+            .(isset($info['talk_type_real'])?'d':'_').chr(31)
             .'_', // talk pass
             $evt->UID));
 
@@ -348,40 +369,56 @@ class BackendUtils{
         $evt->SUMMARY->setValue("✔️ ".$a->parameters['CN']->getValue());
 
         //Talk link
-        if(count($xad)>4 && $xad[4]==='_'){
-            $tlk=$this->getUserSettings(self::KEY_TALK,$userId);
-            // check if Talk link is needed
-            if($tlk[self::TALK_ENABLED]===true){
-                $ti=new TalkIntegration($tlk,$this);
-                $token=$ti->createRoomForEvent(
-                    $a->parameters['CN']->getValue(),
-                    $evt->DTSTART,
-                    $userId);
-                if(!empty($token)){
-                    if(!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
-                    $l10n=\OC::$server->getL10N($this->appName);
-                    if($token!=="-") {
-                        $pi='';
-                        if(strpos($token,chr(31))===false) {
-                            // just token
-                            $xad[4] = $token;
-                        }else{
-                            // taken + pass
-                            list($xad[4],$xad[5])=explode(chr(31),$token);
-                            $pi="\n".$l10n->t("Guest password:")." ".$xad[5];
-                            $token=$xad[4];
+        if(count($xad)>4){
+            if($xad[4]==='_') {
+                $tlk = $this->getUserSettings(self::KEY_TALK, $userId);
+                // check if Talk link is needed
+                if ($tlk[self::TALK_ENABLED] === true) {
+                    $ti = new TalkIntegration($tlk, $this);
+                    $token = $ti->createRoomForEvent(
+                        $a->parameters['CN']->getValue(),
+                        $evt->DTSTART,
+                        $userId);
+                    if (!empty($token)) {
+                        if (!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
+                        $l10n = \OC::$server->getL10N($this->appName);
+                        if ($token !== "-") {
+                            $pi = '';
+                            if (strpos($token, chr(31)) === false) {
+                                // just token
+                                $xad[4] = $token;
+                            } else {
+                                // taken + pass
+                                list($xad[4], $xad[5]) = explode(chr(31), $token);
+                                $pi = "\n" . $l10n->t("Guest password:") . " " . $xad[5];
+                                $token = $xad[4];
+                            }
+                            $evt->{self::XAD_PROP}->setValue($this->encrypt(
+                                implode(chr(31), $xad), $evt->UID));
+                            $evt->DESCRIPTION->setValue(
+                                $evt->DESCRIPTION->getValue() . "\n\n" .
+                                $ti->getRoomURL($token) . $pi);
+                        } else {
+                            $evt->DESCRIPTION->setValue(
+                                $evt->DESCRIPTION->getValue() . "\n\n" .
+                                $l10n->t("Talk integration error: check logs"));
                         }
-                        $evt->{self::XAD_PROP}->setValue($this->encrypt(
-                            implode(chr(31), $xad), $evt->UID));
-                        $evt->DESCRIPTION->setValue(
-                            $evt->DESCRIPTION->getValue(). "\n\n".
-                            $ti->getRoomURL($token).$pi);
-                    }else{
-                        $evt->DESCRIPTION->setValue(
-                            $evt->DESCRIPTION->getValue()."\n\n".
-                            $l10n->t("Talk integration error: check logs"));
                     }
                 }
+            }elseif ($xad[4]==='d'){
+                // overridden by client...
+                // set xad to 'f' and add self::TALK_FORM_REAL_TXT to description
+                $xad[4]='f';
+                $evt->{self::XAD_PROP}->setValue($this->encrypt(
+                    implode(chr(31), $xad), $evt->UID));
+
+                $tlk = $this->getUserSettings(self::KEY_TALK, $userId);
+                if (!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
+                $evt->DESCRIPTION->setValue(
+                    $evt->DESCRIPTION->getValue() . "\n\n" .
+                    (!empty($tlk[self::TALK_FORM_REAL_TXT])
+                        ?$tlk[self::TALK_FORM_REAL_TXT]
+                        :$tlk[self::TALK_FORM_DEF_REAL]));
             }
         }
 
@@ -806,6 +843,12 @@ class BackendUtils{
              $default=self::DIR_DEF;
          }else if($key===self::KEY_TALK){
              $default=self::TALK_DEF;
+             // Translate defaults
+             $l10n=\OC::$server->getL10N($this->appName);
+             $default[self::TALK_FORM_DEF_LABEL]=$l10n->t('Meeting Type');
+             $default[self::TALK_FORM_DEF_PLACEHOLDER]=$l10n->t('Select meeting type');
+             $default[self::TALK_FORM_DEF_REAL]=$l10n->t('In-person meeting');
+             $default[self::TALK_FORM_DEF_VIRTUAL]=$l10n->t('Online (audio/video)');
          }else{
              // this should never happen
              return null;
