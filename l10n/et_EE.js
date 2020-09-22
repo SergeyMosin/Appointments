@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Confirm" : "Kinnita",
     "Cancel" : "Loobu",
+    "Password" : "Parool",
     "Info" : "Info",
     "Delete" : "Kustuta",
     "Settings" : "Seaded",

@@ -4,6 +4,7 @@ OC.L10N.register(
     "Available" : "Pieejams",
     "Confirm" : "Apstiprināt",
     "Cancel" : "Atcelt",
+    "Password" : "Parole",
     "Info" : "Info",
     "Delete" : "Dzēst",
     "Settings" : "Iestatījumi",
