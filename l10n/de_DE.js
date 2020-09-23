@@ -53,6 +53,7 @@ OC.L10N.register(
     "Page not added: 10 pages maximum" : "Seite nicht hinzugefügt: maximal 10 Seiten",
     "Please setup the directory page first." : "Bitte richten Sie zuerst die Verzeichnisseite ein.",
     "Directory page" : "Verzeichnisseite",
+    "This is an automatically sent email, please do not reply." : "Dies ist eine automatisch versandte E-Mail, bitte nicht antworten.",
     "Appointments" : "Termine",
     "Book appointments into your calendar via secure online form." : "Buchen Sie Termine in Ihrem Kalender über ein sicheres Online-Formular.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Buchen Sie Termine in Ihrem Kalender über ein sicheres Online-Formular. Teilnehmer können Ihre Termine über einen E-Mail-Link bestätigen oder absagen.",

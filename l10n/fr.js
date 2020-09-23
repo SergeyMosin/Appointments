@@ -207,7 +207,7 @@ OC.L10N.register(
     "Delete when appointments is removed" : "Supprimer lorsque les rendez-vous sont enlevés",
     "Enable lobby" : "Activer la salle d'attente",
     "Guest password" : "Mot de passe invité",
-    "Talk room name" : "Nom de la salle de discussion",
+    "Talk room name" : "Nom de la salle de discussion ",
     "Guest name + Date/Time" : "Nom d’invité + date/horaire",
     "Date/Time + Guest name" : "Date/horaire + nom d’invité",
     "Guest name only" : "Nom d’invité seulement",

@@ -35,6 +35,7 @@ OC.L10N.register(
     "Book Your Appointment" : "Bóka stefnumótið þitt",
     "Please select a calendar first" : "Veldu fyrst dagatal",
     "Selected calendar not found" : "Finn ekki valið dagatal",
+    "This is an automatically sent email, please do not reply." : "Þetta er sjálfvirk tölvupóstsending, ekki svara þessu.",
     "Appointments" : "Stefnumót",
     "Book appointments into your calendar via secure online form." : "Bókaðu stefnumót inn í dagatalið þitt í gegnum öruggt innfyllingarform á netinu.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Bókaðu stefnumót inn í dagatalið þitt í gegnum öruggt innfyllingarform á netinu. Þátttakendur geta síðan staðfest eða aflýst stefnumótum sínum með tengli í tölvupósti.",

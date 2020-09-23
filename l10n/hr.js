@@ -47,6 +47,7 @@ OC.L10N.register(
     "Please add time slots first." : "Prvo dodajte vremensku oznaku.",
     "Please select a calendar first" : "Prvo odaberite kalendar",
     "Selected calendar not found" : "Odabrani kalendar nije pronađen",
+    "This is an automatically sent email, please do not reply." : "Ovo je automatski poslana poruka e-pošte, nemojte odgovarati.",
     "Appointments" : "Dogovori",
     "Book appointments into your calendar via secure online form." : "Unesite dogovore u kalendar putem zaštićenog obrasca na mreži.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Unesite dogovore u kalendar putem zaštićenog obrasca na mreži. Sudionici mogu potvrditi ili otkazati dogovore putem poveznice koju će primiti e-poštom.",

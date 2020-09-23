@@ -39,6 +39,7 @@ OC.L10N.register(
     "Please add time slots first." : "Lisää ensin aikajaksot.",
     "Please select a calendar first" : "Valitse ensin kalenteri",
     "Selected calendar not found" : "Valittua kalenteria ei löytynyt",
+    "This is an automatically sent email, please do not reply." : "Tämä on automaattisesti lähetetty viesti. Älä vastaa tähän viestiin.",
     "Appointments" : "Tapaamiset",
     "Share Online" : "Jaa verkossa",
     "Stop Sharing" : "Lopeta jakaminen",

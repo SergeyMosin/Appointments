@@ -52,6 +52,7 @@ OC.L10N.register(
     "Page not added: 10 pages maximum" : "Side ikke lagt til: Maksimum 10 sider",
     "Please setup the directory page first." : "Sett opp katalogsiden først.",
     "Directory page" : "Katalogside",
+    "This is an automatically sent email, please do not reply." : "Dette er en automatisk sendt e-post, ikke svar.",
     "Appointments" : "Avtaler",
     "Book appointments into your calendar via secure online form." : "Book avtaler i kalenderen din via et sikkert online skjema.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Book avtaler i kalenderen din via et sikkert online skjema. Deltakere kan bekrefte eller avbryte timene sine via en e-postkobling.",

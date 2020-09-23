@@ -55,6 +55,7 @@ OC.L10N.register(
     "Page not added: 10 pages maximum" : "Sayfa eklenemedi: En fazla 10 sayfa",
     "Please setup the directory page first." : "Lütfen önce dizin sayfasını ayarlayın.",
     "Directory page" : "Dizin sayfası",
+    "This is an automatically sent email, please do not reply." : "Bu ileti otomatik olarak gönderildiğinden lütfen yanıtlamayın.",
     "Appointments" : "Randevular",
     "Book appointments into your calendar via secure online form." : "Güvenli çevrim içi form ile randevularınızı takviminize işleyin.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Güvenli çevrim içi form ile randevularınızı takviminize işleyin. Katılımcılar kendilerine gönderilen e-postadaki bağlantıyı kullanarak randevuyu kabul ya da red edebilir.",

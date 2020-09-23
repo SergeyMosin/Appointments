@@ -18,6 +18,7 @@ OC.L10N.register(
     "We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request" : "Vi har skickat ett mejl till %s. Var snäll och öppna det och klicka på bekräftelselänken för att slutföra din mötesbegäran",
     "Organization Name" : "Organisationsnamn",
     "Book Your Appointment" : "Boka in ditt möte",
+    "This is an automatically sent email, please do not reply." : "Detta är ett automatiskt skickat e-postmeddelande, svara inte på detta meddelande.",
     "Appointments" : "Möten",
     "Book appointments into your calendar via secure online form." : "Boka in möten i din kalender via ett säkert onlineformulär.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Boka in möten i din kalender via ett säkert onlineformulär. Deltagare kan bekräfta eller ställa in möten via en e-postlänk.",

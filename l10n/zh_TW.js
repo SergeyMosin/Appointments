@@ -10,6 +10,7 @@ OC.L10N.register(
     "%s Appointment is confirmed" : "%s 預約已確認",
     "Password" : "密碼",
     "Info" : "資訊",
+    "This is an automatically sent email, please do not reply." : "此為自動寄送的電子郵件，請不要回覆。",
     "Delete" : "刪除",
     "Settings" : "設定",
     "Close" : "關閉",

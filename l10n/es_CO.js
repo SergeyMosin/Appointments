@@ -5,6 +5,7 @@ OC.L10N.register(
     "Cancel" : "Cancelar",
     "Password" : "Contraseña",
     "Info" : "Info",
+    "This is an automatically sent email, please do not reply." : "Este es un correo enviado automáticamente, por favor no lo contestes. ",
     "Delete" : "Borrar",
     "Settings" : "Configuraciones ",
     "Close" : "Cerrar",

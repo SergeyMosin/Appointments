@@ -25,6 +25,7 @@ OC.L10N.register(
     "We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request" : "Išsiuntėme el. laišką, adresu %s. Norėdami užbaigti susitikimo užklausą, atverkite el. laišką ir spustelėkite ant patvirtinimo nuorodos.",
     "Organization Name" : "Organizacijos pavadinimas",
     "Book Your Appointment" : "Registruokitės į susitikimą",
+    "This is an automatically sent email, please do not reply." : "Tai yra automatinis pranešimas, prašome neatsakyti.",
     "Appointments" : "Susitikimai",
     "Book appointments into your calendar via secure online form." : "Registruokite susitikimus į savo kalendorių per saugią internetinę formą.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Registruokite susitikimus į savo kalendorių per saugią internetinę formą. Kviestiniai gali patvirtinti ar atsisakyti savo susitikimų, naudodamiesi nuoroda el. laiške.",
