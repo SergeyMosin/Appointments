@@ -1,6 +1,10 @@
 { "translations": {
     "Guest password:" : "Mot de passe invité :",
     "Talk integration error: check logs" : "Erreur d'intégration de discussion : vérifier les journaux",
+    "Meeting Type" : "Type de réunion",
+    "Select meeting type" : "Sélectionner le type de réunion",
+    "In-person meeting" : "Réunion en face à face",
+    "Online (audio/video)" : "Réunion à distance",
     "Your email address is required for this operation." : "Votre adresse e-mail est requise pour cette opération.",
     "A location, address or URL is required for this operation. Check User/Organization settings." : "Un lieu, une adresse ou une URL est requise pour cette opération. Vérifiez les paramètres Utilisateur/Organisation.",
     "Can't find your name. Check User/Organization settings." : "Votre nom n’a pas été trouvé. Vérifiez les paramètres Utilisateur/Organisation.",
@@ -53,6 +57,7 @@
     "Page not added: 10 pages maximum" : "Page non ajoutée : 10 pages maximum",
     "Please setup the directory page first." : "Veuillez d’abord configurer la page du répertoire.",
     "Directory page" : "Page de dossier",
+    "This is an automatically sent email, please do not reply." : "Ceci est un e-mail envoyé automatiquement, veuillez ne pas y répondre.",
     "Appointments" : "Rendez-vous",
     "Book appointments into your calendar via secure online form." : "Réservez des rendez-vous dans votre agenda via un formulaire en ligne sécurisé.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Réservez des rendez-vous dans votre agenda via un formulaire en ligne sécurisé. Les participants peuvent confirmer ou annuler leurs rendez-vous par un lien électronique.",
