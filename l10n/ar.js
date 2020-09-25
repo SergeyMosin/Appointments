@@ -11,6 +11,7 @@ OC.L10N.register(
     "Close" : "إغلاق",
     "Remove" : "حذف",
     "Loading" : "Loading",
+    "Start" : "ابدأ",
     "Advanced Settings" : "الإعدادات المتقدمة",
     "15 Minutes" : "15 دقيقة",
     "30 Minutes" : "30 دقيقة",
