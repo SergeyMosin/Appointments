@@ -162,7 +162,7 @@ OC.L10N.register(
     "Title and URL can be empty" : "Le titre et l’URL peuvent rester vides.",
     "Public Page Settings" : "Paramètres de la page publique",
     "Control what your visitors see" : "Contrôler ce que vos visiteurs voient",
-    "Form Title" : "Titre du formulaire ",
+    "Form Title" : "Titre du formulaire",
     "Show appointments for next" : "Montrer vos prochains rendez-vous pour ",
     "One Week" : "Une semaine",
     "Two Weeks" : "Deux semaines",
