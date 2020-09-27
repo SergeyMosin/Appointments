@@ -1,6 +1,7 @@
 OC.L10N.register(
     "appointments",
     {
+    "Guest password:" : "Gjestepassord:",
     "Your email address is required for this operation." : "Din e-post adresse er nødvendig for denne operasjonen.",
     "A location, address or URL is required for this operation. Check User/Organization settings." : "En plassering, adresse eller URL kreves for denne operasjonen. Sjekk innstillinger for Bruker/Organisasjon.",
     "Can't find your name. Check User/Organization settings." : "Finner ikke navnet ditt. Sjekk innstillinger for Bruker/Organisasjon.",
@@ -110,6 +111,7 @@ OC.L10N.register(
     "Require \"Appointment\" category" : "Krev \"Avtale\" kategori",
     "Apply" : "Bruk",
     "Simple" : "Enkel",
+    "External" : "Ekstern",
     "Warning" : "Advarsel",
     "Error" : "Feil",
     "Edit" : "Rediger",
