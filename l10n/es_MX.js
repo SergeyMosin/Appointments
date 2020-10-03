@@ -27,6 +27,7 @@ OC.L10N.register(
     "Almost done..." : "Casi terminado...",
     "We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request" : "Hemos enviado un correo a %s, por favor ábralo y haga click en el enlace de confirmación para finalizar su solicitud de cita",
     "Book Your Appointment" : "Registre su Cita",
+    "This is an automatically sent email, please do not reply." : "Este es un correo enviado automáticamente, por favor no lo contestes. ",
     "Appointments" : "Citas",
     "Book appointments into your calendar via secure online form." : "Registrar citas en su calendario via forma segura en linea .",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Registrar citas en su calendario via forma segunta en linea. Los asistentes pueden confirmar o cancelar sus citas via enlace por correo.",

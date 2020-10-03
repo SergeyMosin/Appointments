@@ -5,6 +5,7 @@ OC.L10N.register(
     "Cancel" : "უარყოფა",
     "Password" : "პაროლი",
     "Info" : "ინფორმაცია",
+    "This is an automatically sent email, please do not reply." : "ეს ელ-წერილი გამოგზავნილია ავტომატურად, გთხოვთ არ უპასუხოთ.",
     "Delete" : "წაშლა",
     "Settings" : "პარამეტრები",
     "Close" : "დახურვა",

@@ -34,6 +34,7 @@ OC.L10N.register(
     "Please add time slots first." : "Kérem először időpontot adjon hozzá.",
     "Please select a calendar first" : "Kérem először naptárat válasszon",
     "Selected calendar not found" : "A kiválasztott naptár nem található",
+    "This is an automatically sent email, please do not reply." : "Ez egy automatikusan küldött levél, kérlek ne válaszolj rá.",
     "Appointments" : "Találkozók",
     "Share Online" : "Megosztás Online",
     "Stop Sharing" : "Megosztás Befejezése",

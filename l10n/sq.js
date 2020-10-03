@@ -5,6 +5,7 @@ OC.L10N.register(
     "Cancel" : "Anullo",
     "Password" : "Fjalëkalim",
     "Info" : "Info",
+    "This is an automatically sent email, please do not reply." : "Ky është një email i dërguar automatikisht, ju lutem mos u përgjigjni.",
     "Delete" : "Delete",
     "Settings" : "Rregullimet",
     "Close" : "Mbylleni",

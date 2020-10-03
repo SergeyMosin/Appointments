@@ -1,4 +1,5 @@
 { "translations": {
+    "Guest password:" : "Gjestepassord:",
     "Your email address is required for this operation." : "Din e-post adresse er nødvendig for denne operasjonen.",
     "A location, address or URL is required for this operation. Check User/Organization settings." : "En plassering, adresse eller URL kreves for denne operasjonen. Sjekk innstillinger for Bruker/Organisasjon.",
     "Can't find your name. Check User/Organization settings." : "Finner ikke navnet ditt. Sjekk innstillinger for Bruker/Organisasjon.",
@@ -50,6 +51,7 @@
     "Page not added: 10 pages maximum" : "Side ikke lagt til: Maksimum 10 sider",
     "Please setup the directory page first." : "Sett opp katalogsiden først.",
     "Directory page" : "Katalogside",
+    "This is an automatically sent email, please do not reply." : "Dette er en automatisk sendt e-post, ikke svar.",
     "Appointments" : "Avtaler",
     "Book appointments into your calendar via secure online form." : "Book avtaler i kalenderen din via et sikkert online skjema.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Book avtaler i kalenderen din via et sikkert online skjema. Deltakere kan bekrefte eller avbryte timene sine via en e-postkobling.",
@@ -107,6 +109,7 @@
     "Require \"Appointment\" category" : "Krev \"Avtale\" kategori",
     "Apply" : "Bruk",
     "Simple" : "Enkel",
+    "External" : "Ekstern",
     "Warning" : "Advarsel",
     "Error" : "Feil",
     "Edit" : "Rediger",

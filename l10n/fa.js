@@ -6,6 +6,7 @@ OC.L10N.register(
     "Cancel" : "لغو",
     "Password" : "کلمه عبور",
     "Info" : "اطلاعات",
+    "This is an automatically sent email, please do not reply." : "این یک ایمیل بصورت خودکار ارسال شده است ، لطفاً پاسخ ندهید.",
     "Delete" : "حذف",
     "Settings" : "تنظیمات",
     "Close" : "بستن",

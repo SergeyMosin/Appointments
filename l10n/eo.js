@@ -6,6 +6,7 @@ OC.L10N.register(
     "Cancel" : "Nuligi",
     "Password" : "Pasvorto",
     "Info" : "Info",
+    "This is an automatically sent email, please do not reply." : "Tio estas aŭtomate sendita retpoŝtmesaĝo; bv. ne respondi.",
     "Delete" : "Forigi",
     "Settings" : "Agordoj",
     "Close" : "Malfermi",

@@ -48,6 +48,7 @@ OC.L10N.register(
     "Please select a calendar first" : "始めにカレンダーを選択してください",
     "Selected calendar not found" : "選択されたカレンダーが見つかりません",
     "Action failed. Select calendar(s) first." : "作業に失敗しました。先にカレンダーを選択してください。",
+    "This is an automatically sent email, please do not reply." : "これは自動的に生成されたメールです。返信しないでください。",
     "Appointments" : "予約",
     "Book appointments into your calendar via secure online form." : "セキュアなオンラインフォームでカレンダーに予約を登録しましょう。",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "セキュアなオンラインフォームでカレンダーに予約を登録しましょう。参加者はメールへのリンクで予約を承認もしくはキャンセルできます。",

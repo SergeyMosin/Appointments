@@ -5,6 +5,7 @@ OC.L10N.register(
     "Cancel" : "Loobu",
     "Password" : "Parool",
     "Info" : "Info",
+    "This is an automatically sent email, please do not reply." : "See on automaatselt saadetud e-kiri, palun ära vasta.",
     "Delete" : "Kustuta",
     "Settings" : "Seaded",
     "Close" : "Sulge",

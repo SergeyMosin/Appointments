@@ -6,6 +6,7 @@ OC.L10N.register(
     "Cancel" : "Отказ",
     "Password" : "Парола",
     "Info" : "Информация",
+    "This is an automatically sent email, please do not reply." : "Имейлът е генериран автоматично, моля не отговаряйте.",
     "Delete" : "Изтриване",
     "Settings" : "Настройки",
     "Close" : "Затваряне",
