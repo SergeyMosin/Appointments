@@ -961,13 +961,14 @@ class BackendUtils{
 
     /**
      * @param string $userId
+     * @param string $pageId
      * @param string $appName
      * @param string $tz_data_str Can be VTIMEZONE data, 'L' = floating or 'UTC'
      * @param string $cr_date 20200414T073008Z must be UTC (ends with Z),
      * @param string $title title is used when the appointment is being reset
      * @return string[] ['1_before_uid'=>'string...','2_before_dts'=>'string...','3_before_dte'=>'string...','4_last'=>'string...'] or ['err'=>'Error text...']
      */
-    function makeAppointmentParts($userId, $appName, $tz_data_str, $cr_date,$title=""){
+    function makeAppointmentParts($userId, $pageId, $appName, $tz_data_str, $cr_date,$title=""){
 
         $l10n=\OC::$server->getL10N($appName);
         $iUser=\OC::$server->getUserManager()->get($userId);
@@ -991,13 +992,32 @@ class BackendUtils{
         }
 
         $org=$this->getUserSettings(self::KEY_ORG,$userId);
+        if($pageId==='p0'){
+            $org_name=$org[BackendUtils::ORG_NAME];
+            $addr=$org[BackendUtils::ORG_ADDR];
+        }else{
+            $mps=$this->getUserSettings(
+                BackendUtils::KEY_MPS.$pageId,$userId);
+            $org_name=!empty($mps[BackendUtils::ORG_NAME])
+                ?$mps[BackendUtils::ORG_NAME]
+                :$org[BackendUtils::ORG_NAME];
+            $addr=!empty($mps[BackendUtils::ORG_ADDR])
+                ?$mps[BackendUtils::ORG_ADDR]
+                :$org[BackendUtils::ORG_ADDR];
+        }
 
+        // email is not per page
         $email=$org[self::ORG_EMAIL];
+
+        $name=trim($iUser->getDisplayName());
+        if(empty($name)){
+            $name=$org_name;
+        }
+
         if(empty($email)) $email=$iUser->getEMailAddress();
         if(empty($email)){
             return ['err'=>$l10n->t("Your email address is required for this operation.")];
         }
-        $addr=$org[self::ORG_ADDR];
         if(empty($addr)){
             return ['err'=>$l10n->t("A location, address or URL is required for this operation. Check User/Organization settings.")];
         }
@@ -1005,10 +1025,6 @@ class BackendUtils{
 //        \\ encodes \ \N or \n encodes newline \; encodes ; \, encodes ,
         $addr=str_replace(array("\\",";",",","\r\n","\r","\n"),array('\\\\','\;','\,',' \n',' \n',' \n'),$addr);
 
-        $name=trim($iUser->getDisplayName());
-        if(empty($name)){
-            $name=$org[self::ORG_NAME];
-        }
         if(empty($name)){
             return ['err'=>$l10n->t("Can't find your name. Check User/Organization settings.")];
         }

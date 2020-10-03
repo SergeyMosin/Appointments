@@ -1,3 +1,7 @@
+## 1.7.7 - 2020-10-03
+### Fixed
+- Issue #136, wrong location when additional pages are used.
+
 ## 1.7.6 - 2020-09-22
 ### Fixed
 - NC19 email template regression

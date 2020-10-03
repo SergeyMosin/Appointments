@@ -644,7 +644,7 @@ class BCSabreImpl implements IBackendConnector{
 
             /** @noinspection PhpUnhandledExceptionInspection */
             $parts=$this->utils->makeAppointmentParts(
-                $userId,$this->appName,$tzi,
+                $userId,$pageId,$this->appName,$tzi,
                 (new \DateTime('now',new \DateTimeZone('UTC')))->format(self::TIME_FORMAT));
             if(isset($parts['err'])) {
                 $this->logErr($parts['err']." - calId: " . $srcId . ", uri: " . $srcUri);

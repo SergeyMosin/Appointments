@@ -866,7 +866,7 @@ class PageController extends Controller {
         if($cal===null) return '1:'.$this->l->t("Selected calendar not found");
 
         $evt_parts=$this->utils->makeAppointmentParts(
-            $this->userId,$this->appName,$tz_data_str,$data[0],$title);
+            $this->userId,$pageId,$this->appName,$tz_data_str,$data[0],$title);
         if(isset($evt_parts['err'])){
             return '1:'.$evt_parts['err'];
         }
