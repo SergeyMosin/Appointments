@@ -209,25 +209,7 @@ class DavListener {
 
 
 //        $tmpl=$mailer->createEMailTemplate("ID_".time());
-        $r=new \ReflectionMethod('OCP\Mail\IEMailTemplate', 'addBodyListItem');
-        if($r->getNumberOfParameters()===6){
-            //NC20+
-            $tmpl=new EMailTemplateNC20(
-                new \OCP\Defaults(),
-                \OC::$server->getURLGenerator(),
-                $this->l10N,
-                "ID_".time(),
-                []
-            );
-        }else{
-            $tmpl=new EMailTemplateNC(
-                new \OCP\Defaults(),
-                \OC::$server->getURLGenerator(),
-                $this->l10N,
-                "ID_".time(),
-                []
-            );
-        }
+        $tmpl=$this->getEmailTemplate();
 
         // Message the organizer
         $om_prefix="";
@@ -570,7 +552,9 @@ class DavListener {
                 // Here we need organizer's timezone for getDateTimeString()
                 $utz_info.=$utils->getUserTimezone($userId,$config)->getName();
 
-                $tmpl = $mailer->createEMailTemplate("ID_" . time());
+//                $tmpl = $mailer->createEMailTemplate("ID_" . time());
+                $tmpl=$this->getEmailTemplate();
+
                 $tmpl->setSubject($om_prefix . ": " . $to_name . ", "
                     . $utils->getDateTimeString($evt_dt,$utz_info,1));
                 $tmpl->addHeading(" "); // spacer
@@ -672,4 +656,29 @@ class DavListener {
         $tmpl->addBodyText($talk_link_html,$talk_link_txt);
         return trim($talk_link_txt);
     }
+
+    private function getEmailTemplate(){
+        $r=new \ReflectionMethod('OCP\Mail\IEMailTemplate', 'addBodyListItem');
+        if($r->getNumberOfParameters()===6){
+            //NC20+
+            $tmpl=new EMailTemplateNC20(
+                new \OCP\Defaults(),
+                \OC::$server->getURLGenerator(),
+                $this->l10N,
+                "ID_".time(),
+                []
+            );
+        }else{
+            $tmpl=new EMailTemplateNC(
+                new \OCP\Defaults(),
+                \OC::$server->getURLGenerator(),
+                $this->l10N,
+                "ID_".time(),
+                []
+            );
+        }
+        return $tmpl;
+    }
+
+
 }
