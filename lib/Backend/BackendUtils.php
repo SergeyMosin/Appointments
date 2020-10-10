@@ -1077,9 +1077,10 @@ class BackendUtils{
             // Try Nextcloud default timezone
             $tz_name = $config->getUserValue($userId, 'core', 'timezone');
             if(empty($tz_name) || strpos($tz_name,'auto')){
+                return \OC::$server->getDateTimeZone()->getTimeZone();
                 // Use UTC
-                \OC::$server->getLogger()->warning("no timezone for floating time found - using date_default_timezone_get(): ".date_default_timezone_get());
-                $tz_name=date_default_timezone_get();
+//                \OC::$server->getLogger()->warning("no timezone for floating time found - using date_default_timezone_get(): ".date_default_timezone_get());
+//                $tz_name=date_default_timezone_get();
             }
         }
 
