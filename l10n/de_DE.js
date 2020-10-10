@@ -210,7 +210,7 @@ OC.L10N.register(
     "Talk App Integration" : "Talk-App-Einbindung",
     "Talk room settings for appointments" : "Besprechungsraum-Einstellungen für Termine",
     "Create rooms for confirmed appointments" : "Räume für bestätigte Termine erstellen",
-    "Delete when appointments is removed" : "Raum löschen, wenn Termine entfernt wurden",
+    "Delete when appointments is removed" : "Löschen, wenn Termine entfernt wurden",
     "Enable lobby" : "Lobby aktivieren",
     "Guest password" : "Gast-Passwort:",
     "Talk room name" : "Name des Besprechungsraums",
