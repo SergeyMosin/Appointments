@@ -6,6 +6,7 @@ namespace OCA\Appointments\Backend;
 
 use OCA\Appointments\AppInfo\Application;
 use OCA\Appointments\Email\EMailTemplateNC;
+use OCA\Appointments\Email\EMailTemplateNC20;
 use OCP\AppFramework\QueryException;
 use Sabre\VObject\Reader;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -208,13 +209,25 @@ class DavListener {
 
 
 //        $tmpl=$mailer->createEMailTemplate("ID_".time());
-        $tmpl=new EMailTemplateNC(
-            new \OCP\Defaults(),
-            \OC::$server->getURLGenerator(),
-            $this->l10N,
-            "ID_".time(),
-            []
-        );
+        $r=new \ReflectionMethod('OCP\Mail\IEMailTemplate', 'addBodyListItem');
+        if($r->getNumberOfParameters()===6){
+            //NC20+
+            $tmpl=new EMailTemplateNC20(
+                new \OCP\Defaults(),
+                \OC::$server->getURLGenerator(),
+                $this->l10N,
+                "ID_".time(),
+                []
+            );
+        }else{
+            $tmpl=new EMailTemplateNC(
+                new \OCP\Defaults(),
+                \OC::$server->getURLGenerator(),
+                $this->l10N,
+                "ID_".time(),
+                []
+            );
+        }
 
         // Message the organizer
         $om_prefix="";

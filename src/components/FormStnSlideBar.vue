@@ -95,7 +95,7 @@
                                 v-model="ppsInfo.metaNoIndex"
                                 type="checkbox"
                                 id="srgdev-appt_pps-meta-noindex"
-                                class="checkbox"><label for="srgdev-appt_pps-meta-noindex">{{t('appointments','Add {taginfo} tag',{taginfo: '"noindex" meta'})}}</label><a
+                                class="checkbox"><label for="srgdev-appt_pps-meta-noindex">{{t('appointments','Add {taginfo} tag',{taginfo: '/noindex/ meta'})}}</label><a
                                 class="icon-info srgdev-appt-info-link"
                                 target="_blank"
                                 href="https://support.google.com/webmasters/answer/93710?hl=en"></a></div>
