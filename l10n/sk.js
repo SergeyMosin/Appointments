@@ -1,6 +1,7 @@
 OC.L10N.register(
     "appointments",
     {
+    "Online (audio/video)" : "Online (audio/video)",
     "Your email address is required for this operation." : "Na túto operáciu sa vyžaduje vaša e-mailová adresa.",
     "A location, address or URL is required for this operation. Check User/Organization settings." : "Na túto operáciu je potrebné miesto, adresa alebo URL. Skontrolujte nastavenia používateľa/organizácie.",
     "Can't find your name. Check User/Organization settings." : "Vaše meno sa nenašlo. Skontrolujte nastavenia používateľa/organizácie.",
@@ -75,6 +76,7 @@ OC.L10N.register(
     "Can not get public URL from server" : "Nedá sa získať verejná URL zo servera",
     "Public link copied to clipboard" : "Verejný odkaz bol skopírovaný do schránky",
     "Copy Error" : "Chyba pri kopírovaní",
+    "Public Page" : "Verejná stránka",
     "Add Appointment Slots" : "Pridať možné stretnutia",
     "Loading" : "Načítava sa...",
     "Select Dates:" : "Vybrať dátumy:",
@@ -134,6 +136,7 @@ OC.L10N.register(
     "Text" : "Text",
     "URL" : "URL",
     "Save" : "Uložiť",
+    "Add New Link" : "Pridať nový odkaz",
     "Public Page Settings" : "Nastavenia verejnej stránky",
     "Control what your visitors see" : "Určte, čo uvidia vaši návštevníci",
     "Form Title" : "Názov formulára",

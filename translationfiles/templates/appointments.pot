@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2020-10-03 03:33+0000\n"
+"POT-Creation-Date: 2020-10-10 03:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,21 +41,21 @@ msgstr ""
 msgid "Online (audio/video)"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:998
+#: /app/lib/Backend/BackendUtils.php:1019
 msgid "Your email address is required for this operation."
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1002
+#: /app/lib/Backend/BackendUtils.php:1022
 msgid ""
 "A location, address or URL is required for this operation. Check User/"
 "Organization settings."
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1013
+#: /app/lib/Backend/BackendUtils.php:1029
 msgid "Can't find your name. Check User/Organization settings."
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1017
+#: /app/lib/Backend/BackendUtils.php:1033
 msgid "Available"
 msgstr ""
 
