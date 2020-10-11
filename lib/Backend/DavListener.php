@@ -6,6 +6,7 @@ namespace OCA\Appointments\Backend;
 
 use OCA\Appointments\AppInfo\Application;
 use OCA\Appointments\Email\EMailTemplateNC;
+use OCA\Appointments\Email\EMailTemplateNC20;
 use OCP\AppFramework\QueryException;
 use Sabre\VObject\Reader;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -208,13 +209,7 @@ class DavListener {
 
 
 //        $tmpl=$mailer->createEMailTemplate("ID_".time());
-        $tmpl=new EMailTemplateNC(
-            new \OCP\Defaults(),
-            \OC::$server->getURLGenerator(),
-            $this->l10N,
-            "ID_".time(),
-            []
-        );
+        $tmpl=$this->getEmailTemplate();
 
         // Message the organizer
         $om_prefix="";
@@ -270,23 +265,37 @@ class DavListener {
             // TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now confirmed.
             $tmpl->addBodyText($this->l10N->t('Your %1$s appointment scheduled for %2$s is now confirmed.',[$org_name,$date_time]));
 
-            if(count($xad)>4 && strlen($xad[4])>1) {
-                $tlk=$utils->getUserSettings(BackendUtils::KEY_TALK,$userId);
-                $ti = new TalkIntegration($tlk, $utils);
-                // add talk link info
-                $talk_link_txt=$this->addTalkInfo($tmpl,$xad,$ti,$tlk,$config->getUserValue($userId ,$this->appName, "c" . "nk"));
-            }
-
-            if(!empty($eml_settings[BackendUtils::EML_CNF_TXT])){
-                $tmpl->addBodyText($eml_settings[BackendUtils::EML_CNF_TXT]);
-            }
-
             // add cancellation link
             list($btn_url,$btn_tkn) = $this->makeBtnInfo(
                 $userId,$pageId,$embed,
                 $event['objectData']['uri'],
                 $utils,$config);
             $cnl_lnk_url=$btn_url."0".$btn_tkn;
+
+            if(count($xad)>4){
+                $has_link=strlen($xad[4])>1?1:0;
+                $tlk = $utils->getUserSettings(BackendUtils::KEY_TALK, $userId);
+                if($has_link===1) {
+                    $ti = new TalkIntegration($tlk, $utils);
+                    // add talk link info
+                    $talk_link_txt = $this->addTalkInfo(
+                        $tmpl, $xad, $ti, $tlk,
+                        $config->getUserValue($userId, $this->appName, "c" . "nk"));
+                }
+
+                if($tlk[BackendUtils::TALK_FORM_ENABLED]===true){
+                    if($has_link===0){
+                        // add in-person meeting type
+                        $tmpl->addBodyText($this->makeMeetingTypeInfo($tlk,$has_link));
+                    }
+                    $this->addTypeChangeLink($tmpl,$tlk,$btn_url."3".$btn_tkn,$has_link);
+                }
+            }
+
+
+            if(!empty($eml_settings[BackendUtils::EML_CNF_TXT])){
+                $tmpl->addBodyText($eml_settings[BackendUtils::EML_CNF_TXT]);
+            }
 
             if($eml_settings[BackendUtils::EML_MCONF]) {
                 $om_prefix = $this->l10N->t("Appointment confirmed");
@@ -322,6 +331,42 @@ class DavListener {
                     $ti = new TalkIntegration($tlk, $utils);
                     $ti->deleteRoom($xad[4]);
                 }
+            }
+
+        }elseif ($hint===BackendUtils::APPT_SES_TYPE_CHANGE){
+
+            $tmpl->setSubject($this->l10N->t("%s Appointment update",[$org_name]));
+            // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
+            $tmpl->addBodyText($this->l10N->t("Dear %s,",[$to_name]));
+            // TRANSLATORS Main part of email
+            $tmpl->addBodyText($this->l10N->t("Your appointment details have changed. Please review information below."));
+
+            $tlk = $utils->getUserSettings(BackendUtils::KEY_TALK, $userId);
+
+            $has_link=strlen($xad[4])>1?1:0;
+
+            $tmpl->addBodyListItem($this->makeMeetingTypeInfo($tlk,$has_link));
+            $tmpl->addBodyListItem($this->l10N->t("Date/Time: %s", [$date_time]));
+
+            if($has_link===1) {
+                // add talk link info
+                $ti = new TalkIntegration($tlk, $utils);
+                $talk_link_txt=$this->addTalkInfo(
+                    $tmpl,$xad,$ti,$tlk,
+                    $config->getUserValue($userId, $this->appName, "c". "nk"));
+            }
+
+            list($btn_url,$btn_tkn) = $this->makeBtnInfo(
+                $userId,$pageId,$embed,
+                $event['objectData']['uri'],
+                $utils,$config);
+
+            $this->addTypeChangeLink($tmpl,$tlk,$btn_url."3".$btn_tkn,$has_link);
+
+            $cnl_lnk_url=$btn_url."0".$btn_tkn;
+
+            if($eml_settings[BackendUtils::EML_MCONF]) {
+                $om_prefix = $this->l10N->t("Appointment updated");
             }
 
         }elseif($hint === null){
@@ -386,9 +431,15 @@ class DavListener {
             }
 
             // if there is a Talk room - add info...
-            if(count($xad)>4 && strlen($xad[4])>1) {
-                // add talk link info
-                $talk_link_txt=$this->addTalkInfo($tmpl,$xad,$ti,$tlk,$config->getUserValue($userId, $this->appName, "c". "nk"));
+            if(count($xad)>4){
+                $has_link=strlen($xad[4])>1?1:0;
+                if($has_link===1) {
+                    // add talk link info
+                    $talk_link_txt=$this->addTalkInfo(
+                        $tmpl,$xad,$ti,$tlk,
+                        $config->getUserValue($userId, $this->appName, "c". "nk"));
+                }
+                $this->addTypeChangeLink($tmpl,$tlk,$btn_url."3".$btn_tkn,$has_link);
             }
 
             if(empty($org_phone)) {
@@ -527,6 +578,9 @@ class DavListener {
             if(isset($evt->{BackendUtils::XAD_PROP})){
                 $evt->remove($evt->{BackendUtils::XAD_PROP});
             }
+            if(isset($evt->{BackendUtils::X_DSR})){
+                $evt->remove($evt->{BackendUtils::X_DSR});
+            }
 
             $msg->attach(
                 $mailer->createAttachment(
@@ -557,7 +611,9 @@ class DavListener {
                 // Here we need organizer's timezone for getDateTimeString()
                 $utz_info.=$utils->getUserTimezone($userId,$config)->getName();
 
-                $tmpl = $mailer->createEMailTemplate("ID_" . time());
+//                $tmpl = $mailer->createEMailTemplate("ID_" . time());
+                $tmpl=$this->getEmailTemplate();
+
                 $tmpl->setSubject($om_prefix . ": " . $to_name . ", "
                     . $utils->getDateTimeString($evt_dt,$utz_info,1));
                 $tmpl->addHeading(" "); // spacer
@@ -621,7 +677,7 @@ class DavListener {
      * @param $c
      * @return string
      */
-    function addTalkInfo($tmpl,$xad,$ti,$tlk,$c){
+    private function addTalkInfo($tmpl,$xad,$ti,$tlk,$c){
         $url=$ti->getRoomURL($xad[4]);
         $url_html='<a target="_blank" href="'.$url.'">'.$url.'</a>';
 
@@ -659,4 +715,91 @@ class DavListener {
         $tmpl->addBodyText($talk_link_html,$talk_link_txt);
         return trim($talk_link_txt);
     }
+
+    /**
+     * @param $tmpl
+     * @param $tlk
+     * @param $typeChangeLink
+     * @param int $newType 0=virtual, 1=real
+     */
+    private function addTypeChangeLink($tmpl,$tlk,$typeChangeLink,$newType){
+        $txt = strip_tags(trim($tlk[BackendUtils::TALK_FORM_TYPE_CHANGE_TXT]));
+        if (!empty($txt)) {
+
+            if($newType===0){
+                // need virtual text
+                $nt=htmlspecialchars((
+                    !empty($tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT])
+                        ?$tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT]
+                        :$tlk[BackendUtils::TALK_FORM_DEF_VIRTUAL]),
+                    ENT_QUOTES,'UTF-8');
+            }else{
+                // real txt
+                $nt=htmlspecialchars((
+                    !empty($tlk[BackendUtils::TALK_FORM_REAL_TXT])
+                        ?$tlk[BackendUtils::TALK_FORM_REAL_TXT]
+                        :$tlk[BackendUtils::TALK_FORM_DEF_REAL]),
+                    ENT_QUOTES,'UTF-8');
+            }
+
+            $txt=str_replace('{{new_type}}',$nt,$txt);
+
+            $s = strpos($txt, '{{');
+            if ($s !== false) {
+                $e = strpos($txt, '}}', $s);
+                if ($e !== false) {
+                    $ltx = substr($txt, $s + 2, $e - $s - 2);
+
+                    $p1 = substr($txt, 0, $s);
+                    $p2 = substr($txt, $e + 2);
+
+                    $h=$p1.'<a href="'. $typeChangeLink.'">'.$ltx.'<a>'.$p2;
+                    $t=$p1.$ltx. ': '. $typeChangeLink.' '. $p2;
+
+                    $tmpl->addBodyText($h,$t);
+                }
+            }
+        }
+    }
+
+    private function makeMeetingTypeInfo($tlk,$has_link){
+        $info=!empty($tlk[BackendUtils::TALK_FORM_LABEL])
+            ?$tlk[BackendUtils::TALK_FORM_LABEL]
+            :$tlk[BackendUtils::TALK_FORM_DEF_LABEL];
+        if($has_link){
+            $info.=': '.(!empty($tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT])
+                    ?$tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT]
+                    :$tlk[BackendUtils::TALK_FORM_DEF_VIRTUAL]);
+        }else{
+            $info.=': '.(!empty($tlk[BackendUtils::TALK_FORM_REAL_TXT])
+                    ?$tlk[BackendUtils::TALK_FORM_REAL_TXT]
+                    :$tlk[BackendUtils::TALK_FORM_DEF_REAL]);
+        }
+        return htmlspecialchars($info,ENT_QUOTES,'UTF-8');
+    }
+
+    private function getEmailTemplate(){
+        $r=new \ReflectionMethod('OCP\Mail\IEMailTemplate', 'addBodyListItem');
+        if($r->getNumberOfParameters()===6){
+            //NC20+
+            $tmpl=new EMailTemplateNC20(
+                new \OCP\Defaults(),
+                \OC::$server->getURLGenerator(),
+                $this->l10N,
+                "ID_".time(),
+                []
+            );
+        }else{
+            $tmpl=new EMailTemplateNC(
+                new \OCP\Defaults(),
+                \OC::$server->getURLGenerator(),
+                $this->l10N,
+                "ID_".time(),
+                []
+            );
+        }
+        return $tmpl;
+    }
+
+
 }

@@ -6,6 +6,8 @@ namespace OCA\Appointments\Backend;
 use OCA\Appointments\AppInfo\Application;
 use OCA\Talk\Participant;
 use OCA\Talk\Webinary;
+use OCA\Talk\Room;
+use ReflectionMethod;
 
 class TalkIntegration{
 
@@ -58,7 +60,12 @@ class TalkIntegration{
         if($tm!==null){
             $roomName=$this->formatRoomName($attendeeName,$dateTime,$userId);
             try {
-                $room = $tm->createPublicRoom($roomName);
+                $m = new ReflectionMethod($tm, 'createRoom');
+                if($m->isPublic()){
+                    $room = $tm->createRoom(Room::PUBLIC_CALL, $roomName);
+                }else {
+                    $room = $tm->createPublicRoom($roomName);
+                }
                 $room->addUsers([
                     'userId' => $userId,
                     'participantType' => Participant::OWNER,
@@ -220,7 +227,7 @@ class TalkIntegration{
             /** @type \OCA\Talk\Manager $tm */
             $tm = \OC::$server->getRegisteredAppContainer(Application::APP_ID)->query(self::$tmClass);
             $r=true;
-            if(!method_exists($tm,'createPublicRoom')){
+            if(!method_exists($tm,'createPublicRoom') && !method_exists($tm,'createRoom')){
                 $r=false;
             }elseif(!method_exists($tm,'getRoomByToken')){
                 $r=false;

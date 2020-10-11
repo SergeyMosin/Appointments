@@ -1,3 +1,12 @@
+## 1.7.9 - 2020-10-11
+### Added
+- Meeting type change capabilities - issue# 140
+
+## 1.7.8 - 2020-10-10
+### Fixed
+- Issue #139, NC20 talk integration.
+- Issue #141, NC20 email template error.
+
 ## 1.7.7 - 2020-10-03
 ### Fixed
 - Issue #136, wrong location when additional pages are used.

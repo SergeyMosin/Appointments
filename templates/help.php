@@ -92,7 +92,17 @@ form{
     <option value="" disabled="" selected="" hidden="">Select meeting type</option>
     <option style="font-size: medium" value="0">In-person meeting</option>
     <option style="font-size: medium" value="1">Online (audio/video)</option>
-  </select><br>
+  </select>
+  <p class="srgdev-appt-hs-p" style="margin-top: 1em;margin-bottom: .75em"><strong id="srgdev-sec_talkTypeChange">Type change email text</strong> - if this field is not empty and has two tokens <code class="srgdev-appt-hs-code_short">{{link_text}}</code> (can contain any text) and <code class="srgdev-appt-hs-code_short">{{new_type}}</code> (MUST be new_type), then this text will be attached to the email and attenddes will be able to switch their meeting type simply by clicking a link.</p>
+  <p class="srgdev-appt-hs-p">For example, this:</p>
+  <code class="srgdev-appt-hs-code">
+    Click {{here}} to change your appointment type to {{new_type}}.
+  </code>
+  <p class="srgdev-appt-hs-p">will look similar to this:</p>
+  <code class="srgdev-appt-hs-code">
+    Click <span style="color: blue;text-decoration: underline">here</span> to change your appointment type to Online (audio/video).
+  </code>
+  <p class="srgdev-appt-hs-p">Talk rooms will created and deleted as automatically when a meeting type changes.</p><br>
   <h2 class="srgdev-appt-hs-h1">10. iFrame/Embedding</h2>
     <div class="srgdev-appt-hs-p">
         1. If the iframe is under a different domain use <strong>occ</strong> to set allowed Frame Ancestor Domain:
