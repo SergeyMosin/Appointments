@@ -200,7 +200,7 @@ class PageController extends Controller {
         list($userId,$pageId) = $this->utils->verifyToken($this->request->getParam("token"),$this->c);
         $pd=$this->request->getParam("d");
         if($userId===null || $pd===null || strlen($pd)>512
-            || (($a=substr($pd,0,1))!=='0') && $a!=='1' && $a!=='2'){
+            || (($a=substr($pd,0,1))!=='0') && $a!=='1' && $a!=='2' && $a!=='3'){
             return new NotFoundResponse();
         }
 
@@ -318,6 +318,54 @@ class PageController extends Controller {
                     $page_text = $this->l->t("Your appointment scheduled for %s is canceled.", [$date_time]);
                 }else{
                     $page_text = $this->l->t("Your appointment is canceled.");
+                }
+            }
+        }else if($a==='3'){
+            // Appointment type change (Talk integration)
+
+            // Set hint for dav listener
+            $ses=\OC::$server->getSession();
+            $ses->set(
+                BackendUtils::APPT_SES_KEY_HINT,
+                BackendUtils::APPT_SES_TYPE_CHANGE);
+
+            $cId=$cal_id;
+            $data=$this->bc->getObjectData($cal_id,$uri);
+            if($data===null) {
+
+                // The appointment can be in the destination calendar (manual mode)
+                $cms = $this->utils->getUserSettings(
+                    $pageId === 'p0'
+                        ? BackendUtils::KEY_CLS
+                        : BackendUtils::KEY_MPS . $pageId,
+                    $userId);
+
+                if ($cms[BackendUtils::CLS_TS_MODE] === '0' && $otherCalId !== "-1") {
+                    $cId=$otherCalId;
+
+                    // try the destination calendar
+                    $data=$this->bc->getObjectData($otherCalId,$uri);
+                }
+
+            }
+
+            if($data!==null) {
+
+                $tlk = $this->utils->getUserSettings(BackendUtils::KEY_TALK, $userId);
+
+                list($new_type,$new_data) = $this->utils->dataChangeApptType($data, $userId);
+                if (!empty($new_type) && !empty($new_data)) {
+
+                    if($this->bc->updateObject($cId, $uri, $new_data) !== false) {
+                        $sts = 0;
+
+                        $lbl=!empty($tlk[BackendUtils::TALK_FORM_LABEL])
+                            ?$tlk[BackendUtils::TALK_FORM_LABEL]
+                            :$tlk[BackendUtils::TALK_FORM_DEF_LABEL];
+
+                        // TRANSLATORS Ex: Your {{meeting type}} has been changed to {{online(video/audio)}}
+                        $page_text = $this->l->t("Your %s has been changed to %s", [$lbl, $new_type]);
+                    }
                 }
             }
         }

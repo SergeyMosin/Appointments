@@ -122,6 +122,22 @@
                 class="srgdev-appt-sb-input-text"
                 id="srgdev-appt_talk-ff-virtual"
                 type="text">
+            <div class="srgdev-appt-info-lcont top-margin">
+              <label
+                  class="srgdev-appt-sb-label-inline"
+                  for="srgdev-appt_talk-type-change">
+                {{t('appointments','Type change email text:')}}</label><a
+                class="icon-info srgdev-appt-info-link"
+                @click="$root.$emit('helpWanted','talkTypeChange')"></a>
+            </div>
+            <textarea
+                :disabled="talkInfo.enabled===false"
+                @focus="noKeyNoFocus"
+                :placeholder="t('appointments','See documentation...')"
+                v-model="talkInfo.formTxtTypeChange"
+                class="srgdev-appt-sb-textarea"
+                id="srgdev-appt_talk-type-change"
+            ></textarea>
           </div>
         </div>
         <button
@@ -172,7 +188,9 @@ export default {
         formDefLabel:"",
         formDefPlaceholder:"",
         formDefReal:"",
-        formDefVirtual:""
+        formDefVirtual:"",
+
+        formTxtTypeChange:""
       }
     }
   },

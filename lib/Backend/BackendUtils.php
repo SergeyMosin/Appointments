@@ -14,6 +14,8 @@ class BackendUtils{
     const APPT_CAT="Appointment";
     const TZI_PROP="X-TZI";
     const XAD_PROP="X-APPT-DATA";
+    // original description
+    const X_DSR="X-APPT-DSR";
 
     const CIPHER="AES-128-CFB";
     const HASH_TABLE_NAME="appointments_hash";
@@ -25,6 +27,7 @@ class BackendUtils{
     public const APPT_SES_CONFIRM = "1";
     public const APPT_SES_CANCEL = "2";
     public const APPT_SES_SKIP = "3";
+    public const APPT_SES_TYPE_CHANGE = "4";
 
     public const KEY_ORG = 'org_info';
     public const ORG_NAME = 'organization';
@@ -174,6 +177,8 @@ class BackendUtils{
     public const TALK_FORM_DEF_REAL = "formDefReal";
     public const TALK_FORM_DEF_VIRTUAL = "formDefVirtual";
 
+    public const TALK_FORM_TYPE_CHANGE_TXT = "formTxtTypeChange";
+
     public const TALK_DEF = array(
         self::TALK_ENABLED => false,
         self::TALK_DEL_ROOM => false,
@@ -186,6 +191,7 @@ class BackendUtils{
         self::TALK_FORM_PLACEHOLDER => "",
         self::TALK_FORM_REAL_TXT => "",
         self::TALK_FORM_VIRTUAL_TXT => "",
+        self::TALK_FORM_TYPE_CHANGE_TXT => "",
     );
 
     private $appName=Application::APP_ID;
@@ -276,8 +282,12 @@ class BackendUtils{
         }
         $evt->SUMMARY->setValue("⌛ ".$info['name']);
 
+        $dsr=$info['name']."\n".(empty($info['phone'])?"":($info['phone']."\n")).$info['email'];
         if(!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
-        $evt->DESCRIPTION->setValue($info['name']."\n".(empty($info['phone'])?"":($info['phone']."\n")).$info['email']);
+        $evt->DESCRIPTION->setValue($dsr);
+
+        if(!isset($evt->{self::X_DSR})) $evt->add(self::X_DSR);
+        $evt->{self::X_DSR}->setValue($dsr);
 
         if(!isset($evt->STATUS)) $evt->add('STATUS');
         $evt->STATUS->setValue("CONFIRMED");
@@ -317,6 +327,61 @@ class BackendUtils{
         $this->setApptHash($evt);
 
         return $vo->serialize();
+    }
+
+    /**
+     * @param $uri
+     * @param $userId
+     * @return string[] [new meeting type, '' === error, data]
+     */
+    function dataChangeApptType($data,$userId){
+        $r=['',''];
+
+        $vo=$this->getAppointment($data,'CONFIRMED');
+        if($vo===null) return $r;
+
+        /** @var \Sabre\VObject\Component\VEvent $evt*/
+        $evt=$vo->VEVENT;
+
+        if(isset($evt->{BackendUtils::XAD_PROP})) {
+            // @see BackendUtils->dataSetAttendee for BackendUtils::XAD_PROP
+            $xad = explode(chr(31), $this->decrypt(
+                $evt->{BackendUtils::XAD_PROP}->getValue(),
+                $evt->UID->getValue()));
+
+            if(count($xad)>4) {
+
+                $a=$this->getAttendee($evt);
+                if ($a===null) {
+                    return $r;
+                }
+
+                if ($xad[4] === 'f') {
+                    // the appointment was previously finalized as "in-person"
+                    // ... so, set $xad[4]='_' @see BackendUtils->dataSetAttendee
+                    // this will add a talk room and description when a addTalkInfo is called
+                    $xad[4] = '_';
+
+                }elseif(strlen($xad[4])>1){
+                    // this was a virtual appointment...
+                    // ... $xad[4] is the room token.
+                    // delete the room first...
+
+                    $tlk = $this->getUserSettings(self::KEY_TALK, $userId);
+                    $ti = new TalkIntegration($tlk, $this);
+                    $ti->deleteRoom($xad[4]);
+
+                    // set $xad[4]='d' which will just and description @see BackendUtils->dataSetAttendee
+                    $xad[4]='d';
+                }
+
+                $new_type=$this->addEvtTalkInfo($userId,$xad,$evt,$a);
+                $r[0]=$new_type;
+                $r[1]=$vo->serialize();
+            }
+        }
+
+        return $r;
     }
 
     /**
@@ -369,6 +434,25 @@ class BackendUtils{
         $evt->SUMMARY->setValue("✔️ ".$a->parameters['CN']->getValue());
 
         //Talk link
+        $this->addEvtTalkInfo($userId,$xad,$evt,$a);
+
+        $this->setSEQ($evt);
+
+        $this->setApptHash($evt);
+
+        return [$vo->serialize(),$dts, $pageId];
+    }
+
+    /**
+     * @param $userId
+     * @param $xad
+     * @param $evt
+     * @param $a - attendee
+     * @return string new appointment type virtual/in-person (from talk settings)
+     */
+    private function addEvtTalkInfo($userId, $xad, $evt, $a){
+        $r='';
+
         if(count($xad)>4){
             if($xad[4]==='_') {
                 $tlk = $this->getUserSettings(self::KEY_TALK, $userId);
@@ -380,7 +464,7 @@ class BackendUtils{
                         $evt->DTSTART,
                         $userId);
                     if (!empty($token)) {
-                        if (!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
+
                         $l10n = \OC::$server->getL10N($this->appName);
                         if ($token !== "-") {
                             $pi = '';
@@ -395,38 +479,57 @@ class BackendUtils{
                             }
                             $evt->{self::XAD_PROP}->setValue($this->encrypt(
                                 implode(chr(31), $xad), $evt->UID));
-                            $evt->DESCRIPTION->setValue(
-                                $evt->DESCRIPTION->getValue() . "\n\n" .
+
+                            $this->updateDescription($evt,"\n\n" .
                                 $ti->getRoomURL($token) . $pi);
+
+                            $r=(!empty($tlk[self::TALK_FORM_VIRTUAL_TXT])
+                                ?$tlk[self::TALK_FORM_VIRTUAL_TXT]
+                                :$tlk[self::TALK_FORM_DEF_VIRTUAL]);
+
                         } else {
-                            $evt->DESCRIPTION->setValue(
-                                $evt->DESCRIPTION->getValue() . "\n\n" .
+
+                            $this->updateDescription($evt,"\n\n" .
                                 $l10n->t("Talk integration error: check logs"));
                         }
                     }
                 }
             }elseif ($xad[4]==='d'){
-                // overridden by client...
+                // meeting type is overridden by client to real,
                 // set xad to 'f' and add self::TALK_FORM_REAL_TXT to description
                 $xad[4]='f';
                 $evt->{self::XAD_PROP}->setValue($this->encrypt(
                     implode(chr(31), $xad), $evt->UID));
 
                 $tlk = $this->getUserSettings(self::KEY_TALK, $userId);
-                if (!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
-                $evt->DESCRIPTION->setValue(
-                    $evt->DESCRIPTION->getValue() . "\n\n" .
-                    (!empty($tlk[self::TALK_FORM_REAL_TXT])
-                        ?$tlk[self::TALK_FORM_REAL_TXT]
-                        :$tlk[self::TALK_FORM_DEF_REAL]));
+
+                $r=(!empty($tlk[self::TALK_FORM_REAL_TXT])
+                    ?$tlk[self::TALK_FORM_REAL_TXT]
+                    :$tlk[self::TALK_FORM_DEF_REAL]);
+
+                $this->updateDescription($evt,"\n\n".$r);
             }
         }
 
-        $this->setSEQ($evt);
+        return $r;
+    }
 
-        $this->setApptHash($evt);
+    /**
+     * @param \Sabre\VObject\Component\VEvent $evt
+     * @param $addString string text to be added to original description
+     */
+    private function updateDescription($evt,$addString){
+        // just in-case
+        if (!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
 
-        return [$vo->serialize(),$dts, $pageId];
+        if(isset($evt->{self::X_DSR})){
+            // we have original description
+            $d=$evt->{self::X_DSR}->getValue();
+        }else{
+            $d=$evt->DESCRIPTION->getValue();
+        }
+
+        $evt->DESCRIPTION->setValue($d.$addString);
     }
 
     /**
