@@ -102,7 +102,7 @@ form{
   <code class="srgdev-appt-hs-code">
     Click <span style="color: blue;text-decoration: underline">here</span> to change your appointment type to Online (audio/video).
   </code>
-  <p class="srgdev-appt-hs-p">Talk rooms will created and deleted as automatically when a meeting type changes.</p><br>
+  <p class="srgdev-appt-hs-p">Talk rooms will be created and deleted  automatically when a meeting type changes.</p><br>
   <h2 class="srgdev-appt-hs-h1">10. iFrame/Embedding</h2>
     <div class="srgdev-appt-hs-p">
         1. If the iframe is under a different domain use <strong>occ</strong> to set allowed Frame Ancestor Domain:
