@@ -1,3 +1,7 @@
+## 1.7.9 - 2020-10-11
+### Added
+- Meeting type change capabilities - issue# 140
+
 ## 1.7.8 - 2020-10-10
 ### Fixed
 - Issue #139, NC20 talk integration.
