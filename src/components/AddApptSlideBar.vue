@@ -38,7 +38,7 @@
               @click="$root.$emit('helpWanted','timezone')"><span>Please read</span></a>
         </div>
         <select v-model="apptTZ" id="appt_tz-select" class="appt-select">
-          <option value="L">Local (floating)</option>
+<!--          <option value="L">Local (floating)</option>-->
           <option value="C">{{tzName}}</option>
         </select>
           <p style="padding-top: .5em; font-size: 80%">Support for FLOATING timezones is being phased out</p>
