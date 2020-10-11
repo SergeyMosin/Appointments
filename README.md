@@ -1,5 +1,8 @@
 # Appointments App | NextCloud
 
+### Notice: Support for floating timezones is being phased-out
+
+
 ![Main View](screenshots/screenshot1.jpg)
 
 ---
@@ -13,5 +16,3 @@
 ---
 ## Getting Started...
 [Help/Tutorial](https://htmlpreview.github.io/?https://github.com/SergeyMosin/Appointments/blob/master/templates/help.php)
-
-[Timezone Settings](https://github.com/SergeyMosin/Appointments/issues/58#issuecomment-619092772)
