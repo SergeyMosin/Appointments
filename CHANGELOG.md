@@ -1,3 +1,6 @@
+## 1.7.10 - 2020-10-11
+- translation release - issue# 142 ?
+
 ## 1.7.9 - 2020-10-11
 ### Added
 - Meeting type change capabilities - issue# 140
