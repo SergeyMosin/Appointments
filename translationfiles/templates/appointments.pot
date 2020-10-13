@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2020-10-11 03:28+0000\n"
+"POT-Creation-Date: 2020-10-13 03:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,45 +17,45 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: /app/lib/Backend/BackendUtils.php:393
+#: /app/lib/Backend/BackendUtils.php:477
 msgid "Guest password:"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:404
+#: /app/lib/Backend/BackendUtils.php:493
 msgid "Talk integration error: check logs"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:848
+#: /app/lib/Backend/BackendUtils.php:951
 msgid "Meeting Type"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:849
+#: /app/lib/Backend/BackendUtils.php:952
 msgid "Select meeting type"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:850
+#: /app/lib/Backend/BackendUtils.php:953
 msgid "In-person meeting"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:851
+#: /app/lib/Backend/BackendUtils.php:954
 msgid "Online (audio/video)"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1019
+#: /app/lib/Backend/BackendUtils.php:1122
 msgid "Your email address is required for this operation."
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1022
+#: /app/lib/Backend/BackendUtils.php:1125
 msgid ""
 "A location, address or URL is required for this operation. Check User/"
 "Organization settings."
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1029
+#: /app/lib/Backend/BackendUtils.php:1132
 msgid "Can't find your name. Check User/Organization settings."
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1033
+#: /app/lib/Backend/BackendUtils.php:1136
 msgid "Available"
 msgstr ""
 
@@ -66,7 +66,8 @@ msgid "%s appointment (action needed)"
 msgstr ""
 
 #. TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
-#: /app/lib/Backend/DavListener.php:233 /app/lib/Backend/DavListener.php:328
+#: /app/lib/Backend/DavListener.php:233 /app/lib/Backend/DavListener.php:340
+#: /app/lib/Backend/DavListener.php:378
 #, php-format
 msgid "Dear %s,"
 msgstr ""
@@ -77,11 +78,11 @@ msgstr ""
 msgid "The %1$s appointment scheduled for %2$s is awaiting your confirmation."
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:244 /app/lib/Backend/DavListener.php:376
+#: /app/lib/Backend/DavListener.php:244 /app/lib/Backend/DavListener.php:426
 msgid "Confirm"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:246 /app/lib/Backend/DavListener.php:378
+#: /app/lib/Backend/DavListener.php:246 /app/lib/Backend/DavListener.php:428
 #: /app/specialVueFakeDummyForL10nScript.js:24
 #: /app/specialVueFakeDummyForL10nScript.js:121
 msgid "Cancel"
@@ -103,109 +104,113 @@ msgstr ""
 msgid "Your %1$s appointment scheduled for %2$s is now confirmed."
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:287
+#: /app/lib/Backend/DavListener.php:301
 msgid "Appointment confirmed"
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Canceled
-#: /app/lib/Backend/DavListener.php:297
+#: /app/lib/Backend/DavListener.php:311
 #, php-format
 msgid "%s Appointment is canceled"
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment Status Changed
-#: /app/lib/Backend/DavListener.php:302
+#: /app/lib/Backend/DavListener.php:316
 #, php-format
 msgid "%s appointment status changed"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:307
+#: /app/lib/Backend/DavListener.php:321
 #, php-format
 msgid "Your %1$s appointment scheduled for %2$s is now canceled."
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:311
+#: /app/lib/Backend/DavListener.php:325
 msgid "Appointment canceled"
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} appointment status update
-#: /app/lib/Backend/DavListener.php:326
+#: /app/lib/Backend/DavListener.php:338 /app/lib/Backend/DavListener.php:376
 #, php-format
 msgid "%s Appointment update"
 msgstr ""
 
 #. TRANSLATORS Main part of email
-#: /app/lib/Backend/DavListener.php:330
+#: /app/lib/Backend/DavListener.php:342 /app/lib/Backend/DavListener.php:380
 msgid "Your appointment details have changed. Please review information below."
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:340
+#: /app/lib/Backend/DavListener.php:349 /app/lib/Backend/DavListener.php:390
 #, php-format
 msgid "Date/Time: %s"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:351
+#: /app/lib/Backend/DavListener.php:369
+msgid "Appointment updated"
+msgstr ""
+
+#: /app/lib/Backend/DavListener.php:401
 msgid "Status: Canceled"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:356
+#: /app/lib/Backend/DavListener.php:406
 msgid "Status: Pending confirmation"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:358
+#: /app/lib/Backend/DavListener.php:408
 msgid "Status: Confirmed"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:364
+#: /app/lib/Backend/DavListener.php:414
 #, php-format
 msgid "Location: %s"
 msgstr ""
 
 #. TRANSLATORS Additional part of email - contact information WITHOUT phone number (only email). The last argument is email address.
-#: /app/lib/Backend/DavListener.php:391
+#: /app/lib/Backend/DavListener.php:447
 #, php-format
 msgid "If you have any questions please write to %s"
 msgstr ""
 
 #. TRANSLATORS Additional part of email - contact information WITH email AND phone number: If you have any questions please feel free to call {123-456-7890} or write to {email@example.com}
-#: /app/lib/Backend/DavListener.php:394
+#: /app/lib/Backend/DavListener.php:450
 #, php-format
 msgid ""
 "If you have any questions please feel free to call %1$s or write to %2$s"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:408 /app/templates/public/formerr.php:20
+#: /app/lib/Backend/DavListener.php:464 /app/templates/public/formerr.php:20
 #: /app/templates/public/thanks.php:9
 msgid "Thank you"
 msgstr ""
 
 #. TRANSLATORS This is a part of an email message. %1$s Cancel Appointment %2$s is a link to the cancellation page (HTML format).
-#: /app/lib/Backend/DavListener.php:415
+#: /app/lib/Backend/DavListener.php:471
 #, php-format
 msgid "To cancel your appointment please click: %1$s Cancel Appointment %2$s"
 msgstr ""
 
 #. TRANSLATORS This is a part of an email message. %s is a URL of the cancellation page (PLAIN TEXT format).
-#: /app/lib/Backend/DavListener.php:418
+#: /app/lib/Backend/DavListener.php:474
 #, php-format
 msgid "To cancel your appointment please visit: %s"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:480
+#: /app/lib/Backend/DavListener.php:536
 msgid "Appointment is canceled"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:517
+#: /app/lib/Backend/DavListener.php:573
 #, php-format
 msgid "%s Appointment"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:639 /app/lib/Backend/DavListener.php:652
+#: /app/lib/Backend/DavListener.php:698 /app/lib/Backend/DavListener.php:711
 msgid "Password"
 msgstr ""
 
 #. TRANSLATORS This a link to chat/(video)call, Ex: Chat/Call link: https://my_domain.com/call/kzu6e4uv
-#: /app/lib/Backend/DavListener.php:649
+#: /app/lib/Backend/DavListener.php:708
 #, php-format
 msgid "Chat/Call link: %s"
 msgstr ""
@@ -232,51 +237,57 @@ msgstr ""
 msgid "Your appointment is canceled."
 msgstr ""
 
+#. TRANSLATORS Ex: Your {{meeting type}} has been changed to {{online(video/audio)}}
+#: /app/lib/Controller/PageController.php:367
+#, php-format
+msgid "Your %s has been changed to %s"
+msgstr ""
+
 #. TRANSLATORS Meaning the booking process is finished
-#: /app/lib/Controller/PageController.php:330
+#: /app/lib/Controller/PageController.php:378
 msgid "All done."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:349
-#: /app/lib/Controller/PageController.php:633
+#: /app/lib/Controller/PageController.php:397
+#: /app/lib/Controller/PageController.php:681
 msgid "Info"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:350
-#: /app/lib/Controller/PageController.php:634
+#: /app/lib/Controller/PageController.php:398
+#: /app/lib/Controller/PageController.php:682
 msgid "Link Expired..."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:605
+#: /app/lib/Controller/PageController.php:653
 msgid "Almost done..."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:627
+#: /app/lib/Controller/PageController.php:675
 #, php-format
 msgid ""
 "We have sent an email to %s, please open it and click on the confirmation "
 "link to finalize your appointment request"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:690
+#: /app/lib/Controller/PageController.php:738
 msgid "Organization Name"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:696
+#: /app/lib/Controller/PageController.php:744
 #: /app/specialVueFakeDummyForL10nScript.js:128
-#: /app/specialVueFakeDummyForL10nScript.js:209
+#: /app/specialVueFakeDummyForL10nScript.js:211
 msgid "Book Your Appointment"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:860
+#: /app/lib/Controller/PageController.php:908
 msgid "Please add time slots first."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:863
+#: /app/lib/Controller/PageController.php:911
 msgid "Please select a calendar first"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:866
+#: /app/lib/Controller/PageController.php:914
 msgid "Selected calendar not found"
 msgstr ""
 
@@ -472,7 +483,7 @@ msgstr ""
 #: /app/specialVueFakeDummyForL10nScript.js:126
 #: /app/specialVueFakeDummyForL10nScript.js:150
 #: /app/specialVueFakeDummyForL10nScript.js:183
-#: /app/specialVueFakeDummyForL10nScript.js:204
+#: /app/specialVueFakeDummyForL10nScript.js:206
 msgid "Loading"
 msgstr ""
 
@@ -572,8 +583,8 @@ msgstr ""
 #: /app/specialVueFakeDummyForL10nScript.js:84
 #: /app/specialVueFakeDummyForL10nScript.js:148
 #: /app/specialVueFakeDummyForL10nScript.js:162
-#: /app/specialVueFakeDummyForL10nScript.js:199
-#: /app/specialVueFakeDummyForL10nScript.js:212
+#: /app/specialVueFakeDummyForL10nScript.js:201
+#: /app/specialVueFakeDummyForL10nScript.js:214
 msgid "Apply"
 msgstr ""
 
@@ -624,7 +635,7 @@ msgid "External"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:85
-#: /app/specialVueFakeDummyForL10nScript.js:201
+#: /app/specialVueFakeDummyForL10nScript.js:203
 msgid "Warning"
 msgstr ""
 
@@ -762,7 +773,7 @@ msgid "Control what your visitors see"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:127
-#: /app/specialVueFakeDummyForL10nScript.js:208
+#: /app/specialVueFakeDummyForL10nScript.js:210
 msgid "Form Title"
 msgstr ""
 
@@ -1010,40 +1021,48 @@ msgstr ""
 msgid "\"Online\" option text:"
 msgstr ""
 
+#: /app/specialVueFakeDummyForL10nScript.js:199
+msgid "Type change email text:"
+msgstr ""
+
 #: /app/specialVueFakeDummyForL10nScript.js:200
-msgid "\"Meeting type\" form field."
+msgid "See documentation..."
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:202
+msgid "\"Meeting type\" form field."
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:204
 msgid ""
 "Guest will be placed in the lobby until you allow access to the Room "
 "manually via Talk app side menu."
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:203
+#: /app/specialVueFakeDummyForL10nScript.js:205
 msgid "Your Contact Information"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:203
+#: /app/specialVueFakeDummyForL10nScript.js:205
 msgid "Form header and event organizer settings"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:205
+#: /app/specialVueFakeDummyForL10nScript.js:207
 #: /app/templates/public/form.php:37
 msgid "Name:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:206
-#: /app/specialVueFakeDummyForL10nScript.js:211
+#: /app/specialVueFakeDummyForL10nScript.js:208
+#: /app/specialVueFakeDummyForL10nScript.js:213
 #: /app/templates/public/form.php:39
 msgid "Email:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:207
+#: /app/specialVueFakeDummyForL10nScript.js:209
 msgid "Location:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:210
+#: /app/specialVueFakeDummyForL10nScript.js:212
 #: /app/templates/public/form.php:43
 msgid "Phone:"
 msgstr ""
