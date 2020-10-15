@@ -79,7 +79,7 @@
                                 v-model="ppsInfo.gdpr"
                                 id="srgdev-appt_pps-gdpr"
                                 type="text"
-                                :placeholder="t('appointments','See Tutorial...')">
+                                :placeholder="t('appointments','See Tutorial ...')">
                         <div style="padding-top: .25em"
                              class="srgdev-appt-sb-chb-cont"><input
                                 v-model="ppsInfo.hidePhone"

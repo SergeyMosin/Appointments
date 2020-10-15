@@ -395,7 +395,7 @@ class PageController extends Controller {
                 $tr_name="public/thanks";
                 $tr_params=[
                     'appt_c_head'=>$this->l->t("Info"),
-                    'appt_c_msg'=>$this->l->t("Link Expired...")
+                    'appt_c_msg'=>$this->l->t("Link Expired ...")
                 ];
                 $tr_sts=409;
             }
@@ -650,7 +650,7 @@ class PageController extends Controller {
         $tmpl='public/formerr';
         $rs=500;
         $param=[
-            'appt_c_head'=>$this->l->t("Almost done..."),
+            'appt_c_head'=>$this->l->t("Almost done ..."),
         ];
 
         $sts=$this->request->getParam('sts');
@@ -679,7 +679,7 @@ class PageController extends Controller {
                     // TODO: graceful redirect somewhere, via js perhaps??
                     $tmpl = 'public/thanks';
                     $param['appt_c_head']=$this->l->t("Info");
-                    $param['appt_c_msg'] = $this->l->t("Link Expired...");
+                    $param['appt_c_msg'] = $this->l->t("Link Expired ...");
                     $rs = 409;
                 }
             }

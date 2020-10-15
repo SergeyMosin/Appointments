@@ -133,7 +133,7 @@
             <textarea
                 :disabled="talkInfo.enabled===false"
                 @focus="noKeyNoFocus"
-                :placeholder="t('appointments','See documentation...')"
+                :placeholder="t('appointments','See documentation ...')"
                 v-model="talkInfo.formTxtTypeChange"
                 class="srgdev-appt-sb-textarea"
                 id="srgdev-appt_talk-type-change"

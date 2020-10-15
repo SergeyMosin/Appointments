@@ -214,7 +214,7 @@ export default {
       this.apply(true)
       this.$emit("showModal", [
         this.t('appointments', 'Warning'),
-        this.t('appointments', 'Time slot mode has changed. Public page is going offline…'),
+        this.t('appointments', 'Time slot mode has changed. Public page is going offline ...'),
         this.start])
     },
 
