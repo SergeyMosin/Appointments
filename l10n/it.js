@@ -213,7 +213,7 @@ OC.L10N.register(
     "Talk room settings for appointments" : "Impostazioni stanza Talk per appuntamenti",
     "Create rooms for confirmed appointments" : "Crea stanza per appuntamenti confermati",
     "Delete when appointments is removed" : "Elimina quando l'appuntamento viene rimosso",
-    "Enable lobby" : "Abilita anticamera",
+    "Enable lobby" : "Abilita ingresso",
     "Guest password" : "Password ospite",
     "Talk room name" : "Nome stanza di Talk",
     "Guest name + Date/Time" : "Nome ospite + data/ora",

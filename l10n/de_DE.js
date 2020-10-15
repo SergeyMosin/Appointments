@@ -27,7 +27,7 @@ OC.L10N.register(
     "%s Appointment update" : "%s Terminaktualisierung",
     "Your appointment details have changed. Please review information below." : "Ihre Termindetails haben sich geändert. Bitte überprüfen Sie die Informationen unten.",
     "Date/Time: %s" : "Datum/Uhrzeit: %s",
-    "Appointment updated" : "Verabredung aktualisiert",
+    "Appointment updated" : "Termin aktualisiert",
     "Status: Canceled" : "Status: Abgesagt",
     "Status: Pending confirmation" : "Status: Wartende Bestätigung",
     "Status: Confirmed" : "Status: Bestätigt",

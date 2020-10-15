@@ -76,6 +76,7 @@ OC.L10N.register(
     "Customize Public Page" : "Anpassa publika sidan",
     "close" : "stäng",
     "Enable lobby" : "Aktivera lobbyn",
+    "See documentation..." : "Se dokumentation...",
     "Name:" : "Namn:",
     "Email:" : "E-post:",
     "Location:" : "Ort:",
