@@ -1,0 +1,2 @@
+https://hg.mozilla.org/comm-central/file/tip/calendar/timezones/zones.json
+save file as zones.js @see issue #112

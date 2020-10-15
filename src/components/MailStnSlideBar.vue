@@ -1,7 +1,14 @@
 <template>
-    <SlideBar :title="t('appointments','Emails and Notifications')" :subtitle="t('appointments','Control when emails and notifications are sent')" @close="close">
+    <SlideBar :title="t('appointments','Emails and Notifications')" :subtitle="t('appointments','Control when emails and notifications are sent')" icon="icon-appt-go-back" @close="close">
         <template slot="main-area">
-            <div class="srgdev-appt-sb-main-cont">
+          <div v-show="isLoading===true" class="sb_loading_cont">
+            <span class="icon-loading sb_loading_icon_cont"></span>
+            <span class="sb_loading_text">{{t('appointments','Loading')}}</span>
+          </div>
+            <div
+                v-show="isLoading===false"
+                :class="{'sb_disable':isSending}"
+                class="srgdev-appt-sb-main-cont">
                 <input
                         v-model="emlInfo.icsFile"
                         type="checkbox"
@@ -46,11 +53,46 @@
                             id="srgdev-appt_emn-me-cancel"
                             class="checkbox"><label class="srgdev-appt-sb-label-inline" for="srgdev-appt_emn-me-cancel">{{t('appointments','Canceled')}}</label><br>
                 </div>
-                <button
-                        @click="apply"
-                        class="primary srgdev-appt-sb-genbtn">{{t('appointments','Apply')}}
-                </button>
-
+                <div
+                        style="margin-bottom: .75em"
+                        class="srgdev-appt-info-lcont">
+                    <input
+                            v-model="emlInfo.skipEVS"
+                            type="checkbox"
+                            id="srgdev-appt_emn-skip-evs"
+                            class="checkbox"><label style="margin-left: -3px;" class="srgdev-appt-sb-label-inline" for="srgdev-appt_emn-skip-evs">{{t('appointments','Skip email validation step')}}</label><a
+                        class="icon-info srgdev-appt-info-link"
+                        @click="$root.$emit('helpWanted','emailskipevs')"></a>
+                </div>
+                <label
+                        v-show="emlInfo.skipEVS===false"
+                        class="srgdev-appt-sb-label-inline"
+                        for="srgdev-appt_emn-vld-note">
+                    {{t('appointments','Additional VALIDATION email text:')}}</label>
+                <textarea
+                        v-show="emlInfo.skipEVS===false"
+                        v-model="emlInfo.vldNote"
+                        class="srgdev-appt-sb-textarea"
+                        id="srgdev-appt_emn-vld-note"
+                ></textarea>
+                <div class="srgdev-appt-info-lcont">
+                    <label
+                        class="srgdev-appt-sb-label-inline"
+                        for="srgdev-appt_emn-cnf-note">
+                    {{t('appointments','Additional CONFIRMATION email text:')}}</label><a
+                        class="icon-info srgdev-appt-info-link"
+                        @click="$root.$emit('helpWanted','emailmoretext')"></a>
+                </div>
+                <textarea
+                        v-model="emlInfo.cnfNote"
+                        class="srgdev-appt-sb-textarea"
+                        id="srgdev-appt_emn-cnf-note"
+                ></textarea>
+              <button
+                  @click="apply"
+                  class="primary srgdev-appt-sb-genbtn"
+                  :class="{'appt-btn-loading':isSending}">{{t('appointments','Apply')}}
+              </button>
             </div>
         </template>
     </SlideBar>
@@ -64,26 +106,51 @@
         components: {
             SlideBar
         },
-        props:{
-            title:'',
-            subtitle:'',
-            emlInfo: {
-                type: Object,
-                default: function () {
-                    return {
-                        icsFile: false,
-                        attMod: false,
-                        attDel: false,
-                        meReq: false,
-                        meConfirm: false,
-                        meCancel: false
-                    }
-                }
-            }
-        },
-        methods: {
-            apply(){
-                this.$emit('apply',this.emlInfo)
+      props:{
+        title:'',
+        subtitle:'',
+      },
+      mounted: function () {
+        this.isLoading=true
+        this.start()
+      },
+      inject: ['getState', 'setState'],
+      data: function (){
+        return {
+          isLoading:true,
+          isSending:false,
+          // TODO: email ME modification/update
+          emlInfo: {
+            icsFile: false,
+            skipEVS: false,
+            attMod: false,
+            attDel: false,
+            meReq: false,
+            meConfirm: false,
+            meCancel: false,
+            vldNote: "",
+            cnfNote: ""
+          }
+        }
+      },
+       methods: {
+         async start() {
+           this.isLoading=true
+           try {
+             this.emlInfo = await this.getState("get_eml", "")
+             this.isLoading=false
+           } catch (e) {
+             this.isLoading=false
+             console.log(e)
+             OC.Notification.showTemporary(this.t('appointments', "Can not request data"), {timeout: 4, type: 'error'})
+           }
+         },
+
+         apply(){
+           this.isSending=true
+           this.setState('set_eml',this.emlInfo).then(()=>{
+             this.isSending=false
+           })
             },
             close(){
                 this.$emit('close')

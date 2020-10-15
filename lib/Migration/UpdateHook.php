@@ -5,148 +5,112 @@ namespace OCA\Appointments\Migration;
 
 
 use OC\User\Manager;
-use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
-use OCA\Appointments\Controller\PageController;
-use OCA\DAV\CalDAV\CalDavBackend;
-use OCP\AppFramework\QueryException;
+use OCA\Appointments\Backend\ExternalModeSabrePlugin;
 use OCP\IConfig;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
-use OCP\PreConditionNotMetException;
 
 class UpdateHook implements IRepairStep {
+
+    private const KEY_U_NAME = 'organization';
+    private const KEY_U_EMAIL = 'email';
+    private const KEY_U_ADDR = 'address';
+    private const KEY_U_PHONE = 'phone';
 
     private $c;
     private $um;
     private $appName;
+    private $utils;
 
     public function __construct($AppName,
                         IConfig $config,
-                        Manager $userManager){
+                        Manager $userManager,
+                        BackendUtils $utils){
         $this->c=$config;
         $this->um=$userManager;
         $this->appName=$AppName;
+        $this->utils=$utils;
     }
 
     public function getName(){
         return 'Update hook for Appointments app';
     }
 
-    public function run(IOutput $output){
+    public function run(IOutput $output)
+    {
 
-        $nb_key="new_backend";
-        if(empty($this->c->getAppValue($this->appName,$nb_key))) {
+        $nb_key = "new_backend";
+        $nb_val=intval($this->c->getAppValue($this->appName, $nb_key,'0'));
 
-            $users = $this->um->search('', 1000);
+        if ($nb_val < 3) {
 
-            try {
-                /** @var CalDavBackend $backend */
-                $backend = \OC::$server->query(CalDavBackend::class);
-                if (!method_exists($backend, "getCalendarByUri")) {
-                    $backend = null;
-                }
-            } catch (QueryException $e) {
-                $output->warning("appointments UpdateHook can't get CalDavBackend");
-                $backend = null;
-            }
-
+            $users = $this->um->search('', 2000);
             $output->info("running appointments UpdateHook for " . count($users) . " users");
+
             foreach ($users as $user) {
                 if ($user->getLastLogin() !== 0) {
                     $userId = $user->getUID();
 
-                    // convert cal_uri -> cal_id
-                    $cal_url = $this->c->getUserValue(
-                        $userId, $this->appName,
-                        'cal_url', null);
-                    if ($cal_url !== null) {
-                        $cal_id = -1;
-                        if ($backend !== null) {
-                            $cal = $backend->getCalendarByUri(
-                                BackendManager::PRINCIPAL_PREFIX . $userId,
-                                $cal_url);
-                            if ($cal !== null) {
-                                $cal_id = $cal['id'];
-                            }
+                    if($nb_val<2) {
+                        // TODO: remove soon
+                        // this is previous fix (version skipped)
+                        // Fix #111 regression
+                        if (!empty($this->c->getUserValue($userId, $userId, BackendUtils::KEY_CLS))) {
+                            $this->c->deleteUserValue($userId, $userId, BackendUtils::KEY_CLS);
                         }
+                    }
+                    // new update
 
-                        try {
-                            $this->c->setUserValue(
-                                $userId, $this->appName,
-                                'cal_id', $cal_id);
-                        } catch (PreConditionNotMetException $e) {
-                            $output->warning($e->getMessage());
+                    $cal_id=$this->c->getUserValue($userId, $this->appName, 'cal_id');
+                    if (!empty($cal_id)){
+
+                        $this->c->deleteUserValue($userId, $this->appName, 'cal_id');
+
+                        $cls=$this->utils->getUserSettings(
+                            BackendUtils::KEY_CLS,$userId);
+                        $cls[BackendUtils::CLS_MAIN_ID]=strval($cal_id);
+
+                        $js=json_encode($cls);
+                        if($js!==false){
+                            /** @noinspection PhpUnhandledExceptionInspection */
+                            $this->c->setUserValue($userId,$this->appName,BackendUtils::KEY_CLS,$js);
                         }
-                        $this->c->deleteUserValue(
-                            $userId, $this->appName, 'cal_url');
                     }
 
-                    // Email Options
-                    $ics = $this->c->getUserValue(
-                        $userId, $this->appName,
-                        BackendUtils::EML_ICS, null);
-                    if ($ics !== null) {
-                        $a = BackendUtils::EML_DEF;
-                        $a[BackendUtils::EML_ICS] = $ics;
-                        $j = json_encode($a);
-                        if ($j !== false) {
-                            try {
-                                $this->c->setUserValue(
-                                    $userId, $this->appName,
-                                    BackendUtils::KEY_EML, $j);
-                            } catch (PreConditionNotMetException $e) {
-                                $output->warning($e->getMessage());
-                            }
+                    // org info
+                    $org_name=$this->c->getUserValue($userId, $this->appName, self::KEY_U_NAME,null);
+                    if($org_name!==null){
+
+                        $a=array(
+                            BackendUtils::ORG_NAME=>$org_name,
+                            BackendUtils::ORG_EMAIL=>$this->c->getUserValue($userId, $this->appName, self::KEY_U_EMAIL),
+                            BackendUtils::ORG_ADDR=>$this->c->getUserValue($userId, $this->appName, self::KEY_U_ADDR),
+                            BackendUtils::ORG_PHONE=>$this->c->getUserValue($userId, $this->appName, self::KEY_U_PHONE)
+                        );
+                        $js=json_encode($a);
+                        if($js!==false){
+                            /** @noinspection PhpUnhandledExceptionInspection */
+                            $this->c->setUserValue($userId,$this->appName,BackendUtils::KEY_ORG,$js);
                         }
-                        $this->c->deleteUserValue(
-                            $userId, $this->appName,
-                            BackendUtils::EML_ICS);
+
+                        $this->c->deleteUserValue($userId, $this->appName,self::KEY_U_NAME);
+                        $this->c->deleteUserValue($userId, $this->appName,self::KEY_U_EMAIL);
+                        $this->c->deleteUserValue($userId, $this->appName,self::KEY_U_ADDR);
+                        $this->c->deleteUserValue($userId, $this->appName,self::KEY_U_PHONE);
                     }
 
-                    // Convert pubPageSettings
-                    $PPS_KEY = "pubPageSettings";
-
-                    $old_pps = $this->c->getUserValue(
-                        $userId, $this->appName, $PPS_KEY, null);
-
-                    if ($old_pps !== null) {
-                        $a = PageController::PSN_DEF;
-                        $a[PageController::PSN_NWEEKS] = $old_pps[0];
-                        $a[PageController::PSN_EMPTY] = boolval($old_pps[1]);
-                        $a[PageController::PSN_FNED] = boolval($old_pps[2]);
-                        $a[PageController::PSN_WEEKEND] = boolval($old_pps[3]);
-                        $a[PageController::PSN_TIME2] = boolval($old_pps[4]);
-
-                        $a[PageController::PSN_FORM_TITLE] = $this->c->getUserValue(
-                            $userId, $this->appName, PageController::PSN_FORM_TITLE);
-                        $a[PageController::PSN_GDPR] = $this->c->getUserValue(
-                            $userId, $this->appName, PageController::PSN_GDPR);
-
-                        $j = json_encode($a);
-                        if ($j !== false) {
-                            try {
-                                $this->c->setUserValue(
-                                    $userId, $this->appName,
-                                    PageController::KEY_PSN, $j);
-                            } catch (PreConditionNotMetException $e) {
-                                $output->warning($e->getMessage());
-                            }
-                        }
-
-                        $this->c->deleteUserValue(
-                            $userId, $this->appName, $PPS_KEY);
-                        $this->c->deleteUserValue(
-                            $userId, $this->appName,
-                            PageController::PSN_FORM_TITLE);
-                        $this->c->deleteUserValue(
-                            $userId, $this->appName,
-                            PageController::PSN_GDPR);
+                    // autofix fix for multi-page
+                    $afv=$this->c->getUserValue($userId, $this->appName,
+                        ExternalModeSabrePlugin::AUTO_FIX_URI,"");
+                    if(!empty($afv) && $afv[0]==="/"){
+                        $this->c->setUserValue($userId, $this->appName,
+                            ExternalModeSabrePlugin::AUTO_FIX_URI,
+                            'p0'.$afv.chr(31));
                     }
                 }
             }
-
-            $this->c->setAppValue($this->appName,$nb_key,"1");
+            $this->c->setAppValue($this->appName, $nb_key, "3");
         }
         $output->info("appointments UpdateHook finished");
     }

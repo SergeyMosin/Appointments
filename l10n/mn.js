@@ -3,14 +3,26 @@ OC.L10N.register(
     {
     "Confirm" : "Батлах",
     "Cancel" : "болиулах",
+    "Password" : "Нууц үг",
     "Info" : "Info",
+    "Delete" : "Устгах",
+    "Settings" : "Тохиргоо",
     "Close" : "Хаах",
+    "Remove" : "Устгах",
+    "Loading" : "Loading",
+    "Start" : "эхлэх",
     "Apply" : "хэрэглэх",
+    "Warning" : "Warning",
+    "Error" : "Алдаа",
+    "Edit" : "засварлах",
+    "Title" : "Цол/Албан тушаал",
+    "URL" : "URL",
+    "Save" : "Хадгалах",
     "Deleted" : "Устгагдсан",
     "Confirmed" : "Баталгаажсан",
-    "Start" : "эхлэх",
     "Location:" : "Байршил:",
     "Back" : "буцах",
-    "Next" : "дараагийх"
+    "Next" : "дараагийх",
+    "An error has occurred" : "Алдаа гарлаа"
 },
 "nplurals=2; plural=(n != 1);");

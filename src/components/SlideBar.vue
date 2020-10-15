@@ -4,7 +4,7 @@
             <header :class="{'app-sidebar-header--with-figure': hasFigure}"
                     class="app-sidebar-header">
                 <!-- close sidebar button -->
-                <a href="#" class="app-sidebar__close icon-close" :title="t('appointments','close')"
+                <a href="#" :class="['app-sidebar__close', icon]" :title="t('appointments','close')"
                    @click.prevent="closeSidebar" />
 
                 <!-- sidebar header illustration/figure -->
@@ -57,6 +57,10 @@
                 type: String,
                 default: ''
             },
+            icon: {
+                type: String,
+                default: 'icon-close'
+            },
             /**
              * Url to the top header background image
              * Applied with css
@@ -98,7 +102,7 @@
     @import '../../node_modules/@nextcloud/vue/src/assets/variables.scss';
 
     $header-height: 50px;
-    $sidebar-min-width: 300px;
+    $slidebar-min-width: 360px;
     $sidebar-max-width: 500px;
 
     $desc-vertical-padding: 18px;
@@ -114,7 +118,7 @@
         /** height: calc(100vh - #{$header-height}); */
         height: 100%;
         width: 27vw;
-        min-width: $sidebar-min-width;
+        min-width: $slidebar-min-width;
         max-width: $sidebar-max-width;
         top: 0;
 
@@ -242,7 +246,7 @@
 
     .slide-right-enter-to,
     .slide-right-leave {
-        min-width: $sidebar-min-width;
+        min-width: $slidebar-min-width;
         max-width: $sidebar-max-width;
     }
 

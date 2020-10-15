@@ -21,8 +21,16 @@
 
         setTimeout(function () {
             let b=document.getElementById("srgdev-ncfp_fbtn")
+            let txt
+            // translations are done on the backend (bug???)
+            if(b.hasAttribute("data-tr-ses-to")){
+                txt=b.getAttribute('data-tr-ses-to')
+            }else{
+                // Back-up ????
+                txt='Session Timeout. Reload.';
+            }
             b.disabled=true;
-            b.textContent="Session Timeout. Reload."
+            b.textContent=txt
         },900000)
     }
 
@@ -65,13 +73,25 @@
 
         el=document.getElementById("srgdev-ncfp_sel-hidden")
         let sdx=el.selectedIndex
+        let tzi
         if (sdx===-1 || el.value===""){
             el=document.getElementById("srgdev-ncfp_sel-dummy")
             el.setAttribute('err','err');
             el.addEventListener("focus",clearFormErr,false)
             lee=1
+        }else{
+            tzi=el.dataRef[sdx].tzi
         }
-        let tzi=el.dataRef[sdx].tzi
+
+        el=document.getElementById("srgdev-ncfp_talk_type")
+        if (el!==null){
+            sdx=el.selectedIndex
+            if (sdx!==1 && sdx!==2){
+                el.setAttribute('err','err');
+                el.addEventListener("focus",clearFormErr,false)
+                lee=1
+            }
+        }
 
         el=document.getElementById("srgdev-ncfp_fname")
         if (el.value.length<3){
@@ -85,9 +105,10 @@
             el.addEventListener("input",clearFormErr,false)
             lee=1
         }
+        // Phone field is optional
         // match [0-9], '.()-+,/' and ' ' (space) at least 9 digits
         el=document.getElementById("srgdev-ncfp_fphone")
-        if (el.value==='' || el.value.length<9 || /^[0-9 .()\-+,/]*$/.test(el.value)===false){
+        if (el!==null && (el.value==='' || el.value.length<9 || /^[0-9 .()\-+,/]*$/.test(el.value)===false)){
             el.setCustomValidity( t('appointments','Phone number is required.'));
             el.addEventListener("input",clearFormErr,false)
             lee=1
@@ -105,7 +126,7 @@
             e.stopPropagation()
             return false
         }
-
+        document.getElementById("srgdev-ncfp_fbtn-spinner").style.display="inline-block"
         el=document.createElement("input")
         el.type="hidden"
         el.name="tzi"
@@ -149,8 +170,13 @@
 
     function timeClick(e) {
         let t=e.target
+
+        if(t.parentElement.dpuClickID!==undefined){
+            t=t.parentElement;
+        }
+
         if(t.dpuClickID!==undefined){
-            document.getElementById('srgdev-ncfp_sel-dummy').value=t.parentElement.getAttribute('data-dm')+' - '+t.textContent;
+            document.getElementById('srgdev-ncfp_sel-dummy').value=t.parentElement.getAttribute('data-dm')+' - '+t.timeAt;
             let elm=document.getElementById('srgdev-ncfp_sel-hidden')
             elm.selectedIndex=t.dpuClickID
             elm.value=elm.dataRef[t.dpuClickID].d
@@ -160,16 +186,22 @@
     }
 
     function prevNextDPU(e) {
-        const p=e.target.parentElement
-        if(e.target.id==="srgdev-dpu_bf-back"){
-            if(p.curDP>0) p.curDP--
-        }else{
-            if(p.curDP<p.maxDP) p.curDP++
-            if(p.curDP===p.maxDP){
-                e.target.setAttribute('disabled','')
-            }else{
-                e.target.removeAttribute('disabled')
+        let p
+        // e.target===undefined when we do initial "scroll" @see makeDpu()
+        if(e.target!==undefined) {
+            p = e.target.parentElement
+            if (e.target.id === "srgdev-dpu_bf-back") {
+                if (p.curDP > 0) p.curDP--
+            } else {
+                if (p.curDP < p.maxDP) p.curDP++
+                if (p.curDP === p.maxDP) {
+                    e.target.setAttribute('disabled', '')
+                } else {
+                    e.target.removeAttribute('disabled')
+                }
             }
+        }else{
+            p=e;
         }
         if(p.curDP===0){
             p.firstElementChild.setAttribute('disabled','')
@@ -187,7 +219,50 @@
 
         document.getElementById("srgdev-dpu_main-date").style.left="-"+(p.curDP*5*4.6)+"em"
     }
-    
+
+    function addSwipe(cont,bfc) {
+        cont.touchInfo={x:0,y:0,id:-1}
+        cont.bfNav=bfc
+        cont.addEventListener("touchstart",swipeStart)
+        cont.addEventListener("touchend", swipeEnd)
+
+    }
+    /** @param {TouchEvent} e */
+    function swipeStart(e) {
+        if(e.changedTouches!==undefined && e.changedTouches.length>0){
+            const cc=e.changedTouches[0]
+            const ti=this.touchInfo
+            ti.x=cc.clientX
+            ti.y=cc.clientY
+            ti.id=cc.identifier
+        }
+    }
+    /** @param {TouchEvent} e */
+    function swipeEnd(e) {
+        if(e.changedTouches!==undefined && e.changedTouches.length>0){
+            const cc=e.changedTouches[0]
+            const ti=this.touchInfo
+            if(cc.identifier===ti.id) {
+                const dx=(cc.clientX-ti.x)|0
+                const dy=(cc.clientY-ti.y)|0
+                let t = dx>>31
+                let dx_abc=((dx + t) ^ t)
+                t = dy>>31
+                if( dx_abc > ((dy + t) ^ t) && dx_abc>50 ){
+                    if(dx<0){
+                        // swipe left - push next
+                        this.bfNav.lastElementChild.click()
+                    }else{
+                        // swipe right - push prev
+                        this.bfNav.firstElementChild.click()
+                    }
+                }
+            }
+            ti.id=-1
+        }
+    }
+
+
     
     function makeDpu(pps) {
 
@@ -195,7 +270,9 @@
         const PPS_EMPTY="showEmpty";
         const PPS_FNED="startFNED";
         const PPS_WEEKEND="showWeekends";
+        const PPS_SHOWTZ="showTZ";
         const PPS_TIME2="time2Cols";
+        const PPS_END_TIME="endTime";
 
         let pso={}
         let ta=pps.split('.')
@@ -211,12 +288,11 @@
             console.log("data-state: ",s.getAttribute("data-state"))
             return
         }
-        // There is a proble with js translations without Vue, so just get it from PHP for now
+        // There is a problem with js translations without Vue, so just get it from PHP for now
         const dpuTrHdr=s.getAttribute("data-hdr")
         const dpuTrBack=s.getAttribute("data-tr-back")
         const dpuTrNext=s.getAttribute("data-tr-next")
         const dpuTrNA=s.getAttribute("data-tr-not-available")
-
 
         let mn
         let dn
@@ -233,10 +309,10 @@
         }
 
         const has_intl=window.Intl && typeof window.Intl === "object"
-
+        const lang=document.documentElement.lang
         let tf
         if(has_intl) {
-            let f = new Intl.DateTimeFormat([],
+            let f = new Intl.DateTimeFormat([lang],
                 {hour: "numeric", minute: "2-digit"})
             tf=f.format
         }else{
@@ -244,9 +320,21 @@
                 return d.toLocaleTimeString()
             }
         }
+
+        let tfz
+        if(has_intl) {
+            let f = new Intl.DateTimeFormat([lang],
+                {hour: "numeric", minute: "2-digit", timeZoneName:"short"})
+            tfz=f.format
+        }else{
+            tfz=function (d) {
+                return d.toLocaleTimeString()
+            }
+        }
+
         let df
         if(has_intl) {
-            let f = new Intl.DateTimeFormat([],
+            let f = new Intl.DateTimeFormat([lang],
                 {month: "long"})
             df=f.format
         }else{
@@ -257,7 +345,7 @@
 
         let wf
         if(has_intl) {
-            let f = new Intl.DateTimeFormat([],
+            let f = new Intl.DateTimeFormat([lang],
                 {weekday: "short"})
             wf=f.format
         }else{
@@ -268,7 +356,7 @@
 
         let wft
         if(has_intl) {
-            let f = new Intl.DateTimeFormat([],
+            let f = new Intl.DateTimeFormat([lang],
                 {weekday: "short", month: "long", day: "2-digit"})
             wft=f.format
         }else{
@@ -279,7 +367,7 @@
 
         let wff
         if(has_intl) {
-            let f = new Intl.DateTimeFormat([],
+            let f = new Intl.DateTimeFormat([lang],
                 {weekday: "long", month: "long", day: "numeric", year:"numeric"})
             wff=f.format
         }else{
@@ -287,7 +375,6 @@
                 return d.toLocaleDateString()
             }
         }
-
 
         let dta=[]
         let tzn=undefined
@@ -300,17 +387,49 @@
             if(typeof tzn!=="string") tzn=undefined
         }
 
-        for(let md=new Date(),tzo,tzi,t,
+        for(let md=new Date(),tzo,tzi,t,tStr,atStr,sp,sp2,ti,
+                ts,endTime=pso[PPS_END_TIME],showTZ=pso[PPS_SHOWTZ],
                 ia=s.getAttribute("data-info").split(','),
                 l=ia.length,i=0,ds;i<l;i++){
             ds=ia[i]
 
-            let sp=ds.indexOf(":",8);
+            sp=ds.indexOf(":",8);
             md.setTime(+ds.substr(1,sp-1)*1000)
             tzo=md.getTimezoneOffset()
             t=ds.charAt(0)
 
-            if(t==="F") md.setTime(md.getTime()+(tzo*60000))
+            ti=0
+            if(t==="F"){
+                ti=(tzo*60000)
+                md.setTime(md.getTime()+ti)
+                tStr=atStr=tf(md)
+            }else{
+                if(showTZ===0){
+                    tStr=atStr=tf(md)
+                }else{
+                    tStr=atStr=tfz(md)
+                    if(endTime===1){
+                        tStr=tf(md) // no tz override
+                    }
+
+                }
+            }
+            ts=md.getTime()
+
+            if(endTime===1){
+                sp2=sp+1
+                // sp must be the pos of the last used ':'
+                sp=ds.indexOf(":",sp2)
+                // sp2 is end time
+                sp2=+ds.substr(sp2,sp-sp2)*1000
+
+                md.setTime(ts+((sp2+ti)-ts))
+                if(t==='F' || showTZ===0){
+                    tStr+=' - '+tf(md)
+                }else{
+                    tStr+=' - '+tfz(md)
+                }
+            }
 
             if(tzn!==undefined){
                 tzi=t+tzn
@@ -323,15 +442,20 @@
                 tzi=t+(tzo>0?'-':'+')+(h<10?'0'+h:h)+(m<10?'0'+m:m)
             }
 
+            sp++
+            sp2=ds.indexOf(":",sp)
             dta[i] = {
-                rts: md.getTime(),
-                d: ds.substr(sp+1),
-                tzi:tzi
+                rts: ts,
+                d: ds.substr(sp,sp2-sp),
+                t: ds.substr(sp2+2), // +2 is for ":_"
+                tzi:tzi,
+                time:tStr,
+                timeAt:atStr
             }
         }
 
         dta.sort((a, b) => (a.rts > b.rts) ? 1 : -1)
-        dta.push({rts:0,d:"",tzi:""}) //last option to finalize the loop
+        dta.push({rts:0,d:"",t:"",tzi:"",time:""}) //last option to finalize the loop
 
         s.dataRef=dta
 
@@ -374,6 +498,7 @@
         lcd.id="srgdev-dpu_main-date"
         lcd.className="srgdev-dpu-bkr-cls"
         lcd.style.left="0em"
+        addSwipe(lcd,lcdBF)
         cont.appendChild(lcd)
 
         let lcTime=document.createElement('div')
@@ -396,7 +521,7 @@
             e1.className='srgdev-dpu-date-cont'+(is_empty?" srgdev-dpu-dc-empty":"")
 
             let e2=document.createElement('span')
-            e2.className='srgdev-dpu-date-wd'
+            e2.className=d.getDay()!==0?'srgdev-dpu-date-wd':'srgdev-dpu-date-wd srgdev-dpu-date-wd-sunday';
             e2.appendChild(document.createTextNode(wf(d)))
             e1.appendChild(e2)
 
@@ -440,20 +565,24 @@
 
         let tu_class
         // Time columns
-        if(pso[PPS_TIME2]===1){
-            tu_class='srgdev-dpu-time-unit2'
+        if(pso[PPS_TIME2]===0 || pso[PPS_END_TIME]===1){
+            tu_class='srgdev-dpu-time-unit'+
+                (pso[PPS_END_TIME]===1?"_tn":"")
         }else{
-            tu_class='srgdev-dpu-time-unit'
+            tu_class='srgdev-dpu-time-unit2'
         }
 
-        for(let ts,ti,ets,tts,te,pe,i=0;i<l;i++){
-            ts= dta[i].rts
+        for(let tl,ts,ti,ets,tts,te,pe,dto,i=0;i<l;i++){
+            dto=dta[i]
+            ts= dto.rts
             if(ts===0) break
             d.setTime(ts)
 
             let ud=d.getDate()
 
             if(lastUD!==ud){
+
+                // if(do_break) break
 
                 // Show "empty" days ...
                 tts=td.getTime()
@@ -497,7 +626,6 @@
                     te.setAttribute('data-active','')
                 }
                 lcd.appendChild(te)
-                if(do_break) break
 
                 te=document.createElement('div')
                 te.id="srgdev-dpu_tc"+(lcc-1)
@@ -520,7 +648,15 @@
             te=document.createElement("span")
             te.className=tu_class
             te.dpuClickID=i
-            te.appendChild(document.createTextNode(tf(d)))
+            te.timeAt=dto.timeAt
+            // te.appendChild(document.createTextNode(tf(d)))
+            te.appendChild(document.createTextNode(dto.time))
+            if(dto.t!=="") {
+                tl = document.createElement("span")
+                tl.className = "srgdev-dpu-appt-title"
+                tl.appendChild(document.createTextNode(dto.t))
+                te.appendChild(tl)
+            }
             pe.appendChild(te)
         }
 
@@ -530,8 +666,8 @@
         d.setHours(1)
         d.setTime(d.getTime()+86400000)
 
-        lcc%=5
-        if(lcc>0) {
+        // lcc%=5
+        if(lcc%5>0) {
             for(let ti,l = 5 - (lcc % 5), i = 0; i < l; i++) {
 
                 ti = d.getDay()
@@ -555,18 +691,27 @@
             }
         }
 
+
         // Make empty time cont
-        lcdBF=document.createElement('div')
-        lcdBF.id="srgdev-dpu_tce"
-        lcdBF.className='srgdev-dpu-time-cont'
-        lcdBF.appendChild(document.createTextNode(dpuTrNA))
-        lcTime.appendChild(lcdBF)
+        let te=document.createElement('div')
+        te.id="srgdev-dpu_tce"
+        te.className='srgdev-dpu-time-cont'
+        te.appendChild(document.createTextNode(dpuTrNA))
+        lcTime.appendChild(te)
 
         lcTime.firstElementChild.setAttribute('data-active','')
         lcd.curActive=an.toString()
 
         cont.addEventListener("click", timeClick)
         document.getElementById('srgdev-ncfp_sel_cont').appendChild(cont)
+
+        // let's make sure the correct date square is shown...
+        // ... 5 is the number of available slots per pagination page
+        let ti=Math.floor(an/5)
+        if(ti>0) {
+            lcdBF.curDP=ti
+            prevNextDPU(lcdBF)
+        }
     }
 
 })()

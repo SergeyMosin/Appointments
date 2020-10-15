@@ -49,10 +49,14 @@ module.exports = {
 		new webpack.DefinePlugin({
 			appVersion: JSON.stringify(require('./package.json').version)
 		}),
-		new CopyPlugin([
-			{ from: 'node_modules/@nextcloud/vue/src/assets/variables.scss', to: '../css/variables.scss' },
-			{ from: '../../core/css/variables.scss', to: '../css/svariables.scss' },
-		]),
+		new CopyPlugin(
+			{
+				patterns: [
+					{from: 'node_modules/@nextcloud/vue/src/assets/variables.scss', to: '../css/variables.scss'},
+					{from: '../../core/css/variables.scss', to: '../css/svariables.scss'},
+				]
+			}
+		),
 
 	]
 	,

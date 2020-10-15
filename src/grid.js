@@ -182,36 +182,53 @@ function _apptGridMaker() {
     function addPastAppts(data,clr) {
 
         const btm=DH*12; // 12*5min=1hour
-        for(let sp,tzo,ets,elm,uTop,d=new Date(),ds,uLen,cID,da=data.split(","),
-                l=da.length,i=0;i<l;i++){
-            ds=da[i]
-
-            sp=ds.indexOf(":",8);
-
-            //get end time first
-            d.setTime(ds.substr(sp+2)*1000)
-
-            tzo=d.getTimezoneOffset()
-            if(ds.charAt(0)==="F"){
-                tzo*=60000
-            }else{
-                tzo=0
+        const pd=data.split(String.fromCharCode(31))
+        for(let pds,j=0,ll=pd.length;j<ll;j++) {
+            pds=pd[j]
+            if(pds.length<3) continue
+            if(j>0){
+                const sep=pds.indexOf(String.fromCharCode(30))
+                if(sep===-1) continue
+                clr=pds.substr(0,sep)
+                pds=pds.substr(sep+1)
             }
+            for (let sp, tzo, ets, elm, uTop, d = new Date(), ds, uLen, cID, da = pds.split(","),
+                     l = da.length, i = 0; i < l; i++) {
+                ds = da[i]
 
-            ets=d.getTime()+tzo
+                sp = ds.indexOf(":", 8);
 
-            // start
-            d.setTime(ds.substr(1,sp-1)*1000+tzo)
+                //get end time first
+                d.setTime(ds.substr(sp + 2) * 1000)
 
-            uLen=Math.floor((ets-d.getTime())/300000)
+                tzo = d.getTimezoneOffset()
+                if (ds.charAt(0) === "F") {
+                    tzo *= 60000
+                } else {
+                    tzo = 0
+                }
 
-            cID=d.getDay()-1
-            uTop=Math.floor((((d.getHours()-8)*60)/5)
-                +((d.getMinutes()/5)))
+                ets = d.getTime() + tzo
 
-            if(uTop>=0 && uTop+uLen<=btm){
-                elm=makeApptElement(uTop,uLen,null,cID,clr)
-                mData.mc_cols[cID].appendChild(elm)
+                // start
+                d.setTime(ds.substr(1, sp - 1) * 1000 + tzo)
+
+                uLen = Math.floor((ets - d.getTime()) / 300000)
+
+                cID = d.getDay() - 1
+                if(cID<0){
+                    // this is sunday
+                    continue
+                }
+                // console.log("cID:",cID)
+
+                uTop = Math.floor((((d.getHours() - 8) * 60) / 5)
+                    + ((d.getMinutes() / 5)))
+
+                if (uTop >= 0 && uTop + uLen <= btm) {
+                    elm = makeApptElement(uTop, uLen, null, cID, clr)
+                    mData.mc_cols[cID].appendChild(elm)
+                }
             }
         }
     }
@@ -360,10 +377,10 @@ function _apptGridMaker() {
 
         // Ever 3rd line visible i.e. 15min
         const VS_LINE = 2
-
+        const lang=document.documentElement.lang
        let timeFormat
         if(window.Intl && typeof window.Intl === "object") {
-            let f = new Intl.DateTimeFormat([],
+            let f = new Intl.DateTimeFormat([lang],
                 {hour: "numeric", minute: "2-digit"})
             timeFormat=f.format
         }else{

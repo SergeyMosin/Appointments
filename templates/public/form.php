@@ -11,7 +11,8 @@ style('appointments', 'form');
     if($_['appt_state']!=='2'){
         $disabled='disabled ';
     }
-    print $_['appt_inline_style'].'<form autocomplete="off" method="POST" class="srgdev-ncfp-form" '.$disabled.' id="srgdev-ncfp_frm" data-pps="'.$_['appt_pps'].'">
+    /** @noinspection PhpUndefinedVariableInspection */
+    print $_['appt_inline_style'].'<form autocomplete="off" method="POST" class="srgdev-ncfp-form" '.$disabled.' id="srgdev-ncfp_frm" data-pps="'.$_['appt_pps'].'" novalidate>
         <h2 class="srgdev-ncfp-form-org">'.htmlentities($_['appt_org_name']).'</h2>
         <div class="srgdev-ncfp-form-addr">'.$_['appt_org_addr'].'</div>
         <h3 class="srgdev-ncfp-form-header">'.
@@ -32,21 +33,23 @@ style('appointments', 'form');
                 echo ' '.$disabled.'data-state="'.$_['appt_state'].'" data-info="'.$_['appt_sel_opts'].'" data-hdr="'.htmlspecialchars($l->t('Select Date and Time'),ENT_QUOTES, 'UTF-8').'" data-tr-back="'.htmlspecialchars($back,ENT_QUOTES, 'UTF-8').'" data-tr-next="'.htmlspecialchars($next,ENT_QUOTES, 'UTF-8').'" data-tr-not-available="'.htmlspecialchars($l->t('No Appointments Available'),ENT_QUOTES, 'UTF-8').'">';
                 ?>
         </div>
+        <?php if(isset($_['appt_tlk_type'])) echo $_['appt_tlk_type']; ?>
         <label for="srgdev-ncfp_fname" class="srgdev-ncfp-form-label"><?php p($l->t("Name:"))?></label>
-        <input name="name" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter Name")); ?>" id="srgdev-ncfp_fname" class="srgdev-ncfp-form-input" type="text">
+        <input name="name" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter name")); ?>" id="srgdev-ncfp_fname" class="srgdev-ncfp-form-input" type="text">
         <label for="srgdev-ncfp_femail" class="srgdev-ncfp-form-label"><?php p($l->t("Email:"));?></label>
-        <input name="email" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter Email")); ?>" id="srgdev-ncfp_femail" class="srgdev-ncfp-form-input" type="email">
-        <label for="srgdev-ncfp_fphone" class="srgdev-ncfp-form-label"><?php p($l->t("Phone:")); ?></label>
-        <input name="phone" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter Phone Number")); ?>" id="srgdev-ncfp_fphone" class="srgdev-ncfp-form-input" type="tel"><?php
+        <input name="email" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter email")); ?>" id="srgdev-ncfp_femail" class="srgdev-ncfp-form-input" type="email">
+        <?php
+        if($_['appt_hide_phone']===false) {
+            echo '<label for="srgdev-ncfp_fphone" class="srgdev-ncfp-form-label">'.htmlspecialchars($l->t("Phone:"), ENT_QUOTES, 'UTF-8').'</label><input name="phone" ' .$disabled .' placeholder="' . htmlspecialchars($l->t("Enter phone number"), ENT_QUOTES, 'UTF-8') . '" id="srgdev-ncfp_fphone" class="srgdev-ncfp-form-input" type="tel">';
+        }
         if(!empty($_['appt_gdpr'])){
             echo '<div class="srgdev-ncfp-chb-cont"><input class="checkbox" type="checkbox" id="appt_gdpr_id"/>'.(strpos($_['appt_gdpr'],'appt_gdpr_id')===false?'<label for="appt_gdpr_id">'.$_['appt_gdpr'].'</label>':$_['appt_gdpr']).'</div>';
         }
         ?>
-        <button id="srgdev-ncfp_fbtn" <?php echo $disabled ?>class="primary srgdev-ncfp-form-btn"><?php
+        <button id="srgdev-ncfp_fbtn" <?php echo $disabled ?>class="primary srgdev-ncfp-form-btn" data-tr-ses-to="<?php
+        echo htmlspecialchars($l->t('Session Timeout. Reload.'), ENT_QUOTES, 'UTF-8').'"><span>'.
             // TRANSLATORS This is the text for the "Book Now" button, on the appointment form.
-            p($l->t("Book Now"));
-            ?></button>
+        htmlspecialchars($l->t("Book Now"),ENT_QUOTES,'UTF-8');?></span><span id="srgdev-ncfp_fbtn-spinner"></span></button>
     </div>
     </form>
-
 </div>

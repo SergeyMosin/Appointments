@@ -3,13 +3,25 @@ OC.L10N.register(
     {
     "Confirm" : "Bevestig",
     "Cancel" : "Kanselleer",
+    "Password" : "Wagwoord",
     "Info" : "Inligting",
+    "Delete" : "Skrap",
+    "Settings" : "Instellings",
     "Close" : "Sluit",
+    "Remove" : "Verwyder",
+    "Loading" : "Laai tans..",
+    "Start" : "Start",
+    "Warning" : "Waarskuwing",
+    "Error" : "Fout",
+    "Edit" : "Wysig",
+    "Title" : "Titel",
+    "URL" : "Bronadres",
+    "Save" : "Stoor",
     "Deleted" : "Geskrap",
     "Confirmed" : "Bevestig",
-    "Start" : "Start",
     "Location:" : "Ligging:",
     "Back" : "Terug",
-    "Next" : "Volgende"
+    "Next" : "Volgende",
+    "An error has occurred" : "’n Fout het voorgekom"
 },
 "nplurals=2; plural=(n != 1);");

@@ -1,7 +1,14 @@
 <template>
-    <SlideBar :title="t('appointments','Public Page Settings')" :subtitle="t('appointments','Control what your visitors see')" @close="close">
+    <SlideBar :title="t('appointments','Public Page Settings')" :subtitle="t('appointments','Control what your visitors see')" icon="icon-appt-go-back" @close="close">
         <template slot="main-area">
-            <div class="pps-main-cont">
+          <div v-show="isLoading===true" class="sb_loading_cont">
+            <span class="icon-loading sb_loading_icon_cont"></span>
+            <span class="sb_loading_text">{{t('appointments','Loading')}}</span>
+          </div>
+          <div
+              v-show="isLoading===false"
+              :class="{'sb_disable':isSending}"
+              class="pps-main-cont">
                 <label class="pps-txt-label" for="srgdev-appt_pps-form-title">{{t('appointments','Form Title')}}:</label>
                 <input
                         class="pps-text-input"
@@ -23,30 +30,41 @@
                     <option value="4">{{t('appointments','Four Weeks')}}</option>
                     <option value="5">{{t('appointments','Five Weeks')}}</option>
                 </select>
-                <input
+                <div class="srgdev-appt-sb-chb-cont"><input
                         v-model="ppsInfo.showEmpty"
                         type="checkbox"
                         id="srgdev-appt_pps-show-empty"
                         class="checkbox">
-                <label for="srgdev-appt_pps-show-empty">{{t('appointments','Show Empty Days')}}</label><br>
+                    <label for="srgdev-appt_pps-show-empty">{{t('appointments','Show Empty Days')}}</label></div>
                 <div class="pps-indent"
                         v-show="ppsInfo.showEmpty===true">
-                    <input
+                    <div style="margin-top: .25em" class="srgdev-appt-sb-chb-cont"><input
                             v-model="ppsInfo.startFNED"
                             type="checkbox"
                             id="srgdev-appt_pps-start-mon"
-                            class="checkbox"><label for="srgdev-appt_pps-start-mon">{{t('appointments','Start on current day instead of Monday')}}</label><br>
-                    <input
+                            class="checkbox"><label for="srgdev-appt_pps-start-mon">{{t('appointments','Start on current day instead of Monday')}}</label></div>
+                    <div class="srgdev-appt-sb-chb-cont"><input
                             v-model="ppsInfo.showWeekends"
                             type="checkbox"
                             id="srgdev-appt_pps-show-weekends"
-                            class="checkbox"><label for="srgdev-appt_pps-show-weekends">{{t('appointments','Show Empty Weekends')}}</label><br>
+                            class="checkbox"><label for="srgdev-appt_pps-show-weekends">{{t('appointments','Show Empty Weekends')}}</label></div>
                 </div>
-                <input
+                <div class="srgdev-appt-sb-chb-cont"><input
                         v-model="ppsInfo.time2Cols"
                         type="checkbox"
+                        :disabled="ppsInfo.endTime===true"
                         id="srgdev-appt_pps-time-cols"
-                        class="checkbox"><label for="srgdev-appt_pps-time-cols">{{t('appointments','Show time in two columns')}}</label><br><br>
+                        class="checkbox"><label for="srgdev-appt_pps-time-cols">{{t('appointments','Show time in two columns')}}</label></div>
+                <div class="srgdev-appt-sb-chb-cont"><input
+                        v-model="ppsInfo.endTime"
+                        type="checkbox"
+                        @change="function() {
+                          if(ppsInfo.endTime===true && ppsInfo.time2Cols===true){
+                              ppsInfo.time2Cols=false
+                          }
+                        }"
+                        id="srgdev-appt_pps-end-time"
+                        class="checkbox"><label for="srgdev-appt_pps-end-time">{{t('appointments','Show end time')}}</label></div><br>
                 <ApptAccordion
                     title="Advanced Settings"
                     :open="false">
@@ -62,17 +80,25 @@
                                 id="srgdev-appt_pps-gdpr"
                                 type="text"
                                 :placeholder="t('appointments','See Tutorial...')">
-                        <label
-                                class="pps-label"
-                                for="srgdev-appt_pps-appt-reset">
-                            {{t('appointments','When Attendee Cancels')}}:</label>
-                        <select
-                                v-model="ppsInfo.whenCanceled"
-                                class="pps-input"
-                                id="srgdev-appt_pps-appt-reset">
-                            <option value="mark">{{t('appointments','Mark the appointment as canceled')}}</option>
-                            <option value="reset">{{t('appointments','Reset (make the timeslot available)')}}</option>
-                        </select>
+                        <div style="padding-top: .25em"
+                             class="srgdev-appt-sb-chb-cont"><input
+                                v-model="ppsInfo.hidePhone"
+                                type="checkbox"
+                                id="srgdev-appt_pps-hide-phone"
+                                class="checkbox"><label for="srgdev-appt_pps-hide-phone">{{t('appointments','Hide phone number field')}}</label></div>
+                        <div class="srgdev-appt-sb-chb-cont"><input
+                                v-model="ppsInfo.showTZ"
+                                type="checkbox"
+                                id="srgdev-appt_pps-show-tz"
+                                class="checkbox"><label for="srgdev-appt_pps-show-tz">{{t('appointments','Show timezone')}}</label></div>
+                        <div class="srgdev-appt-info-lcont srgdev-appt-sb-chb-cont"><input
+                                v-model="ppsInfo.metaNoIndex"
+                                type="checkbox"
+                                id="srgdev-appt_pps-meta-noindex"
+                                class="checkbox"><label for="srgdev-appt_pps-meta-noindex">{{t('appointments','Add {taginfo} tag',{taginfo: '/noindex/ meta'})}}</label><a
+                                class="icon-info srgdev-appt-info-link"
+                                target="_blank"
+                                href="https://support.google.com/webmasters/answer/93710?hl=en"></a></div>
                         <label class="pps-txt-label" for="srgdev-appt_pps-page-title">{{t('appointments','Page Header Title:')}}</label>
                         <input
                                 v-model="ppsInfo.pageTitle"
@@ -101,9 +127,9 @@
                 </ApptAccordion>
                 <button
                         @click="apply"
-                        class="primary pps-genbtn">{{t('appointments','Apply')}}
+                        class="primary pps-genbtn"
+                        :class="{'appt-btn-loading':isSending}">{{t('appointments','Apply')}}
                 </button>
-
             </div>
         </template>
     </SlideBar>
@@ -119,31 +145,56 @@
             SlideBar,
             ApptAccordion
         },
-        props:{
+      mounted: function () {
+        this.isLoading=true
+        this.start()
+      },
+      inject: ['getState', 'setState'],
+      props:{
             title:'',
             subtitle:'',
-            ppsInfo: {
-                type: Object,
-                default: function () {
-                    return {
-                        formTitle:"",
-                        nbrWeeks: "1",
-                        showEmpty: true,
-                        startFNED: false,
-                        showWeekends: false,
-                        time2Cols: false,
-                        gdpr: "",
-                        whenCanceled:"mark",
-                        pageTitle:"",
-                        pageSubTitle:"",
-                        pageStyle:""
-                    }
-                }
-            }
         },
+      data: function (){
+        return {
+          isLoading:true,
+          isSending:false,
+          ppsInfo: {
+            formTitle:"",
+            nbrWeeks: "1",
+            showEmpty: true,
+            startFNED: false,
+            showWeekends: false,
+            time2Cols: false,
+            endTime: false,
+            gdpr: "",
+            whenCanceled:"mark",
+            hidePhone:false,
+            showTZ:false,
+            pageTitle:"",
+            pageSubTitle:"",
+            metaNoIndex:false,
+            pageStyle:""
+          }
+
+        }
+      },
         methods: {
+          async start() {
+            this.isLoading=true
+            try {
+              this.ppsInfo = await this.getState("get_pps", "")
+              this.isLoading=false
+            } catch (e) {
+              this.isLoading=false
+              console.log(e)
+              OC.Notification.showTemporary(this.t('appointments', "Can not request data"), {timeout: 4, type: 'error'})
+            }
+          },
             apply(){
-                this.$emit('apply',this.ppsInfo)
+            this.isSending=true
+              this.setState('set_pps',this.ppsInfo).then(()=>{
+                this.isSending=false
+              })
             },
             close(){
                 this.$emit('close')

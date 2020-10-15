@@ -1,5 +1,169 @@
+## 1.7.10 - 2020-10-11
+- translation release - issue# 142 ?
+
+## 1.7.9 - 2020-10-11
+### Added
+- Meeting type change capabilities - issue# 140
+
+## 1.7.8 - 2020-10-10
+### Fixed
+- Issue #139, NC20 talk integration.
+- Issue #141, NC20 email template error.
+
+## 1.7.7 - 2020-10-03
+### Fixed
+- Issue #136, wrong location when additional pages are used.
+
+## 1.7.6 - 2020-09-22
+### Fixed
+- NC19 email template regression
+
+## 1.7.5 - 2020-09-21
+### Added
+- "Meeting Type" form field for Talk integration
+### Changed
+- Use NC18 email template even on NC19
+### Fixed
+- CSS for dark themes
+
+
+## 1.7.4 - 2020-09-20
+### Added
+- Talk App integration
+
+## 1.7.3 - 2020-09-11
+### Fixed
+- issue #120
+
+## 1.7.2 - 2020-09-06
+### Fixed
+- issue #123 
+
+## 1.7.1 - 2020-09-05
+### Fixed
+- issue #124 
+
+## 1.7.0 - 2020-09-05
+### Added
+- Multi-page support
+### Changed
+- Email confirm/cancel buttons depend on an attendee's PARTSTAT parameter
+### Fixed
+- Use "mailto" scheme in .ics attachments instead of "acct" 
+
+## 1.6.8 - 2020-08-11
+### Fixed
+- issue #116
+
+## 1.6.7 - 2020-07-29
+### Added
+- "Show end time" option
+- "Show timezone" option
+- spinner to "Book now" button
+### Fixed
+- pending appointments are not cancelled in "simple mode" with dual calendars
+
+## 1.6.6 - 2020-07-26
+### Added
+- swipe and mobile style to the public page
+### Changed
+- moved calendar selectors to "Calendars" section
+- internal code cleanup and optimization
+### Fixed
+- issue #112 (nginx)
+
+## 1.6.5 - 2020-07-20
+### Fixed
+- finalize issue #111
+
+## 1.6.4 - 2020-07-20
+### Fixed
+- Lodash security update
+- issue #111
+
+## 1.6.3 - 2020-07-14
+### Fixed
+- Stale calendar info
+
+## 1.6.2 - 2020-07-14
+### Added
+- "Auto-fix" option for "External Mode"
+- Ability to show appointment's title in the form
+- Minimum prep/lead time
+
+## 1.6.1 - 2020-07-06
+### Changed
+- "Appointment" category is optional in "External Mode"
+
+## 1.6.0 - 2020-07-04
+### Added
+- External Mode to timeslot management
+- Cancellation link to confirmation emails
+### Changed
+- "Sunday" is red now
+### Fixed
+- Hash table cleanup when deleting old appointments.
+
+## 1.5.2 - 2020-06-15
+### Added
+- Text to "Public Page URL" dialog buttons
+- Setup cancellation link for confirmation emails (awaiting translations)
+
+## 1.5.1 - 2020-06-10
+### Added
+- css for XL screens
+- Saturday to "add appointments" grid
+
+## 1.5.0 - 2020-06-03
+### Changed
+- Grouped calendar options into 'Manage Appointment Slots'
+- Moved 'Attendee Cancels' options to 'Manage Appointment Slots &gt; Advanced Options'
+- Moved 'Copy public link' to 'Public Page [...]' menu
+### Added
+- Options for additional email text
+- Added 'Remove Old Appointments' option
+- Iframes support
+
+## 1.4.16 - 2020-05-20
+### Added
+- Option to add 'robots noindex' meta tag
+### Fixed
+- Preview for "skip email verification step" option
+
+## 1.4.15 - 2020-05-13
+### Fixed
+- frontend error check fails when date empty
+
+## 1.4.14 - 2020-05-07
+### Added
+- Option to skip email validation test
+
+## 1.4.13 - 2020-05-07
+### Test
+- Install test
+
+## 1.4.12 - 2020-05-07
+### Changed
+- Display all existing appointments in the schedule generator
+### Fixed
+- Shared calendars support (must have edit permission)
+
+## 1.4.11 - 2020-05-05
+### Added
+- Translations
+
+## 1.4.10 - 2020-05-01
+### Added
+- Translations push
+
+## 1.4.9 - 2020-04-29
+### Added
+- Option to hide phone number input
+### Fixed
+- Confirm page error (regression from v1.4.8)
+
 ## 1.4.8 - 2020-04-28
-### Change
+### Changed
 - Timezone info in the help section
 ### Added
 - Longer hours in the 'Schedule Generator' issues #62

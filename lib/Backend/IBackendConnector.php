@@ -2,14 +2,25 @@
 namespace OCA\Appointments\Backend;
 
 interface IBackendConnector{
+
+
+    /**
+     * @param string[] $calIds
+     * @param \DateTime $end
+     * @param bool $only_empty
+     * @param bool $delete if false just count
+     * @return mixed
+     */
+    function queryRangePast($calIds,$end,$only_empty,$delete);
+
     /**
      * @param string $calId
      * @param \DateTime $start should have user's timezone
      * @param \DateTime $end should have user's timezone
-     * @param bool $no_uri (optional)
+     * @param string $mode 1char(mode)+userId or 'no_url'
      * @return string|null
      */
-    function queryRange($calId,$start,$end,$no_uri=false);
+    function queryRange($calId,$start,$end,$mode);
 
     /**
      * @param string $calId
@@ -91,24 +102,22 @@ interface IBackendConnector{
 
     /**
      * Returns array [int,string|null]
+     *      Status: 0=OK,1=Error, Localized DateTime string or null.
      *
      * @param $userId
      * @param $calId
      * @param $uri
-     * @return array [int, string|null]
-     *                  Status: 0=OK,1=Error,
-     *                  Localized DateTime string or null.
+     * @return array
      */
     function cancelAttendee($userId, $calId, $uri);
 
-
-
     /**
-     * Returns array [int, string, string|null, string]
+     * Returns array [int, string, string|null, string, string]
      *              Status: 0=OK,1=Error
-     *              Localized DateTime string, can be empty
-     *              see PageController:addAppointments $ds param, can be empty
+     *              Localized DateTime string, can be empt see PageController:addAppointments
+     *              $ds param, can be empty
      *              $tz_data for new appointment can be one of: VTIMEZONE data, 'L' = floating or 'UTC'
+     *              $title might be needed when the appointment is reset
      *
      * @param $userId
      * @param $calId

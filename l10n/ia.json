@@ -1,12 +1,22 @@
 { "translations": {
     "Confirm" : "Confirmar",
     "Cancel" : "Cancellar",
+    "Password" : "Contrasigno",
     "Info" : "Info",
+    "Delete" : "Deler",
+    "Settings" : "Configurationes",
     "Close" : "Clauder",
+    "Loading" : "Loading",
+    "Start" : "Initio",
     "Apply" : "Applicar",
+    "Warning" : "Aviso",
+    "Error" : "Error",
+    "Edit" : "Modificar",
+    "Title" : "Titulo",
+    "URL" : "URL",
+    "Save" : "Salveguardar",
     "Deleted" : "Delite",
     "Confirmed" : "Confirmate",
-    "Start" : "Initio",
     "Back" : "Retro",
     "Next" : "Sequente"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

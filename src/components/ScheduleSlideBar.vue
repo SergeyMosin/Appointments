@@ -1,7 +1,7 @@
 <template>
     <SlideBar :title="this.title" :subtitle="subtitle" @close="function() {
         resetAppt()
-        $emit('close')
+        $emit('back')
     }">
         <template slot="main-area">
             <div class="appt-gen-wrap">
