@@ -1,3 +1,7 @@
+## 1.7.10 - 2020-10-17
+### Added
+- display option for 8 and 12 weeks pull #138
+
 ## 1.7.10 - 2020-10-11
 - translation release - issue# 142 ?
 
