@@ -171,6 +171,8 @@ OC.L10N.register(
     "Three Weeks" : "Üç Hafta",
     "Four Weeks" : "Dört Hafta",
     "Five Weeks" : "Beş Hafta",
+    "Eight Weeks" : "Sekiz Hafta",
+    "Twelve Weeks" : "12 Hafta",
     "Show Empty Days" : "Boş Günler Görüntülensin",
     "Start on current day instead of Monday" : "Pazartesi yerine geçerli günden başlansın",
     "Show Empty Weekends" : "Boş Hafta Sonları Görüntülensin",

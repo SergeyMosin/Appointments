@@ -171,6 +171,8 @@ OC.L10N.register(
     "Three Weeks" : "Drei Wochen",
     "Four Weeks" : "Vier Wochen",
     "Five Weeks" : "Fünf Wochen",
+    "Eight Weeks" : "Acht Wochen",
+    "Twelve Weeks" : "Zwölf Wochen",
     "Show Empty Days" : "Leere Tage anzeigen",
     "Start on current day instead of Monday" : "Starte am aktuellen Tag anstatt Montag",
     "Show Empty Weekends" : "Leere Wochenenden anzeigen",
