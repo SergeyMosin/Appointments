@@ -171,6 +171,8 @@ OC.L10N.register(
     "Three Weeks" : "Tři týdny",
     "Four Weeks" : "Čtyři týdny",
     "Five Weeks" : "Pět týdnů",
+    "Eight Weeks" : "Osm týdnů",
+    "Twelve Weeks" : "Dvanáct týdnů",
     "Show Empty Days" : "Zobrazit prázdné dny",
     "Start on current day instead of Monday" : "Začít stávajícím dnem namísto pondělím",
     "Show Empty Weekends" : "Zobrazit prázdné víkendy",
