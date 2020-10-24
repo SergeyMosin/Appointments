@@ -228,7 +228,7 @@ OC.L10N.register(
     "Placeholder text:" : "Platzhaltertext:",
     "\"In-person\" option text:" : "Persönlicher Optionstext:",
     "\"Online\" option text:" : "\"Online\" Optionstext:",
-    "Type change email text:" : "Gebe den Änderungs-E-Mail-Text ein:",
+    "Type change email text:" : "Gebe den Text für die Änderungs-E-Mail ein:",
     "See documentation..." : "Schau in die Dokumentation",
     "\"Meeting type\" form field." : "Formularfeld \"Besprechungstyp\"",
     "Guest will be placed in the lobby until you allow access to the Room manually via Talk app side menu." : "Der Gast bleibt in der Lobby bis du ihn manuell in den Raum, über das Seitenmenü der Talk-App, gelassen hast.",

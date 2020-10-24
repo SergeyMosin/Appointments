@@ -191,7 +191,7 @@ OC.L10N.register(
     "Attach .ics file to confirm/cancel emails" : "Załącz plik .ics, aby potwierdzić/anulować wiadomości e-mail",
     "Email Attendee when the appointment is:" : "Wyślij uczestnikowi wiadomość e-mail, gdy spotkanie jest:",
     "Modified (Time, Status, Location)" : "Zmodyfikowano (czas, status, lokalizacja)",
-    "Deleted" : "Usunięte",
+    "Deleted" : "Usunięto",
     "Email Me when an appointment is:" : "Wyślij mi wiadomość e-mail, gdy spotkanie jest:",
     "Requested" : "Poproszone",
     "Confirmed" : "Potwierdzone",
