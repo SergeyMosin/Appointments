@@ -257,7 +257,7 @@
           <div class="srgdev-appt-modal_content">
             <div v-if="evtGridModal===1" class="srgdev-appt-modal-lbl">
               {{
-                t('appointments', 'Adding appointment to {calendarName} calendar ...', {calendarName: calInfo.curCal_name})
+                t('appointments', 'Adding appointment to {calendarName} calendar …', {calendarName: calInfo.curCal_name})
               }}
             </div>
             <div v-if="evtGridModal===2" class="srgdev-appt-modal-lbl">
@@ -267,7 +267,7 @@
             </div>
             <div v-if="evtGridModal===3" class="srgdev-appt-modal-lbl">
               <span v-show="modalErrTxt!==''">{{ modalErrTxt }}</span>
-              <span v-show="modalErrTxt===''">{{ t('appointments', 'Error occurred. Check console ...') }}</span>
+              <span v-show="modalErrTxt===''">{{ t('appointments', 'Error occurred. Check console …') }}</span>
             </div>
             <div v-if="evtGridModal===4" class="srgdev-appt-modal-lbl">
               <div style="font-size: 110%;font-weight: bold">{{ modalHeader }}</div>
@@ -912,7 +912,7 @@ export default {
 
     showPubLink(page) {
       this.openGeneralModal(1)
-      this.generalModalLoadingTxt = this.t('appointments', 'Fetching URL from the server ...')
+      this.generalModalLoadingTxt = this.t('appointments', 'Fetching URL from the server …')
       if(page==='p0'){
         // this is actually the header text for this dialog
         this.generalModalBtnTxt = this.page0.label
