@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2020-10-26 03:28+0000\n"
+"POT-Creation-Date: 2020-10-27 03:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -255,11 +255,11 @@ msgstr ""
 
 #: /app/lib/Controller/PageController.php:398
 #: /app/lib/Controller/PageController.php:682
-msgid "Link Expired..."
+msgid "Link Expired …"
 msgstr ""
 
 #: /app/lib/Controller/PageController.php:653
-msgid "Almost done..."
+msgid "Almost done …"
 msgstr ""
 
 #: /app/lib/Controller/PageController.php:675
@@ -430,7 +430,7 @@ msgid "Copy to Next"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:31
-msgid "Adding appointment to {calendarName} calendar..."
+msgid "Adding appointment to {calendarName} calendar …"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:32
@@ -438,7 +438,7 @@ msgid "All appointments have been added to {calendarName} calendar."
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:33
-msgid "Error occurred. Check console..."
+msgid "Error occurred. Check console …"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:35
@@ -450,7 +450,7 @@ msgid "New Settings Applied."
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:37
-msgid "Fetching URL from the server..."
+msgid "Fetching URL from the server …"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:38
@@ -640,7 +640,7 @@ msgid "Warning"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:86
-msgid "Time slot mode has changed. Public page is going offline…"
+msgid "Time slot mode has changed. Public page is going offline …"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:87
@@ -834,7 +834,7 @@ msgid "GDPR Compliance"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:143
-msgid "See Tutorial..."
+msgid "See Tutorial …"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:144
@@ -1034,7 +1034,7 @@ msgid "Type change email text:"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:202
-msgid "See documentation..."
+msgid "See documentation …"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:204
