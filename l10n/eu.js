@@ -1,6 +1,8 @@
 OC.L10N.register(
     "appointments",
     {
+    "Select meeting type" : "Hautatu bilera mota",
+    "Online (audio/video)" : "Linean (audioa/bideoa)",
     "Your email address is required for this operation." : "Zure e-posta beharrezkoa da ekintza honetarako.",
     "A location, address or URL is required for this operation. Check User/Organization settings." : "Kokaleku bat, helbide edo URL bat behar da ekintza honetarako. Egiaztatu erabiltzaile/erakundearen ezarpenak.",
     "Can't find your name. Check User/Organization settings." : "Ezin da zure izena aurkitu. Egiaztatu erabiltzaile/erakundearen ezarpenak.",
@@ -188,6 +190,7 @@ OC.L10N.register(
     "Customize and configure the app" : "Pertsonalizatu eta konfiguratu aplikazioa",
     "Customize Public Page" : "Pertsonalizatu orri publikoa",
     "Email Settings" : "E-posta ezarpenak",
+    "Talk Integration" : "Talk integrazioa",
     "Contributor Key" : "Gako Kolaboratzailea",
     "Thank You" : "Eskerrik asko",
     "close" : "itxi",
