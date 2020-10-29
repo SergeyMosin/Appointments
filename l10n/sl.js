@@ -45,6 +45,7 @@ OC.L10N.register(
     "Your appointment scheduled for %s is confirmed." : "Sestanek, načrtovan za %s je potrjen.",
     "Your appointment scheduled for %s is canceled." : "Sestanek, načrtovan za %s je preklican.",
     "Your appointment is canceled." : "Dogovorjen sestanek je preklican",
+    "Your %s has been changed to %s" : "Vrsta sestanka %s je spremenjena v %s sestanek.",
     "All done." : "Končano!",
     "Info" : "Podrobnosti",
     "Link Expired …" : "Povezava je potekla ...",
