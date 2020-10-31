@@ -1,6 +1,7 @@
 OC.L10N.register(
     "appointments",
     {
+    "Guest password:" : "Svečio slaptažodis:",
     "Your email address is required for this operation." : "Šiai operacijai atlikti yra reikalingas jūsų el. pašto adresas.",
     "Available" : "Prieinamas",
     "Dear %s," : "Gerb. %s,",
@@ -20,9 +21,13 @@ OC.L10N.register(
     "Your appointment is canceled." : "Jūsų susitikimo yra atsisakyta.",
     "All done." : "Viskas atlikta.",
     "Info" : "Informacija",
+    "Link Expired …" : "Nuoroda nebegalioja…",
+    "Almost done …" : "Beveik atlikta…",
     "We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request" : "Išsiuntėme el. laišką, adresu %s. Norėdami užbaigti susitikimo užklausą, atverkite el. laišką ir spustelėkite ant patvirtinimo nuorodos.",
     "Organization Name" : "Organizacijos pavadinimas",
     "Book Your Appointment" : "Registruokitės į susitikimą",
+    "Please select a calendar first" : "Iš pradžių, pasirinkite kalendorių",
+    "Selected calendar not found" : "Pasirinktas kalendorius nerastas",
     "This is an automatically sent email, please do not reply." : "Tai yra automatinis pranešimas, prašome neatsakyti.",
     "Appointments" : "Susitikimai",
     "Book appointments into your calendar via secure online form." : "Registruokite susitikimus į savo kalendorių per saugią internetinę formą.",
