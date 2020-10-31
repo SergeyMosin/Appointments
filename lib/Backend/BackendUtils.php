@@ -662,7 +662,9 @@ class BackendUtils{
         $xad=explode(chr(31),$this->decrypt(
             $evt->{BackendUtils::XAD_PROP}->getValue(),
             $evt->UID->getValue()));
-        if(count($xad)>1 && $xad[1][0]==='_'){
+
+        // @see dataSetAttendee() $xad=...
+        if(count($xad)>1 && !empty($xad[1]) && $xad[1][0]==='_'){
             $title=$xad[1];
         }
 

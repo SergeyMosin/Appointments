@@ -302,7 +302,7 @@ class PageController extends Controller {
                 list($sts, $date_time, $dt_info, $tz_data,$title) = $this->bc->deleteCalendarObject($userId, $r_cal_id, $uri);
 
                 if(empty($dt_info)){
-                    \OC::$server->getLogger()->error('can not re-create appointment, no dt_info');
+                    \OC::$server->getLogger()->warning('can not re-create appointment, no dt_info');
                 }else if($cms[BackendUtils::CLS_TS_MODE]==='0'){
                     // this only needed in simple/manual mode
                     $cr=$this->addAppointments($userId,$pageId,$dt_info,$tz_data,$title);
