@@ -1,4 +1,10 @@
-## 1.7.10 - 2020-10-17
+## 1.7.12 - 2020-10-31
+### Changed 
+- Change triple dot to ellipsis PR #144
+### Fixed
+"Uninitialized string offset: 0 at BackendUtils.php#665" possibly related to issue #149
+
+## 1.7.11 - 2020-10-17
 ### Added
 - display option for 8 and 12 weeks pull #138
 
