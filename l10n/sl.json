@@ -46,7 +46,7 @@
     "Your %s has been changed to %s" : "Vrsta sestanka %s je spremenjena v %s sestanek.",
     "All done." : "Končano!",
     "Info" : "Podrobnosti",
-    "Link Expired …" : "Povezava je potekla ...",
+    "Link Expired …" : "Povezava je pretekla ...",
     "Almost done …" : "Opravilo je skoraj končano ...",
     "We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request" : "Na elektronski naslov %s je bilo poslano sporočilo. Odprite ga in zahtevo za sestanek potrdite s klikom na povezavo.",
     "Organization Name" : "Ime ustanove",
