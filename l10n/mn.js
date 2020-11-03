@@ -1,6 +1,13 @@
 OC.L10N.register(
     "appointments",
     {
+    "Guest password:" : "Зочны нууц үг",
+    "Meeting Type" : "Уулзалтын төрөл",
+    "Select meeting type" : "Уулзалтын төрөл сонгох",
+    "In-person meeting" : "Биечлэн уулзах",
+    "Online (audio/video)" : "Онлайн (дуут/видео)",
+    "Your email address is required for this operation." : "Энэ үйлдлийг хийхэд таны эмэйл хаяг хэрэгтэй.",
+    "Available" : "Боломжтой",
     "Confirm" : "Батлах",
     "Cancel" : "болиулах",
     "Password" : "Нууц үг",
