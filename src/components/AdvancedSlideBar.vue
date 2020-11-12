@@ -27,6 +27,7 @@
             <option value="30">{{ t('appointments', '30 Minutes') }}</option>
             <option value="60">{{ t('appointments', '1 Hour') }}</option>
             <option value="120">{{ t('appointments', '2 Hours') }}</option>
+            <option value="720">{{ t('appointments', '1 Day') }}</option>
           </select>
           <label
               class="tsb-label"
