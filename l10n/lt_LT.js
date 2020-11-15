@@ -154,6 +154,7 @@ OC.L10N.register(
     "Customize Public Page" : "Tinkinti viešąjį puslapį",
     "Email Settings" : "El. pašto nustatymai",
     "Contributor Key" : "Talkininko raktas",
+    "Thank You" : "Ačiū",
     "close" : "užverti",
     "Enable lobby" : "Įjungti laukimo salę",
     "Guest name + Date/Time" : "Svečio vardas + Data/Laikas",
