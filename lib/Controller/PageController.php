@@ -304,7 +304,7 @@ class PageController extends Controller {
                 if(empty($dt_info)){
                     \OC::$server->getLogger()->warning('can not re-create appointment, no dt_info');
                 }else if($cms[BackendUtils::CLS_TS_MODE]==='0'){
-                    // this only needed in simple/manual mode
+                    // this is only needed in simple/manual mode
                     $cr=$this->addAppointments($userId,$pageId,$dt_info,$tz_data,$title);
                     if($cr[0]!=='0'){
                         \OC::$server->getLogger()->error('addAppointments() failed '.$cr);
@@ -896,7 +896,7 @@ class PageController extends Controller {
      *      dtstamp,dtstart,dtend [,dtstart,dtend,...] -
      *      dttsamp: 20200414T073008Z must be UTC (ends with Z),
      *      dtstart/dtend: 20200414T073008
-     * @param string $tz_data_str Can be VTIMEZONE data, 'L' = floating or 'UTC'
+     * @param string $tz_data_str Can be VTIMEZONE data or 'UTC'
      * @param string $title title is used when the appointment is being reset
      * @return string
      */

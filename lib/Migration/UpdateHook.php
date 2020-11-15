@@ -52,16 +52,6 @@ class UpdateHook implements IRepairStep {
                 if ($user->getLastLogin() !== 0) {
                     $userId = $user->getUID();
 
-                    if($nb_val<2) {
-                        // TODO: remove soon
-                        // this is previous fix (version skipped)
-                        // Fix #111 regression
-                        if (!empty($this->c->getUserValue($userId, $userId, BackendUtils::KEY_CLS))) {
-                            $this->c->deleteUserValue($userId, $userId, BackendUtils::KEY_CLS);
-                        }
-                    }
-                    // new update
-
                     $cal_id=$this->c->getUserValue($userId, $this->appName, 'cal_id');
                     if (!empty($cal_id)){
 

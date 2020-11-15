@@ -204,7 +204,10 @@ $color-placeholder-var:var(--color-text-maxcontrast);
   border: thin solid $color-border;
   border: thin solid var(--color-border);
   overflow: hidden;
-  display: none;
+
+  display: block;
+  height: 0;
+  visibility: hidden;
 }
 
 .srgdev-dpu-bkr-cls{
@@ -213,7 +216,9 @@ $color-placeholder-var:var(--color-text-maxcontrast);
 }
 
 #srgdev-dpu_main-cont[data-open]{
-  display: block;
+  //display: block;
+  height: auto;
+  visibility: visible;
 }
 
 #srgdev-dpu_main-header{

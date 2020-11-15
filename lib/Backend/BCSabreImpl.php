@@ -44,7 +44,6 @@ class BCSabreImpl implements IBackendConnector{
 
         $cc=count($calIds);
         if($cc===0){
-
             return "0";
         }
 
@@ -145,17 +144,14 @@ class BCSabreImpl implements IBackendConnector{
 
             /** @var \Sabre\VObject\Component\VCalendar $vo */
             $vo = Reader::read($cd);
-            if (!isset($vo->VEVENT)) {
-                $vo->destroy();
-                continue;
-            }
             /** @var \Sabre\VObject\Component\VEvent $evt */
             $evt = $vo->VEVENT;
 
             /** @noinspection PhpPossiblePolymorphicInvocationInspection */
             if(isset($evt->RRULE) || !$evt->DTSTART->hasTime()
                 || !isset($evt->DTEND)
-                || (isset($evt->CLASS) && $evt->CLASS->getValue()!=='PUBLIC')){
+                || (isset($evt->CLASS) && $evt->CLASS->getValue()!=='PUBLIC')
+                || $evt->DTSTART->isFloating()){
                 $vo->destroy();
                 continue;
             }
@@ -175,7 +171,6 @@ class BCSabreImpl implements IBackendConnector{
         return $c;
     }
 
-
     /**
      * @param string $calIds dstCal(main)+chr(31)+srcCal(free spots)
      * @param \DateTime $start should have user's timezone
@@ -190,7 +185,6 @@ class BCSabreImpl implements IBackendConnector{
 
         // user's timezone
         $utz=$start->getTimezone();
-        $utz_offset=$start->getOffset();
 
         $start_ts=$start->getTimestamp();
         $end_ts=$end->getTimestamp();
@@ -241,10 +235,6 @@ class BCSabreImpl implements IBackendConnector{
 
                 /** @var \Sabre\VObject\Component\VCalendar $vo */
                 $vo = Reader::read($obj['calendardata']);
-                if (!isset($vo->VEVENT)) {
-                    $vo->destroy();
-                    continue;
-                }
                 /** @var \Sabre\VObject\Component\VEvent $evt */
                 $evt = $vo->VEVENT;
                 /** @noinspection PhpPossiblePolymorphicInvocationInspection */
@@ -305,11 +295,6 @@ class BCSabreImpl implements IBackendConnector{
 
             /** @var \Sabre\VObject\Component\VCalendar $vo */
             $vo = Reader::read($cd);
-            if (!isset($vo->VEVENT)) {
-                // not an event
-                $vo->destroy();
-                continue;
-            }
 
             /** @var \Sabre\VObject\Component\VEvent $evt */
             $evt = $vo->VEVENT;
@@ -320,11 +305,11 @@ class BCSabreImpl implements IBackendConnector{
                 continue;
             }
 
+            // TODO: remove 'U'
             $ts_pref = 'U';
-            $ts_offset = 0;
-            if ($evt->DTSTART->isFloating()) {
-                $ts_pref = 'F';
-                $ts_offset = $utz_offset;
+            if ($evt->DTSTART->isFloating()){
+                $vo->destroy();
+                continue;
             }
 
             $atl=':';
@@ -378,8 +363,8 @@ class BCSabreImpl implements IBackendConnector{
                     if (AVLIntervalTree::lookUp($booked_tree,
                             $s_ts, $e_ts) === null) {
 
-                        $str_out.=$ts_pref.($s_ts + $ts_offset)
-                            .($showET?":".($e_ts + $ts_offset):"")
+                        $str_out.=$ts_pref.$s_ts
+                            .($showET?":".$e_ts:"")
                             .':'.$this->utils->encrypt($ses_info.pack("LL",$s_ts,$e_ts).substr($obj['uri'],0,-4),$key).$atl.',';
                     }
                 }
@@ -397,13 +382,10 @@ class BCSabreImpl implements IBackendConnector{
                 $this->utils->optimizeRecurrence($it->getDtStart(), $it->getDtEnd(), $skip_until, $vo);
                 $this->updateObject($srcId, $obj['uri'], $vo->serialize());
             }
-
             $vo->destroy();
         }
         return $str_out!==''?substr($str_out,0,-1):null;
     }
-
-
 
     /**
      * @inheritDoc
@@ -429,14 +411,13 @@ class BCSabreImpl implements IBackendConnector{
         }
 
         // Simple Mode...
+        $o_start=$start->getTimestamp();
+        $o_end=$end->getTimestamp();
 
-        $f_start=$start->getTimestamp();
-        $f_end=$end->getTimestamp();
-
-        // We need to adjust for floating timezones and filter
+        // We need to adjust for UTC timezones and filter
         // 50400 = 14 hours
-        $start->setTimestamp($f_start-50400);
-        $end->setTimestamp($f_end+50400);
+        $start->setTimestamp($start->getTimestamp()-50400);
+        $end->setTimestamp($end->getTimestamp()+50400);
 
         $parser=new XmlService();
         $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
@@ -454,50 +435,43 @@ class BCSabreImpl implements IBackendConnector{
         $ses_start=time().'|';
         $ret='';
 
-        $utz_offset=$start->getOffset();
-        $utz=$start->getTimezone();
-        $start_ts=$f_start;
-
         $showET=$this->utils->getUserSettings(BackendUtils::KEY_PSN,$userId)[BackendUtils::PSN_END_TIME];
 
+        // TODO: remove 'U'
+        $ts_pref = 'U';
         foreach ($objs as $obj){
 
             $vo=Reader::read($obj['calendardata']);
 
             /** @var  \Sabre\VObject\Property\ICalendar\DateTime $dt_start */
             $dt_start=$vo->VEVENT->DTSTART;
-            $s_ts=$dt_start->getDateTime($utz)->getTimestamp();
+            if ($dt_start->isFloating()){
+                $vo->destroy();
+                continue;
+            }
 
-            if($s_ts>$start_ts){
+            $s_ts=$dt_start->getDateTime()->getTimestamp();
+            if($s_ts>$o_start){
+                $e_ts=$vo->VEVENT->DTEND->getDateTime()->getTimestamp();
+                if($e_ts<=$o_end) {
 
-                $e_ts=$vo->VEVENT->DTEND->getDateTime($utz)->getTimestamp();
-
-                $ts_pref = 'U';
-//                $ts_offset = 0;
-                if ($dt_start->isFloating()) {
-                    $ts_pref = 'F';
-//                    $ts_offset = $utz_offset;
-                    $s_ts+=$utz_offset;
-                    $e_ts+=$utz_offset;
-                }
-
-                if($key!==""){
-
-                    $atl=':';
-                    if(isset($vo->VEVENT->SUMMARY)){
-                        $s=$vo->VEVENT->SUMMARY->getValue();
-                        if($s[0]==="_"){
-                            $atl.=$s;
+                    if ($key !== "") {
+                        $atl = ':';
+                        if (isset($vo->VEVENT->SUMMARY)) {
+                            $s = $vo->VEVENT->SUMMARY->getValue();
+                            if ($s[0] === "_") {
+                                $atl .= $s;
+                            }
                         }
-                    }
 
-                    $ret.=$ts_pref.$s_ts
-                        .($showET? ":".$e_ts :"")
-                        .':'.$this->utils->encrypt($ses_start.$obj['uri'],$key)
-                        .$atl.',';
-                }else{
-                    // add end_time instead of uri
-                    $ret.=$ts_pref.$s_ts.':'.$ts_pref.$e_ts.',';
+                        $ret .= $ts_pref . $s_ts
+                            . ($showET ? ":" . $e_ts : "")
+                            . ':' . $this->utils->encrypt($ses_start . $obj['uri'], $key)
+                            . $atl . ',';
+                    } else {
+                        // add end_time instead of uri
+                        $ret .= $ts_pref . $s_ts . ':' . $ts_pref . $e_ts . ',';
+                    }
                 }
             }
             $vo->destroy();
@@ -875,7 +849,7 @@ class BCSabreImpl implements IBackendConnector{
      * @inheritDoc
      */
     function deleteCalendarObject($userId, $calId, $uri){
-        $ret=[0,'','','L',''];
+        $ret=[0,'','','UTC',''];
         $d=$this->getObjectData($calId,$uri);
         if($d!==null){
             $ra=$this->utils->dataDeleteAppt($d);

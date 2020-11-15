@@ -192,8 +192,9 @@ function _apptGridMaker() {
                 clr=pds.substr(0,sep)
                 pds=pds.substr(sep+1)
             }
-            for (let sp, tzo, ets, elm, uTop, d = new Date(), ds, uLen, cID, da = pds.split(","),
+            for (let sp, ets, elm, uTop, d = new Date(), ds, uLen, cID, da = pds.split(","),
                      l = da.length, i = 0; i < l; i++) {
+                // TODO: remove 'U' from ds
                 ds = da[i]
 
                 sp = ds.indexOf(":", 8);
@@ -201,17 +202,10 @@ function _apptGridMaker() {
                 //get end time first
                 d.setTime(ds.substr(sp + 2) * 1000)
 
-                tzo = d.getTimezoneOffset()
-                if (ds.charAt(0) === "F") {
-                    tzo *= 60000
-                } else {
-                    tzo = 0
-                }
-
-                ets = d.getTime() + tzo
+                ets = d.getTime()
 
                 // start
-                d.setTime(ds.substr(1, sp - 1) * 1000 + tzo)
+                d.setTime(ds.substr(1, sp - 1) * 1000)
 
                 uLen = Math.floor((ets - d.getTime()) / 300000)
 
@@ -442,18 +436,15 @@ function _apptGridMaker() {
 
     function getStarEnds(ts,add_offset) {
 
-        //For start and end need this: YYYYMMDDTHHMMSS
-        function makeT(d) {
-            const h=d.getHours()
-            const m=d.getMinutes()
-            return "T"+(h<10?"0"+h:""+h)+(m<10?"0"+m:""+m)+"00"
-        }
-        function makeD(d) {
+        function makeDT(d){
             const month = d.getMonth() + 1
             const day = d.getDate()
+            const h=d.getHours()
+            const m=d.getMinutes()
             return d.getFullYear()
                 + (month < 10 ? "0" + month : "" + month)
                 + (day < 10 ? "0" + day : "" + day)
+                +"T"+(h<10?"0"+h:""+h)+(m<10?"0"+m:""+m)+"00"
         }
 
         const day_start_ms=MPH*SH
@@ -464,11 +455,6 @@ function _apptGridMaker() {
         let rc=0
         for(let d=new Date(),ds_ts,dst,i=0,l=mData.mc_cols.length;i<l;i++){
             ds_ts=ts+day_start_ms+ms_per_day*i
-            d.setTime(ds_ts)
-            if(add_offset){
-                d.setTime(d.getTime()+d.getTimezoneOffset()*60000)
-            }
-            dst=makeD(d)
             for(let ofs=0,pa=mData.mc_pos[i], j=0,k=pa.length;j<k;j+=2){
                 // Start
                 d.setTime(pa[j]*MP5+ds_ts)
@@ -476,10 +462,10 @@ function _apptGridMaker() {
                     ofs=d.getTimezoneOffset()*60000
                     d.setTime(d.getTime()+ofs)
                 }
-                r[++rc]=dst+makeT(d)
+                r[++rc]=makeDT(d)
                 // End
                 d.setTime((pa[j+1]+1)*MP5+ds_ts+ofs)
-                r[++rc]=dst+makeT(d)
+                r[++rc]=makeDT(d)
             }
         }
         return r

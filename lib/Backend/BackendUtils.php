@@ -633,7 +633,7 @@ class BackendUtils{
      * @noinspection PhpDocMissingThrowsInspection
      */
     function dataDeleteAppt($data){
-        $f="L";
+        $f="";
         $vo=$this->getAppointment($data,'CONFIRMED');
         if($vo===null) return ['','',$f,''];
 
@@ -643,8 +643,8 @@ class BackendUtils{
         if(isset($evt->DTSTART) && isset($evt->DTEND)) {
             /** @noinspection PhpUnhandledExceptionInspection */
             $dt = (new \DateTime('now', new \DateTimeZone('utc')))->format("Ymd\THis") . "Z,".
-                $evt->DTSTART->getRawMimeDirValue().",".
-                $evt->DTEND->getRawMimeDirValue();
+                rtrim($evt->DTSTART->getRawMimeDirValue(),'Z').",".
+                rtrim($evt->DTEND->getRawMimeDirValue(),'Z');
 
             if(!$evt->DTSTART->isFloating()){
                 if(isset($evt->DTSTART['TZID']) && isset($vo->VTIMEZONE)){
@@ -680,6 +680,7 @@ class BackendUtils{
      */
     function getAttendee($evt){
         $r=null;
+        $ao=null;
 
         $ov=$evt->ORGANIZER->getValue();
         $ov=trim(substr($ov,strpos($ov,":")+1));
@@ -689,21 +690,21 @@ class BackendUtils{
         for($i=0;$i<$c;$i++){
             $a=$aa[$i];
             $v=$a->getValue();
-            // Some external clients add organizer as attendee so we need to grab the first attendee that does NOT match organizers' email
-            if($ov!==trim(substr($v,strpos($v,":")+1))
-                && isset($a->parameters['CN'])
-                && isset($a->parameters['PARTSTAT'])
-            ){
+            if(isset($a->parameters['CN']) && isset($a->parameters['PARTSTAT'])){
                 // Some external clients set SCHEDULE-STATUS to 3.7 because of the "acct" scheme
                 if (isset($a->parameters['SCHEDULE-STATUS'])){
                     unset($a->parameters['SCHEDULE-STATUS']);
                 }
-
+                // Some external clients add organizer as attendee we only use if it is the only attendee (testing), otherwise we look for the one that does NOT match the organizer
+                if($ov===trim(substr($v,strpos($v,":")+1))){
+                    $ao=$a;
+                    continue;
+                }
                 $r=$a;
                 break;
             }
         }
-        return $r;
+        return $r!==null?$r:$ao;
     }
 
     /**
@@ -920,22 +921,7 @@ class BackendUtils{
          if($key===self::KEY_CLS){
              $default=self::CLS_DEF;
          }else if($key===self::KEY_PAGES){
-
              $default=self::PAGES_DEF;
-
-             // TODO: migration, remove soon...
-             $old_enabled=$config->getUserValue(
-                 $userId, $this->appName, 'page_enabled');
-             if($old_enabled!==''){
-                 $config->deleteUserValue(
-                     $userId, $this->appName, 'page_enabled');
-                 $default['p0'][self::PAGES_ENABLED]=intval($old_enabled);
-                 $js=json_encode($default);
-                 if($js!==false){
-                     $config->setUserValue($userId,$this->appName,$key,$js);
-                 }
-             }
-
          }else if($key===self::KEY_ORG){
              $default=self::ORG_DEF;
          }else if($key===self::KEY_PSN){
@@ -1068,7 +1054,7 @@ class BackendUtils{
      * @param string $userId
      * @param string $pageId
      * @param string $appName
-     * @param string $tz_data_str Can be VTIMEZONE data, 'L' = floating or 'UTC'
+     * @param string $tz_data_str Can be VTIMEZONE data, 'UTC'
      * @param string $cr_date 20200414T073008Z must be UTC (ends with Z),
      * @param string $title title is used when the appointment is being reset
      * @return string[] ['1_before_uid'=>'string...','2_before_dts'=>'string...','3_before_dte'=>'string...','4_last'=>'string...'] or ['err'=>'Error text...']
@@ -1086,14 +1072,14 @@ class BackendUtils{
         $tz_id="";
         $tz_Z="";
         $tz_data = "";
-        if ($tz_data_str==='UTC'){
-            $tz_Z="Z";
-        }elseif($tz_data_str!=="L" && !empty($tz_data_str)){
+        if($tz_data_str!=="UTC" && !empty($tz_data_str)){
             $tzo=Reader::read("BEGIN:VCALENDAR\r\nPRODID:-//IDN nextcloud.com//Appointments App//EN\r\nCALSCALE:GREGORIAN\r\nVERSION:2.0\r\n".$tz_data_str."\r\nEND:VCALENDAR");
             if(isset($tzo->VTIMEZONE) &&  isset($tzo->VTIMEZONE->TZID)){
                 $tz_id=';TZID='.$tzo->VTIMEZONE->TZID->getValue();
                 $tz_data=trim($tzo->VTIMEZONE->serialize())."\r\n";
             }
+        }else{
+            $tz_Z="Z";
         }
 
         $org=$this->getUserSettings(self::KEY_ORG,$userId);

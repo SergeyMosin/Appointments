@@ -20,6 +20,9 @@
             @input="setToStartOfWeek"
             :format="weekFormat"
             type="week"></DatePicker>
+          <div class="srgdev-appt-info-lcont srgdev-appt-tz-cont">
+            {{t('appointments','Timezone:')+' '+tzName}}
+          </div>
         <label for="appt_dur-select" class="select-label">{{t('appointments','Appointment Duration:')}}</label>
         <vue-slider
             :min="10"
@@ -31,20 +34,10 @@
             id="appt_dur-select"
             class="appt-slider"
             v-model="apptDur"></vue-slider>
-        <div class="srgdev-appt-info-lcont">
-          <label for="appt_tz-select" class="select-label">{{t('appointments','Timezone:')}}</label>
-          <a
-              class="icon-info srgdev-appt-info-link"
-              @click="$root.$emit('helpWanted','timezone')"><span>Please read</span></a>
-        </div>
-        <select v-model="apptTZ" id="appt_tz-select" class="appt-select">
-<!--          <option value="L">Local (floating)</option>-->
-          <option value="C">{{tzName}}</option>
-        </select>
-          <p style="padding-top: .5em; font-size: 80%">Support for FLOATING timezones is being phased out</p>
         <button
             @click="goApptGen"
             :disabled="apptWeek===null"
+            style="margin-top: 5em"
             class="primary srgdev-appt-sb-genbtn">{{t('appointments','Start')}}
         </button>
         </div>
@@ -125,12 +118,6 @@ export default {
     }
   },
 
-  watch: {
-    tzName(val){
-      this.apptTZ = val === 'UTC' ? "L" : "C";
-    }
-  },
-
   data: function () {
     return {
 
@@ -143,8 +130,6 @@ export default {
       apptWeek:null,
 
       apptDur:30,
-
-      apptTZ:"C",
 
       datePickerPopupStyle:{
         top:"75%",
@@ -193,6 +178,7 @@ export default {
 
       this.tzName = "UTC"
       this.tzData = "UTC"
+
       try {
         let res= await this.getState("get_tz")
         if (res !== null && res.toLowerCase() !== 'utc') {
@@ -273,7 +259,7 @@ export default {
     goApptGen(){
       this.close(true)
       let r={
-        tz: this.apptTZ==="C"?this.tzData:"L",
+        tz: this.tzData,
         week:(this.apptWeek.getTime()),
         dur:this.apptDur,
         pageId:this.curPageData.pageId,
@@ -316,10 +302,9 @@ export default {
 .appt-slider{
   margin-bottom: 3em;
 }
-.appt-select {
-  margin: 0;
-  width: 100%;
-  padding: 0 0 0 .25em;
+.srgdev-appt-tz-cont{
+  color: var(--color-text-lighter);
+  font-size: 85%;
+  line-height: 1.1;
 }
-
 </style>

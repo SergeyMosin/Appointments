@@ -387,10 +387,12 @@
             if(typeof tzn!=="string") tzn=undefined
         }
 
-        for(let md=new Date(),tzo,tzi,t,tStr,atStr,sp,sp2,ti,
+        for(let md=new Date(),tzo,tzi,t,tStr,atStr,sp,sp2,
                 ts,endTime=pso[PPS_END_TIME],showTZ=pso[PPS_SHOWTZ],
                 ia=s.getAttribute("data-info").split(','),
                 l=ia.length,i=0,ds;i<l;i++){
+
+            //TODO: remove 'U' from ds
             ds=ia[i]
 
             sp=ds.indexOf(":",8);
@@ -398,20 +400,12 @@
             tzo=md.getTimezoneOffset()
             t=ds.charAt(0)
 
-            ti=0
-            if(t==="F"){
-                ti=(tzo*60000)
-                md.setTime(md.getTime()+ti)
+            if(showTZ===0){
                 tStr=atStr=tf(md)
             }else{
-                if(showTZ===0){
-                    tStr=atStr=tf(md)
-                }else{
-                    tStr=atStr=tfz(md)
-                    if(endTime===1){
-                        tStr=tf(md) // no tz override
-                    }
-
+                tStr=atStr=tfz(md)
+                if(endTime===1){
+                    tStr=tf(md) // no tz override
                 }
             }
             ts=md.getTime()
@@ -423,7 +417,7 @@
                 // sp2 is end time
                 sp2=+ds.substr(sp2,sp-sp2)*1000
 
-                md.setTime(ts+((sp2+ti)-ts))
+                md.setTime(ts+(sp2-ts))
                 if(t==='F' || showTZ===0){
                     tStr+=' - '+tf(md)
                 }else{
