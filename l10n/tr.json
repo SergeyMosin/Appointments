@@ -145,7 +145,7 @@
     "two calendars affected" : "iki takvim etkilendi",
     "Number of expired appointments/slots: " : "Zamanı geçmiş randevu/aralık sayısı:",
     "Can not get calendar data" : "Takvim verileri alınamadı",
-    "This action can NOT be undone. Continue?" : "Bu işlem geri alınamaz. İlerlemek istiyor musunuz?",
+    "This action can NOT be undone. Continue?" : "Bu işlem geri alınamaz. İşlemi sürdürmek istiyor musunuz?",
     "Removing Appointment Slots" : "Randevu Aralıkları Siliniyor",
     "Can not delete old appointments/slots" : "Eski randevular/aralıklar silinemedi",
     "All empty appointment slots created before {fullDate} are removed" : "{fullDate} tarihinden önce oluşturulmuş tüm boş randevu aralıkları silindi",
