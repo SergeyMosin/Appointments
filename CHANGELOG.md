@@ -1,3 +1,9 @@
+## 1.7.13 - 2020-11-20
+### Added
+- Extra input field option - issue #24
+### Changed 
+- Removed "floating" timezones support
+
 ## 1.7.12 - 2020-10-31
 ### Changed 
 - Change triple dot to ellipsis PR #144
