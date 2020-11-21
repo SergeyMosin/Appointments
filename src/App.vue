@@ -293,6 +293,9 @@
       </div>
       <div v-show="visibleSection===3" v-html="helpContent" class="srgdev-appt-help-sec">
       </div>
+      <div v-show="visibleSection===4" class="srgdev-appt-main-sec_fid">
+        <FormInputsDesigner v-if="visibleSection===4"/>
+      </div>
       <div :class="{'sb_disable':stateInProgress}">
         <PagePickerSlideBar
             v-if="sbShow===11"
@@ -328,6 +331,7 @@
             @close="sbShow=0"/>
         <FormStnSlideBar
             v-if="sbShow===2"
+            @gotoToFid="sbShow=0;visibleSection=4"
             @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
         <MailStnSlideBar
             v-if="sbShow===4"
@@ -394,12 +398,14 @@ import FormStnSlideBar from "./components/FormStnSlideBar.vue"
 import UserStnSlideBar from "./components/UserStnSlideBar.vue"
 import MailStnSlideBar from "./components/MailStnSlideBar.vue"
 
-import ApptMgrSlideBar from "./components/ApptMgrSlideBar";
-import ApptAccordion from "./components/ApptAccordion.vue";
-import AdvancedSlideBar from "./components/AdvancedSlideBar";
-import PagePickerSlideBar from "./components/PagePickerSlideBar";
-import DirSlideBar from "./components/DirSlideBar";
-import TalkSlideBar from "./components/TalkSlideBar";
+import ApptMgrSlideBar from "./components/ApptMgrSlideBar"
+import ApptAccordion from "./components/ApptAccordion.vue"
+import AdvancedSlideBar from "./components/AdvancedSlideBar"
+import PagePickerSlideBar from "./components/PagePickerSlideBar"
+import DirSlideBar from "./components/DirSlideBar"
+import TalkSlideBar from "./components/TalkSlideBar"
+
+import FormInputsDesigner from "./components/FormInputsDesigner"
 
 export default {
   name: 'App',
@@ -429,6 +435,7 @@ export default {
     AddApptSlideBar,
     DelApptSlideBar,
     SettingsSlideBar,
+    FormInputsDesigner,
   },
 
   data: function () {
@@ -834,9 +841,9 @@ export default {
       }).then(response => {
         this.stateInProgress = false
         if (response.status === 200) {
-          this.getFormData(pageId)
+          if(action!=='set_fi') this.getFormData(pageId)
           OCP.Toast.success(this.t('appointments', 'New Settings Applied.'))
-          return true
+          return action!=='set_fi'?true:response.data
         }else if(response.status===202){
           this.handle202(response.data)
         }

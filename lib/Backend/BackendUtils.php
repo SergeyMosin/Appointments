@@ -194,6 +194,9 @@ class BackendUtils{
         self::TALK_FORM_TYPE_CHANGE_TXT => "",
     );
 
+    public const KEY_FORM_INPUTS_JSON='fi_json';
+    public const KEY_FORM_INPUTS_HTML='fi_html';
+
     private $appName=Application::APP_ID;
 
     /**
@@ -282,7 +285,7 @@ class BackendUtils{
         }
         $evt->SUMMARY->setValue("⌛ ".$info['name']);
 
-        $dsr=$info['name']."\n".(empty($info['phone'])?"":($info['phone']."\n")).$info['email'];
+        $dsr=$info['name']."\n".(empty($info['phone'])?"":($info['phone']."\n")).$info['email'].$info['_more_data'];
         if(!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
         $evt->DESCRIPTION->setValue($dsr);
 
@@ -940,6 +943,19 @@ class BackendUtils{
              $default[self::TALK_FORM_DEF_PLACEHOLDER]=$l10n->t('Select meeting type');
              $default[self::TALK_FORM_DEF_REAL]=$l10n->t('In-person meeting');
              $default[self::TALK_FORM_DEF_VIRTUAL]=$l10n->t('Online (audio/video)');
+         }else if($key===self::KEY_FORM_INPUTS_JSON){
+             // this is a special case
+             $sa = json_decode(
+                 $config->getUserValue($userId, $this->appName, $key,null),
+                 true);
+             if ($sa !== null) {
+                 return $sa;
+             }else{
+                 return [];
+             }
+         }else if($key===self::KEY_FORM_INPUTS_HTML){
+             // this is a special case
+             return [$config->getUserValue($userId, $this->appName, $key,'')];
          }else{
              // this should never happen
              return null;
@@ -1357,7 +1373,6 @@ class BackendUtils{
             throw new \ErrorException("Can't find key");
         }
         if($pageId==="p0"){
-            $m='';
             $pfx='';
             $upi=$userId;
         }else{

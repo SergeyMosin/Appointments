@@ -462,8 +462,98 @@ class StateController extends Controller{
                     }
                 }
             }
+        }else if($action==='set_fi'){
+            $value=$this->request->getParam("d",'');
+            if(empty($value)) {
+                $v = "[]";
+                $h = '';
+                $r->setStatus(200);
+            }else{
+                $a = json_decode($value, true);
+                if ($a === null) {
+                    $v = "[]";
+                    $h = '';
+                    $r->setStatus(400);
+                } else {
+                    $h = $this->makeFormComponent($a[0], 0);
+                    $v = json_encode($a);
+                    if ($v === false) $v = "[]";
+                    $r->setStatus(200);
+                }
+            }
+
+            /** @noinspection PhpUnhandledExceptionInspection */
+            $this->config->setUserValue($this->userId, $this->appName, BackendUtils::KEY_FORM_INPUTS_JSON,$v);
+            $this->config->setUserValue($this->userId, $this->appName, BackendUtils::KEY_FORM_INPUTS_HTML,$h);
+
+            $r->setData($h);
+
+        }else if($action==='get_fi'){
+            $a=$this->utils->getUserSettings(
+                BackendUtils::KEY_FORM_INPUTS_JSON, $this->userId);
+
+            // TODO: this needs to be done for all elements
+            if(isset($a[0]) && isset($a[0]['name'])) unset($a[0]['name']);
+
+            $j=json_encode($a);
+            if($j!==false){
+                $r->setData($j);
+                $r->setStatus(200);
+            }else{
+                $r->setStatus(500);
+            }
         }
         return $r;
+    }
+
+    private function makeFormComponent(&$obj,$index=0){
+        $r='';
+        if(!isset($obj['tag']) || !isset($obj['label'][2])) return $r;
+        $obj['label']=htmlspecialchars(trim($obj['label']),ENT_QUOTES, 'UTF-8');
+        $tail='';
+        $ph='';
+        $class='';
+        switch ($obj['tag']){
+            /** @noinspection PhpMissingBreakStatementInspection */
+            case 'input':
+                if(!isset($obj['type'])) $obj['type']='text';
+                $tail=' type="'.($obj['type']==='number'?'number':'text').'"/>';
+                $class='srgdev-ncfp-form-input';
+            case 'textarea':
+                if(!isset($obj['placeholder'])) return $r;
+                $ph=' placeholder="'.htmlspecialchars($obj['placeholder'],ENT_QUOTES, 'UTF-8').'"';
+                if(empty($tail)){
+                    $tail='></textarea>';
+                    $class='srgdev-ncfp-form-textarea';
+                }
+                break;
+            case 'select':
+                if(!isset($obj['options'])
+                    || gettype($obj['options'])!=='array'
+                    || count($obj['options'])===0) return $r;
+                $tail='>';
+                foreach ($obj['options'] as $option){
+                    if(isset($option[1])){
+                        $o=htmlspecialchars($option,ENT_QUOTES, 'UTF-8');
+                        $tail.='<option class="srgdev-ncfp-form-option" value="'.$o.'">'.$o.'</option>';
+                    }
+                }
+                if(!isset($tail[1])) return $r;
+                $tail.='</select>';
+                $class='srgdev-ncfp-form-input srgdev-ncfp-form-select';
+                break;
+            default: return $r;
+        }
+
+        $id='srgdev-ncfp_'.hash('adler32',$index.$obj['tag'].$obj['label']);
+        $name='n'.hash('adler32',$tail.$id.$index);
+
+        $obj['name']=$name;
+
+        $dmo=(isset($obj['required']) && $obj['required'])===true?'r1':'r0';
+
+        return '<label for="'.$id.'" class="srgdev-ncfp-form-label">'.$obj['label'].'</label><'.$obj['tag'].' data-more="'.$dmo.'" id="'.$id.'" name="'.$name.'" class="'.$class.'"'.$ph.$tail;
+
     }
 
     /**
@@ -474,7 +564,7 @@ class StateController extends Controller{
      * @return bool
      * @noinspection PhpDocMissingThrowsInspection
      */
-    function setClsMps($key,$def,$value,$pageId){
+    private function setClsMps($key,$def,$value,$pageId){
 
         $o_cms=$this->utils->getUserSettings(
             $key,$this->userId);
@@ -553,7 +643,7 @@ class StateController extends Controller{
      * @param array $a can be CLS or MPS
      * @return array
      */
-    function getMoreProps($a){
+    private function getMoreProps($a){
         if($a[BackendUtils::CLS_TS_MODE]==="0"
             && $a[BackendUtils::CLS_MAIN_ID]!=="-1"){
 
@@ -567,7 +657,7 @@ class StateController extends Controller{
         return $a;
     }
 
-    function getPubURI($pageId){
+    private function getPubURI($pageId){
         $pb = $this->utils->getPublicWebBase();
         $tkn = $this->utils->getToken($this->userId,$pageId);
         return $pb . '/' . $this->utils->pubPrx($tkn, false) . 'form' . chr(31)

@@ -220,6 +220,29 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       el.setCustomValidity(t('appointments', 'Phone number is required.'));
       el.addEventListener("input", clearFormErr, false);
       lee = 1;
+    } //Check for custom inputs
+
+
+    var elms = document.getElementById('srgdev-ncfp-main-inputs').children;
+
+    for (var i = 0, elm, l = elms.length; i < l; i++) {
+      elm = elms[i];
+
+      if (elm.hasAttribute('data-more')) {
+        if (elm.tagName === 'INPUT' || elm.tagName === 'TEXTAREA') {
+          var cv = elm.value.trim();
+
+          if (elm.getAttribute('data-more') === 'r1' && cv === '') {
+            elm.setCustomValidity(t('appointments', 'Required.'));
+            elm.addEventListener("input", clearFormErr, false);
+            lee = 1;
+          } else if (elm.hasAttribute('type') && elm.getAttribute('type') === 'number' && isNaN(cv)) {
+            elm.setCustomValidity(t('appointments', 'Number required.'));
+            elm.addEventListener("input", clearFormErr, false);
+            lee = 1;
+          }
+        }
+      }
     }
 
     el = document.getElementById('appt_gdpr_id');

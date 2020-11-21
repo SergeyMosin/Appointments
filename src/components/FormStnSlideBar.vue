@@ -125,6 +125,9 @@
                                 style="width: 96%;"
                                 placeholder="&lt;style&gt;...&lt;/style&gt;">
                         </textarea>
+                      <div class="appt-stn-ext-link">
+                        <span @click="$emit('gotoToFid')" class="appt-stn-ext-link_span">Form Designer (beta) &raquo;</span>
+                      </div>
                     </template>
                 </ApptAccordion>
                 <button
