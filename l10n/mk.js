@@ -25,6 +25,7 @@ OC.L10N.register(
     "Deleted" : "Избришана",
     "Confirmed" : "Потврдено",
     "Canceled" : "Откажано",
+    "close" : "затвори",
     "Enable lobby" : "Овозможи лоби",
     "Name:" : "Име:",
     "Location:" : "Локација:",

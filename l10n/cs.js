@@ -132,6 +132,7 @@ OC.L10N.register(
     "Simple" : "Jednoduché",
     "External" : "Externí",
     "Warning" : "Varování",
+    "Time slot mode has changed. Public page is going offline …" : "Režim časového slotu se změnil. Veřejná stránka se stává nedostupnou…",
     "Error" : "Chyba",
     "Main calendar is required" : "Hlavní kalendář je povinný",
     "Source calendar is required" : "Zdrojový kalendář je povinný",
