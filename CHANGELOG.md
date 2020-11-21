@@ -1,3 +1,7 @@
+## 1.7.14 - 2020-11-20
+### Changed
+- translations
+
 ## 1.7.13 - 2020-11-20
 ### Added
 - Extra input field option - issue #24
