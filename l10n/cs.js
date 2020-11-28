@@ -179,6 +179,7 @@ OC.L10N.register(
     "Show time in two columns" : "Zobrazovat čas ve dvou sloupcích",
     "Show end time" : "Zobrazit čas konce",
     "GDPR Compliance" : "Shoda s nařízením GDPR",
+    "See Tutorial …" : "Viz návod …",
     "Hide phone number field" : "Skrýt kolonku telefonní číslo",
     "Show timezone" : "Zobrazit časové pásmo",
     "Add {taginfo} tag" : "Přidat štítek {taginfo}",
