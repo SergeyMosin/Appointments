@@ -56,6 +56,7 @@ OC.L10N.register(
     "Copy Error" : "복사 에러",
     "Loading" : "불러오는 중",
     "Select Dates:" : "날짜 선택:",
+    "Timezone:" : "시간대:",
     "Start" : "Start",
     "15 Minutes" : "15분",
     "30 Minutes" : "30분",
