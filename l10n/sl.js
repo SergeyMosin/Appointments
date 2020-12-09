@@ -206,7 +206,7 @@ OC.L10N.register(
     "Customize and configure the app" : "Prilagoditev in nastavitev programa",
     "Customize Public Page" : "Javna stran po meri",
     "Email Settings" : "Nastavitve elektronske pošte",
-    "Talk Integration" : "Podpora za Talk",
+    "Talk Integration" : "Združevalnik Talk",
     "Contributor Key" : "Skupnostni ključ",
     "Thank You" : "Hvala,",
     "Key accepted. All contributor only features are unlocked." : "Ključ je sprejet. Odklenjene so vse možnosti uporabe.",

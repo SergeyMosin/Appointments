@@ -1,6 +1,11 @@
 OC.L10N.register(
     "appointments",
     {
+    "Guest password:" : "訪客密碼：",
+    "Meeting Type" : "會議類型",
+    "Select meeting type" : "選擇會議類型",
+    "Online (audio/video)" : "線上 (音訊/視訊)",
+    "Your email address is required for this operation." : "需要你的電子郵件地址才能執行此操作。",
     "Available" : "可用",
     "%s appointment (action needed)" : "%s 預約 (需要操作)",
     "Dear %s," : "親愛的 %s,",
@@ -8,6 +13,8 @@ OC.L10N.register(
     "Confirm" : "確認",
     "Cancel" : "取消",
     "%s Appointment is confirmed" : "%s 預約已確認",
+    "Date/Time: %s" : "日期/時間： %s",
+    "Status: Canceled" : "狀態：已取消",
     "Password" : "密碼",
     "Info" : "資訊",
     "This is an automatically sent email, please do not reply." : "此為自動寄送的電子郵件，請不要回覆。",
