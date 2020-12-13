@@ -1,6 +1,9 @@
 OC.L10N.register(
     "appointments",
     {
+    "Guest password:" : "访客密码：",
+    "Meeting Type" : "会议类型",
+    "Select meeting type" : "选择会议类型",
     "Available" : "可用",
     "%s appointment (action needed)" : "%s 预约（需要操作）",
     "Dear %s," : "亲爱的%s，",
