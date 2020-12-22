@@ -1,3 +1,7 @@
+## 1.7.15 - 2020-12-21
+### Fixed 
+- define 'more_html' at the start
+
 ## 1.7.14 - 2020-11-20
 ### Changed
 - translations
