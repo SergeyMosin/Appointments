@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2020-12-21 03:35+0000\n"
+"POT-Creation-Date: 2020-12-22 03:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -279,15 +279,15 @@ msgstr ""
 msgid "Book Your Appointment"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:933
+#: /app/lib/Controller/PageController.php:932
 msgid "Please add time slots first."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:936
+#: /app/lib/Controller/PageController.php:935
 msgid "Please select a calendar first"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:939
+#: /app/lib/Controller/PageController.php:938
 msgid "Selected calendar not found"
 msgstr ""
 
