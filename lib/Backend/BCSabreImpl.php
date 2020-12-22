@@ -189,7 +189,7 @@ class BCSabreImpl implements IBackendConnector{
         $start_ts=$start->getTimestamp();
         $end_ts=$end->getTimestamp();
 
-        // We need to adjust for floating timezones and filter
+        // We need to adjust for and filter
         $rep_start=clone $start;
         $rep_start->modify('-14 hours');
         $rep_end=clone $end;

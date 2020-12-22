@@ -772,6 +772,7 @@ class PageController extends Controller {
             'appt_gdpr'=>'',
             'appt_inline_style'=>$pps[BackendUtils::PSN_PAGE_STYLE],
             'appt_hide_phone'=>$pps[BackendUtils::PSN_HIDE_TEL],
+            'more_html'=>''
         ];
 
 
@@ -815,7 +816,7 @@ class PageController extends Controller {
         $cms=$cls=$this->utils->getUserSettings(
             BackendUtils::KEY_CLS,$uid);
 
-        // Because of floating timezones...
+        // Because of utc
         $utz=$this->utils->getUserTimezone($uid,$this->c);
         try {
             $t_start = new \DateTime('now +'.$cls[BackendUtils::CLS_PREP_TIME]."mins", $utz);
@@ -875,8 +876,6 @@ class PageController extends Controller {
         $moreHTML=$this->utils->getUserSettings(BackendUtils::KEY_FORM_INPUTS_HTML,$uid);
         if(isset($moreHTML[0]) && isset($moreHTML[0][8])){
             $params['more_html']=$moreHTML[0];
-        }else{
-            $params['more_html']='';
         }
 
         $tr->setParams($params);
