@@ -29,6 +29,9 @@ class BackendUtils{
     public const APPT_SES_SKIP = "3";
     public const APPT_SES_TYPE_CHANGE = "4";
 
+    public const KEY_USE_DEF_EMAIL = 'useDefaultEmail';
+    public const KEY_EMAIL_FIX = 'emailFixOpt';
+
     public const KEY_ORG = 'org_info';
     public const ORG_NAME = 'organization';
     public const ORG_EMAIL = 'email';
@@ -41,8 +44,6 @@ class BackendUtils{
         self::ORG_ADDR=>"",
         self::ORG_PHONE=>"");
 
-    public const KEY_USE_DEF_EMAIL = 'useDefaultEmail';
-    public const KEY_EMAIL_FIX = 'emailFixOpt';
 
     // Email Settings
     public const KEY_EML = 'email_options';
@@ -262,6 +263,7 @@ class BackendUtils{
         $config = \OC::$server->getConfig();
         // @see issues #120 and #116
         // Should this be documented ???
+        // TODO: this should be $config->getAppValue(...)
         $e_fix = $config->getUserValue($userId, $this->appName, self::KEY_EMAIL_FIX);
 
         if ($e_fix === 'none') {

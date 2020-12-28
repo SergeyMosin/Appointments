@@ -273,22 +273,25 @@ class DavListener {
             $cnl_lnk_url=$btn_url."0".$btn_tkn;
 
             if(count($xad)>4){
+
                 $has_link=strlen($xad[4])>1?1:0;
                 $tlk = $utils->getUserSettings(BackendUtils::KEY_TALK, $userId);
-                if($has_link===1) {
-                    $ti = new TalkIntegration($tlk, $utils);
-                    // add talk link info
-                    $talk_link_txt = $this->addTalkInfo(
-                        $tmpl, $xad, $ti, $tlk,
-                        $config->getUserValue($userId, $this->appName, "c" . "nk"));
-                }
-
-                if($tlk[BackendUtils::TALK_FORM_ENABLED]===true){
-                    if($has_link===0){
-                        // add in-person meeting type
-                        $tmpl->addBodyText($this->makeMeetingTypeInfo($tlk,$has_link));
+                if($tlk[BackendUtils::TALK_ENABLED]) {
+                    if ($has_link === 1) {
+                        $ti = new TalkIntegration($tlk, $utils);
+                        // add talk link info
+                        $talk_link_txt = $this->addTalkInfo(
+                            $tmpl, $xad, $ti, $tlk,
+                            $config->getUserValue($userId, $this->appName, "c" . "nk"));
                     }
-                    $this->addTypeChangeLink($tmpl,$tlk,$btn_url."3".$btn_tkn,$has_link);
+
+                    if ($tlk[BackendUtils::TALK_FORM_ENABLED] === true) {
+                        if ($has_link === 0) {
+                            // add in-person meeting type
+                            $tmpl->addBodyText($this->makeMeetingTypeInfo($tlk, $has_link));
+                        }
+                        $this->addTypeChangeLink($tmpl, $tlk, $btn_url . "3" . $btn_tkn, $has_link);
+                    }
                 }
             }
 
@@ -431,7 +434,7 @@ class DavListener {
             }
 
             // if there is a Talk room - add info...
-            if(count($xad)>4){
+            if(count($xad)>4 && $tlk[BackendUtils::TALK_ENABLED]){
                 $has_link=strlen($xad[4])>1?1:0;
                 if($has_link===1) {
                     // add talk link info
