@@ -285,7 +285,7 @@
       </div>
       <div v-show="visibleSection===0" class="srgdev-appt-main-sec">
         <ul class="srgdev-appt-main-info">
-          <li>{{ t('appointments', '{pageLabel} Preview',{pageLabel:pagePreviewLabel}) }}<span style="margin-left: 1.25em" v-show="pagePreviewLoading===true" class="icon-loading-small"></span></li>
+          <li>{{ pagePreviewLabel+' '+t('appointments', 'Preview') }}<span style="margin-left: 1.25em" v-show="pagePreviewLoading===true" class="icon-loading-small"></span></li>
         </ul>
         <div class="srgdev-appt-main-frame-cont">
           <iframe class="srgdev-appt-main-frame" @load="pagePreviewLoading=false" ref="pubPageRef" :src="pubPage"></iframe>
@@ -718,8 +718,8 @@ export default {
 
               }
               if (n !== -1) {
-                let fn = ["'Name'", "'Email'", "'Location'"][n]
-                OC.Notification.showTemporary(this.t('appointments', "Error: {fieldName} empty, check settings", {fieldName: fn}) + "\xa0\xa0\xa0\xa0", {
+                let fn = ["Name", "Email", "Location"][n]
+                OC.Notification.showTemporary(this.t('appointments', "Error: '{fieldName}' field is empty, check User/Organization settings", {fieldName: fn}) + "\xa0\xa0\xa0\xa0", {
                   timeout: 8,
                   type: 'error'
                 })
