@@ -35393,7 +35393,7 @@ var render = function() {
                     "popup-style": _vm.datePickerPopupStyle,
                     placeholder: _vm.t("appointments", "Select Dates"),
                     lang: _vm.lang,
-                    format: _vm.weekFormat,
+                    formatter: _vm.weekFormat,
                     type: "week"
                   },
                   on: { input: _vm.setToStartOfWeek },

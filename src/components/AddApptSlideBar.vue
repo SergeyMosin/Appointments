@@ -18,7 +18,7 @@
             v-model="apptWeek"
             :lang="lang"
             @input="setToStartOfWeek"
-            :format="weekFormat"
+            :formatter="weekFormat"
             type="week"></DatePicker>
           <div class="srgdev-appt-info-lcont srgdev-appt-tz-cont">
             {{t('appointments','Timezone:')+' '+tzName}}
