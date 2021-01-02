@@ -19,6 +19,9 @@ class BackendUtils{
 
     const CIPHER="AES-128-CFB";
     const HASH_TABLE_NAME="appointments_hash";
+    const PREF_TABLE_NAME="appointments_pref";
+
+
     const FLOAT_TIME_FORMAT="Ymd.His";
 
     public const APPT_SES_KEY_HINT = "appointment_hint";
@@ -95,6 +98,9 @@ class BackendUtils{
         self::CLS_TS_MODE=>'0' // 0=simple/manual, 1=external/XTM, (2=template)
     );
 
+    public const KEY_TEMPLATE='template';
+    public const KEY_DAYS_OFF='days_off';
+
     public const KEY_PSN = "page_options";
     public const PSN_PAGE_TITLE = "pageTitle";
     public const PSN_FNED = "startFNED";
@@ -128,6 +134,7 @@ class BackendUtils{
         self::PSN_PAGE_STYLE => ""
     );
 
+    public const KEY_MPS_COL = "more_pages";
     public const KEY_MPS = "more_pages_";
     public const MPS_DEF=array(
         self::CLS_MAIN_ID=>'-1',
@@ -199,6 +206,8 @@ class BackendUtils{
     public const KEY_FORM_INPUTS_HTML='fi_html';
 
     private $appName=Application::APP_ID;
+    /** @var array */
+    private $settings=null;
 
     /**
      * @param \DateTimeImmutable $new_start
@@ -914,6 +923,22 @@ class BackendUtils{
     }
 
 
+    private function loadSettingsFromDB($userId){
+        $qb=\OC::$server->getDatabaseConnection()->getQueryBuilder();
+        $c=$qb->select('*')
+            ->from(self::PREF_TABLE_NAME)
+            ->where($qb->expr()->eq('user_id',$qb->createNamedParameter($userId)))
+            ->execute();
+        $t=$c->fetch();
+        $c->closeCursor();
+
+        if($t===false){
+            $this->settings = [];
+        }else {
+            $this->settings = $t;
+        }
+    }
+
     /**
      * @param string $key
      * @param string $userId
@@ -921,7 +946,11 @@ class BackendUtils{
      */
      function getUserSettings($key,$userId){
 
-         $config = \OC::$server->getConfig();
+         if($this->settings===null){
+             $this->loadSettingsFromDB($userId);
+         }
+
+         $pn="";
 
          if($key===self::KEY_CLS){
              $default=self::CLS_DEF;
@@ -931,8 +960,12 @@ class BackendUtils{
              $default=self::ORG_DEF;
          }else if($key===self::KEY_PSN){
              $default=self::PSN_DEF;
+         }else if($key===self::KEY_MPS_COL){
+             $default=null;
          }else if(strpos($key,self::KEY_MPS)===0){
              $default=self::MPS_DEF;
+             $pn=substr($key,strlen(self::KEY_MPS));
+             $key=self::KEY_MPS_COL;
          }else if($key===self::KEY_EML){
              $default=self::EML_DEF;
          }else if($key===self::KEY_DIR){
@@ -947,9 +980,7 @@ class BackendUtils{
              $default[self::TALK_FORM_DEF_VIRTUAL]=$l10n->t('Online (audio/video)');
          }else if($key===self::KEY_FORM_INPUTS_JSON){
              // this is a special case
-             $sa = json_decode(
-                 $config->getUserValue($userId, $this->appName, $key,null),
-                 true);
+             $sa = json_decode(($this->settings[$key]??null),true);
              if ($sa !== null) {
                  return $sa;
              }else{
@@ -957,26 +988,74 @@ class BackendUtils{
              }
          }else if($key===self::KEY_FORM_INPUTS_HTML){
              // this is a special case
-             return [$config->getUserValue($userId, $this->appName, $key,'')];
+             return [$this->settings[$key]??''];
          }else{
              // this should never happen
              return null;
          }
 
-         $sa = json_decode(
-             $config->getUserValue($userId, $this->appName, $key),
-             true);
+         $sa = json_decode(($this->settings[$key]??null),true);
+         if(!empty($pn)) $sa=$sa[$pn]??null; // <- mps
+
          if ($sa === null) {
              return $default;
          }
 
-         foreach ($default as $k => $v) {
-             if (!isset($sa[$k])) {
-                 $sa[$k] = $v;
+         if($default!==null) {
+             foreach ($default as $k => $v) {
+                 if (!isset($sa[$k])) {
+                     $sa[$k] = $v;
+                 }
              }
          }
+
          return $sa;
     }
+
+    /**
+     * @param string $userId
+     * @param string $key
+     * @param string|null $value
+     */
+    function setDBValue($userId,$key,$value){
+        try{
+            $qb=\OC::$server->getDatabaseConnection()->getQueryBuilder();
+            $r=$qb->update(self::PREF_TABLE_NAME)
+                ->set($key,$qb->createNamedParameter($value))
+                ->where($qb->expr()->eq('user_id',$qb->createNamedParameter($userId)))
+                ->execute();
+            if($r===0){
+                $qb=\OC::$server->getDatabaseConnection()->getQueryBuilder();
+                $qb->insert(self::PREF_TABLE_NAME)
+                    ->setValue('user_id',$qb->createNamedParameter($userId))
+                    ->setValue($key,$qb->createNamedParameter($value))
+                    ->execute();
+            }
+            return true;
+        }catch (\Exception $e){
+            \OC::$server->getLogger()->error($e);
+            return false;
+        }
+    }
+
+    /**
+     * @param string $userId
+     * @param string $page
+     * @param array|null $value
+     * @return bool
+     */
+    function setDBMpsValue($userId,$page,$value){
+         $mps=$this->getUserSettings(self::KEY_MPS_COL,$userId)??[];
+         $mps[$page]=$value;
+         $v=json_encode($mps);
+         if($v===false){
+             return false;
+         }
+         $this->setDBValue($userId,self::KEY_MPS_COL,$v);
+         return true;
+    }
+
+
     /**
      * @param string $key
      * @param string $value_str JSON String
@@ -984,7 +1063,6 @@ class BackendUtils{
      * @param string $userId
      * @param string $appName
      * @return bool
-     * @noinspection PhpDocMissingThrowsInspection
      */
     function setUserSettings($key, $value_str, $default_or_pgs, $userId, $appName){
         if($key===self::KEY_PAGES){
@@ -1004,14 +1082,20 @@ class BackendUtils{
                 }
             }
         }
+
+        if(strpos($key,self::KEY_MPS)===0){
+            return $this->setDBMpsValue(
+                $userId, substr($key,strlen(self::KEY_MPS)), $sa);
+        }
+
         $js=json_encode($sa);
         if($js===false){
             return false;
         }
 
-        $config=\OC::$server->getConfig();
-        /** @noinspection PhpUnhandledExceptionInspection */
-        $config->setUserValue($userId,$appName,$key,$js);
+
+        $this->setDBValue($userId,$key,$js);
+
         return true;
     }
 

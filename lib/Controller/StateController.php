@@ -38,6 +38,100 @@ class StateController extends Controller{
         $this->bc=$backendManager->getConnector();
     }
 
+
+    /**
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     */
+    public function temp(){
+//        $u=$this->userId;
+//        $u='New User';
+//        $u='Produser';
+        $u='UserTest';
+        $a=$this->appName;
+
+        $o=[];
+
+        $v=$this->config->getUserValue($u,$a,BackendUtils::KEY_ORG,null);
+        $o[BackendUtils::KEY_ORG]=$v;
+
+        $v=$this->config->getUserValue($u,$a,BackendUtils::KEY_CLS,null);
+        $o[BackendUtils::KEY_CLS]=$v;
+
+        $v=$this->config->getUserValue($u,$a,BackendUtils::KEY_DIR,null);
+        $o[BackendUtils::KEY_DIR]=$v;
+
+        $v=$this->config->getUserValue($u,$a,BackendUtils::KEY_EML,null);
+        $o[BackendUtils::KEY_EML]=$v;
+
+        $v=$this->config->getUserValue($u,$a,BackendUtils::KEY_FORM_INPUTS_HTML,null);
+        $o[BackendUtils::KEY_FORM_INPUTS_HTML]=$v;
+
+        $v=$this->config->getUserValue($u,$a,BackendUtils::KEY_FORM_INPUTS_JSON,null);
+        $o[BackendUtils::KEY_FORM_INPUTS_JSON]=$v;
+
+        $v=$this->config->getUserValue($u,$a,BackendUtils::KEY_PAGES,null);
+        $o[BackendUtils::KEY_PAGES]=$v;
+
+        $pgs=json_decode($v,true);
+
+
+        $pi=[];
+        if($pgs!==null) {
+            foreach ($pgs as $k => $p) {
+                if ($k !== 'p0') {
+                    $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_MPS . $k, null);
+                    $pi[$k] = json_decode($v, true);
+                }
+            }
+        }
+        if(!empty($pi)) {
+            $o[BackendUtils::KEY_MPS_COL] = json_encode($pi);
+        }
+
+        $v=$this->config->getUserValue($u,$a,BackendUtils::KEY_PSN,null);
+        $o[BackendUtils::KEY_PSN]=$v;
+
+        $v=$this->config->getUserValue($u,$a,BackendUtils::KEY_TALK,null);
+        $o[BackendUtils::KEY_TALK]=$v;
+
+        $o['user_id']=$u;
+
+        try {
+            // insert into BackendUtils::PREF_TABLE_NAME
+            $qb = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+            $qb->insert(BackendUtils::PREF_TABLE_NAME);
+            foreach ($o as $k => $v) {
+                $qb->setValue($k, $qb->createNamedParameter($v));
+            }
+            $qb->execute();
+
+
+            // delete from 'oc_preferences'
+            //
+            // delete $mps first
+            if($pgs!==null) {
+                foreach ($pgs as $k => $p) {
+                    if ($k !== 'p0') {
+                        $this->config->deleteUserValue($u, $a, BackendUtils::KEY_MPS . $k);
+                    }
+                }
+            }
+            // delete other keys
+            foreach ($o as $k => $v) {
+                $this->config->deleteUserValue($u, $a, $k);
+            }
+
+        }catch (\Exception $e){
+            \OC::$server->getLogger()->error('Error: '.$e->getMessage());
+        }
+
+
+        return $o;
+    }
+
+
+
     /**
      * @NoAdminRequired
      * @throws \OCP\PreConditionNotMetException
@@ -79,9 +173,10 @@ class StateController extends Controller{
             $j = json_encode($pgs);
             if ($j !== false) {
                 if ($changed === true) {
-                    $this->config->setUserValue(
-                        $this->userId, $this->appName,
-                        BackendUtils::KEY_PAGES, $j);
+                    $this->utils->setDBValue($this->userId,BackendUtils::KEY_PAGES,$j);
+//                    $this->config->setUserValue(
+//                        $this->userId, $this->appName,
+//                        BackendUtils::KEY_PAGES, $j);
                 }
                 $r->setData($j);
                 $r->setStatus(200);
@@ -159,9 +254,10 @@ class StateController extends Controller{
                                 $r->setData('{"info":"' . $this->l->t("Page not added: 10 pages maximum") . '"}');
                             } else {
                                 // add empty so we can get_mps & set_mps
-                                $this->config->setUserValue(
-                                    $this->userId, $this->appName,
-                                    BackendUtils::KEY_MPS . $pageId, "");
+                                $this->utils->setDBMpsValue($this->userId,$pageId,null);
+//                                $this->config->setUserValue(
+//                                    $this->userId, $this->appName,
+//                                    BackendUtils::KEY_MPS . $pageId, "");
                             }
                         }
                     }else if($pageId==="delete" && $vo["page"]!=="p0"){
@@ -182,17 +278,25 @@ class StateController extends Controller{
                             // array_values = reindex
                             $dpl=json_encode(array_values($a));
                             if($dpl!==false) {
-                                $this->config->setUserValue(
-                                    $this->userId, $this->appName,
-                                    BackendUtils::KEY_DIR, $dpl);
+                                $this->utils->setDBValue($this->userId,BackendUtils::KEY_DIR,$dpl);
+//                                $this->config->setUserValue(
+//                                    $this->userId, $this->appName,
+//                                    BackendUtils::KEY_DIR, $dpl);
                             }
                         }
 
                         // delete the page
                         unset($pgs[$_pid]);
-                        $this->config->deleteUserValue(
-                            $this->userId,$this->appName,
-                            BackendUtils::KEY_MPS.$_pid);
+
+                        $mps=$this->utils->getUserSettings(BackendUtils::KEY_MPS_COL,$this->userId);
+                        unset($mps[$_pid]);
+                        $this->utils->setDBValue($this->userId,BackendUtils::KEY_MPS_COL,
+                            json_encode($mps)?:null);
+
+//                        $this->utils->setDBValue();
+//                        $this->config->deleteUserValue(
+//                            $this->userId,$this->appName,
+//                            BackendUtils::KEY_MPS.$_pid);
                     }else{
                         \OC::$server->getLogger()->error("Bad pageId/page_action");
                         $sts=400;
@@ -354,10 +458,12 @@ class StateController extends Controller{
         }else if($action==="get_mps") {
             $pageId=$this->request->getParam("p");
             // must have a pageId for this action
-            if(!empty($pageId) && null!==$this->config->getUserValue(
-                    $this->userId,$this->appName,
-                    BackendUtils::KEY_MPS.$pageId,null))
-            {
+            if(!empty($pageId) && $this->MPExists($pageId)){
+
+//            if(!empty($pageId) && null!==$this->config->getUserValue(
+//                    $this->userId,$this->appName,
+//                    BackendUtils::KEY_MPS.$pageId,null))
+//            {
                 $a=$this->utils->getUserSettings(
                     BackendUtils::KEY_MPS.$pageId, $this->userId);
 
@@ -374,11 +480,7 @@ class StateController extends Controller{
             $pageId=$this->request->getParam("p");
             $value=$this->request->getParam("d");
             // must have a pageId for this action
-            if(!empty($pageId) && $value!==null
-                && null!==$this->config->getUserValue(
-                    $this->userId,$this->appName,
-                    BackendUtils::KEY_MPS.$pageId,null))
-            {
+            if(!empty($pageId) && $this->MPExists($pageId)){
                 if($this->setClsMps(
                     BackendUtils::KEY_MPS.$pageId,
                     BackendUtils::MPS_DEF,
@@ -405,7 +507,8 @@ class StateController extends Controller{
             if($value!==null) {
 
                 /** @noinspection PhpUnhandledExceptionInspection */
-                $this->config->setUserValue($this->userId, $this->appName,BackendUtils::KEY_DIR,$value);
+//                $this->config->setUserValue($this->userId, $this->appName,BackendUtils::KEY_DIR,$value);
+                $this->utils->setDBValue($this->userId,BackendUtils::KEY_DIR,$value);
 
                 $r->setStatus(200);
             }else{
@@ -483,8 +586,11 @@ class StateController extends Controller{
             }
 
             /** @noinspection PhpUnhandledExceptionInspection */
-            $this->config->setUserValue($this->userId, $this->appName, BackendUtils::KEY_FORM_INPUTS_JSON,$v);
-            $this->config->setUserValue($this->userId, $this->appName, BackendUtils::KEY_FORM_INPUTS_HTML,$h);
+//            $this->config->setUserValue($this->userId, $this->appName, BackendUtils::KEY_FORM_INPUTS_JSON,$v);
+//            $this->config->setUserValue($this->userId, $this->appName, BackendUtils::KEY_FORM_INPUTS_HTML,$h);
+
+            $this->utils->setDBValue($this->userId,BackendUtils::KEY_FORM_INPUTS_JSON,$v);
+            $this->utils->setDBValue($this->userId,BackendUtils::KEY_FORM_INPUTS_HTML,$h);
 
             $r->setData($h);
 
@@ -663,5 +769,11 @@ class StateController extends Controller{
         return $pb . '/' . $this->utils->pubPrx($tkn, false) . 'form' . chr(31)
             . $pb . '/' . $this->utils->pubPrx($tkn, true) . 'form';
     }
+
+    private function MPExists($p){
+        $mps=$this->utils->getUserSettings(BackendUtils::KEY_MPS_COL,$this->userId);
+        return $mps!==null && array_key_exists($p,$mps);
+    }
+
 
 }

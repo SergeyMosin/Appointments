@@ -3,22 +3,15 @@
 
 namespace OCA\Appointments\Migration;
 
-
 use OC\User\Manager;
 use OCA\Appointments\Backend\BackendUtils;
-use OCA\Appointments\Backend\ExternalModeSabrePlugin;
 use OCP\IConfig;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
 class UpdateHook implements IRepairStep {
 
-    private const KEY_U_NAME = 'organization';
-    private const KEY_U_EMAIL = 'email';
-    private const KEY_U_ADDR = 'address';
-    private const KEY_U_PHONE = 'phone';
-
-    private $c;
+    private $config;
     private $um;
     private $appName;
     private $utils;
@@ -27,7 +20,7 @@ class UpdateHook implements IRepairStep {
                         IConfig $config,
                         Manager $userManager,
                         BackendUtils $utils){
-        $this->c=$config;
+        $this->config=$config;
         $this->um=$userManager;
         $this->appName=$AppName;
         $this->utils=$utils;
@@ -41,66 +34,98 @@ class UpdateHook implements IRepairStep {
     {
 
         $nb_key = "new_backend";
-        $nb_val=intval($this->c->getAppValue($this->appName, $nb_key,'0'));
+        $nb_val=intval($this->config->getAppValue($this->appName, $nb_key,'0'));
 
-        if ($nb_val < 3) {
+        if ($nb_val < 4) {
 
             $users = $this->um->search('', 2000);
             $output->info("running appointments UpdateHook for " . count($users) . " users");
+            $a=$this->appName;
 
             foreach ($users as $user) {
                 if ($user->getLastLogin() !== 0) {
-                    $userId = $user->getUID();
 
-                    $cal_id=$this->c->getUserValue($userId, $this->appName, 'cal_id');
-                    if (!empty($cal_id)){
+                    $u = $user->getUID();
 
-                        $this->c->deleteUserValue($userId, $this->appName, 'cal_id');
+                    if ($this->config->getUserValue($u, $a, BackendUtils::KEY_PAGES, null) !== null) {
 
-                        $cls=$this->utils->getUserSettings(
-                            BackendUtils::KEY_CLS,$userId);
-                        $cls[BackendUtils::CLS_MAIN_ID]=strval($cal_id);
+                        $o = [];
 
-                        $js=json_encode($cls);
-                        if($js!==false){
-                            /** @noinspection PhpUnhandledExceptionInspection */
-                            $this->c->setUserValue($userId,$this->appName,BackendUtils::KEY_CLS,$js);
+                        $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_ORG, null);
+                        $o[BackendUtils::KEY_ORG] = $v;
+
+                        $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_CLS, null);
+                        $o[BackendUtils::KEY_CLS] = $v;
+
+                        $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_DIR, null);
+                        $o[BackendUtils::KEY_DIR] = $v;
+
+                        $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_EML, null);
+                        $o[BackendUtils::KEY_EML] = $v;
+
+                        $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_FORM_INPUTS_HTML, null);
+                        $o[BackendUtils::KEY_FORM_INPUTS_HTML] = $v;
+
+                        $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_FORM_INPUTS_JSON, null);
+                        $o[BackendUtils::KEY_FORM_INPUTS_JSON] = $v;
+
+                        $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_PAGES, null);
+                        $o[BackendUtils::KEY_PAGES] = $v;
+
+                        $pgs = json_decode($v, true);
+
+                        $pi = [];
+                        if ($pgs !== null) {
+                            foreach ($pgs as $k => $p) {
+                                if ($k !== 'p0') {
+                                    $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_MPS . $k, null);
+                                    $pi[$k] = json_decode($v, true);
+                                }
+                            }
                         }
-                    }
-
-                    // org info
-                    $org_name=$this->c->getUserValue($userId, $this->appName, self::KEY_U_NAME,null);
-                    if($org_name!==null){
-
-                        $a=array(
-                            BackendUtils::ORG_NAME=>$org_name,
-                            BackendUtils::ORG_EMAIL=>$this->c->getUserValue($userId, $this->appName, self::KEY_U_EMAIL),
-                            BackendUtils::ORG_ADDR=>$this->c->getUserValue($userId, $this->appName, self::KEY_U_ADDR),
-                            BackendUtils::ORG_PHONE=>$this->c->getUserValue($userId, $this->appName, self::KEY_U_PHONE)
-                        );
-                        $js=json_encode($a);
-                        if($js!==false){
-                            /** @noinspection PhpUnhandledExceptionInspection */
-                            $this->c->setUserValue($userId,$this->appName,BackendUtils::KEY_ORG,$js);
+                        if (!empty($pi)) {
+                            $o[BackendUtils::KEY_MPS_COL] = json_encode($pi);
                         }
 
-                        $this->c->deleteUserValue($userId, $this->appName,self::KEY_U_NAME);
-                        $this->c->deleteUserValue($userId, $this->appName,self::KEY_U_EMAIL);
-                        $this->c->deleteUserValue($userId, $this->appName,self::KEY_U_ADDR);
-                        $this->c->deleteUserValue($userId, $this->appName,self::KEY_U_PHONE);
-                    }
+                        $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_PSN, null);
+                        $o[BackendUtils::KEY_PSN] = $v;
 
-                    // autofix fix for multi-page
-                    $afv=$this->c->getUserValue($userId, $this->appName,
-                        ExternalModeSabrePlugin::AUTO_FIX_URI,"");
-                    if(!empty($afv) && $afv[0]==="/"){
-                        $this->c->setUserValue($userId, $this->appName,
-                            ExternalModeSabrePlugin::AUTO_FIX_URI,
-                            'p0'.$afv.chr(31));
+                        $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_TALK, null);
+                        $o[BackendUtils::KEY_TALK] = $v;
+
+                        $o['user_id'] = $u;
+
+                        try {
+                            // insert into BackendUtils::PREF_TABLE_NAME
+                            $qb = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+                            $qb->insert(BackendUtils::PREF_TABLE_NAME);
+                            foreach ($o as $k => $v) {
+                                $qb->setValue($k, $qb->createNamedParameter($v));
+                            }
+                            $qb->execute();
+
+                            // delete from 'oc_preferences'
+                            //
+                            // delete $mps first
+                            if ($pgs !== null) {
+                                foreach ($pgs as $k => $p) {
+                                    if ($k !== 'p0') {
+                                        $this->config->deleteUserValue($u, $a, BackendUtils::KEY_MPS . $k);
+                                    }
+                                }
+                            }
+                            // delete other keys
+                            foreach ($o as $k => $v) {
+                                $this->config->deleteUserValue($u, $a, $k);
+                            }
+
+                        } catch (\Exception $e) {
+                            $output->warning($e->getMessage());
+                        }
                     }
                 }
             }
-            $this->c->setAppValue($this->appName, $nb_key, "3");
+            $this->config->setAppValue($this->appName, $nb_key, "4");
         }
         $output->info("appointments UpdateHook finished");
     }

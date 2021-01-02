@@ -23,5 +23,8 @@ return [
         ['name' => 'dir#index', 'url' => '/pub/{token}/dir', 'verb' => 'GET'],
         ['name' => 'dir#indexbase', 'url' => '/dir', 'verb' => 'GET'],
 
+
+        ['name' => 'state#temp', 'url' => '/stt', 'verb' => 'GET'],
+
     ]
 ];
