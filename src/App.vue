@@ -210,48 +210,49 @@
         </Modal>
       </div>
       <div v-show="visibleSection===1" class="srgdev-appt-cal-view-cont">
-        <div class="srgdev-appt-cal-view-btns">
-          <button @click="addScheduleToCalendar()" class="primary">
-            {{ t('appointments', 'Add to Calendar') }}
-          </button>
-          <button @click="closePreviewGrid()">
-            {{ t('appointments', 'Discard') }}
-          </button>
-        </div>
-        <div id="srgdev-appt-grid-scroll_cont">
-          <ul class="srgdev-appt-grid-header">
-            <li v-for="(hi, index) in gridHeader"
-                class="srgdev-appt-gh-li"
-                :style="{width:hi.w}">
-              <div class="srgdev-appt-gh-txt">{{ hi.txt }}</div>
-              <Actions
-                  menuAlign="right"
-                  class="srgdev-appt-gh-act1">
-                <ActionInput
-                    :value="hi.n"
-                    :closeAfterClick="true"
-                    :disabled="hi.hasAppts"
-                    @submit="gridApptsAdd(index,$event)"
-                    icon="icon-add"
-                    class="srgdev-appt-gh-act-inp"
-                    type="number"></ActionInput>
-                <ActionButton
-                    icon="icon-delete"
-                    :disabled="!hi.hasAppts"
-                    :closeAfterClick="true"
-                    @click="gridApptsDel(index)">{{ t('appointments', 'Remove All') }}
-                </ActionButton>
-                <ActionButton
-                    :disabled="!hi.hasAppts"
-                    :closeAfterClick="true"
-                    v-if="index!==gridHeader.length-1"
-                    icon="icon-category-workflow"
-                    @click="gridApptsCopy(index)">{{ t('appointments', 'Copy to Next') }}
-                </ActionButton>
-              </Actions>
-            </li>
-          </ul>
-          <div ref="grid_cont" class="srgdev-appt-grid-cont"></div>
+        <div class="srgdev-appt-grid-flex">
+          <div class="srgdev-appt-cal-view-btns">
+            <button @click="addScheduleToCalendar()" class="primary">
+              {{ t('appointments', 'Add to Calendar') }}
+            </button>
+            <button @click="closePreviewGrid()">
+              {{ t('appointments', 'Discard') }}
+            </button>
+          </div>
+          <div class="srgdev-appt-grid-flex-lower">
+            <ul class="srgdev-appt-grid-header">
+              <li v-for="(hi, index) in gridHeader"
+                  class="srgdev-appt-gh-li"
+                  :style="{width:hi.w}">
+                <div class="srgdev-appt-gh-txt">{{ hi.txt }}</div>
+                <Actions
+                    menuAlign="right"
+                    class="srgdev-appt-gh-act1">
+                  <ActionInput
+                      :value="hi.n"
+                      :closeAfterClick="true"
+                      @submit="gridApptsAdd(index,$event)"
+                      icon="icon-add"
+                      class="srgdev-appt-gh-act-inp"
+                      type="number"></ActionInput>
+                  <ActionButton
+                      icon="icon-delete"
+                      :disabled="!hi.hasAppts"
+                      :closeAfterClick="true"
+                      @click="gridApptsDel(index)">{{ t('appointments', 'Remove All') }}
+                  </ActionButton>
+                  <ActionButton
+                      :disabled="!hi.hasAppts"
+                      :closeAfterClick="true"
+                      v-if="index!==gridHeader.length-1"
+                      icon="icon-category-workflow"
+                      @click="gridApptsCopy(index)">{{ t('appointments', 'Copy to Next') }}
+                  </ActionButton>
+                </Actions>
+              </li>
+            </ul>
+            <div ref="grid_cont" class="srgdev-appt-grid-cont"></div>
+          </div>
         </div>
         <Modal v-if="evtGridModal!==0" :canClose="false">
           <div class="srgdev-appt-modal_content">
@@ -1048,6 +1049,7 @@ export default {
     makePreviewGrid(d) {
 
       gridMaker.resetAllColumns()
+      gridMaker.setMode(gridMaker.MODE_SIMPLE)
 
       const NBR_DAYS = 6
       // Generate local names for days and month(s)
