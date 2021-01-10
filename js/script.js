@@ -4428,12 +4428,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_DirSlideBar__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/DirSlideBar */ "./src/components/DirSlideBar.vue");
 /* harmony import */ var _components_TalkSlideBar__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/TalkSlideBar */ "./src/components/TalkSlideBar.vue");
 /* harmony import */ var _components_FormInputsDesigner__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/FormInputsDesigner */ "./src/components/FormInputsDesigner.vue");
+/* harmony import */ var _components_TemplateApptOptions__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/TemplateApptOptions */ "./src/components/TemplateApptOptions.vue");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4827,9 +4843,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'App',
   components: {
+    TemplateApptOptions: _components_TemplateApptOptions__WEBPACK_IMPORTED_MODULE_19__["default"],
     TalkSlideBar: _components_TalkSlideBar__WEBPACK_IMPORTED_MODULE_17__["default"],
     DirSlideBar: _components_DirSlideBar__WEBPACK_IMPORTED_MODULE_16__["default"],
     PagePickerSlideBar: _components_PagePickerSlideBar__WEBPACK_IMPORTED_MODULE_15__["default"],
@@ -4891,8 +4909,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       gridHeader: [],
       gridApptLen: 0,
       gridApptTs: 0,
-      gridApptTZ: "L",
-      gridApptsPageId: "p0",
+      gridMode: _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].MODE_SIMPLE,
       generalModal: 0,
       generalModalTxt: ["", ""],
       generalModalLoadingTxt: "",
@@ -4939,26 +4956,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     }
   },
+  created: function created() {
+    this.gridApptTZ = "L";
+    this.gridTzName = "";
+    this.gridApptsPageId = "p0";
+    this.gridCID = 0;
+    this.evtGridElm = null;
+  },
   beforeMount: function beforeMount() {
     this.resetCalInfo();
   },
   mounted: function mounted() {
-    // this.getPages(1,'p0')
-    // this.getFormData('p0')
-    this.$root.$on('helpWanted', this.helpWantedHandler);
-
-    if (!this.isGridReady) {
-      this.gridSetup();
-    }
-
-    this.makePreviewGrid({
-      calColor: "#9750A4",
-      calName: "RTRT",
-      dur: 30,
-      pageId: "p1",
-      tz: "BEGIN:VTIMEZONE\r\nTZID:America/New_York\r\nBEGIN:DAYLIGHT\r\nTZOFFSETFROM:-0500\r\nTZOFFSETTO:-0400\r\nTZNAME:EDT\r\nDTSTART:19700308T020000\r\nRRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU\r\nEND:DAYLIGHT\r\nBEGIN:STANDARD\r\nTZOFFSETFROM:-0400\r\nTZOFFSETTO:-0500\r\nTZNAME:EST\r\nDTSTART:19701101T020000\r\nRRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU\r\nEND:STANDARD\r\nEND:VTIMEZONE",
-      week: 1609736400000
-    });
+    this.getPages(1, 'p0');
+    this.$root.$on('helpWanted', this.helpWantedHandler); // ------- testing --
+    // if(!this.isGridReady){
+    //   this.gridSetup()
+    // }
+    // this.curPageId="p0"
+    // this.editApptTemplate({
+    //   tzName:"America/New_York",
+    //   pageId:this.curPageId
+    // })
   },
   beforeDestroy: function beforeDestroy() {
     this.$root.$off('helpWanted', this.helpWantedHandler);
@@ -4970,9 +4988,57 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
+    editSingleAppt: function editSingleAppt(e) {
+      this.evtGridElm = e.detail;
+      this.evtGridModal = 5;
+    },
+    editApptTemplate: function editApptTemplate(info) {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var wd, day, d;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!_this.isGridReady) {
+                  _this.gridSetup();
+                }
+
+                _this.gridTzName = info.tzName;
+                wd = new Date();
+                wd.setHours(0, 0, 0);
+                day = wd.getDay();
+
+                if (day === 0) {
+                  day++;
+                } else {
+                  day = 1 - day;
+                }
+
+                d = {
+                  dur: 0,
+                  week: wd.setTime(wd.getTime() + day * 86400000),
+                  tz: null,
+                  pageId: info.pageId
+                };
+
+                _this.makePreviewGrid(d, _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].MODE_TEMPLATE);
+
+              case 8:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
+    saveTemplate: function saveTemplate() {
+      this.setState('set_t_data', _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].getTemplateData(), this.curPageData.pageId);
+    },
     openViaPicker: function openViaPicker(sbn, evt) {
       if (this.sbShow === 11 && this.sbGotoBack === sbn) {
-        // picker fro THIS slideBar is showing... close it
+        // picker from THIS slideBar is showing... close it
         this.toggleSlideBar(0);
         return;
       }
@@ -5006,7 +5072,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     getPages: function getPages(idx, p) {
-      var _this = this;
+      var _this2 = this;
 
       this.pageInfoLoading = idx;
       this.stateInProgress = true;
@@ -5021,7 +5087,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           for (var prop in d) {
             if (d.hasOwnProperty(prop)) {
               if (prop === 'p0') {
-                _this.page0 = Object.assign({}, _this.page0, d['p0']);
+                _this2.page0 = Object.assign({}, _this2.page0, d['p0']);
               } else {
                 ap[c] = d[prop];
                 ap[c]['pageId'] = prop;
@@ -5030,21 +5096,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             }
           }
 
-          _this.morePages = ap;
+          _this2.morePages = ap;
         }
 
-        _this.getFormData(p);
+        _this2.getFormData(p);
 
-        _this.pageInfoLoading = 0;
-        _this.stateInProgress = false;
+        _this2.pageInfoLoading = 0;
+        _this2.stateInProgress = false;
       })["catch"](function (error) {
-        _this.stateInProgress = false;
-        _this.pageInfoLoading = 0;
+        _this2.stateInProgress = false;
+        _this2.pageInfoLoading = 0;
         console.log(error);
       });
     },
     setPages: function setPages(p, v, idx) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.pageInfoLoading = idx;
       var ji = "";
@@ -5067,19 +5133,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }).then(function (response) {
         if (response.status === 200) {
           // this.getFormData(p)
-          _this2.getPages(idx, p);
+          _this3.getPages(idx, p);
         } else if (response.status === 202) {
-          _this2.handle202(response.data);
+          _this3.handle202(response.data);
         }
       })["catch"](function (error) {
         console.log(error);
-        OC.Notification.showTemporary(_this2.t('appointments', "Page settings error. Check console") + "\xa0\xa0\xa0\xa0", {
+        OC.Notification.showTemporary(_this3.t('appointments', "Page settings error. Check console") + "\xa0\xa0\xa0\xa0", {
           timeout: 4,
           type: 'error'
         });
       }).then(function () {
         // always executed
-        _this2.pageInfoLoading = 0; // p can be pageId or "new" or "delete
+        _this3.pageInfoLoading = 0; // p can be pageId or "new" or "delete
         // this.getFormData(p)
       });
     },
@@ -5106,7 +5172,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.setPages(page, co, idx); // this.getFormData(page)
     },
     setPageEnabled: function setPageEnabled(page, enable) {
-      var _this3 = this;
+      var _this4 = this;
 
       var p;
       var idx = 1;
@@ -5129,7 +5195,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.pageInfoLoading = idx;
         this.getState("get_uci").then(function (res) {
           if (res === null) {
-            _this3.pageInfoLoading = 0;
+            _this4.pageInfoLoading = 0;
             return null;
           } //organization: "", email: "", address: ""
 
@@ -5148,17 +5214,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           if (n !== -1) {
             var fn = ["Name", "Email", "Location"][n];
-            OC.Notification.showTemporary(_this3.t('appointments', "Error: '{fieldName}' field is empty, check User/Organization settings", {
+            OC.Notification.showTemporary(_this4.t('appointments', "Error: '{fieldName}' field is empty, check User/Organization settings", {
               fieldName: fn
             }) + "\xa0\xa0\xa0\xa0", {
               timeout: 8,
               type: 'error'
             });
-            _this3.pageInfoLoading = 0;
+            _this4.pageInfoLoading = 0;
           } else {
             p.enabled = 1;
 
-            _this3.setPages(page, p, idx);
+            _this4.setPages(page, p, idx);
           }
         });
       } else {
@@ -5197,6 +5263,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     gridApptsAdd: function gridApptsAdd(cID, event) {
       var hd = this.gridHeader[cID];
       hd.n = event.target.querySelector('input[type=number]').value;
+
+      if (this.gridMode === _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].MODE_SIMPLE) {
+        this.gridApptsAddSimple(cID);
+      } else {
+        this.gridCID = cID;
+        this.evtGridElm = null;
+        this.evtGridModal = 5;
+      }
+    },
+    gridApptsAddTemplate: function gridApptsAddTemplate(ai) {
+      var hd = this.gridHeader[this.gridCID];
+      var nbr = parseInt(hd.n);
+      if (isNaN(nbr) || nbr < 1) nbr = 1;
+      _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].addAppt(0, ai.dur[0], nbr, this.gridCID, ai);
+      hd.hasAppts = true;
+    },
+    gridApptUpdate: function gridApptUpdate(ai) {
+      _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].updateAppt(ai);
+    },
+    gridApptsAddSimple: function gridApptsAddSimple(cID) {
+      var hd = this.gridHeader[cID];
       var nbr = parseInt(hd.n);
       if (isNaN(nbr) || nbr < 1) return;
 
@@ -5220,36 +5307,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.isGridReady = true;
     },
 
-    /** @return {Promise<JSON|string|null>} */
+    /** @return {Promise<JSON|string|Array|null>} */
     getState: function getState(action) {
       var _arguments = arguments,
-          _this4 = this;
+          _this5 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
         var p, res;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
                 p = _arguments.length > 1 && _arguments[1] !== undefined ? _arguments[1] : "";
-                _this4.stateInProgress = true;
-                _context.prev = 2;
-                _context.next = 5;
+                _this5.stateInProgress = true;
+                _context2.prev = 2;
+                _context2.next = 5;
                 return _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7___default.a.post('state', {
                   a: action,
                   p: p
                 });
 
               case 5:
-                res = _context.sent;
-                _this4.stateInProgress = false;
+                res = _context2.sent;
+                _this5.stateInProgress = false;
 
                 if (!(res.status === 200)) {
-                  _context.next = 11;
+                  _context2.next = 11;
                   break;
                 }
 
-                return _context.abrupt("return", res.data);
+                return _context2.abrupt("return", res.data);
 
               case 11:
                 console.log(res);
@@ -5257,29 +5344,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   timeout: 8,
                   type: 'error'
                 });
-                return _context.abrupt("return", null);
+                return _context2.abrupt("return", null);
 
               case 14:
-                _context.next = 22;
+                _context2.next = 22;
                 break;
 
               case 16:
-                _context.prev = 16;
-                _context.t0 = _context["catch"](2);
-                _this4.stateInProgress = false;
-                console.log(_context.t0);
+                _context2.prev = 16;
+                _context2.t0 = _context2["catch"](2);
+                _this5.stateInProgress = false;
+                console.log(_context2.t0);
                 OC.Notification.showTemporary(t('appointments', "Can't get Settings. Check console") + "\xa0\xa0\xa0\xa0", {
                   timeout: 8,
                   type: 'error'
                 });
-                return _context.abrupt("return", null);
+                return _context2.abrupt("return", null);
 
               case 22:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, null, [[2, 16]]);
+        }, _callee2, null, [[2, 16]]);
       }))();
     },
 
@@ -5290,53 +5377,53 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
      */
     setState: function setState(action, value) {
       var _arguments2 = arguments,
-          _this5 = this;
+          _this6 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
         var pageId, ji;
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
                 pageId = _arguments2.length > 2 && _arguments2[2] !== undefined ? _arguments2[2] : '';
                 ji = "";
-                _this5.stateInProgress = true;
-                _context2.prev = 3;
+                _this6.stateInProgress = true;
+                _context3.prev = 3;
                 ji = JSON.stringify(value);
-                _context2.next = 13;
+                _context3.next = 13;
                 break;
 
               case 7:
-                _context2.prev = 7;
-                _context2.t0 = _context2["catch"](3);
-                _this5.stateInProgress = false;
-                console.log(_context2.t0);
-                OC.Notification.showTemporary(_this5.t('appointments', "Can't apply settings"), {
+                _context3.prev = 7;
+                _context3.t0 = _context3["catch"](3);
+                _this6.stateInProgress = false;
+                console.log(_context3.t0);
+                OC.Notification.showTemporary(_this6.t('appointments', "Can't apply settings"), {
                   timeout: 4,
                   type: 'error'
                 });
-                return _context2.abrupt("return", false);
+                return _context3.abrupt("return", false);
 
               case 13:
-                _context2.next = 15;
+                _context3.next = 15;
                 return _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7___default.a.post('state', {
                   a: action,
                   d: ji,
                   p: pageId
                 }).then(function (response) {
-                  _this5.stateInProgress = false;
+                  _this6.stateInProgress = false;
 
                   if (response.status === 200) {
-                    if (action !== 'set_fi') _this5.getFormData(pageId);
-                    OCP.Toast.success(_this5.t('appointments', 'New Settings Applied.'));
+                    if (action !== 'set_fi') _this6.getFormData(pageId);
+                    OCP.Toast.success(_this6.t('appointments', 'New Settings Applied.'));
                     return action !== 'set_fi' ? true : response.data;
                   } else if (response.status === 202) {
-                    _this5.handle202(response.data);
+                    _this6.handle202(response.data);
                   }
                 })["catch"](function (error) {
-                  _this5.stateInProgress = false;
+                  _this6.stateInProgress = false;
                   console.log(error);
-                  OC.Notification.showTemporary(_this5.t('appointments', "Can't apply settings"), {
+                  OC.Notification.showTemporary(_this6.t('appointments', "Can't apply settings"), {
                     timeout: 4,
                     type: 'error'
                   });
@@ -5344,14 +5431,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 15:
-                return _context2.abrupt("return", _context2.sent);
+                return _context3.abrupt("return", _context3.sent);
 
               case 16:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2, null, [[3, 7]]);
+        }, _callee3, null, [[3, 7]]);
       }))();
     },
     toggleSlideBar: function toggleSlideBar(sbn, pageId) {
@@ -5378,7 +5465,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.showHelp(section); // document.getElementById("sec_"+section).scrollIntoView()
     },
     showHelp: function showHelp(sec) {
-      var _this6 = this;
+      var _this7 = this;
 
       if (typeof sec !== "string" && this.visibleSection === 3) {
         this.visibleSection = 0;
@@ -5388,10 +5475,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.visibleSection = 3;
       _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7___default.a.get('help').then(function (response) {
         if (response.status === 200) {
-          _this6.helpContent = response.data;
+          _this7.helpContent = response.data;
 
           if (sec !== undefined) {
-            _this6.$nextTick(function () {
+            _this7.$nextTick(function () {
               var elm = document.getElementById("srgdev-sec_" + sec);
 
               if (elm !== null) {
@@ -5408,11 +5495,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       })["catch"](function (error) {
         console.log(error);
-        _this6.helpContent = '';
+        _this7.helpContent = '';
       });
     },
     showPubLink: function showPubLink(page) {
-      var _this7 = this;
+      var _this8 = this;
 
       this.openGeneralModal(1);
       this.generalModalLoadingTxt = this.t('appointments', 'Fetching URL from the server …');
@@ -5436,19 +5523,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }).then(function (response) {
         if (response.status === 200) {
           var ua = response.data.split(String.fromCharCode(31));
-          _this7.generalModalLoadingTxt = "";
+          _this8.generalModalLoadingTxt = "";
 
-          _this7.$set(_this7.generalModalTxt, 0, ua[0]);
+          _this8.$set(_this8.generalModalTxt, 0, ua[0]);
 
-          _this7.$set(_this7.generalModalTxt, 1, ua[1]);
+          _this8.$set(_this8.generalModalTxt, 1, ua[1]);
         } else if (response.status === 202) {
-          _this7.handle202(response.data);
+          _this8.handle202(response.data);
         }
       })["catch"](function (error) {
-        _this7.closeGeneralModal();
+        _this8.closeGeneralModal();
 
         console.log(error);
-        OCP.Toast.error(_this7.t('appointments', 'Can not get public URL from server') + "\xa0\xa0\xa0\xa0");
+        OCP.Toast.error(_this8.t('appointments', 'Can not get public URL from server') + "\xa0\xa0\xa0\xa0");
       });
     },
     doCopyPubLink: function doCopyPubLink() {
@@ -5540,8 +5627,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.visibleSection = 0;
     },
     makePreviewGrid: function makePreviewGrid(d) {
-      var _this8 = this;
+      var _this9 = this;
 
+      var mode = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].MODE_SIMPLE;
+      this.gridMode = mode;
+      _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].setMode(mode);
       _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].resetAllColumns();
       var NBR_DAYS = 6; // Generate local names for days and month(s)
 
@@ -5549,16 +5639,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var lang = document.documentElement.lang;
 
       if (window.Intl && _typeof(window.Intl) === "object") {
-        var f = new Intl.DateTimeFormat([lang], {
-          weekday: "short",
-          month: "2-digit",
-          day: "2-digit"
-        });
+        var f;
+
+        if (mode === _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].MODE_SIMPLE) {
+          f = new Intl.DateTimeFormat([lang], {
+            weekday: "short",
+            month: "2-digit",
+            day: "2-digit"
+          });
+        } else {
+          f = new Intl.DateTimeFormat([lang], {
+            weekday: "long"
+          });
+        }
+
         tff = f.format;
       } else {
-        // noinspection JSUnusedLocalSymbols
+        var _sl = mode === _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].MODE_SIMPLE ? 10 : 3; // noinspection JSUnusedLocalSymbols
+
+
         tff = function tff(d) {
-          return td.toDateString().slice(0, 10);
+          return td.toDateString().slice(0, _sl);
         };
       }
 
@@ -5586,26 +5687,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.gridApptTZ = d.tz;
       this.gridApptsPageId = d.pageId;
       this.visibleSection = 1;
-      this.$set(this.calInfo, "curCal_color", d.calColor);
-      this.$set(this.calInfo, "curCal_name", d.calName); // dd-mm-yyyy
 
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7___default.a.post('calgetweek', {
-        t: pd,
-        p: d.pageId
-      }).then(function (response) {
-        if (response.status === 200) {
-          if (response.data !== "") {
-            _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].addPastAppts(response.data, _this8.calInfo.curCal_color);
+      if (mode === _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].MODE_SIMPLE) {
+        this.$set(this.calInfo, "curCal_color", d.calColor);
+        this.$set(this.calInfo, "curCal_name", d.calName); // dd-mm-yyyy
+
+        _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7___default.a.post('calgetweek', {
+          t: pd,
+          p: d.pageId
+        }).then(function (response) {
+          if (response.status === 200) {
+            if (response.data !== "") {
+              _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].addPastAppts(response.data, _this9.calInfo.curCal_color);
+            }
           }
-        }
-      })["catch"](function (error) {
-        _this8.modalErrTxt = t('appointments', "Bad calendar data. Check selected calendars.");
-        _this8.evtGridModal = 3;
-        console.log(error);
-      });
+        })["catch"](function (error) {
+          _this9.modalErrTxt = t('appointments', "Bad calendar data. Check selected calendars.");
+          _this9.evtGridModal = 3;
+          console.log(error);
+        });
+      } else {
+        this.$set(this.calInfo, "curCal_color", null);
+        this.$set(this.calInfo, "curCal_name", null); // get template data
+
+        this.getState('get_t_data', d.pageId).then(function (data) {
+          _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].addPastAppts(data, null); //activate non empty columns
+
+          data.forEach(function (c, i) {
+            _this9.gridHeader[i].hasAppts = c.length > 0;
+          });
+        });
+      }
     },
     addScheduleToCalendar: function addScheduleToCalendar() {
-      var _this9 = this;
+      var _this10 = this;
 
       var tsa = _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].getStarEnds(this.gridApptTs, this.gridApptTZ === 'UTC');
       this.evtGridModal = 1;
@@ -5620,19 +5735,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             console.log(response.data);
 
             if (response.data.length > 6) {
-              _this9.modalErrTxt = response.data.substr(2);
+              _this10.modalErrTxt = response.data.substr(2);
             }
 
-            _this9.evtGridModal = 3;
+            _this10.evtGridModal = 3;
           } else {
             // good
-            _this9.evtGridModal = 2;
+            _this10.evtGridModal = 2;
           }
         }
       })["catch"](function (error) {
         // What text can we get from the error ???
-        _this9.modalErrTxt = "";
-        _this9.evtGridModal = 3;
+        _this10.modalErrTxt = "";
+        _this10.evtGridModal = 3;
         console.log(error);
       }); //     .finally(()=>{
       //     this.closePreviewGrid()
@@ -5645,6 +5760,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (this.evtGridModal < 3) this.getFormData(this.gridApptsPageId);
       this.modalErrTxt = "";
       this.evtGridModal = 0;
+      this.evtGridElm = null;
     },
     showCModal: function showCModal(txt) {
       this.openGeneralModal(3);
@@ -6005,7 +6121,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var data, res, url, tzr, tzd, tzs, alias;
+        var data, d;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -6043,32 +6159,71 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
                 _this.tzData = "UTC";
                 _context.prev = 17;
                 _context.next = 20;
-                return _this.getState("get_tz");
+                return _this.getTimeZone();
 
               case 20:
-                res = _context.sent;
+                d = _context.sent;
+                _this.tzName = d.name;
+                _this.tzData = d.data;
+                _this.isLoading = false;
+                _context.next = 32;
+                break;
+
+              case 26:
+                _context.prev = 26;
+                _context.t1 = _context["catch"](17);
+                _this.isLoading = false;
+                console.error("Can't get timezone");
+                console.log(_context.t1);
+                OC.Notification.showTemporary(_this.t('appointments', "Can't load timezones"), {
+                  timeout: 4,
+                  type: 'error'
+                });
+
+              case 32:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[2, 9], [17, 26]]);
+      }))();
+    },
+    getTimeZone: function getTimeZone() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        var res, url, tzr, tzd, tzs, alias;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return _this2.getState("get_tz");
+
+              case 2:
+                res = _context2.sent;
 
                 if (!(res !== null && res.toLowerCase() !== 'utc')) {
-                  _context.next = 42;
+                  _context2.next = 22;
                   break;
                 }
 
                 url = Object(_nextcloud_router__WEBPACK_IMPORTED_MODULE_2__["linkTo"])('appointments', 'ajax/zones.js');
-                _context.next = 25;
+                _context2.next = 7;
                 return _nextcloud_axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(url);
 
-              case 25:
-                tzr = _context.sent;
+              case 7:
+                tzr = _context2.sent;
 
                 if (!(tzr.status === 200)) {
-                  _context.next = 39;
+                  _context2.next = 19;
                   break;
                 }
 
                 tzd = tzr.data;
 
                 if (!(_typeof(tzd) === "object" && tzd.hasOwnProperty('aliases') && tzd.hasOwnProperty('zones'))) {
-                  _context.next = 36;
+                  _context2.next = 16;
                   break;
                 }
 
@@ -6085,50 +6240,34 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
                   }
                 }
 
-                _this.tzName = res;
-                _this.tzData = "BEGIN:VTIMEZONE\r\nTZID:" + res.trim() + "\r\n" + tzs.trim() + "\r\nEND:VTIMEZONE";
-                _this.isLoading = false;
-                _context.next = 37;
-                break;
-
-              case 36:
-                throw new Error("Bad tzr.data");
-
-              case 37:
-                _context.next = 40;
-                break;
-
-              case 39:
-                throw new Error("Bad status: " + tzr.status);
-
-              case 40:
-                _context.next = 43;
-                break;
-
-              case 42:
-                throw new Error("Can't get_tz");
-
-              case 43:
-                _context.next = 51;
-                break;
-
-              case 45:
-                _context.prev = 45;
-                _context.t1 = _context["catch"](17);
-                _this.isLoading = false;
-                console.error("Can't get timezone");
-                console.log(_context.t1);
-                OC.Notification.showTemporary(_this.t('appointments', "Can't load timezones"), {
-                  timeout: 4,
-                  type: 'error'
+                return _context2.abrupt("return", {
+                  name: res,
+                  data: "BEGIN:VTIMEZONE\r\nTZID:" + res.trim() + "\r\n" + tzs.trim() + "\r\nEND:VTIMEZONE"
                 });
 
-              case 51:
+              case 16:
+                throw new Error("Bad tzr.data");
+
+              case 17:
+                _context2.next = 20;
+                break;
+
+              case 19:
+                throw new Error("Bad status: " + tzr.status);
+
+              case 20:
+                _context2.next = 23;
+                break;
+
+              case 22:
+                throw new Error("Can't get_tz");
+
+              case 23:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, null, [[2, 9], [17, 45]]);
+        }, _callee2);
       }))();
     },
     getTimeFormat: function getTimeFormat() {
@@ -6396,6 +6535,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ApptAccordion",
   props: {
@@ -6407,6 +6550,14 @@ __webpack_require__.r(__webpack_exports__);
     open: {
       type: Boolean,
       "default": false
+    },
+    help: {
+      type: String,
+      "default": ''
+    },
+    helpStyle: {
+      type: String,
+      "default": ''
     }
   },
   data: function data() {
@@ -6527,15 +6678,20 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SlideBar.vue */ "./src/components/SlideBar.vue");
 /* harmony import */ var _ApptIconButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ApptIconButton */ "./src/components/ApptIconButton.vue");
-/* harmony import */ var _nextcloud_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @nextcloud/vue */ "./node_modules/@nextcloud/vue/dist/ncvuecomponents.js");
-/* harmony import */ var _nextcloud_vue__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_vue__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-slider-component */ "./node_modules/vue-slider-component/dist/vue-slider-component.umd.min.js");
-/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-slider-component/theme/default.css */ "./node_modules/vue-slider-component/theme/default.css");
-/* harmony import */ var vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @nextcloud/axios */ "./node_modules/@nextcloud/axios/dist/index.js");
-/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_axios__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _ApptIconLabel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ApptIconLabel */ "./src/components/ApptIconLabel.vue");
+/* harmony import */ var _ApptAccordion_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ApptAccordion.vue */ "./src/components/ApptAccordion.vue");
+/* harmony import */ var _nextcloud_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @nextcloud/router */ "./node_modules/@nextcloud/router/dist/index.js");
+/* harmony import */ var _nextcloud_router__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_router__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _nextcloud_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @nextcloud/vue */ "./node_modules/@nextcloud/vue/dist/ncvuecomponents.js");
+/* harmony import */ var _nextcloud_vue__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_vue__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-slider-component */ "./node_modules/vue-slider-component/dist/vue-slider-component.umd.min.js");
+/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-slider-component/theme/default.css */ "./node_modules/vue-slider-component/theme/default.css");
+/* harmony import */ var vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @nextcloud/axios */ "./node_modules/@nextcloud/axios/dist/index.js");
+/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_axios__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _ApptIconLabel__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./ApptIconLabel */ "./src/components/ApptIconLabel.vue");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -6662,6 +6818,56 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 
 
@@ -6672,12 +6878,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ApptMgrSlideBar",
   components: {
-    ApptIconLabel: _ApptIconLabel__WEBPACK_IMPORTED_MODULE_6__["default"],
+    ApptIconLabel: _ApptIconLabel__WEBPACK_IMPORTED_MODULE_8__["default"],
     SlideBar: _SlideBar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     ApptIconButton: _ApptIconButton__WEBPACK_IMPORTED_MODULE_1__["default"],
-    VueSlider: vue_slider_component__WEBPACK_IMPORTED_MODULE_3___default.a,
-    Actions: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_2__["Actions"],
-    ActionButton: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_2__["ActionButton"]
+    VueSlider: vue_slider_component__WEBPACK_IMPORTED_MODULE_5___default.a,
+    Actions: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_4__["Actions"],
+    ActionButton: _nextcloud_vue__WEBPACK_IMPORTED_MODULE_4__["ActionButton"],
+    ApptAccordion: _ApptAccordion_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   props: {
     curPageData: Object,
@@ -6698,9 +6905,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         destCalId: "-1",
         nrSrcCalId: "-1",
         nrDstCalId: "-1",
-        tsMode: "0"
+        tmmDstCalId: "-1",
+        tmmMoreCals: [],
+        tsMode: "2"
       },
       realCalIDs: "-1-1",
+      tzName: "",
+      tzData: "",
       cals: []
     };
   },
@@ -6709,7 +6920,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var data, res, cals, i, l, cal;
+        var data, res, cals, i, l, cal, d;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -6746,7 +6957,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _context.prev = 16;
                 _context.next = 19;
-                return _nextcloud_axios__WEBPACK_IMPORTED_MODULE_5___default.a.get('callist');
+                return _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7___default.a.get('callist');
 
               case 19:
                 res = _context.sent;
@@ -6776,12 +6987,49 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 30:
+                if (!(_this.calInfo.tsMode === "2")) {
+                  _context.next = 46;
+                  break;
+                }
+
+                _context.prev = 31;
+                _context.next = 34;
+                return _this.getTimeZone();
+
+              case 34:
+                d = _context.sent;
+                _this.tzName = d.name;
+                _this.tzData = d.data;
+                _this.isLoading = false;
+                _context.next = 46;
+                break;
+
+              case 40:
+                _context.prev = 40;
+                _context.t2 = _context["catch"](31);
+                _this.isLoading = false;
+                console.error("Can't get timezone");
+                console.log(_context.t2);
+                OC.Notification.showTemporary(_this.t('appointments', "Can't load timezones"), {
+                  timeout: 4,
+                  type: 'error'
+                });
+
+              case 46:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[1, 9], [16, 25]]);
+        }, _callee, null, [[1, 9], [16, 25], [31, 40]]);
       }))();
+    },
+    handleEditTemplate: function handleEditTemplate() {
+      this.$emit('editTemplate', {
+        pageId: this.curPageData.pageId,
+        tzName: this.tzName,
+        tzData: this.tzData
+      });
+      this.close();
     },
     tsModeChanged: function tsModeChanged() {
       this.apply(true);
@@ -6812,6 +7060,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             this.$emit("showModal", [this.t('appointments', 'Error'), this.t('appointments', 'Source and Destination calendars must be different')]);
             return;
           }
+        } else if (this.calInfo.tsMode === '2') {
+          if (this.tzData !== "") {
+            this.calInfo.tzData = this.tzData;
+            this.calInfo.tzName = this.tzName;
+          } else {
+            this.$emit("showModal", [this.t('appointments', 'Error'), this.t('appointments', 'Timezone data is empty')]);
+            return;
+          }
         }
       }
 
@@ -6831,13 +7087,100 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     gotoEvt: function gotoEvt(evt) {
       if (evt !== 'gotoAdvStn' && this.realCalIDs !== this.calInfo.mainCalId.toString() + this.calInfo.destCalId.toString()) {
-        OC.Notification.showTemporary(this.t('appointments', "Please apply calendar chages first") + "\xa0\xa0\xa0\xa0", {
+        OC.Notification.showTemporary(this.t('appointments', "Please apply calendar changes first") + "\xa0\xa0\xa0\xa0", {
           timeout: 4,
           type: 'warning'
         });
       } else {
         this.$emit(evt, this.curPageData.pageId);
       }
+    },
+    removeFromTMM: function removeFromTMM(calId) {
+      this.calInfo.tmmMoreCals = this.calInfo.tmmMoreCals.filter(function (cid) {
+        return cid !== calId;
+      });
+    },
+    getTimeZone: function getTimeZone() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        var res, url, tzr, tzd, tzs, alias;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return _this3.getState("get_tz");
+
+              case 2:
+                res = _context2.sent;
+
+                if (!(res !== null && res.toLowerCase() !== 'utc')) {
+                  _context2.next = 22;
+                  break;
+                }
+
+                url = Object(_nextcloud_router__WEBPACK_IMPORTED_MODULE_3__["linkTo"])('appointments', 'ajax/zones.js');
+                _context2.next = 7;
+                return _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7___default.a.get(url);
+
+              case 7:
+                tzr = _context2.sent;
+
+                if (!(tzr.status === 200)) {
+                  _context2.next = 19;
+                  break;
+                }
+
+                tzd = tzr.data;
+
+                if (!(_typeof(tzd) === "object" && tzd.hasOwnProperty('aliases') && tzd.hasOwnProperty('zones'))) {
+                  _context2.next = 16;
+                  break;
+                }
+
+                tzs = "";
+
+                if (tzd.zones[res] !== undefined) {
+                  tzs = tzd.zones[res].ics.join("\r\n");
+                } else if (tzd.aliases[res] !== undefined) {
+                  alias = tzd.aliases[res].aliasTo;
+
+                  if (tzd.zones[alias] !== undefined) {
+                    res = alias;
+                    tzs = tzd.zones[alias].ics.join("\r\n");
+                  }
+                }
+
+                return _context2.abrupt("return", {
+                  name: res,
+                  data: "BEGIN:VTIMEZONE\r\nTZID:" + res.trim() + "\r\n" + tzs.trim() + "\r\nEND:VTIMEZONE"
+                });
+
+              case 16:
+                throw new Error("Bad tzr.data");
+
+              case 17:
+                _context2.next = 20;
+                break;
+
+              case 19:
+                throw new Error("Bad status: " + tzr.status);
+
+              case 20:
+                _context2.next = 23;
+                break;
+
+              case 22:
+                throw new Error("Can't get_tz");
+
+              case 23:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
     },
     close: function close() {
       this.$emit('close');
@@ -9015,6 +9358,171 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     close: function close() {
       this.$emit('close');
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/TemplateApptOptions.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TemplateApptOptions.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-slider-component */ "./node_modules/vue-slider-component/dist/vue-slider-component.umd.min.js");
+/* harmony import */ var vue_slider_component__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-slider-component/theme/default.css */ "./node_modules/vue-slider-component/theme/default.css");
+/* harmony import */ var vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_slider_component_theme_default_css__WEBPACK_IMPORTED_MODULE_1__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "TemplateApptOptions",
+  components: {
+    VueSlider: vue_slider_component__WEBPACK_IMPORTED_MODULE_0___default.a
+  },
+  props: {
+    elm: {
+      type: HTMLDivElement,
+      "default": null
+    }
+  },
+  created: function created() {
+    this.durMax = 150;
+  },
+  // TODO: add header info
+  // computed:{
+  //   header(){
+  //     return this.elm===null?null:this.elm.firstElementChild.textContent
+  //   }
+  // },
+  data: function data() {
+    return {
+      // first one is a needed for a work-around
+      durations: [10, 30],
+      title: ""
+    };
+  },
+  mounted: function mounted() {
+    if (this.elm !== null) {
+      this.durations = [10].concat(_toConsumableArray(this.elm.dur));
+      this.title = this.elm.title;
+    }
+  },
+  methods: {
+    addAppts: function addAppts() {
+      if (this.elm === null) {
+        this.$emit('close');
+        this.$emit('tmplAddAppts', {
+          dur: _toConsumableArray(this.durations.slice(1)).sort(function (a, b) {
+            return a - b;
+          }),
+          title: this.title.trim()
+        });
+      } else {
+        this.$emit('tmplUpdateAppt', {
+          dur: _toConsumableArray(this.durations.slice(1)).sort(function (a, b) {
+            return a - b;
+          }),
+          title: this.title.trim(),
+          cIdx: this.elm.cIdx,
+          cID: this.elm.cID
+        });
+        this.$emit('close');
+      }
+    },
+    addDuration: function addDuration() {
+      // TODO: contributors message
+      if (this.durations.length > 3) return;
+      var a = [].concat(_toConsumableArray(this.durations), [this.durMax]).sort(function (a, b) {
+        return a - b;
+      }); // find largest space
+
+      var s = 0;
+
+      for (var sp = 0, spn = 0, i = 0, l = a.length - 1; i < l; i++) {
+        spn = a[i + 1] - a[i];
+
+        if (spn > sp) {
+          sp = spn;
+          s = i;
+        }
+      }
+
+      this.durations.push(((a[s] + (a[s + 1] - a[s] >> 1)) / 5 | 0) * 5);
+    },
+    removeDuration: function removeDuration() {
+      if (this.durations.length > 2) {
+        this.durations.splice(-1, 1);
+      }
+    },
+    deleteAppt: function deleteAppt() {
+      // reuse event
+      this.$emit('tmplUpdateAppt', {
+        cIdx: this.elm.cIdx,
+        cID: this.elm.cID,
+        del: true
+      });
+      this.$emit('close');
+    },
+    showHelp: function showHelp() {//TODO: help
+      // $root.$emit('helpWanted',help)
     }
   }
 });
@@ -17308,7 +17816,7 @@ module.exports = exports;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "\n.appt-accordion-title[data-v-ba97c4d6]{\n    margin-bottom: .25em;\n    cursor: pointer;\n    background-position: left center;\n    padding-left: 1.75em;\n    background-size: 1.5em;\n    margin-left: -.5em;\n}\n.appt-accordion-content[data-v-ba97c4d6]{\n    padding-left: 1.25em;\n}\n", ""]);
+exports.push([module.i, "\n.appt-accordion-title[data-v-ba97c4d6]{\n    margin-bottom: .25em;\n    cursor: pointer;\n    background-position: left center;\n    padding-left: 1.75em;\n    background-size: 1.5em;\n    margin-left: -.5em;\n  position: relative;\n}\n.appt-accordion-content[data-v-ba97c4d6]{\n    padding-left: 1.25em;\n}\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -17326,7 +17834,7 @@ module.exports = exports;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "\n.tsb-label[data-v-393034e7] {\n  display: block;\n}\n.tsb-input[data-v-393034e7] {\n  margin-top: 0;\n  display: block;\n  min-width: 80%;\n  margin-bottom: 1em;\n  color: var(--color-text-lighter);\n}\n.tsb-adv-settings-link[data-v-393034e7]{\n  margin: 1em 0 0\n}\n.tsb-adv-settings-link_span[data-v-393034e7]{\n  font-size: 90%;\n  cursor: pointer;\n  color: var(--color-text-lighter);\n}\n.tsb-adv-settings-link_span[data-v-393034e7]:hover{\n  text-decoration: underline;\n  color: var(--color-main-text)\n}\n\n", ""]);
+exports.push([module.i, "\n.tsb-label[data-v-393034e7] {\n  display: block;\n}\n.tsb-input[data-v-393034e7] {\n  margin-top: 0;\n  display: block;\n  min-width: 80%;\n  margin-bottom: 1em;\n  color: var(--color-text-lighter);\n}\n.tsb-adv-settings-link[data-v-393034e7]{\n  margin: 1em 0 0\n}\n.tsb-adv-settings-link_span[data-v-393034e7]{\n  font-size: 90%;\n  cursor: pointer;\n  color: var(--color-text-lighter);\n}\n.tsb-adv-settings-link_span[data-v-393034e7]:hover{\n  text-decoration: underline;\n  color: var(--color-main-text)\n}\n\n\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -17417,6 +17925,42 @@ var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
 exports.push([module.i, "\n.top-margin[data-v-4b55769e]{\n  margin-top: .75em;\n}\n.tsb-label[data-v-4b55769e] {\n  display: block;\n  margin-top: .75em;\n}\n.tsb-input[data-v-4b55769e] {\n  margin-top: 0;\n  display: block;\n  min-width: 80%;\n  margin-bottom: .5em;\n  color: var(--color-main-text);\n}\n", ""]);
+// Exports
+module.exports = exports;
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/TemplateApptOptions.vue?vue&type=style&index=0&lang=css&":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TemplateApptOptions.vue?vue&type=style&index=0&lang=css& ***!
+  \**********************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Imports
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+exports = ___CSS_LOADER_API_IMPORT___(false);
+// Module
+exports.push([module.i, "\n.tao-cont .vue-slider-dot:first-child{\n  display: none !important;\n}\n", ""]);
+// Exports
+module.exports = exports;
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/TemplateApptOptions.vue?vue&type=style&index=1&id=065f255e&scoped=true&lang=css&":
+/*!**********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TemplateApptOptions.vue?vue&type=style&index=1&id=065f255e&scoped=true&lang=css& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Imports
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+exports = ___CSS_LOADER_API_IMPORT___(false);
+// Module
+exports.push([module.i, "\n.tao-h4[data-v-065f255e]{\n  padding-bottom: .5em;\n  border-bottom: 1px solid var(--color-border);\n  font-weight: bold;\n}\n.help-link[data-v-065f255e]{\n  left: auto;\n  right: 0;\n  bottom: 12px;\n  position: absolute;\n}\n.tao-cont[data-v-065f255e]{\n  min-width: 22em;\n  position: relative;\n}\n.pml-cont[data-v-065f255e]{\n  position: relative;\n}\n.pml-m[data-v-065f255e],\n.pml-p[data-v-065f255e]{\n  font-size: 125%;\n  position: absolute;\n  height: 1em;\n  width: 1em;\n  line-height: 1em;\n  top: 50%;\n  margin-top: -.5em;\n  text-align: center;\n  cursor: pointer;\n  color: var(--color-text-light);\n}\n.pml-m[data-v-065f255e]:hover,\n.pml-p[data-v-065f255e]:hover{\n  color: var(--color-main-text);\n  transform: scale(1.2);\n}\n.pml-p[data-v-065f255e]{\n  right: 1.375em;\n}\n.pml-m[data-v-065f255e]{\n  right: 0;\n}\n.slider-label[data-v-065f255e],\n.select-label[data-v-065f255e]{\n  display: block;\n  margin-top: 1em;\n  margin-bottom: .25em;\n}\n.slider-label[data-v-065f255e]{\n  cursor: default;\n}\n.appt-slider[data-v-065f255e]{\n  margin-bottom: 3em;\n}\ninput[data-v-065f255e]{\n  display: block;\n  width: 100%;\n}\n.delete-btn[data-v-065f255e]{\n  margin-right: 1.5em;\n}\n.delete-btn[data-v-065f255e]:hover{\n  color: var(--color-error);\n}\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -36279,44 +36823,112 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "srgdev-appt-grid-flex" }, [
-                _c("div", { staticClass: "srgdev-appt-cal-view-btns" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "primary",
-                      on: {
-                        click: function($event) {
-                          return _vm.addScheduleToCalendar()
-                        }
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.gridMode === 0,
+                        expression: "gridMode===0"
                       }
-                    },
-                    [
-                      _vm._v(
-                        "\n            " +
-                          _vm._s(_vm.t("appointments", "Add to Calendar")) +
-                          "\n          "
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      on: {
-                        click: function($event) {
-                          return _vm.closePreviewGrid()
+                    ],
+                    staticClass: "srgdev-appt-cal-view-btns"
+                  },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "primary",
+                        on: {
+                          click: function($event) {
+                            return _vm.addScheduleToCalendar()
+                          }
                         }
+                      },
+                      [
+                        _vm._v(
+                          "\n            " +
+                            _vm._s(_vm.t("appointments", "Add to Calendar")) +
+                            "\n          "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        on: {
+                          click: function($event) {
+                            return _vm.closePreviewGrid()
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n            " +
+                            _vm._s(_vm.t("appointments", "Discard")) +
+                            "\n          "
+                        )
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.gridMode === 1,
+                        expression: "gridMode===1"
                       }
-                    },
-                    [
-                      _vm._v(
-                        "\n            " +
-                          _vm._s(_vm.t("appointments", "Discard")) +
-                          "\n          "
-                      )
-                    ]
-                  )
-                ]),
+                    ],
+                    staticClass: "srgdev-appt-cal-view-btns"
+                  },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "primary",
+                        staticStyle: { "margin-right": "1em" },
+                        on: {
+                          click: function($event) {
+                            return _vm.saveTemplate()
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n            " +
+                            _vm._s(_vm.t("appointments", "Save")) +
+                            "\n          "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        on: {
+                          click: function($event) {
+                            return _vm.closePreviewGrid()
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n            " +
+                            _vm._s(_vm.t("appointments", "Cancel")) +
+                            "\n          "
+                        )
+                      ]
+                    )
+                  ]
+                ),
                 _vm._v(" "),
                 _c("div", { staticClass: "srgdev-appt-grid-flex-lower" }, [
                   _c(
@@ -36415,151 +37027,197 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", {
                     ref: "grid_cont",
-                    staticClass: "srgdev-appt-grid-cont"
+                    staticClass: "srgdev-appt-grid-cont",
+                    on: { gridContext: _vm.editSingleAppt }
                   })
                 ])
               ]),
               _vm._v(" "),
               _vm.evtGridModal !== 0
                 ? _c("Modal", { attrs: { canClose: false } }, [
-                    _c("div", { staticClass: "srgdev-appt-modal_content" }, [
-                      _vm.evtGridModal === 1
-                        ? _c("div", { staticClass: "srgdev-appt-modal-lbl" }, [
-                            _vm._v(
-                              "\n            " +
-                                _vm._s(
-                                  _vm.t(
-                                    "appointments",
-                                    "Adding appointment to {calendarName} calendar …",
-                                    { calendarName: _vm.calInfo.curCal_name }
-                                  )
-                                ) +
-                                "\n          "
-                            )
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.evtGridModal === 2
-                        ? _c("div", { staticClass: "srgdev-appt-modal-lbl" }, [
-                            _vm._v(
-                              "\n            " +
-                                _vm._s(
-                                  _vm.t(
-                                    "appointments",
-                                    "All appointments have been added to {calendarName} calendar.",
-                                    { calendarName: _vm.calInfo.curCal_name }
-                                  )
-                                ) +
-                                "\n          "
-                            )
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.evtGridModal === 3
-                        ? _c("div", { staticClass: "srgdev-appt-modal-lbl" }, [
-                            _c(
-                              "span",
-                              {
-                                directives: [
-                                  {
-                                    name: "show",
-                                    rawName: "v-show",
-                                    value: _vm.modalErrTxt !== "",
-                                    expression: "modalErrTxt!==''"
-                                  }
-                                ]
-                              },
-                              [_vm._v(_vm._s(_vm.modalErrTxt))]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "span",
-                              {
-                                directives: [
-                                  {
-                                    name: "show",
-                                    rawName: "v-show",
-                                    value: _vm.modalErrTxt === "",
-                                    expression: "modalErrTxt===''"
-                                  }
-                                ]
-                              },
+                    _c(
+                      "div",
+                      {
+                        class:
+                          _vm.evtGridModal === 5
+                            ? "srgdev-appt-modal_content_tmpl"
+                            : "srgdev-appt-modal_content"
+                      },
+                      [
+                        _vm.evtGridModal === 1
+                          ? _c(
+                              "div",
+                              { staticClass: "srgdev-appt-modal-lbl" },
                               [
                                 _vm._v(
-                                  _vm._s(
-                                    _vm.t(
-                                      "appointments",
-                                      "Error occurred. Check console …"
-                                    )
-                                  )
+                                  "\n            " +
+                                    _vm._s(
+                                      _vm.t(
+                                        "appointments",
+                                        "Adding appointment to {calendarName} calendar …",
+                                        {
+                                          calendarName: _vm.calInfo.curCal_name
+                                        }
+                                      )
+                                    ) +
+                                    "\n          "
                                 )
                               ]
                             )
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.evtGridModal === 4
-                        ? _c("div", { staticClass: "srgdev-appt-modal-lbl" }, [
-                            _c(
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.evtGridModal === 2
+                          ? _c(
                               "div",
-                              {
-                                staticStyle: {
-                                  "font-size": "110%",
-                                  "font-weight": "bold"
-                                }
-                              },
-                              [_vm._v(_vm._s(_vm.modalHeader))]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticStyle: {
-                                  "user-select": "text",
-                                  cursor: "text"
-                                }
-                              },
-                              [_vm._v(_vm._s(_vm.modalText))]
+                              { staticClass: "srgdev-appt-modal-lbl" },
+                              [
+                                _vm._v(
+                                  "\n            " +
+                                    _vm._s(
+                                      _vm.t(
+                                        "appointments",
+                                        "All appointments have been added to {calendarName} calendar.",
+                                        {
+                                          calendarName: _vm.calInfo.curCal_name
+                                        }
+                                      )
+                                    ) +
+                                    "\n          "
+                                )
+                              ]
                             )
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.evtGridModal === 1
-                        ? _c(
-                            "div",
-                            { staticClass: "srgdev-appt-modal-slider" },
-                            [
-                              _c("div", {
-                                staticClass: "srgdev-appt-slider-line"
-                              }),
-                              _vm._v(" "),
-                              _c("div", {
-                                staticClass: "srgdev-appt-slider-inc"
-                              }),
-                              _vm._v(" "),
-                              _c("div", {
-                                staticClass: "srgdev-appt-slider-dec"
-                              })
-                            ]
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.evtGridModal > 1
-                        ? _c(
-                            "button",
-                            {
-                              staticClass: "primary",
-                              on: { click: _vm.closeEvtModal }
-                            },
-                            [
-                              _vm._v(
-                                _vm._s(_vm.t("appointments", "Close")) +
-                                  "\n          "
-                              )
-                            ]
-                          )
-                        : _vm._e()
-                    ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.evtGridModal === 3
+                          ? _c(
+                              "div",
+                              { staticClass: "srgdev-appt-modal-lbl" },
+                              [
+                                _c(
+                                  "span",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "show",
+                                        rawName: "v-show",
+                                        value: _vm.modalErrTxt !== "",
+                                        expression: "modalErrTxt!==''"
+                                      }
+                                    ]
+                                  },
+                                  [_vm._v(_vm._s(_vm.modalErrTxt))]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "span",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "show",
+                                        rawName: "v-show",
+                                        value: _vm.modalErrTxt === "",
+                                        expression: "modalErrTxt===''"
+                                      }
+                                    ]
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.t(
+                                          "appointments",
+                                          "Error occurred. Check console …"
+                                        )
+                                      )
+                                    )
+                                  ]
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.evtGridModal === 4
+                          ? _c(
+                              "div",
+                              { staticClass: "srgdev-appt-modal-lbl" },
+                              [
+                                _c(
+                                  "div",
+                                  {
+                                    staticStyle: {
+                                      "font-size": "110%",
+                                      "font-weight": "bold"
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(_vm.modalHeader))]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticStyle: {
+                                      "user-select": "text",
+                                      cursor: "text"
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(_vm.modalText))]
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.evtGridModal === 1
+                          ? _c(
+                              "div",
+                              { staticClass: "srgdev-appt-modal-slider" },
+                              [
+                                _c("div", {
+                                  staticClass: "srgdev-appt-slider-line"
+                                }),
+                                _vm._v(" "),
+                                _c("div", {
+                                  staticClass: "srgdev-appt-slider-inc"
+                                }),
+                                _vm._v(" "),
+                                _c("div", {
+                                  staticClass: "srgdev-appt-slider-dec"
+                                })
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.evtGridModal === 5
+                          ? _c("TemplateApptOptions", {
+                              attrs: { elm: _vm.evtGridElm },
+                              on: {
+                                tmplUpdateAppt: function($event) {
+                                  return _vm.gridApptUpdate($event)
+                                },
+                                tmplAddAppts: function($event) {
+                                  return _vm.gridApptsAddTemplate($event)
+                                },
+                                close: _vm.closeEvtModal
+                              }
+                            })
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.evtGridModal > 1 && _vm.evtGridModal !== 5
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "primary",
+                                on: { click: _vm.closeEvtModal }
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(_vm.t("appointments", "Close")) +
+                                    "\n          "
+                                )
+                              ]
+                            )
+                          : _vm._e()
+                      ],
+                      1
+                    )
                   ])
                 : _vm._e()
             ],
@@ -36695,6 +37353,9 @@ var render = function() {
                       },
                       showModal: function($event) {
                         return _vm.showSimpleGeneralModal($event)
+                      },
+                      editTemplate: function($event) {
+                        return _vm.editApptTemplate($event)
                       },
                       reloadPages: function($event) {
                         return _vm.getPages(0, _vm.curPageData.pageId)
@@ -37524,7 +38185,20 @@ var render = function() {
         ],
         on: { click: _vm.toggle }
       },
-      [_vm._v(_vm._s(_vm.title))]
+      [
+        _vm.help !== ""
+          ? _c("a", {
+              staticClass: "icon-info srgdev-appt-info-link",
+              style: _vm.helpStyle,
+              on: {
+                click: function($event) {
+                  return _vm.$root.$emit("helpWanted", _vm.help)
+                }
+              }
+            })
+          : _vm._e(),
+        _vm._v("\n  " + _vm._s(_vm.title) + "\n")
+      ]
     ),
     _vm._v(" "),
     _c(
@@ -37771,7 +38445,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n              " +
+                          "\n                " +
                             _vm._s(_vm.t("appointments", "Main calendar")) +
                             ":"
                         )
@@ -37846,7 +38520,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n              " +
+                          "\n                " +
                             _vm._s(
                               _vm.t(
                                 "appointments",
@@ -37917,9 +38591,7 @@ var render = function() {
                     2
                   )
                 ]
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.calInfo.tsMode === "1"
+              : _vm.calInfo.tsMode === "1"
               ? [
                   _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
                     _c(
@@ -37930,7 +38602,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n              " +
+                          "\n                " +
                             _vm._s(
                               _vm.t(
                                 "appointments",
@@ -38010,7 +38682,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n              " +
+                          "\n                " +
                             _vm._s(
                               _vm.t(
                                 "appointments",
@@ -38081,33 +38753,257 @@ var render = function() {
                     2
                   )
                 ]
+              : _vm.calInfo.tsMode === "2"
+              ? [
+                  _c("ApptIconButton", {
+                    attrs: {
+                      disabled: _vm.calInfo.tmmDstCalId === "-1",
+                      text: _vm.t("appointments", "Edit Template"),
+                      icon: "icon-edit"
+                    },
+                    on: { click: _vm.handleEditTemplate }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "tsb-label",
+                        attrs: { for: "appt_tsb-dest-tmm-cal-id" }
+                      },
+                      [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(
+                              _vm.t(
+                                "appointments",
+                                "Destination Calendar (Booked)"
+                              )
+                            ) +
+                            ":"
+                        )
+                      ]
+                    ),
+                    _c("a", {
+                      staticClass: "icon-info srgdev-appt-info-link",
+                      staticStyle: { right: "9%" },
+                      on: {
+                        click: function($event) {
+                          return _vm.$root.$emit("helpWanted", "destcal_tmm")
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.calInfo.tmmDstCalId,
+                          expression: "calInfo.tmmDstCalId"
+                        }
+                      ],
+                      staticClass: "tsb-input",
+                      attrs: { id: "appt_tsb-dest-tmm-cal-id" },
+                      on: {
+                        change: [
+                          function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.calInfo,
+                              "tmmDstCalId",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          },
+                          function($event) {
+                            return _vm.removeFromTMM(_vm.calInfo.tmmDstCalId)
+                          }
+                        ]
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "-1" } }, [
+                        _vm._v(
+                          _vm._s(_vm.t("appointments", "Calendar Required"))
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.cals, function(cal) {
+                        return _c("option", { domProps: { value: cal.id } }, [
+                          _vm._v(_vm._s(cal.name))
+                        ])
+                      })
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "ApptAccordion",
+                    {
+                      staticStyle: { "margin-bottom": "1em" },
+                      attrs: {
+                        title: _vm.t("appointments", "Check for conflicts in…"),
+                        help: "abc",
+                        "help-style": "right:9%",
+                        open: false
+                      }
+                    },
+                    [
+                      _c(
+                        "template",
+                        { slot: "content" },
+                        _vm._l(_vm.cals, function(cal) {
+                          return _c(
+                            "div",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: cal.id !== _vm.calInfo.tmmDstCalId,
+                                  expression: "cal.id!==calInfo.tmmDstCalId"
+                                }
+                              ]
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.calInfo.tmmMoreCals,
+                                    expression: "calInfo.tmmMoreCals"
+                                  }
+                                ],
+                                staticClass: "checkbox",
+                                attrs: {
+                                  type: "checkbox",
+                                  id: "srgdev-appt_tmm_more_" + cal.id
+                                },
+                                domProps: {
+                                  value: cal.id,
+                                  checked: Array.isArray(
+                                    _vm.calInfo.tmmMoreCals
+                                  )
+                                    ? _vm._i(_vm.calInfo.tmmMoreCals, cal.id) >
+                                      -1
+                                    : _vm.calInfo.tmmMoreCals
+                                },
+                                on: {
+                                  change: function($event) {
+                                    var $$a = _vm.calInfo.tmmMoreCals,
+                                      $$el = $event.target,
+                                      $$c = $$el.checked ? true : false
+                                    if (Array.isArray($$a)) {
+                                      var $$v = cal.id,
+                                        $$i = _vm._i($$a, $$v)
+                                      if ($$el.checked) {
+                                        $$i < 0 &&
+                                          _vm.$set(
+                                            _vm.calInfo,
+                                            "tmmMoreCals",
+                                            $$a.concat([$$v])
+                                          )
+                                      } else {
+                                        $$i > -1 &&
+                                          _vm.$set(
+                                            _vm.calInfo,
+                                            "tmmMoreCals",
+                                            $$a
+                                              .slice(0, $$i)
+                                              .concat($$a.slice($$i + 1))
+                                          )
+                                      }
+                                    } else {
+                                      _vm.$set(_vm.calInfo, "tmmMoreCals", $$c)
+                                    }
+                                  }
+                                }
+                              }),
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "srgdev-appt-sb-label-inline",
+                                  attrs: {
+                                    for: "srgdev-appt_tmm_more_" + cal.id
+                                  }
+                                },
+                                [_vm._v(_vm._s(cal.name))]
+                              )
+                            ]
+                          )
+                        }),
+                        0
+                      )
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c("label", { staticClass: "tsb-label" }, [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm.t("appointments", "Timezone:"))
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "tsb-input" }, [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(
+                          _vm.tzName === ""
+                            ? _vm.t("appointments", "Loading…")
+                            : _vm.tzName
+                        ) +
+                        "\n            "
+                    )
+                  ])
+                ]
               : _vm._e(),
             _vm._v(" "),
-            _c("div", { staticClass: "srgdev-appt-info-lcont" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "tsb-label",
-                  attrs: { for: "appt_tsb-ts-mode" }
-                },
-                [
-                  _vm._v(
-                    "\n            " +
-                      _vm._s(_vm.t("appointments", "Time slot mode")) +
-                      ":"
-                  )
-                ]
-              ),
-              _c("a", {
-                staticClass: "icon-info srgdev-appt-info-link",
-                staticStyle: { right: "9%" },
-                on: {
-                  click: function($event) {
-                    return _vm.$root.$emit("helpWanted", "ts_mode")
+            _c(
+              "div",
+              {
+                staticClass: "srgdev-appt-info-lcont",
+                staticStyle: { "margin-top": "2em" }
+              },
+              [
+                _c(
+                  "label",
+                  {
+                    staticClass: "tsb-label",
+                    attrs: { for: "appt_tsb-ts-mode" }
+                  },
+                  [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm.t("appointments", "Time slot mode")) +
+                        ":"
+                    )
+                  ]
+                ),
+                _c("a", {
+                  staticClass: "icon-info srgdev-appt-info-link",
+                  staticStyle: { right: "9%" },
+                  on: {
+                    click: function($event) {
+                      return _vm.$root.$emit("helpWanted", "ts_mode")
+                    }
                   }
-                }
-              })
-            ]),
+                })
+              ]
+            ),
             _vm._v(" "),
             _c(
               "select",
@@ -38146,6 +39042,10 @@ var render = function() {
                 }
               },
               [
+                _c("option", { attrs: { value: "2" } }, [
+                  _vm._v(_vm._s(_vm.t("appointments", "Weekly Template")))
+                ]),
+                _vm._v(" "),
                 _c("option", { attrs: { value: "0" } }, [
                   _vm._v(_vm._s(_vm.t("appointments", "Simple")))
                 ]),
@@ -38182,7 +39082,7 @@ var render = function() {
                 class: { "appt-btn-loading": _vm.isSending },
                 on: { click: _vm.apply }
               },
-              [_vm._v(_vm._s(_vm.t("appointments", "Apply")) + "\n        ")]
+              [_vm._v(_vm._s(_vm.t("appointments", "Apply")) + "\n          ")]
             )
           ],
           2
@@ -41967,6 +42867,148 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/TemplateApptOptions.vue?vue&type=template&id=065f255e&scoped=true&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TemplateApptOptions.vue?vue&type=template&id=065f255e&scoped=true& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "tao-cont" },
+    [
+      _c("div", { staticClass: "pml-cont" }, [
+        _c("label", { staticClass: "slider-label" }, [
+          _vm._v(_vm._s(_vm.t("appointments", "Duration (minutes):")))
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "pml-p", on: { click: _vm.addDuration } }, [
+          _vm._v("+")
+        ]),
+        _vm._v(" "),
+        _c(
+          "span",
+          { staticClass: "pml-m", on: { click: _vm.removeDuration } },
+          [_vm._v("−")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("vue-slider", {
+        staticClass: "appt-slider",
+        attrs: {
+          min: 10,
+          max: _vm.durMax,
+          order: false,
+          interval: 5,
+          process: false,
+          tooltip: "always",
+          tooltipPlacement: "bottom",
+          "tooltip-formatter": "{value}",
+          id: "appt_dur-select"
+        },
+        model: {
+          value: _vm.durations,
+          callback: function($$v) {
+            _vm.durations = $$v
+          },
+          expression: "durations"
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "label",
+        { staticClass: "select-label", attrs: { for: "srgdev-tao-title" } },
+        [_vm._v(_vm._s(_vm.t("appointments", "Title:")))]
+      ),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.title,
+            expression: "title"
+          }
+        ],
+        staticStyle: { "margin-bottom": "2em" },
+        attrs: {
+          placeholder: _vm.t("appointments", "Optional"),
+          id: "srgdev-tao-title",
+          type: "text"
+        },
+        domProps: { value: _vm.title },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.title = $event.target.value
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "primary",
+          staticStyle: { "margin-right": "1em" },
+          on: { click: _vm.addAppts }
+        },
+        [
+          _vm._v(
+            _vm._s(
+              _vm.elm === null
+                ? _vm.t("appointments", "Add")
+                : _vm.t("appointments", "Update")
+            ) + "\n  "
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _vm.elm !== null
+        ? _c(
+            "button",
+            { staticClass: "delete-btn", on: { click: _vm.deleteAppt } },
+            [_vm._v("Delete")]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          on: {
+            click: function($event) {
+              return _vm.$emit("close")
+            }
+          }
+        },
+        [_vm._v(_vm._s(_vm.t("appointments", "Cancel")))]
+      ),
+      _vm._v(" "),
+      _c("a", {
+        staticClass: "icon-info srgdev-appt-info-link help-link",
+        on: { click: _vm.showHelp }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/UserStnSlideBar.vue?vue&type=template&id=3720d924&":
 /*!*********************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/components/UserStnSlideBar.vue?vue&type=template&id=3720d924& ***!
@@ -43026,6 +44068,48 @@ if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
 var add = __webpack_require__(/*! ../../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js").default
 var update = add("2db72355", content, false, {});
+// Hot Module Replacement
+if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/TemplateApptOptions.vue?vue&type=style&index=0&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-style-loader!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TemplateApptOptions.vue?vue&type=style&index=0&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/vue-loader/lib??vue-loader-options!./TemplateApptOptions.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/TemplateApptOptions.vue?vue&type=style&index=0&lang=css&");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var add = __webpack_require__(/*! ../../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js").default
+var update = add("3421a6f5", content, false, {});
+// Hot Module Replacement
+if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/TemplateApptOptions.vue?vue&type=style&index=1&id=065f255e&scoped=true&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-style-loader!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TemplateApptOptions.vue?vue&type=style&index=1&id=065f255e&scoped=true&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/vue-loader/lib??vue-loader-options!./TemplateApptOptions.vue?vue&type=style&index=1&id=065f255e&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/TemplateApptOptions.vue?vue&type=style&index=1&id=065f255e&scoped=true&lang=css&");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var add = __webpack_require__(/*! ../../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js").default
+var update = add("4207544e", content, false, {});
 // Hot Module Replacement
 if(false) {}
 
@@ -57195,6 +58279,111 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/components/TemplateApptOptions.vue":
+/*!************************************************!*\
+  !*** ./src/components/TemplateApptOptions.vue ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TemplateApptOptions_vue_vue_type_template_id_065f255e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TemplateApptOptions.vue?vue&type=template&id=065f255e&scoped=true& */ "./src/components/TemplateApptOptions.vue?vue&type=template&id=065f255e&scoped=true&");
+/* harmony import */ var _TemplateApptOptions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TemplateApptOptions.vue?vue&type=script&lang=js& */ "./src/components/TemplateApptOptions.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _TemplateApptOptions_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TemplateApptOptions.vue?vue&type=style&index=0&lang=css& */ "./src/components/TemplateApptOptions.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _TemplateApptOptions_vue_vue_type_style_index_1_id_065f255e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TemplateApptOptions.vue?vue&type=style&index=1&id=065f255e&scoped=true&lang=css& */ "./src/components/TemplateApptOptions.vue?vue&type=style&index=1&id=065f255e&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_4__["default"])(
+  _TemplateApptOptions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TemplateApptOptions_vue_vue_type_template_id_065f255e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TemplateApptOptions_vue_vue_type_template_id_065f255e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "065f255e",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "src/components/TemplateApptOptions.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./src/components/TemplateApptOptions.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./src/components/TemplateApptOptions.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_TemplateApptOptions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib??ref--3!../../node_modules/vue-loader/lib??vue-loader-options!./TemplateApptOptions.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/components/TemplateApptOptions.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_3_node_modules_vue_loader_lib_index_js_vue_loader_options_TemplateApptOptions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./src/components/TemplateApptOptions.vue?vue&type=style&index=0&lang=css&":
+/*!*********************************************************************************!*\
+  !*** ./src/components/TemplateApptOptions.vue?vue&type=style&index=0&lang=css& ***!
+  \*********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TemplateApptOptions_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-style-loader!../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/vue-loader/lib??vue-loader-options!./TemplateApptOptions.vue?vue&type=style&index=0&lang=css& */ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/TemplateApptOptions.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TemplateApptOptions_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TemplateApptOptions_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TemplateApptOptions_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TemplateApptOptions_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
+
+/***/ }),
+
+/***/ "./src/components/TemplateApptOptions.vue?vue&type=style&index=1&id=065f255e&scoped=true&lang=css&":
+/*!*********************************************************************************************************!*\
+  !*** ./src/components/TemplateApptOptions.vue?vue&type=style&index=1&id=065f255e&scoped=true&lang=css& ***!
+  \*********************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TemplateApptOptions_vue_vue_type_style_index_1_id_065f255e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-style-loader!../../node_modules/css-loader/dist/cjs.js!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/vue-loader/lib??vue-loader-options!./TemplateApptOptions.vue?vue&type=style&index=1&id=065f255e&scoped=true&lang=css& */ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./src/components/TemplateApptOptions.vue?vue&type=style&index=1&id=065f255e&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TemplateApptOptions_vue_vue_type_style_index_1_id_065f255e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TemplateApptOptions_vue_vue_type_style_index_1_id_065f255e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TemplateApptOptions_vue_vue_type_style_index_1_id_065f255e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_TemplateApptOptions_vue_vue_type_style_index_1_id_065f255e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
+
+/***/ }),
+
+/***/ "./src/components/TemplateApptOptions.vue?vue&type=template&id=065f255e&scoped=true&":
+/*!*******************************************************************************************!*\
+  !*** ./src/components/TemplateApptOptions.vue?vue&type=template&id=065f255e&scoped=true& ***!
+  \*******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TemplateApptOptions_vue_vue_type_template_id_065f255e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../node_modules/vue-loader/lib??vue-loader-options!./TemplateApptOptions.vue?vue&type=template&id=065f255e&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/TemplateApptOptions.vue?vue&type=template&id=065f255e&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TemplateApptOptions_vue_vue_type_template_id_065f255e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TemplateApptOptions_vue_vue_type_template_id_065f255e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./src/components/UserStnSlideBar.vue":
 /*!********************************************!*\
   !*** ./src/components/UserStnSlideBar.vue ***!
@@ -57275,6 +58464,18 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _apptGridMaker() {
   // !!! meke sure that the .grid-line height is 2px less thant this is !!!
   var LINE_HEIGHT_5M = 7;
@@ -57348,12 +58549,12 @@ function _apptGridMaker() {
    * @param {number} len duration in minutes
    * @param {number} cnt number of appointments
    * @param {number} cID column ID 0=Monday, 1=Tuesday, etc...
-   * @param {string} clr background color
+   * @param {string|Object} clr background color or template mode appt. info
    */
 
 
   function addAppt(start, len, cnt, cID, clr) {
-    if (len < 5) len = 5;else if (len > 120) len = 120;
+    if (len < 5) len = 5;else if (len > 150) len = 150;
     var uLen = Math.floor(len / 5);
     var uMax = mData.uMax - uLen + 1;
     if (start < 0) start = 0;else if (start > uMax) return;
@@ -57378,13 +58579,17 @@ function _apptGridMaker() {
 
 
   function cloneColumns(fromCID, toCID, clr) {
-    if (mData.mc_elm[toCID].length !== 0) {
+    if (mData.mc_elm[toCID].length !== 0 || mData.mc_elm[fromCID].length === 0) {
       return;
     }
 
     var f = document.createDocumentFragment();
+    var copyDur = mData.mode === MODE_TEMPLATE;
     mData.mc_elm[fromCID].forEach(function (a, i) {
-      f.appendChild(makeApptElement(a.uTop, a.uLen, i, toCID, clr));
+      f.appendChild(makeApptElement(a.uTop, a.uLen, i, toCID, copyDur ? {
+        dur: _toConsumableArray(a.dur),
+        title: a.title
+      } : clr));
     });
     mData.mc_cols[toCID].appendChild(f); //Set z-index & margin
 
@@ -57429,7 +58634,7 @@ function _apptGridMaker() {
   function makeApptElement(uTop, uLen, idx, cID, clr) {
     var elm = document.createElement('div');
     elm.className = sP + 'appt';
-    elm.style.backgroundColor = clr;
+    if (mData.mode !== MODE_TEMPLATE && clr !== null) elm.style.backgroundColor = clr;
 
     if (idx !== null) {
       elm.uTop = uTop;
@@ -57437,6 +58642,11 @@ function _apptGridMaker() {
       elm.cIdx = idx;
       elm.cID = cID;
       elm.style.zIndex = mData.mc_elm[cID].length + 1;
+
+      if (mData.mode !== MODE_SIMPLE && clr !== null) {
+        elm.dur = clr.dur;
+        elm.title = clr.title;
+      }
     } else {
       elm.className += " " + sP + "appt-empty";
       elm.style.zIndex = "-1";
@@ -57448,19 +58658,126 @@ function _apptGridMaker() {
     elm.style.height = e2.offsetTop + e2.offsetHeight - ge.offsetTop - .25 + 'px';
     var et = document.createElement('div');
     et.className = sP + "appt_txt";
-    et.appendChild(document.createTextNode(ge.dxt + ' - ' + mData.elms[uTop + uLen].dxt));
+    et.appendChild(document.createTextNode(makeTxt(elm)));
     elm.appendChild(et);
+
+    if (elm.title !== undefined && elm.title !== '') {
+      et = document.createElement('div');
+      et.className = sP + "appt_txt";
+      et.appendChild(document.createTextNode(elm.title));
+      elm.appendChild(et);
+    }
 
     if (idx !== null) {
       // TODO: delegate these events to the parent ???
       elm.addEventListener("mousedown", appGoDrag);
+
+      if (mData.mode === MODE_TEMPLATE) {
+        elm.addEventListener("contextmenu", editAppt);
+      }
+
       mData.mc_elm[cID].push(elm);
     }
 
     return elm;
   }
 
+  function editAppt(evt) {
+    mData.scrollCont.lastElementChild.dispatchEvent(new CustomEvent('gridContext', {
+      detail: evt.target
+    }));
+    evt.preventDefault();
+    evt.stopPropagation();
+  }
+
+  function updateAppt(info) {
+    var colElms = mData.mc_elm[info.cID];
+    var el = colElms[info.cIdx];
+
+    if (info.del !== undefined) {
+      // delete
+      el.parentElement.removeChild(el);
+      colElms.splice(info.cIdx, 1); // (re)set cIdxs and z-index
+
+      colElms.forEach(function (elm, index) {
+        elm.cIdx = index;
+        elm.style.zIndex = index + 1;
+      });
+      this.sorted = [];
+
+      if (colElms.length !== 0) {
+        setSorted(colElms, colElms[colElms.length - 1]);
+        setMargins(colElms);
+      }
+
+      return;
+    }
+
+    el.dur = info.dur;
+    el.title = info.title;
+    var uLen = Math.floor(info.dur[0] / 5);
+    var uTop = el.uTop;
+    var ge = mData.elms[uTop];
+    var e2 = mData.elms[uTop + uLen - 1];
+    el.uLen = uLen;
+    el.style.height = e2.offsetTop + e2.offsetHeight - ge.offsetTop - .25 + 'px';
+    el.firstElementChild.textContent = makeTxt(el);
+
+    if (info.title === "") {
+      if (el.children.length > 1) {
+        el.removeChild(el.lastElementChild);
+      }
+    } else {
+      if (el.children.length > 1) {
+        el.lastElementChild.textContent = info.title;
+      } else {
+        var et = document.createElement('div');
+        et.className = sP + "appt_txt";
+        et.appendChild(document.createTextNode(info.title));
+        el.appendChild(et);
+      }
+    }
+
+    setSorted(colElms, el);
+    setMargins(colElms);
+  }
+
+  function makeTxt(el) {
+    if (mData.mode === MODE_SIMPLE || el.dur.length === 1) {
+      return mData.elms[el.uTop].dxt + ' - ' + mData.elms[el.uTop + el.uLen].dxt;
+    } else {
+      return mData.elms[el.uTop].dxt + ' (' + el.dur.join(', ') + ')';
+    }
+  }
+
+  function addTemplateData(data) {
+    var day_start_ts = SH * 3600;
+
+    for (var f, colElms, l = data.length, i = 0; i < l; i++) {
+      if (data[i].length !== 0) {
+        f = document.createDocumentFragment();
+
+        for (var uTop, uLen, info, d = data[i], k = d.length, j = 0; j < k; j++) {
+          info = d[j];
+          uTop = Math.floor((info.start - day_start_ts) / 5);
+          uLen = Math.floor(info.dur[0] / 5);
+          f.appendChild(makeApptElement(uTop, uLen, j, i, info));
+        }
+
+        mData.mc_cols[i].appendChild(f);
+        colElms = mData.mc_elm[i];
+        setSorted(colElms, colElms[0]);
+        setMargins(colElms);
+      }
+    }
+  }
+
   function addPastAppts(data, clr) {
+    if (clr === null) {
+      addTemplateData(data);
+      return;
+    }
+
     var btm = DH * 12; // 12*5min=1hour
 
     var pd = data.split(String.fromCharCode(31));
@@ -57505,6 +58822,8 @@ function _apptGridMaker() {
   }
 
   function appGoDrag(e) {
+    // we need the "contextmenu" event
+    if (e.button !== undefined && e.button === 2) return;
     var cID = this.cID;
     if (cID === undefined) return; // mData.gridLayer.style.cursor = 'grabbing'
 
@@ -57650,8 +58969,8 @@ function _apptGridMaker() {
       } // Set txt
 
 
-      de.firstElementChild.textContent = md.elms[idx].dxt + ' - ' + md.elms[idx + de.uLen].dxt;
       de.uTop = idx;
+      de.firstElementChild.textContent = makeTxt(de);
       de.style.top = md.elms[idx].offsetTop + 'px';
     } else {
       md.ce = null;
@@ -57781,6 +59100,28 @@ function _apptGridMaker() {
     mData.mode = mode;
   }
 
+  function getTemplateData() {
+    var day_start_ts = SH * 3600;
+    var wa = [];
+
+    for (var da, i = 0, l = mData.mc_cols.length; i < l; i++) {
+      da = [];
+
+      for (var elm, ea = mData.mc_elm[i], j = 0, k = ea.length; j < k; j++) {
+        elm = ea[j];
+        da.push({
+          start: day_start_ts + elm.uTop * 5,
+          dur: elm.dur,
+          title: elm.title
+        });
+      }
+
+      wa.push(da);
+    }
+
+    return wa;
+  }
+
   return {
     MODE_SIMPLE: MODE_SIMPLE,
     MODE_TEMPLATE: MODE_TEMPLATE,
@@ -57791,7 +59132,9 @@ function _apptGridMaker() {
     resetAllColumns: resetAllColumns,
     getStarEnds: getStarEnds,
     addPastAppts: addPastAppts,
-    setMode: setMode
+    setMode: setMode,
+    updateAppt: updateAppt,
+    getTemplateData: getTemplateData
   };
 }
 

@@ -153,7 +153,8 @@ $appt_grid_ml:6em;
 	left: 2px;
 	right: 2px;
 	border: 1px solid rgba(255,255,255,.95);
-	color: rgb(250, 250, 250);
+	color: $color-primary-text;
+	background: $color-primary;
 	overflow: hidden;
 	cursor: grab;
 	border-radius: 4px;
@@ -169,6 +170,7 @@ $appt_grid_ml:6em;
 	cursor: grab;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	pointer-events: none;
 }
 
 .sb_loading_cont{
@@ -307,6 +309,10 @@ $appt_grid_ml:6em;
 .srgdev-appt-modal_content {
 	text-align: center;
 	margin: 2em 6em;
+}
+.srgdev-appt-modal_content_tmpl{
+	text-align: left;
+	margin: 2em 3em 1em;
 }
 .srgdev-appt-modal-header{
 	font-size: 110%;
@@ -805,7 +811,8 @@ textarea.appt-stn-txt-ta{
 	display: block;
 	position: relative;
 }
-.srgdev-appt-info-lcont>.srgdev-appt-info-link{
+.srgdev-appt-info-lcont>.srgdev-appt-info-link,
+.appt-accordion-title>.srgdev-appt-info-link{
 	display: block;
 	position: absolute;
 	width: auto;

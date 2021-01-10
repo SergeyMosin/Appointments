@@ -98,11 +98,11 @@ class Version010201Date20201227000005 extends SimpleMigrationStep {
                 'notnull' => false,
                 'length' => 32768
             ]);
-            $table->addColumn(BackendUtils::KEY_TEMPLATE,Type::TEXT,[
+            $table->addColumn(BackendUtils::KEY_TMPL_DATA,Type::TEXT,[
                 'notnull' => false,
                 'length' => 32768
             ]);
-            $table->addColumn(BackendUtils::KEY_DAYS_OFF,Type::TEXT,[
+            $table->addColumn(BackendUtils::KEY_TMPL_INFO,Type::TEXT,[
                 'notnull' => false,
                 'length' => 32768
             ]);

@@ -180,42 +180,10 @@ export default {
       this.tzData = "UTC"
 
       try {
-        let res= await this.getState("get_tz")
-        if (res !== null && res.toLowerCase() !== 'utc') {
-          let url = linkTo('appointments', 'ajax/zones.js')
-          const tzr=await axios.get(url)
-          if (tzr.status === 200) {
-
-            let tzd = tzr.data
-            if (typeof tzd === "object"
-                && tzd.hasOwnProperty('aliases')
-                && tzd.hasOwnProperty('zones')) {
-
-              let tzs = ""
-              if (tzd.zones[res] !== undefined) {
-                tzs = tzd.zones[res].ics.join("\r\n")
-
-              } else if (tzd.aliases[res] !== undefined) {
-                let alias = tzd.aliases[res].aliasTo
-                if (tzd.zones[alias] !== undefined) {
-                  res = alias
-                  tzs = tzd.zones[alias].ics.join("\r\n")
-                }
-              }
-
-              this.tzName = res
-              this.tzData = "BEGIN:VTIMEZONE\r\nTZID:" + res.trim() + "\r\n" + tzs.trim() + "\r\nEND:VTIMEZONE"
-
-              this.isLoading=false
-            }else{
-              throw new Error("Bad tzr.data")
-            }
-          }else{
-            throw new Error("Bad status: "+tzr.status)
-          }
-        }else{
-          throw new Error("Can't get_tz")
-        }
+        const d=await this.getTimeZone()
+        this.tzName = d.name
+        this.tzData = d.data
+        this.isLoading=false
       }catch (e){
         this.isLoading=false
         console.error("Can't get timezone")
@@ -223,6 +191,46 @@ export default {
         OC.Notification.showTemporary(this.t('appointments', "Can't load timezones"), {timeout: 4, type: 'error'})
       }
     },
+
+    async getTimeZone(){
+      let res= await this.getState("get_tz")
+      if (res !== null && res.toLowerCase() !== 'utc') {
+        let url = linkTo('appointments', 'ajax/zones.js')
+        const tzr=await axios.get(url)
+        if (tzr.status === 200) {
+
+          let tzd = tzr.data
+          if (typeof tzd === "object"
+              && tzd.hasOwnProperty('aliases')
+              && tzd.hasOwnProperty('zones')) {
+
+            let tzs = ""
+            if (tzd.zones[res] !== undefined) {
+              tzs = tzd.zones[res].ics.join("\r\n")
+
+            } else if (tzd.aliases[res] !== undefined) {
+              let alias = tzd.aliases[res].aliasTo
+              if (tzd.zones[alias] !== undefined) {
+                res = alias
+                tzs = tzd.zones[alias].ics.join("\r\n")
+              }
+            }
+
+            return{
+              name:res,
+              data:"BEGIN:VTIMEZONE\r\nTZID:" + res.trim() + "\r\n" + tzs.trim() + "\r\nEND:VTIMEZONE"
+            }
+          }else{
+            throw new Error("Bad tzr.data")
+          }
+        }else{
+          throw new Error("Bad status: "+tzr.status)
+        }
+      }else{
+        throw new Error("Can't get_tz")
+      }
+    },
+
 
     getTimeFormat(){
       let date = new Date(0);

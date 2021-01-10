@@ -21,7 +21,6 @@ class BackendUtils{
     const HASH_TABLE_NAME="appointments_hash";
     const PREF_TABLE_NAME="appointments_pref";
 
-
     const FLOAT_TIME_FORMAT="Ymd.His";
 
     public const APPT_SES_KEY_HINT = "appointment_hint";
@@ -41,13 +40,6 @@ class BackendUtils{
     public const ORG_ADDR = 'address';
     public const ORG_PHONE = 'phone';
 
-    const ORG_DEF=array(
-        self::ORG_NAME=>"",
-        self::ORG_EMAIL=>"",
-        self::ORG_ADDR=>"",
-        self::ORG_PHONE=>"");
-
-
     // Email Settings
     public const KEY_EML = 'email_options';
     public const EML_ICS= 'icsFile';
@@ -60,17 +52,6 @@ class BackendUtils{
     public const EML_VLD_TXT = 'vldNote';
     public const EML_CNF_TXT = 'cnfNote';
 
-    const EML_DEF=array(
-        self::EML_ICS=>false,
-        self::EML_SKIP_EVS=>false,
-        self::EML_AMOD=>false,
-        self::EML_ADEL=>false,
-        self::EML_MREQ=>false,
-        self::EML_MCONF=>false,
-        self::EML_MCNCL=>false,
-        self::EML_VLD_TXT=>"",
-        self::EML_CNF_TXT=>"");
-
     // Calendar Settings
     public const KEY_CLS = 'calendar_settings';
     // simple mode
@@ -82,24 +63,18 @@ class BackendUtils{
     public const CLS_XTM_PUSH_REC= 'nrPushRec';
     public const CLS_XTM_REQ_CAT= 'nrRequireCat';
     public const CLS_XTM_AUTO_FIX= 'nrAutoFix';
+    // template mode
+    public const CLS_TMM_DST_ID= 'tmmDstCalId';
+    public const CLS_TMM_MORE_CALS= 'tmmMoreCals';
+    // --
     public const CLS_PREP_TIME = 'prepTime';
     public const CLS_ON_CANCEL = 'whenCanceled';
     public const CLS_TS_MODE = 'tsMode';
-    const CLS_DEF=array(
-        self::CLS_MAIN_ID=>'-1',
-        self::CLS_DEST_ID=>'-1',
-        self::CLS_XTM_SRC_ID=>'-1',
-        self::CLS_XTM_DST_ID=>'-1',
-        self::CLS_XTM_PUSH_REC=>true,
-        self::CLS_XTM_REQ_CAT=>false,
-        self::CLS_XTM_AUTO_FIX=>false,
-        self::CLS_PREP_TIME=>"0",
-        self::CLS_ON_CANCEL=>'mark',
-        self::CLS_TS_MODE=>'0' // 0=simple/manual, 1=external/XTM, (2=template)
-    );
 
-    public const KEY_TEMPLATE='template';
-    public const KEY_DAYS_OFF='days_off';
+    public const KEY_TMPL_DATA='template_data';
+    public const KEY_TMPL_INFO='template_info';
+    public const TMPL_TZ_NAME="tzName";
+    public const TMPL_TZ_DATA="tzData";
 
     public const KEY_PSN = "page_options";
     public const PSN_PAGE_TITLE = "pageTitle";
@@ -117,39 +92,8 @@ class BackendUtils{
     public const PSN_END_TIME = "endTime";
     public const PSN_SHOW_TZ = "showTZ";
 
-    public const PSN_DEF = array(
-        self::PSN_FORM_TITLE => "",
-        self::PSN_NWEEKS => "1",
-        self::PSN_EMPTY => true,
-        self::PSN_FNED => false, // start at first not empty day
-        self::PSN_WEEKEND => false,
-        self::PSN_TIME2 => false,
-        self::PSN_END_TIME => false,
-        self::PSN_HIDE_TEL => false,
-        self::PSN_SHOW_TZ => false,
-        self::PSN_GDPR => "",
-        self::PSN_PAGE_TITLE => "",
-        self::PSN_PAGE_SUB_TITLE => "",
-        self::PSN_META_NO_INDEX => false,
-        self::PSN_PAGE_STYLE => ""
-    );
-
     public const KEY_MPS_COL = "more_pages";
     public const KEY_MPS = "more_pages_";
-    public const MPS_DEF=array(
-        self::CLS_MAIN_ID=>'-1',
-        self::CLS_DEST_ID=>'-1',
-        self::CLS_XTM_SRC_ID=>'-1',
-        self::CLS_XTM_DST_ID=>'-1',
-        self::CLS_TS_MODE=>'0',
-
-        self::ORG_NAME=>"",
-        self::ORG_EMAIL=>"",
-        self::ORG_ADDR=>"",
-        self::ORG_PHONE=>"",
-
-        self::PSN_FORM_TITLE=>"",
-    );
 
     public const KEY_PAGES="pages";
     public const PAGES_ENABLED="enabled";
@@ -160,12 +104,7 @@ class BackendUtils{
         self::PAGES_LABEL=>""
     );
 
-    public const PAGES_DEF=array(
-        'p0'=>self::PAGES_VAL_DEF
-    );
-
     public const KEY_DIR="dir_info";
-    public const DIR_DEF=array();
 
     public const KEY_TALK = "appt_talk";
     public const TALK_ENABLED = "enabled";
@@ -186,21 +125,6 @@ class BackendUtils{
     public const TALK_FORM_DEF_VIRTUAL = "formDefVirtual";
 
     public const TALK_FORM_TYPE_CHANGE_TXT = "formTxtTypeChange";
-
-    public const TALK_DEF = array(
-        self::TALK_ENABLED => false,
-        self::TALK_DEL_ROOM => false,
-        self::TALK_EMAIL_TXT => "",
-        self::TALK_LOBBY => false,
-        self::TALK_PASSWORD => false,
-        self::TALK_NAME_FORMAT => 0, // 0=Name+DT, 1=DT+Name, 2=Name Only
-        self::TALK_FORM_ENABLED => false,
-        self::TALK_FORM_LABEL => "",
-        self::TALK_FORM_PLACEHOLDER => "",
-        self::TALK_FORM_REAL_TXT => "",
-        self::TALK_FORM_VIRTUAL_TXT => "",
-        self::TALK_FORM_TYPE_CHANGE_TXT => "",
-    );
 
     public const KEY_FORM_INPUTS_JSON='fi_json';
     public const KEY_FORM_INPUTS_HTML='fi_html';
@@ -922,6 +846,118 @@ class BackendUtils{
         return $vo;
     }
 
+    function getDefaultForKey($key){
+        switch ($key){
+            case self::KEY_ORG:
+                $d=array(
+                    self::ORG_NAME=>"",
+                    self::ORG_EMAIL=>"",
+                    self::ORG_ADDR=>"",
+                    self::ORG_PHONE=>"");
+                break;
+            case self::KEY_EML:
+                $d=array(
+                    self::EML_ICS=>false,
+                    self::EML_SKIP_EVS=>false,
+                    self::EML_AMOD=>false,
+                    self::EML_ADEL=>false,
+                    self::EML_MREQ=>false,
+                    self::EML_MCONF=>false,
+                    self::EML_MCNCL=>false,
+                    self::EML_VLD_TXT=>"",
+                    self::EML_CNF_TXT=>"");
+                break;
+            case self::KEY_CLS:
+                $d=array(
+                    self::CLS_MAIN_ID=>'-1',
+                    self::CLS_DEST_ID=>'-1',
+
+                    self::CLS_XTM_SRC_ID=>'-1',
+                    self::CLS_XTM_DST_ID=>'-1',
+                    self::CLS_XTM_PUSH_REC=>true,
+                    self::CLS_XTM_REQ_CAT=>false,
+                    self::CLS_XTM_AUTO_FIX=>false,
+
+                    self::CLS_TMM_DST_ID=>'-1',
+                    self::CLS_TMM_MORE_CALS=>[],
+
+                    self::CLS_PREP_TIME=>"0",
+                    self::CLS_ON_CANCEL=>'mark',
+                    // 0=simple/manual, 1=external/XTM, (2=template)
+                    self::CLS_TS_MODE=>'2');
+                break;
+            case self::KEY_PSN:
+                $d=array(
+                    self::PSN_FORM_TITLE => "",
+                    self::PSN_NWEEKS => "1",
+                    self::PSN_EMPTY => true,
+                    self::PSN_FNED => false, // start at first not empty day
+                    self::PSN_WEEKEND => false,
+                    self::PSN_TIME2 => false,
+                    self::PSN_END_TIME => false,
+                    self::PSN_HIDE_TEL => false,
+                    self::PSN_SHOW_TZ => false,
+                    self::PSN_GDPR => "",
+                    self::PSN_PAGE_TITLE => "",
+                    self::PSN_PAGE_SUB_TITLE => "",
+                    self::PSN_META_NO_INDEX => false,
+                    self::PSN_PAGE_STYLE => "");
+                break;
+            case self::KEY_MPS_COL:
+                $d=null;
+                break;
+            case self::KEY_MPS:
+                $d=array(
+                    self::CLS_MAIN_ID=>'-1',
+                    self::CLS_DEST_ID=>'-1',
+                    self::CLS_XTM_SRC_ID=>'-1',
+                    self::CLS_XTM_DST_ID=>'-1',
+                    self::CLS_TMM_DST_ID=>'-1',
+                    self::CLS_TMM_MORE_CALS=>[],
+
+                    self::CLS_TS_MODE=>'2',
+
+                    self::ORG_NAME=>"",
+                    self::ORG_EMAIL=>"",
+                    self::ORG_ADDR=>"",
+                    self::ORG_PHONE=>"",
+
+                    self::PSN_FORM_TITLE=>"");
+                break;
+            case self::KEY_PAGES:
+                $d=array('p0'=>self::PAGES_VAL_DEF);
+                break;
+            case self::KEY_TALK:
+                $d=array(
+                    self::TALK_ENABLED => false,
+                    self::TALK_DEL_ROOM => false,
+                    self::TALK_EMAIL_TXT => "",
+                    self::TALK_LOBBY => false,
+                    self::TALK_PASSWORD => false,
+                    // 0=Name+DT, 1=DT+Name, 2=Name Only
+                    self::TALK_NAME_FORMAT => 0,
+                    self::TALK_FORM_ENABLED => false,
+                    self::TALK_FORM_LABEL => "",
+                    self::TALK_FORM_PLACEHOLDER => "",
+                    self::TALK_FORM_REAL_TXT => "",
+                    self::TALK_FORM_VIRTUAL_TXT => "",
+                    self::TALK_FORM_TYPE_CHANGE_TXT => "");
+                break;
+            case self::KEY_DIR:
+            case self::KEY_TMPL_DATA:
+                $d=array();
+                break;
+            case self::KEY_TMPL_INFO:
+                $d=array(
+                    self::TMPL_TZ_NAME=>"",
+                    self::TMPL_TZ_DATA=>"");
+                break;
+            default:
+                $d=null;
+        }
+        return $d;
+    }
+
 
     private function loadSettingsFromDB($userId){
         $qb=\OC::$server->getDatabaseConnection()->getQueryBuilder();
@@ -939,6 +975,21 @@ class BackendUtils{
         }
     }
 
+    function getTemplateData($pageId,$userId){
+        return $this->getUserSettings(self::KEY_TMPL_DATA,$userId)[$pageId]??array([],[],[],[],[],[],[]);
+    }
+
+    function setTemplateData($pageId,$value,$userId){
+        $td=$this->getUserSettings(self::KEY_TMPL_DATA,$userId);
+        $td[$pageId]=json_decode($value,true)??array([],[],[],[],[],[],[]);
+        $jv=json_encode($td);
+        if($jv===false) {
+            return false;
+        }else{
+            return $this->setDBValue($userId, self::KEY_TMPL_DATA, $jv);
+        }
+    }
+
     /**
      * @param string $key
      * @param string $userId
@@ -952,26 +1003,14 @@ class BackendUtils{
 
          $pn="";
 
-         if($key===self::KEY_CLS){
-             $default=self::CLS_DEF;
-         }else if($key===self::KEY_PAGES){
-             $default=self::PAGES_DEF;
-         }else if($key===self::KEY_ORG){
-             $default=self::ORG_DEF;
-         }else if($key===self::KEY_PSN){
-             $default=self::PSN_DEF;
-         }else if($key===self::KEY_MPS_COL){
-             $default=null;
+         $default=$this->getDefaultForKey($key);
+
+         if($key===self::KEY_TMPL_DATA){
+             return json_decode($this->settings[self::KEY_TMPL_DATA]??null,true)??$default;
          }else if(strpos($key,self::KEY_MPS)===0){
-             $default=self::MPS_DEF;
              $pn=substr($key,strlen(self::KEY_MPS));
              $key=self::KEY_MPS_COL;
-         }else if($key===self::KEY_EML){
-             $default=self::EML_DEF;
-         }else if($key===self::KEY_DIR){
-             $default=self::DIR_DEF;
-         }else if($key===self::KEY_TALK){
-             $default=self::TALK_DEF;
+         } else if($key===self::KEY_TALK){
              // Translate defaults
              $l10n=\OC::$server->getL10N($this->appName);
              $default[self::TALK_FORM_DEF_LABEL]=$l10n->t('Meeting Type');
@@ -989,9 +1028,6 @@ class BackendUtils{
          }else if($key===self::KEY_FORM_INPUTS_HTML){
              // this is a special case
              return [$this->settings[$key]??''];
-         }else{
-             // this should never happen
-             return null;
          }
 
          $sa = json_decode(($this->settings[$key]??null),true);
@@ -1031,6 +1067,8 @@ class BackendUtils{
                     ->setValue($key,$qb->createNamedParameter($value))
                     ->execute();
             }
+            // set cached
+            $this->settings[$key]=$value;
             return true;
         }catch (\Exception $e){
             \OC::$server->getLogger()->error($e);
@@ -1126,7 +1164,10 @@ class BackendUtils{
 
         // What mode are we in ??
         $ts_mode=$csProvider[self::CLS_TS_MODE];
-        if ($ts_mode==="1"){
+        if($ts_mode==="2"){
+            $dst=$csProvider[self::CLS_TMM_DST_ID];
+            return ($bc!==null && $bc->getCalendarById($dst,$userId)===null)?'-1':$dst;
+        }else if ($ts_mode==="1"){
             $dst=$csProvider[self::CLS_XTM_DST_ID];
             $src=$csProvider[self::CLS_XTM_SRC_ID];
             // External mode - main calendar is destination calendar

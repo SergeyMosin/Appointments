@@ -211,12 +211,20 @@
       </div>
       <div v-show="visibleSection===1" class="srgdev-appt-cal-view-cont">
         <div class="srgdev-appt-grid-flex">
-          <div class="srgdev-appt-cal-view-btns">
+          <div v-show="gridMode===0" class="srgdev-appt-cal-view-btns">
             <button @click="addScheduleToCalendar()" class="primary">
               {{ t('appointments', 'Add to Calendar') }}
             </button>
             <button @click="closePreviewGrid()">
               {{ t('appointments', 'Discard') }}
+            </button>
+          </div>
+          <div v-show="gridMode===1" class="srgdev-appt-cal-view-btns">
+            <button style="margin-right: 1em" @click="saveTemplate()" class="primary">
+              {{ t('appointments', 'Save') }}
+            </button>
+            <button @click="closePreviewGrid()">
+              {{ t('appointments', 'Cancel') }}
             </button>
           </div>
           <div class="srgdev-appt-grid-flex-lower">
@@ -251,11 +259,11 @@
                 </Actions>
               </li>
             </ul>
-            <div ref="grid_cont" class="srgdev-appt-grid-cont"></div>
+            <div @gridContext="editSingleAppt" ref="grid_cont" class="srgdev-appt-grid-cont"></div>
           </div>
         </div>
         <Modal v-if="evtGridModal!==0" :canClose="false">
-          <div class="srgdev-appt-modal_content">
+          <div :class="evtGridModal===5?'srgdev-appt-modal_content_tmpl':'srgdev-appt-modal_content'">
             <div v-if="evtGridModal===1" class="srgdev-appt-modal-lbl">
               {{
                 t('appointments', 'Adding appointment to {calendarName} calendar …', {calendarName: calInfo.curCal_name})
@@ -279,7 +287,13 @@
               <div class="srgdev-appt-slider-inc"></div>
               <div class="srgdev-appt-slider-dec"></div>
             </div>
-            <button v-if="evtGridModal>1" class="primary" @click="closeEvtModal">{{ t('appointments', 'Close') }}
+            <TemplateApptOptions
+                v-if="evtGridModal===5"
+                :elm="evtGridElm"
+                @tmplUpdateAppt="gridApptUpdate($event)"
+                @tmplAddAppts="gridApptsAddTemplate($event)"
+                @close="closeEvtModal"/>
+            <button v-if="evtGridModal>1 && evtGridModal!==5" class="primary" @click="closeEvtModal">{{ t('appointments', 'Close') }}
             </button>
           </div>
         </Modal>
@@ -313,6 +327,7 @@
             @gotoDelAppt="curPageId=$event;toggleSlideBar(8);sbGotoBack=6"
             @gotoAdvStn="curPageId=$event;toggleSlideBar(10);sbGotoBack=6"
             @showModal="showSimpleGeneralModal($event)"
+            @editTemplate="editApptTemplate($event)"
             @reloadPages="getPages(0,curPageData.pageId)"
             @close="toggleSlideBar(0)"/>
         <UserStnSlideBar
@@ -407,10 +422,12 @@ import DirSlideBar from "./components/DirSlideBar"
 import TalkSlideBar from "./components/TalkSlideBar"
 
 import FormInputsDesigner from "./components/FormInputsDesigner"
+import TemplateApptOptions from "./components/TemplateApptOptions";
 
 export default {
   name: 'App',
   components: {
+    TemplateApptOptions,
     TalkSlideBar,
     DirSlideBar,
     PagePickerSlideBar,
@@ -482,8 +499,7 @@ export default {
       gridHeader: [],
       gridApptLen: 0,
       gridApptTs: 0,
-      gridApptTZ: "L",
-      gridApptsPageId: "p0",
+      gridMode:gridMaker.MODE_SIMPLE,
 
       generalModal: 0,
       generalModalTxt: ["", ""],
@@ -500,6 +516,7 @@ export default {
     };
   },
   computed: {
+
     curPageData:function (){
       const ml=this.morePages.length
       if(this.curPageId==='p0'){
@@ -530,15 +547,36 @@ export default {
       }
     }
   },
+
+  created(){
+    this.gridApptTZ="L"
+    this.gridTzName=""
+    this.gridApptsPageId="p0"
+    this.gridCID=0
+    this.evtGridElm=null
+  },
+
   beforeMount() {
     this.resetCalInfo()
   },
 
   mounted() {
+
     this.getPages(1,'p0')
-    // this.getFormData('p0')
+
     this.$root.$on('helpWanted', this.helpWantedHandler)
+
+    // ------- testing --
+    // if(!this.isGridReady){
+    //   this.gridSetup()
+    // }
+    // this.curPageId="p0"
+    // this.editApptTemplate({
+    //   tzName:"America/New_York",
+    //   pageId:this.curPageId
+    // })
   },
+
   beforeDestroy() {
     this.$root.$off('helpWanted', this.helpWantedHandler)
   },
@@ -551,9 +589,45 @@ export default {
 
 
   methods: {
+
+    editSingleAppt(e){
+      this.evtGridElm=e.detail
+      this.evtGridModal=5
+    },
+
+    async editApptTemplate(info){
+      if(!this.isGridReady){
+        this.gridSetup()
+      }
+
+      this.gridTzName=info.tzName
+
+      const wd=new Date()
+      wd.setHours(0,0,0)
+      let day=wd.getDay()
+      if(day===0){
+        day++
+      }else{
+        day=1-day
+      }
+
+      const d={
+        dur:0,
+        week:wd.setTime(wd.getTime()+(day*86400000)),
+        tz:null,
+        pageId:info.pageId
+      }
+
+      this.makePreviewGrid(d,gridMaker.MODE_TEMPLATE)
+    },
+
+    saveTemplate(){
+      this.setState('set_t_data',gridMaker.getTemplateData(),this.curPageData.pageId)
+    },
+
     openViaPicker(sbn,evt){
       if(this.sbShow===11 && this.sbGotoBack===sbn){
-        // picker fro THIS slideBar is showing... close it
+        // picker from THIS slideBar is showing... close it
         this.toggleSlideBar(0);
         return
       }
@@ -763,9 +837,32 @@ export default {
 
     gridApptsAdd(cID, event) {
       let hd = this.gridHeader[cID]
-
       hd.n = event.target.querySelector('input[type=number]').value
 
+      if(this.gridMode===gridMaker.MODE_SIMPLE){
+        this.gridApptsAddSimple(cID)
+      }else{
+        this.gridCID=cID
+        this.evtGridElm=null
+        this.evtGridModal=5
+      }
+    },
+
+    gridApptsAddTemplate(ai){
+      let hd = this.gridHeader[this.gridCID]
+      let nbr = parseInt(hd.n)
+      if (isNaN(nbr) || nbr < 1) nbr=1
+
+      gridMaker.addAppt(0, ai.dur[0], nbr, this.gridCID, ai)
+      hd.hasAppts = true
+    },
+
+    gridApptUpdate(ai){
+      gridMaker.updateAppt(ai)
+    },
+
+    gridApptsAddSimple(cID){
+      let hd = this.gridHeader[cID]
       let nbr = parseInt(hd.n)
       if (isNaN(nbr) || nbr < 1) return
 
@@ -776,6 +873,8 @@ export default {
       gridMaker.addAppt(0, this.gridApptLen, nbr, cID, this.calInfo.curCal_color)
       hd.hasAppts = true
     },
+
+
 
     gridApptsDel(cID) {
       gridMaker.resetColumn(cID)
@@ -792,7 +891,7 @@ export default {
       this.isGridReady = true
     },
 
-    /** @return {Promise<JSON|string|null>} */
+    /** @return {Promise<JSON|string|Array|null>} */
     async getState(action,p="") {
       this.stateInProgress = true
       try {
@@ -1046,23 +1145,32 @@ export default {
       this.visibleSection = 0
     },
 
-    makePreviewGrid(d) {
+    makePreviewGrid(d,mode=gridMaker.MODE_SIMPLE) {
+
+      this.gridMode=mode
+      gridMaker.setMode(mode)
 
       gridMaker.resetAllColumns()
-      gridMaker.setMode(gridMaker.MODE_SIMPLE)
 
       const NBR_DAYS = 6
       // Generate local names for days and month(s)
       let tff
       const lang=document.documentElement.lang
       if (window.Intl && typeof window.Intl === "object") {
-        let f = new Intl.DateTimeFormat([lang],
-            {weekday: "short", month: "2-digit", day: "2-digit"})
+        let f
+        if(mode===gridMaker.MODE_SIMPLE) {
+          f = new Intl.DateTimeFormat([lang],
+              {weekday: "short", month: "2-digit", day: "2-digit"})
+        }else{
+          f = new Intl.DateTimeFormat([lang],
+              {weekday: "long"})
+        }
         tff = f.format
       } else {
+        const _sl=mode===gridMaker.MODE_SIMPLE?10:3
         // noinspection JSUnusedLocalSymbols
         tff = function (d) {
-          return td.toDateString().slice(0, 10)
+          return td.toDateString().slice(0, _sl)
         }
       }
 
@@ -1093,24 +1201,40 @@ export default {
 
       this.visibleSection = 1
 
-      this.$set(this.calInfo, "curCal_color", d.calColor)
-      this.$set(this.calInfo, "curCal_name", d.calName)
+      if(mode===gridMaker.MODE_SIMPLE) {
+        this.$set(this.calInfo, "curCal_color", d.calColor)
+        this.$set(this.calInfo, "curCal_name", d.calName)
 
-      // dd-mm-yyyy
-      axios.post('calgetweek', {
+        // dd-mm-yyyy
+        axios.post('calgetweek', {
           t: pd,
           p: d.pageId
-      }).then(response => {
-        if (response.status === 200) {
-          if (response.data !== "") {
-            gridMaker.addPastAppts(response.data, this.calInfo.curCal_color)
+        }).then(response => {
+          if (response.status === 200) {
+            if (response.data !== "") {
+              gridMaker.addPastAppts(response.data, this.calInfo.curCal_color)
+            }
           }
-        }
-      }).catch(error => {
-        this.modalErrTxt = t('appointments', "Bad calendar data. Check selected calendars.")
-        this.evtGridModal = 3
-        console.log(error);
-      })
+        }).catch(error => {
+          this.modalErrTxt = t('appointments', "Bad calendar data. Check selected calendars.")
+          this.evtGridModal = 3
+          console.log(error);
+        })
+
+      }else{
+        this.$set(this.calInfo, "curCal_color", null)
+        this.$set(this.calInfo, "curCal_name", null)
+
+        // get template data
+        this.getState('get_t_data',d.pageId)
+            .then(data=>{
+              gridMaker.addPastAppts(data, null)
+              //activate non empty columns
+              data.forEach((c,i)=>{
+                this.gridHeader[i].hasAppts = c.length>0
+              })
+            })
+      }
     },
 
     addScheduleToCalendar() {
@@ -1154,6 +1278,7 @@ export default {
       if (this.evtGridModal < 3) this.getFormData(this.gridApptsPageId)
       this.modalErrTxt = ""
       this.evtGridModal = 0
+      this.evtGridElm=null
     },
 
     showCModal(txt){

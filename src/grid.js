@@ -77,12 +77,12 @@ function _apptGridMaker() {
      * @param {number} len duration in minutes
      * @param {number} cnt number of appointments
      * @param {number} cID column ID 0=Monday, 1=Tuesday, etc...
-     * @param {string} clr background color
+     * @param {string|Object} clr background color or template mode appt. info
      */
     function addAppt(start, len, cnt, cID, clr) {
 
         if (len < 5) len = 5
-        else if (len > 120) len = 120
+        else if (len > 150) len = 150
 
         let uLen = Math.floor(len / 5)
         let uMax = mData.uMax - uLen + 1
@@ -111,13 +111,15 @@ function _apptGridMaker() {
      * @param {string} clr background color
      */
     function cloneColumns(fromCID, toCID, clr) {
-        if (mData.mc_elm[toCID].length !== 0) {
+        if (mData.mc_elm[toCID].length !== 0 || mData.mc_elm[fromCID].length===0) {
             return
         }
         let f = document.createDocumentFragment()
+        const copyDur=mData.mode===MODE_TEMPLATE
         mData.mc_elm[fromCID].forEach((a, i) => {
-            f.appendChild(makeApptElement(a.uTop, a.uLen, i, toCID, clr))
+            f.appendChild(makeApptElement(a.uTop, a.uLen, i, toCID, copyDur?{dur:[...a.dur],title:a.title}:clr))
         })
+
         mData.mc_cols[toCID].appendChild(f)
 
         //Set z-index & margin
@@ -159,13 +161,17 @@ function _apptGridMaker() {
     function makeApptElement(uTop, uLen, idx, cID, clr) {
         let elm = document.createElement('div')
         elm.className = sP+'appt'
-        elm.style.backgroundColor=clr
+        if(mData.mode!==MODE_TEMPLATE && clr!==null) elm.style.backgroundColor=clr
         if(idx!==null) {
             elm.uTop = uTop
             elm.uLen = uLen
             elm.cIdx = idx
             elm.cID = cID
             elm.style.zIndex=mData.mc_elm[cID].length+1
+            if(mData.mode!==MODE_SIMPLE && clr!==null){
+                elm.dur=clr.dur
+                elm.title=clr.title
+            }
         }else{
             elm.className+=" "+sP+"appt-empty"
             elm.style.zIndex="-1"
@@ -179,21 +185,124 @@ function _apptGridMaker() {
 
         let et = document.createElement('div')
         et.className = sP+"appt_txt"
-        et.appendChild(document.createTextNode(ge.dxt + ' - ' + mData.elms[uTop + uLen].dxt))
+        et.appendChild(document.createTextNode(makeTxt(elm)))
         elm.appendChild(et)
+
+        if(elm.title!==undefined && elm.title!=='') {
+            et = document.createElement('div')
+            et.className = sP + "appt_txt"
+            et.appendChild(document.createTextNode(elm.title))
+            elm.appendChild(et)
+        }
 
         if(idx!==null) {
 
             // TODO: delegate these events to the parent ???
             elm.addEventListener("mousedown", appGoDrag)
-
+            if(mData.mode===MODE_TEMPLATE){
+                elm.addEventListener("contextmenu", editAppt)
+            }
             mData.mc_elm[cID].push(elm)
 
         }
         return elm
     }
 
+    function editAppt(evt){
+        mData.scrollCont.lastElementChild.dispatchEvent(new CustomEvent('gridContext',{detail:evt.target}))
+        evt.preventDefault()
+        evt.stopPropagation()
+    }
+
+    function updateAppt(info){
+        const colElms=mData.mc_elm[info.cID]
+        const el=colElms[info.cIdx]
+
+        if(info.del!==undefined){
+            // delete
+            el.parentElement.removeChild(el)
+            colElms.splice(info.cIdx,1)
+
+            // (re)set cIdxs and z-index
+            colElms.forEach((elm,index)=>{
+                elm.cIdx=index
+                elm.style.zIndex=index+1
+            })
+
+            this.sorted=[]
+            if(colElms.length!==0) {
+                setSorted(colElms, colElms[colElms.length - 1])
+                setMargins(colElms)
+            }
+            return
+        }
+
+        el.dur=info.dur
+        el.title=info.title
+
+        const uLen = Math.floor(info.dur[0] / 5)
+        const uTop = el.uTop
+
+        let ge = mData.elms[uTop]
+        let e2 = mData.elms[uTop + uLen - 1]
+
+        el.uLen=uLen
+        el.style.height = (e2.offsetTop + e2.offsetHeight - ge.offsetTop - .25) + 'px'
+
+        el.firstElementChild.textContent = makeTxt(el)
+        if(info.title===""){
+            if(el.children.length>1){
+                el.removeChild(el.lastElementChild)
+            }
+        }else{
+            if(el.children.length>1){
+                el.lastElementChild.textContent=info.title
+            }else{
+                const et = document.createElement('div')
+                et.className = sP + "appt_txt"
+                et.appendChild(document.createTextNode(info.title))
+                el.appendChild(et)
+            }
+        }
+
+        setSorted(colElms,el)
+        setMargins(colElms)
+    }
+
+    function makeTxt(el){
+        if(mData.mode===MODE_SIMPLE || el.dur.length===1){
+            return mData.elms[el.uTop].dxt + ' - ' + mData.elms[el.uTop + el.uLen].dxt
+        }else{
+            return mData.elms[el.uTop].dxt + ' ('+el.dur.join(', ')+')'
+        }
+    }
+
+    function addTemplateData(data){
+        const day_start_ts=SH*3600
+        for(let f,colElms,l=data.length,i=0;i<l;i++){
+            if(data[i].length!==0) {
+                f = document.createDocumentFragment()
+                for (let uTop, uLen, info, d = data[i], k = d.length, j = 0; j < k; j++) {
+                    info = d[j]
+                    uTop = Math.floor((info.start - day_start_ts) / 5)
+                    uLen = Math.floor(info.dur[0] / 5)
+                    f.appendChild(makeApptElement(uTop, uLen, j, i, info))
+                }
+
+                mData.mc_cols[i].appendChild(f)
+                colElms = mData.mc_elm[i]
+                setSorted(colElms, colElms[0])
+                setMargins(colElms)
+            }
+        }
+    }
+
     function addPastAppts(data,clr) {
+
+        if(clr===null){
+            addTemplateData(data)
+            return
+        }
 
         const btm=DH*12; // 12*5min=1hour
         const pd=data.split(String.fromCharCode(31))
@@ -244,6 +353,9 @@ function _apptGridMaker() {
 
 
     function appGoDrag(e) {
+
+        // we need the "contextmenu" event
+        if(e.button!==undefined && e.button===2) return;
 
         const cID = this.cID
         if (cID === undefined) return
@@ -399,8 +511,8 @@ function _apptGridMaker() {
             }
 
             // Set txt
-            de.firstElementChild.textContent = md.elms[idx].dxt + ' - ' + md.elms[idx + de.uLen].dxt
             de.uTop = idx
+            de.firstElementChild.textContent = makeTxt(de)
             de.style.top = md.elms[idx].offsetTop + 'px'
         } else {
             md.ce = null
@@ -532,6 +644,25 @@ function _apptGridMaker() {
         mData.mode=mode
     }
 
+    function getTemplateData(){
+        const day_start_ts=SH*3600
+
+        const wa=[]
+        for(let da,i=0,l=mData.mc_cols.length;i<l;i++){
+            da=[]
+            for(let elm,ea=mData.mc_elm[i], j=0,k=ea.length;j<k;j++){
+                elm=ea[j]
+                da.push({
+                    start:day_start_ts+elm.uTop*5,
+                    dur:elm.dur,
+                    title:elm.title
+                })
+            }
+            wa.push(da)
+        }
+        return wa
+    }
+
     return{
         MODE_SIMPLE:MODE_SIMPLE,
         MODE_TEMPLATE:MODE_TEMPLATE,
@@ -543,6 +674,8 @@ function _apptGridMaker() {
         getStarEnds:getStarEnds,
         addPastAppts:addPastAppts,
         setMode:setMode,
+        updateAppt:updateAppt,
+        getTemplateData:getTemplateData
     }
 }
 

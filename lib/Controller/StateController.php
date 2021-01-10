@@ -162,7 +162,7 @@ class StateController extends Controller{
 
                     $ts_mode = $this->utils->getUserSettings($key, $this->userId)[BackendUtils::CLS_TS_MODE];
 
-                    if (($ts_mode === "0" && $main_cal === "-1") ||
+                    if ((($ts_mode === "0" || $ts_mode === "2") && $main_cal === "-1") ||
                         ($ts_mode === "1" && ($main_cal === "-1" || $other_cal === "-1"))
                     ) {
                         $pgs[$pageId][BackendUtils::PAGES_ENABLED] = 0;
@@ -219,7 +219,7 @@ class StateController extends Controller{
                                 BackendUtils::KEY_ORG,
                                 $this->userId)[BackendUtils::ORG_EMAIL];
 
-                            if(($ts_mode==="0" && $main_cal==="-1")
+                            if((($ts_mode==="0" || $ts_mode==="2")&& $main_cal==="-1")
                                 || ($ts_mode==="1" && ($main_cal==="-1" || $other_cal==="-1"))
                                 || empty($email)
                             ){
@@ -361,7 +361,7 @@ class StateController extends Controller{
             if($value!==null) {
                 if($this->utils->setUserSettings(
                         BackendUtils::KEY_PSN,
-                        $value, BackendUtils::PSN_DEF,
+                        $value, $this->utils->getDefaultForKey(BackendUtils::KEY_PSN),
                         $this->userId,$this->appName)===true
                 ){
                     $r->setStatus(200);
@@ -394,7 +394,7 @@ class StateController extends Controller{
             if($d!==null && strlen($d)<512) {
                 if($this->utils->setUserSettings(
                         BackendUtils::KEY_ORG,
-                        $d, BackendUtils::ORG_DEF,
+                        $d, $this->utils->getDefaultForKey(BackendUtils::KEY_ORG),
                         $this->userId,$this->appName)===true
                 ){
                     $r->setStatus(200);
@@ -417,7 +417,7 @@ class StateController extends Controller{
             if($value!==null) {
                 if($this->utils->setUserSettings(
                         BackendUtils::KEY_EML,
-                        $value, BackendUtils::EML_DEF,
+                        $value, $this->utils->getDefaultForKey(BackendUtils::KEY_EML),
                         $this->userId,$this->appName)===true
                 ){
                     $r->setStatus(200);
@@ -447,7 +447,7 @@ class StateController extends Controller{
 
                 if($this->setClsMps(
                         BackendUtils::KEY_CLS,
-                        BackendUtils::CLS_DEF,
+                        $this->utils->getDefaultForKey(BackendUtils::KEY_CLS),
                         $value,'p0')===true)
                 {
                     $r->setStatus(200);
@@ -483,7 +483,7 @@ class StateController extends Controller{
             if(!empty($pageId) && $this->MPExists($pageId)){
                 if($this->setClsMps(
                     BackendUtils::KEY_MPS.$pageId,
-                    BackendUtils::MPS_DEF,
+                    $this->utils->getDefaultForKey(BackendUtils::KEY_MPS),
                     $value,$pageId)===true)
                 {
                     $r->setStatus(200);
@@ -555,7 +555,7 @@ class StateController extends Controller{
                     }else {
                         if ($this->utils->setUserSettings(
                                 BackendUtils::KEY_TALK,
-                                $value, BackendUtils::TALK_DEF,
+                                $value, $this->utils->getDefaultForKey(BackendUtils::KEY_TALK),
                                 $this->userId, $this->appName) === true
                         ) {
                             $r->setStatus(200);
@@ -594,21 +594,46 @@ class StateController extends Controller{
 
             $r->setData($h);
 
-        }else if($action==='get_fi'){
-            $a=$this->utils->getUserSettings(
+        }else if($action==='get_fi') {
+            $a = $this->utils->getUserSettings(
                 BackendUtils::KEY_FORM_INPUTS_JSON, $this->userId);
 
             // TODO: this needs to be done for all elements
-            if(isset($a[0]) && isset($a[0]['name'])) unset($a[0]['name']);
+            if (isset($a[0]) && isset($a[0]['name'])) unset($a[0]['name']);
 
-            $j=json_encode($a);
-            if($j!==false){
+            $j = json_encode($a);
+            if ($j !== false) {
                 $r->setData($j);
+                $r->setStatus(200);
+            } else {
+                $r->setStatus(500);
+            }
+        }else if($action==='get_t_data'){
+            $pageId=$this->request->getParam("p");
+            if($pageId!==null) {
+                $a = $this->utils->getTemplateData($pageId, $this->userId);
+                $j = json_encode($a);
+                if ($j !== false) {
+                    $r->setData($j);
+                    $r->setStatus(200);
+                } else {
+                    $r->setStatus(500);
+                }
+            }
+        }else if($action==='set_t_data'){
+            $pageId=$this->request->getParam("p");
+            $value=$this->request->getParam("d");
+            if($pageId!==null && $this->utils->setTemplateData($pageId,$value,$this->userId)===true){
                 $r->setStatus(200);
             }else{
                 $r->setStatus(500);
             }
+        }else if($action==='get_t_info'){
+            $r->setStatus(200);
+        }else if($action==='set_t_info'){
+            $r->setStatus(200);
         }
+
         return $r;
     }
 
@@ -675,6 +700,14 @@ class StateController extends Controller{
         $o_cms=$this->utils->getUserSettings(
             $key,$this->userId);
 
+        //check if we have BackendUtils::KEY_TMPL_INFO
+        if(strpos($value,BackendUtils::TMPL_TZ_DATA)){
+            $this->utils->setUserSettings(
+                        BackendUtils::KEY_TMPL_INFO, $value,
+                        $this->utils->getDefaultForKey(BackendUtils::KEY_TMPL_INFO),
+                        $this->userId,$this->appName);
+        }
+
         if($this->utils->setUserSettings(
                 $key, $value, $def,
                 $this->userId,$this->appName)===true
@@ -724,7 +757,6 @@ class StateController extends Controller{
                 $this->config->setUserValue($this->userId, $this->appName,
                     ExternalModeSabrePlugin::AUTO_FIX_URI,$afu);
             }
-
 
             if($o_cms[BackendUtils::CLS_TS_MODE]!==$cms[BackendUtils::CLS_TS_MODE]){
                 // ts_mode changed - disable the page...
