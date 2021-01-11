@@ -734,15 +734,16 @@ class BCSabreImpl implements IBackendConnector{
             /** @var \Sabre\VObject\Property\ICalendar\DateTime $dt_start */
             $dt_start = $evt->DTSTART;
 
-            if ($dt_start->isFloating()) {
-                $this->logErr("floating timezones are not supported - calId: " . $srcId . ", uri: " . $srcUri);
-                return 3;
-            }elseif(isset($dt_start->parameters['TZID']) && isset($vo->VTIMEZONE)){
+            if(isset($dt_start->parameters['TZID']) && isset($vo->VTIMEZONE)){
                 $tzi=$vo->VTIMEZONE->serialize();
             }elseif(strpos($dt_start->getValue(), 'Z') !== false){
                 $tzi='UTC';
             }else{
-                $this->logErr("bad timezone info - calId: " . $srcId . ", uri: " . $srcUri);
+                if ($dt_start->isFloating()) {
+                    $this->logErr("floating timezones are not supported - calId: " . $srcId . ", uri: " . $srcUri);
+                }else {
+                    $this->logErr("bad timezone info - calId: " . $srcId . ", uri: " . $srcUri);
+                }
                 return 3;
             }
 
