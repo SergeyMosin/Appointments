@@ -408,7 +408,7 @@
             if(typeof tzn!=="string") tzn=undefined
         }
 
-        for(let md=new Date(),tzo,tzi,t,tStr,atStr,sp,sp2,
+        for(let md=new Date(),tzo,tzi,t,tStr,atStr,sp,sp2,dur,dur_idx,
                 ts,endTime=pso[PPS_END_TIME],showTZ=pso[PPS_SHOWTZ],
                 ia=s.getAttribute("data-info").split(','),
                 l=ia.length,i=0,ds;i<l;i++){
@@ -431,18 +431,32 @@
             }
             ts=md.getTime()
 
-            if(endTime===1){
+            dur_idx=""
+            if(endTime===1 || t==='T'){
                 sp2=sp+1
                 // sp must be the pos of the last used ':'
                 sp=ds.indexOf(":",sp2)
-                // sp2 is end time
-                sp2=+ds.substr(sp2,sp-sp2)*1000
 
-                md.setTime(ts+(sp2-ts))
-                if(t==='F' || showTZ===0){
-                    tStr+=' - '+tf(md)
-                }else{
-                    tStr+=' - '+tfz(md)
+                if(t==="T"){
+                    dur=ds.substr(sp2,sp-sp2).split(';').map(n=>n|0)
+                    dur_idx="_1"
+                }
+
+
+                if(endTime===1) {
+                    if(t==="T"){
+                        // console.log("dur",dur)
+                        md.setTime(ts+dur[0]*60000)
+                    }else {
+                        // sp2 is end time
+                        sp2=+ds.substr(sp2,sp-sp2)*1000
+                        md.setTime(ts + (sp2 - ts))
+                    }
+                    if (showTZ === 0) {
+                        tStr += ' - ' + tf(md)
+                    } else {
+                        tStr += ' - ' + tfz(md)
+                    }
                 }
             }
 
@@ -461,7 +475,7 @@
             sp2=ds.indexOf(":",sp)
             dta[i] = {
                 rts: ts,
-                d: ds.substr(sp,sp2-sp),
+                d: ds.substr(sp,sp2-sp)+dur_idx,
                 t: ds.substr(sp2+2), // +2 is for ":_"
                 tzi:tzi,
                 time:tStr,
@@ -472,6 +486,7 @@
         dta.sort((a, b) => (a.rts > b.rts) ? 1 : -1)
         dta.push({rts:0,d:"",t:"",tzi:"",time:""}) //last option to finalize the loop
 
+        console.log(dta)
         s.dataRef=dta
 
         let l=dta.length

@@ -284,7 +284,7 @@ function _apptGridMaker() {
                 f = document.createDocumentFragment()
                 for (let uTop, uLen, info, d = data[i], k = d.length, j = 0; j < k; j++) {
                     info = d[j]
-                    uTop = Math.floor((info.start - day_start_ts) / 5)
+                    uTop = Math.floor((info.start - day_start_ts) / 300)
                     uLen = Math.floor(info.dur[0] / 5)
                     f.appendChild(makeApptElement(uTop, uLen, j, i, info))
                 }
@@ -653,9 +653,9 @@ function _apptGridMaker() {
             for(let elm,ea=mData.mc_elm[i], j=0,k=ea.length;j<k;j++){
                 elm=ea[j]
                 da.push({
-                    start:day_start_ts+elm.uTop*5,
+                    start:day_start_ts+elm.uTop*300,
                     dur:elm.dur,
-                    title:elm.title
+                    title:elm.title.replaceAll(',',' ')
                 })
             }
             wa.push(da)

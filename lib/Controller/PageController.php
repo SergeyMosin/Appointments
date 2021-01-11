@@ -568,7 +568,12 @@ class PageController extends Controller {
             return $rr;
         }
 
-        if(substr($dc,0,2)==="_1"){
+        $dcs=substr($dc,0,2);
+        if($dcs==="_2"){
+            // template mode
+            // $dc = '_2'.ses_time.'_'pageId(2bytes).$day(1byte)$indexInDay'_'startTs'_'durIndex;
+
+        }else if($dcs==="_1"){
             // external mode
             // $dc='_'ts_mode(1byte)ses_time(4bytes)dates(8bytes)uri(no extension)
 
@@ -775,8 +780,6 @@ class PageController extends Controller {
             'more_html'=>''
         ];
 
-
-
         // google recaptcha
         // 'jsfiles'=>['https://www.google.com/recaptcha/api.js']
         //        $tr->getContentSecurityPolicy()->addAllowedScriptDomain('https://www.google.com/recaptcha/')->addAllowedScriptDomain('https://www.gstatic.com/recaptcha/')->addAllowedFrameDomain('https://www.google.com/recaptcha/');
@@ -827,22 +830,29 @@ class PageController extends Controller {
             return $tr;
         }
 
-        $t_end=clone $t_start;
-        $t_end->setTimestamp($t_start->getTimestamp()+(7*$nw*86400));
-        $t_end->setTime(0,0);
-
         if($pageId!=='p0'){
             $cms=$mps;
         }
-
         $ts_mode=$cms[BackendUtils::CLS_TS_MODE];
+
+        if($ts_mode==='2'){
+            $nw=min(8,$nw);
+        }
+
+        $t_end=clone $t_start;
+        $t_end->setTimestamp($t_start->getTimestamp()+(7*$nw*86400));
+        $t_end->setTime(0,0);
 
         if($ts_mode==="1"){ // external mode
             // @see BCSabreImpl->queryRange()
             $cid.=chr(31).$cms[BackendUtils::CLS_XTM_SRC_ID];
         }
 
-        $out=$this->bc->queryRange($cid,$t_start,$t_end,$ts_mode.$uid);
+        if($ts_mode==="2") {
+            $out = $this->bc->queryTemplate($cms, $t_start, $t_end, $uid, $pageId);
+        }else{
+            $out = $this->bc->queryRange($cid, $t_start, $t_end, $ts_mode . $uid);
+        }
 
         if(empty($out)) {
             $params['appt_state']='5';

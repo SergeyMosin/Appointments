@@ -1231,7 +1231,9 @@ export default {
               gridMaker.addPastAppts(data, null)
               //activate non empty columns
               data.forEach((c,i)=>{
-                this.gridHeader[i].hasAppts = c.length>0
+                if(this.gridHeader[i]!==undefined) {
+                  this.gridHeader[i].hasAppts = c.length > 0
+                }
               })
             })
       }

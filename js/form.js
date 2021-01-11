@@ -551,7 +551,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       if (typeof tzn !== "string") tzn = undefined;
     }
 
-    for (var md = new Date(), tzo, tzi, _t2, tStr, atStr, sp, sp2, ts, endTime = pso[PPS_END_TIME], showTZ = pso[PPS_SHOWTZ], ia = s.getAttribute("data-info").split(','), _l2 = ia.length, _i = 0, ds; _i < _l2; _i++) {
+    for (var md = new Date(), tzo, tzi, _t2, tStr, atStr, sp, sp2, dur, dur_idx, ts, endTime = pso[PPS_END_TIME], showTZ = pso[PPS_SHOWTZ], ia = s.getAttribute("data-info").split(','), _l2 = ia.length, _i = 0, ds; _i < _l2; _i++) {
       //TODO: remove 'U' from ds
       ds = ia[_i];
       sp = ds.indexOf(":", 8);
@@ -570,19 +570,35 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
 
       ts = md.getTime();
+      dur_idx = "";
 
-      if (endTime === 1) {
+      if (endTime === 1 || _t2 === 'T') {
         sp2 = sp + 1; // sp must be the pos of the last used ':'
 
-        sp = ds.indexOf(":", sp2); // sp2 is end time
+        sp = ds.indexOf(":", sp2);
 
-        sp2 = +ds.substr(sp2, sp - sp2) * 1000;
-        md.setTime(ts + (sp2 - ts));
+        if (_t2 === "T") {
+          dur = ds.substr(sp2, sp - sp2).split(';').map(function (n) {
+            return n | 0;
+          });
+          dur_idx = "_1";
+        }
 
-        if (_t2 === 'F' || showTZ === 0) {
-          tStr += ' - ' + tf(md);
-        } else {
-          tStr += ' - ' + tfz(md);
+        if (endTime === 1) {
+          if (_t2 === "T") {
+            // console.log("dur",dur)
+            md.setTime(ts + dur[0] * 60000);
+          } else {
+            // sp2 is end time
+            sp2 = +ds.substr(sp2, sp - sp2) * 1000;
+            md.setTime(ts + (sp2 - ts));
+          }
+
+          if (showTZ === 0) {
+            tStr += ' - ' + tf(md);
+          } else {
+            tStr += ' - ' + tfz(md);
+          }
         }
       }
 
@@ -601,7 +617,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       sp2 = ds.indexOf(":", sp);
       dta[_i] = {
         rts: ts,
-        d: ds.substr(sp, sp2 - sp),
+        d: ds.substr(sp, sp2 - sp) + dur_idx,
         t: ds.substr(sp2 + 2),
         // +2 is for ":_"
         tzi: tzi,
@@ -621,6 +637,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       time: ""
     }); //last option to finalize the loop
 
+    console.log(dta);
     s.dataRef = dta;
     var l = dta.length;
     var cont = document.createElement('div');

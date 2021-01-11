@@ -5714,7 +5714,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].addPastAppts(data, null); //activate non empty columns
 
           data.forEach(function (c, i) {
-            _this9.gridHeader[i].hasAppts = c.length > 0;
+            if (_this9.gridHeader[i] !== undefined) {
+              _this9.gridHeader[i].hasAppts = c.length > 0;
+            }
           });
         });
       }
@@ -58759,7 +58761,7 @@ function _apptGridMaker() {
 
         for (var uTop, uLen, info, d = data[i], k = d.length, j = 0; j < k; j++) {
           info = d[j];
-          uTop = Math.floor((info.start - day_start_ts) / 5);
+          uTop = Math.floor((info.start - day_start_ts) / 300);
           uLen = Math.floor(info.dur[0] / 5);
           f.appendChild(makeApptElement(uTop, uLen, j, i, info));
         }
@@ -59110,9 +59112,9 @@ function _apptGridMaker() {
       for (var elm, ea = mData.mc_elm[i], j = 0, k = ea.length; j < k; j++) {
         elm = ea[j];
         da.push({
-          start: day_start_ts + elm.uTop * 5,
+          start: day_start_ts + elm.uTop * 300,
           dur: elm.dur,
-          title: elm.title
+          title: elm.title.replaceAll(',', ' ')
         });
       }
 

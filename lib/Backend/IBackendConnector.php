@@ -23,6 +23,16 @@ interface IBackendConnector{
     function queryRange($calId,$start,$end,$mode);
 
     /**
+     * @param array $cms
+     * @param \DateTime $start should have user's timezone
+     * @param \DateTime $end should have user's timezone
+     * @param string $userId
+     * @param string $pageId
+     * @return string|null
+     */
+    function queryTemplate($cms, $start, $end, $userId, $pageId);
+
+    /**
      * @param string $calId
      * @param string $uri
      * @param string $data

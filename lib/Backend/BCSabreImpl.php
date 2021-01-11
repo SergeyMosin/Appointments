@@ -189,7 +189,7 @@ class BCSabreImpl implements IBackendConnector{
         $start_ts=$start->getTimestamp();
         $end_ts=$end->getTimestamp();
 
-        // We need to adjust for and filter
+        // We need to adjust for UTC and filter
         $rep_start=clone $start;
         $rep_start->modify('-14 hours');
         $rep_end=clone $end;
@@ -305,7 +305,6 @@ class BCSabreImpl implements IBackendConnector{
                 continue;
             }
 
-            // TODO: remove 'U'
             $ts_pref = 'U';
             if ($evt->DTSTART->isFloating()){
                 $vo->destroy();
@@ -316,7 +315,7 @@ class BCSabreImpl implements IBackendConnector{
             if(isset($evt->SUMMARY)){
                 $s=$evt->SUMMARY->getValue();
                 if($s[0]==="_"){
-                    $atl.=$s;
+                    $atl.=str_replace(',',' ',$s);;
                 }
             }
 
@@ -390,6 +389,137 @@ class BCSabreImpl implements IBackendConnector{
     /**
      * @inheritDoc
      */
+    function queryTemplate($cms, $start, $end, $userId, $pageId){
+
+        $key = hex2bin($this->config->getAppValue($this->appName, 'hk'));
+        if (empty($key)) {
+            \OC::$server->getLogger()->error("Can't find hkey");
+            return null;
+        }
+
+        $cals=array_merge([$cms[BackendUtils::CLS_TMM_DST_ID]],$cms[BackendUtils::CLS_TMM_MORE_CALS]);
+
+        $utz=$start->getTimezone();
+
+        $start_ts=$start->getTimestamp();
+        $end_ts=$end->getTimestamp();
+
+        // We need to adjust for UTC and filter
+        $rep_start=clone $start;
+        $rep_start->modify('-14 hours');
+        $rep_end=clone $end;
+        $rep_end->modify('+14 hours');
+
+        $start_str=$rep_start->format(self::TIME_FORMAT);
+        $end_str=$rep_end->format(self::TIME_FORMAT);
+
+        $parser=new XmlService();
+        $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
+
+        try {
+            $result = $parser->parse($this::makeTrDavReport($start_str,$end_str,false));
+        } catch (ParseException $e) {
+            \OC::$server->getLogger()->error($e);
+            return null;
+        }
+
+        $booked_tree = null;
+        $itc = new AVLIntervalTree();
+
+        // get booked & busy timeslots
+        foreach ($cals as $calId) {
+            $urls = $this->backend->calendarQuery($calId, $result->filters);
+            if (count($urls) > 0) {
+                $objs = $this->backend->getMultipleCalendarObjects($calId, $urls);
+                foreach ($objs as $obj) {
+                    /** @var \Sabre\VObject\Component\VCalendar $vo */
+                    $vo = Reader::read($obj['calendardata']);
+                    /** @var \Sabre\VObject\Component\VEvent $evt */
+                    $evt = $vo->VEVENT;
+                    /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+                    if (!$evt->DTSTART->hasTime() || (isset($evt->CLASS) && $evt->CLASS->getValue() !== 'PUBLIC')) {
+                        $vo->destroy();
+                        continue;
+                    }
+
+                    if (isset($evt->RRULE)) {
+
+                        try {
+                            $it = new EventIterator($vo->getByUID($evt->UID->getValue()), null, $utz);
+                        } catch (NoInstancesException $e) {
+                            // This event is recurring, but it doesn't have a single instance. We are skipping this event from the output entirely.
+                            continue;
+                        }
+                        $it->fastForward($start);
+                    } else {
+                        // TODO: reuse FakeIterator
+                        $it=new FakeIterator($evt,$utz);
+                    }
+
+                    $c=0;
+                    while ($it->valid() && $c<128) {
+                        $c++;
+                        $_evt=$it->getEventObject();
+                        if((isset($_evt->STATUS) && $_evt->STATUS->getValue()==='CANCELLED') || (isset($_evt->TRANSP) && $_evt->TRANSP->getValue()==='TRANSPARENT')){
+                            $it->next();
+                            continue;
+                        }
+
+                        $s_ts = $it->getDTStart()->getTimestamp();
+
+                        if ($s_ts >= $end_ts) {
+                            break;
+                        }
+                        if ($s_ts > $start_ts) {
+                            $e_ts = $it->getDTEnd()->getTimestamp();
+                            $itc->insert($booked_tree, $s_ts, $e_ts);
+                        }
+                        $it->next();
+                    }
+                    $vo->destroy();
+                }
+            }
+        }
+        $td=$this->utils->getTemplateData($pageId,$userId);
+        if(count($td)!==7) $td[]=[];
+        $start->modify("today");
+        // 0=Monday
+        $day=$start->format('N')-1;
+        $ds=$start->getTimestamp();
+        $out="";
+        $ses_start='_2'.time().'_';
+        while ($ds<$end_ts){
+            $dia=$td[$day];
+            $tc=0;
+            foreach ($dia as $di) {
+                $sts=$ds+$di['start'];
+                if($sts>$end_ts) break 2; // Done :)
+                $cc=0;
+                foreach ($di['dur'] as $dur) {
+                    $ets=$sts+$dur*60;
+                    if(AVLIntervalTree::lookUp($booked_tree, $sts, $ets) !== null){
+                        // this spot is taken
+                        break;
+                    }
+                    ++$cc;
+                }
+                if($cc!==0){
+                    $data=$ses_start.$pageId.$day.$tc.'_'.$sts;
+                    $out.='T'.$sts.":".implode(';',array_slice($di['dur'],0,$cc)).":".$this->utils->encrypt($data,$key).":_".$di['title'].',';
+                }
+                $tc++;
+            }
+            $day++;
+            if($day>=7) $day=0;
+            $ds+=86400;
+        }
+        return $out!==''?substr($out,0,-1):null;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
     function queryRange($calId, $start, $end, $mode){
 
         $no_uri=($mode==='no_url');
@@ -437,7 +567,6 @@ class BCSabreImpl implements IBackendConnector{
 
         $showET=$this->utils->getUserSettings(BackendUtils::KEY_PSN,$userId)[BackendUtils::PSN_END_TIME];
 
-        // TODO: remove 'U'
         $ts_pref = 'U';
         foreach ($objs as $obj){
 
@@ -460,7 +589,7 @@ class BCSabreImpl implements IBackendConnector{
                         if (isset($vo->VEVENT->SUMMARY)) {
                             $s = $vo->VEVENT->SUMMARY->getValue();
                             if ($s[0] === "_") {
-                                $atl .= $s;
+                                $atl .= str_replace(',',' ',$s);
                             }
                         }
 
@@ -606,7 +735,8 @@ class BCSabreImpl implements IBackendConnector{
             $dt_start = $evt->DTSTART;
 
             if ($dt_start->isFloating()) {
-                $tzi = "L";
+                $this->logErr("floating timezones are not supported - calId: " . $srcId . ", uri: " . $srcUri);
+                return 3;
             }elseif(isset($dt_start->parameters['TZID']) && isset($vo->VTIMEZONE)){
                 $tzi=$vo->VTIMEZONE->serialize();
             }elseif(strpos($dt_start->getValue(), 'Z') !== false){
@@ -688,7 +818,6 @@ class BCSabreImpl implements IBackendConnector{
                 // for external mode we need to re-check the time range and update the lock_uid to "real" uid or delete the lock_uid if the time range is "taken"
 
 
-                /** @noinspection PhpUndefinedVariableInspection */
                 $trc=$this->checkRangeTR($info['ext_start'],$info['ext_end'],$calId,$utz,$cls[BackendUtils::CLS_XTM_REQ_CAT]);
 
                 if($trc===0){
