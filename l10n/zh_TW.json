@@ -4,6 +4,8 @@
     "Select meeting type" : "選擇會議類型",
     "Online (audio/video)" : "線上 (音訊/視訊)",
     "Your email address is required for this operation." : "需要你的電子郵件地址才能執行此操作。",
+    "A location, address or URL is required for this operation. Check User/Organization settings." : "此操作需要一個地址或 URL ，請確認使用者/組織設定。",
+    "Can't find your name. Check User/Organization settings." : "找不到您的名字，請確認使用者/組織設定。",
     "Available" : "可用",
     "%s appointment (action needed)" : "%s 預約 (需要操作)",
     "Dear %s," : "親愛的 %s,",
