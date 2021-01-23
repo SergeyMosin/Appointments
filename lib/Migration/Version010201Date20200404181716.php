@@ -25,18 +25,18 @@ class Version010201Date20200404181716 extends SimpleMigrationStep {
         if (!$schema->hasTable(BackendUtils::HASH_TABLE_NAME)) {
             $table = $schema->createTable(BackendUtils::HASH_TABLE_NAME);
 
-            $table->addColumn('id', Type::INTEGER, [
+            $table->addColumn('id', 'integer', [
                 'autoincrement' => true,
                 'notnull' => true,
                 'length' => 11,
                 'unsigned' => true,
             ]);
-            $table->addColumn('uid', Type::STRING, [
+            $table->addColumn('uid', 'string', [
                 'notnull' => true,
                 'length' => 127
             ]);
             //20200413.141317
-            $table->addColumn('hash', Type::STRING, [
+            $table->addColumn('hash', 'string', [
                 'notnull' => true,
                 'length' => 32
             ]);
