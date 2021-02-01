@@ -52,6 +52,10 @@ name: "TemplateApptOptions",
     elm:{
       type:HTMLDivElement,
       default:null
+    },
+    hasKey:{
+      type: Boolean,
+      default: false,
     }
   },
   created(){
@@ -96,7 +100,13 @@ name: "TemplateApptOptions",
     },
 
     addDuration(){
-      // TODO: contributors message
+
+      if(this.hasKey===false && this.durations.length>2) {
+        this.$emit('close')
+        this.$emit('showCModal',this.t('appointments', 'More than two duration choices'))
+        return
+      }
+
       if(this.durations.length>3) return
 
       const a=[...this.durations,this.durMax].sort((a,b)=>a-b)
@@ -129,8 +139,8 @@ name: "TemplateApptOptions",
     },
 
     showHelp(){
-      //TODO: help
-      // $root.$emit('helpWanted',help)
+      this.$emit('close')
+      this.$root.$emit('helpWanted','props_tmm')
     }
 
   },

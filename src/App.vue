@@ -290,6 +290,8 @@
             <TemplateApptOptions
                 v-if="evtGridModal===5"
                 :elm="evtGridElm"
+                :has-key="hasKey"
+                @showCModal="showCModal"
                 @tmplUpdateAppt="gridApptUpdate($event)"
                 @tmplAddAppts="gridApptsAddTemplate($event)"
                 @close="closeEvtModal"/>
@@ -323,6 +325,7 @@
             ref="tsbRef"
             v-if="sbShow===6"
             :cur-page-data="curPageData"
+            @showCModal="showCModal"
             @gotoAddAppt="curPageId=$event;toggleSlideBar(7);sbGotoBack=6"
             @gotoDelAppt="curPageId=$event;toggleSlideBar(8);sbGotoBack=6"
             @gotoAdvStn="curPageId=$event;toggleSlideBar(10);sbGotoBack=6"
@@ -512,7 +515,9 @@ export default {
 
       calInfo: {},
 
-      stateInProgress: false
+      stateInProgress: false,
+
+      hasKey:false
     };
   },
   computed: {
@@ -599,6 +604,10 @@ export default {
       if(!this.isGridReady){
         this.gridSetup()
       }
+
+      this.getState("get_k").then(k=>{
+        this.hasKey=k!==""
+      })
 
       this.gridTzName=info.tzName
 

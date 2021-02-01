@@ -104,7 +104,6 @@
                 style="right: 9%"
                 class="icon-info srgdev-appt-info-link"
                 @click="$root.$emit('helpWanted','destcal_tmm')"></a>
-<!--              TODO: destcal_tmm helpWanted... -->
             </div>
             <select
                 v-model="calInfo.tmmDstCalId"
@@ -116,7 +115,7 @@
             </select>
             <ApptAccordion
                 :title="t('appointments', 'Check for conflicts in…')"
-                help="abc"
+                help="conflicts_tmm"
                 help-style="right:9%"
                 style="margin-bottom: 1em"
                 :open="false">
@@ -126,6 +125,7 @@
                       type="checkbox"
                       :value="cal.id"
                       v-model="calInfo.tmmMoreCals"
+                      @click="handleMoreCals"
                       :id="'srgdev-appt_tmm_more_'+cal.id"
                       class="checkbox"><label class="srgdev-appt-sb-label-inline" :for="'srgdev-appt_tmm_more_'+cal.id">{{cal.name}}</label>
                 </div>
@@ -227,6 +227,7 @@ export default {
       tzData:"",
 
       cals: [],
+      hasKey:false,
     };
   },
 
@@ -277,6 +278,21 @@ export default {
           console.error("Can't get timezone")
           console.log(e)
           OC.Notification.showTemporary(this.t('appointments', "Can't load timezones"), {timeout: 4, type: 'error'})
+        }
+      }
+
+      this.getState("get_k").then(k=>{
+        this.hasKey=k!==""
+      })
+
+    },
+
+    handleMoreCals(evt){
+      if(this.hasKey===false && this.calInfo.tmmMoreCals.length>1){
+        if(evt.currentTarget.checked===true) {
+          this.$emit('showCModal',this.t('appointments', "More than 2 additional calendars."))
+          evt.preventDefault()
+          return false
         }
       }
     },

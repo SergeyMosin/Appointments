@@ -603,6 +603,15 @@ class StateController extends Controller{
         $o_cms=$this->utils->getUserSettings(
             $key,$this->userId);
 
+        $d=$this->config->getUserValue($this->userId, $this->appName, "cnk");
+        if($d==="" || ((hexdec(substr($d,0,4))>>15)&1)!==((hexdec(substr($d,4,4))>>12)&1) ){
+            $vo=json_decode($value,true);
+            if(isset($vo[BackendUtils::CLS_TMM_MORE_CALS]) && count($vo[BackendUtils::CLS_TMM_MORE_CALS])>2){
+                $vo[BackendUtils::CLS_TMM_MORE_CALS]=array_slice($vo[BackendUtils::CLS_TMM_MORE_CALS],0,2);
+                $value=json_encode($vo);
+            }
+        }
+
         //check if we have BackendUtils::KEY_TMPL_INFO
         if(strpos($value,BackendUtils::TMPL_TZ_DATA)){
             $this->utils->setUserSettings(

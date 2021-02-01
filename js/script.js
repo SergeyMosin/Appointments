@@ -4823,6 +4823,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 // noinspection ES6CheckImport
 
 
@@ -4919,7 +4922,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       generalModalActionCallback: undefined,
       generalModalBtnTxt: "",
       calInfo: {},
-      stateInProgress: false
+      stateInProgress: false,
+      hasKey: false
     };
   },
   computed: {
@@ -5005,6 +5009,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this.gridSetup();
                 }
 
+                _this.getState("get_k").then(function (k) {
+                  _this.hasKey = k !== "";
+                });
+
                 _this.gridTzName = info.tzName;
                 wd = new Date();
                 wd.setHours(0, 0, 0);
@@ -5025,7 +5033,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this.makePreviewGrid(d, _grid_js__WEBPACK_IMPORTED_MODULE_8__["default"].MODE_TEMPLATE);
 
-              case 8:
+              case 9:
               case "end":
                 return _context.stop();
             }
@@ -6914,7 +6922,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       realCalIDs: "-1-1",
       tzName: "",
       tzData: "",
-      cals: []
+      cals: [],
+      hasKey: false
     };
   },
   methods: {
@@ -7018,12 +7027,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 46:
+                _this.getState("get_k").then(function (k) {
+                  _this.hasKey = k !== "";
+                });
+
+              case 47:
               case "end":
                 return _context.stop();
             }
           }
         }, _callee, null, [[1, 9], [16, 25], [31, 40]]);
       }))();
+    },
+    handleMoreCals: function handleMoreCals(evt) {
+      if (this.hasKey === false && this.calInfo.tmmMoreCals.length > 1) {
+        if (evt.currentTarget.checked === true) {
+          this.$emit('showCModal', this.t('appointments', "More than 2 additional calendars."));
+          evt.preventDefault();
+          return false;
+        }
+      }
     },
     handleEditTemplate: function handleEditTemplate() {
       this.$emit('editTemplate', {
@@ -9443,6 +9466,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     elm: {
       type: HTMLDivElement,
       "default": null
+    },
+    hasKey: {
+      type: Boolean,
+      "default": false
     }
   },
   created: function created() {
@@ -9490,7 +9517,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }
     },
     addDuration: function addDuration() {
-      // TODO: contributors message
+      if (this.hasKey === false && this.durations.length > 2) {
+        this.$emit('close');
+        this.$emit('showCModal', this.t('appointments', 'More than two duration choices'));
+        return;
+      }
+
       if (this.durations.length > 3) return;
       var a = [].concat(_toConsumableArray(this.durations), [this.durMax]).sort(function (a, b) {
         return a - b;
@@ -9523,8 +9555,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       });
       this.$emit('close');
     },
-    showHelp: function showHelp() {//TODO: help
-      // $root.$emit('helpWanted',help)
+    showHelp: function showHelp() {
+      this.$emit('close');
+      this.$root.$emit('helpWanted', 'props_tmm');
     }
   }
 });
@@ -37193,8 +37226,12 @@ var render = function() {
                         _vm._v(" "),
                         _vm.evtGridModal === 5
                           ? _c("TemplateApptOptions", {
-                              attrs: { elm: _vm.evtGridElm },
+                              attrs: {
+                                elm: _vm.evtGridElm,
+                                "has-key": _vm.hasKey
+                              },
                               on: {
+                                showCModal: _vm.showCModal,
                                 tmplUpdateAppt: function($event) {
                                   return _vm.gridApptUpdate($event)
                                 },
@@ -37342,6 +37379,7 @@ var render = function() {
                     ref: "tsbRef",
                     attrs: { "cur-page-data": _vm.curPageData },
                     on: {
+                      showCModal: _vm.showCModal,
                       gotoAddAppt: function($event) {
                         _vm.curPageId = $event
                         _vm.toggleSlideBar(7)
@@ -38451,7 +38489,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                " +
+                          "\n              " +
                             _vm._s(_vm.t("appointments", "Main calendar")) +
                             ":"
                         )
@@ -38526,7 +38564,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                " +
+                          "\n              " +
                             _vm._s(
                               _vm.t(
                                 "appointments",
@@ -38608,7 +38646,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                " +
+                          "\n              " +
                             _vm._s(
                               _vm.t(
                                 "appointments",
@@ -38688,7 +38726,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                " +
+                          "\n              " +
                             _vm._s(
                               _vm.t(
                                 "appointments",
@@ -38779,7 +38817,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                " +
+                          "\n              " +
                             _vm._s(
                               _vm.t(
                                 "appointments",
@@ -38861,7 +38899,7 @@ var render = function() {
                       staticStyle: { "margin-bottom": "1em" },
                       attrs: {
                         title: _vm.t("appointments", "Check for conflicts in…"),
-                        help: "abc",
+                        help: "conflicts_tmm",
                         "help-style": "right:9%",
                         open: false
                       }
@@ -38908,6 +38946,7 @@ var render = function() {
                                     : _vm.calInfo.tmmMoreCals
                                 },
                                 on: {
+                                  click: _vm.handleMoreCals,
                                   change: function($event) {
                                     var $$a = _vm.calInfo.tmmMoreCals,
                                       $$el = $event.target,
@@ -38959,20 +38998,20 @@ var render = function() {
                   _vm._v(" "),
                   _c("label", { staticClass: "tsb-label" }, [
                     _vm._v(
-                      "\n              " +
+                      "\n            " +
                         _vm._s(_vm.t("appointments", "Timezone:"))
                     )
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "tsb-input" }, [
                     _vm._v(
-                      "\n              " +
+                      "\n            " +
                         _vm._s(
                           _vm.tzName === ""
                             ? _vm.t("appointments", "Loading…")
                             : _vm.tzName
                         ) +
-                        "\n            "
+                        "\n          "
                     )
                   ])
                 ]
@@ -38993,7 +39032,7 @@ var render = function() {
                   },
                   [
                     _vm._v(
-                      "\n              " +
+                      "\n            " +
                         _vm._s(_vm.t("appointments", "Time slot mode")) +
                         ":"
                     )
@@ -39088,7 +39127,7 @@ var render = function() {
                 class: { "appt-btn-loading": _vm.isSending },
                 on: { click: _vm.apply }
               },
-              [_vm._v(_vm._s(_vm.t("appointments", "Apply")) + "\n          ")]
+              [_vm._v(_vm._s(_vm.t("appointments", "Apply")) + "\n        ")]
             )
           ],
           2
