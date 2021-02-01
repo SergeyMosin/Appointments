@@ -1,3 +1,15 @@
+## 1.8.0 - 2021-01-30
+### Added
+- Template Mode
+### Changed
+- Appointment slots can overlap now in the editor
+- Use own DB table for settings, instead of 'oc_preferences'
+### Fixed
+- Modals on wide screens
+- Doctrine3 type strings
+- 'null' array in extra fields
+
+
 ## 1.7.15 - 2020-12-21
 ### Fixed 
 - define 'more_html' at the start

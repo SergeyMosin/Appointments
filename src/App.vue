@@ -226,6 +226,7 @@
             <button @click="closePreviewGrid()">
               {{ t('appointments', 'Cancel') }}
             </button>
+            <div style="float:right; font-style: italic; font-size: 75%; color: var(--color-text-light); padding-right: 1.5em;">{{ t('appointments', 'Hint: right-click on appointment to edit.')}}</div>
           </div>
           <div class="srgdev-appt-grid-flex-lower">
             <ul class="srgdev-appt-grid-header">
