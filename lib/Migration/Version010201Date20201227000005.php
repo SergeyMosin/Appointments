@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace OCA\Appointments\Migration;
 
-use Doctrine\DBAL\Types\Type;
 use OCA\Appointments\Backend\BackendUtils;
 use OCP\DB\ISchemaWrapper;
 use OCP\Migration\IOutput;
@@ -25,18 +24,18 @@ class Version010201Date20201227000005 extends SimpleMigrationStep {
         if (!$schema->hasTable(BackendUtils::HASH_TABLE_NAME)) {
             $table = $schema->createTable(BackendUtils::HASH_TABLE_NAME);
 
-            $table->addColumn('id', Type::INTEGER, [
+            $table->addColumn('id', 'integer', [
                 'autoincrement' => true,
                 'notnull' => true,
                 'length' => 11,
                 'unsigned' => true,
             ]);
-            $table->addColumn('uid', Type::STRING, [
+            $table->addColumn('uid', 'string', [
                 'notnull' => true,
                 'length' => 127
             ]);
             //20200413.141317
-            $table->addColumn('hash', Type::STRING, [
+            $table->addColumn('hash', 'string', [
                 'notnull' => true,
                 'length' => 32
             ]);
@@ -50,64 +49,64 @@ class Version010201Date20201227000005 extends SimpleMigrationStep {
         if (!$schema->hasTable(BackendUtils::PREF_TABLE_NAME)) {
             $table = $schema->createTable(BackendUtils::PREF_TABLE_NAME);
 
-            $table->addColumn('id', Type::INTEGER, [
+            $table->addColumn('id', 'integer', [
                 'autoincrement' => true,
                 'notnull' => true,
                 'unsigned' => true,
             ]);
 
-            $table->addColumn('user_id', Type::STRING, [
+            $table->addColumn('user_id', 'string', [
                 'notnull' => true,
                 'length' => 64
             ]);
 
 
-            $table->addColumn(BackendUtils::KEY_ORG,Type::STRING,[
+            $table->addColumn(BackendUtils::KEY_ORG, 'string',[
                 'notnull' => false,
                 'length' => 512
             ]);
-            $table->addColumn(BackendUtils::KEY_CLS,Type::STRING,[
+            $table->addColumn(BackendUtils::KEY_CLS,'string',[
                 'notnull' => false,
                 'length' => 512
             ]);
-            $table->addColumn(BackendUtils::KEY_DIR,Type::TEXT,[
+            $table->addColumn(BackendUtils::KEY_DIR,'text',[
                 'notnull' => false,
                 'length' => 32768
             ]);
-            $table->addColumn(BackendUtils::KEY_EML,Type::TEXT,[
+            $table->addColumn(BackendUtils::KEY_EML,'text',[
                 'notnull' => false,
                 'length' => 32768
             ]);
-            $table->addColumn(BackendUtils::KEY_FORM_INPUTS_HTML,Type::TEXT,[
+            $table->addColumn(BackendUtils::KEY_FORM_INPUTS_HTML,'text',[
                 'notnull' => false,
                 'length' => 32768
             ]);
-            $table->addColumn(BackendUtils::KEY_FORM_INPUTS_JSON,Type::TEXT,[
+            $table->addColumn(BackendUtils::KEY_FORM_INPUTS_JSON,'text',[
                 'notnull' => false,
                 'length' => 32768
             ]);
-            $table->addColumn(BackendUtils::KEY_MPS_COL,Type::TEXT,[
+            $table->addColumn(BackendUtils::KEY_MPS_COL,'text',[
                 'notnull' => false,
                 'length' => 32768
             ]);
-            $table->addColumn(BackendUtils::KEY_PAGES,Type::TEXT,[
+            $table->addColumn(BackendUtils::KEY_PAGES,'text',[
                 'notnull' => false,
                 'length' => 32768
             ]);
-            $table->addColumn(BackendUtils::KEY_PSN,Type::TEXT,[
+            $table->addColumn(BackendUtils::KEY_PSN,'text',[
                 'notnull' => false,
                 'length' => 32768
             ]);
-            $table->addColumn(BackendUtils::KEY_TMPL_DATA,Type::TEXT,[
+            $table->addColumn(BackendUtils::KEY_TMPL_DATA,'text',[
                 'notnull' => false,
                 'length' => 32768
             ]);
-            $table->addColumn(BackendUtils::KEY_TMPL_INFO,Type::TEXT,[
+            $table->addColumn(BackendUtils::KEY_TMPL_INFO,'text',[
                 'notnull' => false,
                 'length' => 32768
             ]);
 
-            $table->addColumn(BackendUtils::KEY_TALK,Type::TEXT,[
+            $table->addColumn(BackendUtils::KEY_TALK,'text',[
                 'notnull' => false,
                 'length' => 32768
             ]);
@@ -116,9 +115,6 @@ class Version010201Date20201227000005 extends SimpleMigrationStep {
             $table->setPrimaryKey(['id']);
             $table->addUniqueIndex(['user_id'],'user_index');
         }
-
-
-
 
         return $schema;
     }
