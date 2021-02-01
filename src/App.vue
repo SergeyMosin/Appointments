@@ -1,7 +1,7 @@
 <template>
   <div id="content">
     <AppNavigation>
-      <ul :class="{'sb_disable':stateInProgress}">
+      <ul :class="{'sb_disable':stateInProgress || visibleSection===1}">
         <AppNavigationItem
             :class="{'sb_disable_nav-item':sbShow!==0}"
             @click="curPageId='p0';getFormData('p0')"
@@ -649,7 +649,7 @@ export default {
           this.curPageId='p0'
           this.toggleSlideBar(sbn)
         } else {
-          // the picker can be already open update info forst
+          // the picker can be already open update info first
           this.pagePickerTitle=evt.currentTarget.textContent.trim()
           this.sbGotoBack = sbn
           if(this.sbShow!==11){

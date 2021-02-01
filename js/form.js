@@ -306,6 +306,41 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var elm = document.getElementById('srgdev-ncfp_sel-hidden');
       elm.selectedIndex = t.dpuClickID;
       elm.value = elm.dataRef[t.dpuClickID].d;
+      var dur = elm.dataRef[t.dpuClickID].dur;
+      elm = document.getElementById('srgdev-ncfp_dur-cont');
+
+      if (dur === null || dur.length === 1) {
+        elm.style.display = 'none';
+      } else {
+        var opts = elm.lastElementChild.children;
+        var tr = window.t('appointments', 'Minutes');
+        opts[0].textContent = dur[0] + " " + tr;
+
+        for (var o, i = 1, l = Math.max(opts.length, dur.length); i < l; i++) {
+          if (i >= opts.length) {
+            // create
+            o = document.createElement('option');
+            o.className = 'srgdev-ncfp-form-option';
+            o.appendChild(document.createTextNode(''));
+            elm.lastElementChild.appendChild(o);
+          } else {
+            o = opts[i];
+
+            if (i >= dur.length) {
+              o.style.display = 'none';
+              continue;
+            }
+          }
+
+          o.style.display = 'block';
+          o.value = i;
+          o.textContent = dur[i] + " " + tr;
+        }
+
+        elm.style.display = 'block';
+      }
+
+      elm.lastElementChild.value = 0;
       document.getElementById("srgdev-dpu_main-cont").removeAttribute("data-open");
     }
   }
@@ -569,8 +604,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
       }
 
-      ts = md.getTime();
-      dur_idx = "";
+      ts = md.getTime(); // dur_idx=""
+
+      dur = null;
 
       if (endTime === 1 || _t2 === 'T') {
         sp2 = sp + 1; // sp must be the pos of the last used ':'
@@ -581,10 +617,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           dur = ds.substr(sp2, sp - sp2).split(';').map(function (n) {
             return n | 0;
           });
-          dur_idx = "_1";
         }
 
-        if (endTime === 1) {
+        if (endTime === 1 && dur !== null && dur.length < 2) {
           if (_t2 === "T") {
             // console.log("dur",dur)
             md.setTime(ts + dur[0] * 60000);
@@ -617,9 +652,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       sp2 = ds.indexOf(":", sp);
       dta[_i] = {
         rts: ts,
-        d: ds.substr(sp, sp2 - sp) + dur_idx,
+        d: ds.substr(sp, sp2 - sp),
         t: ds.substr(sp2 + 2),
         // +2 is for ":_"
+        dur: dur,
         tzi: tzi,
         time: tStr,
         timeAt: atStr
@@ -636,8 +672,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       tzi: "",
       time: ""
     }); //last option to finalize the loop
+    // console.log(dta)
 
-    console.log(dta);
     s.dataRef = dta;
     var l = dta.length;
     var cont = document.createElement('div');

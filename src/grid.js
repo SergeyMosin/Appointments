@@ -162,9 +162,9 @@ function _apptGridMaker() {
         let elm = document.createElement('div')
         elm.className = sP+'appt'
         if(mData.mode!==MODE_TEMPLATE && clr!==null) elm.style.backgroundColor=clr
+        elm.uTop = uTop
+        elm.uLen = uLen
         if(idx!==null) {
-            elm.uTop = uTop
-            elm.uLen = uLen
             elm.cIdx = idx
             elm.cID = cID
             elm.style.zIndex=mData.mc_elm[cID].length+1

@@ -5060,7 +5060,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           this.curPageId = 'p0';
           this.toggleSlideBar(sbn);
         } else {
-          // the picker can be already open update info forst
+          // the picker can be already open update info first
           this.pagePickerTitle = evt.currentTarget.textContent.trim();
           this.sbGotoBack = sbn;
 
@@ -9456,7 +9456,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   // },
   data: function data() {
     return {
-      // first one is a needed for a work-around
+      // first one is needed for a work-around
       durations: [10, 30],
       title: ""
     };
@@ -35942,7 +35942,11 @@ var render = function() {
       _c("AppNavigation", [
         _c(
           "ul",
-          { class: { sb_disable: _vm.stateInProgress } },
+          {
+            class: {
+              sb_disable: _vm.stateInProgress || _vm.visibleSection === 1
+            }
+          },
           [
             _c(
               "AppNavigationItem",
@@ -42970,7 +42974,7 @@ var render = function() {
             _vm._s(
               _vm.elm === null
                 ? _vm.t("appointments", "Add")
-                : _vm.t("appointments", "Update")
+                : _vm.t("appointments", "OK")
             ) + "\n  "
           )
         ]
@@ -58637,10 +58641,10 @@ function _apptGridMaker() {
     var elm = document.createElement('div');
     elm.className = sP + 'appt';
     if (mData.mode !== MODE_TEMPLATE && clr !== null) elm.style.backgroundColor = clr;
+    elm.uTop = uTop;
+    elm.uLen = uLen;
 
     if (idx !== null) {
-      elm.uTop = uTop;
-      elm.uLen = uLen;
       elm.cIdx = idx;
       elm.cID = cID;
       elm.style.zIndex = mData.mc_elm[cID].length + 1;

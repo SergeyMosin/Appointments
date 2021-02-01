@@ -33,6 +33,12 @@ style('appointments', 'form');
                 echo ' '.$disabled.'data-state="'.$_['appt_state'].'" data-info="'.$_['appt_sel_opts'].'" data-hdr="'.htmlspecialchars($l->t('Select Date and Time'),ENT_QUOTES, 'UTF-8').'" data-tr-back="'.htmlspecialchars($back,ENT_QUOTES, 'UTF-8').'" data-tr-next="'.htmlspecialchars($next,ENT_QUOTES, 'UTF-8').'" data-tr-not-available="'.htmlspecialchars($l->t('No Appointments Available'),ENT_QUOTES, 'UTF-8').'">';
                 ?>
         </div>
+        <div id="srgdev-ncfp_dur-cont" style="display: none">
+            <label for="srgdev-ncfp_dur-sel" class="srgdev-ncfp-form-label"><?php p($l->t('Duration:')); ?></label>
+            <select name="appt_dur" required id="srgdev-ncfp_dur-sel" class="srgdev-ncfp-form-input srgdev-ncfp-form-select">
+                <option value="0" class="srgdev-ncfp-form-option" selected>txt</option>
+            </select>
+        </div>
         <?php if(isset($_['appt_tlk_type']) && empty($disabled)) echo $_['appt_tlk_type']; ?>
         <label for="srgdev-ncfp_fname" class="srgdev-ncfp-form-label"><?php p($l->t("Name:"))?></label>
         <input name="name" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter name")); ?>" id="srgdev-ncfp_fname" class="srgdev-ncfp-form-input" type="text">

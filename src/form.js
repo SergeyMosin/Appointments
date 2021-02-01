@@ -155,8 +155,6 @@
         this.appendChild(el)
     }
 
-
-
     function selClick(e) {
         let elm=document.getElementById("srgdev-dpu_main-cont")
         if(elm.getAttribute("data-open")===null){
@@ -201,6 +199,36 @@
             let elm=document.getElementById('srgdev-ncfp_sel-hidden')
             elm.selectedIndex=t.dpuClickID
             elm.value=elm.dataRef[t.dpuClickID].d
+
+            const dur=elm.dataRef[t.dpuClickID].dur
+            elm=document.getElementById('srgdev-ncfp_dur-cont')
+            if(dur===null || dur.length===1){
+                elm.style.display='none'
+            }else{
+                const opts=elm.lastElementChild.children
+                const tr=window.t('appointments', 'Minutes')
+                opts[0].textContent=dur[0]+" "+tr
+                for(let o,i=1,l=Math.max(opts.length,dur.length);i<l;i++){
+                    if(i>=opts.length){
+                        // create
+                        o=document.createElement('option')
+                        o.className='srgdev-ncfp-form-option'
+                        o.appendChild(document.createTextNode(''))
+                        elm.lastElementChild.appendChild(o)
+                    }else{
+                        o=opts[i]
+                        if(i>=dur.length){
+                            o.style.display='none'
+                            continue
+                        }
+                    }
+                    o.style.display='block'
+                    o.value=i
+                    o.textContent=dur[i]+" "+tr
+                }
+                elm.style.display='block'
+            }
+            elm.lastElementChild.value=0
 
             document.getElementById("srgdev-dpu_main-cont").removeAttribute("data-open")
         }
@@ -431,7 +459,8 @@
             }
             ts=md.getTime()
 
-            dur_idx=""
+            // dur_idx=""
+            dur=null
             if(endTime===1 || t==='T'){
                 sp2=sp+1
                 // sp must be the pos of the last used ':'
@@ -439,11 +468,9 @@
 
                 if(t==="T"){
                     dur=ds.substr(sp2,sp-sp2).split(';').map(n=>n|0)
-                    dur_idx="_1"
                 }
 
-
-                if(endTime===1) {
+                if(endTime===1 && dur!==null && dur.length<2) {
                     if(t==="T"){
                         // console.log("dur",dur)
                         md.setTime(ts+dur[0]*60000)
@@ -475,8 +502,9 @@
             sp2=ds.indexOf(":",sp)
             dta[i] = {
                 rts: ts,
-                d: ds.substr(sp,sp2-sp)+dur_idx,
+                d: ds.substr(sp,sp2-sp),
                 t: ds.substr(sp2+2), // +2 is for ":_"
+                dur:dur,
                 tzi:tzi,
                 time:tStr,
                 timeAt:atStr
@@ -486,7 +514,7 @@
         dta.sort((a, b) => (a.rts > b.rts) ? 1 : -1)
         dta.push({rts:0,d:"",t:"",tzi:"",time:""}) //last option to finalize the loop
 
-        console.log(dta)
+        // console.log(dta)
         s.dataRef=dta
 
         let l=dta.length

@@ -500,6 +500,9 @@ class PageController extends Controller {
         if(!isset($post['adatetime']) || strlen($post['adatetime'])>127
             || preg_match('/[^a-zA-Z0-9+\/=]/',$post['adatetime'])
 
+            || !isset($post['appt_dur']) || strlen($post['appt_dur']) !== 1
+            || preg_match('/[^0-5]/u',$post['appt_dur'])
+
             || !isset($post['name']) || strlen($post['name']) > 64
             || strlen($post['name']) < 3
             || preg_match('/[^\PC ]/u',$post['name'])
@@ -513,7 +516,7 @@ class PageController extends Controller {
             || $this->mailer->validateMailAddress($post['email'])===false
 
             || !isset($post['tzi']) || strlen($post['tzi'])>64
-            || preg_match('/^[UF][^\pC ]*$/u',$post['tzi'])!==1){
+            || preg_match('/^[UFT][^\pC ]*$/u',$post['tzi'])!==1){
 
             $rr=new RedirectResponse($bad_input_url);
             $rr->setStatus(303);
@@ -535,9 +538,10 @@ class PageController extends Controller {
 
         $v='';
         $fij=$this->utils->getUserSettings(BackendUtils::KEY_FORM_INPUTS_JSON,$userId);
+
         if(!empty($fij)){
             $f0=$fij[0];
-            if(isset($post[$f0['name']])){
+            if(!empty($f0) && isset($post[$f0['name']])){
                 $n=$post[$f0['name']];
                 // TODO: check "number" type
                 $v=htmlspecialchars(preg_replace('/\s+/', ' ',trim(substr($n,0,255))),ENT_QUOTES, 'UTF-8');
@@ -571,7 +575,22 @@ class PageController extends Controller {
         $dcs=substr($dc,0,2);
         if($dcs==="_2"){
             // template mode
-            // $dc = '_2'.ses_time.'_'pageId(2bytes).$day(1byte)$indexInDay'_'startTs'_'durIndex;
+            // $dc = '_2'.ses_time.'_'pageId(2bytes).$day(1byte)$indexInDay'_'startTs
+            $pos=strpos($dc,'_',2);
+            $ti=intval(substr($dc,2,$pos-2));
+            $post['tmpl_day']=intval(substr($dc,$pos+3,1));
+            $pos2=strpos($dc,'_',$pos+1);
+            $post['tmpl_idx']=intval(substr($dc,$pos+4,$pos2-($pos+4)));
+            $post['tmpl_start_ts']=intval(substr($dc,$pos2+1));
+
+            // make new uri, it is needed for email, buttons, etc...
+            $o = strtoupper(hash("tiger128,4", $dc."appointments app - srgdev.com".$userId.rand().$cal_id.$pageId));
+            $evt_uri = substr($o, 0, 9) . "-" .
+                substr($o, 9, 5) . "-" .
+                substr($o, 14, 5) . "-" .
+                substr($o, 19, 5) . "-ASM" .
+                substr($o, 24) . ".ics";
+
 
         }else if($dcs==="_1"){
             // external mode

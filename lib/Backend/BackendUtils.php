@@ -1272,7 +1272,7 @@ class BackendUtils{
 
         return [
             '1_before_uid'=>"BEGIN:VCALENDAR\r\n" .
-                "PRODID:-//IDN nextcloud.com//Appointment App | srgdev.com//EN\r\n" .
+                "PRODID:-//IDN nextcloud.com//Appointments App | srgdev.com//EN\r\n" .
                 "CALSCALE:GREGORIAN\r\n" .
                 "VERSION:2.0\r\n" .
                 "BEGIN:VEVENT\r\n" .

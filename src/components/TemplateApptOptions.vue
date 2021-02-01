@@ -30,7 +30,7 @@
   <button style="margin-right: 1em" class="primary" @click="addAppts">{{
       elm===null
           ?t('appointments', 'Add')
-          :t('appointments', 'Update')}}
+          :t('appointments', 'OK')}}
   </button>
   <button v-if="elm!==null" @click="deleteAppt" class="delete-btn">Delete</button>
   <button @click="$emit('close')">{{ t('appointments', 'Cancel') }}</button>
@@ -65,7 +65,7 @@ name: "TemplateApptOptions",
   // },
   data: function () {
     return {
-      // first one is a needed for a work-around
+      // first one is needed for a work-around
       durations:[10,30],
       title:""
     }
