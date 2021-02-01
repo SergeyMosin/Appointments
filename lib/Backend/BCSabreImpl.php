@@ -587,6 +587,7 @@ class BCSabreImpl implements IBackendConnector{
             $tc=0;
             foreach ($dia as $di) {
                 $sts=$ds+$di['start'];
+                if($sts<$start_ts) continue; // skip past
                 if($sts>$end_ts) break 2; // Done :)
                 $cc=0;
                 foreach ($di['dur'] as $dur) {

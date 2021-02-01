@@ -28,6 +28,8 @@ class DavListener {
      */
     public function handle(GenericEvent $event, $eventName): void{
 
+//        \OC::$server->getLogger()->error('DL Debug: M0 '.$eventName);
+
         // objectUri
         if(!isset($event['objectData']['calendardata']) ||
             !isset($event['objectData']['uri'])){
@@ -44,6 +46,8 @@ class DavListener {
             return;
         }
 
+//        \OC::$server->getLogger()->error('DL Debug: M1');
+
         $ses=\OC::$server->getSession();
         $hint=$ses->get(BackendUtils::APPT_SES_KEY_HINT);
         if($hint===BackendUtils::APPT_SES_SKIP
@@ -52,6 +56,8 @@ class DavListener {
             // no need for email
             return;
         }
+
+//        \OC::$server->getLogger()->error('DL Debug: M2');
 
         $vObject=Reader::read($cd);
         if(!isset($vObject->VEVENT)){
@@ -65,6 +71,9 @@ class DavListener {
             return;
         }
 
+//        \OC::$server->getLogger()->error('DL Debug: M3');
+
+
         try {
             /** @var BackendUtils $utils*/
             $utils = \OC::$server->query(BackendUtils::class);
@@ -72,6 +81,8 @@ class DavListener {
             \OC::$server->getLogger()->error($e->getMessage());
             return;
         }
+
+//        \OC::$server->getLogger()->error('DL Debug: M4');
 
         $config=\OC::$server->getConfig();
 
@@ -92,6 +103,8 @@ class DavListener {
             \OC::$server->getLogger()->error("XAD_PROP not found");
             return;
         }
+
+//        \OC::$server->getLogger()->error('DL Debug: M5');
 
         $other_cal='-1';
         $cal_id=$utils->getMainCalId($userId,$pageId,null,$other_cal);
@@ -114,6 +127,8 @@ class DavListener {
             return;
         }
 
+//        \OC::$server->getLogger()->error('DL Debug: M6');
+
         $hash=$utils->getApptHash($evt->UID->getValue());
         if($eventName===self::DEL_EVT_NAME){
             $utils->deleteApptHash($evt);
@@ -128,6 +143,8 @@ class DavListener {
             // Bad data
             return;
         }
+
+//        \OC::$server->getLogger()->error('DL Debug: M7');
 
         $utz=$utils->getUserTimezone($userId,$config);
         try {
@@ -145,6 +162,8 @@ class DavListener {
             // Event is in the past
             return;
         }
+
+//        \OC::$server->getLogger()->error('DL Debug: M8');
 
         $hash_ch=$utils->getHashChanges($hash,$evt);
 
