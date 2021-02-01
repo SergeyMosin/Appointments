@@ -1,3 +1,7 @@
+## 1.8.1 - 2021-02-01
+### Fixed
+- Upgrade failed issue #173 (POSTGRESQL ?)
+
 ## 1.8.0 - 2021-01-30
 ### Added
 - Template Mode
