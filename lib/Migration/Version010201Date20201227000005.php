@@ -113,7 +113,7 @@ class Version010201Date20201227000005 extends SimpleMigrationStep {
 
 
             $table->setPrimaryKey(['id']);
-            $table->addUniqueIndex(['user_id'],'user_index');
+            $table->addUniqueIndex(['user_id'],BackendUtils::PREF_TABLE_NAME.'_user_index');
         }
 
         return $schema;
