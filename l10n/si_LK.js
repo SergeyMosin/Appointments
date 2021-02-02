@@ -8,13 +8,13 @@ OC.L10N.register(
     "Settings" : "සැකසුම්",
     "Close" : "වසන්න",
     "Remove" : "ඉවත් කරන්න ",
+    "Save" : "සුරකින්න",
     "Loading" : "Loading",
     "Warning" : "අවවාදය",
     "Error" : "දෝෂයක්",
     "Edit" : "සකසන්න",
     "Title" : "මාතෘකාව",
     "URL" : "URL",
-    "Save" : "සුරකින්න",
     "Next" : "ඊලඟ"
 },
 "nplurals=2; plural=(n != 1);");
