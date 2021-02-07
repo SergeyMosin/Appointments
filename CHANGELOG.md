@@ -1,3 +1,8 @@
+## 1.8.2 - 2021-02-07
+### Fixed
+- Past dates are shown in week template
+- Access array offset on value of type null for additional pages
+
 ## 1.8.1 - 2021-02-01
 ### Fixed
 - Upgrade failed issue #173 (POSTGRESQL ?)
