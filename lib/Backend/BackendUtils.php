@@ -904,8 +904,8 @@ class BackendUtils{
                     self::PSN_PAGE_STYLE => "");
                 break;
             case self::KEY_MPS_COL:
-                $d=null;
-                break;
+//                $d=null;
+//                break;
             case self::KEY_MPS:
                 $d=array(
                     self::CLS_MAIN_ID=>'-1',
@@ -1010,6 +1010,7 @@ class BackendUtils{
          }else if(strpos($key,self::KEY_MPS)===0){
              $pn=substr($key,strlen(self::KEY_MPS));
              $key=self::KEY_MPS_COL;
+             $default=$this->getDefaultForKey($key);
          } else if($key===self::KEY_TALK){
              // Translate defaults
              $l10n=\OC::$server->getL10N($this->appName);
