@@ -113,6 +113,8 @@ class BCSabreImpl implements IBackendConnector{
      */
     private function checkRangeTR($start_ts, $end_ts, $calId, $utz, $cat_required){
 
+        $start=new \DateTime('@'.$start_ts,$utz);
+
         // Because of floating timezones...
         // 50400 = 14 hours
         /** @noinspection PhpUnhandledExceptionInspection */
@@ -133,7 +135,6 @@ class BCSabreImpl implements IBackendConnector{
         $urls=$this->backend->calendarQuery($calId,$result->filters);
         $objs = $this->backend->getMultipleCalendarObjects($calId, $urls);
 
-        $c=0;
         foreach ($objs as $obj) {
 
             $cd=$obj['calendardata'];
@@ -147,28 +148,82 @@ class BCSabreImpl implements IBackendConnector{
             /** @var \Sabre\VObject\Component\VEvent $evt */
             $evt = $vo->VEVENT;
 
+
             /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-            if(isset($evt->RRULE) || !$evt->DTSTART->hasTime()
-                || !isset($evt->DTEND)
-                || (isset($evt->CLASS) && $evt->CLASS->getValue()!=='PUBLIC')
-                || $evt->DTSTART->isFloating()){
+            if (!$evt->DTSTART->hasTime() || (isset($evt->CLASS) && $evt->CLASS->getValue() !== 'PUBLIC')) {
                 $vo->destroy();
                 continue;
             }
 
-            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-            $s_ts = $evt->DTSTART->getDateTime($utz)->getTimestamp();
-            if($s_ts<$end_ts){
-                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-                $e_ts=$evt->DTEND->getDateTime($utz)->getTimestamp();
-                if($e_ts>$start_ts){
-                    $c=1;
+            if (isset($evt->RRULE)) {
+
+                try {
+                    $it = new EventIterator($vo->getByUID($evt->UID->getValue()), null, $utz);
+                } catch (NoInstancesException $e) {
+                    // This event is recurring, but it doesn't have a single instance. We are skipping this event from the output entirely.
+                    continue;
+                }
+                $it->fastForward($start);
+            } else {
+                // TODO: reuse FakeIterator
+                $it=new FakeIterator($evt,$utz);
+            }
+
+            $c=0;
+            while ($it->valid() && $c<128) {
+                $c++;
+                $_evt=$it->getEventObject();
+                if((isset($_evt->STATUS) && $_evt->STATUS->getValue()==='CANCELLED') || (isset($_evt->TRANSP) && $_evt->TRANSP->getValue()==='TRANSPARENT')){
+                    $it->next();
+                    continue;
+                }
+
+                $s_ts = $it->getDtStart()->getTimestamp();
+
+                if ($s_ts >= $end_ts) {
                     break;
                 }
+                if ($s_ts >= $start_ts) {
+                    return 1;
+                }
+                $it->next();
             }
             $vo->destroy();
+
+
+
+
+
+
+
+
+//            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+//            if(isset($evt->RRULE) || !$evt->DTSTART->hasTime()
+//                || !isset($evt->DTEND)
+//                || (isset($evt->CLASS) && $evt->CLASS->getValue()!=='PUBLIC')
+//                || $evt->DTSTART->isFloating()){
+//                $vo->destroy();
+//                continue;
+//            }
+//
+//            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+//            $s_ts = $evt->DTSTART->getDateTime($utz)->getTimestamp();
+//            if($s_ts<$end_ts){
+//                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+//                $e_ts=$evt->DTEND->getDateTime($utz)->getTimestamp();
+//                if($e_ts>$start_ts){
+//                    $c=1;
+//                    break;
+//                }
+//            }
+//            $vo->destroy();
+
+
+
+
+
         }
-        return $c;
+        return 0;
     }
 
     /**
@@ -220,7 +275,7 @@ class BCSabreImpl implements IBackendConnector{
             return null;
         }
 
-        // Get booked spots
+        // Get booked/busy spots
         $urls=$this->backend->calendarQuery($dstId,$result->filters);
         $booked_tree=null;
 
@@ -237,34 +292,92 @@ class BCSabreImpl implements IBackendConnector{
                 $vo = Reader::read($obj['calendardata']);
                 /** @var \Sabre\VObject\Component\VEvent $evt */
                 $evt = $vo->VEVENT;
+
+
+
                 /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-                if(isset($evt->RRULE) || !$evt->DTSTART->hasTime()
-                    || (isset($evt->CLASS) && $evt->CLASS->getValue()!=='PUBLIC')){
+                if (!$evt->DTSTART->hasTime() || (isset($evt->CLASS) && $evt->CLASS->getValue() !== 'PUBLIC')) {
                     $vo->destroy();
                     continue;
                 }
 
-                /** @var \Sabre\VObject\Property\ICalendar\DateTime $dt_start */
-                $dt_start = $evt->DTSTART;
-                $start_date_time = $dt_start->getDateTime($utz);
-                $s_ts = $start_date_time->getTimestamp();
+                if (isset($evt->RRULE)) {
 
+                    try {
+                        $it = new EventIterator($vo->getByUID($evt->UID->getValue()), null, $utz);
+                    } catch (NoInstancesException $e) {
+                        // This event is recurring, but it doesn't have a single instance. We are skipping this event from the output entirely.
+                        continue;
+                    }
+                    $it->fastForward($start);
+                } else {
+                    // TODO: reuse FakeIterator
+                    $it=new FakeIterator($evt,$utz);
+                }
 
-                if ($s_ts > $start_ts && $s_ts < $end_ts) {
-
-                    // Get end_timestamp
-                    if (isset($evt->DTEND)) {
-                        $e_ts = $evt->DTEND->getDateTime($utz)->getTimeStamp();
-                    } elseif (isset($evt->DURATION)) {
-                        $e_ts = $start_date_time->add($evt->DURATION->getDateInterval())->getTimeStamp();
-                    } else {
-                        $vo->destroy();
+                $c=0;
+                while ($it->valid() && $c<128) {
+                    $c++;
+                    $_evt=$it->getEventObject();
+                    if((isset($_evt->STATUS) && $_evt->STATUS->getValue()==='CANCELLED') || (isset($_evt->TRANSP) && $_evt->TRANSP->getValue()==='TRANSPARENT')){
+                        $it->next();
                         continue;
                     }
 
-                    $itc->insert($booked_tree, $s_ts, $e_ts);
+                    $s_ts = $it->getDtStart()->getTimestamp();
+
+                    if ($s_ts >= $end_ts) {
+                        break;
+                    }
+                    if ($s_ts > $start_ts) {
+                        $e_ts = $it->getDtEnd()->getTimestamp();
+
+                        $itc->insert($booked_tree, $s_ts, $e_ts);
+                    }
+                    $it->next();
                 }
                 $vo->destroy();
+
+
+
+
+
+
+
+
+//                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+//                if(isset($evt->RRULE) || !$evt->DTSTART->hasTime()
+//                    || (isset($evt->CLASS) && $evt->CLASS->getValue()!=='PUBLIC')){
+//                    $vo->destroy();
+//                    continue;
+//                }
+//
+//                /** @var \Sabre\VObject\Property\ICalendar\DateTime $dt_start */
+//                $dt_start = $evt->DTSTART;
+//                $start_date_time = $dt_start->getDateTime($utz);
+//                $s_ts = $start_date_time->getTimestamp();
+//
+//
+//                if ($s_ts > $start_ts && $s_ts < $end_ts) {
+//
+//                    // Get end_timestamp
+//                    if (isset($evt->DTEND)) {
+//                        $e_ts = $evt->DTEND->getDateTime($utz)->getTimeStamp();
+//                    } elseif (isset($evt->DURATION)) {
+//                        $e_ts = $start_date_time->add($evt->DURATION->getDateInterval())->getTimeStamp();
+//                    } else {
+//                        $vo->destroy();
+//                        continue;
+//                    }
+//
+//                    $itc->insert($booked_tree, $s_ts, $e_ts);
+//                }
+//                $vo->destroy();
+
+
+
+
+
             }
         }
 
@@ -465,7 +578,7 @@ class BCSabreImpl implements IBackendConnector{
                         if ($s_ts >= $end_ts) {
                             break;
                         }
-                        if ($s_ts > $start_ts) {
+                        if ($s_ts >= $start_ts) {
                             return 1;
                         }
                         $it->next();
