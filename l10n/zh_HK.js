@@ -96,6 +96,7 @@ OC.L10N.register(
     "Five Weeks" : "5 星期",
     "Eight Weeks" : "8 星期",
     "Twelve Weeks" : "12 星期",
+    "Start on current day instead of Monday" : "從當天開始，而不是星期一",
     "Show timezone" : "顯示時區",
     "Emails and Notifications" : "電郵和通知",
     "Deleted" : "已刪除",
