@@ -1,3 +1,8 @@
+## 1.8.3 - 2021-02-14
+### Change
+- Add recurrence blocking in external mode - issue #168
+- Add more 'leadtime' options - issue #135
+
 ## 1.8.2 - 2021-02-07
 ### Fixed
 - Past dates are shown in week template
