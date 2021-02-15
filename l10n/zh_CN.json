@@ -78,6 +78,7 @@
     "Adding appointment to {calendarName} calendar …" : "正在把预约添加到日历{calendarName}",
     "All appointments have been added to {calendarName} calendar." : "所有预约都已被添加至日历{calendarName}",
     "Error occurred. Check console …" : "发生错误。请检查控制台……",
+    "Preview" : "预览",
     "New Settings Applied." : "新设置已应用。",
     "Fetching URL from the server …" : "正在从服务器获取 URL……",
     "Can not get public URL from server" : "无法从服务器获取公共 URL",
