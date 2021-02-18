@@ -28,6 +28,7 @@ OC.L10N.register(
     "URL" : "URL",
     "Deleted" : "Изтрито",
     "Confirmed" : "Потвърдено",
+    "Canceled" : "Отказано",
     "Location:" : "Местоположение:",
     "Back" : "Назад",
     "Next" : "Напред",
