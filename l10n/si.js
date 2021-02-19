@@ -16,6 +16,7 @@ OC.L10N.register(
     "Close" : "වසන්න",
     "Remove" : "ඉවත් කරන්න",
     "Save" : "සුරකින්න",
+    "Loading" : "පූරණය වෙමින්",
     "15 Minutes" : "විනාඩි 15 යි",
     "30 Minutes" : "විනාඩි 30 යි",
     "1 Hour" : "හෝරා 1 යි",
@@ -28,6 +29,8 @@ OC.L10N.register(
     "close" : "වසන්න",
     "Add" : "එකතු කරන්න",
     "OK" : "හරි",
-    "Back" : "ආපසු"
+    "Location:" : "ස්ථානය:",
+    "Back" : "ආපසු",
+    "Next" : "ඊළඟ"
 },
 "nplurals=2; plural=(n != 1);");
