@@ -22,6 +22,7 @@ OC.L10N.register(
     "Title" : "Títol",
     "URL" : "URL",
     "Deleted" : "Suprimit",
+    "Enable lobby" : "Activar la sala d’espèra",
     "Location:" : "Localizacion :",
     "Back" : "Retorn",
     "Next" : "Seguent"
