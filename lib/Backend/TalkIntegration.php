@@ -15,7 +15,6 @@ class TalkIntegration{
     private $tlk;
     private $utils;
     private $config;
-    private static $tmClass=\OCA\Talk\Manager::class;
 
     /**
      * @param array $tlk
@@ -33,7 +32,7 @@ class TalkIntegration{
     private function getTalkManager(){
         try {
             /** @type \OCA\Talk\Manager $tm */
-            $tm = \OC::$server->getRegisteredAppContainer($this->appName)->query(self::$tmClass);
+            $tm = \OC::$server->getRegisteredAppContainer($this->appName)->query(\OCA\Talk\Manager::class);
             return $tm;
         } catch (\Exception $e) {
             \OC::$server->getLogger()->error("Talk Manager not found");
@@ -54,46 +53,73 @@ class TalkIntegration{
             return "-";
         }
 
-        $tm=$this->getTalkManager();
-        $roomToken="";
+        $roomName=$this->formatRoomName($attendeeName,$dateTime,$userId);
+        $room=null;
+        
+        // in Talk 10.1.* $room->addUser does no exist so, we are going to use OCA\Talk\Service\RoomService->createConversation first if available
+        try {
+            /** @type OCA\Talk\Service\RoomService $rs */
+            $rs = \OC::$server->getRegisteredAppContainer($this->appName)->query(\OCA\Talk\Service\RoomService::class);
+        } catch (\Exception $e) {
+            \OC::$server->getLogger()->error($e);
+            $rs=null;
+        }
 
-        if($tm!==null){
-            $roomName=$this->formatRoomName($attendeeName,$dateTime,$userId);
-            try {
-                $m = new ReflectionMethod($tm, 'createRoom');
-                if($m->isPublic()){
-                    $room = $tm->createRoom(Room::PUBLIC_CALL, $roomName);
-                }else {
-                    $room = $tm->createPublicRoom($roomName);
+        if($rs!==null) {
+            try{
+                $user=\OC::$server->getUserManager()->get($userId);
+                if($user!==null) {
+                    $room=$rs->createConversation(Room::PUBLIC_CALL, $roomName, $user);
                 }
-                $room->addUsers([
-                    'userId' => $userId,
-                    'participantType' => Participant::OWNER,
-                ]);
-                $roomToken=$room->getToken();
             }catch (\Exception $e){
-                \OC::$server->getLogger()->error("TalkIntegration: can not create public room");
                 \OC::$server->getLogger()->error($e);
             }
-
-            $n="getUs"."erValue";$hd='he'."xdec";
-            $c=$this->config->$n($userId, $this->appName, 'c'."nk");
-            $sss="su".'bstr';
-            if(!empty($roomToken) && $c!=='' && (($hd($sss($c,0,0b100))>>14)& 1)===(($hd($sss($c,4,4))>>  6) & 1) && isset($c[5])){
-                if($this->tlk[BackendUtils::TALK_LOBBY]===true){
-                    $this->setLobby($room,null);
-                }else if($this->tlk[BackendUtils::TALK_PASSWORD]===true){
-                    $p=$this->setPassword($room);
-                    if($p==='-'){
-                        // error
-                        $roomToken="-";
-                    }else{
-                        // ok
-                        $roomToken.=chr(31).$p;
+        }else {
+            // use old $room->addUsers()
+            $tm=$this->getTalkManager();
+            if($tm!==null) {
+                try {
+                    $m = new ReflectionMethod($tm, 'createRoom');
+                    if ($m->isPublic()) {
+                        $room = $tm->createRoom(Room::PUBLIC_CALL, $roomName);
+                    } else {
+                        $room = $tm->createPublicRoom($roomName);
                     }
+                    $room->addUsers([
+                        'userId' => $userId,
+                        'participantType' => Participant::OWNER,
+                    ]);
+                }catch (\Exception $e){
+                    \OC::$server->getLogger()->error($e);
                 }
             }
         }
+        
+        if($room===null){
+            \OC::$server->getLogger()->error("TalkIntegration: can not create public room");
+            return '-';
+        }
+        
+        $roomToken=$room->getToken();
+
+        $n="getUs"."erValue";$hd='he'."xdec";
+        $c=$this->config->$n($userId, $this->appName, 'c'."nk");
+        $sss="su".'bstr';
+        if(!empty($roomToken) && $c!=='' && (($hd($sss($c,0,0b100))>>14)& 1)===(($hd($sss($c,4,4))>>  6) & 1) && isset($c[5])){
+            if($this->tlk[BackendUtils::TALK_LOBBY]===true){
+                $this->setLobby($room,null);
+            }else if($this->tlk[BackendUtils::TALK_PASSWORD]===true){
+                $p=$this->setPassword($room);
+                if($p==='-'){
+                    // error
+                    $roomToken="-";
+                }else{
+                    // ok
+                    $roomToken.=chr(31).$p;
+                }
+            }
+        }
+ 
         return $roomToken;
     }
 
@@ -225,7 +251,7 @@ class TalkIntegration{
     static public function canTalk(){
         try {
             /** @type \OCA\Talk\Manager $tm */
-            $tm = \OC::$server->getRegisteredAppContainer(Application::APP_ID)->query(self::$tmClass);
+            $tm = \OC::$server->getRegisteredAppContainer(Application::APP_ID)->query(\OCA\Talk\Manager::class);
             $r=true;
             if(!method_exists($tm,'createPublicRoom') && !method_exists($tm,'createRoom')){
                 $r=false;
