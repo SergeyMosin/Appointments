@@ -42,6 +42,7 @@ OC.L10N.register(
     "Deleted" : "已刪除",
     "Confirmed" : "已確認",
     "close" : " 關閉",
+    "Title:" : "標題：",
     "Name:" : "姓名：",
     "Location:" : "地點：",
     "Back" : "返回",
