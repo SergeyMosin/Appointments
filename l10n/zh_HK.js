@@ -57,6 +57,7 @@ OC.L10N.register(
     "Please select a calendar first" : "請先選擇日曆",
     "Selected calendar not found" : "找不到選定的日曆",
     "Action failed. Select calendar(s) first." : "動作失敗。 首先選擇日曆。",
+    "Page not added: 10 pages maximum" : "未添加頁面：最多10頁",
     "Directory page" : "目錄頁面",
     "Can't find Talk app. Is it installed and enabled ?" : "找不到 Talk 應用程式。 是否已安裝並啟用？",
     "This is an automatically sent email, please do not reply." : "此為自動寄送的電子郵件，請不要回覆。",
