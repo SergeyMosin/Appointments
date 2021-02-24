@@ -1,3 +1,7 @@
+## 1.8.4 - 2021-02-23
+### Fix
+- Talk 10.1.* integration - issue #179
+
 ## 1.8.3 - 2021-02-14
 ### Change
 - Add recurrence blocking in external mode - issue #168
