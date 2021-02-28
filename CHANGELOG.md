@@ -1,3 +1,7 @@
+## 1.8.5 - 2021-02-28
+### Fix
+- Daylight savings and start_date detection in 'weekly template' mode
+
 ## 1.8.4 - 2021-02-23
 ### Fix
 - Talk 10.1.* integration - issue #179
