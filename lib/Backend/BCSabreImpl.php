@@ -178,50 +178,15 @@ class BCSabreImpl implements IBackendConnector{
                     continue;
                 }
 
-                $s_ts = $it->getDtStart()->getTimestamp();
 
-                if ($s_ts >= $end_ts) {
-                    break;
-                }
-                if ($s_ts >= $start_ts) {
+//                start1 <= end2 && start2 <= end1
+                if($start_ts <= $it->getDtEnd()->getTimestamp()
+                    && $it->getDtStart()->getTimestamp() <= $end_ts){
                     return 1;
                 }
                 $it->next();
             }
             $vo->destroy();
-
-
-
-
-
-
-
-
-//            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-//            if(isset($evt->RRULE) || !$evt->DTSTART->hasTime()
-//                || !isset($evt->DTEND)
-//                || (isset($evt->CLASS) && $evt->CLASS->getValue()!=='PUBLIC')
-//                || $evt->DTSTART->isFloating()){
-//                $vo->destroy();
-//                continue;
-//            }
-//
-//            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-//            $s_ts = $evt->DTSTART->getDateTime($utz)->getTimestamp();
-//            if($s_ts<$end_ts){
-//                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-//                $e_ts=$evt->DTEND->getDateTime($utz)->getTimestamp();
-//                if($e_ts>$start_ts){
-//                    $c=1;
-//                    break;
-//                }
-//            }
-//            $vo->destroy();
-
-
-
-
-
         }
         return 0;
     }
@@ -293,8 +258,6 @@ class BCSabreImpl implements IBackendConnector{
                 /** @var \Sabre\VObject\Component\VEvent $evt */
                 $evt = $vo->VEVENT;
 
-
-
                 /** @noinspection PhpPossiblePolymorphicInvocationInspection */
                 if (!$evt->DTSTART->hasTime() || (isset($evt->CLASS) && $evt->CLASS->getValue() !== 'PUBLIC')) {
                     $vo->destroy();
@@ -323,61 +286,17 @@ class BCSabreImpl implements IBackendConnector{
                         $it->next();
                         continue;
                     }
-
+                    
+                    // start1 <= end2 && start2 <= end1
                     $s_ts = $it->getDtStart()->getTimestamp();
-
-                    if ($s_ts >= $end_ts) {
-                        break;
-                    }
-                    if ($s_ts > $start_ts) {
-                        $e_ts = $it->getDtEnd()->getTimestamp();
-
+                    $e_ts = $it->getDtEnd()->getTimestamp();
+                    if($start_ts <= $e_ts && $s_ts <= $end_ts) {
                         $itc->insert($booked_tree, $s_ts, $e_ts);
                     }
+                    
                     $it->next();
                 }
                 $vo->destroy();
-
-
-
-
-
-
-
-
-//                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-//                if(isset($evt->RRULE) || !$evt->DTSTART->hasTime()
-//                    || (isset($evt->CLASS) && $evt->CLASS->getValue()!=='PUBLIC')){
-//                    $vo->destroy();
-//                    continue;
-//                }
-//
-//                /** @var \Sabre\VObject\Property\ICalendar\DateTime $dt_start */
-//                $dt_start = $evt->DTSTART;
-//                $start_date_time = $dt_start->getDateTime($utz);
-//                $s_ts = $start_date_time->getTimestamp();
-//
-//
-//                if ($s_ts > $start_ts && $s_ts < $end_ts) {
-//
-//                    // Get end_timestamp
-//                    if (isset($evt->DTEND)) {
-//                        $e_ts = $evt->DTEND->getDateTime($utz)->getTimeStamp();
-//                    } elseif (isset($evt->DURATION)) {
-//                        $e_ts = $start_date_time->add($evt->DURATION->getDateInterval())->getTimeStamp();
-//                    } else {
-//                        $vo->destroy();
-//                        continue;
-//                    }
-//
-//                    $itc->insert($booked_tree, $s_ts, $e_ts);
-//                }
-//                $vo->destroy();
-
-
-
-
-
             }
         }
 
@@ -463,14 +382,14 @@ class BCSabreImpl implements IBackendConnector{
                     && $_evt->STATUS->getValue()==='CANCELLED'){
                     continue;
                 }
-
+                
                 $s_ts = $it->getDtStart()->getTimestamp();
 
-                if ($s_ts >= $end_ts || $c > 96) {
-                    break;
+                if ($s_ts >= $end_ts ) {
+                    continue;
                 }
                 if ($s_ts > $start_ts) {
-                    $e_ts = $it->getDtEnd()->getTimestamp();
+                $e_ts = $it->getDtEnd()->getTimestamp();
 
                     if (AVLIntervalTree::lookUp($booked_tree,
                             $s_ts, $e_ts) === null) {
@@ -481,6 +400,7 @@ class BCSabreImpl implements IBackendConnector{
                     }
                 }
                 $c++;
+                if($c>96) break;
                 $it->next();
             }
 
@@ -517,7 +437,7 @@ class BCSabreImpl implements IBackendConnector{
 
         // We need to adjust for UTC and filter
         $rep_start=clone $start;
-        $rep_start->modify('-14 hours');
+        $rep_start->modify('-24 hours');
         $rep_end=clone $end;
         $rep_end->modify('+14 hours');
 
@@ -573,12 +493,9 @@ class BCSabreImpl implements IBackendConnector{
                             continue;
                         }
 
-                        $s_ts = $it->getDtStart()->getTimestamp();
-
-                        if ($s_ts >= $end_ts) {
-                            break;
-                        }
-                        if ($s_ts >= $start_ts) {
+//                        start1 <= end2 && start2 <= end1
+                        if($start_ts <= $it->getDtEnd()->getTimestamp()
+                            && $it->getDtStart()->getTimestamp() <= $end_ts){
                             return 1;
                         }
                         $it->next();
@@ -612,7 +529,7 @@ class BCSabreImpl implements IBackendConnector{
 
         // We need to adjust for UTC and filter
         $rep_start=clone $start;
-        $rep_start->modify('-14 hours');
+        $rep_start->modify('-24 hours'); // 24 =  14 + (10 max appt length)
         $rep_end=clone $end;
         $rep_end->modify('+14 hours');
 
@@ -670,15 +587,11 @@ class BCSabreImpl implements IBackendConnector{
                             $it->next();
                             continue;
                         }
-
+                        
+                        // start1 <= end2 && start2 <= end1
                         $s_ts = $it->getDtStart()->getTimestamp();
-
-                        if ($s_ts >= $end_ts) {
-                            break;
-                        }
-                        if ($s_ts > $start_ts) {
-                            $e_ts = $it->getDtEnd()->getTimestamp();
-
+                        $e_ts = $it->getDtEnd()->getTimestamp();
+                        if($start_ts <= $e_ts && $s_ts <= $end_ts) {
                             $itc->insert($booked_tree, $s_ts, $e_ts);
                         }
                         $it->next();
@@ -698,8 +611,14 @@ class BCSabreImpl implements IBackendConnector{
         while ($ds<$end_ts){
             $dia=$td[$day];
             $tc=0;
+            
             foreach ($dia as $di) {
-                $sts=$ds+$di['start'];
+                // reusing $rep_start
+//                $sts=$ds+$di['start'];
+                //TODO: there are better ways to sent this to the front end, instead of calculating it here
+                $start->setTime(0,0,$di['start']);
+                $sts=$start->getTimestamp();
+
                 if($sts<$start_ts) continue; // skip past
                 if($sts>$end_ts) break 2; // Done :)
                 $cc=0;
@@ -717,9 +636,13 @@ class BCSabreImpl implements IBackendConnector{
                 }
                 $tc++;
             }
+            
             $day++;
             if($day>=7) $day=0;
-            $ds+=86400;
+            // we need to re-calculate this because of daytime savings
+            $start->setTime(0,0);
+            $start->modify('+1 day');
+            $ds=$start->getTimestamp();
         }
         return $out!==''?substr($out,0,-1):null;
     }
