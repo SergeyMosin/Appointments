@@ -125,7 +125,7 @@ OC.L10N.register(
     "Optimize recurrence" : "優化再發率",
     "Require \"Appointment\" category" : "需要 “約會” 類別",
     "Auto-fix \"Source\" timeslots" : "自動修復 “源” 時隙",
-    "Apply" : "儲存",
+    "Apply" : "使用",
     "Calendars and Schedule" : "日曆和時間表",
     "Manage appointments and calendar settings" : "管理約會和日曆設置",
     "Main calendar" : "主日曆",
