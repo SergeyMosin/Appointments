@@ -391,7 +391,7 @@ class BCSabreImpl implements IBackendConnector{
 
                 if ($s_ts >= $end_ts ) {
                     $it->next();
-                    continue;
+                    break;
                 }
                 if ($s_ts > $start_ts) {
                 $e_ts = $it->getDtEnd()->getTimestamp();
