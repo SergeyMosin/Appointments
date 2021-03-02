@@ -1,3 +1,7 @@
+## 1.8.7 - 2021-03-01
+### Fix
+- Issue #184 part 2
+
 ## 1.8.6 - 2021-03-01
 ### Fix
 - Infinite loop in 'external mode' issue #184
