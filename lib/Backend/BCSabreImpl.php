@@ -377,6 +377,9 @@ class BCSabreImpl implements IBackendConnector{
             $c = 0;
             while ($it->valid()) {
 
+                $c++;
+                if($c>128) break;
+
                 $_evt=$it->getEventObject();
                 if(isset($_evt->STATUS)
                     && $_evt->STATUS->getValue()==='CANCELLED'){
@@ -401,8 +404,6 @@ class BCSabreImpl implements IBackendConnector{
                             .':'.$this->utils->encrypt($ses_info.pack("LL",$s_ts,$e_ts).substr($obj['uri'],0,-4),$key).$atl.',';
                     }
                 }
-                $c++;
-                if($c>96) break;
                 $it->next();
             }
 
