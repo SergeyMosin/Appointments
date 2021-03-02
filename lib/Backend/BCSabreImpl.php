@@ -380,12 +380,14 @@ class BCSabreImpl implements IBackendConnector{
                 $_evt=$it->getEventObject();
                 if(isset($_evt->STATUS)
                     && $_evt->STATUS->getValue()==='CANCELLED'){
+                    $it->next();
                     continue;
                 }
                 
                 $s_ts = $it->getDtStart()->getTimestamp();
 
                 if ($s_ts >= $end_ts ) {
+                    $it->next();
                     continue;
                 }
                 if ($s_ts > $start_ts) {
