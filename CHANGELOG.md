@@ -1,3 +1,7 @@
+## 1.8.6 - 2021-03-01
+### Fix
+- Infinite loop in 'external mode' issue #184
+
 ## 1.8.5 - 2021-02-28
 ### Fix
 - Daylight savings and start_date detection in 'weekly template' mode
