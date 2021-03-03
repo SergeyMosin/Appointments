@@ -218,7 +218,7 @@ $color-placeholder-var:var(--color-text-maxcontrast);
   overflow: hidden;
 
   display: block;
-  height: 0;
+  //height: 0;
   visibility: hidden;
 }
 
@@ -229,7 +229,7 @@ $color-placeholder-var:var(--color-text-maxcontrast);
 
 #srgdev-dpu_main-cont[data-open]{
   //display: block;
-  height: auto;
+  //height: auto;
   visibility: visible;
 }
 
