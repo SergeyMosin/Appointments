@@ -22,6 +22,7 @@ return [
 
         ['name' => 'dir#index', 'url' => '/pub/{token}/dir', 'verb' => 'GET'],
         ['name' => 'dir#indexbase', 'url' => '/dir', 'verb' => 'GET'],
-
+        
+        ['name' => 'Debug#settingsDump', 'url' => '/settings_dump', 'verb' => 'GET'],
     ]
 ];

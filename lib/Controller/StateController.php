@@ -531,10 +531,6 @@ class StateController extends Controller{
             }else{
                 $r->setStatus(500);
             }
-        }else if($action==='get_t_info'){
-            $r->setStatus(200);
-        }else if($action==='set_t_info'){
-            $r->setStatus(200);
         }
 
         return $r;

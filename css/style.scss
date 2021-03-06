@@ -878,3 +878,7 @@ textarea.appt-stn-txt-ta{
 	}
 
 }
+
+.toggler--closed:hover>.aib_icon_wrap{
+	transform: scale(1.1);
+}

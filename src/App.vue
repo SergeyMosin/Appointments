@@ -571,6 +571,7 @@ export default {
     this.getPages(1,'p0')
 
     this.$root.$on('helpWanted', this.helpWantedHandler)
+    this.$root.$on('dumpSettings', this.dumpSettings)
 
     // ------- testing --
     // if(!this.isGridReady){
@@ -585,6 +586,7 @@ export default {
 
   beforeDestroy() {
     this.$root.$off('helpWanted', this.helpWantedHandler)
+    this.$root.$off('dumpSettings', this.dumpSettings)
   },
   provide: function () {
     return {
@@ -1026,6 +1028,25 @@ export default {
             this.helpContent = ''
           })
     },
+
+    dumpSettings(){
+      this.toggleSlideBar(0)
+      this.visibleSection = 3
+
+      axios.get('settings_dump')
+          .then(response => {
+            if (response.status === 200) {
+              this.helpContent = response.data
+            }else{
+              this.helpContent = 'Error occurred: bad status ('+response.status+')'
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+            this.helpContent = 'Error occurred, check console.'
+          })
+    },
+
 
     showPubLink(page) {
       this.openGeneralModal(1)
