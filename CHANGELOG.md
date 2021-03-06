@@ -1,3 +1,9 @@
+## 1.8.8 - 2021-03-06
+### Added
+- DebugController
+### Changed
+- max-version is 21 now
+
 ## 1.8.7 - 2021-03-01
 ### Fix
 - Issue #184 part 2
