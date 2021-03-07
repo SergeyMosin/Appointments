@@ -859,8 +859,8 @@ class BackendUtils{
                 $d=array(
                     self::EML_ICS=>false,
                     self::EML_SKIP_EVS=>false,
-                    self::EML_AMOD=>false,
-                    self::EML_ADEL=>false,
+                    self::EML_AMOD=>true,
+                    self::EML_ADEL=>true,
                     self::EML_MREQ=>false,
                     self::EML_MCONF=>false,
                     self::EML_MCNCL=>false,

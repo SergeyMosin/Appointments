@@ -176,20 +176,21 @@ class DavListener {
                 && ($att->parameters['PARTSTAT']->getValue()==='DECLINED'
                     || ($hash_ch===null && $eventName!==self::DEL_EVT_NAME)
                     || $utils->isApptCancelled($hash,$evt)===true
-                    || ($eml_settings[BackendUtils::EML_ADEL]===false
-                        && $eventName===self::DEL_EVT_NAME)
-                    || ($eml_settings[BackendUtils::EML_AMOD]===false
-                        && $eventName!==self::DEL_EVT_NAME))
+                )
             )){
-            // Bad attendee value or no significant external changes or cancelled or emails not wanted
+            // Bad attendee value or no significant external changes
             return;
         }
+        
+//        \OC::$server->getLogger()->error('DL Debug: M9');
 
         $to_name=$att->parameters['CN']->getValue();
         if(empty($to_name) || preg_match('/[^\PC ]/u',$to_name)){
             \OC::$server->getLogger()->error("invalid attendee name");
             return;
         }
+
+//        \OC::$server->getLogger()->error('DL Debug: M10');
 
         $mailer=\OC::$server->getMailer();
 
@@ -199,6 +200,8 @@ class DavListener {
             \OC::$server->getLogger()->error("invalid attendee email");
             return;
         }
+        
+//        \OC::$server->getLogger()->error('DL Debug: M11');
 
         $date_time=$utils->getDateTimeString(
             $evt->DTSTART->getDateTime(),
@@ -243,6 +246,8 @@ class DavListener {
         $no_ics=false;
         $talk_link_txt='';
 
+//        \OC::$server->getLogger()->error('DL Debug: M12');
+        
         if($hint === BackendUtils::APPT_SES_BOOK){
             // Just booked, send email to the attendee requesting confirmation...
 
@@ -480,9 +485,18 @@ class DavListener {
             // Update hash
             $utils->setApptHash($evt);
 
+            if(($eml_settings[BackendUtils::EML_ADEL]===false
+                    && $eventName===self::DEL_EVT_NAME)
+                || ($eml_settings[BackendUtils::EML_AMOD]===false
+                    && $eventName!==self::DEL_EVT_NAME)){
+                // no need to go further if we don want to email attendees on change
+                return;
+            }
+
         }else return;
 
-
+        
+        
         $tmpl->addBodyText($this->l10N->t("Thank you"));
 
         // cancellation link for confirmation emails
