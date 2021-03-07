@@ -1,3 +1,7 @@
+## 1.8.10 - 2021-03-06
+### Changed
+- 'disableForGroups' -> 'limitToGroups'
+
 ## 1.8.9 - 2021-03-06
 ### Added
 - 'disableForGroups' occ setting
