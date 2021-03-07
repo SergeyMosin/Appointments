@@ -1,8 +1,11 @@
 ## 1.8.9 - 2021-03-06
+### Added
+- 'disableForGroups' occ setting
 ### Fixed
 - Talk integration when 'email attendee' is disabled
 ### Changed
 - 'email attendee' options are 'On' by default now
+
 
 ## 1.8.8 - 2021-03-06
 ### Added
