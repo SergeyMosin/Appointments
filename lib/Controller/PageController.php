@@ -60,12 +60,30 @@ class PageController extends Controller {
     public function index() {
         $t=new TemplateResponse($this->appName, 'index');
 
-        $csp=$t->getContentSecurityPolicy();
-        if($csp===null){
-            $csp=new ContentSecurityPolicy();
+        $noGroups=$this->c->getAppValue($this->appName,
+            BackendUtils::KEY_NO_GROUPS);
+        \OC::$server->getLogger()->error(var_export($noGroups,true));
+        if($noGroups!==''){
+            $nga = json_decode($noGroups,true);
+            \OC::$server->getLogger()->error(var_export($nga,true));
+            if ($nga !== null) {
+                $userGroups=\OC::$server->getGroupManager()->getUserIdGroups($this->userId);
+                foreach ($nga as $ng) {
+                    if (array_key_exists($ng, $userGroups)) {
+                        $t->setParams(['disabled'=>true]);
+                        break;
+                    }
+                }
+            }
+        }
+        
+        $csp = $t->getContentSecurityPolicy();
+        if ($csp === null) {
+            $csp = new ContentSecurityPolicy();
             $t->setContentSecurityPolicy($csp);
         }
         $csp->addAllowedFrameDomain('\'self\'');
+        
         return  $t;// templates/index.php
     }
 

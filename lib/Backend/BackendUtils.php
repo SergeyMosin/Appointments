@@ -32,6 +32,7 @@ class BackendUtils{
     public const APPT_SES_TYPE_CHANGE = "4";
 
     public const KEY_USE_DEF_EMAIL = 'useDefaultEmail';
+    public const KEY_NO_GROUPS = 'disableForGroups';
     public const KEY_EMAIL_FIX = 'emailFixOpt';
 
     public const KEY_ORG = 'org_info';
