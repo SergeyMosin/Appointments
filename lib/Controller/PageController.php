@@ -60,19 +60,21 @@ class PageController extends Controller {
     public function index() {
         $t=new TemplateResponse($this->appName, 'index');
 
-        $noGroups=$this->c->getAppValue($this->appName,
-            BackendUtils::KEY_NO_GROUPS);
-        \OC::$server->getLogger()->error(var_export($noGroups,true));
-        if($noGroups!==''){
-            $nga = json_decode($noGroups,true);
-            \OC::$server->getLogger()->error(var_export($nga,true));
-            if ($nga !== null) {
+        $allowedGroups=$this->c->getAppValue($this->appName,
+            BackendUtils::KEY_LIMIT_TO_GROUPS);
+        if($allowedGroups!==''){
+            $aga = json_decode($allowedGroups,true);
+            if ($aga !== null) {
                 $userGroups=\OC::$server->getGroupManager()->getUserIdGroups($this->userId);
-                foreach ($nga as $ng) {
-                    if (array_key_exists($ng, $userGroups)) {
-                        $t->setParams(['disabled'=>true]);
+                $disable=true;
+                foreach ($aga as $ag) {
+                    if (array_key_exists($ag, $userGroups)) {
+                        $disable=false;
                         break;
                     }
+                }
+                if($disable) {
+                    $t->setParams(['disabled' => true]);
                 }
             }
         }
