@@ -127,6 +127,7 @@ OC.L10N.register(
     "Optimize recurrence" : "Optimaliseer herhaling",
     "Require \"Appointment\" category" : "Vereist \"Afspraak\" categorie",
     "Auto-fix \"Source\" timeslots" : "Auto-fix \"Bron\" tijdsloten",
+    "Debugging" : "Debuggen",
     "Apply" : "Toepassen",
     "Calendars and Schedule" : "Agenda's en rooster",
     "Manage appointments and calendar settings" : "Beheren afspraken en agenda-instellingen",
