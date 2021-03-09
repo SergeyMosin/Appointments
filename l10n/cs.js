@@ -127,6 +127,7 @@ OC.L10N.register(
     "Optimize recurrence" : "Optimalizovat opakovanost",
     "Require \"Appointment\" category" : "Vyžadovat kategorii „Schůzka“",
     "Auto-fix \"Source\" timeslots" : "Automaticky opravovat „Zdrojové“ časové sloty",
+    "Debugging" : "Ladění",
     "Apply" : "Použít",
     "Calendars and Schedule" : "Kalendáře a plánování",
     "Manage appointments and calendar settings" : "Spravovat nastavení schůzek a kalendáře",

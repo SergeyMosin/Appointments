@@ -127,6 +127,7 @@ OC.L10N.register(
     "Optimize recurrence" : "Otimizar a recorrência",
     "Require \"Appointment\" category" : "Requer categoria \"Compromisso\"",
     "Auto-fix \"Source\" timeslots" : "Correção automática de intervalos de tempo de \"Origem\"",
+    "Debugging" : "Depurando",
     "Apply" : "Aplicar",
     "Calendars and Schedule" : "Calendários e Programação",
     "Manage appointments and calendar settings" : "Gerenciar agendamentos e configurações do calendário",
