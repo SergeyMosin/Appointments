@@ -127,6 +127,7 @@ OC.L10N.register(
     "Optimize recurrence" : "Optimizatu errepikatzeak",
     "Require \"Appointment\" category" : "Eskatu \"Hitzordu\" kategoria",
     "Auto-fix \"Source\" timeslots" : "Konpondu automatikoki \"Jatorriko\" ordu-tarteak",
+    "Debugging" : "Arazketa",
     "Apply" : "Aplikatu",
     "Calendars and Schedule" : "Egutegia eta Antolaketa",
     "Manage appointments and calendar settings" : "Kudeatu hitzorduak eta egutegi ezarpenak",
