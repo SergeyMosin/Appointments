@@ -1,6 +1,7 @@
 OC.L10N.register(
     "appointments",
     {
+    "Guest password:" : "Vendég jelszava:",
     "Your email address is required for this operation." : "Ehhez a művelethez az email címedre van szükség.",
     "Can't find your name. Check User/Organization settings." : "Nem található a neve. Ellenőrizze a Felhasználó/Szervezet beállításokat.",
     "Available" : "Elérhető",
