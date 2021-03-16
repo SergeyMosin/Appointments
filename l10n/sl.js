@@ -127,6 +127,7 @@ OC.L10N.register(
     "Optimize recurrence" : "Prilagodi ponavljanje",
     "Require \"Appointment\" category" : "Zahtevaj kategorijo »Sestanek«",
     "Auto-fix \"Source\" timeslots" : "Samodejno popravi »Izvorna« časovna polja",
+    "Debugging" : "Razhroščevanje",
     "Apply" : "Uveljavi",
     "Calendars and Schedule" : "Koledarji in urnik",
     "Manage appointments and calendar settings" : "Nastavitve sestankov in koledarja",
