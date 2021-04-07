@@ -3,150 +3,129 @@
 
 namespace OCA\Appointments\Migration;
 
-
 use OC\User\Manager;
-use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
-use OCA\Appointments\Controller\PageController;
-use OCA\DAV\CalDAV\CalDavBackend;
-use OCP\AppFramework\QueryException;
 use OCP\IConfig;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
-use OCP\PreConditionNotMetException;
 
 class UpdateHook implements IRepairStep {
 
-    private $c;
+    private $config;
     private $um;
     private $appName;
+    private $utils;
 
     public function __construct($AppName,
                         IConfig $config,
-                        Manager $userManager){
-        $this->c=$config;
+                        Manager $userManager,
+                        BackendUtils $utils){
+        $this->config=$config;
         $this->um=$userManager;
         $this->appName=$AppName;
+        $this->utils=$utils;
     }
 
     public function getName(){
         return 'Update hook for Appointments app';
     }
 
-    public function run(IOutput $output){
+    public function run(IOutput $output)
+    {
 
-        $nb_key="new_backend";
-        if(empty($this->c->getAppValue($this->appName,$nb_key))) {
+        $nb_key = "new_backend";
+        $nb_val=intval($this->config->getAppValue($this->appName, $nb_key,'0'));
 
-            $users = $this->um->search('', 1000);
+        if ($nb_val < 4) {
 
-            try {
-                /** @var CalDavBackend $backend */
-                $backend = \OC::$server->query(CalDavBackend::class);
-                if (!method_exists($backend, "getCalendarByUri")) {
-                    $backend = null;
-                }
-            } catch (QueryException $e) {
-                $output->warning("appointments UpdateHook can't get CalDavBackend");
-                $backend = null;
-            }
-
+            $users = $this->um->search('', 2000);
             $output->info("running appointments UpdateHook for " . count($users) . " users");
+            $a=$this->appName;
+
             foreach ($users as $user) {
                 if ($user->getLastLogin() !== 0) {
-                    $userId = $user->getUID();
 
-                    // convert cal_uri -> cal_id
-                    $cal_url = $this->c->getUserValue(
-                        $userId, $this->appName,
-                        'cal_url', null);
-                    if ($cal_url !== null) {
-                        $cal_id = -1;
-                        if ($backend !== null) {
-                            $cal = $backend->getCalendarByUri(
-                                BackendManager::PRINCIPAL_PREFIX . $userId,
-                                $cal_url);
-                            if ($cal !== null) {
-                                $cal_id = $cal['id'];
+                    $u = $user->getUID();
+
+                    if ($this->config->getUserValue($u, $a, BackendUtils::KEY_PAGES, null) !== null) {
+
+                        $o = [];
+
+                        $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_ORG, null);
+                        $o[BackendUtils::KEY_ORG] = $v;
+
+                        $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_CLS, null);
+                        $o[BackendUtils::KEY_CLS] = $v;
+
+                        $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_DIR, null);
+                        $o[BackendUtils::KEY_DIR] = $v;
+
+                        $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_EML, null);
+                        $o[BackendUtils::KEY_EML] = $v;
+
+                        $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_FORM_INPUTS_HTML, null);
+                        $o[BackendUtils::KEY_FORM_INPUTS_HTML] = $v;
+
+                        $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_FORM_INPUTS_JSON, null);
+                        $o[BackendUtils::KEY_FORM_INPUTS_JSON] = $v;
+
+                        $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_PAGES, null);
+                        $o[BackendUtils::KEY_PAGES] = $v;
+
+                        $pgs = json_decode($v, true);
+
+                        $pi = [];
+                        if ($pgs !== null) {
+                            foreach ($pgs as $k => $p) {
+                                if ($k !== 'p0') {
+                                    $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_MPS . $k, null);
+                                    $pi[$k] = json_decode($v, true);
+                                }
                             }
                         }
+                        if (!empty($pi)) {
+                            $o[BackendUtils::KEY_MPS_COL] = json_encode($pi);
+                        }
+
+                        $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_PSN, null);
+                        $o[BackendUtils::KEY_PSN] = $v;
+
+                        $v = $this->config->getUserValue($u, $a, BackendUtils::KEY_TALK, null);
+                        $o[BackendUtils::KEY_TALK] = $v;
+
+                        $o['user_id'] = $u;
 
                         try {
-                            $this->c->setUserValue(
-                                $userId, $this->appName,
-                                'cal_id', $cal_id);
-                        } catch (PreConditionNotMetException $e) {
+                            // insert into BackendUtils::PREF_TABLE_NAME
+                            $qb = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+                            $qb->insert(BackendUtils::PREF_TABLE_NAME);
+                            foreach ($o as $k => $v) {
+                                $qb->setValue($k, $qb->createNamedParameter($v));
+                            }
+                            $qb->execute();
+
+                            // delete from 'oc_preferences'
+                            //
+                            // delete $mps first
+                            if ($pgs !== null) {
+                                foreach ($pgs as $k => $p) {
+                                    if ($k !== 'p0') {
+                                        $this->config->deleteUserValue($u, $a, BackendUtils::KEY_MPS . $k);
+                                    }
+                                }
+                            }
+                            // delete other keys
+                            foreach ($o as $k => $v) {
+                                $this->config->deleteUserValue($u, $a, $k);
+                            }
+
+                        } catch (\Exception $e) {
                             $output->warning($e->getMessage());
                         }
-                        $this->c->deleteUserValue(
-                            $userId, $this->appName, 'cal_url');
-                    }
-
-                    // Email Options
-                    $ics = $this->c->getUserValue(
-                        $userId, $this->appName,
-                        BackendUtils::EML_ICS, null);
-                    if ($ics !== null) {
-                        $a = BackendUtils::EML_DEF;
-                        $a[BackendUtils::EML_ICS] = $ics;
-                        $j = json_encode($a);
-                        if ($j !== false) {
-                            try {
-                                $this->c->setUserValue(
-                                    $userId, $this->appName,
-                                    BackendUtils::KEY_EML, $j);
-                            } catch (PreConditionNotMetException $e) {
-                                $output->warning($e->getMessage());
-                            }
-                        }
-                        $this->c->deleteUserValue(
-                            $userId, $this->appName,
-                            BackendUtils::EML_ICS);
-                    }
-
-                    // Convert pubPageSettings
-                    $PPS_KEY = "pubPageSettings";
-
-                    $old_pps = $this->c->getUserValue(
-                        $userId, $this->appName, $PPS_KEY, null);
-
-                    if ($old_pps !== null) {
-                        $a = PageController::PSN_DEF;
-                        $a[PageController::PSN_NWEEKS] = $old_pps[0];
-                        $a[PageController::PSN_EMPTY] = boolval($old_pps[1]);
-                        $a[PageController::PSN_FNED] = boolval($old_pps[2]);
-                        $a[PageController::PSN_WEEKEND] = boolval($old_pps[3]);
-                        $a[PageController::PSN_TIME2] = boolval($old_pps[4]);
-
-                        $a[PageController::PSN_FORM_TITLE] = $this->c->getUserValue(
-                            $userId, $this->appName, PageController::PSN_FORM_TITLE);
-                        $a[PageController::PSN_GDPR] = $this->c->getUserValue(
-                            $userId, $this->appName, PageController::PSN_GDPR);
-
-                        $j = json_encode($a);
-                        if ($j !== false) {
-                            try {
-                                $this->c->setUserValue(
-                                    $userId, $this->appName,
-                                    PageController::KEY_PSN, $j);
-                            } catch (PreConditionNotMetException $e) {
-                                $output->warning($e->getMessage());
-                            }
-                        }
-
-                        $this->c->deleteUserValue(
-                            $userId, $this->appName, $PPS_KEY);
-                        $this->c->deleteUserValue(
-                            $userId, $this->appName,
-                            PageController::PSN_FORM_TITLE);
-                        $this->c->deleteUserValue(
-                            $userId, $this->appName,
-                            PageController::PSN_GDPR);
                     }
                 }
             }
-
-            $this->c->setAppValue($this->appName,$nb_key,"1");
+            $this->config->setAppValue($this->appName, $nb_key, "4");
         }
         $output->info("appointments UpdateHook finished");
     }

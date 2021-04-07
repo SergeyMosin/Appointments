@@ -17,10 +17,20 @@ interface IBackendConnector{
      * @param string $calId
      * @param \DateTime $start should have user's timezone
      * @param \DateTime $end should have user's timezone
-     * @param bool $no_uri (optional)
+     * @param string $mode 1char(mode)+userId or 'no_url'
      * @return string|null
      */
-    function queryRange($calId,$start,$end,$no_uri=false);
+    function queryRange($calId,$start,$end,$mode);
+
+    /**
+     * @param array $cms
+     * @param \DateTime $start should have user's timezone
+     * @param \DateTime $end should have user's timezone
+     * @param string $userId
+     * @param string $pageId
+     * @return string|null
+     */
+    function queryTemplate($cms, $start, $end, $userId, $pageId);
 
     /**
      * @param string $calId
@@ -112,11 +122,12 @@ interface IBackendConnector{
     function cancelAttendee($userId, $calId, $uri);
 
     /**
-     * Returns array [int, string, string|null, string]
+     * Returns array [int, string, string|null, string, string]
      *              Status: 0=OK,1=Error
-     *              Localized DateTime string, can be empty
-     *              see PageController:addAppointments $ds param, can be empty
+     *              Localized DateTime string, can be empt see PageController:addAppointments
+     *              $ds param, can be empty
      *              $tz_data for new appointment can be one of: VTIMEZONE data, 'L' = floating or 'UTC'
+     *              $title might be needed when the appointment is reset
      *
      * @param $userId
      * @param $calId

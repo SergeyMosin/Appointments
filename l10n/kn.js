@@ -1,0 +1,20 @@
+OC.L10N.register(
+    "appointments",
+    {
+    "Cancel" : "﻿ರದ್ದು",
+    "Password" : "ಗುಪ್ತ ಪದ",
+    "Info" : "Info",
+    "Delete" : "﻿ಅಳಿಸಿ",
+    "Settings" : "ಆಯ್ಕೆ",
+    "Close" : "ಮುಚ್ಚು",
+    "Remove" : "ತೆಗೆದುಹಾಕಿ",
+    "Save" : "﻿ಉಳಿಸಿ",
+    "Loading" : "Loading",
+    "Warning" : "﻿ಎಚ್ಚರಿಕೆ",
+    "Error" : "﻿ತಪ್ಪಾಗಿದೆ",
+    "Edit" : "ಸಂಪಾದಿಸು",
+    "Title" : "ಶೀರ್ಷಿಕೆ",
+    "URL" : "ಜಾಲದ ಕೊಂಡಿ",
+    "Next" : "ಮುಂದೆ"
+},
+"nplurals=2; plural=(n > 1);");
