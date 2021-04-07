@@ -81,7 +81,7 @@
                                 v-model="ppsInfo.gdpr"
                                 id="srgdev-appt_pps-gdpr"
                                 type="text"
-                                :placeholder="t('appointments','See Tutorial...')">
+                                :placeholder="t('appointments','See Tutorial …')">
                         <div style="padding-top: .25em"
                              class="srgdev-appt-sb-chb-cont"><input
                                 v-model="ppsInfo.hidePhone"
@@ -125,6 +125,9 @@
                                 style="width: 96%;"
                                 placeholder="&lt;style&gt;...&lt;/style&gt;">
                         </textarea>
+                      <div class="appt-stn-ext-link">
+                        <span @click="$emit('gotoToFid')" class="appt-stn-ext-link_span">Form Designer (beta) &raquo;</span>
+                      </div>
                     </template>
                 </ApptAccordion>
                 <button

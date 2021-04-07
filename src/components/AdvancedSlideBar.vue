@@ -1,9 +1,10 @@
 <template>
-  <SlideBar :title="t('appointments','Advanced Settings')" :subtitle="t('appointments','These settings affect ALL pages')" icon="icon-appt-go-back" @close="close">
+  <SlideBar :title="t('appointments','Advanced Settings')"
+            :subtitle="t('appointments','These settings affect ALL pages')" icon="icon-appt-go-back" @close="close">
     <template slot="main-area">
       <div v-show="isLoading===true" class="sb_loading_cont">
         <span class="icon-loading sb_loading_icon_cont"></span>
-        <span class="sb_loading_text">{{t('appointments','Loading')}}</span>
+        <span class="sb_loading_text">{{ t('appointments', 'Loading') }}</span>
       </div>
       <div
           v-show="isLoading===false"
@@ -27,6 +28,12 @@
             <option value="30">{{ t('appointments', '30 Minutes') }}</option>
             <option value="60">{{ t('appointments', '1 Hour') }}</option>
             <option value="120">{{ t('appointments', '2 Hours') }}</option>
+            <option value="240">{{ t('appointments', '4 Hours') }}</option>
+            <option value="480">{{ t('appointments', '8 Hours') }}</option>
+            <option value="720">{{ t('appointments', '12 Hours') }}</option>
+            <option value="1440">{{ t('appointments', '1 day') }}</option>
+            <option value="2880">{{ t('appointments', '2 days') }}</option>
+            <option value="5760">{{ t('appointments', '4 days') }}</option>
           </select>
           <label
               class="tsb-label"
@@ -41,9 +48,12 @@
           </select>
         </div>
         <ApptIconLabel
+            class="toggler" :class="{'toggler--closed':sections[0]===0}"
+            @click.native="toggleSection(0)"
             :text="t('appointments','External Mode Settings')"
             icon="icon-sched-mode"/>
-        <div class="srgdev-appt-sb-indent_small">
+        <div v-show="sections[0]===1"
+             class="srgdev-appt-sb-indent_small">
           <div class="srgdev-appt-info-lcont srgdev-appt-sb-chb-cont" style="margin-top: 1em"><input
               type="checkbox"
               v-model="calInfo.nrPushRec"
@@ -74,10 +84,19 @@
               @click="$root.$emit('helpWanted','auto_fix_nr')"></a>
           </div>
         </div>
+        <ApptIconLabel
+            class="toggler" :class="{'toggler--closed':sections[1]===0}"
+            @click.native="toggleSection(1)"
+            :text="t('appointments','Debugging')"
+            icon="icon-category-monitoring"/>
+        <div v-show="sections[1]===1"
+             class="srgdev-appt-sb-indent">
+          <span @click="$root.$emit('dumpSettings')" class="srgdev-appt-sb-linker">Settings Dump</span>
+        </div>
         <button
             @click="apply"
             class="primary srgdev-appt-sb-genbtn"
-            :class="{'appt-btn-loading':isSending}">{{t('appointments','Apply')}}
+            :class="{'appt-btn-loading':isSending}">{{ t('appointments', 'Apply') }}
         </button>
       </div>
     </template>
@@ -94,19 +113,20 @@ export default {
     ApptIconLabel,
     SlideBar
   },
-  props:{
-    title:'',
-    subtitle:'',
+  props: {
+    title: '',
+    subtitle: '',
   },
   mounted: function () {
-    this.isLoading=true
+    this.isLoading = true
     this.start()
   },
   inject: ['getState', 'setState'],
-  data: function (){
+  data: function () {
     return {
-      isLoading:true,
-      isSending:false,
+      isLoading: true,
+      isSending: false,
+      sections: [0, 0],
       calInfo: {
         prepTime: "0",
         whenCanceled: "mark",
@@ -118,33 +138,38 @@ export default {
   },
   methods: {
     async start() {
-      this.isLoading=true
+      this.isLoading = true
       try {
         this.calInfo = await this.getState("get_cls", "")
-        this.isLoading=false
+        this.isLoading = false
       } catch (e) {
-        this.isLoading=false
+        this.isLoading = false
         console.log(e)
         OC.Notification.showTemporary(this.t('appointments', "Can not request data"), {timeout: 4, type: 'error'})
       }
     },
-
-    apply(){
-      this.isSending=true
-      this.setState('set_cls',this.calInfo).then(()=>{
-        this.isSending=false
+    toggleSection(s) {
+      this.$set(this.sections, s, this.sections[s] ^ 1)
+    },
+    apply() {
+      this.isSending = true
+      this.setState('set_cls', this.calInfo).then(() => {
+        this.isSending = false
       })
     },
-    close(){
+    close() {
       this.$emit('close')
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .tsb-label {
   display: block;
+}
+.toggler{
+  cursor: pointer;
 }
 .tsb-input {
   margin-top: 0;
@@ -152,5 +177,9 @@ export default {
   min-width: 80%;
   margin-bottom: 1em;
   color: var(--color-text-lighter);
+}
+.srgdev-appt-sb-linker:hover{
+  text-decoration: underline;
+  cursor: pointer;
 }
 </style>

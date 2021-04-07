@@ -18,8 +18,11 @@
             v-model="apptWeek"
             :lang="lang"
             @input="setToStartOfWeek"
-            :format="weekFormat"
+            :formatter="weekFormat"
             type="week"></DatePicker>
+          <div class="srgdev-appt-info-lcont srgdev-appt-tz-cont">
+            {{t('appointments','Timezone:')+' '+tzName}}
+          </div>
         <label for="appt_dur-select" class="select-label">{{t('appointments','Appointment Duration:')}}</label>
         <vue-slider
             :min="10"
@@ -31,20 +34,10 @@
             id="appt_dur-select"
             class="appt-slider"
             v-model="apptDur"></vue-slider>
-        <div class="srgdev-appt-info-lcont">
-          <label for="appt_tz-select" class="select-label">{{t('appointments','Timezone:')}}</label>
-          <a
-              class="icon-info srgdev-appt-info-link"
-              @click="$root.$emit('helpWanted','timezone')"><span>Please read</span></a>
-        </div>
-        <select v-model="apptTZ" id="appt_tz-select" class="appt-select">
-<!--          <option value="L">Local (floating)</option>-->
-          <option value="C">{{tzName}}</option>
-        </select>
-          <p style="padding-top: .5em; font-size: 80%">Support for FLOATING timezones is being phased out</p>
         <button
             @click="goApptGen"
             :disabled="apptWeek===null"
+            style="margin-top: 5em"
             class="primary srgdev-appt-sb-genbtn">{{t('appointments','Start')}}
         </button>
         </div>
@@ -125,12 +118,6 @@ export default {
     }
   },
 
-  watch: {
-    tzName(val){
-      this.apptTZ = val === 'UTC' ? "L" : "C";
-    }
-  },
-
   data: function () {
     return {
 
@@ -143,8 +130,6 @@ export default {
       apptWeek:null,
 
       apptDur:30,
-
-      apptTZ:"C",
 
       datePickerPopupStyle:{
         top:"75%",
@@ -193,43 +178,12 @@ export default {
 
       this.tzName = "UTC"
       this.tzData = "UTC"
+
       try {
-        let res= await this.getState("get_tz")
-        if (res !== null && res.toLowerCase() !== 'utc') {
-          let url = linkTo('appointments', 'ajax/zones.js')
-          const tzr=await axios.get(url)
-          if (tzr.status === 200) {
-
-            let tzd = tzr.data
-            if (typeof tzd === "object"
-                && tzd.hasOwnProperty('aliases')
-                && tzd.hasOwnProperty('zones')) {
-
-              let tzs = ""
-              if (tzd.zones[res] !== undefined) {
-                tzs = tzd.zones[res].ics.join("\r\n")
-
-              } else if (tzd.aliases[res] !== undefined) {
-                let alias = tzd.aliases[res].aliasTo
-                if (tzd.zones[alias] !== undefined) {
-                  res = alias
-                  tzs = tzd.zones[alias].ics.join("\r\n")
-                }
-              }
-
-              this.tzName = res
-              this.tzData = "BEGIN:VTIMEZONE\r\nTZID:" + res.trim() + "\r\n" + tzs.trim() + "\r\nEND:VTIMEZONE"
-
-              this.isLoading=false
-            }else{
-              throw new Error("Bad tzr.data")
-            }
-          }else{
-            throw new Error("Bad status: "+tzr.status)
-          }
-        }else{
-          throw new Error("Can't get_tz")
-        }
+        const d=await this.getTimeZone()
+        this.tzName = d.name
+        this.tzData = d.data
+        this.isLoading=false
       }catch (e){
         this.isLoading=false
         console.error("Can't get timezone")
@@ -237,6 +191,46 @@ export default {
         OC.Notification.showTemporary(this.t('appointments', "Can't load timezones"), {timeout: 4, type: 'error'})
       }
     },
+
+    async getTimeZone(){
+      let res= await this.getState("get_tz")
+      if (res !== null && res.toLowerCase() !== 'utc') {
+        let url = linkTo('appointments', 'ajax/zones.js')
+        const tzr=await axios.get(url)
+        if (tzr.status === 200) {
+
+          let tzd = tzr.data
+          if (typeof tzd === "object"
+              && tzd.hasOwnProperty('aliases')
+              && tzd.hasOwnProperty('zones')) {
+
+            let tzs = ""
+            if (tzd.zones[res] !== undefined) {
+              tzs = tzd.zones[res].ics.join("\r\n")
+
+            } else if (tzd.aliases[res] !== undefined) {
+              let alias = tzd.aliases[res].aliasTo
+              if (tzd.zones[alias] !== undefined) {
+                res = alias
+                tzs = tzd.zones[alias].ics.join("\r\n")
+              }
+            }
+
+            return{
+              name:res,
+              data:"BEGIN:VTIMEZONE\r\nTZID:" + res.trim() + "\r\n" + tzs.trim() + "\r\nEND:VTIMEZONE"
+            }
+          }else{
+            throw new Error("Bad tzr.data")
+          }
+        }else{
+          throw new Error("Bad status: "+tzr.status)
+        }
+      }else{
+        throw new Error("Can't get_tz")
+      }
+    },
+
 
     getTimeFormat(){
       let date = new Date(0);
@@ -273,7 +267,7 @@ export default {
     goApptGen(){
       this.close(true)
       let r={
-        tz: this.apptTZ==="C"?this.tzData:"L",
+        tz: this.tzData,
         week:(this.apptWeek.getTime()),
         dur:this.apptDur,
         pageId:this.curPageData.pageId,
@@ -316,10 +310,9 @@ export default {
 .appt-slider{
   margin-bottom: 3em;
 }
-.appt-select {
-  margin: 0;
-  width: 100%;
-  padding: 0 0 0 .25em;
+.srgdev-appt-tz-cont{
+  color: var(--color-text-lighter);
+  font-size: 85%;
+  line-height: 1.1;
 }
-
 </style>

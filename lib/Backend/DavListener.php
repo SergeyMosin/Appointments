@@ -28,6 +28,8 @@ class DavListener {
      */
     public function handle(GenericEvent $event, $eventName): void{
 
+//        \OC::$server->getLogger()->error('DL Debug: M0 '.$eventName);
+
         // objectUri
         if(!isset($event['objectData']['calendardata']) ||
             !isset($event['objectData']['uri'])){
@@ -44,6 +46,8 @@ class DavListener {
             return;
         }
 
+//        \OC::$server->getLogger()->error('DL Debug: M1');
+
         $ses=\OC::$server->getSession();
         $hint=$ses->get(BackendUtils::APPT_SES_KEY_HINT);
         if($hint===BackendUtils::APPT_SES_SKIP
@@ -52,6 +56,8 @@ class DavListener {
             // no need for email
             return;
         }
+
+//        \OC::$server->getLogger()->error('DL Debug: M2');
 
         $vObject=Reader::read($cd);
         if(!isset($vObject->VEVENT)){
@@ -65,6 +71,9 @@ class DavListener {
             return;
         }
 
+//        \OC::$server->getLogger()->error('DL Debug: M3');
+
+
         try {
             /** @var BackendUtils $utils*/
             $utils = \OC::$server->query(BackendUtils::class);
@@ -72,6 +81,8 @@ class DavListener {
             \OC::$server->getLogger()->error($e->getMessage());
             return;
         }
+
+//        \OC::$server->getLogger()->error('DL Debug: M4');
 
         $config=\OC::$server->getConfig();
 
@@ -92,6 +103,8 @@ class DavListener {
             \OC::$server->getLogger()->error("XAD_PROP not found");
             return;
         }
+
+//        \OC::$server->getLogger()->error('DL Debug: M5');
 
         $other_cal='-1';
         $cal_id=$utils->getMainCalId($userId,$pageId,null,$other_cal);
@@ -114,6 +127,8 @@ class DavListener {
             return;
         }
 
+//        \OC::$server->getLogger()->error('DL Debug: M6');
+
         $hash=$utils->getApptHash($evt->UID->getValue());
         if($eventName===self::DEL_EVT_NAME){
             $utils->deleteApptHash($evt);
@@ -128,6 +143,8 @@ class DavListener {
             // Bad data
             return;
         }
+
+//        \OC::$server->getLogger()->error('DL Debug: M7');
 
         $utz=$utils->getUserTimezone($userId,$config);
         try {
@@ -146,6 +163,8 @@ class DavListener {
             return;
         }
 
+//        \OC::$server->getLogger()->error('DL Debug: M8');
+
         $hash_ch=$utils->getHashChanges($hash,$evt);
 
         $eml_settings=$utils->getUserSettings(
@@ -157,20 +176,21 @@ class DavListener {
                 && ($att->parameters['PARTSTAT']->getValue()==='DECLINED'
                     || ($hash_ch===null && $eventName!==self::DEL_EVT_NAME)
                     || $utils->isApptCancelled($hash,$evt)===true
-                    || ($eml_settings[BackendUtils::EML_ADEL]===false
-                        && $eventName===self::DEL_EVT_NAME)
-                    || ($eml_settings[BackendUtils::EML_AMOD]===false
-                        && $eventName!==self::DEL_EVT_NAME))
+                )
             )){
-            // Bad attendee value or no significant external changes or cancelled or emails not wanted
+            // Bad attendee value or no significant external changes
             return;
         }
+        
+//        \OC::$server->getLogger()->error('DL Debug: M9');
 
         $to_name=$att->parameters['CN']->getValue();
         if(empty($to_name) || preg_match('/[^\PC ]/u',$to_name)){
             \OC::$server->getLogger()->error("invalid attendee name");
             return;
         }
+
+//        \OC::$server->getLogger()->error('DL Debug: M10');
 
         $mailer=\OC::$server->getMailer();
 
@@ -180,6 +200,8 @@ class DavListener {
             \OC::$server->getLogger()->error("invalid attendee email");
             return;
         }
+        
+//        \OC::$server->getLogger()->error('DL Debug: M11');
 
         $date_time=$utils->getDateTimeString(
             $evt->DTSTART->getDateTime(),
@@ -224,6 +246,8 @@ class DavListener {
         $no_ics=false;
         $talk_link_txt='';
 
+//        \OC::$server->getLogger()->error('DL Debug: M12');
+        
         if($hint === BackendUtils::APPT_SES_BOOK){
             // Just booked, send email to the attendee requesting confirmation...
 
@@ -273,22 +297,25 @@ class DavListener {
             $cnl_lnk_url=$btn_url."0".$btn_tkn;
 
             if(count($xad)>4){
+
                 $has_link=strlen($xad[4])>1?1:0;
                 $tlk = $utils->getUserSettings(BackendUtils::KEY_TALK, $userId);
-                if($has_link===1) {
-                    $ti = new TalkIntegration($tlk, $utils);
-                    // add talk link info
-                    $talk_link_txt = $this->addTalkInfo(
-                        $tmpl, $xad, $ti, $tlk,
-                        $config->getUserValue($userId, $this->appName, "c" . "nk"));
-                }
-
-                if($tlk[BackendUtils::TALK_FORM_ENABLED]===true){
-                    if($has_link===0){
-                        // add in-person meeting type
-                        $tmpl->addBodyText($this->makeMeetingTypeInfo($tlk,$has_link));
+                if($tlk[BackendUtils::TALK_ENABLED]) {
+                    if ($has_link === 1) {
+                        $ti = new TalkIntegration($tlk, $utils);
+                        // add talk link info
+                        $talk_link_txt = $this->addTalkInfo(
+                            $tmpl, $xad, $ti, $tlk,
+                            $config->getUserValue($userId, $this->appName, "c" . "nk"));
                     }
-                    $this->addTypeChangeLink($tmpl,$tlk,$btn_url."3".$btn_tkn,$has_link);
+
+                    if ($tlk[BackendUtils::TALK_FORM_ENABLED] === true) {
+                        if ($has_link === 0) {
+                            // add in-person meeting type
+                            $tmpl->addBodyText($this->makeMeetingTypeInfo($tlk, $has_link));
+                        }
+                        $this->addTypeChangeLink($tmpl, $tlk, $btn_url . "3" . $btn_tkn, $has_link);
+                    }
                 }
             }
 
@@ -431,7 +458,7 @@ class DavListener {
             }
 
             // if there is a Talk room - add info...
-            if(count($xad)>4){
+            if(count($xad)>4 && $tlk[BackendUtils::TALK_ENABLED]){
                 $has_link=strlen($xad[4])>1?1:0;
                 if($has_link===1) {
                     // add talk link info
@@ -458,9 +485,18 @@ class DavListener {
             // Update hash
             $utils->setApptHash($evt);
 
+            if(($eml_settings[BackendUtils::EML_ADEL]===false
+                    && $eventName===self::DEL_EVT_NAME)
+                || ($eml_settings[BackendUtils::EML_AMOD]===false
+                    && $eventName!==self::DEL_EVT_NAME)){
+                // no need to go further if we don want to email attendees on change
+                return;
+            }
+
         }else return;
 
-
+        
+        
         $tmpl->addBodyText($this->l10N->t("Thank you"));
 
         // cancellation link for confirmation emails

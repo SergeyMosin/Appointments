@@ -1,4 +1,85 @@
-## 1.7.10 - 2020-10-17
+## 1.8.10 - 2021-03-06
+### Changed
+- 'disableForGroups' -> 'limitToGroups'
+
+## 1.8.9 - 2021-03-06
+### Added
+- 'disableForGroups' occ setting
+### Fixed
+- Talk integration when 'email attendee' is disabled
+### Changed
+- 'email attendee' options are 'On' by default now
+
+
+## 1.8.8 - 2021-03-06
+### Added
+- DebugController
+### Changed
+- max-version is 21 now
+
+## 1.8.7 - 2021-03-01
+### Fix
+- Issue #184 part 2
+
+## 1.8.6 - 2021-03-01
+### Fix
+- Infinite loop in 'external mode' issue #184
+
+## 1.8.5 - 2021-02-28
+### Fix
+- Daylight savings and start_date detection in 'weekly template' mode
+
+## 1.8.4 - 2021-02-23
+### Fix
+- Talk 10.1.* integration - issue #179
+
+## 1.8.3 - 2021-02-14
+### Change
+- Add recurrence blocking in external mode - issue #168
+- Add more 'leadtime' options - issue #135
+
+## 1.8.2 - 2021-02-07
+### Fixed
+- Past dates are shown in week template
+- Access array offset on value of type null for additional pages
+
+## 1.8.1 - 2021-02-01
+### Fixed
+- Upgrade failed issue #173 (POSTGRESQL ?)
+
+## 1.8.0 - 2021-01-30
+### Added
+- Template Mode
+### Changed
+- Appointment slots can overlap now in the editor
+- Use own DB table for settings, instead of 'oc_preferences'
+### Fixed
+- Modals on wide screens
+- Doctrine3 type strings
+- 'null' array in extra fields
+
+
+## 1.7.15 - 2020-12-21
+### Fixed 
+- define 'more_html' at the start
+
+## 1.7.14 - 2020-11-20
+### Changed
+- translations
+
+## 1.7.13 - 2020-11-20
+### Added
+- Extra input field option - issue #24
+### Changed 
+- Removed "floating" timezones support
+
+## 1.7.12 - 2020-10-31
+### Changed 
+- Change triple dot to ellipsis PR #144
+### Fixed
+"Uninitialized string offset: 0 at BackendUtils.php#665" possibly related to issue #149
+
+## 1.7.11 - 2020-10-17
 ### Added
 - display option for 8 and 12 weeks pull #138
 

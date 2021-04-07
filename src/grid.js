@@ -1,12 +1,15 @@
 function _apptGridMaker() {
     // !!! meke sure that the .grid-line height is 2px less thant this is !!!
-    const LINE_HEIGHT_5M = 6
+    const LINE_HEIGHT_5M = 7
     const MPH = 3600000
     const MP5 = 300000
     // Start at 8AM
     const SH = 8
-    // 11 hours
+    // 14 hours
     const DH = 14
+
+    const MODE_SIMPLE=0
+    const MODE_TEMPLATE=1
 
     let sP
 
@@ -27,20 +30,21 @@ function _apptGridMaker() {
         /** @type HTMLElement */
         gridLayer: null,
 
+        /** @type HTMLElement */
+        scrollCont: null,
+        /** @type HTMLElement */
+        headerElm: null,
+        headerHeight:0,
 
-        /** @type {number[]} */
-        column_pos: undefined,
-        /** @type {Array} */
-        column_elm: undefined,
-
-        // this is kind of bad...
-        /** @type {Array[]} */
-        mc_pos: [],
         /** @type {Array[]} */
         mc_elm: [],
 
         /** @type {HTMLElement[]} */
-        mc_cols: []
+        mc_cols: [],
+
+        sorted:[],
+
+        mode:MODE_SIMPLE
     }
 
     /**
@@ -49,6 +53,10 @@ function _apptGridMaker() {
      * @param {string} stylePrefix
      */
     function setup(cont,colCnt,stylePrefix="") {
+
+        mData.scrollCont=cont.parentElement;
+        mData.headerElm=mData.scrollCont.firstElementChild
+
         sP=stylePrefix
         let elm=document.createElement('div')
         elm.className=sP+'grid_layer'
@@ -69,17 +77,12 @@ function _apptGridMaker() {
      * @param {number} len duration in minutes
      * @param {number} cnt number of appointments
      * @param {number} cID column ID 0=Monday, 1=Tuesday, etc...
-     * @param {string} clr background color
+     * @param {string|Object} clr background color or template mode appt. info
      */
     function addAppt(start, len, cnt, cID, clr) {
 
-        // For now its one shot only, need to reset and add again :(
-        if (mData.mc_pos[cID].length !== 0) {
-            return
-        }
-
         if (len < 5) len = 5
-        else if (len > 120) len = 120
+        else if (len > 150) len = 150
 
         let uLen = Math.floor(len / 5)
         let uMax = mData.uMax - uLen + 1
@@ -96,6 +99,10 @@ function _apptGridMaker() {
         }
 
         mData.mc_cols[cID].appendChild(f)
+
+        const colElms=mData.mc_elm[cID]
+        setSorted(colElms,colElms[colElms.length-1])
+        setMargins(colElms)
     }
 
     /**
@@ -104,14 +111,24 @@ function _apptGridMaker() {
      * @param {string} clr background color
      */
     function cloneColumns(fromCID, toCID, clr) {
-        if (mData.mc_pos[toCID].length !== 0) {
+        if (mData.mc_elm[toCID].length !== 0 || mData.mc_elm[fromCID].length===0) {
             return
         }
         let f = document.createDocumentFragment()
+        const copyDur=mData.mode===MODE_TEMPLATE
         mData.mc_elm[fromCID].forEach((a, i) => {
-            f.appendChild(makeApptElement(a.uTop, a.uLen, i, toCID, clr))
+            f.appendChild(makeApptElement(a.uTop, a.uLen, i, toCID, copyDur?{dur:[...a.dur],title:a.title}:clr))
         })
+
         mData.mc_cols[toCID].appendChild(f)
+
+        //Set z-index & margin
+        mData.mc_elm[fromCID].forEach((a, i) => {
+            let te=mData.mc_elm[toCID][i]
+            te.style.zIndex=a.style.zIndex
+            te.style.marginRight=a.style.marginRight
+        })
+
     }
 
     /**
@@ -124,7 +141,6 @@ function _apptGridMaker() {
                 p.removeChild(els[i])
                 els[i]=null; //???
         }
-        mData.mc_pos[cID] = []
         mData.mc_elm[cID] = []
     }
 
@@ -133,7 +149,6 @@ function _apptGridMaker() {
      */
     function resetAllColumns() {
         for(let i=0,l=mData.mc_cols.length;i<l;i++){
-            mData.mc_pos[i] = []
             mData.mc_elm[i] = []
             let p = mData.mc_cols[i]
             while (p.lastElementChild){
@@ -146,14 +161,20 @@ function _apptGridMaker() {
     function makeApptElement(uTop, uLen, idx, cID, clr) {
         let elm = document.createElement('div')
         elm.className = sP+'appt'
-        elm.style.backgroundColor=clr
+        if(mData.mode!==MODE_TEMPLATE && clr!==null) elm.style.backgroundColor=clr
+        elm.uTop = uTop
+        elm.uLen = uLen
         if(idx!==null) {
-            elm.uTop = uTop
-            elm.uLen = uLen
             elm.cIdx = idx
             elm.cID = cID
+            elm.style.zIndex=mData.mc_elm[cID].length+1
+            if(mData.mode!==MODE_SIMPLE && clr!==null){
+                elm.dur=clr.dur
+                elm.title=clr.title
+            }
         }else{
             elm.className+=" "+sP+"appt-empty"
+            elm.style.zIndex="-1"
         }
 
         let ge = mData.elms[uTop]
@@ -164,22 +185,124 @@ function _apptGridMaker() {
 
         let et = document.createElement('div')
         et.className = sP+"appt_txt"
-        et.appendChild(document.createTextNode(ge.dxt + ' - ' + mData.elms[uTop + uLen].dxt))
+        et.appendChild(document.createTextNode(makeTxt(elm)))
         elm.appendChild(et)
+
+        if(elm.title!==undefined && elm.title!=='') {
+            et = document.createElement('div')
+            et.className = sP + "appt_txt"
+            et.appendChild(document.createTextNode(elm.title))
+            elm.appendChild(et)
+        }
 
         if(idx!==null) {
 
             // TODO: delegate these events to the parent ???
             elm.addEventListener("mousedown", appGoDrag)
-
-            mData.mc_pos[cID].push(uTop, uTop + uLen - 1)
+            if(mData.mode===MODE_TEMPLATE){
+                elm.addEventListener("contextmenu", editAppt)
+            }
             mData.mc_elm[cID].push(elm)
 
         }
         return elm
     }
 
+    function editAppt(evt){
+        mData.scrollCont.lastElementChild.dispatchEvent(new CustomEvent('gridContext',{detail:evt.target}))
+        evt.preventDefault()
+        evt.stopPropagation()
+    }
+
+    function updateAppt(info){
+        const colElms=mData.mc_elm[info.cID]
+        const el=colElms[info.cIdx]
+
+        if(info.del!==undefined){
+            // delete
+            el.parentElement.removeChild(el)
+            colElms.splice(info.cIdx,1)
+
+            // (re)set cIdxs and z-index
+            colElms.forEach((elm,index)=>{
+                elm.cIdx=index
+                elm.style.zIndex=index+1
+            })
+
+            this.sorted=[]
+            if(colElms.length!==0) {
+                setSorted(colElms, colElms[colElms.length - 1])
+                setMargins(colElms)
+            }
+            return
+        }
+
+        el.dur=info.dur
+        el.title=info.title
+
+        const uLen = Math.floor(info.dur[0] / 5)
+        const uTop = el.uTop
+
+        let ge = mData.elms[uTop]
+        let e2 = mData.elms[uTop + uLen - 1]
+
+        el.uLen=uLen
+        el.style.height = (e2.offsetTop + e2.offsetHeight - ge.offsetTop - .25) + 'px'
+
+        el.firstElementChild.textContent = makeTxt(el)
+        if(info.title===""){
+            if(el.children.length>1){
+                el.removeChild(el.lastElementChild)
+            }
+        }else{
+            if(el.children.length>1){
+                el.lastElementChild.textContent=info.title
+            }else{
+                const et = document.createElement('div')
+                et.className = sP + "appt_txt"
+                et.appendChild(document.createTextNode(info.title))
+                el.appendChild(et)
+            }
+        }
+
+        setSorted(colElms,el)
+        setMargins(colElms)
+    }
+
+    function makeTxt(el){
+        if(mData.mode===MODE_SIMPLE || el.dur.length===1){
+            return mData.elms[el.uTop].dxt + ' - ' + mData.elms[el.uTop + el.uLen].dxt
+        }else{
+            return mData.elms[el.uTop].dxt + ' ('+el.dur.join(', ')+')'
+        }
+    }
+
+    function addTemplateData(data){
+        const day_start_ts=SH*3600
+        for(let f,colElms,l=data.length,i=0;i<l;i++){
+            if(data[i].length!==0) {
+                f = document.createDocumentFragment()
+                for (let uTop, uLen, info, d = data[i], k = d.length, j = 0; j < k; j++) {
+                    info = d[j]
+                    uTop = Math.floor((info.start - day_start_ts) / 300)
+                    uLen = Math.floor(info.dur[0] / 5)
+                    f.appendChild(makeApptElement(uTop, uLen, j, i, info))
+                }
+
+                mData.mc_cols[i].appendChild(f)
+                colElms = mData.mc_elm[i]
+                setSorted(colElms, colElms[0])
+                setMargins(colElms)
+            }
+        }
+    }
+
     function addPastAppts(data,clr) {
+
+        if(clr===null){
+            addTemplateData(data)
+            return
+        }
 
         const btm=DH*12; // 12*5min=1hour
         const pd=data.split(String.fromCharCode(31))
@@ -192,8 +315,9 @@ function _apptGridMaker() {
                 clr=pds.substr(0,sep)
                 pds=pds.substr(sep+1)
             }
-            for (let sp, tzo, ets, elm, uTop, d = new Date(), ds, uLen, cID, da = pds.split(","),
+            for (let sp, ets, elm, uTop, d = new Date(), ds, uLen, cID, da = pds.split(","),
                      l = da.length, i = 0; i < l; i++) {
+                // TODO: remove 'U' from ds
                 ds = da[i]
 
                 sp = ds.indexOf(":", 8);
@@ -201,17 +325,10 @@ function _apptGridMaker() {
                 //get end time first
                 d.setTime(ds.substr(sp + 2) * 1000)
 
-                tzo = d.getTimezoneOffset()
-                if (ds.charAt(0) === "F") {
-                    tzo *= 60000
-                } else {
-                    tzo = 0
-                }
-
-                ets = d.getTime() + tzo
+                ets = d.getTime()
 
                 // start
-                d.setTime(ds.substr(1, sp - 1) * 1000 + tzo)
+                d.setTime(ds.substr(1, sp - 1) * 1000)
 
                 uLen = Math.floor((ets - d.getTime()) / 300000)
 
@@ -237,16 +354,21 @@ function _apptGridMaker() {
 
     function appGoDrag(e) {
 
+        // we need the "contextmenu" event
+        if(e.button!==undefined && e.button===2) return;
+
         const cID = this.cID
         if (cID === undefined) return
-        mData.column_pos = mData.mc_pos[cID]
-        mData.column_elm = mData.mc_elm[cID]
 
         // mData.gridLayer.style.cursor = 'grabbing'
         mData.mc_cols[cID].style.pointerEvents = "none"
 
-        mData.curDrag = this
         mData.diff = e.offsetY
+
+        mData.curDrag = this
+        setSorted(mData.mc_elm[cID],mData.curDrag)
+
+        mData.headerHeight=mData.headerElm.offsetHeight
 
         window.addEventListener('mouseup', apptStopDrag)
 
@@ -254,9 +376,64 @@ function _apptGridMaker() {
         e.preventDefault()
     }
 
+    function setSorted(clmElms,curDrag){
+        for(let els=clmElms,el,z,sorted=mData.sorted
+                ,de=curDrag,dz=+de.style.zIndex
+                ,i=0,l=els.length;i<l;i++) {
+            el=els[i]
+            if(el!==de){
+                z= +el.style.zIndex
+                if(z>dz){
+                    el.style.zIndex=--z
+                }
+            }else{
+                z=els.length
+                el.style.zIndex=z
+            }
+
+            // start sorted at 0
+            z--
+
+            if(sorted[z]===undefined){
+                sorted[z]={
+                    idx:i,
+                    m:0,
+                    h:el.uTop,
+                    l:el.uTop+el.uLen
+                }
+            }else {
+                sorted[z].idx = i
+                sorted[z].m=0
+                sorted[z].h=el.uTop
+                sorted[z].l=el.uTop+el.uLen
+            }
+        }
+    }
+
+    function setMargins(clmElms){
+        const cl=clmElms.length
+        // calculate margins
+        for (let i=1,cur,sorted=mData.sorted;i<cl;i++){
+            cur=sorted[i]
+            for(let prev,j=0;j<i;j++){
+                prev=sorted[j]
+                if(prev.h<cur.l && cur.h < prev.l){
+                    // overlap
+                    cur.m=Math.max(cur.m,prev.m+3)
+                }
+            }
+        }
+
+        // set margins
+        for (let i = 0, sorted = mData.sorted, s; i < cl; i++) {
+            s=sorted[i]
+            clmElms[s.idx].style.marginRight=s.m+"px"
+        }
+    }
+
     function apptStopDrag() {
+
         mData.mc_cols[mData.curDrag.cID].style.pointerEvents = "all"
-        // mData.gridLayer.style.cursor = 'default'
 
         mData.diff = -1
         mData.uOffset = -1
@@ -264,6 +441,16 @@ function _apptGridMaker() {
             mData.ce.removeAttribute('top_ok')
             mData.ce = null
         }
+
+        const clmElms=mData.mc_elm[mData.curDrag.cID]
+        // set h & l for curDrag
+        const ts=mData.sorted[clmElms.length-1]
+        ts.h= +mData.curDrag.uTop
+        ts.l=ts.h+mData.curDrag.uLen
+
+        // calculate margins
+        setMargins(clmElms)
+
         mData.curDrag = null
         window.removeEventListener('mouseup', apptStopDrag)
     }
@@ -302,54 +489,31 @@ function _apptGridMaker() {
             elm.setAttribute('top_ok', '')
             md.ce = elm
 
-            let de = md.curDrag
-            let stackStart = de.cIdx
-            let stackEnd = stackStart + 1
-            // Move stack...
+            const de = md.curDrag
+
             if (de.uTop < idx) {
                 // moving down
-                let uo = de.uLen - 1
-                for (let i = stackEnd, clm = md.column_pos, l = clm.length; i < l; i++) {
-                    let ci = i * 2
-                    // compare to the previous one
-                    // bottom of prev >= top of cur
-                    if (clm[ci - 1] + 1 >= clm[ci]) {
-                        uo += md.column_elm[stackEnd].uLen
-                        stackEnd++
-                    } else break
+
+                if(idx+de.uLen>md.uMax) idx=md.uMax-de.uLen+1
+
+                const diff=(md.scrollCont.offsetHeight+md.scrollCont.scrollTop)-(md.elms[idx+de.uLen].offsetTop+md.headerHeight)
+                if(diff<10){
+                    md.scrollCont.scrollBy(0,Math.abs(10-diff))
                 }
-
-                if (idx + uo > md.uMax) idx = md.uMax - uo
-
             } else {
                 // moving up
-                for (let i = stackStart, clm = md.column_pos; i > 0; i--) {
-                    let ci = i * 2
-                    // compare to the previous one
-                    // bottom of prev >= top of cur
-                    if (clm[ci - 1] + 1 >= clm[ci]) {
-                        stackStart--
-                        idx -= md.column_elm[stackStart].uLen
-                    } else break
-                }
                 if (idx < 0) idx = 0
+
+                const diff=md.elms[idx].offsetTop-md.scrollCont.scrollTop
+                if(diff<10){
+                    md.scrollCont.scrollBy(0,-Math.abs(10-diff))
+                }
             }
 
-            for (let ge, el, els = md.column_elm, i = stackStart; i < stackEnd; i++) {
-                ge = md.elms[idx]
-                el = els[i]
-
-                // Set txt
-                el.firstElementChild.textContent = ge.dxt + ' - ' + md.elms[idx + el.uLen].dxt
-
-                el.uTop = idx
-                el.style.top = ge.offsetTop + 'px'
-                let ci = i * 2
-                md.column_pos[ci] = idx
-                md.column_pos[ci + 1] = idx + el.uLen - 1
-                idx += el.uLen
-
-            }
+            // Set txt
+            de.uTop = idx
+            de.firstElementChild.textContent = makeTxt(de)
+            de.style.top = md.elms[idx].offsetTop + 'px'
         } else {
             md.ce = null
         }
@@ -366,13 +530,11 @@ function _apptGridMaker() {
             elm.style.width = w
             al.appendChild(elm)
             mData.mc_cols[i] = elm
-            mData.mc_pos[i] = []
             mData.mc_elm[i] = []
         }
     }
 
     function makeHGrid() {
-        // 5 Min will take 5px
         const STEP = LINE_HEIGHT_5M
 
         // Ever 3rd line visible i.e. 15min
@@ -442,18 +604,15 @@ function _apptGridMaker() {
 
     function getStarEnds(ts,add_offset) {
 
-        //For start and end need this: YYYYMMDDTHHMMSS
-        function makeT(d) {
-            const h=d.getHours()
-            const m=d.getMinutes()
-            return "T"+(h<10?"0"+h:""+h)+(m<10?"0"+m:""+m)+"00"
-        }
-        function makeD(d) {
+        function makeDT(d){
             const month = d.getMonth() + 1
             const day = d.getDate()
+            const h=d.getHours()
+            const m=d.getMinutes()
             return d.getFullYear()
                 + (month < 10 ? "0" + month : "" + month)
                 + (day < 10 ? "0" + day : "" + day)
+                +"T"+(h<10?"0"+h:""+h)+(m<10?"0"+m:""+m)+"00"
         }
 
         const day_start_ms=MPH*SH
@@ -462,38 +621,61 @@ function _apptGridMaker() {
         // First element is the "create date" in UTC
         let r=[(new Date).toISOString().slice(0,-5).replace(/[\-:]/g,'')+'Z']
         let rc=0
-        for(let d=new Date(),ds_ts,dst,i=0,l=mData.mc_cols.length;i<l;i++){
+        for(let d=new Date(),ds_ts,i=0,l=mData.mc_cols.length;i<l;i++){
             ds_ts=ts+day_start_ms+ms_per_day*i
-            d.setTime(ds_ts)
-            if(add_offset){
-                d.setTime(d.getTime()+d.getTimezoneOffset()*60000)
-            }
-            dst=makeD(d)
-            for(let ofs=0,pa=mData.mc_pos[i], j=0,k=pa.length;j<k;j+=2){
+            for(let ofs=0,elm,ea=mData.mc_elm[i], j=0,k=ea.length;j<k;j++){
                 // Start
-                d.setTime(pa[j]*MP5+ds_ts)
+                elm=ea[j]
+                d.setTime(elm.uTop*MP5+ds_ts)
                 if(add_offset){
                     ofs=d.getTimezoneOffset()*60000
                     d.setTime(d.getTime()+ofs)
                 }
-                r[++rc]=dst+makeT(d)
+                r[++rc]=makeDT(d)
                 // End
-                d.setTime((pa[j+1]+1)*MP5+ds_ts+ofs)
-                r[++rc]=dst+makeT(d)
+                d.setTime((elm.uTop+elm.uLen)*MP5+ds_ts+ofs)
+                r[++rc]=makeDT(d)
             }
         }
         return r
     }
 
+    function setMode(mode){
+        mData.mode=mode
+    }
+
+    function getTemplateData(){
+        const day_start_ts=SH*3600
+
+        const wa=[]
+        for(let da,i=0,l=mData.mc_cols.length;i<l;i++){
+            da=[]
+            for(let elm,ea=mData.mc_elm[i], j=0,k=ea.length;j<k;j++){
+                elm=ea[j]
+                da.push({
+                    start:day_start_ts+elm.uTop*300,
+                    dur:elm.dur,
+                    title:elm.title.replaceAll(',',' ')
+                })
+            }
+            wa.push(da)
+        }
+        return wa
+    }
 
     return{
+        MODE_SIMPLE:MODE_SIMPLE,
+        MODE_TEMPLATE:MODE_TEMPLATE,
         setup:setup,
         addAppt:addAppt,
         cloneColumns:cloneColumns,
         resetColumn:resetColumn,
         resetAllColumns:resetAllColumns,
         getStarEnds:getStarEnds,
-        addPastAppts:addPastAppts
+        addPastAppts:addPastAppts,
+        setMode:setMode,
+        updateAppt:updateAppt,
+        getTemplateData:getTemplateData
     }
 }
 

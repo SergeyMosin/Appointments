@@ -60,12 +60,32 @@ class PageController extends Controller {
     public function index() {
         $t=new TemplateResponse($this->appName, 'index');
 
-        $csp=$t->getContentSecurityPolicy();
-        if($csp===null){
-            $csp=new ContentSecurityPolicy();
+        $allowedGroups=$this->c->getAppValue($this->appName,
+            BackendUtils::KEY_LIMIT_TO_GROUPS);
+        if($allowedGroups!==''){
+            $aga = json_decode($allowedGroups,true);
+            if ($aga !== null) {
+                $userGroups=\OC::$server->getGroupManager()->getUserIdGroups($this->userId);
+                $disable=true;
+                foreach ($aga as $ag) {
+                    if (array_key_exists($ag, $userGroups)) {
+                        $disable=false;
+                        break;
+                    }
+                }
+                if($disable) {
+                    $t->setParams(['disabled' => true]);
+                }
+            }
+        }
+        
+        $csp = $t->getContentSecurityPolicy();
+        if ($csp === null) {
+            $csp = new ContentSecurityPolicy();
             $t->setContentSecurityPolicy($csp);
         }
         $csp->addAllowedFrameDomain('\'self\'');
+        
         return  $t;// templates/index.php
     }
 
@@ -302,9 +322,9 @@ class PageController extends Controller {
                 list($sts, $date_time, $dt_info, $tz_data,$title) = $this->bc->deleteCalendarObject($userId, $r_cal_id, $uri);
 
                 if(empty($dt_info)){
-                    \OC::$server->getLogger()->error('can not re-create appointment, no dt_info');
+                    \OC::$server->getLogger()->warning('can not re-create appointment, no dt_info');
                 }else if($cms[BackendUtils::CLS_TS_MODE]==='0'){
-                    // this only needed in simple/manual mode
+                    // this is only needed in simple/manual mode
                     $cr=$this->addAppointments($userId,$pageId,$dt_info,$tz_data,$title);
                     if($cr[0]!=='0'){
                         \OC::$server->getLogger()->error('addAppointments() failed '.$cr);
@@ -395,7 +415,7 @@ class PageController extends Controller {
                 $tr_name="public/thanks";
                 $tr_params=[
                     'appt_c_head'=>$this->l->t("Info"),
-                    'appt_c_msg'=>$this->l->t("Link Expired...")
+                    'appt_c_msg'=>$this->l->t("Link Expired …")
                 ];
                 $tr_sts=409;
             }
@@ -500,6 +520,9 @@ class PageController extends Controller {
         if(!isset($post['adatetime']) || strlen($post['adatetime'])>127
             || preg_match('/[^a-zA-Z0-9+\/=]/',$post['adatetime'])
 
+            || !isset($post['appt_dur']) || strlen($post['appt_dur']) !== 1
+            || preg_match('/[^0-5]/u',$post['appt_dur'])
+
             || !isset($post['name']) || strlen($post['name']) > 64
             || strlen($post['name']) < 3
             || preg_match('/[^\PC ]/u',$post['name'])
@@ -513,7 +536,7 @@ class PageController extends Controller {
             || $this->mailer->validateMailAddress($post['email'])===false
 
             || !isset($post['tzi']) || strlen($post['tzi'])>64
-            || preg_match('/^[UF][^\pC ]*$/u',$post['tzi'])!==1){
+            || preg_match('/^[UFT][^\pC ]*$/u',$post['tzi'])!==1){
 
             $rr=new RedirectResponse($bad_input_url);
             $rr->setStatus(303);
@@ -533,6 +556,25 @@ class PageController extends Controller {
             }
         }
 
+        $v='';
+        $fij=$this->utils->getUserSettings(BackendUtils::KEY_FORM_INPUTS_JSON,$userId);
+
+        if(!empty($fij)){
+            $f0=$fij[0];
+            if(!empty($f0) && isset($post[$f0['name']])){
+                $n=$post[$f0['name']];
+                // TODO: check "number" type
+                $v=htmlspecialchars(preg_replace('/\s+/', ' ',trim(substr($n,0,255))),ENT_QUOTES, 'UTF-8');
+                if(isset($f0['required']) && $f0['required']===true && $v===''){
+                    $rr=new RedirectResponse($bad_input_url);
+                    $rr->setStatus(303);
+                    return $rr;
+                }
+                $v="\n".rtrim($f0['label'],':').": ".$v;
+            }
+        }
+        $post['_more_data']=$v;
+
         // Input seems OK...
 
         $cal_id=$this->utils->getMainCalId($userId,$pageId,$this->bc);
@@ -550,7 +592,27 @@ class PageController extends Controller {
             return $rr;
         }
 
-        if(substr($dc,0,2)==="_1"){
+        $dcs=substr($dc,0,2);
+        if($dcs==="_2"){
+            // template mode
+            // $dc = '_2'.ses_time.'_'pageId(2bytes).$day(1byte)$indexInDay'_'startTs
+            $pos=strpos($dc,'_',2);
+            $ti=intval(substr($dc,2,$pos-2));
+            $post['tmpl_day']=intval(substr($dc,$pos+3,1));
+            $pos2=strpos($dc,'_',$pos+1);
+            $post['tmpl_idx']=intval(substr($dc,$pos+4,$pos2-($pos+4)));
+            $post['tmpl_start_ts']=intval(substr($dc,$pos2+1));
+
+            // make new uri, it is needed for email, buttons, etc...
+            $o = strtoupper(hash("tiger128,4", $dc."appointments app - srgdev.com".$userId.rand().$cal_id.$pageId));
+            $evt_uri = substr($o, 0, 9) . "-" .
+                substr($o, 9, 5) . "-" .
+                substr($o, 14, 5) . "-" .
+                substr($o, 19, 5) . "-ASM" .
+                substr($o, 24) . ".ics";
+
+
+        }else if($dcs==="_1"){
             // external mode
             // $dc='_'ts_mode(1byte)ses_time(4bytes)dates(8bytes)uri(no extension)
 
@@ -650,7 +712,7 @@ class PageController extends Controller {
         $tmpl='public/formerr';
         $rs=500;
         $param=[
-            'appt_c_head'=>$this->l->t("Almost done..."),
+            'appt_c_head'=>$this->l->t("Almost done …"),
         ];
 
         $sts=$this->request->getParam('sts');
@@ -679,7 +741,7 @@ class PageController extends Controller {
                     // TODO: graceful redirect somewhere, via js perhaps??
                     $tmpl = 'public/thanks';
                     $param['appt_c_head']=$this->l->t("Info");
-                    $param['appt_c_msg'] = $this->l->t("Link Expired...");
+                    $param['appt_c_msg'] = $this->l->t("Link Expired …");
                     $rs = 409;
                 }
             }
@@ -754,9 +816,8 @@ class PageController extends Controller {
             'appt_gdpr'=>'',
             'appt_inline_style'=>$pps[BackendUtils::PSN_PAGE_STYLE],
             'appt_hide_phone'=>$pps[BackendUtils::PSN_HIDE_TEL],
+            'more_html'=>''
         ];
-
-
 
         // google recaptcha
         // 'jsfiles'=>['https://www.google.com/recaptcha/api.js']
@@ -797,7 +858,7 @@ class PageController extends Controller {
         $cms=$cls=$this->utils->getUserSettings(
             BackendUtils::KEY_CLS,$uid);
 
-        // Because of floating timezones...
+        // Because of utc
         $utz=$this->utils->getUserTimezone($uid,$this->c);
         try {
             $t_start = new \DateTime('now +'.$cls[BackendUtils::CLS_PREP_TIME]."mins", $utz);
@@ -808,22 +869,29 @@ class PageController extends Controller {
             return $tr;
         }
 
-        $t_end=clone $t_start;
-        $t_end->setTimestamp($t_start->getTimestamp()+(7*$nw*86400));
-        $t_end->setTime(0,0);
-
         if($pageId!=='p0'){
             $cms=$mps;
         }
-
         $ts_mode=$cms[BackendUtils::CLS_TS_MODE];
+
+        if($ts_mode==='2'){
+            $nw=min(8,$nw);
+        }
+
+        $t_end=clone $t_start;
+        $t_end->setTimestamp($t_start->getTimestamp()+(7*$nw*86400));
+        $t_end->setTime(0,0);
 
         if($ts_mode==="1"){ // external mode
             // @see BCSabreImpl->queryRange()
             $cid.=chr(31).$cms[BackendUtils::CLS_XTM_SRC_ID];
         }
 
-        $out=$this->bc->queryRange($cid,$t_start,$t_end,$ts_mode.$uid);
+        if($ts_mode==="2") {
+            $out = $this->bc->queryTemplate($cms, $t_start, $t_end, $uid, $pageId);
+        }else{
+            $out = $this->bc->queryRange($cid, $t_start, $t_end, $ts_mode . $uid);
+        }
 
         if(empty($out)) {
             $params['appt_state']='5';
@@ -847,13 +915,18 @@ class PageController extends Controller {
             $tlk=$this->utils->getUserSettings(BackendUtils::KEY_TALK,$uid);
             if($tlk[BackendUtils::TALK_ENABLED]===true && $tlk[BackendUtils::TALK_FORM_ENABLED]===true){
                 $params['appt_tlk_type']= '<label for="srgdev-ncfp_talk_type" class="srgdev-ncfp-form-label">'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_LABEL])?$tlk[BackendUtils::TALK_FORM_LABEL]:$tlk[BackendUtils::TALK_FORM_DEF_LABEL]),ENT_QUOTES,'UTF-8').':</label>
-<select name="talk_type" required id="srgdev-ncfp_talk_type" class="srgdev-ncfp-form-input">
+<select name="talk_type" required id="srgdev-ncfp_talk_type" class="srgdev-ncfp-form-input srgdev-ncfp-form-select">
     <option value="" disabled selected hidden>'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_PLACEHOLDER])?$tlk[BackendUtils::TALK_FORM_PLACEHOLDER]:$tlk[BackendUtils::TALK_FORM_DEF_PLACEHOLDER]),ENT_QUOTES,'UTF-8').'</option>
-    <option id="srgdev-ncfp_talk_type_op1" style="font-size: medium" value="0">'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_REAL_TXT])?$tlk[BackendUtils::TALK_FORM_REAL_TXT]:$tlk[BackendUtils::TALK_FORM_DEF_REAL]),ENT_QUOTES,'UTF-8').'</option>
-    <option id="srgdev-ncfp_talk_type_op2" style="font-size: medium" value="1">'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT])?$tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT]:$tlk[BackendUtils::TALK_FORM_DEF_VIRTUAL]),ENT_QUOTES,'UTF-8').'</option>
+    <option class="srgdev-ncfp-form-option" id="srgdev-ncfp_talk_type_op1" style="font-size: medium" value="0">'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_REAL_TXT])?$tlk[BackendUtils::TALK_FORM_REAL_TXT]:$tlk[BackendUtils::TALK_FORM_DEF_REAL]),ENT_QUOTES,'UTF-8').'</option>
+    <option class="srgdev-ncfp-form-option" id="srgdev-ncfp_talk_type_op2" style="font-size: medium" value="1">'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT])?$tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT]:$tlk[BackendUtils::TALK_FORM_DEF_VIRTUAL]),ENT_QUOTES,'UTF-8').'</option>
 </select>';
             }
         }
+        $moreHTML=$this->utils->getUserSettings(BackendUtils::KEY_FORM_INPUTS_HTML,$uid);
+        if(isset($moreHTML[0]) && isset($moreHTML[0][8])){
+            $params['more_html']=$moreHTML[0];
+        }
+
         $tr->setParams($params);
 
         //$tr->getContentSecurityPolicy()->addAllowedFrameAncestorDomain('\'self\'');
@@ -896,7 +969,7 @@ class PageController extends Controller {
      *      dtstamp,dtstart,dtend [,dtstart,dtend,...] -
      *      dttsamp: 20200414T073008Z must be UTC (ends with Z),
      *      dtstart/dtend: 20200414T073008
-     * @param string $tz_data_str Can be VTIMEZONE data, 'L' = floating or 'UTC'
+     * @param string $tz_data_str Can be VTIMEZONE data or 'UTC'
      * @param string $title title is used when the appointment is being reset
      * @return string
      */

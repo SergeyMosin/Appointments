@@ -8,6 +8,7 @@ OC.L10N.register(
     "Settings" : "Paramètres",
     "Close" : "Tampar",
     "Remove" : "Suprimir",
+    "Save" : "Salvar",
     "Loading" : "Loading",
     "15 Minutes" : "15 Minutas",
     "30 Minutes" : "30 Minutas",
@@ -20,8 +21,8 @@ OC.L10N.register(
     "Edit" : "Modificar",
     "Title" : "Títol",
     "URL" : "URL",
-    "Save" : "Salvar",
     "Deleted" : "Suprimit",
+    "Enable lobby" : "Activar la sala d’espèra",
     "Location:" : "Localizacion :",
     "Back" : "Retorn",
     "Next" : "Seguent"

@@ -114,6 +114,27 @@
             lee=1
         }
 
+        //Check for custom inputs
+        let elms=document.getElementById('srgdev-ncfp-main-inputs').children
+        for(let i=0,elm,l=elms.length;i<l;i++){
+            elm=elms[i]
+            if(elm.hasAttribute('data-more')){
+                if(elm.tagName==='INPUT' || elm.tagName==='TEXTAREA'){
+                    let cv=elm.value.trim()
+                    if(elm.getAttribute('data-more')==='r1' && cv===''){
+                        elm.setCustomValidity(t('appointments','Required.'));
+                        elm.addEventListener("input",clearFormErr,false)
+                        lee=1
+                    }else if(elm.hasAttribute('type') && elm.getAttribute('type')==='number' && isNaN(cv)){
+                        elm.setCustomValidity(t('appointments','Number required.'));
+                        elm.addEventListener("input",clearFormErr,false)
+                        lee=1
+                    }
+                }
+            }
+        }
+
+
         el=document.getElementById('appt_gdpr_id')
         if(el!==null && el.checked===false){
             el.setAttribute("err","err")
@@ -133,8 +154,6 @@
         el.value=tzi
         this.appendChild(el)
     }
-
-
 
     function selClick(e) {
         let elm=document.getElementById("srgdev-dpu_main-cont")
@@ -180,6 +199,36 @@
             let elm=document.getElementById('srgdev-ncfp_sel-hidden')
             elm.selectedIndex=t.dpuClickID
             elm.value=elm.dataRef[t.dpuClickID].d
+
+            const dur=elm.dataRef[t.dpuClickID].dur
+            elm=document.getElementById('srgdev-ncfp_dur-cont')
+            if(dur===null || dur.length===1){
+                elm.style.display='none'
+            }else{
+                const opts=elm.lastElementChild.children
+                const tr=window.t('appointments', 'Minutes')
+                opts[0].textContent=dur[0]+" "+tr
+                for(let o,i=1,l=Math.max(opts.length,dur.length);i<l;i++){
+                    if(i>=opts.length){
+                        // create
+                        o=document.createElement('option')
+                        o.className='srgdev-ncfp-form-option'
+                        o.appendChild(document.createTextNode(''))
+                        elm.lastElementChild.appendChild(o)
+                    }else{
+                        o=opts[i]
+                        if(i>=dur.length){
+                            o.style.display='none'
+                            continue
+                        }
+                    }
+                    o.style.display='block'
+                    o.value=i
+                    o.textContent=dur[i]+" "+tr
+                }
+                elm.style.display='block'
+            }
+            elm.lastElementChild.value=0
 
             document.getElementById("srgdev-dpu_main-cont").removeAttribute("data-open")
         }
@@ -387,10 +436,12 @@
             if(typeof tzn!=="string") tzn=undefined
         }
 
-        for(let md=new Date(),tzo,tzi,t,tStr,atStr,sp,sp2,ti,
+        for(let md=new Date(),tzo,tzi,t,tStr,atStr,sp,sp2,dur,dur_idx,
                 ts,endTime=pso[PPS_END_TIME],showTZ=pso[PPS_SHOWTZ],
                 ia=s.getAttribute("data-info").split(','),
                 l=ia.length,i=0,ds;i<l;i++){
+
+            //TODO: remove 'U' from ds
             ds=ia[i]
 
             sp=ds.indexOf(":",8);
@@ -398,36 +449,41 @@
             tzo=md.getTimezoneOffset()
             t=ds.charAt(0)
 
-            ti=0
-            if(t==="F"){
-                ti=(tzo*60000)
-                md.setTime(md.getTime()+ti)
+            if(showTZ===0){
                 tStr=atStr=tf(md)
             }else{
-                if(showTZ===0){
-                    tStr=atStr=tf(md)
-                }else{
-                    tStr=atStr=tfz(md)
-                    if(endTime===1){
-                        tStr=tf(md) // no tz override
-                    }
-
+                tStr=atStr=tfz(md)
+                if(endTime===1){
+                    tStr=tf(md) // no tz override
                 }
             }
             ts=md.getTime()
 
-            if(endTime===1){
+            // dur_idx=""
+            dur=null
+            if(endTime===1 || t==='T'){
                 sp2=sp+1
                 // sp must be the pos of the last used ':'
                 sp=ds.indexOf(":",sp2)
-                // sp2 is end time
-                sp2=+ds.substr(sp2,sp-sp2)*1000
 
-                md.setTime(ts+((sp2+ti)-ts))
-                if(t==='F' || showTZ===0){
-                    tStr+=' - '+tf(md)
-                }else{
-                    tStr+=' - '+tfz(md)
+                if(t==="T"){
+                    dur=ds.substr(sp2,sp-sp2).split(';').map(n=>n|0)
+                }
+
+                if(endTime===1 && dur!==null && dur.length<2) {
+                    if(t==="T"){
+                        // console.log("dur",dur)
+                        md.setTime(ts+dur[0]*60000)
+                    }else {
+                        // sp2 is end time
+                        sp2=+ds.substr(sp2,sp-sp2)*1000
+                        md.setTime(ts + (sp2 - ts))
+                    }
+                    if (showTZ === 0) {
+                        tStr += ' - ' + tf(md)
+                    } else {
+                        tStr += ' - ' + tfz(md)
+                    }
                 }
             }
 
@@ -448,6 +504,7 @@
                 rts: ts,
                 d: ds.substr(sp,sp2-sp),
                 t: ds.substr(sp2+2), // +2 is for ":_"
+                dur:dur,
                 tzi:tzi,
                 time:tStr,
                 timeAt:atStr
@@ -457,6 +514,7 @@
         dta.sort((a, b) => (a.rts > b.rts) ? 1 : -1)
         dta.push({rts:0,d:"",t:"",tzi:"",time:""}) //last option to finalize the loop
 
+        // console.log(dta)
         s.dataRef=dta
 
         let l=dta.length

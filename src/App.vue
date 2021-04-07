@@ -1,7 +1,7 @@
 <template>
   <div id="content">
     <AppNavigation>
-      <ul :class="{'sb_disable':stateInProgress}">
+      <ul :class="{'sb_disable':stateInProgress || visibleSection===1}">
         <AppNavigationItem
             :class="{'sb_disable_nav-item':sbShow!==0}"
             @click="curPageId='p0';getFormData('p0')"
@@ -210,54 +210,64 @@
         </Modal>
       </div>
       <div v-show="visibleSection===1" class="srgdev-appt-cal-view-cont">
-        <div class="srgdev-appt-cal-view-btns">
-          <button @click="addScheduleToCalendar()" class="primary">
-            {{ t('appointments', 'Add to Calendar') }}
-          </button>
-          <button @click="closePreviewGrid()">
-            {{ t('appointments', 'Discard') }}
-          </button>
-        </div>
-        <div id="srgdev-appt-grid-scroll_cont">
-          <ul class="srgdev-appt-grid-header">
-            <li v-for="(hi, index) in gridHeader"
-                class="srgdev-appt-gh-li"
-                :style="{width:hi.w}">
-              <div class="srgdev-appt-gh-txt">{{ hi.txt }}</div>
-              <Actions
-                  menuAlign="right"
-                  class="srgdev-appt-gh-act1">
-                <ActionInput
-                    :value="hi.n"
-                    :closeAfterClick="true"
-                    :disabled="hi.hasAppts"
-                    @submit="gridApptsAdd(index,$event)"
-                    icon="icon-add"
-                    class="srgdev-appt-gh-act-inp"
-                    type="number"></ActionInput>
-                <ActionButton
-                    icon="icon-delete"
-                    :disabled="!hi.hasAppts"
-                    :closeAfterClick="true"
-                    @click="gridApptsDel(index)">{{ t('appointments', 'Remove All') }}
-                </ActionButton>
-                <ActionButton
-                    :disabled="!hi.hasAppts"
-                    :closeAfterClick="true"
-                    v-if="index!==gridHeader.length-1"
-                    icon="icon-category-workflow"
-                    @click="gridApptsCopy(index)">{{ t('appointments', 'Copy to Next') }}
-                </ActionButton>
-              </Actions>
-            </li>
-          </ul>
-          <div ref="grid_cont" class="srgdev-appt-grid-cont"></div>
+        <div class="srgdev-appt-grid-flex">
+          <div v-show="gridMode===0" class="srgdev-appt-cal-view-btns">
+            <button @click="addScheduleToCalendar()" class="primary">
+              {{ t('appointments', 'Add to Calendar') }}
+            </button>
+            <button @click="closePreviewGrid()">
+              {{ t('appointments', 'Discard') }}
+            </button>
+          </div>
+          <div v-show="gridMode===1" class="srgdev-appt-cal-view-btns">
+            <button style="margin-right: 1em" @click="saveTemplate()" class="primary">
+              {{ t('appointments', 'Save') }}
+            </button>
+            <button @click="closePreviewGrid()">
+              {{ t('appointments', 'Cancel') }}
+            </button>
+            <div style="float:right; font-style: italic; font-size: 75%; color: var(--color-text-light); padding-right: 1.5em;">{{ t('appointments', 'Hint: right-click on appointment to edit.')}}</div>
+          </div>
+          <div class="srgdev-appt-grid-flex-lower">
+            <ul class="srgdev-appt-grid-header">
+              <li v-for="(hi, index) in gridHeader"
+                  class="srgdev-appt-gh-li"
+                  :style="{width:hi.w}">
+                <div class="srgdev-appt-gh-txt">{{ hi.txt }}</div>
+                <Actions
+                    menuAlign="right"
+                    class="srgdev-appt-gh-act1">
+                  <ActionInput
+                      :value="hi.n"
+                      :closeAfterClick="true"
+                      @submit="gridApptsAdd(index,$event)"
+                      icon="icon-add"
+                      class="srgdev-appt-gh-act-inp"
+                      type="number"></ActionInput>
+                  <ActionButton
+                      icon="icon-delete"
+                      :disabled="!hi.hasAppts"
+                      :closeAfterClick="true"
+                      @click="gridApptsDel(index)">{{ t('appointments', 'Remove All') }}
+                  </ActionButton>
+                  <ActionButton
+                      :disabled="!hi.hasAppts"
+                      :closeAfterClick="true"
+                      v-if="index!==gridHeader.length-1"
+                      icon="icon-category-workflow"
+                      @click="gridApptsCopy(index)">{{ t('appointments', 'Copy to Next') }}
+                  </ActionButton>
+                </Actions>
+              </li>
+            </ul>
+            <div @gridContext="editSingleAppt" ref="grid_cont" class="srgdev-appt-grid-cont"></div>
+          </div>
         </div>
         <Modal v-if="evtGridModal!==0" :canClose="false">
-          <div class="srgdev-appt-modal_content">
+          <div :class="evtGridModal===5?'srgdev-appt-modal_content_tmpl':'srgdev-appt-modal_content'">
             <div v-if="evtGridModal===1" class="srgdev-appt-modal-lbl">
               {{
-                t('appointments', 'Adding appointment to {calendarName} calendar...', {calendarName: calInfo.curCal_name})
+                t('appointments', 'Adding appointment to {calendarName} calendar …', {calendarName: calInfo.curCal_name})
               }}
             </div>
             <div v-if="evtGridModal===2" class="srgdev-appt-modal-lbl">
@@ -267,7 +277,7 @@
             </div>
             <div v-if="evtGridModal===3" class="srgdev-appt-modal-lbl">
               <span v-show="modalErrTxt!==''">{{ modalErrTxt }}</span>
-              <span v-show="modalErrTxt===''">{{ t('appointments', 'Error occurred. Check console...') }}</span>
+              <span v-show="modalErrTxt===''">{{ t('appointments', 'Error occurred. Check console …') }}</span>
             </div>
             <div v-if="evtGridModal===4" class="srgdev-appt-modal-lbl">
               <div style="font-size: 110%;font-weight: bold">{{ modalHeader }}</div>
@@ -278,20 +288,31 @@
               <div class="srgdev-appt-slider-inc"></div>
               <div class="srgdev-appt-slider-dec"></div>
             </div>
-            <button v-if="evtGridModal>1" class="primary" @click="closeEvtModal">{{ t('appointments', 'Close') }}
+            <TemplateApptOptions
+                v-if="evtGridModal===5"
+                :elm="evtGridElm"
+                :has-key="hasKey"
+                @showCModal="showCModal"
+                @tmplUpdateAppt="gridApptUpdate($event)"
+                @tmplAddAppts="gridApptsAddTemplate($event)"
+                @close="closeEvtModal"/>
+            <button v-if="evtGridModal>1 && evtGridModal!==5" class="primary" @click="closeEvtModal">{{ t('appointments', 'Close') }}
             </button>
           </div>
         </Modal>
       </div>
       <div v-show="visibleSection===0" class="srgdev-appt-main-sec">
         <ul class="srgdev-appt-main-info">
-          <li>{{ t('appointments', '{pageLabel} Preview',{pageLabel:pagePreviewLabel}) }}<span style="margin-left: 1.25em" v-show="pagePreviewLoading===true" class="icon-loading-small"></span></li>
+          <li>{{ pagePreviewLabel+' '+t('appointments', 'Preview') }}<span style="margin-left: 1.25em" v-show="pagePreviewLoading===true" class="icon-loading-small"></span></li>
         </ul>
         <div class="srgdev-appt-main-frame-cont">
           <iframe class="srgdev-appt-main-frame" @load="pagePreviewLoading=false" ref="pubPageRef" :src="pubPage"></iframe>
         </div>
       </div>
       <div v-show="visibleSection===3" v-html="helpContent" class="srgdev-appt-help-sec">
+      </div>
+      <div v-show="visibleSection===4" class="srgdev-appt-main-sec_fid">
+        <FormInputsDesigner v-if="visibleSection===4"/>
       </div>
       <div :class="{'sb_disable':stateInProgress}">
         <PagePickerSlideBar
@@ -305,10 +326,12 @@
             ref="tsbRef"
             v-if="sbShow===6"
             :cur-page-data="curPageData"
+            @showCModal="showCModal"
             @gotoAddAppt="curPageId=$event;toggleSlideBar(7);sbGotoBack=6"
             @gotoDelAppt="curPageId=$event;toggleSlideBar(8);sbGotoBack=6"
             @gotoAdvStn="curPageId=$event;toggleSlideBar(10);sbGotoBack=6"
             @showModal="showSimpleGeneralModal($event)"
+            @editTemplate="editApptTemplate($event)"
             @reloadPages="getPages(0,curPageData.pageId)"
             @close="toggleSlideBar(0)"/>
         <UserStnSlideBar
@@ -328,6 +351,7 @@
             @close="sbShow=0"/>
         <FormStnSlideBar
             v-if="sbShow===2"
+            @gotoToFid="sbShow=0;visibleSection=4"
             @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
         <MailStnSlideBar
             v-if="sbShow===4"
@@ -394,16 +418,20 @@ import FormStnSlideBar from "./components/FormStnSlideBar.vue"
 import UserStnSlideBar from "./components/UserStnSlideBar.vue"
 import MailStnSlideBar from "./components/MailStnSlideBar.vue"
 
-import ApptMgrSlideBar from "./components/ApptMgrSlideBar";
-import ApptAccordion from "./components/ApptAccordion.vue";
-import AdvancedSlideBar from "./components/AdvancedSlideBar";
-import PagePickerSlideBar from "./components/PagePickerSlideBar";
-import DirSlideBar from "./components/DirSlideBar";
-import TalkSlideBar from "./components/TalkSlideBar";
+import ApptMgrSlideBar from "./components/ApptMgrSlideBar"
+import ApptAccordion from "./components/ApptAccordion.vue"
+import AdvancedSlideBar from "./components/AdvancedSlideBar"
+import PagePickerSlideBar from "./components/PagePickerSlideBar"
+import DirSlideBar from "./components/DirSlideBar"
+import TalkSlideBar from "./components/TalkSlideBar"
+
+import FormInputsDesigner from "./components/FormInputsDesigner"
+import TemplateApptOptions from "./components/TemplateApptOptions";
 
 export default {
   name: 'App',
   components: {
+    TemplateApptOptions,
     TalkSlideBar,
     DirSlideBar,
     PagePickerSlideBar,
@@ -429,6 +457,7 @@ export default {
     AddApptSlideBar,
     DelApptSlideBar,
     SettingsSlideBar,
+    FormInputsDesigner,
   },
 
   data: function () {
@@ -474,8 +503,7 @@ export default {
       gridHeader: [],
       gridApptLen: 0,
       gridApptTs: 0,
-      gridApptTZ: "L",
-      gridApptsPageId: "p0",
+      gridMode:gridMaker.MODE_SIMPLE,
 
       generalModal: 0,
       generalModalTxt: ["", ""],
@@ -488,10 +516,13 @@ export default {
 
       calInfo: {},
 
-      stateInProgress: false
+      stateInProgress: false,
+
+      hasKey:false
     };
   },
   computed: {
+
     curPageData:function (){
       const ml=this.morePages.length
       if(this.curPageId==='p0'){
@@ -522,17 +553,40 @@ export default {
       }
     }
   },
+
+  created(){
+    this.gridApptTZ="L"
+    this.gridTzName=""
+    this.gridApptsPageId="p0"
+    this.gridCID=0
+    this.evtGridElm=null
+  },
+
   beforeMount() {
     this.resetCalInfo()
   },
 
   mounted() {
+
     this.getPages(1,'p0')
-    // this.getFormData('p0')
+
     this.$root.$on('helpWanted', this.helpWantedHandler)
+    this.$root.$on('dumpSettings', this.dumpSettings)
+
+    // ------- testing --
+    // if(!this.isGridReady){
+    //   this.gridSetup()
+    // }
+    // this.curPageId="p0"
+    // this.editApptTemplate({
+    //   tzName:"America/New_York",
+    //   pageId:this.curPageId
+    // })
   },
+
   beforeDestroy() {
     this.$root.$off('helpWanted', this.helpWantedHandler)
+    this.$root.$off('dumpSettings', this.dumpSettings)
   },
   provide: function () {
     return {
@@ -543,9 +597,49 @@ export default {
 
 
   methods: {
+
+    editSingleAppt(e){
+      this.evtGridElm=e.detail
+      this.evtGridModal=5
+    },
+
+    async editApptTemplate(info){
+      if(!this.isGridReady){
+        this.gridSetup()
+      }
+
+      this.getState("get_k").then(k=>{
+        this.hasKey=k!==""
+      })
+
+      this.gridTzName=info.tzName
+
+      const wd=new Date()
+      wd.setHours(0,0,0)
+      let day=wd.getDay()
+      if(day===0){
+        day++
+      }else{
+        day=1-day
+      }
+
+      const d={
+        dur:0,
+        week:wd.setTime(wd.getTime()+(day*86400000)),
+        tz:null,
+        pageId:info.pageId
+      }
+
+      this.makePreviewGrid(d,gridMaker.MODE_TEMPLATE)
+    },
+
+    saveTemplate(){
+      this.setState('set_t_data',gridMaker.getTemplateData(),this.curPageData.pageId)
+    },
+
     openViaPicker(sbn,evt){
       if(this.sbShow===11 && this.sbGotoBack===sbn){
-        // picker fro THIS slideBar is showing... close it
+        // picker from THIS slideBar is showing... close it
         this.toggleSlideBar(0);
         return
       }
@@ -567,7 +661,7 @@ export default {
           this.curPageId='p0'
           this.toggleSlideBar(sbn)
         } else {
-          // the picker can be already open update info forst
+          // the picker can be already open update info first
           this.pagePickerTitle=evt.currentTarget.textContent.trim()
           this.sbGotoBack = sbn
           if(this.sbShow!==11){
@@ -711,8 +805,8 @@ export default {
 
               }
               if (n !== -1) {
-                let fn = ["'Name'", "'Email'", "'Location'"][n]
-                OC.Notification.showTemporary(this.t('appointments', "Error: {fieldName} empty, check settings", {fieldName: fn}) + "\xa0\xa0\xa0\xa0", {
+                let fn = ["Name", "Email", "Location"][n]
+                OC.Notification.showTemporary(this.t('appointments', "Error: '{fieldName}' field is empty, check User/Organization settings", {fieldName: fn}) + "\xa0\xa0\xa0\xa0", {
                   timeout: 8,
                   type: 'error'
                 })
@@ -755,9 +849,32 @@ export default {
 
     gridApptsAdd(cID, event) {
       let hd = this.gridHeader[cID]
-
       hd.n = event.target.querySelector('input[type=number]').value
 
+      if(this.gridMode===gridMaker.MODE_SIMPLE){
+        this.gridApptsAddSimple(cID)
+      }else{
+        this.gridCID=cID
+        this.evtGridElm=null
+        this.evtGridModal=5
+      }
+    },
+
+    gridApptsAddTemplate(ai){
+      let hd = this.gridHeader[this.gridCID]
+      let nbr = parseInt(hd.n)
+      if (isNaN(nbr) || nbr < 1) nbr=1
+
+      gridMaker.addAppt(0, ai.dur[0], nbr, this.gridCID, ai)
+      hd.hasAppts = true
+    },
+
+    gridApptUpdate(ai){
+      gridMaker.updateAppt(ai)
+    },
+
+    gridApptsAddSimple(cID){
+      let hd = this.gridHeader[cID]
       let nbr = parseInt(hd.n)
       if (isNaN(nbr) || nbr < 1) return
 
@@ -768,6 +885,8 @@ export default {
       gridMaker.addAppt(0, this.gridApptLen, nbr, cID, this.calInfo.curCal_color)
       hd.hasAppts = true
     },
+
+
 
     gridApptsDel(cID) {
       gridMaker.resetColumn(cID)
@@ -784,7 +903,7 @@ export default {
       this.isGridReady = true
     },
 
-    /** @return {Promise<JSON|string|null>} */
+    /** @return {Promise<JSON|string|Array|null>} */
     async getState(action,p="") {
       this.stateInProgress = true
       try {
@@ -834,9 +953,9 @@ export default {
       }).then(response => {
         this.stateInProgress = false
         if (response.status === 200) {
-          this.getFormData(pageId)
+          if(action!=='set_fi') this.getFormData(pageId)
           OCP.Toast.success(this.t('appointments', 'New Settings Applied.'))
-          return true
+          return action!=='set_fi'?true:response.data
         }else if(response.status===202){
           this.handle202(response.data)
         }
@@ -910,9 +1029,28 @@ export default {
           })
     },
 
+    dumpSettings(){
+      this.toggleSlideBar(0)
+      this.visibleSection = 3
+
+      axios.get('settings_dump')
+          .then(response => {
+            if (response.status === 200) {
+              this.helpContent = response.data
+            }else{
+              this.helpContent = 'Error occurred: bad status ('+response.status+')'
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+            this.helpContent = 'Error occurred, check console.'
+          })
+    },
+
+
     showPubLink(page) {
       this.openGeneralModal(1)
-      this.generalModalLoadingTxt = this.t('appointments', 'Fetching URL from the server...')
+      this.generalModalLoadingTxt = this.t('appointments', 'Fetching URL from the server …')
       if(page==='p0'){
         // this is actually the header text for this dialog
         this.generalModalBtnTxt = this.page0.label
@@ -1038,7 +1176,10 @@ export default {
       this.visibleSection = 0
     },
 
-    makePreviewGrid(d) {
+    makePreviewGrid(d,mode=gridMaker.MODE_SIMPLE) {
+
+      this.gridMode=mode
+      gridMaker.setMode(mode)
 
       gridMaker.resetAllColumns()
 
@@ -1047,13 +1188,20 @@ export default {
       let tff
       const lang=document.documentElement.lang
       if (window.Intl && typeof window.Intl === "object") {
-        let f = new Intl.DateTimeFormat([lang],
-            {weekday: "short", month: "2-digit", day: "2-digit"})
+        let f
+        if(mode===gridMaker.MODE_SIMPLE) {
+          f = new Intl.DateTimeFormat([lang],
+              {weekday: "short", month: "2-digit", day: "2-digit"})
+        }else{
+          f = new Intl.DateTimeFormat([lang],
+              {weekday: "long"})
+        }
         tff = f.format
       } else {
+        const _sl=mode===gridMaker.MODE_SIMPLE?10:3
         // noinspection JSUnusedLocalSymbols
         tff = function (d) {
-          return td.toDateString().slice(0, 10)
+          return td.toDateString().slice(0, _sl)
         }
       }
 
@@ -1084,24 +1232,42 @@ export default {
 
       this.visibleSection = 1
 
-      this.$set(this.calInfo, "curCal_color", d.calColor)
-      this.$set(this.calInfo, "curCal_name", d.calName)
+      if(mode===gridMaker.MODE_SIMPLE) {
+        this.$set(this.calInfo, "curCal_color", d.calColor)
+        this.$set(this.calInfo, "curCal_name", d.calName)
 
-      // dd-mm-yyyy
-      axios.post('calgetweek', {
+        // dd-mm-yyyy
+        axios.post('calgetweek', {
           t: pd,
           p: d.pageId
-      }).then(response => {
-        if (response.status === 200) {
-          if (response.data !== "") {
-            gridMaker.addPastAppts(response.data, this.calInfo.curCal_color)
+        }).then(response => {
+          if (response.status === 200) {
+            if (response.data !== "") {
+              gridMaker.addPastAppts(response.data, this.calInfo.curCal_color)
+            }
           }
-        }
-      }).catch(error => {
-        this.modalErrTxt = t('appointments', "Bad calendar data. Check selected calendars.")
-        this.evtGridModal = 3
-        console.log(error);
-      })
+        }).catch(error => {
+          this.modalErrTxt = t('appointments', "Bad calendar data. Check selected calendars.")
+          this.evtGridModal = 3
+          console.log(error);
+        })
+
+      }else{
+        this.$set(this.calInfo, "curCal_color", null)
+        this.$set(this.calInfo, "curCal_name", null)
+
+        // get template data
+        this.getState('get_t_data',d.pageId)
+            .then(data=>{
+              gridMaker.addPastAppts(data, null)
+              //activate non empty columns
+              data.forEach((c,i)=>{
+                if(this.gridHeader[i]!==undefined) {
+                  this.gridHeader[i].hasAppts = c.length > 0
+                }
+              })
+            })
+      }
     },
 
     addScheduleToCalendar() {
@@ -1145,6 +1311,7 @@ export default {
       if (this.evtGridModal < 3) this.getFormData(this.gridApptsPageId)
       this.modalErrTxt = ""
       this.evtGridModal = 0
+      this.evtGridElm=null
     },
 
     showCModal(txt){

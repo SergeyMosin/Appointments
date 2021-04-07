@@ -8,6 +8,7 @@ OC.L10N.register(
     "Settings" : "Quraşdırmalar",
     "Close" : "Bağla",
     "Remove" : "Sil",
+    "Save" : "Saxla",
     "Loading" : "Loading",
     "15 Minutes" : "15 Dəqiqqə",
     "30 Minutes" : "30 Dəqiqqə",
@@ -18,7 +19,6 @@ OC.L10N.register(
     "Edit" : "Dəyişiklik et",
     "Title" : "Başlıq",
     "URL" : "URL",
-    "Save" : "Saxla",
     "Deleted" : "Silinib",
     "Location:" : "Ərazi:",
     "Next" : "Növbəti"

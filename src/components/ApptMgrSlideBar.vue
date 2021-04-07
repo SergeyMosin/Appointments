@@ -56,7 +56,7 @@
               <option v-for="cal in cals" :value="cal.id">{{ cal.name }}</option>
             </select>
           </template>
-          <template v-if="calInfo.tsMode==='1'">
+          <template v-else-if="calInfo.tsMode==='1'">
             <div class="srgdev-appt-info-lcont">
               <label
                   class="tsb-label"
@@ -90,7 +90,54 @@
               <option v-for="cal in cals" :value="cal.id">{{ cal.name }}</option>
             </select>
           </template>
-          <div class="srgdev-appt-info-lcont">
+          <template v-else-if="calInfo.tsMode==='2'">
+            <ApptIconButton
+                :disabled="calInfo.tmmDstCalId==='-1'"
+                @click="handleEditTemplate"
+                :text="t('appointments','Edit Template')"
+                icon="icon-edit"/>
+            <div class="srgdev-appt-info-lcont">
+              <label
+                  class="tsb-label"
+                  for="appt_tsb-dest-tmm-cal-id">
+                {{ t('appointments', 'Destination Calendar (Booked)') }}:</label><a
+                style="right: 9%"
+                class="icon-info srgdev-appt-info-link"
+                @click="$root.$emit('helpWanted','destcal_tmm')"></a>
+            </div>
+            <select
+                v-model="calInfo.tmmDstCalId"
+                @change="removeFromTMM(calInfo.tmmDstCalId)"
+                class="tsb-input"
+                id="appt_tsb-dest-tmm-cal-id">
+              <option value="-1">{{ t('appointments', 'Calendar Required') }}</option>
+              <option v-for="cal in cals" :value="cal.id">{{ cal.name }}</option>
+            </select>
+            <ApptAccordion
+                :title="t('appointments', 'Check for conflicts in…')"
+                help="conflicts_tmm"
+                help-style="right:9%"
+                style="margin-bottom: 1em"
+                :open="false">
+              <template slot="content">
+                <div v-for="cal in cals" v-show="cal.id!==calInfo.tmmDstCalId">
+                  <input
+                      type="checkbox"
+                      :value="cal.id"
+                      v-model="calInfo.tmmMoreCals"
+                      @click="handleMoreCals"
+                      :id="'srgdev-appt_tmm_more_'+cal.id"
+                      class="checkbox"><label class="srgdev-appt-sb-label-inline" :for="'srgdev-appt_tmm_more_'+cal.id">{{cal.name}}</label>
+                </div>
+              </template>
+            </ApptAccordion>
+            <label class="tsb-label">
+              {{ t('appointments', 'Timezone:') }}</label>
+            <div class="tsb-input">
+              {{tzName===""?t('appointments', 'Loading…'):tzName}}
+            </div>
+          </template>
+          <div style="margin-top: 2em" class="srgdev-appt-info-lcont">
             <label
                 class="tsb-label"
                 for="appt_tsb-ts-mode">
@@ -104,6 +151,7 @@
               class="tsb-input"
               @change="tsModeChanged"
               id="appt_tsb-ts-mode">
+            <option value="2">{{ t('appointments', 'Weekly Template') }}</option>
             <option value="0">{{ t('appointments', 'Simple') }}</option>
             <option value="1">{{ t('appointments', 'External') }}</option>
           </select>
@@ -123,6 +171,8 @@
 <script>
 import SlideBar from "./SlideBar.vue"
 import ApptIconButton from "./ApptIconButton";
+import ApptAccordion from "./ApptAccordion.vue";
+import {linkTo} from '@nextcloud/router'
 
 import {
   ActionButton,
@@ -145,6 +195,7 @@ export default {
     VueSlider,
     Actions,
     ActionButton,
+    ApptAccordion
   },
   props:{
     curPageData:Object,
@@ -166,11 +217,17 @@ export default {
         destCalId: "-1",
         nrSrcCalId: "-1",
         nrDstCalId: "-1",
-        tsMode: "0",
+        tmmDstCalId: "-1",
+        tmmMoreCals: [],
+        tsMode: "2",
       },
       realCalIDs:"-1-1",
 
+      tzName:"",
+      tzData:"",
+
       cals: [],
+      hasKey:false,
     };
   },
 
@@ -208,13 +265,52 @@ export default {
         console.log(e)
         OC.Notification.showTemporary(this.t('appointments', "Can not load calendars"), {timeout: 4, type: 'error'})
       }
+
+      if(this.calInfo.tsMode==="2"){
+        // TODO: check if server and client TZs are the same
+        try {
+          const d=await this.getTimeZone()
+          this.tzName = d.name
+          this.tzData = d.data
+          this.isLoading=false
+        }catch (e){
+          this.isLoading=false
+          console.error("Can't get timezone")
+          console.log(e)
+          OC.Notification.showTemporary(this.t('appointments', "Can't load timezones"), {timeout: 4, type: 'error'})
+        }
+      }
+
+      this.getState("get_k").then(k=>{
+        this.hasKey=k!==""
+      })
+
+    },
+
+    handleMoreCals(evt){
+      if(this.hasKey===false && this.calInfo.tmmMoreCals.length>1){
+        if(evt.currentTarget.checked===true) {
+          this.$emit('showCModal',this.t('appointments', "More than 2 additional calendars."))
+          evt.preventDefault()
+          return false
+        }
+      }
+    },
+
+    handleEditTemplate(){
+      this.$emit('editTemplate', {
+        pageId:this.curPageData.pageId,
+        tzName:this.tzName,
+        tzData:this.tzData
+      })
+      this.close()
     },
 
     tsModeChanged() {
       this.apply(true)
       this.$emit("showModal", [
         this.t('appointments', 'Warning'),
-        this.t('appointments', 'Time slot mode has changed. Public page is going offline…'),
+        this.t('appointments', 'Time slot mode has changed. Public page is going offline …'),
         this.start])
     },
 
@@ -250,6 +346,16 @@ export default {
               this.t('appointments', 'Source and Destination calendars must be different')])
             return
           }
+        }else if(this.calInfo.tsMode==='2'){
+          if(this.tzData!==""){
+            this.calInfo.tzData=this.tzData
+            this.calInfo.tzName=this.tzName
+          }else{
+            this.$emit("showModal", [
+              this.t('appointments', 'Error'),
+              this.t('appointments', 'Timezone data is empty')])
+            return
+          }
         }
       }
 
@@ -273,9 +379,52 @@ export default {
       if(evt!=='gotoAdvStn' &&
           this.realCalIDs!==this.calInfo.mainCalId.toString()+this.calInfo.destCalId.toString()
       ){
-        OC.Notification.showTemporary(this.t('appointments', "Please apply calendar chages first")+"\xa0\xa0\xa0\xa0", {timeout: 4, type: 'warning'})
+        OC.Notification.showTemporary(this.t('appointments', "Please apply calendar changes first")+"\xa0\xa0\xa0\xa0", {timeout: 4, type: 'warning'})
       }else {
         this.$emit(evt, this.curPageData.pageId)
+      }
+    },
+
+    removeFromTMM(calId){
+      this.calInfo.tmmMoreCals=this.calInfo.tmmMoreCals.filter(cid=>cid!==calId)
+    },
+
+    async getTimeZone(){
+      let res= await this.getState("get_tz")
+      if (res !== null && res.toLowerCase() !== 'utc') {
+        let url = linkTo('appointments', 'ajax/zones.js')
+        const tzr=await axios.get(url)
+        if (tzr.status === 200) {
+
+          let tzd = tzr.data
+          if (typeof tzd === "object"
+              && tzd.hasOwnProperty('aliases')
+              && tzd.hasOwnProperty('zones')) {
+
+            let tzs = ""
+            if (tzd.zones[res] !== undefined) {
+              tzs = tzd.zones[res].ics.join("\r\n")
+
+            } else if (tzd.aliases[res] !== undefined) {
+              let alias = tzd.aliases[res].aliasTo
+              if (tzd.zones[alias] !== undefined) {
+                res = alias
+                tzs = tzd.zones[alias].ics.join("\r\n")
+              }
+            }
+
+            return{
+              name:res,
+              data:"BEGIN:VTIMEZONE\r\nTZID:" + res.trim() + "\r\n" + tzs.trim() + "\r\nEND:VTIMEZONE"
+            }
+          }else{
+            throw new Error("Bad tzr.data")
+          }
+        }else{
+          throw new Error("Bad status: "+tzr.status)
+        }
+      }else{
+        throw new Error("Can't get_tz")
       }
     },
 
@@ -309,5 +458,6 @@ export default {
   text-decoration: underline;
   color: var(--color-main-text)
 }
+
 
 </style>

@@ -1,6 +1,7 @@
-@import "../../core/css/variables.scss";
+//@import "../../core/css/variables.scss";
+@import "svariables.scss";
+@import "variables.scss";
 @import "icons.scss";
-
 .srgdev-icon-override{
 	background-repeat: no-repeat;
 	background-position: center;
@@ -22,7 +23,7 @@
 	max-height: 100%;
 }
 .srgdev-appt-cal-view-cont{
-	display: block;
+	display: flex;
 	margin: 0;
 	white-space: nowrap;
 	max-width: 100%;
@@ -30,23 +31,40 @@
 	overflow: hidden;
 	text-align: center;
 }
-#srgdev-appt-grid-scroll_cont{
-	height: 100%;
-	overflow: scroll;
-}
+//#srgdev-appt-grid-scroll_cont{
+//	height: 100%;
+//	overflow: scroll;
+//}
 
+.srgdev-appt-grid-flex{
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+}
+.srgdev-appt-grid-flex-lower{
+	flex: 1;
+	overflow: auto;
+	position: relative;
+}
 .srgdev-appt-grid-cont{
 	position: relative;
 	text-align: left;
 	line-height: 1;
-	margin-bottom: 6em;
+	margin: 0;
+	z-index: 116;
 }
+
 $appt_grid_ml:6em;
 .srgdev-appt-grid-header{
 	display: block;
-	margin: 0 0 0 $appt_grid_ml;
-	padding: 0;
+	margin: 0;
+	padding: 0 0 0 $appt_grid_ml;
 	text-align: left;
+	position: sticky;
+	top: 0;
+	background: $color-main-background;
+	z-index: 117;
 }
 .srgdev-appt-gh-li{
 	//display: inline-block;
@@ -105,7 +123,7 @@ $appt_grid_ml:6em;
 
 .srgdev-appt-grd-grid-line{
 	font-size: 75%;
-	height: 4px;
+	height: 5px;
 	position: absolute;
 	width: 100%;
 	border-top: 1px solid transparent;
@@ -133,12 +151,12 @@ $appt_grid_ml:6em;
 	position: absolute;
 	left: 2px;
 	right: 2px;
-	//border: 1px solid rgb(250,250,250);
-	color: rgb(250, 250, 250);
+	border: 1px solid rgba(255,255,255,.95);
+	color: $color-primary-text;
+	background: $color-primary;
 	overflow: hidden;
 	cursor: grab;
 	border-radius: 4px;
-
 }
 .srgdev-appt-grd-appt-empty{
 	z-index: -1;
@@ -147,8 +165,11 @@ $appt_grid_ml:6em;
 
 .srgdev-appt-grd-appt_txt{
 	font-size: 75%;
-	margin: .25em 0 0 .25em;
+	margin: .25em .25em 0 .25em;
 	cursor: grab;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	pointer-events: none;
 }
 
 .sb_loading_cont{
@@ -170,6 +191,7 @@ $appt_grid_ml:6em;
 	height: 3em;
 	line-height: 3em;
 	color: var(--color-text-lighter);
+	text-align: center;
 }
 
 
@@ -284,9 +306,12 @@ $appt_grid_ml:6em;
 	margin: 1em 0;
 }
 .srgdev-appt-modal_content {
-	min-width: 50vw;
 	text-align: center;
-	margin: 2em 1em;
+	margin: 2em 6em;
+}
+.srgdev-appt-modal_content_tmpl{
+	text-align: left;
+	margin: 2em 3em 1em;
 }
 .srgdev-appt-modal-header{
 	font-size: 110%;
@@ -391,7 +416,7 @@ $srgdev-prog-height:3px;
 	to { transform: translateX(110%) scaleX(.1);}
 }
 
-
+.srgdev-appt-main-sec_fid,
 .srgdev-appt-main-sec{
 	display: block;
 	margin: 0;
@@ -399,6 +424,9 @@ $srgdev-prog-height:3px;
 	height: 100%;
 	padding-top: 3.25em;
 	box-sizing: border-box;
+}
+.srgdev-appt-main-sec_fid{
+	padding: 1em;
 }
 .srgdev-appt-main-frame-cont{
 	width: 100%;
@@ -435,6 +463,18 @@ $srgdev-prog-height:3px;
 		border-color: var(--color-border-dark);
 	}
 }
+
+.appt-stn-ext-link{
+	margin: 1em 0 0;
+	&_span{
+		cursor: pointer;
+		color: var(--color-main-text);
+		&:hover{
+			text-decoration: underline;
+		}
+	}
+}
+
 
 $stn-txt-input-margin: 4px;
 
@@ -668,14 +708,14 @@ textarea.appt-stn-txt-ta{
 		margin-bottom: 2.25em;
 		margin-top: .75em;
 	}
-
-	.srgdev-appt-sb-genbtn{
-		margin-top: 3em;
-		padding-left: 3em;
-		padding-right: 3em;
-		display: block;
-	}
 }
+.srgdev-appt-sb-genbtn{
+	margin-top: 3em;
+	padding-left: 3em;
+	padding-right: 3em;
+	display: block;
+}
+
 .srgdev-appt-sb-main-spacer{
 	height: 0;
 	margin: .75em 0 .75em -4%;
@@ -770,7 +810,8 @@ textarea.appt-stn-txt-ta{
 	display: block;
 	position: relative;
 }
-.srgdev-appt-info-lcont>.srgdev-appt-info-link{
+.srgdev-appt-info-lcont>.srgdev-appt-info-link,
+.appt-accordion-title>.srgdev-appt-info-link{
 	display: block;
 	position: absolute;
 	width: auto;
@@ -836,4 +877,8 @@ textarea.appt-stn-txt-ta{
 		margin: 4em 1em 0;
 	}
 
+}
+
+.toggler--closed:hover>.aib_icon_wrap{
+	transform: scale(1.1);
 }
