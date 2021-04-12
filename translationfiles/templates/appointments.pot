@@ -52,7 +52,7 @@ msgid ""
 msgstr ""
 
 #: /app/lib/Backend/BackendUtils.php:1265
-msgid "Can't find your name. Check User/Organization settings."
+msgid "Cannot find your name. Check User/Organization settings."
 msgstr ""
 
 #: /app/lib/Backend/BackendUtils.php:1269
@@ -314,7 +314,7 @@ msgid "Directory page"
 msgstr ""
 
 #: /app/lib/Controller/StateController.php:460
-msgid "Can't find Talk app. Is it installed and enabled ?"
+msgid "Cannot find Talk app. Is it installed and enabled ?"
 msgstr ""
 
 #: /app/lib/Email/EMailTemplateNC.php:612
