@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2021-04-12 03:43+0000\n"
+"POT-Creation-Date: 2021-04-13 03:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,7 +52,7 @@ msgid ""
 msgstr ""
 
 #: /app/lib/Backend/BackendUtils.php:1265
-msgid "Cannot find your name. Check User/Organization settings."
+msgid "Can't find your name. Check User/Organization settings."
 msgstr ""
 
 #: /app/lib/Backend/BackendUtils.php:1269
@@ -314,7 +314,7 @@ msgid "Directory page"
 msgstr ""
 
 #: /app/lib/Controller/StateController.php:460
-msgid "Cannot find Talk app. Is it installed and enabled ?"
+msgid "Can't find Talk app. Is it installed and enabled ?"
 msgstr ""
 
 #: /app/lib/Email/EMailTemplateNC.php:612
@@ -465,7 +465,7 @@ msgid "Fetching URL from the server …"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:41
-msgid "Cannot get public URL from server"
+msgid "Can not get public URL from server"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:42
@@ -765,11 +765,11 @@ msgid "Number of expired appointments/slots: "
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:126
-msgid "Cannot get calendar data"
+msgid "Can not get calendar data"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:127
-msgid "This action cannot be undone. Continue?"
+msgid "This action can NOT be undone. Continue?"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:128
@@ -777,7 +777,7 @@ msgid "Removing Appointment Slots"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:129
-msgid "Cannot delete old appointments/slots"
+msgid "Can not delete old appointments/slots"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:130
