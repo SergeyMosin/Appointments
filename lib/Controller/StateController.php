@@ -531,6 +531,15 @@ class StateController extends Controller{
             }else{
                 $r->setStatus(500);
             }
+        }else if($action==='get_t_tz'){
+            $a=$this->utils->getUserSettings(BackendUtils::KEY_TMPL_INFO,$this->userId);
+            $j = json_encode($a);
+            if ($j !== false) {
+                $r->setData($j);
+                $r->setStatus(200);
+            } else {
+                $r->setStatus(500);
+            }
         }
 
         return $r;

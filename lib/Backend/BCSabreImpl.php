@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpFullyQualifiedNameUsageInspection */
+<?php /** @noinspection PhpUndefinedFieldInspection */
+
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 
 
 namespace OCA\Appointments\Backend;
@@ -347,7 +349,7 @@ class BCSabreImpl implements IBackendConnector{
             if(isset($evt->SUMMARY)){
                 $s=$evt->SUMMARY->getValue();
                 if($s[0]==="_"){
-                    $atl.=str_replace(',',' ',$s);;
+                    $atl.=str_replace(',',' ',$s);
                 }
             }
 
@@ -603,6 +605,16 @@ class BCSabreImpl implements IBackendConnector{
                 }
             }
         }
+
+        $ti=$this->utils->getUserSettings(BackendUtils::KEY_TMPL_INFO,$userId);
+        if($start->getTimezone()->getName()!==$ti[BackendUtils::TMPL_TZ_NAME]) {
+            try {
+                $start->setTimezone(new \DateTimeZone($ti[BackendUtils::TMPL_TZ_NAME]));
+            } catch (\Exception $e) {
+                \OC::$server->getLogger()->warning('Can not set timezone template');
+            }
+        }
+
         $td=$this->utils->getTemplateData($pageId,$userId);
         if(count($td)!==7) $td[]=[];
         $start->modify("today");
@@ -833,8 +845,6 @@ class BCSabreImpl implements IBackendConnector{
 
         $pageId=$info['_page_id'];
 
-        $cls=$this->utils->getUserSettings(
-            BackendUtils::KEY_CLS,$userId);
         $cms=$this->utils->getUserSettings(
             $pageId==='p0'
                 ?BackendUtils::KEY_CLS
@@ -879,7 +889,14 @@ class BCSabreImpl implements IBackendConnector{
                 substr($h,19,6)."-tm".
                 substr($h,25);
 
-            $dt=new \DateTime('now',$this->utils->getUserTimezone($userId,$this->config));
+            try {
+                $ctz=new \DateTimeZone($tza[BackendUtils::TMPL_TZ_NAME]);
+            } catch (\Exception $e) {
+                \OC::$server->getLogger()->warning('Can not set timezone from template, using default...');
+                $ctz=$this->utils->getUserTimezone($userId,$this->config);
+            }
+
+            $dt=new \DateTime('now',$ctz);
 
             // Insert the UID, start and end
             $d= $parts['1_before_uid'].$uid.
@@ -1000,6 +1017,8 @@ class BCSabreImpl implements IBackendConnector{
                 // for external and template modes we need to re-check the time range and update the lock_uid to "real" uid or delete the lock_uid if the time range is "taken"
 
                 if($ts_mode==='1') {
+                    $cls=$this->utils->getUserSettings(
+                        BackendUtils::KEY_CLS,$userId);
                     $trc = $this->checkRangeTR($info['ext_start'], $info['ext_end'], $calId, $utz, $cls[BackendUtils::CLS_XTM_REQ_CAT]);
                 }else{
                     // template mode
