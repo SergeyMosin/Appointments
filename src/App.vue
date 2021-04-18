@@ -247,10 +247,11 @@
                 <div class="srgdev-appt-gh-txt">{{ hi.txt }}</div>
                 <Actions
                     menuAlign="right"
+                    :open="gridMenuOpen===index"
+                    @open="gridMenuOpen=index"
                     class="srgdev-appt-gh-act1">
                   <ActionInput
                       :value="hi.n"
-                      :closeAfterClick="true"
                       @submit="gridApptsAdd(index,$event)"
                       icon="icon-add"
                       class="srgdev-appt-gh-act-inp"
@@ -521,6 +522,7 @@ export default {
       gridApptLen: 0,
       gridApptTs: 0,
       gridMode: gridMaker.MODE_SIMPLE,
+      gridMenuOpen:-1,
 
       generalModal: 0,
       generalModalTxt: ["", ""],
@@ -859,6 +861,7 @@ export default {
     },
 
     gridApptsAdd(cID, event) {
+      this.gridMenuOpen=-1
       let hd = this.gridHeader[cID]
       hd.n = event.target.querySelector('input[type=number]').value
 
@@ -899,11 +902,13 @@ export default {
 
 
     gridApptsDel(cID) {
+      this.gridMenuOpen=-1
       gridMaker.resetColumn(cID)
       this.gridHeader[cID].hasAppts = false
     },
 
     gridApptsCopy(cID) {
+      this.gridMenuOpen=-1
       gridMaker.cloneColumns(cID, cID + 1, this.calInfo.curCal_color)
       this.gridHeader[cID + 1].hasAppts = true
     },
