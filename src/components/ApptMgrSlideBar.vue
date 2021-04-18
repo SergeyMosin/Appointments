@@ -223,6 +223,7 @@ export default {
         tsMode: "2",
       },
       realCalIDs:"-1-1",
+      realTmmId:"-1",
 
       tzName:"",
       tzData:"",
@@ -239,9 +240,7 @@ export default {
       try {
         const data=this.curPageData
         this.calInfo = await this.getState("get_"+data.stateAction, data.pageId)
-        if(this.calInfo.tsMode==='0'){
-          this.realCalIDs=this.calInfo.mainCalId.toString()+this.calInfo.destCalId.toString()
-        }
+        this.setRealIds()
       } catch (e) {
         this.isLoading=false
         console.log(e)
@@ -299,6 +298,10 @@ export default {
     },
 
     handleEditTemplate(){
+      if(this.realTmmId!==this.calInfo.tmmDstCalId){
+        showWarning(this.t('appointments', "Please apply calendar changes first"))
+        return
+      }
       this.$emit('editTemplate', {
         pageId:this.curPageData.pageId,
         tzName:this.tzName,
@@ -369,11 +372,17 @@ export default {
               // reload pages when tsModeChanged
               this.$emit("reloadPages")
             }
-            if(this.calInfo.tsMode==='0'){
-              this.realCalIDs=this.calInfo.mainCalId.toString()+this.calInfo.destCalId.toString()
-            }
+            this.setRealIds()
             this.isSending=false
       })
+    },
+
+    setRealIds(){
+      if(this.calInfo.tsMode==='0'){
+        this.realCalIDs=this.calInfo.mainCalId.toString()+this.calInfo.destCalId.toString()
+      }else if(this.calInfo.tsMode==='2'){
+        this.realTmmId=this.calInfo.tmmDstCalId
+      }
     },
 
     gotoEvt(evt){
