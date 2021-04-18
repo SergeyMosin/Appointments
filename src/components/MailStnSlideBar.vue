@@ -100,6 +100,7 @@
 
 <script>
     import SlideBar from "./SlideBar.vue"
+    import {showError} from "@nextcloud/dialogs"
 
     export default {
         name: "MailStnSlideBar",
@@ -142,7 +143,7 @@
            } catch (e) {
              this.isLoading=false
              console.log(e)
-             OC.Notification.showTemporary(this.t('appointments', "Can not request data"), {timeout: 4, type: 'error'})
+             showError(this.t('appointments', "Can not request data"))
            }
          },
 

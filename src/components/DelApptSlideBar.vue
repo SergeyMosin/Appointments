@@ -46,7 +46,7 @@ import SlideBar from "./SlideBar.vue"
 import axios from '@nextcloud/axios'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
-
+import {showError} from "@nextcloud/dialogs"
 
 export default {
   name: "AddApptSlideBar",
@@ -110,7 +110,7 @@ export default {
       } catch (e) {
         this.isLoading=false
         console.log(e)
-        OC.Notification.showTemporary(this.t('appointments', "Can not request data"), {timeout: 4, type: 'error'})
+        showError(this.t('appointments', "Can not request data"))
       }
     },
 
@@ -125,7 +125,7 @@ export default {
         str = JSON.stringify(d.ri)
       } catch (e) {
         console.log(e)
-        OC.Notification.showTemporary(this.t('appointments', "Can not request data"), {timeout: 4, type: 'error'})
+        showError(this.t('appointments', "Can not request data"))
         return
       }
 
@@ -185,14 +185,14 @@ export default {
       }).catch(error => {
         this.$emit('closeGM')
         console.log(error)
-        OCP.Toast.error(this.t('appointments', 'Can not get calendar data') + "\xa0\xa0\xa0\xa0")
+        showError(this.t('appointments', 'Can not get calendar data'))
       })
     },
 
     removeOldAppointments() {
 
       if (this.roaData.str === "" || this.roaData.pageId === undefined) {
-        OC.Notification.showTemporary('Can not remove appointments: bad info', {timeout: 4, type: 'error'})
+        showError('Can not remove appointments: bad info')
       }
 
       if (!confirm(this.t('appointments', 'This action can NOT be undone. Continue?'))) return;
@@ -202,7 +202,7 @@ export default {
         generalModalLoadingTxt: this.t('appointments', 'Removing Appointment Slots') + "..."
       })
 
-      const errTxt = this.t('appointments', 'Can not delete old appointments/slots') + "\xa0\xa0\xa0\xa0"
+      const errTxt = this.t('appointments', 'Can not delete old appointments/slots')
 
       const str = this.roaData.str.slice(0, -1) + ',"delete":true}';
       const pageId = this.roaData.pageId
@@ -242,7 +242,7 @@ export default {
             })
 
           } else {
-            OCP.Toast.error(errTxt)
+            showError(errTxt)
           }
           this.$emit('updateGM', {
             generalModalLoadingTxt: ""
@@ -251,7 +251,7 @@ export default {
       }).catch(error => {
         this.$emit('closeGM')
         console.log(error)
-        OCP.Toast.error(errTxt)
+        showError(errTxt)
       })
     },
 

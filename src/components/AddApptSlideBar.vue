@@ -56,6 +56,7 @@ import '../../css/datepicker.css';
 
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
+import {showError} from "@nextcloud/dialogs"
 
 
 export default {
@@ -170,7 +171,7 @@ export default {
       }catch (e){
         console.log(e)
         this.isLoading=false
-        OC.Notification.showTemporary(this.t('appointments', "Can not request data"), {timeout: 4, type: 'error'})
+        showError(this.t('appointments', "Can not request data"))
         return
       }
 
@@ -188,7 +189,7 @@ export default {
         this.isLoading=false
         console.error("Can't get timezone")
         console.log(e)
-        OC.Notification.showTemporary(this.t('appointments', "Can't load timezones"), {timeout: 4, type: 'error'})
+        showError(this.t('appointments', "Can't load timezones"))
       }
     },
 

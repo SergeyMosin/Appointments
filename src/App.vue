@@ -404,7 +404,7 @@ import {
   AppNavigationSpacer,
   Modal,
 } from '@nextcloud/vue'
-
+import {showError,showSuccess} from "@nextcloud/dialogs"
 import SettingsSlideBar from "./components/SettingsSlideBar";
 import DelApptSlideBar from "./components/DelApptSlideBar";
 import AddApptSlideBar from "./components/AddApptSlideBar";
@@ -714,7 +714,7 @@ export default {
       } catch (e) {
         this.pageInfoLoading = 0
         console.log(e)
-        OC.Notification.showTemporary(this.t('appointments', "Can't apply settings"), {timeout: 4, type: 'error'})
+        showError(this.t('appointments', "Can't apply settings"))
       }
 
       axios.post('state', {
@@ -730,10 +730,7 @@ export default {
         }
       }).catch((error) => {
         console.log(error)
-        OC.Notification.showTemporary(this.t('appointments', "Page settings error. Check console") + "\xa0\xa0\xa0\xa0", {
-          timeout: 4,
-          type: 'error'
-        })
+        showError(this.t('appointments', "Page settings error. Check console"))
       }).then(() => {
         // always executed
         this.pageInfoLoading = 0
@@ -806,10 +803,7 @@ export default {
               }
               if (n !== -1) {
                 let fn = ["Name", "Email", "Location"][n]
-                OC.Notification.showTemporary(this.t('appointments', "Error: '{fieldName}' field is empty, check User/Organization settings", {fieldName: fn}) + "\xa0\xa0\xa0\xa0", {
-                  timeout: 8,
-                  type: 'error'
-                })
+                showError(this.t('appointments', "Error: '{fieldName}' field is empty, check User/Organization settings", {fieldName: fn}))
                 this.pageInfoLoading = 0
               } else {
                 p.enabled = 1
@@ -913,19 +907,13 @@ export default {
           return res.data
         } else {
           console.log(res)
-          OC.Notification.showTemporary(t('appointments', "Can't get Settings. Check console") + "\xa0\xa0\xa0\xa0", {
-            timeout: 8,
-            type: 'error'
-          })
+          showError(t('appointments', "Can't get Settings. Check console"))
           return null
         }
       } catch (e) {
         this.stateInProgress = false
         console.log(e)
-        OC.Notification.showTemporary(t('appointments', "Can't get Settings. Check console") + "\xa0\xa0\xa0\xa0", {
-          timeout: 8,
-          type: 'error'
-        })
+        showError(t('appointments', "Can't get Settings. Check console"))
         return null
       }
     },
@@ -943,7 +931,7 @@ export default {
       } catch (e) {
         this.stateInProgress = false
         console.log(e)
-        OC.Notification.showTemporary(this.t('appointments', "Can't apply settings"), {timeout: 4, type: 'error'})
+        showError(this.t('appointments', "Can't apply settings"))
         return false
       }
       return await axios.post('state', {
@@ -954,7 +942,7 @@ export default {
         this.stateInProgress = false
         if (response.status === 200) {
           if(action!=='set_fi') this.getFormData(pageId)
-          OCP.Toast.success(this.t('appointments', 'New Settings Applied.'))
+          showSuccess(this.t('appointments', 'New Settings Applied.'))
           return action!=='set_fi'?true:response.data
         }else if(response.status===202){
           this.handle202(response.data)
@@ -962,7 +950,7 @@ export default {
       }).catch((error) => {
         this.stateInProgress = false
         console.log(error)
-        OC.Notification.showTemporary(this.t('appointments', "Can't apply settings"), {timeout: 4, type: 'error'})
+        showError(this.t('appointments', "Can't apply settings"))
         return false
       })
     },
@@ -1079,14 +1067,14 @@ export default {
       }).catch((error) => {
         this.closeGeneralModal()
         console.log(error)
-        OCP.Toast.error(this.t('appointments', 'Can not get public URL from server') + "\xa0\xa0\xa0\xa0")
+        showError(this.t('appointments', 'Can not get public URL from server'))
       })
 
     },
 
     doCopyPubLink() {
       const text = this.generalModalTxt[0]
-      const ok_txt = this.t('appointments', 'Public link copied to clipboard') + "\xa0\xa0\xa0\xa0"
+      const ok_txt = this.t('appointments', 'Public link copied to clipboard')
       const err_txt = this.t('appointments', 'Copy Error')
       if (navigator.clipboard) {
         navigator.clipboard.writeText(text).then(function () {
@@ -1410,10 +1398,7 @@ export default {
     },
 
     noCalSet() {
-      OC.Notification.showTemporary(this.t('appointments', "Select a Calendar First") + "\xa0\xa0\xa0\xa0", {
-        timeout: 5,
-        type: 'warning'
-      })
+      showError(this.t('appointments', "Select a Calendar First"))
     }
   }
 }

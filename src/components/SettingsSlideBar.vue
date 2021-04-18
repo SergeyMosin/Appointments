@@ -47,6 +47,7 @@ import ActionInput from "./ActionInputExt.vue";
 import {
   AppNavigationItem,
 } from '@nextcloud/vue'
+import {showError} from "@nextcloud/dialogs"
 export default {
   name: "SettingsSlideBar",
   components: {
@@ -100,7 +101,7 @@ export default {
             this.sendingKey=false
             if(r===false){
               this.keyValue=v
-              OC.Notification.showTemporary(this.t('appointments', "Error: Please check key"), {timeout: 6, type: 'error'})
+              showError(this.t('appointments', "Error: Please check key"))
             }else{
               this.keyValue=""
               this.hasKey=true
@@ -110,10 +111,10 @@ export default {
             }
           })
         }else{
-          OC.Notification.showTemporary(this.t('appointments', "Error: Invalid Key"), {timeout: 4, type: 'error'})
+          showError(this.t('appointments', "Error: Invalid Key"))
         }
       }else{
-        OC.Notification.showTemporary(this.t('appointments', "Value not available"), {timeout: 4, type: 'error'})
+        showError(this.t('appointments', "Value not available"))
       }
     },
     close(){

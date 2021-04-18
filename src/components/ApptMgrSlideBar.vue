@@ -173,6 +173,7 @@ import SlideBar from "./SlideBar.vue"
 import ApptIconButton from "./ApptIconButton";
 import ApptAccordion from "./ApptAccordion.vue";
 import {linkTo} from '@nextcloud/router'
+import {showError,showWarning} from "@nextcloud/dialogs"
 
 import {
   ActionButton,
@@ -244,7 +245,7 @@ export default {
       } catch (e) {
         this.isLoading=false
         console.log(e)
-        OC.Notification.showTemporary(this.t('appointments', "Can not request data"), {timeout: 4, type: 'error'})
+        showError(this.t('appointments', "Can not request data"))
         return
       }
 
@@ -263,7 +264,7 @@ export default {
       }catch (e){
         this.isLoading=false
         console.log(e)
-        OC.Notification.showTemporary(this.t('appointments', "Can not load calendars"), {timeout: 4, type: 'error'})
+        showError(this.t('appointments', "Can not load calendars"))
       }
 
       if(this.calInfo.tsMode==="2"){
@@ -277,7 +278,7 @@ export default {
           this.isLoading=false
           console.error("Can't get timezone")
           console.log(e)
-          OC.Notification.showTemporary(this.t('appointments', "Can't load timezones"), {timeout: 4, type: 'error'})
+          showError(this.t('appointments', "Can't load timezones"))
         }
       }
 
@@ -379,7 +380,7 @@ export default {
       if(evt!=='gotoAdvStn' &&
           this.realCalIDs!==this.calInfo.mainCalId.toString()+this.calInfo.destCalId.toString()
       ){
-        OC.Notification.showTemporary(this.t('appointments', "Please apply calendar changes first")+"\xa0\xa0\xa0\xa0", {timeout: 4, type: 'warning'})
+        showWarning(this.t('appointments', "Please apply calendar changes first"))
       }else {
         this.$emit(evt, this.curPageData.pageId)
       }

@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import {showError} from "@nextcloud/dialogs"
 export default {
   name: "FormInputsDesigner",
   data: function () {
@@ -46,7 +47,7 @@ export default {
         this.fiInfo = JSON.stringify(o[0],null,2)
       } catch (e) {
         console.log(e)
-        OC.Notification.showTemporary(this.t('appointments', "Can not request data"), {timeout: 4, type: 'error'})
+        showError(this.t('appointments', "Can not request data"))
       }
       this.isLoading=false
     },
@@ -62,7 +63,7 @@ export default {
           o = [JSON.parse(this.fiInfo)]
         } catch (e) {
           console.log(e)
-          OC.Notification.showTemporary(this.t('appointments', "Bad json, check console"), {timeout: 4, type: 'error'})
+          showError(this.t('appointments', "Bad json, check console"))
           return
         }
       }
