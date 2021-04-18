@@ -15,6 +15,10 @@
 	background-size: 8px;
 }
 
+.srgdev-slider-open .app-navigation-toggle{
+	display: none;
+}
+
 
 //.icon-projects-primary{
 //	@include icon-color('projects', 'actions', $color-primary, 1, true);

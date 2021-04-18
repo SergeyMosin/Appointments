@@ -1,5 +1,5 @@
 <template>
-  <div id="content">
+  <Content app-name="appointments" :class="{'srgdev-slider-open':sbShow!==0}">
     <AppNavigation>
       <ul :class="{'sb_disable':stateInProgress || visibleSection===1}">
         <AppNavigationItem
@@ -68,7 +68,8 @@
                           closeAfterClick>
               {{ t('appointments', 'Share Online') }}
             </ActionButton>
-            <ActionButton v-show="page.enabled===1" @click="setPageEnabled(page.pageId,0)" icon="icon-category-disabled"
+            <ActionButton v-show="page.enabled===1" @click="setPageEnabled(page.pageId,0)"
+                          icon="icon-category-disabled"
                           closeAfterClick>
               {{ t('appointments', 'Stop Sharing') }}
             </ActionButton>
@@ -112,12 +113,14 @@
             @click="toggleSlideBar(9)"
             :title="t('appointments','Settings')"
             icon="icon-settings"/>
+      </ul>
+      <template #footer>
         <AppNavigationItem
             :pinned="true"
             @click="showHelp"
             :title="t('appointments','Help/Tutorial')"
             icon="icon-info"/>
-      </ul>
+      </template>
     </AppNavigation>
     <AppContent style="transition: none;" class="srgdev-app-content" :aria-expanded="navOpen">
       <div v-show="visibleSection===2" class="srgdev-appt-cal-view-cont">
@@ -126,14 +129,19 @@
             <span :data-pop="generalModalPop" class="srgdev-appt-modal_pop_txt">{{ generalModalPopTxt }}</span>
           </div>
           <div v-if="generalModal===1" class="srgdev-appt-modal_content">
-            <div class="srgdev-appt-modal-header">{{ t('appointments', 'Public Page URL') + (generalModalBtnTxt!==""?(" - "+generalModalBtnTxt):"")}}</div>
+            <div class="srgdev-appt-modal-header">
+              {{
+                t('appointments', 'Public Page URL') + (generalModalBtnTxt !== "" ? (" - " + generalModalBtnTxt) : "")
+              }}
+            </div>
             <div v-if="generalModal===1 && generalModalLoadingTxt===''">
               <div class="srgdev-appt-modal-lbl" style="user-select: text; cursor: text;">
                 <span
                     style="cursor: text; display: inline-block; vertical-align: middle;">{{ generalModalTxt[0] }}</span>
                 <div style="position: relative;">
                   <div class="srgdev-appt-icon_txt_btn icon-clippy" @click="doCopyPubLink">Copy</div>
-                  <a target="_blank" :href="generalModalTxt[0]" class="srgdev-appt-icon_txt_btn icon-external">Visit</a>
+                  <a target="_blank" :href="generalModalTxt[0]"
+                     class="srgdev-appt-icon_txt_btn icon-external">Visit</a>
                   <ApptAccordion
                       v-show="generalModalTxt[1]!==''"
                       style="display: inline-block; margin-top: 1.25em; margin-left: .5em;"
@@ -201,10 +209,10 @@
             <button
                 @click="closeGeneralModal"
                 class="primary srgdev-appt-modal-btn">{{
-                    generalModalBtnTxt===""
-                        ?t('appointments', 'Close')
-                        :generalModalBtnTxt
-                }}
+                generalModalBtnTxt === ""
+                    ? t('appointments', 'Close')
+                    : generalModalBtnTxt
+              }}
             </button>
           </div>
         </Modal>
@@ -226,7 +234,10 @@
             <button @click="closePreviewGrid()">
               {{ t('appointments', 'Cancel') }}
             </button>
-            <div style="float:right; font-style: italic; font-size: 75%; color: var(--color-text-light); padding-right: 1.5em;">{{ t('appointments', 'Hint: right-click on appointment to edit.')}}</div>
+            <div
+                style="float:right; font-style: italic; font-size: 75%; color: var(--color-text-light); padding-right: 1.5em;">
+              {{ t('appointments', 'Hint: right-click on appointment to edit.') }}
+            </div>
           </div>
           <div class="srgdev-appt-grid-flex-lower">
             <ul class="srgdev-appt-grid-header">
@@ -296,17 +307,21 @@
                 @tmplUpdateAppt="gridApptUpdate($event)"
                 @tmplAddAppts="gridApptsAddTemplate($event)"
                 @close="closeEvtModal"/>
-            <button v-if="evtGridModal>1 && evtGridModal!==5" class="primary" @click="closeEvtModal">{{ t('appointments', 'Close') }}
+            <button v-if="evtGridModal>1 && evtGridModal!==5" class="primary" @click="closeEvtModal">
+              {{ t('appointments', 'Close') }}
             </button>
           </div>
         </Modal>
       </div>
       <div v-show="visibleSection===0" class="srgdev-appt-main-sec">
         <ul class="srgdev-appt-main-info">
-          <li>{{ pagePreviewLabel+' '+t('appointments', 'Preview') }}<span style="margin-left: 1.25em" v-show="pagePreviewLoading===true" class="icon-loading-small"></span></li>
+          <li>{{ pagePreviewLabel + ' ' + t('appointments', 'Preview') }}<span style="margin-left: 1.25em"
+                                                                               v-show="pagePreviewLoading===true"
+                                                                               class="icon-loading-small"></span></li>
         </ul>
         <div class="srgdev-appt-main-frame-cont">
-          <iframe class="srgdev-appt-main-frame" @load="pagePreviewLoading=false" ref="pubPageRef" :src="pubPage"></iframe>
+          <iframe class="srgdev-appt-main-frame" @load="pagePreviewLoading=false" ref="pubPageRef"
+                  :src="pubPage"></iframe>
         </div>
       </div>
       <div v-show="visibleSection===3" v-html="helpContent" class="srgdev-appt-help-sec">
@@ -387,7 +402,7 @@
             @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
       </div>
     </AppContent>
-  </div>
+  </Content>
 </template>
 
 <script>
@@ -403,8 +418,9 @@ import {
   AppNavigationItem,
   AppNavigationSpacer,
   Modal,
+  Content,
 } from '@nextcloud/vue'
-import {showError,showSuccess} from "@nextcloud/dialogs"
+import {showError, showSuccess} from "@nextcloud/dialogs"
 import SettingsSlideBar from "./components/SettingsSlideBar";
 import DelApptSlideBar from "./components/DelApptSlideBar";
 import AddApptSlideBar from "./components/AddApptSlideBar";
@@ -431,6 +447,7 @@ import TemplateApptOptions from "./components/TemplateApptOptions";
 export default {
   name: 'App',
   components: {
+    Content,
     TemplateApptOptions,
     TalkSlideBar,
     DirSlideBar,
@@ -471,19 +488,19 @@ export default {
       },
 
       // this us used to compute curPageData to pass to settings, etc..
-      curPageId:"p0",
+      curPageId: "p0",
       pagePreviewLabel: this.checkPageLabel(""),
       pagePreviewLoading: false,
 
       pageInfoLoading: 0,
 
       /** @type {{enabled:number,label:string,pageId:string}[]} */
-      morePages:[],
+      morePages: [],
 
       navOpen: false,
       sbShow: 0,
-      sbGotoBack:0,
-      pagePickerTitle:"",
+      sbGotoBack: 0,
+      pagePickerTitle: "",
 
       visibleSection: 0,
 
@@ -503,7 +520,7 @@ export default {
       gridHeader: [],
       gridApptLen: 0,
       gridApptTs: 0,
-      gridMode:gridMaker.MODE_SIMPLE,
+      gridMode: gridMaker.MODE_SIMPLE,
 
       generalModal: 0,
       generalModalTxt: ["", ""],
@@ -512,39 +529,39 @@ export default {
       generalModalPopTxt: "",
       generalModalCloseCallback: undefined,
       generalModalActionCallback: undefined,
-      generalModalBtnTxt:"",
+      generalModalBtnTxt: "",
 
       calInfo: {},
 
       stateInProgress: false,
 
-      hasKey:false
+      hasKey: false
     };
   },
   computed: {
 
-    curPageData:function (){
-      const ml=this.morePages.length
-      if(this.curPageId==='p0'){
+    curPageData: function () {
+      const ml = this.morePages.length
+      if (this.curPageId === 'p0') {
         return {
-          enabled:this.page0.enabled,
-          label:this.checkPageLabel(this.page0.label),
-          stateAction:"cls",
-          uciAction:"uci",
-          pageId:'p0',
-          pageCount:1+ml
+          enabled: this.page0.enabled,
+          label: this.checkPageLabel(this.page0.label),
+          stateAction: "cls",
+          uciAction: "uci",
+          pageId: 'p0',
+          pageCount: 1 + ml
         }
-      }else{
-        let r={}
-        for(let i=0,pgs=this.morePages;i<ml;i++){
-          if(pgs[i].pageId===this.curPageId){
-            r={
-              enabled:pgs[i].enabled,
-              label:pgs[i].label,
-              stateAction:"mps",
-              uciAction:"mps",
-              pageId:pgs[i].pageId,
-              pageCount:1+ml
+      } else {
+        let r = {}
+        for (let i = 0, pgs = this.morePages; i < ml; i++) {
+          if (pgs[i].pageId === this.curPageId) {
+            r = {
+              enabled: pgs[i].enabled,
+              label: pgs[i].label,
+              stateAction: "mps",
+              uciAction: "mps",
+              pageId: pgs[i].pageId,
+              pageCount: 1 + ml
             }
             break
           }
@@ -554,12 +571,12 @@ export default {
     }
   },
 
-  created(){
-    this.gridApptTZ="L"
-    this.gridTzName=""
-    this.gridApptsPageId="p0"
-    this.gridCID=0
-    this.evtGridElm=null
+  created() {
+    this.gridApptTZ = "L"
+    this.gridTzName = ""
+    this.gridApptsPageId = "p0"
+    this.gridCID = 0
+    this.evtGridElm = null
   },
 
   beforeMount() {
@@ -568,7 +585,7 @@ export default {
 
   mounted() {
 
-    this.getPages(1,'p0')
+    this.getPages(1, 'p0')
 
     this.$root.$on('helpWanted', this.helpWantedHandler)
     this.$root.$on('dumpSettings', this.dumpSettings)
@@ -598,73 +615,73 @@ export default {
 
   methods: {
 
-    editSingleAppt(e){
-      this.evtGridElm=e.detail
-      this.evtGridModal=5
+    editSingleAppt(e) {
+      this.evtGridElm = e.detail
+      this.evtGridModal = 5
     },
 
-    async editApptTemplate(info){
-      if(!this.isGridReady){
+    async editApptTemplate(info) {
+      if (!this.isGridReady) {
         this.gridSetup()
       }
 
-      this.getState("get_k").then(k=>{
-        this.hasKey=k!==""
+      this.getState("get_k").then(k => {
+        this.hasKey = k !== ""
       })
 
-      this.gridTzName=info.tzName
+      this.gridTzName = info.tzName
 
-      const wd=new Date()
-      wd.setHours(0,0,0)
-      let day=wd.getDay()
-      if(day===0){
+      const wd = new Date()
+      wd.setHours(0, 0, 0)
+      let day = wd.getDay()
+      if (day === 0) {
         day++
-      }else{
-        day=1-day
+      } else {
+        day = 1 - day
       }
 
-      const d={
-        dur:0,
-        week:wd.setTime(wd.getTime()+(day*86400000)),
-        tz:null,
-        pageId:info.pageId
+      const d = {
+        dur: 0,
+        week: wd.setTime(wd.getTime() + (day * 86400000)),
+        tz: null,
+        pageId: info.pageId
       }
 
-      this.makePreviewGrid(d,gridMaker.MODE_TEMPLATE)
+      this.makePreviewGrid(d, gridMaker.MODE_TEMPLATE)
     },
 
-    saveTemplate(){
-      this.setState('set_t_data',gridMaker.getTemplateData(),this.curPageData.pageId)
+    saveTemplate() {
+      this.setState('set_t_data', gridMaker.getTemplateData(), this.curPageData.pageId)
     },
 
-    openViaPicker(sbn,evt){
-      if(this.sbShow===11 && this.sbGotoBack===sbn){
+    openViaPicker(sbn, evt) {
+      if (this.sbShow === 11 && this.sbGotoBack === sbn) {
         // picker from THIS slideBar is showing... close it
         this.toggleSlideBar(0);
         return
       }
 
-      if(sbn===this.sbShow){
+      if (sbn === this.sbShow) {
         // the slideBar is showing
-        if(this.morePages.length>0){
+        if (this.morePages.length > 0) {
           // multiple pages are available...
           // ... open the pagePicker instead of just closing the slideBar
-          this.pagePickerTitle=evt.currentTarget.textContent.trim()
+          this.pagePickerTitle = evt.currentTarget.textContent.trim()
           this.toggleSlideBar(11)
-          this.sbGotoBack=sbn
-        }else{
+          this.sbGotoBack = sbn
+        } else {
           // single page, just close it
           this.toggleSlideBar(0);
         }
-      }else {
+      } else {
         if (this.morePages.length === 0) {
-          this.curPageId='p0'
+          this.curPageId = 'p0'
           this.toggleSlideBar(sbn)
         } else {
           // the picker can be already open update info first
-          this.pagePickerTitle=evt.currentTarget.textContent.trim()
+          this.pagePickerTitle = evt.currentTarget.textContent.trim()
           this.sbGotoBack = sbn
-          if(this.sbShow!==11){
+          if (this.sbShow !== 11) {
             // the picker is NOT open..., so open it
             this.toggleSlideBar(11)
           }
@@ -672,41 +689,41 @@ export default {
       }
     },
 
-    getPages(idx,p) {
+    getPages(idx, p) {
       this.pageInfoLoading = idx
       this.stateInProgress = true
       axios.post('state', {a: 'get_pages'})
-        .then(response => {
-          if (response.status === 200) {
-            const ap=[]
-            const d=response.data
-            let c=0
-            for (const prop in d) {
-              if (d.hasOwnProperty(prop)) {
-                if (prop === 'p0') {
-                  this.page0 = Object.assign({}, this.page0, d['p0'])
-                }else{
-                  ap[c]=d[prop]
-                  ap[c]['pageId']=prop
-                  c++
+          .then(response => {
+            if (response.status === 200) {
+              const ap = []
+              const d = response.data
+              let c = 0
+              for (const prop in d) {
+                if (d.hasOwnProperty(prop)) {
+                  if (prop === 'p0') {
+                    this.page0 = Object.assign({}, this.page0, d['p0'])
+                  } else {
+                    ap[c] = d[prop]
+                    ap[c]['pageId'] = prop
+                    c++
+                  }
                 }
               }
-            }
 
-            this.morePages=ap
-          }
-          this.getFormData(p)
-          this.pageInfoLoading = 0
-          this.stateInProgress = false
-        })
-        .catch(error => {
-          this.stateInProgress = false
-          this.pageInfoLoading = 0
-          console.log(error);
-        });
+              this.morePages = ap
+            }
+            this.getFormData(p)
+            this.pageInfoLoading = 0
+            this.stateInProgress = false
+          })
+          .catch(error => {
+            this.stateInProgress = false
+            this.pageInfoLoading = 0
+            console.log(error);
+          });
     },
 
-    setPages(p, v,idx) {
+    setPages(p, v, idx) {
       this.pageInfoLoading = idx
       let ji = ""
       try {
@@ -724,8 +741,8 @@ export default {
       }).then(response => {
         if (response.status === 200) {
           // this.getFormData(p)
-          this.getPages(idx,p)
-        }else if(response.status===202){
+          this.getPages(idx, p)
+        } else if (response.status === 202) {
           this.handle202(response.data)
         }
       }).catch((error) => {
@@ -744,33 +761,33 @@ export default {
       const t = evt.target
       const page = t.getAttribute("data-pid")
       let co
-      let idx=1
+      let idx = 1
       if (page === 'p0') {
         co = Object.assign({}, this.page0)
-      }else{
-        for(let i=0,pgs=this.morePages,l=pgs.length;i<l;i++){
-          if(pgs[i].pageId===page){
+      } else {
+        for (let i = 0, pgs = this.morePages, l = pgs.length; i < l; i++) {
+          if (pgs[i].pageId === page) {
             co = Object.assign({}, pgs[i])
-            idx=i+2
+            idx = i + 2
             break
           }
         }
       }
       co.label = t.value
-      this.setPages(page, co,idx)
+      this.setPages(page, co, idx)
       // this.getFormData(page)
     },
 
     setPageEnabled(page, enable) {
       let p
-      let idx=1
+      let idx = 1
       if (page === 'p0') {
         p = Object.assign({}, this.page0)
-      }else{
-        for(let i=0,pgs=this.morePages,l=pgs.length;i<l;i++){
-          if(pgs[i].pageId===page){
+      } else {
+        for (let i = 0, pgs = this.morePages, l = pgs.length; i < l; i++) {
+          if (pgs[i].pageId === page) {
             p = Object.assign({}, pgs[i])
-            idx=i+2
+            idx = i + 2
             break
           }
         }
@@ -785,7 +802,7 @@ export default {
 
         this.getState("get_uci")
             .then(res => {
-              if (res === null){
+              if (res === null) {
                 this.pageInfoLoading = 0
                 return null
               }
@@ -807,36 +824,36 @@ export default {
                 this.pageInfoLoading = 0
               } else {
                 p.enabled = 1
-                this.setPages(page, p,idx)
+                this.setPages(page, p, idx)
               }
             })
 
       } else {
         p.enabled = 0
-        this.setPages(page, p,idx)
+        this.setPages(page, p, idx)
       }
     },
 
-    addNewPage(){
-      this.setPages("new", {enabled:0,label:"New Page"},1)
+    addNewPage() {
+      this.setPages("new", {enabled: 0, label: "New Page"}, 1)
     },
 
-    deletePage(page){
-      let i=0
-      for(const pgs=this.morePages,l=pgs.length;i<l;i++){
-        if(pgs[i].pageId===page){
+    deletePage(page) {
+      let i = 0
+      for (const pgs = this.morePages, l = pgs.length; i < l; i++) {
+        if (pgs[i].pageId === page) {
           break
         }
       }
-      i+=2
+      i += 2
       this.toggleSlideBar(0)
-      this.setPages("delete", {page:page},i)
+      this.setPages("delete", {page: page}, i)
     },
 
     handle202(o) {
       if (o['contrib'] !== undefined) {
         this.showCModal(o['contrib'])
-      }else if(o['info'] !== undefined) {
+      } else if (o['info'] !== undefined) {
         this.showIModal(o['info'])
       }
     },
@@ -845,29 +862,29 @@ export default {
       let hd = this.gridHeader[cID]
       hd.n = event.target.querySelector('input[type=number]').value
 
-      if(this.gridMode===gridMaker.MODE_SIMPLE){
+      if (this.gridMode === gridMaker.MODE_SIMPLE) {
         this.gridApptsAddSimple(cID)
-      }else{
-        this.gridCID=cID
-        this.evtGridElm=null
-        this.evtGridModal=5
+      } else {
+        this.gridCID = cID
+        this.evtGridElm = null
+        this.evtGridModal = 5
       }
     },
 
-    gridApptsAddTemplate(ai){
+    gridApptsAddTemplate(ai) {
       let hd = this.gridHeader[this.gridCID]
       let nbr = parseInt(hd.n)
-      if (isNaN(nbr) || nbr < 1) nbr=1
+      if (isNaN(nbr) || nbr < 1) nbr = 1
 
       gridMaker.addAppt(0, ai.dur[0], nbr, this.gridCID, ai)
       hd.hasAppts = true
     },
 
-    gridApptUpdate(ai){
+    gridApptUpdate(ai) {
       gridMaker.updateAppt(ai)
     },
 
-    gridApptsAddSimple(cID){
+    gridApptsAddSimple(cID) {
       let hd = this.gridHeader[cID]
       let nbr = parseInt(hd.n)
       if (isNaN(nbr) || nbr < 1) return
@@ -879,7 +896,6 @@ export default {
       gridMaker.addAppt(0, this.gridApptLen, nbr, cID, this.calInfo.curCal_color)
       hd.hasAppts = true
     },
-
 
 
     gridApptsDel(cID) {
@@ -898,10 +914,10 @@ export default {
     },
 
     /** @return {Promise<JSON|string|Array|null>} */
-    async getState(action,p="") {
+    async getState(action, p = "") {
       this.stateInProgress = true
       try {
-        const res = await axios.post('state', {a: action,p: p})
+        const res = await axios.post('state', {a: action, p: p})
         this.stateInProgress = false
         if (res.status === 200) {
           return res.data
@@ -923,7 +939,7 @@ export default {
      * @param {Object} value
      * @param {string} pageId
      */
-    async setState(action, value, pageId='') {
+    async setState(action, value, pageId = '') {
       let ji = ""
       this.stateInProgress = true
       try {
@@ -941,10 +957,10 @@ export default {
       }).then(response => {
         this.stateInProgress = false
         if (response.status === 200) {
-          if(action!=='set_fi') this.getFormData(pageId)
+          if (action !== 'set_fi') this.getFormData(pageId)
           showSuccess(this.t('appointments', 'New Settings Applied.'))
-          return action!=='set_fi'?true:response.data
-        }else if(response.status===202){
+          return action !== 'set_fi' ? true : response.data
+        } else if (response.status === 202) {
           this.handle202(response.data)
         }
       }).catch((error) => {
@@ -955,7 +971,7 @@ export default {
       })
     },
 
-    toggleSlideBar(sbn,pageId) {
+    toggleSlideBar(sbn, pageId) {
 
       // CLose nav
       let elm = document.getElementById("app-navigation-toggle")
@@ -964,15 +980,15 @@ export default {
         elm.dispatchEvent(new Event('click'))
       }
 
-      if(sbn===0){
-        this.sbShow=0
+      if (sbn === 0) {
+        this.sbShow = 0
         return
       }
 
       if (this.sbShow === sbn) this.sbShow = 0
       else this.sbShow = sbn
 
-      if(pageId!==undefined){
+      if (pageId !== undefined) {
         this.getFormData(pageId)
       }
 
@@ -993,7 +1009,7 @@ export default {
 
       this.visibleSection = 3
 
-     axios.get('help')
+      axios.get('help')
           .then(response => {
             if (response.status === 200) {
               this.helpContent = response.data
@@ -1017,7 +1033,7 @@ export default {
           })
     },
 
-    dumpSettings(){
+    dumpSettings() {
       this.toggleSlideBar(0)
       this.visibleSection = 3
 
@@ -1025,8 +1041,8 @@ export default {
           .then(response => {
             if (response.status === 200) {
               this.helpContent = response.data
-            }else{
-              this.helpContent = 'Error occurred: bad status ('+response.status+')'
+            } else {
+              this.helpContent = 'Error occurred: bad status (' + response.status + ')'
             }
           })
           .catch((error) => {
@@ -1039,10 +1055,10 @@ export default {
     showPubLink(page) {
       this.openGeneralModal(1)
       this.generalModalLoadingTxt = this.t('appointments', 'Fetching URL from the server …')
-      if(page==='p0'){
+      if (page === 'p0') {
         // this is actually the header text for this dialog
         this.generalModalBtnTxt = this.page0.label
-      }else {
+      } else {
         for (let i = 0, pgs = this.morePages, l = pgs.length; i < l; i++) {
           if (pgs[i].pageId === page) {
             // this is actually the header text for this dialog
@@ -1053,7 +1069,7 @@ export default {
       }
 
       axios.post('state', {
-        a: page==='dir'?'get_diruri':'get_puburi',
+        a: page === 'dir' ? 'get_diruri' : 'get_puburi',
         p: page
       }).then(response => {
         if (response.status === 200) {
@@ -1061,7 +1077,7 @@ export default {
           this.generalModalLoadingTxt = ""
           this.$set(this.generalModalTxt, 0, ua[0])
           this.$set(this.generalModalTxt, 1, ua[1])
-        }else if(response.status===202){
+        } else if (response.status === 202) {
           this.handle202(response.data)
         }
       }).catch((error) => {
@@ -1125,21 +1141,21 @@ export default {
       }
     },
 
-    checkPageLabel(l){
-      return l===""?t('appointments','Public Page'):l;
+    checkPageLabel(l) {
+      return l === "" ? t('appointments', 'Public Page') : l;
     },
 
     getFormData(pageId) {
-      this.pagePreviewLoading=true
-      let lbl=""
-      if(typeof pageId !== "string") {
+      this.pagePreviewLoading = true
+      let lbl = ""
+      if (typeof pageId !== "string") {
         this.pubPage = 'form?v=' + Date.now()
-        lbl=this.page0.label
-      }else{
-        if(pageId==='dir'){
+        lbl = this.page0.label
+      } else {
+        if (pageId === 'dir') {
           this.pubPage = 'dir?v=' + Date.now()
-          lbl=t('appointments','Directory Page')
-        }else {
+          lbl = t('appointments', 'Directory Page')
+        } else {
           if (/^p\d{1}$/.test(pageId) === false) {
             // default to the main page
             pageId = 'p0'
@@ -1160,13 +1176,13 @@ export default {
           }
         }
       }
-      this.pagePreviewLabel=this.checkPageLabel(lbl)
+      this.pagePreviewLabel = this.checkPageLabel(lbl)
       this.visibleSection = 0
     },
 
-    makePreviewGrid(d,mode=gridMaker.MODE_SIMPLE) {
+    makePreviewGrid(d, mode = gridMaker.MODE_SIMPLE) {
 
-      this.gridMode=mode
+      this.gridMode = mode
       gridMaker.setMode(mode)
 
       gridMaker.resetAllColumns()
@@ -1174,19 +1190,19 @@ export default {
       const NBR_DAYS = 6
       // Generate local names for days and month(s)
       let tff
-      const lang=document.documentElement.lang
+      const lang = document.documentElement.lang
       if (window.Intl && typeof window.Intl === "object") {
         let f
-        if(mode===gridMaker.MODE_SIMPLE) {
+        if (mode === gridMaker.MODE_SIMPLE) {
           f = new Intl.DateTimeFormat([lang],
               {weekday: "short", month: "2-digit", day: "2-digit"})
-        }else{
+        } else {
           f = new Intl.DateTimeFormat([lang],
               {weekday: "long"})
         }
         tff = f.format
       } else {
-        const _sl=mode===gridMaker.MODE_SIMPLE?10:3
+        const _sl = mode === gridMaker.MODE_SIMPLE ? 10 : 3
         // noinspection JSUnusedLocalSymbols
         tff = function (d) {
           return td.toDateString().slice(0, _sl)
@@ -1220,7 +1236,7 @@ export default {
 
       this.visibleSection = 1
 
-      if(mode===gridMaker.MODE_SIMPLE) {
+      if (mode === gridMaker.MODE_SIMPLE) {
         this.$set(this.calInfo, "curCal_color", d.calColor)
         this.$set(this.calInfo, "curCal_name", d.calName)
 
@@ -1240,17 +1256,17 @@ export default {
           console.log(error);
         })
 
-      }else{
+      } else {
         this.$set(this.calInfo, "curCal_color", null)
         this.$set(this.calInfo, "curCal_name", null)
 
         // get template data
-        this.getState('get_t_data',d.pageId)
-            .then(data=>{
+        this.getState('get_t_data', d.pageId)
+            .then(data => {
               gridMaker.addPastAppts(data, null)
               //activate non empty columns
-              data.forEach((c,i)=>{
-                if(this.gridHeader[i]!==undefined) {
+              data.forEach((c, i) => {
+                if (this.gridHeader[i] !== undefined) {
                   this.gridHeader[i].hasAppts = c.length > 0
                 }
               })
@@ -1299,21 +1315,21 @@ export default {
       if (this.evtGridModal < 3) this.getFormData(this.gridApptsPageId)
       this.modalErrTxt = ""
       this.evtGridModal = 0
-      this.evtGridElm=null
+      this.evtGridElm = null
     },
 
-    showCModal(txt){
+    showCModal(txt) {
       this.openGeneralModal(3)
       this.$set(this.generalModalTxt, 0, t('appointments', "Contributor only feature"))
       this.$set(this.generalModalTxt, 1, txt)
-      this.generalModalCloseCallback = function (){
+      this.generalModalCloseCallback = function () {
         this.helpWantedHandler('contrib_info')
         // const a = document.createElement('a');
         // a.target="_blank";
         // a.href="https://www.srgdev.com/gh-support/nextcloudapps";
         // a.click();
       }
-      this.generalModalBtnTxt=t('appointments', "More Info")
+      this.generalModalBtnTxt = t('appointments', "More Info")
     },
 
     showIModal(txt) {
@@ -1335,18 +1351,18 @@ export default {
     },
 
     /** @param {Object} o */
-    updateGeneralModal(o){
-      for (const prop in o){
-        if (o.hasOwnProperty(prop) && prop.indexOf('generalModal')===0) {
-          if(prop==='generalModalTxt') {
-            if(o[prop][0]!==undefined){
+    updateGeneralModal(o) {
+      for (const prop in o) {
+        if (o.hasOwnProperty(prop) && prop.indexOf('generalModal') === 0) {
+          if (prop === 'generalModalTxt') {
+            if (o[prop][0] !== undefined) {
               this.$set(this.generalModalTxt, 0, o[prop][0])
             }
-            if(o[prop][1]!==undefined){
+            if (o[prop][1] !== undefined) {
               this.$set(this.generalModalTxt, 1, o[prop][1])
             }
           }
-          this[prop]=o[prop]
+          this[prop] = o[prop]
         }
       }
     },
