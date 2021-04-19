@@ -522,7 +522,7 @@ export default {
       gridApptLen: 0,
       gridApptTs: 0,
       gridMode: gridMaker.MODE_SIMPLE,
-      gridMenuOpen:-1,
+      gridMenuOpen: -1,
 
       generalModal: 0,
       generalModalTxt: ["", ""],
@@ -861,7 +861,7 @@ export default {
     },
 
     gridApptsAdd(cID, event) {
-      this.gridMenuOpen=-1
+      this.gridMenuOpen = -1
       let hd = this.gridHeader[cID]
       hd.n = event.target.querySelector('input[type=number]').value
 
@@ -902,13 +902,13 @@ export default {
 
 
     gridApptsDel(cID) {
-      this.gridMenuOpen=-1
+      this.gridMenuOpen = -1
       gridMaker.resetColumn(cID)
       this.gridHeader[cID].hasAppts = false
     },
 
     gridApptsCopy(cID) {
-      this.gridMenuOpen=-1
+      this.gridMenuOpen = -1
       gridMaker.cloneColumns(cID, cID + 1, this.calInfo.curCal_color)
       this.gridHeader[cID + 1].hasAppts = true
     },
@@ -944,7 +944,7 @@ export default {
      * @param {Object} value
      * @param {string} pageId
      */
-    async setState(action, value, pageId = '') {
+    async setState(action, value, pageId = '',opt={}) {
       let ji = ""
       this.stateInProgress = true
       try {
@@ -963,7 +963,7 @@ export default {
         this.stateInProgress = false
         if (response.status === 200) {
           if (action !== 'set_fi') this.getFormData(pageId)
-          showSuccess(this.t('appointments', 'New Settings Applied.'))
+          if(opt.noToast===undefined) showSuccess(this.t('appointments', 'New Settings Applied.'))
           return action !== 'set_fi' ? true : response.data
         } else if (response.status === 202) {
           this.handle202(response.data)

@@ -404,7 +404,7 @@ export default {
     },
 
     async getTimeZone() {
-      const ttzRes = await this.getState("get_tz")
+      const ttzRes = await this.getState("get_t_tz")
       let res = await this.getState("get_tz")
       if (res !== null && res.toLowerCase() !== 'utc') {
         let url = linkTo('appointments', 'ajax/zones.js')
@@ -439,7 +439,7 @@ export default {
               this.setState(
                   "set_" + this.curPageData.stateAction,
                   this.calInfo,
-                  this.curPageData.pageId)
+                  this.curPageData.pageId,{noToast:true})
             }
 
             return {
