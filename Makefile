@@ -4,8 +4,6 @@
 app_name=$(notdir $(CURDIR))
 project_directory=$(CURDIR)/../$(app_name)
 build_tools_directory=$(CURDIR)/build/tools
-source_build_directory=$(CURDIR)/build/artifacts/source
-source_package_name=$(source_build_directory)/$(app_name)
 appstore_build_directory=$(CURDIR)/build/artifacts/appstore
 appstore_package_name=$(appstore_build_directory)/$(app_name)
 
@@ -70,3 +68,7 @@ appstore: build-prod
 	$(project_directory)/CHANGELOG.md
 
 #	$(project_directory)/translationfiles \
+
+sign-app:
+	openssl dgst -sha512 -sign ~/certs/appointments.key \
+	$(appstore_package_name).tar.gz | openssl base64

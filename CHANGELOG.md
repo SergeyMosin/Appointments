@@ -1,3 +1,13 @@
+## 1.9.0 - 2021-04-18
+### Added
+- page name to emails when multiple pages are in use
+### Fixed
+- incorrect timezone under some circumstances - issue #195
+- grid menus not closing
+### Changed
+- Nextcloud min version is 20 now (v18 and v19 are not supported anymore)
+- if enabled, timezone is displayed next to the date (instead of in the time cell)
+
 ## 1.8.10 - 2021-03-06
 ### Changed
 - 'disableForGroups' -> 'limitToGroups'
