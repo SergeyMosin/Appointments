@@ -659,6 +659,12 @@ class DavListener {
                     if(strlen($info)>2) $tmpl->addBodyListItem($info);
                 }
 
+                // Add page name
+                $pages=$utils->getUserSettings(BackendUtils::KEY_PAGES,$userId);
+                if(count($pages)>1) {
+                    $tmpl->addBodyListItem($pages[$pageId]['label']);
+                }
+
                 $msg=$mailer->createMessage();
                 $msg->setFrom(array($def_email));
                 $msg->setTo(array($org_email));
