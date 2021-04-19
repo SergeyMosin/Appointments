@@ -370,17 +370,6 @@
             }
         }
 
-        let tfz
-        if(has_intl) {
-            let f = new Intl.DateTimeFormat([lang],
-                {hour: "numeric", minute: "2-digit", timeZoneName:"short"})
-            tfz=f.format
-        }else{
-            tfz=function (d) {
-                return d.toLocaleTimeString()
-            }
-        }
-
         let df
         if(has_intl) {
             let f = new Intl.DateTimeFormat([lang],
@@ -437,7 +426,7 @@
         }
 
         for(let md=new Date(),tzo,tzi,t,tStr,atStr,sp,sp2,dur,dur_idx,
-                ts,endTime=pso[PPS_END_TIME],showTZ=pso[PPS_SHOWTZ],
+                ts,endTime=pso[PPS_END_TIME],
                 ia=s.getAttribute("data-info").split(','),
                 l=ia.length,i=0,ds;i<l;i++){
 
@@ -449,17 +438,10 @@
             tzo=md.getTimezoneOffset()
             t=ds.charAt(0)
 
-            if(showTZ===0){
-                tStr=atStr=tf(md)
-            }else{
-                tStr=atStr=tfz(md)
-                if(endTime===1){
-                    tStr=tf(md) // no tz override
-                }
-            }
+            tStr=atStr=tf(md)
+
             ts=md.getTime()
 
-            // dur_idx=""
             dur=null
             if(endTime===1 || t==='T'){
                 sp2=sp+1
@@ -479,11 +461,7 @@
                         sp2=+ds.substr(sp2,sp-sp2)*1000
                         md.setTime(ts + (sp2 - ts))
                     }
-                    if (showTZ === 0) {
-                        tStr += ' - ' + tf(md)
-                    } else {
-                        tStr += ' - ' + tfz(md)
-                    }
+                    tStr += ' - ' + tf(md)
                 }
             }
 
@@ -630,7 +608,33 @@
             tu_class='srgdev-dpu-time-unit2'
         }
 
-        for(let tl,ts,ti,ets,tts,te,pe,dto,i=0;i<l;i++){
+        let getTzName
+        if(pso[PPS_SHOWTZ]===1 && has_intl) {
+            // getTzName=
+            getTzName=function (d) {
+                const short = d.toLocaleDateString([lang]);
+                const full = d.toLocaleDateString([lang], {timeZoneName: 'long'});
+
+                // Trying to remove date from the string in a locale-agnostic way
+                const shortIndex = full.indexOf(short);
+                if (shortIndex >= 0) {
+                    const trimmed = full.substring(0, shortIndex) + full.substring(shortIndex + short.length);
+
+                    // by this time `trimmed` should be the timezone's name with some punctuation -
+                    // trim it from both sides
+                    return trimmed.replace(/^[\s,.\-:;]+|[\s,.\-:;]+$/g, '');
+
+                } else {
+                    return full;
+                }
+
+            }
+        }else{
+            getTzName=function () { return '' }
+        }
+
+
+        for(let tl,ts,ti,ets,tts,te,pe,elt,dto,tzn,i=0;i<l;i++){
             dto=dta[i]
             ts= dto.rts
             if(ts===0) break
@@ -692,6 +696,14 @@
                 pe=document.createElement('div')
                 pe.className="srgdev-dpu-tc-full-date"
                 pe.appendChild(document.createTextNode(wff(d)))
+                // time zone
+                tzn=getTzName(d)
+                if(tzn!=='') {
+                    elt = document.createElement('div')
+                    elt.className = "srgdev-dpu-tc-timezone"
+                    elt.appendChild(document.createTextNode(tzn))
+                    pe.appendChild(elt)
+                }
                 te.appendChild(pe)
 
                 pe=document.createElement('div')

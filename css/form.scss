@@ -373,17 +373,14 @@ $color-placeholder-var:var(--color-text-maxcontrast);
 
 #srgdev-dpu_main-time{
   position: relative;
-  height: 19em;
   border-top: 1px solid $color-border;
   border-top: 1px solid var(--color-border);
 }
 
 .srgdev-dpu-time-cont{
   //display: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 0;
+  //position: absolute;
+  display: none;
   width: 100%;
   overflow: hidden;
   background-color: $color-main-background;
@@ -398,6 +395,7 @@ $color-placeholder-var:var(--color-text-maxcontrast);
   text-align: center;
   padding-top: 2.5em;
   line-height: 1.6;
+  height: 12.75em;
   color: $color-text-lighter;
   color: var(--color-text-lighter);
 }
@@ -405,7 +403,8 @@ $color-placeholder-var:var(--color-text-maxcontrast);
 .srgdev-dpu-time-cont[data-active]{
   //transform: translateX(100%);
   z-index: 510;
-  height: 100%;
+  display: block;
+  //height: 100%;
 }
 .srgdev-dpu-tc-full-date{
   text-align: center;
@@ -414,14 +413,17 @@ $color-placeholder-var:var(--color-text-maxcontrast);
   font-weight: bold;
   color: $color-main-text;
   color: var(--color-main-text);
-
+}
+.srgdev-dpu-tc-timezone{
+  font-weight: normal;
+  font-size: 75%;
+  color: ($color-text-lighter);
+  color: var(--color-text-lighter);
 }
 .srgdev-dpu-tc-tu-wrap{
   overflow-y: scroll;
-  top: 3.2em;
-  bottom: 0;
   width: 100%;
-  position: absolute;
+  height: 14.5em;
   text-align: center;
 }
 .srgdev-dpu-time-unit_tn,
