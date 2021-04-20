@@ -48,7 +48,7 @@ OC.L10N.register(
     "Your %s has been changed to %s" : "S'apuntamentu tuo%s est istadu mudadu a su %s",
     "All done." : "Fatu.",
     "Info" : "Informatziones",
-    "Link Expired …" : "Ligòngiu iscàdidu ...",
+    "Link Expired …" : "Ligòngiu iscadidu ...",
     "Almost done …" : "Cuasi fatu ...",
     "We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request" : "Amus imbiadu unu messàgiu de posta a %s, aberi·ddu e incarca subra su ligàmene de cunfirma pro cumpretare sa rechesta de apuntamentu.",
     "Organization Name" : "Nùmene organizatzione",
