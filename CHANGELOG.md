@@ -1,3 +1,7 @@
+## 1.9.1 - 2021-04-20
+### Fixed
+- CSS layering - issue #203
+
 ## 1.9.0 - 2021-04-18
 ### Added
 - page name to emails when multiple pages are in use
