@@ -95,7 +95,7 @@ OC.L10N.register(
     "New Settings Applied." : "Impostatziones noas aplicadas.",
     "Fetching URL from the server …" : "Recùperu URL dae su serbidore ...",
     "Can not get public URL from server" : "Impossìbile a otènnere unu URL pùblicu dae su serbidore",
-    "Public link copied to clipboard" : "Ligòngiu pùblicu copiadu in is apuntos",
+    "Public link copied to clipboard" : "Ligòngiu pùblicu copiadu in punta de billete",
     "Copy Error" : "Errore de còpia",
     "Public Page" : "Pàgina pùblica",
     "Add Appointment Slots" : "Agiunghe postos de apuntamentu",
