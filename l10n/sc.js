@@ -142,7 +142,7 @@ OC.L10N.register(
     "Time slot mode" : "Modalidade postu temporale",
     "Weekly Template" : "Modellu de sa chida",
     "Simple" : "Simpre",
-    "External" : "Foranu",
+    "External" : "De foras",
     "Warning" : "Avisu",
     "Time slot mode has changed. Public page is going offline …" : "Sa modalidade postu temporale est cambiada. Sa pàgina pùblica est pro si pònnere in fora de lìnia ...",
     "Error" : "Errore",
