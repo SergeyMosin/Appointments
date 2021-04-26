@@ -56,7 +56,7 @@ OC.L10N.register(
     "Please add time slots first." : "請先添加時段。",
     "Please select a calendar first" : "請先選擇日曆",
     "Selected calendar not found" : "找不到選定的日曆",
-    "Action failed. Select calendar(s) first." : "動作失敗。 首先選擇日曆。",
+    "Action failed. Select calendar(s) first." : "操作失敗。 首先選擇日曆。",
     "More than 2 additional pages (10 maximum)" : "超過2頁（最多10頁）",
     "Page not added: 10 pages maximum" : "未添加頁面：最多10頁",
     "Please setup the directory page first." : "請先設置目錄頁面。",
