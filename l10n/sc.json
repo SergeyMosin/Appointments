@@ -121,7 +121,7 @@
     "When Attendee Cancels" : "Cando is partzetzipantes cantzellant",
     "Mark the appointment as canceled" : "Marca s'apuntamentu comente cantzelladu",
     "Reset (make the timeslot available)" : "Reseta (pone su postu a disponimentu)",
-    "External Mode Settings" : "Impostatziones de modalidade forana",
+    "External Mode Settings" : "Impostatziones de modalidade de foras",
     "Optimize recurrence" : "Règula sa recurrèntzia",
     "Require \"Appointment\" category" : "Rechede categoria \"Apuntamentu\"",
     "Auto-fix \"Source\" timeslots" : "Curregi in automàticu is postos \"Sorgente\"",
@@ -268,7 +268,7 @@
     "Enter phone number" : "Inserta nùmeru de telèfonu",
     "Session Timeout. Reload." : "Sessione fora de tempus. Torra a carrigare.",
     "Book Now" : "Prenota immoe",
-    "An error has occurred" : "Ddoe at àpidu un'errore",
+    "An error has occurred" : "B'at àpidu un'errore",
     "Please %1$stry again%2$s and select a different date." : "Pro praghere %1$storra a proare%2$s e seletziona un'àtera data.",
     "Please contact us directly at" : "Pro praghere, cuntata·nos deretu in ",
     "Please try again later" : "Pro praghere, torra a proare tra unu pagheddu"
