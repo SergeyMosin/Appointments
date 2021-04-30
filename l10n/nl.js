@@ -188,7 +188,7 @@ OC.L10N.register(
     "Twelve Weeks" : "Twaalf weken",
     "Show Empty Days" : "Toon lege dagen",
     "Start on current day instead of Monday" : "Start op huidige dag in plaats van de maandag",
-    "Show Empty Weekends" : "Toon lege weekends",
+    "Show Empty Weekends" : "Toon lege weekenden",
     "Show time in two columns" : "Toon tijd in twee kolommen",
     "Show end time" : "Eindtijd weergeven",
     "GDPR Compliance" : "GDPR Compliancy",
