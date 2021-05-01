@@ -195,7 +195,7 @@ OC.L10N.register(
     "See Tutorial …" : "Veja o tutorial...",
     "Hide phone number field" : "Esconder o campo do número telefônico",
     "Show timezone" : "Mostrar fuso horário",
-    "Add {taginfo} tag" : "Adicionar o rótulo {taginfo}",
+    "Add {taginfo} tag" : "Adicionar a etiqueta {taginfo}",
     "Page Header Title:" : "Título do Cabeçalho da Página:",
     "Page Header Subtitle:" : "Subtítulo do Cabeçalho da Página:",
     "Style Override:" : "Sobrescrever Estilo:",
