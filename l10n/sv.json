@@ -10,7 +10,7 @@
     "Can't find your name. Check User/Organization settings." : "Kan inte hitta ditt namn. Kontrollera användar-/organisations-inställningarna",
     "Available" : "Tillgänglig",
     "%s appointment (action needed)" : "%s bokning (åtgärd behövs)",
-    "Dear %s," : "Bäste%s,",
+    "Dear %s," : "Bäste %s,",
     "The %1$s appointment scheduled for %2$s is awaiting your confirmation." : "%1$s-mötet inbokat den%2$s väntar på din bekräftelse.",
     "Confirm" : "Bekräfta",
     "Cancel" : "Avbryt",
