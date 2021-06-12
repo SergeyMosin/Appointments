@@ -1,3 +1,15 @@
+## 1.9.2 - 2021-06-12
+### Added
+- Version info to `settings dump`
+- Additional logging for #217 and #209 debugging
+### Fixed
+- End-time not showing in `simple` and `external` modes
+### Changed
+- Updated timezone info
+- Updated build tools and dependencies
+- Minor CSS tweaks
+
+
 ## 1.9.1 - 2021-04-20
 ### Fixed
 - CSS layering - issue #203
