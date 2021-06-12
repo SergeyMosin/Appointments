@@ -1,6 +1,8 @@
 <template>
   <Content app-name="appointments" :class="{'srgdev-slider-open':sbShow!==0}">
     <AppNavigation>
+      <template #list>
+        <li>
       <ul :class="{'sb_disable':stateInProgress || visibleSection===1}">
         <AppNavigationItem
             :class="{'sb_disable_nav-item':sbShow!==0}"
@@ -114,6 +116,8 @@
             :title="t('appointments','Settings')"
             icon="icon-settings"/>
       </ul>
+        </li>
+      </template>
       <template #footer>
         <AppNavigationItem
             :pinned="true"
