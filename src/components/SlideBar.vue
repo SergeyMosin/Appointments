@@ -99,6 +99,7 @@
 </script>
 
 <style lang="scss" scoped>
+    @use "sass:math";
     @import '../../node_modules/@nextcloud/vue/src/assets/variables.scss';
 
     $header-height: 50px;
@@ -140,7 +141,8 @@
 
         .app-slidebar-main-area {
             text-align: center;
-            padding: #{$desc-vertical-padding} $desc-vertical-padding / 2 #{$desc-vertical-padding} $desc-vertical-padding / 2;
+          //noinspection CssInvalidFunction
+          padding: #{$desc-vertical-padding} math.div($desc-vertical-padding, 2) #{$desc-vertical-padding} math.div($desc-vertical-padding, 2);
         }
 
 
@@ -153,7 +155,8 @@
                 right: $top-buttons-spacing;
                 z-index: 100;
                 opacity: $opacity_normal;
-                border-radius: $clickable-area / 2;
+              //noinspection CssInvalidFunction
+              border-radius: math.div($clickable-area, 2);
 
                 &:hover,
                 &:active,
@@ -179,7 +182,8 @@
 
             &__desc {
                 position: relative;
-                padding: #{$desc-vertical-padding} #{$clickable-area + $top-buttons-spacing * 3} #{$desc-vertical-padding} $desc-vertical-padding / 2;
+              //noinspection CssInvalidFunction
+              padding: #{$desc-vertical-padding} #{$clickable-area + $top-buttons-spacing * 3} #{$desc-vertical-padding} math.div($desc-vertical-padding, 2);
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -210,11 +214,12 @@
                 }
 
                 // main menu
-                .app-sidebar-header__menu {
+              //noinspection CssInvalidFunction
+              .app-sidebar-header__menu {
                     position: absolute;
-                    right: $clickable-area / 2;
+                    right: math.div($clickable-area, 2);
                     background-color: $action-background-hover;
-                    border-radius: $clickable-area / 2;
+                    border-radius: math.div($clickable-area, 2);
                 }
 
                 &--with-subtitle {
