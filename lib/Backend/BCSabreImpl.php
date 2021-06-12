@@ -16,6 +16,7 @@ use Sabre\VObject\Recur\EventIterator;
 use Sabre\VObject\Recur\NoInstancesException;
 use Sabre\Xml\ParseException;
 use Sabre\VObject\Reader;
+use Psr\Log\LoggerInterface;
 
 class BCSabreImpl implements IBackendConnector{
 
@@ -26,17 +27,21 @@ class BCSabreImpl implements IBackendConnector{
     private $config;
     private $appName;
     private $utils;
+    /** @var LoggerInterface */
+    private $logger;
 
     public function __construct(
                         $AppName,
                         CalDavBackend $backend,
                         IConfig $config,
-                        BackendUtils $utils){
+                        BackendUtils $utils,
+                        LoggerInterface $logger){
         /** @var BackendInterface $backend */
         $this->backend=$backend;
         $this->config=$config;
         $this->appName=$AppName;
         $this->utils=$utils;
+        $this->logger = $logger;
     }
 
     /**
@@ -58,7 +63,7 @@ class BCSabreImpl implements IBackendConnector{
         try {
             $result = $parser->parse($this::makeDavReport(null,$end,$only_empty===true?"TENTATIVE":null));
         } catch (ParseException $e) {
-            \OC::$server->getLogger()->error($e);
+            $this->logger->error($e);
             return null;
         }
 
@@ -130,7 +135,7 @@ class BCSabreImpl implements IBackendConnector{
         try {
             $result = $parser->parse($this::makeTrDavReport($r_start,$r_end,$cat_required));
         } catch (ParseException $e) {
-            \OC::$server->getLogger()->error($e);
+            $this->logger->error($e);
             return -1;
         }
 
@@ -180,10 +185,15 @@ class BCSabreImpl implements IBackendConnector{
                     continue;
                 }
 
-
 //                start1 <= end2 && start2 <= end1
                 if($start_ts <= $it->getDtEnd()->getTimestamp()
                     && $it->getDtStart()->getTimestamp() <= $end_ts){
+                    $this->logger->warning("Timeslot is blocked, calId: ".$calId
+                        .", blocker_start: ".$it->getDtStart()->getTimestamp()
+                        .", blocker_end: ".$it->getDtEnd()->getTimestamp()
+                        .", timeslot_start: ".$start_ts
+                        .", timeslot_end: ".$end_ts
+                    );
                     return 1;
                 }
                 $it->next();
@@ -238,7 +248,7 @@ class BCSabreImpl implements IBackendConnector{
         try {
             $result = $parser->parse($this::makeTrDavReport($start_str,$end_str,$cls[BackendUtils::CLS_XTM_REQ_CAT]));
         } catch (ParseException $e) {
-            \OC::$server->getLogger()->error($e);
+            $this->logger->error($e);
             return null;
         }
 
@@ -305,7 +315,7 @@ class BCSabreImpl implements IBackendConnector{
         try {
             $result = $parser->parse($this::makeTrDavReport($start_str,$end_str,$cls[BackendUtils::CLS_XTM_REQ_CAT]));
         } catch (ParseException $e) {
-            \OC::$server->getLogger()->error($e);
+            $this->logger->error($e);
             return null;
         }
 
@@ -455,7 +465,7 @@ class BCSabreImpl implements IBackendConnector{
         try {
             $result = $parser->parse($this::makeTrDavReport($start_str,$end_str,false));
         } catch (ParseException $e) {
-            \OC::$server->getLogger()->error($e);
+            $this->logger->error($e);
             return -1;
         }
 
@@ -521,7 +531,7 @@ class BCSabreImpl implements IBackendConnector{
 
         $key = hex2bin($this->config->getAppValue($this->appName, 'hk'));
         if (empty($key)) {
-            \OC::$server->getLogger()->error("Can't find hkey");
+            $this->logger->error("Can't find hkey");
             return null;
         }
 
@@ -547,7 +557,7 @@ class BCSabreImpl implements IBackendConnector{
         try {
             $result = $parser->parse($this::makeTrDavReport($start_str,$end_str,false));
         } catch (ParseException $e) {
-            \OC::$server->getLogger()->error($e);
+            $this->logger->error($e);
             return null;
         }
 
@@ -611,7 +621,7 @@ class BCSabreImpl implements IBackendConnector{
             try {
                 $start->setTimezone(new \DateTimeZone($ti[BackendUtils::TMPL_TZ_NAME]));
             } catch (\Exception $e) {
-                \OC::$server->getLogger()->warning('Can not set timezone template');
+                $this->logger->warning('Can not set timezone template');
             }
         }
 
@@ -674,7 +684,7 @@ class BCSabreImpl implements IBackendConnector{
         }else {
             $key = hex2bin($this->config->getAppValue($this->appName, 'hk'));
             if (empty($key)) {
-                \OC::$server->getLogger()->error("Can't find hkey");
+                $this->logger->error("Can't find hkey");
                 return null;
             }
         }
@@ -701,7 +711,7 @@ class BCSabreImpl implements IBackendConnector{
             //$no_url(do not filter status) request is for the schedule generator @see grid.js::addPastAppts()
             $result = $parser->parse($this::makeDavReport($start,$end,$no_uri===false?"TENTATIVE":null));
         } catch (ParseException $e) {
-            \OC::$server->getLogger()->error($e);
+            $this->logger->error($e);
             return null;
         }
 
@@ -763,7 +773,7 @@ class BCSabreImpl implements IBackendConnector{
         try {
             $this->backend->updateCalendarObject($calId, $uri, $data);
         } catch (BadRequest $e) {
-            \OC::$server->getLogger()->error($e);
+            $this->logger->error($e);
             return false;
         }
         return true;
@@ -778,7 +788,7 @@ class BCSabreImpl implements IBackendConnector{
         try {
             $this->backend->createCalendarObject($calId, $uri, $data);
         } catch (BadRequest $e) {
-            \OC::$server->getLogger()->error($e);
+            $this->logger->error($e);
             return false;
         }
         return true;
@@ -892,7 +902,7 @@ class BCSabreImpl implements IBackendConnector{
             try {
                 $ctz=new \DateTimeZone($tza[BackendUtils::TMPL_TZ_NAME]);
             } catch (\Exception $e) {
-                \OC::$server->getLogger()->warning('Can not set timezone from template, using default...');
+                $this->logger->warning('Can not set timezone from template, using default...');
                 $ctz=$this->utils->getUserTimezone($userId,$this->config);
             }
 
@@ -1007,6 +1017,7 @@ class BCSabreImpl implements IBackendConnector{
                 ])->execute();
         }catch (\Exception $e){
             // uid already exists
+            $this->logger->warning("Lock uid already exists");
             $ec=1;
         }
 
@@ -1044,7 +1055,8 @@ class BCSabreImpl implements IBackendConnector{
 
                 }else {
                     // spot busy or error occurred
-                   $ec=1;
+                    $this->logger->warning("BusySpot/error detected in setAttendee func, mode: ".$ts_mode.", trc_code: ".$trc);
+                    $ec=1;
                 }
 
                 // "release" the "lock"
@@ -1087,7 +1099,7 @@ class BCSabreImpl implements IBackendConnector{
     }
 
     private function logErr($err){
-        \OC::$server->getLogger()->error($err);
+        $this->logger->error($err);
     }
 
     /**
@@ -1177,7 +1189,7 @@ class BCSabreImpl implements IBackendConnector{
             }
         }
         if($err!==''){
-            \OC::$server->getLogger()->error($err);
+            $this->logger->error($err);
         }
         return $ret;
     }

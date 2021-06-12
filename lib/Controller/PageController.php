@@ -626,7 +626,7 @@ class PageController extends Controller {
             $post['ext_src_uri']=substr($dc,14).".ics";
 
             // make new uri, it is needed for email, buttons, etc...
-            $o = strtoupper(hash("tiger128,4", $dc."appointments app - srgdev.com".$userId.rand().$cal_id));
+            $o = strtoupper(hash("tiger128,4", $dc."appointments app - srgdev.com".$userId.rand().$cal_id.$post['ext_start'].$post['ext_end']));
             $evt_uri = substr($o, 0, 9) . "-" .
                 substr($o, 9, 5) . "-" .
                 substr($o, 14, 5) . "-" .
