@@ -208,6 +208,7 @@
     }
     .appt-slider{
         margin-bottom: 3em;
+        box-sizing: content-box;
     }
     .appt-select {
         margin: 0;

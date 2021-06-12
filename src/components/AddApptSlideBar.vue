@@ -310,6 +310,7 @@ export default {
 }
 .appt-slider{
   margin-bottom: 3em;
+  box-sizing: content-box;
 }
 .srgdev-appt-tz-cont{
   color: var(--color-text-lighter);

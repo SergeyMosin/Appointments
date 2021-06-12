@@ -274,5 +274,6 @@ export default {
 
 .appt-slider {
   margin-bottom: 3em;
+  box-sizing: content-box;
 }
 </style>
