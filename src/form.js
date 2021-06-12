@@ -450,17 +450,13 @@
 
                 if(t==="T"){
                     dur=ds.substr(sp2,sp-sp2).split(';').map(n=>n|0)
-                }
-
-                if(endTime===1 && dur!==null && dur.length<2) {
-                    if(t==="T"){
-                        // console.log("dur",dur)
+                    if (dur.length<2){
                         md.setTime(ts+dur[0]*60000)
-                    }else {
-                        // sp2 is end time
-                        sp2=+ds.substr(sp2,sp-sp2)*1000
-                        md.setTime(ts + (sp2 - ts))
+                        tStr += ' - ' + tf(md)
                     }
+                }else{
+                    sp2=+ds.substr(sp2,sp-sp2)*1000
+                    md.setTime(sp2)
                     tStr += ' - ' + tf(md)
                 }
             }
