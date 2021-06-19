@@ -185,9 +185,9 @@ class BCSabreImpl implements IBackendConnector{
                     continue;
                 }
 
-//                start1 <= end2 && start2 <= end1
-                if($start_ts <= $it->getDtEnd()->getTimestamp()
-                    && $it->getDtStart()->getTimestamp() <= $end_ts){
+//                start1 < end2 && start2 < end1
+                if($start_ts < $it->getDtEnd()->getTimestamp()
+                    && $it->getDtStart()->getTimestamp() < $end_ts){
                     $this->logger->warning("Timeslot is blocked, calId: ".$calId
                         .", blocker_start: ".$it->getDtStart()->getTimestamp()
                         .", blocker_end: ".$it->getDtEnd()->getTimestamp()
@@ -508,9 +508,9 @@ class BCSabreImpl implements IBackendConnector{
                             continue;
                         }
 
-//                        start1 <= end2 && start2 <= end1
-                        if($start_ts <= $it->getDtEnd()->getTimestamp()
-                            && $it->getDtStart()->getTimestamp() <= $end_ts){
+//                        start1 < end2 && start2 < end1
+                        if($start_ts < $it->getDtEnd()->getTimestamp()
+                            && $it->getDtStart()->getTimestamp() < $end_ts){
                             return 1;
                         }
                         $it->next();
