@@ -1,3 +1,7 @@
+## 1.9.3 - 2021-06-19
+### Fixed
+- double booking check overlap on adjacent timeslots - issue #209
+
 ## 1.9.2 - 2021-06-12
 ### Added
 - Version info to `settings dump`
