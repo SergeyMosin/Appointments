@@ -1,4 +1,7 @@
 { "translations": {
+    "Guest password:" : "Heslo návštevníka:",
+    "Meeting Type" : "Typ schôdzky",
+    "Select meeting type" : "Vyberte typ schôdzky",
     "Online (audio/video)" : "Online (audio/video)",
     "Your email address is required for this operation." : "Na túto operáciu sa vyžaduje vaša e-mailová adresa.",
     "A location, address or URL is required for this operation. Check User/Organization settings." : "Na túto operáciu je potrebné miesto, adresa alebo URL. Skontrolujte nastavenia používateľa/organizácie.",
@@ -38,6 +41,7 @@
     "Your appointment is canceled." : "Vaše stretnutie je zrušené.",
     "All done." : "Všetko je hotové",
     "Info" : "Info",
+    "Link Expired …" : "Odkaz expiroval ...",
     "We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request" : "Poslali sme e-mail %s, otvorte ho a kliknutím na potvrdzovací odkaz dokončite svoju žiadosť o stretnutie",
     "Organization Name" : "Názov spoločnosti",
     "Book Your Appointment" : "Rezervujte si svoje stretnutie",

@@ -252,7 +252,7 @@ OC.L10N.register(
     "OK" : "OK",
     "More than two duration choices" : "Na výběr více než dvě doby trvání",
     "Your Contact Information" : "Vaše kontaktní údaje",
-    "Form header and event organizer settings" : "Hlavička formuláře a nastavení organizátora události",
+    "Form header and event organizer settings" : "Nastavení záhlaví formuláře a organizátora události",
     "Name:" : "Jméno:",
     "Email:" : "E-mail:",
     "Location:" : "Umístění:",
