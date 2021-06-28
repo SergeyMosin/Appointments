@@ -272,6 +272,7 @@ OC.L10N.register(
     "Session Timeout. Reload." : "A munkamenet időkorlátja lejárt. Újratöltés.",
     "Book Now" : "Foglalás most",
     "An error has occurred" : "Hiba történt",
+    "Please %1$stry again%2$s and select a different date." : "Kérjük %1$s, próbálja újra a következőt: %2$s, és válasszon másik dátumot.",
     "Please contact us directly at" : "Kérlek Lépj Velünk Kapcsolatba itt",
     "Please try again later" : "Kérlek próbáld újra"
 },
