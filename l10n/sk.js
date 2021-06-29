@@ -229,6 +229,7 @@ OC.L10N.register(
     "Customize email text:" : "Prispôsobiť text emailu:",
     "Chat/Call link:" : "Odkaz pre Chat/Volanie: ",
     "Label text:" : "Text štítku:",
+    "See documentation …" : "Pozrite dokumentáciu ...",
     "Guest will be placed in the lobby until you allow access to the Room manually via Talk app side menu." : "Návštevník bude čakať v lobby pokiaľ mu neumožníte prístup k Miestnosti manuálne cez bočné menu aplikácie Talk.",
     "Duration (minutes):" : "Dĺžka (minút):",
     "Title:" : "Názov:",
