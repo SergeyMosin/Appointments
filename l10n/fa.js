@@ -22,7 +22,7 @@ OC.L10N.register(
     "Simple" : "ساده",
     "Warning" : "هشدار",
     "Error" : "خطا",
-    "Edit" : "ویرایش کردن",
+    "Edit" : "ویرایش",
     "Title" : "عنوان",
     "Text" : "متن",
     "URL" : "URL",
