@@ -1,11 +1,14 @@
 OC.L10N.register(
     "appointments",
     {
+    "Available" : "Disponible",
     "Confirm" : "Confirmar",
     "Cancel" : "Cancelar",
+    "Appointment confirmed" : "Cita confirmada",
+    "Appointment canceled" : "Cita cancelada",
     "Password" : "Contraseña",
     "Info" : "Info",
-    "This is an automatically sent email, please do not reply." : "Este es un correo enviado automáticamente, favor de no contestarlo. ",
+    "This is an automatically sent email, please do not reply." : "Este es un correo enviado automáticamente, por favor no contestarlo. ",
     "Delete" : "Eliminar",
     "Settings" : "Ajustes",
     "Close" : "Cerrar",
