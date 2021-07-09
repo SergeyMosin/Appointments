@@ -24,5 +24,17 @@ return [
         ['name' => 'dir#indexbase', 'url' => '/dir', 'verb' => 'GET'],
         
         ['name' => 'Debug#settingsDump', 'url' => '/settings_dump', 'verb' => 'GET'],
+    ],
+
+    // ExternalApiController
+    'ocs' => [
+        // GET, http://domain/ocs/v2.php/apps/appointments/api/v1/pageurl
+        // @param userid = {string} (Nexctcloud) ID of the user whoes URL should be returned
+        // @param pagid = {string} Optional. Restrict the result to the page with specified ID.
+        // @param label = {string} Optional. Restrict the result to the pages with specified label.
+        // @param format = json
+        // @status 200 - successfull
+        // @status 202 - successfull, but no result
+        ['name' => 'external_api#get_page_url', 'url' => '/api/v1/pageurl', 'verb' => 'GET'],
     ]
 ];
