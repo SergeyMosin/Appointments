@@ -62,7 +62,7 @@ OC.L10N.register(
     "Please setup the directory page first." : "Najpierw skonfiguruj stronę katalogu.",
     "Directory page" : "Strona katalogu",
     "Can't find Talk app. Is it installed and enabled ?" : "Nie można znaleźć aplikacji Talk. Czy jest zainstalowana i włączona?",
-    "This is an automatically sent email, please do not reply." : "To jest wiadomość e-mail wysłana automatycznie, prosimy nie odpowiadać na nią.",
+    "This is an automatically sent email, please do not reply." : "Jest to wiadomość e-mail wysłana automatycznie, prosimy nie odpowiadać na nią.",
     "Appointments" : "Spotkania",
     "Book appointments into your calendar via secure online form." : "Zarezerwuj terminy w swoim kalendarzu za pomocą bezpiecznego formularza online.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Zarezerwuj terminy w swoim kalendarzu za pomocą bezpiecznego formularza online. Uczestnicy mogą potwierdzić lub anulować spotkanie za pośrednictwem linku e-mail.",

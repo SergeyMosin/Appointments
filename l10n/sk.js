@@ -84,6 +84,7 @@ OC.L10N.register(
     "Add to Calendar" : "Pridať do kalendára",
     "Discard" : "Odstrániť",
     "Save" : "Uložiť",
+    "Hint: right-click on appointment to edit." : "Tip: kliknutím pravým tlačítkom na stretnutie môžete editovať",
     "Remove All" : "Odstrániť všetko",
     "Copy to Next" : "Kopírovať do nasledujúceho",
     "All appointments have been added to {calendarName} calendar." : "Všetky udalosti boli pridané do kalendára {calendarName}.",
