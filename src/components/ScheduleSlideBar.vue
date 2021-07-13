@@ -29,7 +29,7 @@
                         class="appt-slider"
                         v-model="apptDur"></vue-slider>
                 <div class="srgdev-appt-info-lcont">
-                <label for="appt_tz-select" class="select-label">{{t('appointments','Timezone:')}}</label>
+                <label for="appt_tz-select" class="select-label">{{t('appointments','Time zone:')}}</label>
                     <a
                             class="icon-info srgdev-appt-info-link"
                             @click="$root.$emit('helpWanted','timezone')"><span>Please read</span></a>
