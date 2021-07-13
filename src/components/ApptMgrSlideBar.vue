@@ -133,7 +133,7 @@
             </template>
           </ApptAccordion>
           <label class="tsb-label">
-            {{ t('appointments', 'Timezone:') }}</label>
+            {{ t('appointments', 'Time zone:') }}</label>
           <div class="tsb-input">
             {{ tzName === "" ? t('appointments', 'Loading…') : tzName }}
           </div>
@@ -277,7 +277,7 @@ export default {
           this.isLoading = false
         } catch (e) {
           this.isLoading = false
-          console.error("Can't get timezone")
+          console.error("Can't get time zone")
           console.log(e)
           showError(this.t('appointments', "Can't load timezones"))
         }

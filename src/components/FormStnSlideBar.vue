@@ -92,7 +92,7 @@
                                 v-model="ppsInfo.showTZ"
                                 type="checkbox"
                                 id="srgdev-appt_pps-show-tz"
-                                class="checkbox"><label for="srgdev-appt_pps-show-tz">{{t('appointments','Show timezone')}}</label></div>
+                                class="checkbox"><label for="srgdev-appt_pps-show-tz">{{t('appointments','Show time zone')}}</label></div>
                         <div class="srgdev-appt-info-lcont srgdev-appt-sb-chb-cont"><input
                                 v-model="ppsInfo.metaNoIndex"
                                 type="checkbox"
