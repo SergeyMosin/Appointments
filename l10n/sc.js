@@ -127,6 +127,7 @@ OC.L10N.register(
     "Optimize recurrence" : "Règula sa recurrèntzia",
     "Require \"Appointment\" category" : "Rechede categoria \"Apuntamentu\"",
     "Auto-fix \"Source\" timeslots" : "Curregi in automàticu is postos \"Sorgente\"",
+    "Debugging" : "Curretzione",
     "Apply" : "Àplica",
     "Calendars and Schedule" : "Calendàrios e programma",
     "Manage appointments and calendar settings" : "Gesti apuntamentos e impostatziones de su calendàriu",
