@@ -1,3 +1,10 @@
+## 1.10.0 - 2021-08-08
+### Fixed
+- No emails on nc22 - issue #225
+### Changed
+- Nextcloud min version is 21 now
+- Remove ":" punctuation from the form ("Name:" -> "Name") because of nc22 l10n bug
+
 ## 1.9.3 - 2021-06-19
 ### Fixed
 - double booking check overlap on adjacent timeslots - issue #209
