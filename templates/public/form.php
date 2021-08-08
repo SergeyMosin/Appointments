@@ -20,7 +20,7 @@ style('appointments', 'form');
                 ?$_['appt_form_title']
                 :$l->t('No Appointments Available')).'</h3>'
     ?>  <div class="srgdev-ncfp-form-main-cont" id="srgdev-ncfp-main-inputs">
-        <label class="srgdev-ncfp-form-label"><?php p($l->t("Date & Time:")) ?></label>
+        <label class="srgdev-ncfp-form-label"><?php p($l->t("Date & Time")) ?></label>
         <div id="srgdev-ncfp_sel_cont">
             <input <?php echo $disabled ?>readonly placeholder="<?php p($l->t("Select Date & Time")); ?>" name="dtstr" class="srgdev-ncfp-form-input" id="srgdev-ncfp_sel-dummy">
             <input type="hidden" name="adatetime" style="display:none;" id="srgdev-ncfp_sel-hidden"
@@ -34,19 +34,19 @@ style('appointments', 'form');
                 ?>
         </div>
         <div id="srgdev-ncfp_dur-cont" style="display: none">
-            <label for="srgdev-ncfp_dur-sel" class="srgdev-ncfp-form-label"><?php p($l->t('Duration:')); ?></label>
+            <label for="srgdev-ncfp_dur-sel" class="srgdev-ncfp-form-label"><?php p($l->t('Duration')); ?></label>
             <select name="appt_dur" required id="srgdev-ncfp_dur-sel" class="srgdev-ncfp-form-input srgdev-ncfp-form-select">
                 <option value="0" class="srgdev-ncfp-form-option" selected>txt</option>
             </select>
         </div>
         <?php if(isset($_['appt_tlk_type']) && empty($disabled)) echo $_['appt_tlk_type']; ?>
-        <label for="srgdev-ncfp_fname" class="srgdev-ncfp-form-label"><?php p($l->t("Name:"))?></label>
+        <label for="srgdev-ncfp_fname" class="srgdev-ncfp-form-label"><?php p($l->t("Name"))?></label>
         <input name="name" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter name")); ?>" id="srgdev-ncfp_fname" class="srgdev-ncfp-form-input" type="text">
-        <label for="srgdev-ncfp_femail" class="srgdev-ncfp-form-label"><?php p($l->t("Email:"));?></label>
+        <label for="srgdev-ncfp_femail" class="srgdev-ncfp-form-label"><?php p($l->t("Email"));?></label>
         <input name="email" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter email")); ?>" id="srgdev-ncfp_femail" class="srgdev-ncfp-form-input" type="email">
         <?php
         if($_['appt_hide_phone']===false) {
-            echo '<label for="srgdev-ncfp_fphone" class="srgdev-ncfp-form-label">'.htmlspecialchars($l->t("Phone:"), ENT_QUOTES, 'UTF-8').'</label><input name="phone" ' .$disabled .' placeholder="' . htmlspecialchars($l->t("Enter phone number"), ENT_QUOTES, 'UTF-8') . '" id="srgdev-ncfp_fphone" class="srgdev-ncfp-form-input" type="tel">';
+            echo '<label for="srgdev-ncfp_fphone" class="srgdev-ncfp-form-label">'.htmlspecialchars($l->t("Phone"), ENT_QUOTES, 'UTF-8').'</label><input name="phone" ' .$disabled .' placeholder="' . htmlspecialchars($l->t("Enter phone number"), ENT_QUOTES, 'UTF-8') . '" id="srgdev-ncfp_fphone" class="srgdev-ncfp-form-input" type="tel">';
         }
 
         if(empty($disabled)) echo $_['more_html'];
