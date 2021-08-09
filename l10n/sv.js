@@ -109,7 +109,6 @@ OC.L10N.register(
     "Name is required." : "Namn är obligatoriskt.",
     "Email is required." : "E-post är obligatoriskt.",
     "No Appointments Available" : "Inga möten tillgängliga",
-    "Date & Time:" : "Datum & tid:",
     "Select Date & Time" : "Välj datum & tid",
     "Back" : "Tillbaka",
     "Next" : "Nästa",

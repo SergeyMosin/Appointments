@@ -80,7 +80,6 @@ OC.L10N.register(
     "Name is required." : "Tên là bắt buộc.",
     "Email is required." : "Thư điện tử là bắt buộc.",
     "No Appointments Available" : "Không có các lịch hẹn khả dụng",
-    "Date & Time:" : "Ngày và Giờ:",
     "Select Date & Time" : "Chọn Ngày và Giờ",
     "Back" : "Quay lại",
     "Next" : "Kế tiếp",

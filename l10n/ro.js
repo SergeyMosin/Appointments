@@ -68,7 +68,6 @@ OC.L10N.register(
     "Location:" : "Locaţie:",
     "Phone:" : "Telefon:",
     "No Appointments Available" : "Nu sunt întâlniri disponibile",
-    "Date & Time:" : "Data și Ora:",
     "Select Date & Time" : "Selectează Data și Ora",
     "Back" : "Înapoi",
     "Next" : "Următorul",

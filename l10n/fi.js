@@ -148,7 +148,6 @@ OC.L10N.register(
     "Name is required." : "Nimi vaaditaan.",
     "Email is required." : "Sähköpostiosoite vaaditaan.",
     "No Appointments Available" : "Tapaamisia ei ole saatavilla",
-    "Date & Time:" : "Päivä ja aika:",
     "Select Date & Time" : "Valitse päivä ja aika",
     "Back" : "Takaisin",
     "Next" : "Seuraava",

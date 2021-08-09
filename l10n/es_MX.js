@@ -107,7 +107,6 @@ OC.L10N.register(
     "Name is required." : "Nombre es requerido.",
     "Email is required." : "Correo es requerido.",
     "No Appointments Available" : "Sin Citas Disponibles",
-    "Date & Time:" : "Fecha & Hora:",
     "Select Date & Time" : "Seleccione Fecha & Hora",
     "Back" : "Atrás",
     "Next" : "Siguiente",

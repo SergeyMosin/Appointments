@@ -163,7 +163,6 @@ OC.L10N.register(
     "Name is required." : "נדרש שם.",
     "Email is required." : "נדרש דוא״ל.",
     "No Appointments Available" : "אין פגישות זמינות",
-    "Date & Time:" : "תאריך ושעה:",
     "Select Date & Time" : "בחירת תאריך ושעה",
     "Back" : "חזרה",
     "Next" : "הבא",

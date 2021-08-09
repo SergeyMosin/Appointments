@@ -126,7 +126,6 @@ OC.L10N.register(
     "Name is required." : "Ім'я є обов'язковим.",
     "Email is required." : "Ел.пошта є обов'язковою.",
     "No Appointments Available" : "Відсутні зустрічі",
-    "Date & Time:" : "Дата та час:",
     "Select Date & Time" : "Виберіть дату та час",
     "Back" : "Назад",
     "Next" : "Наступний",

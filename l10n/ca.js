@@ -240,7 +240,6 @@ OC.L10N.register(
     "Name is required." : "Cal el nom.",
     "Email is required." : "Es requereix correu electrònic.",
     "No Appointments Available" : "No hi ha cites disponibles",
-    "Date & Time:" : "Data i hora:",
     "Select Date & Time" : "Selecciona la data i l'hora",
     "Back" : "Enrere",
     "Next" : "Següent",

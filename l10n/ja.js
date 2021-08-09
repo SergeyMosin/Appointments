@@ -176,7 +176,6 @@ OC.L10N.register(
     "Name is required." : "名前は必須です。",
     "Email is required." : "メールは必須です。",
     "No Appointments Available" : "予約がありません",
-    "Date & Time:" : "日時：",
     "Select Date & Time" : "日時を選択",
     "Back" : "戻る",
     "Next" : "次へ",
