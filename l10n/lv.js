@@ -20,6 +20,7 @@ OC.L10N.register(
     "Title" : "Amats",
     "Text" : "Teksts",
     "URL" : "URL",
+    "Hide phone number field" : "Slēpt tālruņa numura lauku",
     "Deleted" : "Dzēstie",
     "Confirmed" : "Apstiprināts",
     "Location:" : "Vieta:",
