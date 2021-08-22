@@ -46,6 +46,7 @@ OC.L10N.register(
     "Your appointment is canceled." : "予約がキャンセルされました。",
     "All done." : "全て完了しました。",
     "Info" : "情報",
+    "Link Expired …" : "リンクの有効期限が切れました...",
     "We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request" : "%sへメールを送信しました。メールの承認リンクをクリックして、予約申し込みを完了してください。",
     "Organization Name" : "組織名",
     "Book Your Appointment" : "ご予約はこちら",
