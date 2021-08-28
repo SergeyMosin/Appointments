@@ -214,7 +214,7 @@ OC.L10N.register(
     "Additional CONFIRMATION email text:" : "Text dodatočného POTVRDZOVACIEHO e-mailu:",
     "Multiple public pages available" : "K dispozícii je viac verejných stránok",
     "Main page" : "Hlavná stránka",
-    "Additional pages" : "Ďaľšie stránky",
+    "Additional pages" : "Ďalšie stránky",
     "Additional Settings" : "Ďalšie nastavenia",
     "Customize and configure the app" : "Prispôsobiť a nastaviť aplikáciu",
     "Customize Public Page" : "Prispôsobiť verejnú stránku",
