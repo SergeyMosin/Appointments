@@ -1,3 +1,7 @@
+## 1.10.1 - 2021-09-01
+### Added
+- New translations after removal of ":" punctuation  
+
 ## 1.10.0 - 2021-08-08
 ### Fixed
 - No emails on nc22 - issue #225
