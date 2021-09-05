@@ -789,7 +789,7 @@ textarea.appt-stn-txt-ta{
 	width: 96%;
 	margin: .5em 0 .75em;
 	padding: .75em 0 .75em 1em;
-	background: #eee;
+	background: var(--color-placeholder-light);
 	display: block;
 	font-size: 95%;
 	cursor: text;

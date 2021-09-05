@@ -57,7 +57,7 @@ form{
     <p class="srgdev-appt-hs-p">Once an appointment is booked it will be visible in the calendar with "⌛ pending" status. The attendee can "✔️ Confirm" or "<span style="text-decoration: line-through">Cancel</span>" the appointment via an email link, the status change will be reflected in the calendar upon page reload.</p>
     <h2 class="srgdev-appt-hs-h1" id="srgdev-sec_ts_mode">8. Time slot mode</h2>
     <p class="srgdev-appt-hs-p-h"><strong>Simple mode</strong> - Use provided "Add Appointment Slots" dialog to add "available" time slots. Recurrence is not suported in this mode.</p>
-    <p class="srgdev-appt-hs-p-h"><strong>Weekly Template</strong> - in this mode you can set a weekly template and it will be repeted automatically.</p>
+    <p class="srgdev-appt-hs-p-h"><strong>Weekly Template</strong> - in this mode you can set a weekly template and it will be repeated automatically.</p>
     <p style="margin-left: 1em" class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_destcal_tmm">Destination Calendar (Weekly Template)</strong> - Booked/pending appointments will be placed into this calendar.</p>
     <p style="margin-left: 1em" class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_conflicts_tmm">Check for conflicts in…</strong> - these calendars will be checked for conflicting events in addition to the Destination Calendar.</p>
     <p style="margin-left: 1em" class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_props_tmm">Appointment Properties</strong> - <em>Duration</em>: if you set multiple duration choices for an appointment, then a visitor will be able to pick on of them. <em>Title</em>: if this is set then the title will be displayed next or below the time in the form.</p>
@@ -127,6 +127,7 @@ echo '&lt;iframe src = "'.$src.'"&gt;&lt;/iframe&gt;';
 ...</code>
         Nextcloud <strong>occ</strong>: <a style="color: blue; text-decoration: underline" target="_blank" href="https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html">https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html</a><br>
         Frame Ancestors: <a style="color: blue; text-decoration: underline" target="_blank" href="https://w3c.github.io/webappsec-csp/#directive-frame-ancestors">https://w3c.github.io/webappsec-csp/#directive-frame-ancestors</a><br>
+        Additional information can be found here: <a style="color: blue; text-decoration: underline" target="_blank" href="https://github.com/SergeyMosin/Appointments/issues/191#issuecomment-909210230">https://github.com/SergeyMosin/Appointments/issues/191#issuecomment-909210230</a><br>
     </div>
 
   <h2 id="srgdev-sec_contrib_info" class="srgdev-appt-hs-h1">11. Contributor Features</h2>

@@ -1,4 +1,5 @@
-<?php /** @noinspection PhpUndefinedFieldInspection */
+<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
+/** @noinspection PhpUndefinedFieldInspection */
 
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 
@@ -546,7 +547,7 @@ class BCSabreImpl implements IBackendConnector{
         $rep_start=clone $start;
         $rep_start->modify('-24 hours'); // 24 =  14 + (10 max appt length)
         $rep_end=clone $end;
-        $rep_end->modify('+14 hours');
+        $rep_end->modify('+18 hours');
 
         $start_str=$rep_start->format(self::TIME_FORMAT);
         $end_str=$rep_end->format(self::TIME_FORMAT);
