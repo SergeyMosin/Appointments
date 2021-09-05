@@ -874,9 +874,9 @@ class PageController extends Controller {
         }
         $ts_mode=$cms[BackendUtils::CLS_TS_MODE];
 
-        if($ts_mode==='2'){
-            $nw=min(8,$nw);
-        }
+//        if($ts_mode==='2'){
+//            $nw=min(8,$nw);
+//        }
 
         $t_end=clone $t_start;
         $t_end->setTimestamp($t_start->getTimestamp()+(7*$nw*86400));
