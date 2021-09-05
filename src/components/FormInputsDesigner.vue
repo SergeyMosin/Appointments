@@ -89,6 +89,7 @@ export default {
   .srgdev-fid_sec_left{
     width: 22em;
     position: relative;
+    margin-top: 1.75em;
   }
   .srgdev-fid_html{
     position: absolute;

@@ -556,13 +556,13 @@ class StateController extends Controller{
             /** @noinspection PhpMissingBreakStatementInspection */
             case 'input':
                 if(!isset($obj['type'])) $obj['type']='text';
-                $tail=' type="'.($obj['type']==='number'?'number':'text').'"/>';
+                $tail=' type="'.($obj['type']==='number'?'number':'text').'" maxlength="512"/>';
                 $class='srgdev-ncfp-form-input';
             case 'textarea':
                 if(!isset($obj['placeholder'])) return $r;
                 $ph=' placeholder="'.htmlspecialchars($obj['placeholder'],ENT_QUOTES, 'UTF-8').'"';
                 if(empty($tail)){
-                    $tail='></textarea>';
+                    $tail=' maxlength="512"></textarea>';
                     $class='srgdev-ncfp-form-textarea';
                 }
                 break;

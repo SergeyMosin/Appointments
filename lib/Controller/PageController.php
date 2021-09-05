@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 /** @noinspection PhpComposerExtensionStubsInspection */
 namespace OCA\Appointments\Controller;
@@ -543,7 +543,7 @@ class PageController extends Controller {
             return $rr;
         }
         if($hide_phone) $post['phone']="";
-        $post['name']=htmlspecialchars($post['name'], ENT_QUOTES, 'UTF-8');
+        $post['name']=htmlspecialchars(strip_tags($post['name']), ENT_NOQUOTES);
 
         // Talk integration override...
         if(isset($post['talk_type']) && $post['talk_type']==='0'){
@@ -564,7 +564,8 @@ class PageController extends Controller {
             if(!empty($f0) && isset($post[$f0['name']])){
                 $n=$post[$f0['name']];
                 // TODO: check "number" type
-                $v=htmlspecialchars(preg_replace('/\s+/', ' ',trim(substr($n,0,255))),ENT_QUOTES, 'UTF-8');
+                $v=htmlspecialchars(strip_tags(preg_replace('/\s+/', ' ',trim(substr($n,0,512)))),ENT_NOQUOTES);
+
                 if(isset($f0['required']) && $f0['required']===true && $v===''){
                     $rr=new RedirectResponse($bad_input_url);
                     $rr->setStatus(303);
@@ -914,11 +915,11 @@ class PageController extends Controller {
         if(!empty($this->c->getUserValue($uid ,$this->appName, chr(99)."n".'k'))){
             $tlk=$this->utils->getUserSettings(BackendUtils::KEY_TALK,$uid);
             if($tlk[BackendUtils::TALK_ENABLED]===true && $tlk[BackendUtils::TALK_FORM_ENABLED]===true){
-                $params['appt_tlk_type']= '<label for="srgdev-ncfp_talk_type" class="srgdev-ncfp-form-label">'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_LABEL])?$tlk[BackendUtils::TALK_FORM_LABEL]:$tlk[BackendUtils::TALK_FORM_DEF_LABEL]),ENT_QUOTES,'UTF-8').'</label>
+                $params['appt_tlk_type']= '<label for="srgdev-ncfp_talk_type" class="srgdev-ncfp-form-label">'.htmlspecialchars(strip_tags((!empty($tlk[BackendUtils::TALK_FORM_LABEL])?$tlk[BackendUtils::TALK_FORM_LABEL]:$tlk[BackendUtils::TALK_FORM_DEF_LABEL])),ENT_NOQUOTES).'</label>
 <select name="talk_type" required id="srgdev-ncfp_talk_type" class="srgdev-ncfp-form-input srgdev-ncfp-form-select">
-    <option value="" disabled selected hidden>'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_PLACEHOLDER])?$tlk[BackendUtils::TALK_FORM_PLACEHOLDER]:$tlk[BackendUtils::TALK_FORM_DEF_PLACEHOLDER]),ENT_QUOTES,'UTF-8').'</option>
-    <option class="srgdev-ncfp-form-option" id="srgdev-ncfp_talk_type_op1" style="font-size: medium" value="0">'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_REAL_TXT])?$tlk[BackendUtils::TALK_FORM_REAL_TXT]:$tlk[BackendUtils::TALK_FORM_DEF_REAL]),ENT_QUOTES,'UTF-8').'</option>
-    <option class="srgdev-ncfp-form-option" id="srgdev-ncfp_talk_type_op2" style="font-size: medium" value="1">'.htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT])?$tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT]:$tlk[BackendUtils::TALK_FORM_DEF_VIRTUAL]),ENT_QUOTES,'UTF-8').'</option>
+    <option value="" disabled selected hidden>'.htmlspecialchars(strip_tags((!empty($tlk[BackendUtils::TALK_FORM_PLACEHOLDER])?$tlk[BackendUtils::TALK_FORM_PLACEHOLDER]:$tlk[BackendUtils::TALK_FORM_DEF_PLACEHOLDER])),ENT_NOQUOTES).'</option>
+    <option class="srgdev-ncfp-form-option" id="srgdev-ncfp_talk_type_op1" style="font-size: medium" value="0">'.htmlspecialchars(strip_tags((!empty($tlk[BackendUtils::TALK_FORM_REAL_TXT])?$tlk[BackendUtils::TALK_FORM_REAL_TXT]:$tlk[BackendUtils::TALK_FORM_DEF_REAL])),ENT_NOQUOTES).'</option>
+    <option class="srgdev-ncfp-form-option" id="srgdev-ncfp_talk_type_op2" style="font-size: medium" value="1">'.htmlspecialchars(strip_tags((!empty($tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT])?$tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT]:$tlk[BackendUtils::TALK_FORM_DEF_VIRTUAL])),ENT_NOQUOTES).'</option>
 </select>';
             }
         }

@@ -784,14 +784,14 @@ class DavListener implements IEventListener
                 !empty($tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT])
                     ? $tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT]
                     : $tlk[BackendUtils::TALK_FORM_DEF_VIRTUAL]),
-                    ENT_QUOTES, 'UTF-8');
+                    ENT_NOQUOTES);
             } else {
                 // real txt
                 $nt = htmlspecialchars((
                 !empty($tlk[BackendUtils::TALK_FORM_REAL_TXT])
                     ? $tlk[BackendUtils::TALK_FORM_REAL_TXT]
                     : $tlk[BackendUtils::TALK_FORM_DEF_REAL]),
-                    ENT_QUOTES, 'UTF-8');
+                    ENT_NOQUOTES);
             }
 
             $txt = str_replace('{{new_type}}', $nt, $txt);
@@ -827,7 +827,7 @@ class DavListener implements IEventListener
                     ? $tlk[BackendUtils::TALK_FORM_REAL_TXT]
                     : $tlk[BackendUtils::TALK_FORM_DEF_REAL]);
         }
-        return htmlspecialchars($info, ENT_QUOTES, 'UTF-8');
+        return htmlspecialchars($info, ENT_NOQUOTES);
     }
 
     private function getEmailTemplate() {
