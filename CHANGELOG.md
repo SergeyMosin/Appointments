@@ -1,6 +1,15 @@
+## 1.10.2 - 2021-09-05
+### Fixed
+- Quotes escape in additional form field - issue #202
+### Changed
+- Max text length 255->512 in additional form field - issue #202
+- Remove 8 week limiter in "template mode" - issue #234
+### Added
+- Option to allow all day events to block - issue #226
+
 ## 1.10.1 - 2021-09-01
 ### Added
-- New translations after removal of ":" punctuation  
+- New translations after removal of ":" punctuation
 
 ## 1.10.0 - 2021-08-08
 ### Fixed
