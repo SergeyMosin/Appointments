@@ -46,6 +46,13 @@
             <option value="mark">{{ t('appointments', 'Mark the appointment as canceled') }}</option>
             <option value="reset">{{ t('appointments', 'Reset (make the timeslot available)') }}</option>
           </select>
+          <div style="margin-top: 1.2em">
+          <input
+              v-model="calInfo.allDayBlock"
+              type="checkbox"
+              id="appt_tsb-allday-block"
+              class="checkbox"><label style="margin-left: -3px;" class="srgdev-appt-sb-label-inline" for="appt_tsb-allday-block">{{t('appointments','All day events can block')}}</label>
+          </div>
         </div>
         <ApptIconLabel
             class="toggler" :class="{'toggler--closed':sections[0]===0}"
@@ -131,6 +138,7 @@ export default {
       calInfo: {
         prepTime: "0",
         whenCanceled: "mark",
+        allDayBlock: false,
         nrPushRec: true,
         nrRequireCat: false,
         nrAutoFix: false,

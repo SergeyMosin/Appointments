@@ -115,11 +115,14 @@ class BCSabreImpl implements IBackendConnector{
      * @param int $end_ts UTC
      * @param string $calId
      * @param \DateTimeZone $utz user's timezone
-     * @param bool $cat_required
+     * @param string $userId
      * @return int 0=no events, 1=at least 1
      * @noinspection PhpDocMissingThrowsInspection
      */
-    private function checkRangeTR($start_ts, $end_ts, $calId, $utz, $cat_required){
+    private function checkRangeTR($start_ts, $end_ts, $calId, $utz, $userId){
+
+        $cls=$this->utils->getUserSettings(
+            BackendUtils::KEY_CLS,$userId);
 
         $start=new \DateTime('@'.$start_ts,$utz);
 
@@ -134,7 +137,7 @@ class BCSabreImpl implements IBackendConnector{
         $parser=new XmlService();
         $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
         try {
-            $result = $parser->parse($this::makeTrDavReport($r_start,$r_end,$cat_required));
+            $result = $parser->parse($this::makeTrDavReport($r_start,$r_end,$cls[BackendUtils::CLS_XTM_REQ_CAT]));
         } catch (ParseException $e) {
             $this->logger->error($e);
             return -1;
@@ -142,6 +145,8 @@ class BCSabreImpl implements IBackendConnector{
 
         $urls=$this->backend->calendarQuery($calId,$result->filters);
         $objs = $this->backend->getMultipleCalendarObjects($calId, $urls);
+
+        $all_day_block=$cls[BackendUtils::CLS_ALL_DAY_BLOCK];
 
         foreach ($objs as $obj) {
 
@@ -158,7 +163,7 @@ class BCSabreImpl implements IBackendConnector{
 
 
             /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-            if (!$evt->DTSTART->hasTime() || (isset($evt->CLASS) && $evt->CLASS->getValue() !== 'PUBLIC')) {
+            if ((!$all_day_block && !$evt->DTSTART->hasTime()) || (isset($evt->CLASS) && $evt->CLASS->getValue() !== 'PUBLIC')) {
                 $vo->destroy();
                 continue;
             }
@@ -189,12 +194,6 @@ class BCSabreImpl implements IBackendConnector{
 //                start1 < end2 && start2 < end1
                 if($start_ts < $it->getDtEnd()->getTimestamp()
                     && $it->getDtStart()->getTimestamp() < $end_ts){
-                    $this->logger->warning("Timeslot is blocked, calId: ".$calId
-                        .", blocker_start: ".$it->getDtStart()->getTimestamp()
-                        .", blocker_end: ".$it->getDtEnd()->getTimestamp()
-                        .", timeslot_start: ".$start_ts
-                        .", timeslot_end: ".$end_ts
-                    );
                     return 1;
                 }
                 $it->next();
@@ -257,6 +256,8 @@ class BCSabreImpl implements IBackendConnector{
         $urls=$this->backend->calendarQuery($dstId,$result->filters);
         $booked_tree=null;
 
+        $all_day_block=$cls[BackendUtils::CLS_ALL_DAY_BLOCK];
+
         if(count($urls)>0) {
             $itc=new AVLIntervalTree();
             $objs = $this->backend->getMultipleCalendarObjects($dstId, $urls);
@@ -272,7 +273,7 @@ class BCSabreImpl implements IBackendConnector{
                 $evt = $vo->VEVENT;
 
                 /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-                if (!$evt->DTSTART->hasTime() || (isset($evt->CLASS) && $evt->CLASS->getValue() !== 'PUBLIC')) {
+                if ((!$all_day_block && !$evt->DTSTART->hasTime()) || (isset($evt->CLASS) && $evt->CLASS->getValue() !== 'PUBLIC')) {
                     $vo->destroy();
                     continue;
                 }
@@ -299,14 +300,14 @@ class BCSabreImpl implements IBackendConnector{
                         $it->next();
                         continue;
                     }
-                    
+
                     // start1 <= end2 && start2 <= end1
                     $s_ts = $it->getDtStart()->getTimestamp();
                     $e_ts = $it->getDtEnd()->getTimestamp();
                     if($start_ts <= $e_ts && $s_ts <= $end_ts) {
                         $itc->insert($booked_tree, $s_ts, $e_ts);
                     }
-                    
+
                     $it->next();
                 }
                 $vo->destroy();
@@ -399,7 +400,7 @@ class BCSabreImpl implements IBackendConnector{
                     $it->next();
                     continue;
                 }
-                
+
                 $s_ts = $it->getDtStart()->getTimestamp();
 
                 if ($s_ts >= $end_ts ) {
@@ -439,10 +440,11 @@ class BCSabreImpl implements IBackendConnector{
      * @param $cms
      * @param \DateTime $start
      * @param \DateTime $end
+     * @param string $userId
      * @return int 0=ok, -1=error, 1=taken
      * @throws \Sabre\VObject\Recur\MaxInstancesExceededException
      */
-    function checkRangeTemplate($cms,$start,$end){
+    function checkRangeTemplate($cms, $start, $end, $userId):int{
 
         $cals=array_merge([$cms[BackendUtils::CLS_TMM_DST_ID]],$cms[BackendUtils::CLS_TMM_MORE_CALS]);
 
@@ -470,6 +472,10 @@ class BCSabreImpl implements IBackendConnector{
             return -1;
         }
 
+        $cls=$this->utils->getUserSettings(
+            BackendUtils::KEY_CLS,$userId);
+        $all_day_block=$cls[BackendUtils::CLS_ALL_DAY_BLOCK];
+
         // get booked & busy timeslots
         foreach ($cals as $calId) {
             $urls = $this->backend->calendarQuery($calId, $result->filters);
@@ -481,7 +487,7 @@ class BCSabreImpl implements IBackendConnector{
                     /** @var \Sabre\VObject\Component\VEvent $evt */
                     $evt = $vo->VEVENT;
                     /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-                    if (!$evt->DTSTART->hasTime() || (isset($evt->CLASS) && $evt->CLASS->getValue() !== 'PUBLIC')) {
+                    if ((!$all_day_block && !$evt->DTSTART->hasTime()) || (isset($evt->CLASS) && $evt->CLASS->getValue() !== 'PUBLIC')) {
                         $vo->destroy();
                         continue;
                     }
@@ -565,6 +571,10 @@ class BCSabreImpl implements IBackendConnector{
         $booked_tree = null;
         $itc = new AVLIntervalTree();
 
+        $cls=$this->utils->getUserSettings(
+            BackendUtils::KEY_CLS,$userId);
+        $all_day_block=$cls[BackendUtils::CLS_ALL_DAY_BLOCK];
+
         // get booked & busy timeslots
         foreach ($cals as $calId) {
             $urls = $this->backend->calendarQuery($calId, $result->filters);
@@ -576,7 +586,7 @@ class BCSabreImpl implements IBackendConnector{
                     /** @var \Sabre\VObject\Component\VEvent $evt */
                     $evt = $vo->VEVENT;
                     /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-                    if (!$evt->DTSTART->hasTime() || (isset($evt->CLASS) && $evt->CLASS->getValue() !== 'PUBLIC')) {
+                    if ((!$all_day_block && !$evt->DTSTART->hasTime()) || (isset($evt->CLASS) && $evt->CLASS->getValue() !== 'PUBLIC')) {
                         $vo->destroy();
                         continue;
                     }
@@ -603,7 +613,7 @@ class BCSabreImpl implements IBackendConnector{
                             $it->next();
                             continue;
                         }
-                        
+
                         // start1 <= end2 && start2 <= end1
                         $s_ts = $it->getDtStart()->getTimestamp();
                         $e_ts = $it->getDtEnd()->getTimestamp();
@@ -637,7 +647,7 @@ class BCSabreImpl implements IBackendConnector{
         while ($ds<$end_ts){
             $dia=$td[$day];
             $tc=0;
-            
+
             foreach ($dia as $di) {
                 // reusing $rep_start
 //                $sts=$ds+$di['start'];
@@ -662,7 +672,7 @@ class BCSabreImpl implements IBackendConnector{
                 }
                 $tc++;
             }
-            
+
             $day++;
             if($day>=7) $day=0;
             // we need to re-calculate this because of daytime savings
@@ -1029,15 +1039,13 @@ class BCSabreImpl implements IBackendConnector{
                 // for external and template modes we need to re-check the time range and update the lock_uid to "real" uid or delete the lock_uid if the time range is "taken"
 
                 if($ts_mode==='1') {
-                    $cls=$this->utils->getUserSettings(
-                        BackendUtils::KEY_CLS,$userId);
-                    $trc = $this->checkRangeTR($info['ext_start'], $info['ext_end'], $calId, $utz, $cls[BackendUtils::CLS_XTM_REQ_CAT]);
+                    $trc = $this->checkRangeTR($info['ext_start'], $info['ext_end'], $calId, $utz, $userId);
                 }else{
                     // template mode
                     $dt->setTimestamp($info['tmpl_start_ts']);
                     $dt_end=clone($dt);
                     $dt->setTimestamp($end_ts);
-                    $trc= $this->checkRangeTemplate($cms,$dt,$dt_end);
+                    $trc= $this->checkRangeTemplate($cms,$dt,$dt_end,$userId);
                 }
                 if($trc===0){
                     // the time range is good, create new object...

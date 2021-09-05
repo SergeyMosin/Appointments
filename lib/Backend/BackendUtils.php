@@ -70,6 +70,7 @@ class BackendUtils{
     // --
     public const CLS_PREP_TIME = 'prepTime';
     public const CLS_ON_CANCEL = 'whenCanceled';
+    public const CLS_ALL_DAY_BLOCK = 'allDayBlock';
     public const CLS_TS_MODE = 'tsMode';
 
     public const KEY_TMPL_DATA='template_data';
@@ -884,6 +885,7 @@ class BackendUtils{
 
                     self::CLS_PREP_TIME=>"0",
                     self::CLS_ON_CANCEL=>'mark',
+                    self::CLS_ALL_DAY_BLOCK=>false,
                     // 0=simple/manual, 1=external/XTM, (2=template)
                     self::CLS_TS_MODE=>'2');
                 break;
