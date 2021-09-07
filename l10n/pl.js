@@ -123,6 +123,7 @@ OC.L10N.register(
     "When Attendee Cancels" : "Kiedy uczestnik anuluje",
     "Mark the appointment as canceled" : "Oznacz spotkanie jako anulowane",
     "Reset (make the timeslot available)" : "Zresetuj (udostępnij przedział czasowy)",
+    "All day events can block" : "Wydarzenia całodniowe mogą się blokować",
     "External Mode Settings" : "Ustawienia trybu zewnętrznego",
     "Optimize recurrence" : "Zoptymalizuj cykliczność",
     "Require \"Appointment\" category" : "Wymagaj kategorii \"Spotkanie\"",
