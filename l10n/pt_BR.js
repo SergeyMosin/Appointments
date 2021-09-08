@@ -123,6 +123,7 @@ OC.L10N.register(
     "When Attendee Cancels" : "Quando o Participante Cancela",
     "Mark the appointment as canceled" : "Marcar o compromisso como cancelado",
     "Reset (make the timeslot available)" : "Redefinir (disponibilizar o horário)",
+    "All day events can block" : "Eventos de dia inteiro podem bloquear",
     "External Mode Settings" : "Configurações do Modo Externo",
     "Optimize recurrence" : "Otimizar a recorrência",
     "Require \"Appointment\" category" : "Requer categoria \"Compromisso\"",
