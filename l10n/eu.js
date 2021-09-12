@@ -123,6 +123,7 @@ OC.L10N.register(
     "When Attendee Cancels" : "Partaideak bertan behera uzten duenean",
     "Mark the appointment as canceled" : "Markatu hitzordua bertan behera utzita bezala",
     "Reset (make the timeslot available)" : "Berrezarri (jarri ordu-tartea erabilgarri)",
+    "All day events can block" : "Egun guztiko gertaerak blokea daitezke",
     "External Mode Settings" : "Kanpoko moduaren ezarpenak",
     "Optimize recurrence" : "Optimizatu errepikatzeak",
     "Require \"Appointment\" category" : "Eskatu \"Hitzordu\" kategoria",
