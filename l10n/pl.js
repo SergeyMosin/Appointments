@@ -263,7 +263,7 @@ OC.L10N.register(
     "No Appointments Available" : "Brak wolnych terminów",
     "Date & Time" : "Data i czas",
     "Select Date & Time" : "Wybierz datę i godzinę",
-    "Back" : "Wróć",
+    "Back" : "Wstecz",
     "Next" : "Następny",
     "Select Date and Time" : "Wybierz datę i godzinę",
     "Duration" : "Czas trwania",
