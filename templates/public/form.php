@@ -33,7 +33,15 @@ style('appointments', 'form');
                 echo ' '.$disabled.'data-state="'.$_['appt_state'].'" data-info="'.$_['appt_sel_opts'].'" data-hdr="'.htmlspecialchars($l->t('Select Date and Time'),ENT_QUOTES, 'UTF-8').'" data-tr-back="'.htmlspecialchars($back,ENT_QUOTES, 'UTF-8').'" data-tr-next="'.htmlspecialchars($next,ENT_QUOTES, 'UTF-8').'" data-tr-not-available="'.htmlspecialchars($l->t('No Appointments Available'),ENT_QUOTES, 'UTF-8').'">';
                 ?>
         </div>
-        <div id="srgdev-ncfp_dur-cont" style="display: none">
+        <?php
+        // TRANSLATORS This abbreviation for word "hour(s)" to be used as "2hr 15min" to indicate duration of 2 hours and 15 minutes
+        $data_h = $l->t("hr");
+        // TRANSLATORS This abbreviation for word "minutes(s)" to be used as "2hr 15min" to indicate duration of 2 hours and 15 minutes
+        $data_m = $l->t("min");
+
+        $data_h_m_str='data-tr-hr="'.htmlspecialchars($data_h, ENT_QUOTES).'" data-tr-mn="'.htmlspecialchars($data_m,ENT_QUOTES).'"';
+        ?>
+        <div id="srgdev-ncfp_dur-cont" <?php echo $data_h_m_str; ?> style="display: none">
             <label for="srgdev-ncfp_dur-sel" class="srgdev-ncfp-form-label"><?php p($l->t('Duration')); ?></label>
             <select name="appt_dur" required id="srgdev-ncfp_dur-sel" class="srgdev-ncfp-form-input srgdev-ncfp-form-select">
                 <option value="0" class="srgdev-ncfp-form-option" selected>txt</option>

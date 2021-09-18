@@ -3,119 +3,120 @@
     <AppNavigation>
       <template #list>
         <li>
-      <ul :class="{'sb_disable':stateInProgress || visibleSection===1}">
-        <AppNavigationItem
-            :class="{'sb_disable_nav-item':sbShow!==0}"
-            @click="curPageId='p0';getFormData('p0')"
-            class="srgdev-pubpage-nav-item"
-            :title="(
+          <ul :class="{'sb_disable':stateInProgress || visibleSection===1}">
+            <AppNavigationItem
+                :class="{'sb_disable_nav-item':sbShow!==0}"
+                @click="curPageId='p0';getFormData('p0')"
+                class="srgdev-pubpage-nav-item"
+                :title="(
               checkPageLabel(page0.label)+' '+
               (page0.enabled===1
                 ?t('appointments','[Online]')
                 :t('appointments','[Disabled]'))
               )"
-            :icon="pageInfoLoading!==1?
+                :icon="pageInfoLoading!==1?
                       (page0.enabled===1
                         ?'icon-screen'
                         :'icon-screen-off'):''"
-            :loading="pageInfoLoading===1">
-          <template slot="actions">
-            <ActionButton
-                v-show="page0.enabled===0"
-                @click="setPageEnabled('p0',1)"
-                icon="icon-checkmark-color"
-                closeAfterClick>
-              {{ t('appointments', 'Share Online') }}
-            </ActionButton>
-            <ActionButton
-                v-show="page0.enabled===1"
-                @click="setPageEnabled('p0',0)"
-                icon="icon-category-disabled"
-                closeAfterClick>
-              {{ t('appointments', 'Stop Sharing') }}
-            </ActionButton>
-            <ActionButton @click="showPubLink('p0')" icon="icon-public" closeAfterClick>
-              {{ t('appointments', 'Show URL/link') }}
-            </ActionButton>
-            <ActionInput data-pid="p0" @change="setPageLabel" icon="icon-rename" :value="page0.label">
-              {{ checkPageLabel("") }}
-            </ActionInput>
-            <ActionButton
-                @click="addNewPage()"
-                icon="icon-add"
-                closeAfterClick>
-              {{ t('appointments', 'Add New Page') }}
-            </ActionButton>
-          </template>
-        </AppNavigationItem>
-        <AppNavigationItem
-            v-for="(page,idx) in morePages"
-            class="srgdev-pubpage-nav-item"
-            :class="{'sb_disable_nav-item':sbShow!==0}"
-            @click="curPageId=page.pageId;getFormData(page.pageId)"
-            :title="(
+                :loading="pageInfoLoading===1">
+              <template slot="actions">
+                <ActionButton
+                    v-show="page0.enabled===0"
+                    @click="setPageEnabled('p0',1)"
+                    icon="icon-checkmark-color"
+                    closeAfterClick>
+                  {{ t('appointments', 'Share Online') }}
+                </ActionButton>
+                <ActionButton
+                    v-show="page0.enabled===1"
+                    @click="setPageEnabled('p0',0)"
+                    icon="icon-category-disabled"
+                    closeAfterClick>
+                  {{ t('appointments', 'Stop Sharing') }}
+                </ActionButton>
+                <ActionButton @click="showPubLink('p0')" icon="icon-public" closeAfterClick>
+                  {{ t('appointments', 'Show URL/link') }}
+                </ActionButton>
+                <ActionInput data-pid="p0" @change="setPageLabel" icon="icon-rename" :value="page0.label">
+                  {{ checkPageLabel("") }}
+                </ActionInput>
+                <ActionButton
+                    @click="addNewPage()"
+                    icon="icon-add"
+                    closeAfterClick>
+                  {{ t('appointments', 'Add New Page') }}
+                </ActionButton>
+              </template>
+            </AppNavigationItem>
+            <AppNavigationItem
+                v-for="(page,idx) in morePages"
+                class="srgdev-pubpage-nav-item"
+                :class="{'sb_disable_nav-item':sbShow!==0}"
+                @click="curPageId=page.pageId;getFormData(page.pageId)"
+                :title="(
               checkPageLabel(page.label)+' '+
               (page.enabled===1
                 ?t('appointments','[Online]')
                 :t('appointments','[Disabled]'))
               )"
-            :icon="pageInfoLoading!==(idx+2)?
+                :icon="pageInfoLoading!==(idx+2)?
                       (page.enabled===1
                         ?'icon-screen'
                         :'icon-screen-off'):''"
-            :loading="pageInfoLoading===idx+2"
-            :key="page.pageId">
-          <template slot="actions">
-            <ActionButton v-show="page.enabled===0" @click="setPageEnabled(page.pageId,1)" icon="icon-checkmark-color"
-                          closeAfterClick>
-              {{ t('appointments', 'Share Online') }}
-            </ActionButton>
-            <ActionButton v-show="page.enabled===1" @click="setPageEnabled(page.pageId,0)"
-                          icon="icon-category-disabled"
-                          closeAfterClick>
-              {{ t('appointments', 'Stop Sharing') }}
-            </ActionButton>
-            <ActionButton @click="showPubLink(page.pageId)" icon="icon-public" closeAfterClick>
-              {{ t('appointments', 'Show URL/link') }}
-            </ActionButton>
-            <ActionInput :data-pid="page.pageId" @change="setPageLabel" icon="icon-rename" :value="page.label">
-              {{ checkPageLabel("") }}
-            </ActionInput>
-            <ActionButton @click="deletePage(page.pageId)" icon="icon-delete" closeAfterClick>
-              {{ t('appointments', 'Delete') }}
-            </ActionButton>
-          </template>
-        </AppNavigationItem>
-        <AppNavigationItem
-            v-show="morePages.length>0"
-            :class="{'sb_disable_nav-item':sbShow!==0}"
-            @click="getFormData('dir')"
-            class="srgdev-pubpage-nav-item"
-            :title="t('appointments','Directory Page')"
-            icon="icon-projects">
-          <template slot="actions">
-            <ActionButton @click="toggleSlideBar(12,'dir');sbGotoBack=0" icon="icon-settings" closeAfterClick>
-              {{ t('appointments', 'Settings') }}
-            </ActionButton>
-            <ActionButton @click="showPubLink('dir')" icon="icon-public" closeAfterClick>
-              {{ t('appointments', 'Show URL/link') }}
-            </ActionButton>
-          </template>
-        </AppNavigationItem>
-        <AppNavigationSpacer/>
-        <AppNavigationItem
-            @click="openViaPicker(6,$event)"
-            :title="t('appointments','Manage Appointment Slots')"
-            icon="icon-appt-calendar-clock"/>
-        <AppNavigationItem
-            @click="openViaPicker(3,$event)"
-            :title="t('appointments','User/Organization Info')"
-            icon="icon-user"/>
-        <AppNavigationItem
-            @click="toggleSlideBar(9)"
-            :title="t('appointments','Settings')"
-            icon="icon-settings"/>
-      </ul>
+                :loading="pageInfoLoading===idx+2"
+                :key="page.pageId">
+              <template slot="actions">
+                <ActionButton v-show="page.enabled===0" @click="setPageEnabled(page.pageId,1)"
+                              icon="icon-checkmark-color"
+                              closeAfterClick>
+                  {{ t('appointments', 'Share Online') }}
+                </ActionButton>
+                <ActionButton v-show="page.enabled===1" @click="setPageEnabled(page.pageId,0)"
+                              icon="icon-category-disabled"
+                              closeAfterClick>
+                  {{ t('appointments', 'Stop Sharing') }}
+                </ActionButton>
+                <ActionButton @click="showPubLink(page.pageId)" icon="icon-public" closeAfterClick>
+                  {{ t('appointments', 'Show URL/link') }}
+                </ActionButton>
+                <ActionInput :data-pid="page.pageId" @change="setPageLabel" icon="icon-rename" :value="page.label">
+                  {{ checkPageLabel("") }}
+                </ActionInput>
+                <ActionButton @click="deletePage(page.pageId)" icon="icon-delete" closeAfterClick>
+                  {{ t('appointments', 'Delete') }}
+                </ActionButton>
+              </template>
+            </AppNavigationItem>
+            <AppNavigationItem
+                v-show="morePages.length>0"
+                :class="{'sb_disable_nav-item':sbShow!==0}"
+                @click="getFormData('dir')"
+                class="srgdev-pubpage-nav-item"
+                :title="t('appointments','Directory Page')"
+                icon="icon-projects">
+              <template slot="actions">
+                <ActionButton @click="toggleSlideBar(12,'dir');sbGotoBack=0" icon="icon-settings" closeAfterClick>
+                  {{ t('appointments', 'Settings') }}
+                </ActionButton>
+                <ActionButton @click="showPubLink('dir')" icon="icon-public" closeAfterClick>
+                  {{ t('appointments', 'Show URL/link') }}
+                </ActionButton>
+              </template>
+            </AppNavigationItem>
+            <AppNavigationSpacer/>
+            <AppNavigationItem
+                @click="openViaPicker(6,$event)"
+                :title="t('appointments','Manage Appointment Slots')"
+                icon="icon-appt-calendar-clock"/>
+            <AppNavigationItem
+                @click="openViaPicker(3,$event)"
+                :title="t('appointments','User/Organization Info')"
+                icon="icon-user"/>
+            <AppNavigationItem
+                @click="toggleSlideBar(9)"
+                :title="t('appointments','Settings')"
+                icon="icon-settings"/>
+          </ul>
         </li>
       </template>
       <template #footer>
@@ -307,6 +308,7 @@
             <TemplateApptOptions
                 v-if="evtGridModal===5"
                 :elm="evtGridElm"
+                :cid="gridCID"
                 :has-key="hasKey"
                 @showCModal="showCModal"
                 @tmplUpdateAppt="gridApptUpdate($event)"
@@ -948,7 +950,7 @@ export default {
      * @param {Object} value
      * @param {string} pageId
      */
-    async setState(action, value, pageId = '',opt={}) {
+    async setState(action, value, pageId = '', opt = {}) {
       let ji = ""
       this.stateInProgress = true
       try {
@@ -967,7 +969,7 @@ export default {
         this.stateInProgress = false
         if (response.status === 200) {
           if (action !== 'set_fi') this.getFormData(pageId)
-          if(opt.noToast===undefined) showSuccess(this.t('appointments', 'New Settings Applied.'))
+          if (opt.noToast === undefined) showSuccess(this.t('appointments', 'New Settings Applied.'))
           return action !== 'set_fi' ? true : response.data
         } else if (response.status === 202) {
           this.handle202(response.data)
@@ -1214,7 +1216,7 @@ export default {
         const _sl = mode === gridMaker.MODE_SIMPLE ? 10 : 3
         // noinspection JSUnusedLocalSymbols
         tff = function (d) {
-          return td.toDateString().slice(0, _sl)
+          return d.toDateString().slice(0, _sl)
         }
       }
 

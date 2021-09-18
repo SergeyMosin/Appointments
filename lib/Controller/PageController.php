@@ -521,7 +521,7 @@ class PageController extends Controller {
             || preg_match('/[^a-zA-Z0-9+\/=]/',$post['adatetime'])
 
             || !isset($post['appt_dur']) || strlen($post['appt_dur']) !== 1
-            || preg_match('/[^0-5]/u',$post['appt_dur'])
+            || preg_match('/[^0-7]/u',$post['appt_dur'])
 
             || !isset($post['name']) || strlen($post['name']) > 64
             || strlen($post['name']) < 3

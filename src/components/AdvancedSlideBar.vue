@@ -51,7 +51,7 @@
               v-model="calInfo.allDayBlock"
               type="checkbox"
               id="appt_tsb-allday-block"
-              class="checkbox"><label style="margin-left: -3px;" class="srgdev-appt-sb-label-inline" for="appt_tsb-allday-block">{{t('appointments','All day events can block')}}</label>
+              class="checkbox"><label style="margin-left: -3px;" class="srgdev-appt-sb-label-inline" for="appt_tsb-allday-block">{{t('appointments','Include all day events in conflict check')}}</label>
           </div>
         </div>
         <ApptIconLabel

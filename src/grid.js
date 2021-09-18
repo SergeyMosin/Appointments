@@ -82,7 +82,7 @@ function _apptGridMaker() {
     function addAppt(start, len, cnt, cID, clr) {
 
         if (len < 5) len = 5
-        else if (len > 150) len = 150
+        else if (len > 480) len = 480
 
         let uLen = Math.floor(len / 5)
         let uMax = mData.uMax - uLen + 1
