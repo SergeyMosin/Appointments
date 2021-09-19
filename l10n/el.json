@@ -121,6 +121,7 @@
     "When Attendee Cancels" : "Όταν ακυρώνει ο χρήστης",
     "Mark the appointment as canceled" : "Σημείωση ως ακυρωμένο",
     "Reset (make the timeslot available)" : "Επαναφορά (κάνει διαθέσιμη την χρονική περίοδο)",
+    "All day events can block" : "Ολοήμερα συμβάντα μπορούν να μπλοκάρουν",
     "External Mode Settings" : "Ρυθμίσεις εξωτερικής κατάστασης",
     "Optimize recurrence" : "Βελτιστοποιήστε την επανάληψη",
     "Require \"Appointment\" category" : "Απαιτείται η κατηγορία \"Ραντεβού\"",
