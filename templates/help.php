@@ -1,24 +1,46 @@
 <div class="srgdev-appt-hs-inner">
-    <h2 class="srgdev-appt-hs-h1">1. Select a Calendar (Simple Mode)</h2>
-    <p class="srgdev-appt-hs-p"><code class="srgdev-appt-hs-code_short">Manage Appointment Slots &gt; Calendars > Main Calendar</code></p>
-    <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_maincal">Main Calendar</strong> - when you create new appointments they are placed here and are shown in the your public page(s). It is recommended to create a separate calendar.</p>
-    <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_destcal">Calendar for booked appointments</strong> - if this calendar is different from the main calendar, once an appointment is booked it will be moved here.</p>
-    <h2 class="srgdev-appt-hs-h1">2. Enter Organization Info</h2>
-    <p class="srgdev-appt-hs-p">See the "User/Organization Info" section for required Name, Location and Email Address settings.</p>
-    <h2 class="srgdev-appt-hs-h1">3. Add Appointments</h2>
-    <p class="srgdev-appt-hs-p">Please use the <code class="srgdev-appt-hs-code_short">Manage Appointment Slots &gt; Add Appointment Slots</code> dialog or see "External mode" below.</p>
-    <div class="srgdev-appt-hs-p">
-        <span>1. Set "Schedule Generator" settings</span><br>
-        <span>2. Use "3 Dot" dropdown menus</span><br>
-        <span>3. Adjust times/Add break times by dragging slots up/down</span><br>
-        <span>4. Duplicate the day's slots by clicking "Copy to Next" day option in ellipsis menu</span><br>
-    </div>
-    <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_timezone">Timezone Options:</strong></p>
-    <p class="srgdev-appt-hs-p"><span style="text-decoration: underline">Calendar Timezone</span> - your calendar's timezone will be used. This option should be used if you are booking events where people participate from different locations(timezones), like phone calls or video conferences. <strong>Appointment time is "casted" to visitors local time.</strong></p>
-    <p class="srgdev-appt-hs-p srgdev-appt-hs-p_t">Example: 12:00PM <strong>America/New_York timezone</strong>  appointment based in New York</p>
-    <img alt="local timezone" class="srgdev-appt-hs-tz-img" src="<?php print_unescaped(image_path('appointments', 'actual_timezone.jpg')); ?>" />
-    <p class="srgdev-appt-hs-p"><span style="text-decoration: underline">Local (floating)</span> - LOCAL(FLOATING) TIMEZONES ARE NOT SUPPORTED</p>
-    <h2 class="srgdev-appt-hs-h1">4. Customize Public Page</h2>
+    <h2 class="srgdev-appt-hs-h1">Quick Start Guide</h2>
+    <p class="srgdev-appt-hs-p-hb">1. Add a new calendar (in "Calendar" App)</p>
+    <img alt="add calendar" style="max-width: 760px" src="<?php print_unescaped(image_path('appointments', 'qs1-add-calendar.jpg')); ?>" />
+    <p class="srgdev-appt-hs-p-hb">2. Add contact info</p>
+    <img alt="contact info" style="max-width: 688px" src="<?php print_unescaped(image_path('appointments', 'qs2-contact-info.jpg')); ?>" />
+    <p class="srgdev-appt-hs-p-hb">3. Select Calendar, Apply and Click "Edit Template"</p>
+    <img alt="calendar settings" style="max-width: 694px" src="<?php print_unescaped(image_path('appointments', 'qs3-calendar-settings.jpg')); ?>" />
+    <p class="srgdev-appt-hs-p-hb">4. Add appointment slots</p>
+    <img alt="add appointment slots" style="max-width: 846px" src="<?php print_unescaped(image_path('appointments', 'qs4-add-appointment-slots.jpg')); ?>" />
+    <p class="srgdev-appt-hs-p-hb">5. Save the template</p>
+    <img alt="save template" style="max-width: 857px" src="<?php print_unescaped(image_path('appointments', 'qs5-save-template.jpg')); ?>" />
+    <p class="srgdev-appt-hs-p-hb">6. Enable sharing</p>
+    <img alt="enable sharing" style="max-width: 706px" src="<?php print_unescaped(image_path('appointments', 'qs6-enable-sharing.jpg')); ?>" />
+    <p class="srgdev-appt-hs-p-hb">7. Get appointments page URL</p>
+    <img alt="get page url" style="max-width: 706px" src="<?php print_unescaped(image_path('appointments', 'qs7-get-page-url.jpg')); ?>" />
+
+
+
+
+<!--    <p class="srgdev-appt-hs-p"><code class="srgdev-appt-hs-code_short">Manage Appointment Slots &gt; Calendars > Main Calendar</code></p>-->
+
+<!--    <h2 class="srgdev-appt-hs-h1">2. Enter Organization Info</h2>-->
+<!--    <p class="srgdev-appt-hs-p">See the "User/Organization Info" section for required Name, Location and Email Address settings.</p>-->
+<!--    <h2 class="srgdev-appt-hs-h1">3. Add Appointments</h2>-->
+<!--    <p class="srgdev-appt-hs-p">Please use the <code class="srgdev-appt-hs-code_short">Manage Appointment Slots &gt; Add Appointment Slots</code> dialog or see "External mode" below.</p>-->
+<!--    <div class="srgdev-appt-hs-p">-->
+<!--        <span>1. Set "Schedule Generator" settings</span><br>-->
+<!--        <span>2. Use "3 Dot" dropdown menus</span><br>-->
+<!--        <span>3. Adjust times/Add break times by dragging slots up/down</span><br>-->
+<!--        <span>4. Duplicate the day's slots by clicking "Copy to Next" day option in ellipsis menu</span><br>-->
+<!--    </div>-->
+<!--    <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_timezone">Timezone Options:</strong></p>-->
+<!--    <p class="srgdev-appt-hs-p"><span style="text-decoration: underline">Calendar Timezone</span> - your calendar's timezone will be used. This option should be used if you are booking events where people participate from different locations(timezones), like phone calls or video conferences. <strong>Appointment time is "casted" to visitors local time.</strong></p>-->
+<!--    <p class="srgdev-appt-hs-p srgdev-appt-hs-p_t">Example: 12:00PM <strong>America/New_York timezone</strong>  appointment based in New York</p>-->
+<!--    <img alt="local timezone" class="srgdev-appt-hs-tz-img" src="--><?php //print_unescaped(image_path('appointments', 'actual_timezone.jpg')); ?><!--" />-->
+<!--    <p class="srgdev-appt-hs-p"><span style="text-decoration: underline">Local (floating)</span> - LOCAL(FLOATING) TIMEZONES ARE NOT SUPPORTED</p>-->
+
+
+
+
+    <hr>
+    <h2 class="srgdev-appt-hs-h1">Customize Public Page</h2>
     <p class="srgdev-appt-hs-p"><strong id="srgdev-sec_gdpr">GDPR Compliance</strong></p>
     <p class="srgdev-appt-hs-p">Any text in the "GDPR Compliance" field will trigger display of the "GDPR" check box. Plain text (no html) will work as is, but if you need to add a link to a privacy policy please read on... For the link to work properly you should separate it from the &lt;label&gt; element, and the &lt;label&gt;'s <strong>"for"</strong> attribute MUST be set to <strong>"appt_gdpr_id"</strong>, example:</p>
 <code class="srgdev-appt-hs-code">
@@ -45,29 +67,33 @@ form{
     border-bottom: 3px solid #961AB1;
 }
 &lt;/style&gt;</code>
-    <h2 class="srgdev-appt-hs-h1">5. Email Settings</h2>
+    <h2 class="srgdev-appt-hs-h1">Email Settings</h2>
     <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_emailatt">Email Attendee when the appointment is modified and/or deleted</strong> - Attendees will be notified via email when their <strong>upcoming</strong> appointments are updated or deleted in the calendar app or via some other external mechanism. Only changes to Date/Time, Status or Location will trigger the "Modified" notification.</p>
     <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_emailme">Email Me when an appointment is updated</strong> - A notification email will be sent to you when an appointment is booked via the public page or an upcoming appointment is confirmed or canceled via the email links.</p>
     <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_emailskipevs">Skip email validation step</strong> - When this option is selected the "<em>... action needed</em>" validation email will NOT be sent to the attendee. Instead the "<em>... Appointment is confirmed</em>" message is going to be sent right away, and the "<em>All done</em>" page is going to be shown when the form is submitted.</p>
     <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_emaildef"><code>useDefaultEmail</code></strong> - Most instance of NC won't have the particular configuration allowing to send emails on behalf of organizers. Therefore, the default email address as per <a style="color: blue; text-decoration: underline" href="https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/email_configuration.html" target="_blank">Mail Settings</a> is used, and your address is added in the "Reply-To:" header field. If your Nextcloud configuration supports sending out emails for individual users, Admins can override the 'useDefaultEmail' directive like so: <code style="background: #eeeeee; padding: 0 .5em">occ config:app:set appointments useDefaultEmail --value no</code></p>
     <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_emailmoretext"><code>Additional Email Text</code></strong>  - this text is appended as paragraph to the end of validation and confirmation emails. Currently only pain text is allowed, HTML will be escaped.</p>
-    <h2 class="srgdev-appt-hs-h1">6. Share the Public Link</h2>
-    <p class="srgdev-appt-hs-p">Enable sharing and pass along the public page link <code class="srgdev-appt-hs-code_short">Public Page [...] &gt; Show URL/link</code>. Upcoming appointments will be available on the booking page.</p>
-    <h2 class="srgdev-appt-hs-h1">7. Check Status in the Calendar</h2>
-    <p class="srgdev-appt-hs-p">Once an appointment is booked it will be visible in the calendar with "⌛ pending" status. The attendee can "✔️ Confirm" or "<span style="text-decoration: line-through">Cancel</span>" the appointment via an email link, the status change will be reflected in the calendar upon page reload.</p>
-    <h2 class="srgdev-appt-hs-h1" id="srgdev-sec_ts_mode">8. Time slot mode</h2>
-    <p class="srgdev-appt-hs-p-h"><strong>Simple mode</strong> - Use provided "Add Appointment Slots" dialog to add "available" time slots. Recurrence is not suported in this mode.</p>
+    <h2 class="srgdev-appt-hs-h1" id="srgdev-sec_ts_mode">Time slot mode</h2>
     <p class="srgdev-appt-hs-p-h"><strong>Weekly Template</strong> - in this mode you can set a weekly template and it will be repeated automatically.</p>
-    <p style="margin-left: 1em" class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_destcal_tmm">Destination Calendar (Weekly Template)</strong> - Booked/pending appointments will be placed into this calendar.</p>
-    <p style="margin-left: 1em" class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_conflicts_tmm">Check for conflicts in…</strong> - these calendars will be checked for conflicting events in addition to the Destination Calendar.</p>
-    <p style="margin-left: 1em" class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_props_tmm">Appointment Properties</strong> - <em>Duration</em>: if you set multiple duration choices for an appointment, then a visitor will be able to pick on of them. <em>Title</em>: if this is set then the title will be displayed next or below the time in the form.</p>
+    <div style="margin-left: 2em">
+        <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_destcal_tmm">Destination Calendar (Weekly Template)</strong> - Booked/pending appointments will be placed into this calendar.</p>
+        <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_conflicts_tmm">Check for conflicts in…</strong> - these calendars will be checked for conflicting events in addition to the Destination Calendar.</p>
+        <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_props_tmm">Appointment Properties</strong> - <em>Duration</em>: if you set multiple duration choices for an appointment, then a visitor will be able to pick on of them. <em>Title</em>: if this is set then the title will be displayed next or below the time in the form.</p>
+    </div>
+    <p class="srgdev-appt-hs-p-h"><strong>Simple mode</strong> - Use provided "Add Appointment Slots" dialog to add "available" time slots. Recurrence is not suported in this mode.</p>
+    <div style="margin-left: 2em">
+        <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_maincal">Main Calendar</strong> - when you create new appointments they are placed here and are shown in the your public page(s). It is recommended to create a separate calendar.</p>
+        <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_destcal">Calendar for booked appointments</strong> - if this calendar is different from the main calendar, once an appointment is booked it will be moved here.</p>
+    </div>
     <p class="srgdev-appt-hs-p-h"><strong>External mode</strong> - Use Nextcloud's Calendar App or any other CalDAV compatible client to add "available" timeslots. Most recurrence rules are supported in this mode. Two calendars are required: a "Source Calendar" to keep track of your availability timeslots and a "Destination Calendar" for booked appointments.</p>
-    <p style="margin-left: 1em" class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_sourcecal_nr">Source Calendar (External mode)</strong> - Any event with "Show As" a.k.a. "Time As" a.k.a. "Free/Busy" a.k.a. "Time Transparency" set to "<strong>Free</strong>" (<a style="color: blue; text-decoration: underline" href="https://tools.ietf.org/html/rfc5545#section-3.8.2.7">RFC5545 specs</a> "TRANSP:TRANSPARENT") will be available for booking in the public form. Most recurrence rules are supported. Also see <span style="font-style: italic">Require "Appointment" category.</span></p>
-    <p style="margin-left: 1em" class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_destcal_nr">Destination Calendar (External mode)</strong> - Booked appointments will be placed in here. In addition to booked appointments, any events in this calendar marked as "<strong>Busy</strong>" will prevent conflicting timeslots in the "Source Calendar" from appearing in the public form. Also see <span style="font-style: italic">Require "Appointment" category.</span></p>
-    <p style="margin-left: 1em" class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_push_rec_nr">Optimize recurrence (External mode)</strong> - If recurrent events are used in the "Source Calendar" the start (DTSTART) date will be pushed forward once in a while in order to improve performance.</p>
-    <p style="margin-left: 1em" class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_require_cat_nr">Require "Appointment" category (External mode)</strong> - When this option is set only events with with "Category" set to "<strong>Appointment</strong>" (in English) will be considered.</p>
-    <p style="margin-left: 1em" class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_auto_fix_nr">Auto-fix "Source" timeslots (External mode)</strong> - Some calendar apps do not allow users to set Free/Busy parameter, resulting in timeslots not being available for booking. If this option is enabled <strong>AND the first character of the Description/Notes is "_"</strong> then the Free/Busy will be set to "Free" and "Appointment" category will be added automatically when a new event is created in the "Source" calendar.</p>
-    <h2 class="srgdev-appt-hs-h1">9. Talk App Integration</h2>
+    <div style="margin-left: 2em">
+        <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_sourcecal_nr">Source Calendar (External mode)</strong> - Any event with "Show As" a.k.a. "Time As" a.k.a. "Free/Busy" a.k.a. "Time Transparency" set to "<strong>Free</strong>" (<a style="color: blue; text-decoration: underline" href="https://tools.ietf.org/html/rfc5545#section-3.8.2.7">RFC5545 specs</a> "TRANSP:TRANSPARENT") will be available for booking in the public form. Most recurrence rules are supported. Also see <span style="font-style: italic">Require "Appointment" category.</span></p>
+        <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_destcal_nr">Destination Calendar (External mode)</strong> - Booked appointments will be placed in here. In addition to booked appointments, any events in this calendar marked as "<strong>Busy</strong>" will prevent conflicting timeslots in the "Source Calendar" from appearing in the public form. Also see <span style="font-style: italic">Require "Appointment" category.</span></p>
+        <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_push_rec_nr">Optimize recurrence (External mode)</strong> - If recurrent events are used in the "Source Calendar" the start (DTSTART) date will be pushed forward once in a while in order to improve performance.</p>
+        <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_require_cat_nr">Require "Appointment" category (External mode)</strong> - When this option is set only events with with "Category" set to "<strong>Appointment</strong>" (in English) will be considered.</p>
+        <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_auto_fix_nr">Auto-fix "Source" timeslots (External mode)</strong> - Some calendar apps do not allow users to set Free/Busy parameter, resulting in timeslots not being available for booking. If this option is enabled <strong>AND the first character of the Description/Notes is "_"</strong> then the Free/Busy will be set to "Free" and "Appointment" category will be added automatically when a new event is created in the "Source" calendar.</p>
+    </div>
+    <h2 class="srgdev-appt-hs-h1">Talk App Integration</h2>
   <p class="srgdev-appt-hs-p">Talk rooms/conversations can be automatically created when an appointment is confirmed. <strong>FLOATING timezones are not supported.</strong></p>
   <p class="srgdev-appt-hs-p" style="margin-top: 1em"><strong id="srgdev-sec_talkPassword">Guest password</strong> - when this option is selected Talk rooms will be password protected. An autogenerated pseudo random password will be sent to attendees along with a room/conversation link.</p>
   <p class="srgdev-appt-hs-p" style="margin-top: 1em"><strong id="srgdev-sec_talkEmailTxt">Customize email text</strong> - you can override default email message. There are two tokens available, {{url}} and if you use password protection {{pass}}, they will be replaced with the room's URL and the password if used.</p>
@@ -107,7 +133,7 @@ form{
     Click <span style="color: blue;text-decoration: underline">here</span> to change your appointment type to Online (audio/video).
   </code>
   <p class="srgdev-appt-hs-p">Talk rooms will be created and deleted  automatically when a meeting type changes.</p><br>
-  <h2 class="srgdev-appt-hs-h1">10. iFrame/Embedding</h2>
+  <h2 class="srgdev-appt-hs-h1">iFrame/Embedding</h2>
     <div class="srgdev-appt-hs-p">
         1. If the iframe is under a different domain use <strong>occ</strong> to set allowed Frame Ancestor Domain:
         <code style="white-space: pre" class="srgdev-appt-hs-code">php occ config:app:set appointments "emb_afad_YourUserName" --value "your.domain.com"</code>
@@ -130,7 +156,7 @@ echo '&lt;iframe src = "'.$src.'"&gt;&lt;/iframe&gt;';
         Additional information can be found here: <a style="color: blue; text-decoration: underline" target="_blank" href="https://github.com/SergeyMosin/Appointments/issues/191#issuecomment-909210230">https://github.com/SergeyMosin/Appointments/issues/191#issuecomment-909210230</a><br>
     </div>
 
-  <h2 id="srgdev-sec_contrib_info" class="srgdev-appt-hs-h1">11. Contributor Features</h2>
+  <h2 id="srgdev-sec_contrib_info" class="srgdev-appt-hs-h1">Contributor Features</h2>
   <div class="srgdev-appt-hs-p">
     Contributor feature can be unlocked by obtaining a contributor key in any of the following ways:
     <ol type="a" style="margin: .5em 0 1em 2em">
