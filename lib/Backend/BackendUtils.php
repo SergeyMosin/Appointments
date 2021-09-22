@@ -7,6 +7,8 @@
 namespace OCA\Appointments\Backend;
 
 use OCA\Appointments\AppInfo\Application;
+use OCP\IDBConnection;
+use Psr\Log\LoggerInterface;
 use Sabre\VObject\Reader;
 
 class BackendUtils{
@@ -135,6 +137,17 @@ class BackendUtils{
     /** @var array */
     private $settings=null;
 
+    private $logger;
+
+    /** @var IDBConnection */
+    private $db;
+
+    public function __construct(LoggerInterface $logger,
+                                IDBConnection   $db) {
+        $this->logger = $logger;
+        $this->db = $db;
+    }
+
     /**
      * @param \DateTimeImmutable $new_start
      * @param \DateTimeImmutable $new_end
@@ -178,7 +191,7 @@ class BackendUtils{
         $vo = Reader::read($data);
 
         if ($vo === null || !isset($vo->VEVENT)) {
-            \OC::$server->getLogger()->error("Bad Data: not an event");
+            $this->logger->error("Bad Data: not an event");
             return "2";
         }
 
@@ -186,12 +199,12 @@ class BackendUtils{
         $evt = $vo->VEVENT;
 
         if (!isset($evt->STATUS) || $evt->STATUS->getValue() !== 'TENTATIVE') {
-            \OC::$server->getLogger()->error("Bad Status: must be TENTATIVE");
+            $this->logger->error("Bad Status: must be TENTATIVE");
             return "1";
         }
 
         if (!isset($evt->CATEGORIES) || $evt->CATEGORIES->getValue() !== BackendUtils::APPT_CAT) {
-            \OC::$server->getLogger()->error("Bad Category: not an " . BackendUtils::APPT_CAT);
+            $this->logger->error("Bad Category: not an " . BackendUtils::APPT_CAT);
             return "2";
         }
 
@@ -264,7 +277,7 @@ class BackendUtils{
 
         $this->setSEQ($evt);
 
-        $this->setApptHash($evt);
+        $this->setApptHash($evt, $userId);
 
         return $vo->serialize();
     }
@@ -378,7 +391,7 @@ class BackendUtils{
 
         $this->setSEQ($evt);
 
-        $this->setApptHash($evt);
+        $this->setApptHash($evt,$xad[0]);
 
         return [$vo->serialize(),$dts, $pageId];
     }
@@ -525,7 +538,7 @@ class BackendUtils{
 
         $this->setSEQ($evt);
 
-        $this->setApptHash($evt);
+        $this->setApptHash($evt,$xad[0]);
 
         return [$vo->serialize(),$dts,$pageId];
     }
@@ -539,7 +552,7 @@ class BackendUtils{
 
         $a=$this->getAttendee($evt);
         if ($a===null) {
-            \OC::$server->getLogger()->error("evtCancelAttendee() bad attendee");
+            $this->logger->error("evtCancelAttendee() bad attendee");
             return;
         }
 
@@ -652,9 +665,7 @@ class BackendUtils{
      * @return string|null
      */
     function getApptHash($uid){
-        $db=\OC::$server->getDatabaseConnection();
-
-        $query = $db->getQueryBuilder();
+        $query = $this->db->getQueryBuilder();
         $query->select(['hash'])
             ->from(self::HASH_TABLE_NAME)
             ->where($query->expr()->eq('uid', $query->createNamedParameter($uid)));
@@ -669,37 +680,37 @@ class BackendUtils{
         }
     }
 
-    /**
-     * @param \Sabre\VObject\Component\VEvent $evt
-     */
-    function setApptHash($evt){
-        if(!isset($evt->UID)){
-            \OC::$server->getLogger()->error("can't set appt_hash, no UID");
+    function setApptHash(\Sabre\VObject\Component\VEvent $evt, string $userId) {
+        if (!isset($evt->UID)) {
+            $this->logger->error("can't set appt_hash, no UID");
             return;
         }
-        if(!isset($evt->DTSTART)){
-            \OC::$server->getLogger()->error("can't set appt_hash, no DTSTART");
+        if (!isset($evt->DTSTART)) {
+            $this->logger->error("can't set appt_hash, no DTSTART");
             return;
         }
 
-        $uid=$evt->UID->getValue();
+        $uid = $evt->UID->getValue();
 
-        $db=\OC::$server->getDatabaseConnection();
-        $query = $db->getQueryBuilder();
+        $query = $this->db->getQueryBuilder();
 
-        if($this->getApptHash($uid)===null){
+        $start_ts=$evt->DTSTART->getDateTime()->getTimestamp();
+        if ($this->getApptHash($uid) === null) {
             $query->insert(self::HASH_TABLE_NAME)
                 ->values([
                     'uid' => $query->createNamedParameter($uid),
                     'hash' => $query->createNamedParameter(
-                        $this->makeApptHash($evt))
+                        $this->makeApptHash($evt)),
+                    'user_id' => $query->createNamedParameter($userId),
+                    'start'=> $query->createNamedParameter($start_ts)
                 ])
                 ->execute();
-        }else{
+        } else {
             $query->update(self::HASH_TABLE_NAME)
                 ->set('uid', $query->createNamedParameter($uid))
                 ->set('hash', $query->createNamedParameter(
                     $this->makeApptHash($evt)))
+                ->set('start', $query->createNamedParameter($start_ts))
                 ->where($query->expr()->eq('uid', $query->createNamedParameter($uid)))
                 ->execute();
         }
@@ -708,21 +719,17 @@ class BackendUtils{
     function deleteApptHash($evt){
 
         if(!isset($evt->UID)){
-            \OC::$server->getLogger()->error("can't delete appt_hash, no UID");
+            $this->logger->error("can't delete appt_hash, no UID");
             return;
         }
 
         $this->deleteApptHashByUID(
-            $db=\OC::$server->getDatabaseConnection(),
+            $this->db,
             $evt->UID->getValue()
         );
     }
 
-    /**
-     * @param \OCP\IDBConnection $db
-     * @param string $uid
-     */
-    function deleteApptHashByUID($db,$uid){
+    function deleteApptHashByUID(IDBConnection $db, string $uid){
         $query = $db->getQueryBuilder();
         $query->delete(self::HASH_TABLE_NAME)
             ->where($query->expr()->eq('uid',
@@ -814,7 +821,7 @@ class BackendUtils{
         $vo = Reader::read($data);
 
         if($vo===null || !isset($vo->VEVENT)){
-            \OC::$server->getLogger()->error("Bad Data: not an event");
+            $this->logger->error("Bad Data: not an event");
             return null;
         }
         /** @var \Sabre\VObject\Component\VEvent $evt*/
@@ -826,22 +833,22 @@ class BackendUtils{
         }
 
         if(!isset($evt->STATUS) || ($status !== "*" && $evt->STATUS->getValue() !== $status)) {
-            \OC::$server->getLogger()->error("Bad Status: must be " . $status);
+            $this->logger->error("Bad Status: must be " . $status);
             return null;
         }
 
         if(!isset($evt->CATEGORIES) || $evt->CATEGORIES->getValue()!==BackendUtils::APPT_CAT){
-            \OC::$server->getLogger()->error("Bad Category: not an ".BackendUtils::APPT_CAT);
+            $this->logger->error("Bad Category: not an ".BackendUtils::APPT_CAT);
             return null;
         }
 
         if(!isset($evt->{self::TZI_PROP})){
-            \OC::$server->getLogger()->error("Missing ".self::TZI_PROP." property");
+            $this->logger->error("Missing ".self::TZI_PROP." property");
             return null;
         }
 
         if ($this->getAttendee($evt)===null) {
-            \OC::$server->getLogger()->error("Bad ATTENDEE attribute");
+            $this->logger->error("Bad ATTENDEE attribute");
             return null;
         }
 
@@ -963,7 +970,7 @@ class BackendUtils{
 
 
     private function loadSettingsFromDB($userId){
-        $qb=\OC::$server->getDatabaseConnection()->getQueryBuilder();
+        $qb=$this->db->getQueryBuilder();
         $c=$qb->select('*')
             ->from(self::PREF_TABLE_NAME)
             ->where($qb->expr()->eq('user_id',$qb->createNamedParameter($userId)))
@@ -1059,13 +1066,13 @@ class BackendUtils{
      */
     function setDBValue($userId,$key,$value){
         try{
-            $qb=\OC::$server->getDatabaseConnection()->getQueryBuilder();
+            $qb=$this->db->getQueryBuilder();
             $r=$qb->update(self::PREF_TABLE_NAME)
                 ->set($key,$qb->createNamedParameter($value))
                 ->where($qb->expr()->eq('user_id',$qb->createNamedParameter($userId)))
                 ->execute();
             if($r===0){
-                $qb=\OC::$server->getDatabaseConnection()->getQueryBuilder();
+                $qb=$this->db->getQueryBuilder();
                 $qb->insert(self::PREF_TABLE_NAME)
                     ->setValue('user_id',$qb->createNamedParameter($userId))
                     ->setValue($key,$qb->createNamedParameter($value))
@@ -1075,7 +1082,7 @@ class BackendUtils{
             $this->settings[$key]=$value;
             return true;
         }catch (\Exception $e){
-            \OC::$server->getLogger()->error($e);
+            $this->logger->error($e);
             return false;
         }
     }
@@ -1317,7 +1324,7 @@ class BackendUtils{
             if(empty($tz_name) || strpos($tz_name,'auto')){
                 return \OC::$server->getDateTimeZone()->getTimeZone();
                 // Use UTC
-//                \OC::$server->getLogger()->warning("no timezone for floating time found - using date_default_timezone_get(): ".date_default_timezone_get());
+//                $this->logger->warning("no timezone for floating time found - using date_default_timezone_get(): ".date_default_timezone_get());
 //                $tz_name=date_default_timezone_get();
             }
         }
@@ -1325,7 +1332,7 @@ class BackendUtils{
         try {
             $tz=new \DateTimeZone($tz_name);
         }catch (\Exception $e){
-            \OC::$server->getLogger()->error($e->getMessage());
+            $this->logger->error($e->getMessage());
             $tz=new \DateTimeZone('utc'); // fallback to utc
         }
 
@@ -1359,7 +1366,7 @@ class BackendUtils{
             try {
                 $d = new \DateTime('now', new \DateTimeZone(substr($tzi, 1)));
             } catch (\Exception $e) {
-                \OC::$server->getLogger()->error($e->getMessage());
+                $this->logger->error($e->getMessage());
                 /** @noinspection PhpUnhandledExceptionInspection */
                 $d = new \DateTime('now', $date->getTimezone());
             }

@@ -10,6 +10,7 @@ namespace OCA\Appointments\Backend;
 use OCA\Appointments\IntervalTree\AVLIntervalTree;
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCP\IConfig;
+use OCP\IDBConnection;
 use Sabre\CalDAV\Backend\BackendInterface;
 use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Xml\Service as XmlService;
@@ -30,18 +31,21 @@ class BCSabreImpl implements IBackendConnector{
     private $utils;
     /** @var LoggerInterface */
     private $logger;
+    /** @var IDBConnection */
+    private $db;
 
-    public function __construct(
-                        $AppName,
-                        CalDavBackend $backend,
-                        IConfig $config,
-                        BackendUtils $utils,
-                        LoggerInterface $logger){
+    public function __construct($AppName,
+                                CalDavBackend $backend,
+                                IConfig $config,
+                                BackendUtils $utils,
+                                IDBConnection $db,
+                                LoggerInterface $logger) {
         /** @var BackendInterface $backend */
-        $this->backend=$backend;
-        $this->config=$config;
-        $this->appName=$AppName;
-        $this->utils=$utils;
+        $this->backend = $backend;
+        $this->config = $config;
+        $this->appName = $AppName;
+        $this->utils = $utils;
+        $this->db = $db;
         $this->logger = $logger;
     }
 
@@ -78,11 +82,11 @@ class BCSabreImpl implements IBackendConnector{
                 BackendUtils::APPT_SES_KEY_HINT,
                 BackendUtils::APPT_SES_SKIP);
 
+            // TODO: add cleanup to cron
             // Cleanup hash table
             if($only_empty===false) {
                 $cutoff_str = $end->modify('-35 days')->format(BackendUtils::FLOAT_TIME_FORMAT);
-                $db = \OC::$server->getDatabaseConnection();
-                $query = $db->getQueryBuilder();
+                $query = $this->db->getQueryBuilder();
 
                 $query->delete(BackendUtils::HASH_TABLE_NAME)
                     ->where($query->expr()->lt('hash',
@@ -928,6 +932,8 @@ class BCSabreImpl implements IBackendConnector{
             // Special "lock" uid
             $lock_uid="LOCK_".hash("tiger128,4",$info['tmpl_start_ts'].$pageId.$userId.$cms[BackendUtils::CLS_TMM_DST_ID]);
 
+            $start_ts=$info['tmpl_start_ts'];
+
         }elseif($ts_mode==='1'){
             // external mode...
             // ... query source cal for source uri
@@ -995,6 +1001,8 @@ class BCSabreImpl implements IBackendConnector{
             // Special "lock" uid
             $lock_uid="LOCK_".hash("tiger128,4",$info['ext_start'].$info['ext_end'].$info['ext_src_uri']);
 
+            $start_ts=$info['ext_start'];
+
         }else{
             // manual mode
             $d=$this->getObjectData($calId,$uri);
@@ -1003,28 +1011,32 @@ class BCSabreImpl implements IBackendConnector{
                 return 1;
             }
 
-            // extract uid
-            $us = strpos($d, "\r\nUID:", strpos($d, "BEGIN:VEVENT") + 12);
-            if($us === false) {
-                $this->logErr("Bad object data for " . $uri);
-                return 5;
+            // We need uid and start_ts
+            $vo = Reader::read($d);
+            if ($vo === null || !isset($vo->VEVENT)) {
+                $this->logger->error("Bad Data: not an event");
+                return 1;
+            }
+            if (!isset($evt->DTSTART)) {
+                $this->logger->error("Bad Data: no DTSTART");
+                return 1;
             }
 
-            $us+=6;
-            $lock_uid=$uid=substr($d,$us,strpos($d,"\r\n",$us)-$us);
+            $lock_uid = $uid = $evt->UID->getValue();
+            $start_ts = $evt->DTSTART->getDateTime()->getTimestamp();
         }
 
         $err='';
-        $db = \OC::$server->getDatabaseConnection();
-
         // Ugly locking to avoid a race condition and booking the same appointment twice...
         $ec=0;
-        $query = $db->getQueryBuilder();
+        $query = $this->db->getQueryBuilder();
         try {
             $query->insert(BackendUtils::HASH_TABLE_NAME)
                 ->values([
                     'uid' => $query->createNamedParameter($lock_uid),
-                    'hash' => $query->createNamedParameter('99999999.0000000000000000000000')
+                    'hash' => $query->createNamedParameter('99999999.0000000000000000000000'),
+                    'user_id' => $query->createNamedParameter($userId),
+                    'start'=> $query->createNamedParameter($start_ts)
                 ])->execute();
         }catch (\Exception $e){
             // uid already exists
@@ -1051,11 +1063,13 @@ class BCSabreImpl implements IBackendConnector{
                     // the time range is good, create new object...
                     if($this->createObject($calId,$uri,$d)!==false){
                         // new object OK, set real uid hash
-                        $query = $db->getQueryBuilder();
+                        $query = $this->db->getQueryBuilder();
                         $query->insert(BackendUtils::HASH_TABLE_NAME)
                             ->values([
                                 'uid' => $query->createNamedParameter($uid),
-                                'hash' => $query->createNamedParameter('99999999.0000000000000000000000')
+                                'hash' => $query->createNamedParameter('99999999.0000000000000000000000'),
+                                'user_id' => $query->createNamedParameter($userId),
+                                'start'=> $query->createNamedParameter($start_ts)
                             ])->execute();
                     }else{
                         $err="Can not create object - mode: ".$ts_mode.", cal: ".$calId.", uri: ".$uri;
@@ -1069,7 +1083,7 @@ class BCSabreImpl implements IBackendConnector{
                 }
 
                 // "release" the "lock"
-                $this->utils->deleteApptHashByUID($db,$lock_uid);
+                $this->utils->deleteApptHashByUID($this->db,$lock_uid);
             }
 
             if($ec===0) {
@@ -1092,7 +1106,7 @@ class BCSabreImpl implements IBackendConnector{
             }
 
             if($ec!==0){
-                $this->utils->deleteApptHashByUID($db,$uid);
+                $this->utils->deleteApptHashByUID($this->db,$uid);
                 if(!empty($err)){
                     $this->logErr($err);
                 }

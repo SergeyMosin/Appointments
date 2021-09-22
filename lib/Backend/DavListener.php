@@ -495,7 +495,7 @@ class DavListener implements IEventListener
             }
 
             // Update hash
-            $utils->setApptHash($evt);
+            $utils->setApptHash($evt,$userId);
 
             if (($eml_settings[BackendUtils::EML_ADEL] === false && $isDelete)
                 || ($eml_settings[BackendUtils::EML_AMOD] === false && $isDelete)) {
