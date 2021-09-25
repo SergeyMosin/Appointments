@@ -42,8 +42,8 @@
 </template>
 
 <script>
-import SlideBar from "./SlideBar.vue"
-import ActionInput from "./ActionInputExt.vue";
+import SlideBar from "../SlideBar.vue"
+import ActionInput from "../ActionInputExt.vue";
 import {
   AppNavigationItem,
 } from '@nextcloud/vue'

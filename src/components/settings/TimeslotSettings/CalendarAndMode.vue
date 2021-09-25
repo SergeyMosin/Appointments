@@ -171,9 +171,9 @@
 </template>
 
 <script>
-import SlideBar from "./SlideBar.vue"
-import ApptIconButton from "./ApptIconButton";
-import ApptAccordion from "./ApptAccordion.vue";
+import SlideBar from "../../SlideBar.vue"
+import ApptIconButton from "../../ApptIconButton";
+import ApptAccordion from "../../ApptAccordion.vue";
 import {linkTo} from '@nextcloud/router'
 import {showError, showWarning} from "@nextcloud/dialogs"
 
@@ -186,11 +186,11 @@ import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
 
 import axios from '@nextcloud/axios'
-import ApptIconLabel from "./ApptIconLabel";
+import ApptIconLabel from "../../ApptIconLabel";
 
 export default {
 
-  name: "ApptMgrSlideBar",
+  name: "CalendarAndMode",
   components: {
     ApptIconLabel,
     SlideBar,

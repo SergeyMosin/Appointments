@@ -141,12 +141,12 @@
 </template>
 
 <script>
-    import SlideBar from "./SlideBar.vue"
-    import ApptAccordion from "./ApptAccordion.vue";
+    import SlideBar from "../SlideBar.vue"
+    import ApptAccordion from "../ApptAccordion.vue";
     import {showError} from "@nextcloud/dialogs"
 
     export default {
-        name: "FormStnSlideBar",
+        name: "PublicPageSettings",
         components: {
             SlideBar,
             ApptAccordion

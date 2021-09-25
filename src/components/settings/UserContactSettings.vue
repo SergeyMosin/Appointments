@@ -83,11 +83,11 @@
 </template>
 
 <script>
-import SlideBar from "./SlideBar.vue"
+import SlideBar from "../SlideBar.vue"
 import {showError} from "@nextcloud/dialogs"
 
 export default {
-  name: "MailStnSlideBar",
+  name: "UserContactSettings",
   components: {
     SlideBar
   },

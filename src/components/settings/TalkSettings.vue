@@ -151,10 +151,10 @@
 </template>
 
 <script>
-import SlideBar from "./SlideBar.vue"
+import SlideBar from "../SlideBar.vue"
 import {showError} from "@nextcloud/dialogs"
 export default {
-  name: "TalkSlideBar",
+  name: "TalkSettings",
   components: {
     SlideBar
   },

@@ -344,7 +344,7 @@
             :more-pages="morePages"
             @pageSelected="curPageId=$event;toggleSlideBar(sbGotoBack,$event);sbGotoBack=0"
             @close="toggleSlideBar(0)"/>
-        <ApptMgrSlideBar
+        <CalendarAndMode
             ref="tsbRef"
             v-if="sbShow===6"
             :cur-page-data="curPageData"
@@ -356,7 +356,7 @@
             @editTemplate="editApptTemplate($event)"
             @reloadPages="getPages(0,curPageData.pageId)"
             @close="toggleSlideBar(0)"/>
-        <UserStnSlideBar
+        <UserContactSettings
             v-if="sbShow===3"
             :cur-page-data="curPageData"
             @close="toggleSlideBar(0)"/>
@@ -371,36 +371,36 @@
             @showModal="showSimpleGeneralModal($event)"
             :cur-page-data="curPageData"
             @close="sbShow=0"/>
-        <FormStnSlideBar
+        <PublicPageSettings
             v-if="sbShow===2"
             @gotoToFid="sbShow=0;visibleSection=4"
             @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
-        <MailStnSlideBar
+        <EmailSettings
             v-if="sbShow===4"
             @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
-        <TalkSlideBar
+        <TalkSettings
             v-if="sbShow===14"
             @showCModal="showCModal"
             @showModal="showSimpleGeneralModal($event)"
             @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
-        <AdvancedSlideBar
+        <AdvancedSettings
             v-if="sbShow===10"
             @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
-        <AddApptSlideBar
+        <SimpleAddAppointents
             v-if="sbShow===7"
             :cur-page-data="curPageData"
             :is-grid-ready="isGridReady"
             @setupGrid="gridSetup"
             @agDataReady="makePreviewGrid"
             @close="toggleSlideBar($event===true?0:sbGotoBack);sbGotoBack=0"/>
-        <DelApptSlideBar
+        <SimpleDelAppointments
             v-if="sbShow===8"
             :cur-page-data="curPageData"
             @openGM="openGeneralModal"
             @closeGM="closeGeneralModal"
             @updateGM="updateGeneralModal"
             @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
-        <DirSlideBar
+        <DirectoryPageSettings
             v-if="sbShow===12"
             :page0-label="checkPageLabel(page0.label)"
             :more-pages="morePages"
@@ -428,25 +428,26 @@ import {
   Content,
 } from '@nextcloud/vue'
 import {showError, showSuccess} from "@nextcloud/dialogs"
-import SettingsSlideBar from "./components/SettingsSlideBar";
-import DelApptSlideBar from "./components/DelApptSlideBar";
-import AddApptSlideBar from "./components/AddApptSlideBar";
+import SettingsSlideBar from "./components/settings/SettingsSlideBar";
+import SimpleDelAppointments from "./components/settings/TimeslotSettings/SimpleDelAppointments";
+import SimpleAddAppointents from "./components/settings/TimeslotSettings/SimpleAddAppointents";
 import ActionInput from "./components/ActionInputExt.vue";
 import NavAccountItem from "./components/NavAccountItem.vue";
-import ScheduleSlideBar from "./components/ScheduleSlideBar.vue";
+
 import axios from '@nextcloud/axios'
 
 import gridMaker from "./grid.js"
-import FormStnSlideBar from "./components/FormStnSlideBar.vue"
-import UserStnSlideBar from "./components/UserStnSlideBar.vue"
-import MailStnSlideBar from "./components/MailStnSlideBar.vue"
 
-import ApptMgrSlideBar from "./components/ApptMgrSlideBar"
+import PublicPageSettings from "./components/settings/PublicPageSettings"
+import EmailSettings from "./components/settings/EmailSettings"
+import TalkSettings from "./components/settings/TalkSettings"
+import AdvancedSettings from "./components/settings/AdvancedSettings"
+import DirectoryPageSettings from "./components/settings/DirectoryPageSettings"
+import UserContactSettings from "./components/settings/UserContactSettings"
+
+import CalendarAndMode from "./components/settings/TimeslotSettings/CalendarAndMode"
 import ApptAccordion from "./components/ApptAccordion.vue"
-import AdvancedSlideBar from "./components/AdvancedSlideBar"
 import PagePickerSlideBar from "./components/PagePickerSlideBar"
-import DirSlideBar from "./components/DirSlideBar"
-import TalkSlideBar from "./components/TalkSlideBar"
 
 import FormInputsDesigner from "./components/FormInputsDesigner"
 import TemplateApptOptions from "./components/TemplateApptOptions";
@@ -456,13 +457,14 @@ export default {
   components: {
     Content,
     TemplateApptOptions,
-    TalkSlideBar,
-    DirSlideBar,
     PagePickerSlideBar,
-    AdvancedSlideBar,
-    ApptMgrSlideBar,
-    FormStnSlideBar,
-    ScheduleSlideBar,
+    CalendarAndMode,
+    AdvancedSettings,
+    DirectoryPageSettings,
+    PublicPageSettings,
+    EmailSettings,
+    TalkSettings,
+    UserContactSettings,
     AppNavigation,
     AppNavigationItem,
     NavAccountItem,
@@ -474,12 +476,10 @@ export default {
     Modal,
     Actions,
     ActionInput,
-    UserStnSlideBar,
-    MailStnSlideBar,
     ApptAccordion,
     ActionSeparator,
-    AddApptSlideBar,
-    DelApptSlideBar,
+    SimpleAddAppointents,
+    SimpleDelAppointments,
     SettingsSlideBar,
     FormInputsDesigner,
   },

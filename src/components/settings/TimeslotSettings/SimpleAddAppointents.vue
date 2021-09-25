@@ -47,12 +47,12 @@
 </template>
 
 <script>
-import SlideBar from "./SlideBar.vue"
+import SlideBar from "../../SlideBar.vue"
 import axios from '@nextcloud/axios'
 import {linkTo} from '@nextcloud/router'
 
 import DatePicker from 'vue2-datepicker'
-import '../../css/datepicker.css';
+import '../../../../css/datepicker.css';
 
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
@@ -60,7 +60,7 @@ import {showError} from "@nextcloud/dialogs"
 
 
 export default {
-  name: "AddApptSlideBar",
+  name: "SimpleAddAppointents",
   components: {
     SlideBar,
     VueSlider,

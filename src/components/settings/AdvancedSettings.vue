@@ -111,12 +111,12 @@
 </template>
 
 <script>
-import SlideBar from "./SlideBar.vue"
-import ApptIconLabel from "./ApptIconLabel";
+import SlideBar from "../SlideBar.vue"
+import ApptIconLabel from "../ApptIconLabel";
 import {showError} from "@nextcloud/dialogs"
 
 export default {
-  name: "AdvancedSlideBar",
+  name: "AdvancedSettings",
   components: {
     ApptIconLabel,
     SlideBar

@@ -84,12 +84,12 @@
 </template>
 
 <script>
-import SlideBar from "./SlideBar.vue"
+import SlideBar from "../SlideBar.vue"
 import {ActionButton, Actions, Multiselect} from "@nextcloud/vue"
-import ActionsOpenUp from "./ActionsOpenUp.vue";
+import ActionsOpenUp from "../ActionsOpenUp.vue";
 
 export default {
-  name: "DirSlideBar",
+  name: "DirectoryPageSettings",
   components: {
     Multiselect,
     SlideBar,
