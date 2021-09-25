@@ -17,6 +17,7 @@ OC.L10N.register(
     "30 Minutes" : "30 Minutes",
     "1 Hour" : "1 Hour",
     "2 Hours" : "2 Hours",
+    "All day events can block" : "Include all-day event in conflict check",
     "Apply" : "Apply",
     "Simple" : "Simple",
     "Warning" : "Warning",
