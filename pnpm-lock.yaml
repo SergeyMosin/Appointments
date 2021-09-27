@@ -9,7 +9,7 @@ specifiers:
   '@nextcloud/l10n': ^1.4.1
   '@nextcloud/logger': ^1.1.2
   '@nextcloud/router': ^1.2.0
-  '@nextcloud/vue': ^3.10.1
+  '@nextcloud/vue': ^3.10.2
   '@vue/test-utils': ^1.1.2
   babel-core: ^7.0.0-bridge.0
   babel-eslint: ^10.0.3
@@ -42,7 +42,7 @@ dependencies:
   '@nextcloud/l10n': 1.4.1
   '@nextcloud/logger': 1.1.2
   '@nextcloud/router': 1.2.0
-  '@nextcloud/vue': 3.10.1_webpack@5.38.1
+  '@nextcloud/vue': 3.10.2_webpack@5.38.1
   npm: 7.17.0
   vue: 2.6.14
   vue-slider-component: 3.1.0_vue@2.6.14
@@ -1326,8 +1326,8 @@ packages:
       '@types/jquery': 2.0.54
     dev: false
 
-  /@nextcloud/vue/3.10.1_webpack@5.38.1:
-    resolution: {integrity: sha512-DdnnEFxt5FuZOtAD1x7hSDFVQF9KVVgQtFKwzs2ySNbyIx8rfRfc6noC7JbMAPR1LyPegCst0bVwQIfqsASGog==}
+  /@nextcloud/vue/3.10.2_webpack@5.38.1:
+    resolution: {integrity: sha512-/8r2fE8V7nw9erjm06x3nCALC+6o9q2CzNSL0eDRfsKXCVySFoZ4bYX+zziQUStienisKDRXRhxh7RUAwkS2+w==}
     engines: {node: '>=10.0.0'}
     dependencies:
       '@nextcloud/auth': 1.3.0
@@ -1734,8 +1734,8 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /ansi-regex/5.0.0:
-    resolution: {integrity: sha512-bY6fj56OUQ0hU1KjFNDQuJFezqKdrAyFdIevADiqrWHwSlbmBNMHp5ak2f40Pm8JTFyM2mqxkG6ngkHO11f/lg==}
+  /ansi-regex/5.0.1:
+    resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
     engines: {node: '>=8'}
     dev: false
 
@@ -5144,7 +5144,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       char-regex: 1.0.2
-      strip-ansi: 6.0.0
+      strip-ansi: 6.0.1
     dev: false
 
   /string-width/1.0.2:
@@ -5183,11 +5183,11 @@ packages:
       ansi-regex: 4.1.0
     dev: true
 
-  /strip-ansi/6.0.0:
-    resolution: {integrity: sha512-AuvKTrTfQNYNIctbR1K/YGTR1756GycPsg7b9bdV9Duqur4gv6aKqHXah67Z8ImS7WEz5QVcOtlfW2rZEugt6w==}
+  /strip-ansi/6.0.1:
+    resolution: {integrity: sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==}
     engines: {node: '>=8'}
     dependencies:
-      ansi-regex: 5.0.0
+      ansi-regex: 5.0.1
     dev: false
 
   /strip-bom/2.0.0:

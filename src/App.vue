@@ -212,6 +212,11 @@
             <div class="srgdev-appt-modal-lbl">{{ generalModalTxt[1] }}
             </div>
             <button
+                v-show="generalModalActionCallback!==undefined"
+                @click="actionGeneralModal"
+                class="srgdev-appt-modal-btn">{{ generalModalActionTxt }}
+            </button>
+            <button
                 @click="closeGeneralModal"
                 class="primary srgdev-appt-modal-btn">{{
                 generalModalBtnTxt === ""
@@ -368,6 +373,7 @@
             @gotoADV="toggleSlideBar(10);sbGotoBack=9"
             @gotoDIR="toggleSlideBar(12,'dir');sbGotoBack=9"
             @gotoTALK="toggleSlideBar(14);sbGotoBack=9"
+            @gotoREM="toggleSlideBar(15);sbGotoBack=9"
             @showModal="showSimpleGeneralModal($event)"
             :cur-page-data="curPageData"
             @close="sbShow=0"/>
@@ -380,6 +386,11 @@
             @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
         <TalkSettings
             v-if="sbShow===14"
+            @showCModal="showCModal"
+            @showModal="showSimpleGeneralModal($event)"
+            @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
+        <ReminderSettings
+            v-if="sbShow===15"
             @showCModal="showCModal"
             @showModal="showSimpleGeneralModal($event)"
             @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
@@ -444,6 +455,7 @@ import TalkSettings from "./components/settings/TalkSettings"
 import AdvancedSettings from "./components/settings/AdvancedSettings"
 import DirectoryPageSettings from "./components/settings/DirectoryPageSettings"
 import UserContactSettings from "./components/settings/UserContactSettings"
+import ReminderSettings from "./components/settings/ReminderSettings"
 
 import CalendarAndMode from "./components/settings/TimeslotSettings/CalendarAndMode"
 import ApptAccordion from "./components/ApptAccordion.vue"
@@ -455,6 +467,7 @@ import TemplateApptOptions from "./components/TemplateApptOptions";
 export default {
   name: 'App',
   components: {
+    ReminderSettings,
     Content,
     TemplateApptOptions,
     PagePickerSlideBar,
@@ -538,6 +551,7 @@ export default {
       generalModalCloseCallback: undefined,
       generalModalActionCallback: undefined,
       generalModalBtnTxt: "",
+      generalModalActionTxt: "",
 
       calInfo: {},
 
@@ -1011,6 +1025,7 @@ export default {
       // document.getElementById("sec_"+section).scrollIntoView()
     },
 
+
     showHelp(sec) {
 
       if (typeof sec !== "string" && this.visibleSection === 3) {
@@ -1026,6 +1041,23 @@ export default {
               this.helpContent = response.data
               if (sec !== undefined) {
                 this.$nextTick(function () {
+
+                  // We need to re-scroll when images finsh loading otherwise the scroll position is wrong
+                  const scrollToHelpSec=function () {
+                    const elm = document.getElementById("srgdev-appt_help-cont")
+                    if (elm !== null && elm.hasAttribute("data-sec-elm")) {
+                      const secElm = document.getElementById(elm.getAttribute("data-sec-elm"))
+                      if (secElm !== null) {
+                        secElm.scrollIntoView({block: "center"})
+                      }
+                    }
+                  }
+                  document.getElementById("srgdev-appt_help-cont").setAttribute("data-sec-elm", "srgdev-sec_" + sec)
+                  const imgs = document.getElementsByClassName("quick-start-guide-img")
+                  for (let i = 0; i < imgs.length; i++) {
+                    imgs.item(i).addEventListener("load", scrollToHelpSec)
+                  }
+
                   let elm = document.getElementById("srgdev-sec_" + sec)
                   if (elm !== null) {
                     elm.scrollIntoView({block: "center"})
@@ -1333,14 +1365,10 @@ export default {
       this.openGeneralModal(3)
       this.$set(this.generalModalTxt, 0, t('appointments', "Contributor only feature"))
       this.$set(this.generalModalTxt, 1, txt)
-      this.generalModalCloseCallback = function () {
+      this.generalModalActionCallback = function () {
         this.helpWantedHandler('contrib_info')
-        // const a = document.createElement('a');
-        // a.target="_blank";
-        // a.href="https://www.srgdev.com/gh-support/nextcloudapps";
-        // a.click();
       }
-      this.generalModalBtnTxt = t('appointments', "More Info")
+      this.generalModalActionTxt = t('appointments', "More Info")
     },
 
     showIModal(txt) {
@@ -1395,10 +1423,19 @@ export default {
       this._clearGeneralModal()
     },
 
+    actionGeneralModal() {
+      if (this.generalModalActionCallback !== undefined) {
+        this.generalModalCloseCallback = this.generalModalActionCallback
+        this.generalModalActionCallback = undefined
+      }
+      this.closeGeneralModal()
+    },
+
     closeGeneralModal() {
       this.visibleSection = 0
       this.generalModal = 0
       this.generalModalLoadingTxt = ""
+
       if (this.generalModalCloseCallback !== undefined) {
         this.generalModalCloseCallback()
         this.generalModalCloseCallback = undefined
@@ -1413,6 +1450,7 @@ export default {
       this.generalModalActionCallback = undefined
       this.generalModalPopTxt = ""
       this.generalModalBtnTxt = ""
+      this.generalModalActionTxt = ""
       if (this.generalModalPop !== 0) {
         clearTimeout(this.generalModalPop)
       }

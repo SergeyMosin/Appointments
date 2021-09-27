@@ -1,45 +1,26 @@
-<div class="srgdev-appt-hs-inner">
+<div id="srgdev-appt_help-cont" class="srgdev-appt-hs-inner">
     <h2 class="srgdev-appt-hs-h1">Quick Start Guide</h2>
     <p class="srgdev-appt-hs-p-hb">1. Add a new calendar (in "Calendar" App)</p>
-    <img alt="add calendar" style="max-width: 760px" src="<?php print_unescaped(image_path('appointments', 'qs1-add-calendar.jpg')); ?>" />
+    <img class="quick-start-guide-img" alt="add calendar" style="max-width: 760px" src="<?php print_unescaped(image_path('appointments', 'qs1-add-calendar.jpg')); ?>" />
     <p class="srgdev-appt-hs-p-hb">2. Add contact info</p>
-    <img alt="contact info" style="max-width: 688px" src="<?php print_unescaped(image_path('appointments', 'qs2-contact-info.jpg')); ?>" />
+    <img class="quick-start-guide-img" alt="contact info" style="max-width: 688px" src="<?php print_unescaped(image_path('appointments', 'qs2-contact-info.jpg')); ?>" />
     <p class="srgdev-appt-hs-p-hb">3. Select Calendar, Apply and Click "Edit Template"</p>
-    <img alt="calendar settings" style="max-width: 694px" src="<?php print_unescaped(image_path('appointments', 'qs3-calendar-settings.jpg')); ?>" />
+    <img class="quick-start-guide-img" alt="calendar settings" style="max-width: 694px" src="<?php print_unescaped(image_path('appointments', 'qs3-calendar-settings.jpg')); ?>" />
     <p class="srgdev-appt-hs-p-hb">4. Add appointment slots</p>
-    <img alt="add appointment slots" style="max-width: 846px" src="<?php print_unescaped(image_path('appointments', 'qs4-add-appointment-slots.jpg')); ?>" />
+    <img class="quick-start-guide-img" alt="add appointment slots" style="max-width: 846px" src="<?php print_unescaped(image_path('appointments', 'qs4-add-appointment-slots.jpg')); ?>" />
     <p class="srgdev-appt-hs-p-hb">5. Save the template</p>
-    <img alt="save template" style="max-width: 857px" src="<?php print_unescaped(image_path('appointments', 'qs5-save-template.jpg')); ?>" />
+    <img class="quick-start-guide-img" alt="save template" style="max-width: 857px" src="<?php print_unescaped(image_path('appointments', 'qs5-save-template.jpg')); ?>" />
     <p class="srgdev-appt-hs-p-hb">6. Enable sharing</p>
-    <img alt="enable sharing" style="max-width: 706px" src="<?php print_unescaped(image_path('appointments', 'qs6-enable-sharing.jpg')); ?>" />
+    <img class="quick-start-guide-img" alt="enable sharing" style="max-width: 706px" src="<?php print_unescaped(image_path('appointments', 'qs6-enable-sharing.jpg')); ?>" />
     <p class="srgdev-appt-hs-p-hb">7. Get appointments page URL</p>
-    <img alt="get page url" style="max-width: 706px" src="<?php print_unescaped(image_path('appointments', 'qs7-get-page-url.jpg')); ?>" />
-
-
-
-
-<!--    <p class="srgdev-appt-hs-p"><code class="srgdev-appt-hs-code_short">Manage Appointment Slots &gt; Calendars > Main Calendar</code></p>-->
-
-<!--    <h2 class="srgdev-appt-hs-h1">2. Enter Organization Info</h2>-->
-<!--    <p class="srgdev-appt-hs-p">See the "User/Organization Info" section for required Name, Location and Email Address settings.</p>-->
-<!--    <h2 class="srgdev-appt-hs-h1">3. Add Appointments</h2>-->
-<!--    <p class="srgdev-appt-hs-p">Please use the <code class="srgdev-appt-hs-code_short">Manage Appointment Slots &gt; Add Appointment Slots</code> dialog or see "External mode" below.</p>-->
-<!--    <div class="srgdev-appt-hs-p">-->
-<!--        <span>1. Set "Schedule Generator" settings</span><br>-->
-<!--        <span>2. Use "3 Dot" dropdown menus</span><br>-->
-<!--        <span>3. Adjust times/Add break times by dragging slots up/down</span><br>-->
-<!--        <span>4. Duplicate the day's slots by clicking "Copy to Next" day option in ellipsis menu</span><br>-->
-<!--    </div>-->
-<!--    <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_timezone">Timezone Options:</strong></p>-->
-<!--    <p class="srgdev-appt-hs-p"><span style="text-decoration: underline">Calendar Timezone</span> - your calendar's timezone will be used. This option should be used if you are booking events where people participate from different locations(timezones), like phone calls or video conferences. <strong>Appointment time is "casted" to visitors local time.</strong></p>-->
-<!--    <p class="srgdev-appt-hs-p srgdev-appt-hs-p_t">Example: 12:00PM <strong>America/New_York timezone</strong>  appointment based in New York</p>-->
-<!--    <img alt="local timezone" class="srgdev-appt-hs-tz-img" src="--><?php //print_unescaped(image_path('appointments', 'actual_timezone.jpg')); ?><!--" />-->
-<!--    <p class="srgdev-appt-hs-p"><span style="text-decoration: underline">Local (floating)</span> - LOCAL(FLOATING) TIMEZONES ARE NOT SUPPORTED</p>-->
-
-
-
+    <img class="quick-start-guide-img" alt="get page url" style="max-width: 706px" src="<?php print_unescaped(image_path('appointments', 'qs7-get-page-url.jpg')); ?>" />
+    <p  id="srgdev-sec_timezone" class="srgdev-appt-hs-p-hb">Timezones</p>
+    <p class="srgdev-appt-hs-p">Your calendar's timezone is used as the base and appointment time will be "casted" to visitors local time.</p>
+    <p class="srgdev-appt-hs-p srgdev-appt-hs-p_t">Example: 12:00PM <strong>America/New_York timezone</strong>  appointment based in New York</p>
+    <img alt="local timezone" class="srgdev-appt-hs-tz-img quick-start-guide-img" src="<?php print_unescaped(image_path('appointments', 'actual_timezone.jpg')); ?>" />
 
     <hr>
+
     <h2 class="srgdev-appt-hs-h1">Customize Public Page</h2>
     <p class="srgdev-appt-hs-p"><strong id="srgdev-sec_gdpr">GDPR Compliance</strong></p>
     <p class="srgdev-appt-hs-p">Any text in the "GDPR Compliance" field will trigger display of the "GDPR" check box. Plain text (no html) will work as is, but if you need to add a link to a privacy policy please read on... For the link to work properly you should separate it from the &lt;label&gt; element, and the &lt;label&gt;'s <strong>"for"</strong> attribute MUST be set to <strong>"appt_gdpr_id"</strong>, example:</p>

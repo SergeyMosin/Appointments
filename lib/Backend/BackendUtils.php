@@ -133,6 +133,15 @@ class BackendUtils{
     public const KEY_FORM_INPUTS_JSON='fi_json';
     public const KEY_FORM_INPUTS_HTML='fi_html';
 
+    public const KEY_REMINDERS = "reminders";
+    public const REMINDER_DATA = "data";
+    public const REMINDER_DATA_TIME = "seconds";
+    public const REMINDER_DATA_ACTIONS = "actions";
+    public const REMINDER_SEND_ON_FRIDAY = "friday";
+    public const REMINDER_MORE_TEXT = "moreText";
+    // Read only background_job_mode from appconfig
+    public const REMINDER_BJM = "bjm";
+
     private $appName=Application::APP_ID;
     /** @var array */
     private $settings=null;
@@ -962,6 +971,25 @@ class BackendUtils{
                     self::TMPL_TZ_NAME=>"",
                     self::TMPL_TZ_DATA=>"");
                 break;
+            case self::KEY_REMINDERS:
+                $d = array(
+                    self::REMINDER_DATA => [
+                        [
+                            self::REMINDER_DATA_TIME => "0",
+                            self::REMINDER_DATA_ACTIONS => true
+                        ],
+                        [
+                            self::REMINDER_DATA_TIME => "0",
+                            self::REMINDER_DATA_ACTIONS => true
+                        ],
+                        [
+                            self::REMINDER_DATA_TIME => "0",
+                            self::REMINDER_DATA_ACTIONS => true
+                        ],
+                    ],
+                    self::REMINDER_SEND_ON_FRIDAY => false,
+                    self::REMINDER_MORE_TEXT => "");
+                break;
             default:
                 $d=null;
         }
@@ -1117,7 +1145,11 @@ class BackendUtils{
         if($key===self::KEY_PAGES){
             // already filtered array @see StateController:set_pages
             $sa=$default_or_pgs;
-        }else {
+        } elseif ($key === self::KEY_REMINDERS) {
+            // already filtered or null
+            $this->setDBValue($userId, $key, $value_str);
+            return true;
+        } else {
             $va = json_decode($value_str, true);
             if ($va === null) {
                 return false;

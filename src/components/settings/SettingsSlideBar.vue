@@ -19,6 +19,10 @@
           @click="$emit('gotoDIR')"
           icon="icon-projects"/>
       <AppNavigationItem
+          :title="t('appointments','Reminders')"
+          @click="$emit('gotoREM')"
+          icon="icon-appt-reminder"/>
+      <AppNavigationItem
           :title="t('appointments','Advanced Settings')"
           @click="$emit('gotoADV')"
           icon="icon-settings"/>

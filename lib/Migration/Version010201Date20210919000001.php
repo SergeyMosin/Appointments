@@ -53,6 +53,17 @@ class Version010201Date20210919000001 extends SimpleMigrationStep
             }
         }
 
+        if ($schema->hasTable(BackendUtils::PREF_TABLE_NAME)) {
+            $table = $schema->getTable(BackendUtils::PREF_TABLE_NAME);
+
+            if(!$table->hasColumn("reminders")){
+                $table->addColumn('reminders', 'text',[
+                    'notnull' => false,
+                    'length' => 32768
+                ]);
+            }
+        }
+
         return $schema;
     }
 

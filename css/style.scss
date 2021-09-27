@@ -692,6 +692,12 @@ textarea.appt-stn-txt-ta{
 		width: 96%;
 	}
 
+	.srgdev-appt-sb-input-select{
+		display: block;
+		margin: 0;
+		width: 80%;
+	}
+
 	.srgdev-appt-sb-textarea {
 		min-height: 60px;
 		max-height: 124px;
@@ -810,6 +816,9 @@ textarea.appt-stn-txt-ta{
 	width: 90%;
 	display: block;
 	margin: .5em 0 2em;
+}
+.quick-start-guide-img{
+	box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.125)
 }
 .srgdev-appt-hs-p_t{
 	padding-top: 1em;
