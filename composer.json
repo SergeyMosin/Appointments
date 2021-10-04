@@ -1,5 +1,5 @@
 {
-    "name": "Appointments",
+    "name": "srgdev.com/appointments",
     "description": "Book appointments into you calendar via secure online form.",
     "type": "project",
     "license": "AGPL",
@@ -10,6 +10,7 @@
     ],
     "require": {},
     "require-dev": {
-        "phpunit/phpunit": "^5.4"
+        "phpunit/phpunit": "^8.5.21",
+        "ext-json": "*"
     }
 }

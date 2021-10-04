@@ -43,6 +43,14 @@ class Version010201Date20210919000001 extends SimpleMigrationStep
                 ]);
             }
 
+            if(!$table->hasColumn("status")){
+                $table->addColumn('status', 'integer', [
+                    'notnull' => false,
+                    'length' => 4,
+                    'unsigned' => true,
+                ]);
+            }
+
             $user_index_name=BackendUtils::HASH_TABLE_NAME . '_user_index';
             if(!$table->hasIndex($user_index_name)){
                 $table->addIndex(['user_id'],$user_index_name);
@@ -50,6 +58,10 @@ class Version010201Date20210919000001 extends SimpleMigrationStep
             $start_index_name=BackendUtils::HASH_TABLE_NAME . '_start_index';
             if(!$table->hasIndex($start_index_name)){
                 $table->addIndex(['start'],$start_index_name);
+            }
+            $status_index_name=BackendUtils::HASH_TABLE_NAME . '_status_index';
+            if(!$table->hasIndex($status_index_name)){
+                $table->addIndex(['status'],$status_index_name);
             }
         }
 

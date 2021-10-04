@@ -47,7 +47,8 @@ class Application extends App implements IBootstrap
 
 
         try {
-            $listener = new DavListener();
+            $l10n = $this->getContainer()->query(\OCP\IL10N::class);
+            $listener = new DavListener($l10n);
         } catch (\Exception $e) {
             \OC::$server->getLogger()->error("Can't Init DavListener");
             \OC::$server->getLogger()->error($e->getMessage());

@@ -11,19 +11,24 @@ use OCP\IDBConnection;
 use Psr\Log\LoggerInterface;
 use Sabre\VObject\Reader;
 
-class BackendUtils{
+class BackendUtils
+{
 
-    const APPT_CAT="Appointment";
-    const TZI_PROP="X-TZI";
-    const XAD_PROP="X-APPT-DATA";
+    const APPT_CAT = "Appointment";
+    const TZI_PROP = "X-TZI";
+    const XAD_PROP = "X-APPT-DATA";
     // original description
-    const X_DSR="X-APPT-DSR";
+    const X_DSR = "X-APPT-DSR";
 
-    const CIPHER="AES-128-CFB";
-    const HASH_TABLE_NAME="appointments_hash";
-    const PREF_TABLE_NAME="appointments_pref";
+    const CIPHER = "AES-128-CFB";
+    const HASH_TABLE_NAME = "appointments_hash";
+    const PREF_TABLE_NAME = "appointments_pref";
 
-    const FLOAT_TIME_FORMAT="Ymd.His";
+    const PREF_STATUS_TENTATIVE = 0;
+    const PREF_STATUS_CONFIRMED = 1;
+    const PREF_STATUS_CANCELLED = 2;
+
+    const FLOAT_TIME_FORMAT = "Ymd.His";
 
     public const APPT_SES_KEY_HINT = "appointment_hint";
 
@@ -45,7 +50,7 @@ class BackendUtils{
 
     // Email Settings
     public const KEY_EML = 'email_options';
-    public const EML_ICS= 'icsFile';
+    public const EML_ICS = 'icsFile';
     public const EML_SKIP_EVS = 'skipEVS';
     public const EML_AMOD = 'attMod';
     public const EML_ADEL = 'attDel';
@@ -58,27 +63,31 @@ class BackendUtils{
     // Calendar Settings
     public const KEY_CLS = 'calendar_settings';
     // simple mode
-    public const CLS_MAIN_ID= 'mainCalId'; // this cal_id now
-    public const CLS_DEST_ID= 'destCalId';
+    public const CLS_MAIN_ID = 'mainCalId'; // this cal_id now
+    public const CLS_DEST_ID = 'destCalId';
     // external mode
-    public const CLS_XTM_SRC_ID= 'nrSrcCalId';
-    public const CLS_XTM_DST_ID= 'nrDstCalId';
-    public const CLS_XTM_PUSH_REC= 'nrPushRec';
-    public const CLS_XTM_REQ_CAT= 'nrRequireCat';
-    public const CLS_XTM_AUTO_FIX= 'nrAutoFix';
+    public const CLS_XTM_SRC_ID = 'nrSrcCalId';
+    public const CLS_XTM_DST_ID = 'nrDstCalId';
+    public const CLS_XTM_PUSH_REC = 'nrPushRec';
+    public const CLS_XTM_REQ_CAT = 'nrRequireCat';
+    public const CLS_XTM_AUTO_FIX = 'nrAutoFix';
     // template mode
-    public const CLS_TMM_DST_ID= 'tmmDstCalId';
-    public const CLS_TMM_MORE_CALS= 'tmmMoreCals';
+    public const CLS_TMM_DST_ID = 'tmmDstCalId';
+    public const CLS_TMM_MORE_CALS = 'tmmMoreCals';
     // --
     public const CLS_PREP_TIME = 'prepTime';
     public const CLS_ON_CANCEL = 'whenCanceled';
     public const CLS_ALL_DAY_BLOCK = 'allDayBlock';
     public const CLS_TS_MODE = 'tsMode';
+    // values for tsMode
+    public const CLS_TS_MODE_SIMPLE = '0';
+    public const CLS_TS_MODE_EXTERNAL = '1';
+    public const CLS_TS_MODE_TEMPLATE = '2';
 
-    public const KEY_TMPL_DATA='template_data';
-    public const KEY_TMPL_INFO='template_info';
-    public const TMPL_TZ_NAME="tzName";
-    public const TMPL_TZ_DATA="tzData";
+    public const KEY_TMPL_DATA = 'template_data';
+    public const KEY_TMPL_INFO = 'template_info';
+    public const TMPL_TZ_NAME = "tzName";
+    public const TMPL_TZ_DATA = "tzData";
 
     public const KEY_PSN = "page_options";
     public const PSN_PAGE_TITLE = "pageTitle";
@@ -99,16 +108,16 @@ class BackendUtils{
     public const KEY_MPS_COL = "more_pages";
     public const KEY_MPS = "more_pages_";
 
-    public const KEY_PAGES="pages";
-    public const PAGES_ENABLED="enabled";
-    public const PAGES_LABEL="label";
+    public const KEY_PAGES = "pages";
+    public const PAGES_ENABLED = "enabled";
+    public const PAGES_LABEL = "label";
 
-    public const PAGES_VAL_DEF=array(
-        self::PAGES_ENABLED=>0,
-        self::PAGES_LABEL=>""
+    public const PAGES_VAL_DEF = array(
+        self::PAGES_ENABLED => 0,
+        self::PAGES_LABEL => ""
     );
 
-    public const KEY_DIR="dir_info";
+    public const KEY_DIR = "dir_info";
 
     public const KEY_TALK = "appt_talk";
     public const TALK_ENABLED = "enabled";
@@ -130,8 +139,8 @@ class BackendUtils{
 
     public const TALK_FORM_TYPE_CHANGE_TXT = "formTxtTypeChange";
 
-    public const KEY_FORM_INPUTS_JSON='fi_json';
-    public const KEY_FORM_INPUTS_HTML='fi_html';
+    public const KEY_FORM_INPUTS_JSON = 'fi_json';
+    public const KEY_FORM_INPUTS_HTML = 'fi_html';
 
     public const KEY_REMINDERS = "reminders";
     public const REMINDER_DATA = "data";
@@ -142,9 +151,9 @@ class BackendUtils{
     // Read only background_job_mode from appconfig
     public const REMINDER_BJM = "bjm";
 
-    private $appName=Application::APP_ID;
+    private $appName = Application::APP_ID;
     /** @var array */
-    private $settings=null;
+    private $settings = null;
 
     private $logger;
 
@@ -163,26 +172,26 @@ class BackendUtils{
      * @param int $skipped number of skipped recurrences (to adjust the 'COUNT')
      * @param \Sabre\VObject\Component\VCalendar $vo
      */
-    function optimizeRecurrence($new_start,$new_end,$skipped,$vo){
+    function optimizeRecurrence($new_start, $new_end, $skipped, $vo) {
 
         /**  @var \Sabre\VObject\Component\VEvent $evt */
-        $evt=$vo->VEVENT;
+        $evt = $vo->VEVENT;
 
-        $is_floating=$evt->DTSTART->isFloating();
+        $is_floating = $evt->DTSTART->isFloating();
 
-        $evt->DTSTART->setDateTime($new_start,$is_floating);
+        $evt->DTSTART->setDateTime($new_start, $is_floating);
         // there can be "DURATION" instead of "DTSTART"
-        if(isset($evt->DTEND)){
+        if (isset($evt->DTEND)) {
             // adjust end time
-            $evt->DTEND->setDateTime($new_end,$is_floating);
+            $evt->DTEND->setDateTime($new_end, $is_floating);
         }
 
         $this->setSEQ($evt);
 
         //adjust count if present
-        $rra=$evt->RRULE->getParts();
-        if(isset($rra['COUNT'])){
-            $rra['COUNT']-=$skipped;
+        $rra = $evt->RRULE->getParts();
+        if (isset($rra['COUNT'])) {
+            $rra['COUNT'] -= $skipped;
             $evt->RRULE->setParts($rra);
         }
     }
@@ -195,7 +204,7 @@ class BackendUtils{
      *                  "1"=Bad Status (Most likely booked while waiting),
      *                  "2"=Other Error
      */
-    function dataSetAttendee($data, $info, $userId){
+    function dataSetAttendee($data, $info, $userId) {
 
         $vo = Reader::read($data);
 
@@ -225,40 +234,40 @@ class BackendUtils{
 
         if ($e_fix === 'none') {
             $a = $evt->add('ATTENDEE', "mailto:" . $info['email']);
-        }elseif ($e_fix === 'scheme'){
+        } elseif ($e_fix === 'scheme') {
             $a = $evt->add('ATTENDEE', "acct:" . $info['email']);
-        }else{
+        } else {
             $a = $evt->add('ATTENDEE', "mailto:" . $info['email']);
-            $a['SCHEDULE-AGENT']="CLIENT";
+            $a['SCHEDULE-AGENT'] = "CLIENT";
         }
 
-        $a['CN']=$info['name'];
-        $a['PARTSTAT']="NEEDS-ACTION";
+        $a['CN'] = $info['name'];
+        $a['PARTSTAT'] = "NEEDS-ACTION";
 
-        $title="";
-        if(!isset($evt->SUMMARY)){
+        $title = "";
+        if (!isset($evt->SUMMARY)) {
             $evt->add('SUMMARY');
-        }else{
-            $t=$evt->SUMMARY->getValue();
-            if($t[0]==="_") $title=$t;
+        } else {
+            $t = $evt->SUMMARY->getValue();
+            if ($t[0] === "_") $title = $t;
         }
-        $evt->SUMMARY->setValue("⌛ ".$info['name']);
+        $evt->SUMMARY->setValue("⌛ " . $info['name']);
 
-        $dsr=$info['name']."\n".(empty($info['phone'])?"":($info['phone']."\n")).$info['email'].$info['_more_data'];
-        if(!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
+        $dsr = $info['name'] . "\n" . (empty($info['phone']) ? "" : ($info['phone'] . "\n")) . $info['email'] . $info['_more_data'];
+        if (!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
         $evt->DESCRIPTION->setValue($dsr);
 
-        if(!isset($evt->{self::X_DSR})) $evt->add(self::X_DSR);
+        if (!isset($evt->{self::X_DSR})) $evt->add(self::X_DSR);
         $evt->{self::X_DSR}->setValue($dsr);
 
-        if(!isset($evt->STATUS)) $evt->add('STATUS');
+        if (!isset($evt->STATUS)) $evt->add('STATUS');
         $evt->STATUS->setValue("CONFIRMED");
 
-        if(!isset($evt->TRANSP)) $evt->add('TRANSP');
+        if (!isset($evt->TRANSP)) $evt->add('TRANSP');
         $evt->TRANSP->setValue("OPAQUE");
 
         // Attendee's timezone info at the time of booking
-        if(!isset($evt->{self::TZI_PROP})) $evt->add(self::TZI_PROP);
+        if (!isset($evt->{self::TZI_PROP})) $evt->add(self::TZI_PROP);
         $evt->{self::TZI_PROP}->setValue($info['tzi']);
 
         // isset($info['talk_type_real']) === No need for Talk room
@@ -273,15 +282,15 @@ class BackendUtils{
         //      '_' === check if Talk room is needed
         //      'f' === finished
         //  5: reserved for Talk pass @see $this->dataConfirmAttendee()
-        if(!isset($evt->{self::XAD_PROP})) $evt->add(self::XAD_PROP);
+        if (!isset($evt->{self::XAD_PROP})) $evt->add(self::XAD_PROP);
         $evt->{self::XAD_PROP}->setValue($this->encrypt(
-            $userId.chr(31)
-            .$title.chr(31)
-            .$info['_page_id'].chr(31)
-            .$info['_embed'].chr(31)
+            $userId . chr(31)
+            . $title . chr(31)
+            . $info['_page_id'] . chr(31)
+            . $info['_embed'] . chr(31)
             // talk link, if isset($info['talk_type_real']) means no need for talk room, @see PageController->showFormPost()
-            .(isset($info['talk_type_real'])?'d':'_').chr(31)
-            .'_', // talk pass
+            . (isset($info['talk_type_real']) ? 'd' : '_') . chr(31)
+            . '_', // talk pass
             $evt->UID));
 
         $this->setSEQ($evt);
@@ -296,25 +305,25 @@ class BackendUtils{
      * @param $userId
      * @return string[] [new meeting type, '' === error, data]
      */
-    function dataChangeApptType($data,$userId){
-        $r=['',''];
+    function dataChangeApptType($data, $userId) {
+        $r = ['', ''];
 
-        $vo=$this->getAppointment($data,'CONFIRMED');
-        if($vo===null) return $r;
+        $vo = $this->getAppointment($data, 'CONFIRMED');
+        if ($vo === null) return $r;
 
-        /** @var \Sabre\VObject\Component\VEvent $evt*/
-        $evt=$vo->VEVENT;
+        /** @var \Sabre\VObject\Component\VEvent $evt */
+        $evt = $vo->VEVENT;
 
-        if(isset($evt->{BackendUtils::XAD_PROP})) {
+        if (isset($evt->{BackendUtils::XAD_PROP})) {
             // @see BackendUtils->dataSetAttendee for BackendUtils::XAD_PROP
             $xad = explode(chr(31), $this->decrypt(
                 $evt->{BackendUtils::XAD_PROP}->getValue(),
                 $evt->UID->getValue()));
 
-            if(count($xad)>4) {
+            if (count($xad) > 4) {
 
-                $a=$this->getAttendee($evt);
-                if ($a===null) {
+                $a = $this->getAttendee($evt);
+                if ($a === null) {
                     return $r;
                 }
 
@@ -324,7 +333,7 @@ class BackendUtils{
                     // this will add a talk room and description when a addTalkInfo is called
                     $xad[4] = '_';
 
-                }elseif(strlen($xad[4])>1){
+                } elseif (strlen($xad[4]) > 1) {
                     // this was a virtual appointment...
                     // ... $xad[4] is the room token.
                     // delete the room first...
@@ -334,12 +343,12 @@ class BackendUtils{
                     $ti->deleteRoom($xad[4]);
 
                     // set $xad[4]='d' which will just and description @see BackendUtils->dataSetAttendee
-                    $xad[4]='d';
+                    $xad[4] = 'd';
                 }
 
-                $new_type=$this->addEvtTalkInfo($userId,$xad,$evt,$a);
-                $r[0]=$new_type;
-                $r[1]=$vo->serialize();
+                $new_type = $this->addEvtTalkInfo($userId, $xad, $evt, $a);
+                $r[0] = $new_type;
+                $r[1] = $vo->serialize();
             }
         }
 
@@ -354,55 +363,55 @@ class BackendUtils{
      *                  Localized DateTime string
      *                  $pageId
      */
-    function dataConfirmAttendee($data,$userId){
+    function dataConfirmAttendee($data, $userId) {
 
-        $vo=$this->getAppointment($data,'CONFIRMED');
-        if($vo===null) return [null,null,null];
+        $vo = $this->getAppointment($data, 'CONFIRMED');
+        if ($vo === null) return [null, null, null];
 
-        /** @var \Sabre\VObject\Component\VEvent $evt*/
-        $evt=$vo->VEVENT;
+        /** @var \Sabre\VObject\Component\VEvent $evt */
+        $evt = $vo->VEVENT;
 
-        $a=$this->getAttendee($evt);
-        if ($a===null) {
-            return [null,null,null];
+        $a = $this->getAttendee($evt);
+        if ($a === null) {
+            return [null, null, null];
         }
 
-        if(isset($evt->{BackendUtils::XAD_PROP})){
+        if (isset($evt->{BackendUtils::XAD_PROP})) {
             // @see BackendUtils->dataSetAttendee for BackendUtils::XAD_PROP
-            $xad=explode(chr(31),$this->decrypt(
+            $xad = explode(chr(31), $this->decrypt(
                 $evt->{BackendUtils::XAD_PROP}->getValue(),
                 $evt->UID->getValue()));
-            if(count($xad)>2) {
+            if (count($xad) > 2) {
                 $pageId = $xad[2];
-            }else{
+            } else {
                 $pageId = 'p0';
             }
-        }else {
-            return [null,null,null];
+        } else {
+            return [null, null, null];
         }
 
-        $dts=$this->getDateTimeString(
+        $dts = $this->getDateTimeString(
             $evt->DTSTART->getDateTime(),
             $evt->{self::TZI_PROP}->getValue()
         );
 
-        if($a->parameters['PARTSTAT']->getValue()==='ACCEPTED'){
-            return ["",$dts,$pageId];
+        if ($a->parameters['PARTSTAT']->getValue() === 'ACCEPTED') {
+            return ["", $dts, $pageId];
         }
 
         $a->parameters['PARTSTAT']->setValue('ACCEPTED');
 
-        if(!isset($evt->SUMMARY)) $evt->add('SUMMARY'); // ???
-        $evt->SUMMARY->setValue("✔️ ".$a->parameters['CN']->getValue());
+        if (!isset($evt->SUMMARY)) $evt->add('SUMMARY'); // ???
+        $evt->SUMMARY->setValue("✔️ " . $a->parameters['CN']->getValue());
 
         //Talk link
-        $this->addEvtTalkInfo($userId,$xad,$evt,$a);
+        $this->addEvtTalkInfo($userId, $xad, $evt, $a);
 
         $this->setSEQ($evt);
 
-        $this->setApptHash($evt,$xad[0]);
+        $this->setApptHash($evt, $xad[0]);
 
-        return [$vo->serialize(),$dts, $pageId];
+        return [$vo->serialize(), $dts, $pageId];
     }
 
     /**
@@ -412,11 +421,11 @@ class BackendUtils{
      * @param $a - attendee
      * @return string new appointment type virtual/in-person (from talk settings)
      */
-    private function addEvtTalkInfo($userId, $xad, $evt, $a){
-        $r='';
+    private function addEvtTalkInfo($userId, $xad, $evt, $a) {
+        $r = '';
 
-        if(count($xad)>4){
-            if($xad[4]==='_') {
+        if (count($xad) > 4) {
+            if ($xad[4] === '_') {
                 $tlk = $this->getUserSettings(self::KEY_TALK, $userId);
                 // check if Talk link is needed
                 if ($tlk[self::TALK_ENABLED] === true) {
@@ -442,34 +451,34 @@ class BackendUtils{
                             $evt->{self::XAD_PROP}->setValue($this->encrypt(
                                 implode(chr(31), $xad), $evt->UID));
 
-                            $this->updateDescription($evt,"\n\n" .
+                            $this->updateDescription($evt, "\n\n" .
                                 $ti->getRoomURL($token) . $pi);
 
-                            $r=(!empty($tlk[self::TALK_FORM_VIRTUAL_TXT])
-                                ?$tlk[self::TALK_FORM_VIRTUAL_TXT]
-                                :$tlk[self::TALK_FORM_DEF_VIRTUAL]);
+                            $r = (!empty($tlk[self::TALK_FORM_VIRTUAL_TXT])
+                                ? $tlk[self::TALK_FORM_VIRTUAL_TXT]
+                                : $tlk[self::TALK_FORM_DEF_VIRTUAL]);
 
                         } else {
 
-                            $this->updateDescription($evt,"\n\n" .
+                            $this->updateDescription($evt, "\n\n" .
                                 $l10n->t("Talk integration error: check logs"));
                         }
                     }
                 }
-            }elseif ($xad[4]==='d'){
+            } elseif ($xad[4] === 'd') {
                 // meeting type is overridden by client to real,
                 // set xad to 'f' and add self::TALK_FORM_REAL_TXT to description
-                $xad[4]='f';
+                $xad[4] = 'f';
                 $evt->{self::XAD_PROP}->setValue($this->encrypt(
                     implode(chr(31), $xad), $evt->UID));
 
                 $tlk = $this->getUserSettings(self::KEY_TALK, $userId);
 
-                $r=(!empty($tlk[self::TALK_FORM_REAL_TXT])
-                    ?$tlk[self::TALK_FORM_REAL_TXT]
-                    :$tlk[self::TALK_FORM_DEF_REAL]);
+                $r = (!empty($tlk[self::TALK_FORM_REAL_TXT])
+                    ? $tlk[self::TALK_FORM_REAL_TXT]
+                    : $tlk[self::TALK_FORM_DEF_REAL]);
 
-                $this->updateDescription($evt,"\n\n".$r);
+                $this->updateDescription($evt, "\n\n" . $r);
             }
         }
 
@@ -480,18 +489,18 @@ class BackendUtils{
      * @param \Sabre\VObject\Component\VEvent $evt
      * @param $addString string text to be added to original description
      */
-    private function updateDescription($evt,$addString){
+    private function updateDescription($evt, $addString) {
         // just in-case
         if (!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
 
-        if(isset($evt->{self::X_DSR})){
+        if (isset($evt->{self::X_DSR})) {
             // we have original description
-            $d=$evt->{self::X_DSR}->getValue();
-        }else{
-            $d=$evt->DESCRIPTION->getValue();
+            $d = $evt->{self::X_DSR}->getValue();
+        } else {
+            $d = $evt->DESCRIPTION->getValue();
         }
 
-        $evt->DESCRIPTION->setValue($d.$addString);
+        $evt->DESCRIPTION->setValue($d . $addString);
     }
 
     /**
@@ -500,56 +509,56 @@ class BackendUtils{
      *                  null=error|""=already canceled
      *                  Localized DateTime string
      */
-    function dataCancelAttendee($data){
+    function dataCancelAttendee($data) {
 
-        $vo=$this->getAppointment($data,'*');
-        if($vo===null) return [null,null,null];
+        $vo = $this->getAppointment($data, '*');
+        if ($vo === null) return [null, null, null];
 
-        /** @var \Sabre\VObject\Component\VEvent $evt*/
-        $evt=$vo->VEVENT;
+        /** @var \Sabre\VObject\Component\VEvent $evt */
+        $evt = $vo->VEVENT;
 
-        if($evt->STATUS->getValue()==='TENTATIVE'){
+        if ($evt->STATUS->getValue() === 'TENTATIVE') {
             // Can not cancel tentative appointments
-            return [null,null,null];
+            return [null, null, null];
         }
 
-        $a=$this->getAttendee($evt);
-        if ($a===null) {
-            return [null,null,null];
+        $a = $this->getAttendee($evt);
+        if ($a === null) {
+            return [null, null, null];
         }
 
-        if(isset($evt->{BackendUtils::XAD_PROP})){
+        if (isset($evt->{BackendUtils::XAD_PROP})) {
             // @see BackendUtils->dataSetAttendee for BackendUtils::XAD_PROP
-            $xad=explode(chr(31),$this->decrypt(
+            $xad = explode(chr(31), $this->decrypt(
                 $evt->{BackendUtils::XAD_PROP}->getValue(),
                 $evt->UID->getValue()));
-            if(count($xad)>2) {
+            if (count($xad) > 2) {
                 $pageId = $xad[2];
-            }else{
+            } else {
                 $pageId = 'p0';
             }
-        }else {
-            return [null,null,null];
+        } else {
+            return [null, null, null];
         }
 
-        $dts=$this->getDateTimeString(
+        $dts = $this->getDateTimeString(
             $evt->DTSTART->getDateTime(),
             $evt->{self::TZI_PROP}->getValue()
         );
 
-        if($a->parameters['PARTSTAT']->getValue()==='DECLINED'
-            || $evt->STATUS->getValue()==='CANCELLED' ){
+        if ($a->parameters['PARTSTAT']->getValue() === 'DECLINED'
+            || $evt->STATUS->getValue() === 'CANCELLED') {
             // Already cancelled
-            return ["",$dts,$pageId];
+            return ["", $dts, $pageId];
         }
 
         $this->evtCancelAttendee($evt);
 
         $this->setSEQ($evt);
 
-        $this->setApptHash($evt,$xad[0]);
+        $this->setApptHash($evt, $xad[0]);
 
-        return [$vo->serialize(),$dts,$pageId];
+        return [$vo->serialize(), $dts, $pageId];
     }
 
     /**
@@ -557,27 +566,26 @@ class BackendUtils{
      * @param \Sabre\VObject\Component\VEvent $evt
      * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection
      */
-    function evtCancelAttendee(&$evt){
+    function evtCancelAttendee(&$evt) {
 
-        $a=$this->getAttendee($evt);
-        if ($a===null) {
+        $a = $this->getAttendee($evt);
+        if ($a === null) {
             $this->logger->error("evtCancelAttendee() bad attendee");
             return;
         }
 
         $a->parameters['PARTSTAT']->setValue('DECLINED');
 
-        if(!isset($evt->SUMMARY)) $evt->add('SUMMARY'); // ???
+        if (!isset($evt->SUMMARY)) $evt->add('SUMMARY'); // ???
         $evt->SUMMARY->setValue($a->parameters['CN']->getValue());
 
         $evt->STATUS->setValue('CANCELLED');
 
-        if(!isset($evt->TRANSP)) $evt->add('TRANSP');
+        if (!isset($evt->TRANSP)) $evt->add('TRANSP');
         $evt->TRANSP->setValue("TRANSPARENT");
 
 
     }
-
 
 
     /**
@@ -594,86 +602,86 @@ class BackendUtils{
      * @return string[]
      * @noinspection PhpDocMissingThrowsInspection
      */
-    function dataDeleteAppt($data){
-        $f="";
-        $vo=$this->getAppointment($data,'CONFIRMED');
-        if($vo===null) return ['','',$f,''];
+    function dataDeleteAppt($data) {
+        $f = "";
+        $vo = $this->getAppointment($data, 'CONFIRMED');
+        if ($vo === null) return ['', '', $f, ''];
 
-        /** @var \Sabre\VObject\Component\VEvent $evt*/
-        $evt=$vo->VEVENT;
+        /** @var \Sabre\VObject\Component\VEvent $evt */
+        $evt = $vo->VEVENT;
 
-        if(isset($evt->DTSTART) && isset($evt->DTEND)) {
+        if (isset($evt->DTSTART) && isset($evt->DTEND)) {
             /** @noinspection PhpUnhandledExceptionInspection */
-            $dt = (new \DateTime('now', new \DateTimeZone('utc')))->format("Ymd\THis") . "Z,".
-                rtrim($evt->DTSTART->getRawMimeDirValue(),'Z').",".
-                rtrim($evt->DTEND->getRawMimeDirValue(),'Z');
+            $dt = (new \DateTime('now', new \DateTimeZone('utc')))->format("Ymd\THis") . "Z," .
+                rtrim($evt->DTSTART->getRawMimeDirValue(), 'Z') . "," .
+                rtrim($evt->DTEND->getRawMimeDirValue(), 'Z');
 
-            if(!$evt->DTSTART->isFloating()){
-                if(isset($evt->DTSTART['TZID']) && isset($vo->VTIMEZONE)){
-                    $f=$vo->VTIMEZONE->serialize();
-                    if(empty($f)) $f='UTC'; // <- ???
-                }else{
-                    $f='UTC';
+            if (!$evt->DTSTART->isFloating()) {
+                if (isset($evt->DTSTART['TZID']) && isset($vo->VTIMEZONE)) {
+                    $f = $vo->VTIMEZONE->serialize();
+                    if (empty($f)) $f = 'UTC'; // <- ???
+                } else {
+                    $f = 'UTC';
                 }
             }
-        }else{
-            $dt="";
+        } else {
+            $dt = "";
         }
 
-        $title="";
-        $xad=explode(chr(31),$this->decrypt(
+        $title = "";
+        $xad = explode(chr(31), $this->decrypt(
             $evt->{BackendUtils::XAD_PROP}->getValue(),
             $evt->UID->getValue()));
 
         // @see dataSetAttendee() $xad=...
-        if(count($xad)>1 && !empty($xad[1]) && $xad[1][0]==='_'){
-            $title=$xad[1];
+        if (count($xad) > 1 && !empty($xad[1]) && $xad[1][0] === '_') {
+            $title = $xad[1];
         }
 
         return [$this->getDateTimeString(
             $evt->DTSTART->getDateTime(),
             $evt->{self::TZI_PROP}->getValue()
-        ),$dt,$f,$title];
+        ), $dt, $f, $title];
     }
 
     /**
      * @param \Sabre\VObject\Component\VEvent $evt
      * @return \Sabre\VObject\Property|null
      */
-    function getAttendee($evt){
-        $r=null;
-        $ao=null;
+    function getAttendee($evt) {
+        $r = null;
+        $ao = null;
 
-        $ov=$evt->ORGANIZER->getValue();
-        $ov=trim(substr($ov,strpos($ov,":")+1));
+        $ov = $evt->ORGANIZER->getValue();
+        $ov = trim(substr($ov, strpos($ov, ":") + 1));
 
-        $aa=$evt->ATTENDEE;
-        $c=count($aa);
-        for($i=0;$i<$c;$i++){
-            $a=$aa[$i];
-            $v=$a->getValue();
-            if(isset($a->parameters['CN']) && isset($a->parameters['PARTSTAT'])){
+        $aa = $evt->ATTENDEE;
+        $c = count($aa);
+        for ($i = 0; $i < $c; $i++) {
+            $a = $aa[$i];
+            $v = $a->getValue();
+            if (isset($a->parameters['CN']) && isset($a->parameters['PARTSTAT'])) {
                 // Some external clients set SCHEDULE-STATUS to 3.7 because of the "acct" scheme
-                if (isset($a->parameters['SCHEDULE-STATUS'])){
+                if (isset($a->parameters['SCHEDULE-STATUS'])) {
                     unset($a->parameters['SCHEDULE-STATUS']);
                 }
                 // Some external clients add organizer as attendee we only use if it is the only attendee (testing), otherwise we look for the one that does NOT match the organizer
-                if($ov===trim(substr($v,strpos($v,":")+1))){
-                    $ao=$a;
+                if ($ov === trim(substr($v, strpos($v, ":") + 1))) {
+                    $ao = $a;
                     continue;
                 }
-                $r=$a;
+                $r = $a;
                 break;
             }
         }
-        return $r!==null?$r:$ao;
+        return $r !== null ? $r : $ao;
     }
 
     /**
      * @param string $uid
      * @return string|null
      */
-    function getApptHash($uid){
+    function getApptHash($uid) {
         $query = $this->db->getQueryBuilder();
         $query->select(['hash'])
             ->from(self::HASH_TABLE_NAME)
@@ -682,9 +690,9 @@ class BackendUtils{
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
         $stmt->closeCursor();
 
-        if(!$row) {
+        if (!$row) {
             return null;
-        }else{
+        } else {
             return $row['hash'];
         }
     }
@@ -699,11 +707,28 @@ class BackendUtils{
             return;
         }
 
+        $status = null;
+        if (isset($evt->STATUS)) {
+            switch ($evt->STATUS->getValue()) {
+                case "TENTATIVE":
+                    $status = self::PREF_STATUS_TENTATIVE;
+                    break;
+                case "CONFIRMED":
+                    $status = self::PREF_STATUS_CONFIRMED;
+                    break;
+                case "CANCELLED":
+                    $status = self::PREF_STATUS_CANCELLED;
+                    break;
+                default;
+                    $status = null;
+            }
+        }
+
         $uid = $evt->UID->getValue();
 
         $query = $this->db->getQueryBuilder();
 
-        $start_ts=$evt->DTSTART->getDateTime()->getTimestamp();
+        $start_ts = $evt->DTSTART->getDateTime()->getTimestamp();
         if ($this->getApptHash($uid) === null) {
             $query->insert(self::HASH_TABLE_NAME)
                 ->values([
@@ -711,7 +736,8 @@ class BackendUtils{
                     'hash' => $query->createNamedParameter(
                         $this->makeApptHash($evt)),
                     'user_id' => $query->createNamedParameter($userId),
-                    'start'=> $query->createNamedParameter($start_ts)
+                    'start' => $query->createNamedParameter($start_ts),
+                    'status' => $query->createNamedParameter($status)
                 ])
                 ->execute();
         } else {
@@ -720,14 +746,15 @@ class BackendUtils{
                 ->set('hash', $query->createNamedParameter(
                     $this->makeApptHash($evt)))
                 ->set('start', $query->createNamedParameter($start_ts))
+                ->set('status', $query->createNamedParameter($status))
                 ->where($query->expr()->eq('uid', $query->createNamedParameter($uid)))
                 ->execute();
         }
     }
 
-    function deleteApptHash($evt){
+    function deleteApptHash($evt) {
 
-        if(!isset($evt->UID)){
+        if (!isset($evt->UID)) {
             $this->logger->error("can't delete appt_hash, no UID");
             return;
         }
@@ -738,7 +765,7 @@ class BackendUtils{
         );
     }
 
-    function deleteApptHashByUID(IDBConnection $db, string $uid){
+    function deleteApptHashByUID(IDBConnection $db, string $uid) {
         $query = $db->getQueryBuilder();
         $query->delete(self::HASH_TABLE_NAME)
             ->where($query->expr()->eq('uid',
@@ -747,23 +774,23 @@ class BackendUtils{
     }
 
 
-    function makeApptHash($evt){
+    function makeApptHash($evt) {
         // !! ORDER IS IMPORTANT - DO NOT CHANGE !! //
-        $hs="";
-        if(isset($evt->DTSTART)){
-            $hs.=str_replace("T",".",$evt->DTSTART->getRawMimeDirValue());
-        }else{
-            $hs.="99999999.000000";
+        $hs = "";
+        if (isset($evt->DTSTART)) {
+            $hs .= str_replace("T", ".", $evt->DTSTART->getRawMimeDirValue());
+        } else {
+            $hs .= "99999999.000000";
         }
-        if(isset($evt->STATUS)){
-            $hs.=hash("crc32", $evt->STATUS->getValue(), false);
-        }else{
-            $hs.="00000000";
+        if (isset($evt->STATUS)) {
+            $hs .= hash("crc32", $evt->STATUS->getValue(), false);
+        } else {
+            $hs .= "00000000";
         }
-        if(isset($evt->LOCATION)){
-            $hs.=hash("crc32", $evt->LOCATION->getValue(), false);
-        }else{
-            $hs.="00000000";
+        if (isset($evt->LOCATION)) {
+            $hs .= hash("crc32", $evt->LOCATION->getValue(), false);
+        } else {
+            $hs .= "00000000";
         }
         return $hs;
     }
@@ -773,18 +800,18 @@ class BackendUtils{
      * @param \Sabre\VObject\Component\VEvent $evt
      * @return bool
      */
-    function isApptCancelled($hash,$evt){
+    function isApptCancelled($hash, $evt) {
         // 1e5189eb = hash("crc32", "CANCELLED", false)
-        return $evt->STATUS->getValue()==="CANCELLED" && substr($hash,15,8)==="1e5189eb";
+        return $evt->STATUS->getValue() === "CANCELLED" && substr($hash, 15, 8) === "1e5189eb";
     }
 
     /**
      * @param string $hash
      * @return float
      */
-    function getHashDTStart($hash){
+    function getHashDTStart($hash) {
         // TODO: this really should be the DTEND
-        return (float)substr($hash,0,15);
+        return (float)substr($hash, 0, 15);
     }
 
     /**
@@ -797,27 +824,27 @@ class BackendUtils{
      * @param \Sabre\VObject\Component\VEvent $evt
      * @return bool[]|null
      */
-    function getHashChanges($hash,$evt){
-        $evt_hash=$this->makeApptHash($evt);
-        if($hash===$evt_hash) return null; // not changed
+    function getHashChanges($hash, $evt) {
+        $evt_hash = $this->makeApptHash($evt);
+        if ($hash === $evt_hash) return null; // not changed
 
         return [
-            substr($hash,0,15)!==substr($evt_hash,0,15),
-            substr($hash,15,8)!==substr($evt_hash,15,8),
-            substr($hash,23,8)!==substr($evt_hash,23,8)
+            substr($hash, 0, 15) !== substr($evt_hash, 0, 15),
+            substr($hash, 15, 8) !== substr($evt_hash, 15, 8),
+            substr($hash, 23, 8) !== substr($evt_hash, 23, 8)
         ];
     }
 
     /**
      * @param \Sabre\VObject\Component\VEvent $evt
      */
-    function setSEQ($evt){
-        if(!isset($evt->SEQUENCE)) $evt->add('SEQUENCE',1);
-        else{
-            $sv=intval($evt->SEQUENCE->getValue());
-            $evt->SEQUENCE->setValue($sv+1);
+    function setSEQ($evt) {
+        if (!isset($evt->SEQUENCE)) $evt->add('SEQUENCE', 1);
+        else {
+            $sv = intval($evt->SEQUENCE->getValue());
+            $evt->SEQUENCE->setValue($sv + 1);
         }
-        if(!isset($evt->{'LAST-MODIFIED'})) $evt->add('LAST-MODIFIED');
+        if (!isset($evt->{'LAST-MODIFIED'})) $evt->add('LAST-MODIFIED');
         $evt->{'LAST-MODIFIED'}->setValue(new \DateTime());
     }
 
@@ -826,37 +853,37 @@ class BackendUtils{
      * @param string $status fail is STATUS does not match
      * @return \Sabre\VObject\Document|null
      */
-    function getAppointment($data,$status){
+    function getAppointment($data, $status) {
         $vo = Reader::read($data);
 
-        if($vo===null || !isset($vo->VEVENT)){
+        if ($vo === null || !isset($vo->VEVENT)) {
             $this->logger->error("Bad Data: not an event");
             return null;
         }
-        /** @var \Sabre\VObject\Component\VEvent $evt*/
-        $evt=$vo->VEVENT;
+        /** @var \Sabre\VObject\Component\VEvent $evt */
+        $evt = $vo->VEVENT;
 
-        if(!$evt->DTSTART->hasTime()){
+        if (!$evt->DTSTART->hasTime()) {
             // no all-day events
             return null;
         }
 
-        if(!isset($evt->STATUS) || ($status !== "*" && $evt->STATUS->getValue() !== $status)) {
+        if (!isset($evt->STATUS) || ($status !== "*" && $evt->STATUS->getValue() !== $status)) {
             $this->logger->error("Bad Status: must be " . $status);
             return null;
         }
 
-        if(!isset($evt->CATEGORIES) || $evt->CATEGORIES->getValue()!==BackendUtils::APPT_CAT){
-            $this->logger->error("Bad Category: not an ".BackendUtils::APPT_CAT);
+        if (!isset($evt->CATEGORIES) || $evt->CATEGORIES->getValue() !== BackendUtils::APPT_CAT) {
+            $this->logger->error("Bad Category: not an " . BackendUtils::APPT_CAT);
             return null;
         }
 
-        if(!isset($evt->{self::TZI_PROP})){
-            $this->logger->error("Missing ".self::TZI_PROP." property");
+        if (!isset($evt->{self::TZI_PROP})) {
+            $this->logger->error("Missing " . self::TZI_PROP . " property");
             return null;
         }
 
-        if ($this->getAttendee($evt)===null) {
+        if ($this->getAttendee($evt) === null) {
             $this->logger->error("Bad ATTENDEE attribute");
             return null;
         }
@@ -864,49 +891,49 @@ class BackendUtils{
         return $vo;
     }
 
-    function getDefaultForKey($key){
-        switch ($key){
+    function getDefaultForKey($key) {
+        switch ($key) {
             case self::KEY_ORG:
-                $d=array(
-                    self::ORG_NAME=>"",
-                    self::ORG_EMAIL=>"",
-                    self::ORG_ADDR=>"",
-                    self::ORG_PHONE=>"");
+                $d = array(
+                    self::ORG_NAME => "",
+                    self::ORG_EMAIL => "",
+                    self::ORG_ADDR => "",
+                    self::ORG_PHONE => "");
                 break;
             case self::KEY_EML:
-                $d=array(
-                    self::EML_ICS=>false,
-                    self::EML_SKIP_EVS=>false,
-                    self::EML_AMOD=>true,
-                    self::EML_ADEL=>true,
-                    self::EML_MREQ=>false,
-                    self::EML_MCONF=>false,
-                    self::EML_MCNCL=>false,
-                    self::EML_VLD_TXT=>"",
-                    self::EML_CNF_TXT=>"");
+                $d = array(
+                    self::EML_ICS => false,
+                    self::EML_SKIP_EVS => false,
+                    self::EML_AMOD => true,
+                    self::EML_ADEL => true,
+                    self::EML_MREQ => false,
+                    self::EML_MCONF => false,
+                    self::EML_MCNCL => false,
+                    self::EML_VLD_TXT => "",
+                    self::EML_CNF_TXT => "");
                 break;
             case self::KEY_CLS:
-                $d=array(
-                    self::CLS_MAIN_ID=>'-1',
-                    self::CLS_DEST_ID=>'-1',
+                $d = array(
+                    self::CLS_MAIN_ID => '-1',
+                    self::CLS_DEST_ID => '-1',
 
-                    self::CLS_XTM_SRC_ID=>'-1',
-                    self::CLS_XTM_DST_ID=>'-1',
-                    self::CLS_XTM_PUSH_REC=>true,
-                    self::CLS_XTM_REQ_CAT=>false,
-                    self::CLS_XTM_AUTO_FIX=>false,
+                    self::CLS_XTM_SRC_ID => '-1',
+                    self::CLS_XTM_DST_ID => '-1',
+                    self::CLS_XTM_PUSH_REC => true,
+                    self::CLS_XTM_REQ_CAT => false,
+                    self::CLS_XTM_AUTO_FIX => false,
 
-                    self::CLS_TMM_DST_ID=>'-1',
-                    self::CLS_TMM_MORE_CALS=>[],
+                    self::CLS_TMM_DST_ID => '-1',
+                    self::CLS_TMM_MORE_CALS => [],
 
-                    self::CLS_PREP_TIME=>"0",
-                    self::CLS_ON_CANCEL=>'mark',
-                    self::CLS_ALL_DAY_BLOCK=>false,
+                    self::CLS_PREP_TIME => "0",
+                    self::CLS_ON_CANCEL => 'mark',
+                    self::CLS_ALL_DAY_BLOCK => false,
                     // 0=simple/manual, 1=external/XTM, (2=template)
-                    self::CLS_TS_MODE=>'2');
+                    self::CLS_TS_MODE => '2');
                 break;
             case self::KEY_PSN:
-                $d=array(
+                $d = array(
                     self::PSN_FORM_TITLE => "",
                     self::PSN_NWEEKS => "1",
                     self::PSN_EMPTY => true,
@@ -926,28 +953,28 @@ class BackendUtils{
 //                $d=null;
 //                break;
             case self::KEY_MPS:
-                $d=array(
-                    self::CLS_MAIN_ID=>'-1',
-                    self::CLS_DEST_ID=>'-1',
-                    self::CLS_XTM_SRC_ID=>'-1',
-                    self::CLS_XTM_DST_ID=>'-1',
-                    self::CLS_TMM_DST_ID=>'-1',
-                    self::CLS_TMM_MORE_CALS=>[],
+                $d = array(
+                    self::CLS_MAIN_ID => '-1',
+                    self::CLS_DEST_ID => '-1',
+                    self::CLS_XTM_SRC_ID => '-1',
+                    self::CLS_XTM_DST_ID => '-1',
+                    self::CLS_TMM_DST_ID => '-1',
+                    self::CLS_TMM_MORE_CALS => [],
 
-                    self::CLS_TS_MODE=>'2',
+                    self::CLS_TS_MODE => '2',
 
-                    self::ORG_NAME=>"",
-                    self::ORG_EMAIL=>"",
-                    self::ORG_ADDR=>"",
-                    self::ORG_PHONE=>"",
+                    self::ORG_NAME => "",
+                    self::ORG_EMAIL => "",
+                    self::ORG_ADDR => "",
+                    self::ORG_PHONE => "",
 
-                    self::PSN_FORM_TITLE=>"");
+                    self::PSN_FORM_TITLE => "");
                 break;
             case self::KEY_PAGES:
-                $d=array('p0'=>self::PAGES_VAL_DEF);
+                $d = array('p0' => self::PAGES_VAL_DEF);
                 break;
             case self::KEY_TALK:
-                $d=array(
+                $d = array(
                     self::TALK_ENABLED => false,
                     self::TALK_DEL_ROOM => false,
                     self::TALK_EMAIL_TXT => "",
@@ -964,12 +991,12 @@ class BackendUtils{
                 break;
             case self::KEY_DIR:
             case self::KEY_TMPL_DATA:
-                $d=array();
+                $d = array();
                 break;
             case self::KEY_TMPL_INFO:
-                $d=array(
-                    self::TMPL_TZ_NAME=>"",
-                    self::TMPL_TZ_DATA=>"");
+                $d = array(
+                    self::TMPL_TZ_NAME => "",
+                    self::TMPL_TZ_DATA => "");
                 break;
             case self::KEY_REMINDERS:
                 $d = array(
@@ -991,39 +1018,39 @@ class BackendUtils{
                     self::REMINDER_MORE_TEXT => "");
                 break;
             default:
-                $d=null;
+                $d = null;
         }
         return $d;
     }
 
 
-    private function loadSettingsFromDB($userId){
-        $qb=$this->db->getQueryBuilder();
-        $c=$qb->select('*')
+    private function loadSettingsFromDB($userId) {
+        $qb = $this->db->getQueryBuilder();
+        $c = $qb->select('*')
             ->from(self::PREF_TABLE_NAME)
-            ->where($qb->expr()->eq('user_id',$qb->createNamedParameter($userId)))
+            ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)))
             ->execute();
-        $t=$c->fetch();
+        $t = $c->fetch();
         $c->closeCursor();
 
-        if($t===false){
+        if ($t === false) {
             $this->settings = [];
-        }else {
+        } else {
             $this->settings = $t;
         }
     }
 
-    function getTemplateData($pageId,$userId){
-        return $this->getUserSettings(self::KEY_TMPL_DATA,$userId)[$pageId]??array([],[],[],[],[],[],[]);
+    function getTemplateData($pageId, $userId) {
+        return $this->getUserSettings(self::KEY_TMPL_DATA, $userId)[$pageId] ?? array([], [], [], [], [], [], []);
     }
 
-    function setTemplateData($pageId,$value,$userId){
-        $td=$this->getUserSettings(self::KEY_TMPL_DATA,$userId);
-        $td[$pageId]=json_decode($value,true)??array([],[],[],[],[],[],[]);
-        $jv=json_encode($td);
-        if($jv===false) {
+    function setTemplateData($pageId, $value, $userId) {
+        $td = $this->getUserSettings(self::KEY_TMPL_DATA, $userId);
+        $td[$pageId] = json_decode($value, true) ?? array([], [], [], [], [], [], []);
+        $jv = json_encode($td);
+        if ($jv === false) {
             return false;
-        }else{
+        } else {
             return $this->setDBValue($userId, self::KEY_TMPL_DATA, $jv);
         }
     }
@@ -1033,58 +1060,58 @@ class BackendUtils{
      * @param string $userId
      * @return array
      */
-     function getUserSettings($key,$userId){
+    function getUserSettings($key, $userId) {
 
-         if($this->settings===null){
-             $this->loadSettingsFromDB($userId);
-         }
+        if ($this->settings === null) {
+            $this->loadSettingsFromDB($userId);
+        }
 
-         $pn="";
+        $pn = "";
 
-         $default=$this->getDefaultForKey($key);
+        $default = $this->getDefaultForKey($key);
 
-         if($key===self::KEY_TMPL_DATA){
-             return json_decode($this->settings[self::KEY_TMPL_DATA]??null,true)??$default;
-         }else if(strpos($key,self::KEY_MPS)===0){
-             $pn=substr($key,strlen(self::KEY_MPS));
-             $key=self::KEY_MPS_COL;
-             $default=$this->getDefaultForKey($key);
-         } else if($key===self::KEY_TALK){
-             // Translate defaults
-             $l10n=\OC::$server->getL10N($this->appName);
-             $default[self::TALK_FORM_DEF_LABEL]=$l10n->t('Meeting Type');
-             $default[self::TALK_FORM_DEF_PLACEHOLDER]=$l10n->t('Select meeting type');
-             $default[self::TALK_FORM_DEF_REAL]=$l10n->t('In-person meeting');
-             $default[self::TALK_FORM_DEF_VIRTUAL]=$l10n->t('Online (audio/video)');
-         }else if($key===self::KEY_FORM_INPUTS_JSON){
-             // this is a special case
-             $sa = json_decode(($this->settings[$key]??null),true);
-             if ($sa !== null) {
-                 return $sa;
-             }else{
-                 return [];
-             }
-         }else if($key===self::KEY_FORM_INPUTS_HTML){
-             // this is a special case
-             return [$this->settings[$key]??''];
-         }
+        if ($key === self::KEY_TMPL_DATA) {
+            return json_decode($this->settings[self::KEY_TMPL_DATA] ?? null, true) ?? $default;
+        } else if (strpos($key, self::KEY_MPS) === 0) {
+            $pn = substr($key, strlen(self::KEY_MPS));
+            $key = self::KEY_MPS_COL;
+            $default = $this->getDefaultForKey($key);
+        } else if ($key === self::KEY_TALK) {
+            // Translate defaults
+            $l10n = \OC::$server->getL10N($this->appName);
+            $default[self::TALK_FORM_DEF_LABEL] = $l10n->t('Meeting Type');
+            $default[self::TALK_FORM_DEF_PLACEHOLDER] = $l10n->t('Select meeting type');
+            $default[self::TALK_FORM_DEF_REAL] = $l10n->t('In-person meeting');
+            $default[self::TALK_FORM_DEF_VIRTUAL] = $l10n->t('Online (audio/video)');
+        } else if ($key === self::KEY_FORM_INPUTS_JSON) {
+            // this is a special case
+            $sa = json_decode(($this->settings[$key] ?? null), true);
+            if ($sa !== null) {
+                return $sa;
+            } else {
+                return [];
+            }
+        } else if ($key === self::KEY_FORM_INPUTS_HTML) {
+            // this is a special case
+            return [$this->settings[$key] ?? ''];
+        }
 
-         $sa = json_decode(($this->settings[$key]??null),true);
-         if(!empty($pn)) $sa=$sa[$pn]??null; // <- mps
+        $sa = json_decode(($this->settings[$key] ?? null), true);
+        if (!empty($pn)) $sa = $sa[$pn] ?? null; // <- mps
 
-         if ($sa === null) {
-             return $default;
-         }
+        if ($sa === null) {
+            return $default;
+        }
 
-         if($default!==null) {
-             foreach ($default as $k => $v) {
-                 if (!isset($sa[$k])) {
-                     $sa[$k] = $v;
-                 }
-             }
-         }
+        if ($default !== null) {
+            foreach ($default as $k => $v) {
+                if (!isset($sa[$k])) {
+                    $sa[$k] = $v;
+                }
+            }
+        }
 
-         return $sa;
+        return $sa;
     }
 
     /**
@@ -1092,24 +1119,24 @@ class BackendUtils{
      * @param string $key
      * @param string|null $value
      */
-    function setDBValue($userId,$key,$value){
-        try{
-            $qb=$this->db->getQueryBuilder();
-            $r=$qb->update(self::PREF_TABLE_NAME)
-                ->set($key,$qb->createNamedParameter($value))
-                ->where($qb->expr()->eq('user_id',$qb->createNamedParameter($userId)))
+    function setDBValue($userId, $key, $value) {
+        try {
+            $qb = $this->db->getQueryBuilder();
+            $r = $qb->update(self::PREF_TABLE_NAME)
+                ->set($key, $qb->createNamedParameter($value))
+                ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)))
                 ->execute();
-            if($r===0){
-                $qb=$this->db->getQueryBuilder();
+            if ($r === 0) {
+                $qb = $this->db->getQueryBuilder();
                 $qb->insert(self::PREF_TABLE_NAME)
-                    ->setValue('user_id',$qb->createNamedParameter($userId))
-                    ->setValue($key,$qb->createNamedParameter($value))
+                    ->setValue('user_id', $qb->createNamedParameter($userId))
+                    ->setValue($key, $qb->createNamedParameter($value))
                     ->execute();
             }
             // set cached
-            $this->settings[$key]=$value;
+            $this->settings[$key] = $value;
             return true;
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             $this->logger->error($e);
             return false;
         }
@@ -1121,15 +1148,15 @@ class BackendUtils{
      * @param array|null $value
      * @return bool
      */
-    function setDBMpsValue($userId,$page,$value){
-         $mps=$this->getUserSettings(self::KEY_MPS_COL,$userId)??[];
-         $mps[$page]=$value;
-         $v=json_encode($mps);
-         if($v===false){
-             return false;
-         }
-         $this->setDBValue($userId,self::KEY_MPS_COL,$v);
-         return true;
+    function setDBMpsValue($userId, $page, $value) {
+        $mps = $this->getUserSettings(self::KEY_MPS_COL, $userId) ?? [];
+        $mps[$page] = $value;
+        $v = json_encode($mps);
+        if ($v === false) {
+            return false;
+        }
+        $this->setDBValue($userId, self::KEY_MPS_COL, $v);
+        return true;
     }
 
 
@@ -1141,10 +1168,10 @@ class BackendUtils{
      * @param string $appName
      * @return bool
      */
-    function setUserSettings($key, $value_str, $default_or_pgs, $userId, $appName){
-        if($key===self::KEY_PAGES){
+    function setUserSettings($key, $value_str, $default_or_pgs, $userId, $appName) {
+        if ($key === self::KEY_PAGES) {
             // already filtered array @see StateController:set_pages
-            $sa=$default_or_pgs;
+            $sa = $default_or_pgs;
         } elseif ($key === self::KEY_REMINDERS) {
             // already filtered or null
             $this->setDBValue($userId, $key, $value_str);
@@ -1164,18 +1191,18 @@ class BackendUtils{
             }
         }
 
-        if(strpos($key,self::KEY_MPS)===0){
+        if (strpos($key, self::KEY_MPS) === 0) {
             return $this->setDBMpsValue(
-                $userId, substr($key,strlen(self::KEY_MPS)), $sa);
+                $userId, substr($key, strlen(self::KEY_MPS)), $sa);
         }
 
-        $js=json_encode($sa);
-        if($js===false){
+        $js = json_encode($sa);
+        if ($js === false) {
             return false;
         }
 
 
-        $this->setDBValue($userId,$key,$js);
+        $this->setDBValue($userId, $key, $js);
 
         return true;
     }
@@ -1195,44 +1222,44 @@ class BackendUtils{
      * @param string|null $otherCal get the ID of the other calendar "-1"=not found
      * @return string calendar Id or "-1" = no main cal
      */
-    function getMainCalId($userId,$pageId,$bc,&$otherCal=null){
+    function getMainCalId($userId, $pageId, $bc, &$otherCal = null) {
 
-        if($pageId==='p0'){
+        if ($pageId === 'p0') {
             // main calendar is provider
-            $csProvider=$this->getUserSettings(self::KEY_CLS,$userId);
-        }else{
+            $csProvider = $this->getUserSettings(self::KEY_CLS, $userId);
+        } else {
             // more_pages_ holds $dst/$src cals
-            $csProvider=$this->getUserSettings(self::KEY_MPS.$pageId,$userId);
+            $csProvider = $this->getUserSettings(self::KEY_MPS . $pageId, $userId);
         }
 
         // What mode are we in ??
-        $ts_mode=$csProvider[self::CLS_TS_MODE];
-        if($ts_mode==="2"){
-            $dst=$csProvider[self::CLS_TMM_DST_ID];
-            return ($bc!==null && $bc->getCalendarById($dst,$userId)===null)?'-1':$dst;
-        }else if ($ts_mode==="1"){
-            $dst=$csProvider[self::CLS_XTM_DST_ID];
-            $src=$csProvider[self::CLS_XTM_SRC_ID];
+        $ts_mode = $csProvider[self::CLS_TS_MODE];
+        if ($ts_mode === "2") {
+            $dst = $csProvider[self::CLS_TMM_DST_ID];
+            return ($bc !== null && $bc->getCalendarById($dst, $userId) === null) ? '-1' : $dst;
+        } else if ($ts_mode === "1") {
+            $dst = $csProvider[self::CLS_XTM_DST_ID];
+            $src = $csProvider[self::CLS_XTM_SRC_ID];
             // External mode - main calendar is destination calendar
-            if($src === "-1" || $dst === "-1" || $src === $dst){
-                if(isset($otherCal)){
-                    $otherCal='-1';
+            if ($src === "-1" || $dst === "-1" || $src === $dst) {
+                if (isset($otherCal)) {
+                    $otherCal = '-1';
                 }
                 return "-1";
-            }else{
-                if(isset($otherCal)){
-                    $otherCal=($bc!==null && $bc->getCalendarById($src,$userId)===null)?'-1':$src;
+            } else {
+                if (isset($otherCal)) {
+                    $otherCal = ($bc !== null && $bc->getCalendarById($src, $userId) === null) ? '-1' : $src;
                 }
-                return ($bc!==null && $bc->getCalendarById($dst,$userId)===null)?"-1":$dst;
+                return ($bc !== null && $bc->getCalendarById($dst, $userId) === null) ? "-1" : $dst;
             }
-        }else{
+        } else {
             // Manual $ts_mode==="0"
-            if(isset($otherCal)){
-                $dst=$csProvider[self::CLS_DEST_ID];
-                $otherCal=($bc!==null && $bc->getCalendarById($dst,$userId)===null)?'-1':$dst;
+            if (isset($otherCal)) {
+                $dst = $csProvider[self::CLS_DEST_ID];
+                $otherCal = ($bc !== null && $bc->getCalendarById($dst, $userId) === null) ? '-1' : $dst;
             }
-            $src=$csProvider[self::CLS_MAIN_ID];
-            return ($bc!==null && $bc->getCalendarById($src,$userId)===null)?'-1':$src;
+            $src = $csProvider[self::CLS_MAIN_ID];
+            return ($bc !== null && $bc->getCalendarById($src, $userId) === null) ? '-1' : $src;
         }
     }
 
@@ -1245,91 +1272,91 @@ class BackendUtils{
      * @param string $title title is used when the appointment is being reset
      * @return string[] ['1_before_uid'=>'string...','2_before_dts'=>'string...','3_before_dte'=>'string...','4_last'=>'string...'] or ['err'=>'Error text...']
      */
-    function makeAppointmentParts($userId, $pageId, $appName, $tz_data_str, $cr_date,$title=""){
+    function makeAppointmentParts($userId, $pageId, $appName, $tz_data_str, $cr_date, $title = "") {
 
-        $l10n=\OC::$server->getL10N($appName);
-        $iUser=\OC::$server->getUserManager()->get($userId);
-        if($iUser===null){
-            return ['err'=>'Bad user Id.'];
+        $l10n = \OC::$server->getL10N($appName);
+        $iUser = \OC::$server->getUserManager()->get($userId);
+        if ($iUser === null) {
+            return ['err' => 'Bad user Id.'];
         }
-        $rn="\r\n";
-        $cr_date_rn=$cr_date."\r\n";
+        $rn = "\r\n";
+        $cr_date_rn = $cr_date . "\r\n";
 
-        $tz_id="";
-        $tz_Z="";
+        $tz_id = "";
+        $tz_Z = "";
         $tz_data = "";
-        if($tz_data_str!=="UTC" && !empty($tz_data_str)){
-            $tzo=Reader::read("BEGIN:VCALENDAR\r\nPRODID:-//IDN nextcloud.com//Appointments App//EN\r\nCALSCALE:GREGORIAN\r\nVERSION:2.0\r\n".$tz_data_str."\r\nEND:VCALENDAR");
-            if(isset($tzo->VTIMEZONE) &&  isset($tzo->VTIMEZONE->TZID)){
-                $tz_id=';TZID='.$tzo->VTIMEZONE->TZID->getValue();
-                $tz_data=trim($tzo->VTIMEZONE->serialize())."\r\n";
+        if ($tz_data_str !== "UTC" && !empty($tz_data_str)) {
+            $tzo = Reader::read("BEGIN:VCALENDAR\r\nPRODID:-//IDN nextcloud.com//Appointments App//EN\r\nCALSCALE:GREGORIAN\r\nVERSION:2.0\r\n" . $tz_data_str . "\r\nEND:VCALENDAR");
+            if (isset($tzo->VTIMEZONE) && isset($tzo->VTIMEZONE->TZID)) {
+                $tz_id = ';TZID=' . $tzo->VTIMEZONE->TZID->getValue();
+                $tz_data = trim($tzo->VTIMEZONE->serialize()) . "\r\n";
             }
-        }else{
-            $tz_Z="Z";
+        } else {
+            $tz_Z = "Z";
         }
 
-        $org=$this->getUserSettings(self::KEY_ORG,$userId);
-        if($pageId==='p0'){
-            $org_name=$org[BackendUtils::ORG_NAME];
-            $addr=$org[BackendUtils::ORG_ADDR];
-        }else{
-            $mps=$this->getUserSettings(
-                BackendUtils::KEY_MPS.$pageId,$userId);
-            $org_name=!empty($mps[BackendUtils::ORG_NAME])
-                ?$mps[BackendUtils::ORG_NAME]
-                :$org[BackendUtils::ORG_NAME];
-            $addr=!empty($mps[BackendUtils::ORG_ADDR])
-                ?$mps[BackendUtils::ORG_ADDR]
-                :$org[BackendUtils::ORG_ADDR];
+        $org = $this->getUserSettings(self::KEY_ORG, $userId);
+        if ($pageId === 'p0') {
+            $org_name = $org[BackendUtils::ORG_NAME];
+            $addr = $org[BackendUtils::ORG_ADDR];
+        } else {
+            $mps = $this->getUserSettings(
+                BackendUtils::KEY_MPS . $pageId, $userId);
+            $org_name = !empty($mps[BackendUtils::ORG_NAME])
+                ? $mps[BackendUtils::ORG_NAME]
+                : $org[BackendUtils::ORG_NAME];
+            $addr = !empty($mps[BackendUtils::ORG_ADDR])
+                ? $mps[BackendUtils::ORG_ADDR]
+                : $org[BackendUtils::ORG_ADDR];
         }
 
         // email is not per page
-        $email=$org[self::ORG_EMAIL];
+        $email = $org[self::ORG_EMAIL];
 
-        $name=trim($iUser->getDisplayName());
-        if(empty($name)){
-            $name=$org_name;
+        $name = trim($iUser->getDisplayName());
+        if (empty($name)) {
+            $name = $org_name;
         }
 
-        if(empty($email)) $email=$iUser->getEMailAddress();
-        if(empty($email)){
-            return ['err'=>$l10n->t("Your email address is required for this operation.")];
+        if (empty($email)) $email = $iUser->getEMailAddress();
+        if (empty($email)) {
+            return ['err' => $l10n->t("Your email address is required for this operation.")];
         }
-        if(empty($addr)){
-            return ['err'=>$l10n->t("A location, address or URL is required for this operation. Check User/Organization settings.")];
+        if (empty($addr)) {
+            return ['err' => $l10n->t("A location, address or URL is required for this operation. Check User/Organization settings.")];
         }
 //        ESCAPED-CHAR = ("\\" / "\;" / "\," / "\N" / "\n")
 //        \\ encodes \ \N or \n encodes newline \; encodes ; \, encodes ,
-        $addr=str_replace(array("\\",";",",","\r\n","\r","\n"),array('\\\\','\;','\,',' \n',' \n',' \n'),$addr);
+        $addr = str_replace(array("\\", ";", ",", "\r\n", "\r", "\n"), array('\\\\', '\;', '\,', ' \n', ' \n', ' \n'), $addr);
 
-        if(empty($name)){
-            return ['err'=>$l10n->t("Can't find your name. Check User/Organization settings.")];
+        if (empty($name)) {
+            return ['err' => $l10n->t("Can't find your name. Check User/Organization settings.")];
         }
 
-        if(empty($title)){
-            $summary=\OC::$server->getL10N($appName)->t("Available");
-        }else{
-            $summary=$title;
+        if (empty($title)) {
+            $summary = \OC::$server->getL10N($appName)->t("Available");
+        } else {
+            $summary = $title;
         }
 
 
         return [
-            '1_before_uid'=>"BEGIN:VCALENDAR\r\n" .
+            '1_before_uid' => "BEGIN:VCALENDAR\r\n" .
                 "PRODID:-//IDN nextcloud.com//Appointments App | srgdev.com//EN\r\n" .
                 "CALSCALE:GREGORIAN\r\n" .
                 "VERSION:2.0\r\n" .
                 "BEGIN:VEVENT\r\n" .
-                "SUMMARY:".$summary.$rn.
+                "SUMMARY:" . $summary . $rn .
                 "STATUS:TENTATIVE\r\n" .
-                "TRANSP:TRANSPARENT\r\n".
+                "TRANSP:TRANSPARENT\r\n" .
                 "LAST-MODIFIED:" . $cr_date_rn .
                 "DTSTAMP:" . $cr_date_rn .
                 "SEQUENCE:1\r\n" .
                 "CATEGORIES:" . BackendUtils::APPT_CAT . $rn .
                 "CREATED:" . $cr_date_rn . "UID:", // UID goes here
-            '2_before_dts' => $rn . "DTSTART".$tz_id.":", // DTSTART goes here
-            '3_before_dte' => $tz_Z.$rn . "DTEND".$tz_id.":", // DTEND goes here
-            '4_last' => $tz_Z.$rn .$this->chunk_split_unicode("ORGANIZER;CN=".$name.":mailto:".$email,75,"\r\n ").$rn . $this->chunk_split_unicode("LOCATION:".$addr,75,"\r\n "). $rn. "END:VEVENT\r\n".$tz_data."END:VCALENDAR\r\n"
+            '2_before_dts' => $rn . "DTSTART" . $tz_id . ":", // DTSTART goes here
+            '3_before_dte' => $tz_Z . $rn . "DTEND" . $tz_id . ":", // DTEND goes here
+            '4_last' => $tz_Z . $rn . $this->chunk_split_unicode("ORGANIZER;CN=" . $name . ":mailto:" . $email, 75, "\r\n ") . $rn . $this->chunk_split_unicode("LOCATION:" . $addr, 75, "\r\n ") . $rn . "END:VEVENT\r\n" . $tz_data . "END:VCALENDAR\r\n"
         ];
     }
 
@@ -1348,12 +1375,12 @@ class BackendUtils{
      * @param \OCP\IConfig $config
      * @return \DateTimeZone
      */
-    function getUserTimezone($userId,$config){
-        $tz_name=$config->getUserValue($userId, 'calendar', 'timezone');
-        if(empty($tz_name) || strpos($tz_name,'auto')!==false){
+    function getUserTimezone($userId, $config) {
+        $tz_name = $config->getUserValue($userId, 'calendar', 'timezone');
+        if (empty($tz_name) || strpos($tz_name, 'auto') !== false) {
             // Try Nextcloud default timezone
             $tz_name = $config->getUserValue($userId, 'core', 'timezone');
-            if(empty($tz_name) || strpos($tz_name,'auto')){
+            if (empty($tz_name) || strpos($tz_name, 'auto')) {
                 return \OC::$server->getDateTimeZone()->getTimeZone();
                 // Use UTC
 //                $this->logger->warning("no timezone for floating time found - using date_default_timezone_get(): ".date_default_timezone_get());
@@ -1362,10 +1389,10 @@ class BackendUtils{
         }
 
         try {
-            $tz=new \DateTimeZone($tz_name);
-        }catch (\Exception $e){
+            $tz = new \DateTimeZone($tz_name);
+        } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
-            $tz=new \DateTimeZone('utc'); // fallback to utc
+            $tz = new \DateTimeZone('utc'); // fallback to utc
         }
 
         return $tz;
@@ -1380,21 +1407,21 @@ class BackendUtils{
      * @return string
      * @noinspection PhpDocMissingThrowsInspection
      */
-    function getDateTimeString($date, $tzi, $short_dt=0){
+    function getDateTimeString($date, $tzi, $short_dt = 0) {
 
-        $l10N=\OC::$server->getL10N($this->appName);
-        if($tzi[0]==="F"){
-            $d=$date->format('Ymd\THis');
-            if($short_dt===0){
+        $l10N = \OC::$server->getL10N($this->appName);
+        if ($tzi[0] === "F") {
+            $d = $date->format('Ymd\THis');
+            if ($short_dt === 0) {
                 $date_time =
                     $l10N->l('date', $d, ['width' => 'full']) . ', ' .
                     $l10N->l('time', $d, ['width' => 'short']);
-            }else if($short_dt===1) {
-                $date_time =$l10N->l('datetime', $d, ['width' => 'short']);
-            }else{
-                $date_time='';
+            } else if ($short_dt === 1) {
+                $date_time = $l10N->l('datetime', $d, ['width' => 'short']);
+            } else {
+                $date_time = '';
             }
-        }else{
+        } else {
             try {
                 $d = new \DateTime('now', new \DateTimeZone(substr($tzi, 1)));
             } catch (\Exception $e) {
@@ -1404,14 +1431,14 @@ class BackendUtils{
             }
             $d->setTimestamp($date->getTimestamp());
 
-            if($short_dt===0){
-                $date_time = $l10N->l('date', $d, ['width' => 'full']).', '.
+            if ($short_dt === 0) {
+                $date_time = $l10N->l('date', $d, ['width' => 'full']) . ', ' .
                     str_replace(':00 ', ' ',
                         $l10N->l('time', $d, ['width' => 'long']));
-            }else if($short_dt===1) {
-                $date_time =$l10N->l('datetime', $d, ['width' => 'short']);
-            }else{
-                $date_time='';
+            } else if ($short_dt === 1) {
+                $date_time = $l10N->l('datetime', $d, ['width' => 'short']);
+            } else {
+                $date_time = '';
             }
         }
 
@@ -1424,12 +1451,12 @@ class BackendUtils{
      * @param string $iv special case
      * @return string
      */
-    function encrypt(string $data,string $key,$iv=''):string {
-        if($iv==='') {
-            $iv=$_iv = openssl_random_pseudo_bytes(
+    function encrypt(string $data, string $key, $iv = ''): string {
+        if ($iv === '') {
+            $iv = $_iv = openssl_random_pseudo_bytes(
                 openssl_cipher_iv_length(self::CIPHER));
-        }else{
-            $_iv='';
+        } else {
+            $_iv = '';
         }
         $ciphertext_raw = openssl_encrypt(
             $data,
@@ -1438,9 +1465,9 @@ class BackendUtils{
             OPENSSL_RAW_DATA,
             $iv);
 
-        return $_iv!==''
-            ?base64_encode($_iv.$ciphertext_raw)
-            :$_iv.$ciphertext_raw;
+        return $_iv !== ''
+            ? base64_encode($_iv . $ciphertext_raw)
+            : $_iv . $ciphertext_raw;
     }
 
     /**
@@ -1449,20 +1476,20 @@ class BackendUtils{
      * @param string $iv
      * @return string
      */
-    function decrypt(string $data,string $key,$iv=''):string {
-        $s1=$iv===''?base64_decode($data):$data;
-        if($s1===false || empty($key)) return '';
+    function decrypt(string $data, string $key, $iv = ''): string {
+        $s1 = $iv === '' ? base64_decode($data) : $data;
+        if ($s1 === false || empty($key)) return '';
 
-        $s1=$iv.$s1;
+        $s1 = $iv . $s1;
 
         $ivlen = openssl_cipher_iv_length(self::CIPHER);
-        $t=openssl_decrypt(
-            substr($s1,$ivlen),
+        $t = openssl_decrypt(
+            substr($s1, $ivlen),
             self::CIPHER,
             $key,
             OPENSSL_RAW_DATA,
-            substr($s1,0,$ivlen));
-        return $t===false?'':$t;
+            substr($s1, 0, $ivlen));
+        return $t === false ? '' : $t;
     }
 
 
@@ -1471,13 +1498,13 @@ class BackendUtils{
      * @param bool $embed
      * @return string
      */
-    function pubPrx($token,$embed){
-        return $embed ? 'embed/'.$token.'/' : 'pub/'.$token.'/';
+    function pubPrx($token, $embed) {
+        return $embed ? 'embed/' . $token . '/' : 'pub/' . $token . '/';
     }
 
 
-    function getPublicWebBase(){
-        return \OC::$server->getURLGenerator()->getBaseUrl().'/index.php/apps/appointments';
+    function getPublicWebBase() {
+        return \OC::$server->getURLGenerator()->getBaseUrl() . '/index.php/apps/appointments';
     }
 
 
@@ -1487,44 +1514,44 @@ class BackendUtils{
      * @return string[]|null[] [useId,pageId] on success, [null,null]=not verified
      * @throws \ErrorException
      */
-    function verifyToken($token,$config){
-        if(empty($token) || strlen($token)>256) return [null,null];
-        $token=str_replace("_","/",$token);
-        $key=hex2bin($config->getAppValue($this->appName, 'hk'));
-        $iv=hex2bin($config->getAppValue($this->appName, 'tiv'));
-        if(empty($key) || empty($iv)){
+    function verifyToken($token, $config) {
+        if (empty($token) || strlen($token) > 256) return [null, null];
+        $token = str_replace("_", "/", $token);
+        $key = hex2bin($config->getAppValue($this->appName, 'hk'));
+        $iv = hex2bin($config->getAppValue($this->appName, 'tiv'));
+        if (empty($key) || empty($iv)) {
             throw new \ErrorException("Can't find key");
         }
 
-        $l=strlen($token);
-        if(($l&3)!==0){
+        $l = strlen($token);
+        if (($l & 3) !== 0) {
             // not divisible by 4
-            $m=intval($token[$l-1]);
-            $token=substr($token,0,-($m===1?2:1));
-            $token.=str_repeat('=',$m);
+            $m = intval($token[$l - 1]);
+            $token = substr($token, 0, -($m === 1 ? 2 : 1));
+            $token .= str_repeat('=', $m);
 
-            $rc=base64_decode($token);
-            if($rc===false) return [null,null];
+            $rc = base64_decode($token);
+            if ($rc === false) return [null, null];
 
-            $iv[0]=substr($rc,-1);
-            $raw=substr($rc,0,-1);
-            $pageId='';
-        }else{
-            $raw=base64_decode($token);
-            if($raw===false) return [null,null];
-            $pageId="p0";
+            $iv[0] = substr($rc, -1);
+            $raw = substr($rc, 0, -1);
+            $pageId = '';
+        } else {
+            $raw = base64_decode($token);
+            if ($raw === false) return [null, null];
+            $pageId = "p0";
         }
 
-        $td=$this->decrypt($raw,$key,$iv);
-        if(strlen($td)>4 && substr($td,0,4)===hash( 'adler32', substr($td,4),true)){
-            $u=substr($td, 4);
-            if($pageId===''){
-                return [substr($u,0,-1),'p'.ord(substr($u,-1))];
-            }else {
+        $td = $this->decrypt($raw, $key, $iv);
+        if (strlen($td) > 4 && substr($td, 0, 4) === hash('adler32', substr($td, 4), true)) {
+            $u = substr($td, 4);
+            if ($pageId === '') {
+                return [substr($u, 0, -1), 'p' . ord(substr($u, -1))];
+            } else {
                 return [$u, $pageId];
             }
-        }else{
-            return [null,null];
+        } else {
+            return [null, null];
         }
     }
 
@@ -1535,44 +1562,44 @@ class BackendUtils{
      * @return string
      * @throws \ErrorException
      */
-    function getToken($userId,$pageId="p0"){
-        $config=\OC::$server->getConfig();
-        $key=hex2bin($config->getAppValue($this->appName, 'hk'));
-        $iv=hex2bin($config->getAppValue($this->appName, 'tiv'));
-        if(empty($key) || empty($iv)){
+    function getToken($userId, $pageId = "p0") {
+        $config = \OC::$server->getConfig();
+        $key = hex2bin($config->getAppValue($this->appName, 'hk'));
+        $iv = hex2bin($config->getAppValue($this->appName, 'tiv'));
+        if (empty($key) || empty($iv)) {
             throw new \ErrorException("Can't find key");
         }
-        if($pageId==="p0"){
-            $pfx='';
-            $upi=$userId;
-        }else{
-            $pn=intval(substr($pageId,1));
-            if($pn<1 || $pn>14){
+        if ($pageId === "p0") {
+            $pfx = '';
+            $upi = $userId;
+        } else {
+            $pn = intval(substr($pageId, 1));
+            if ($pn < 1 || $pn > 14) {
                 throw new \ErrorException("Bad page number");
             }
-            $pfx=($iv[0]^$iv[15])^$iv[$pn];
+            $pfx = ($iv[0] ^ $iv[15]) ^ $iv[$pn];
 
-            $iv=$pfx.substr($iv,1);
-            $upi=$userId.chr($pn);
+            $iv = $pfx . substr($iv, 1);
+            $upi = $userId . chr($pn);
         }
 
-        $tkn=$this->encrypt(
-            hash('adler32',$upi,true).$upi, $key, $iv);
+        $tkn = $this->encrypt(
+            hash('adler32', $upi, true) . $upi, $key, $iv);
 
 
-        if($pfx===''){
-            $bd=base64_encode($tkn);
-        }else{
-            $v=base64_encode($tkn.$pfx);
-            $bd=trim($v,'=');
-            $ld=strlen($v)-strlen($bd);
-            if($ld===1){
-                $bd.="01";
-            }else{
-                $bd.=$ld;
+        if ($pfx === '') {
+            $bd = base64_encode($tkn);
+        } else {
+            $v = base64_encode($tkn . $pfx);
+            $bd = trim($v, '=');
+            $ld = strlen($v) - strlen($bd);
+            if ($ld === 1) {
+                $bd .= "01";
+            } else {
+                $bd .= $ld;
             }
         }
-        return urlencode(str_replace("/","_", $bd));
+        return urlencode(str_replace("/", "_", $bd));
     }
 }
 

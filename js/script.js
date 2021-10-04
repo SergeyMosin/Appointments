@@ -17369,6 +17369,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -29742,7 +29749,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_pnpm_css_loader_5_2_6_webpack_5_38_1_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".rem-disable[data-v-e41b9a3e] {\n  opacity: 0.5;\n}\n.rem-disable .rem-disable-inner[data-v-e41b9a3e] {\n  pointer-events: none;\n}\n.rem-unused[data-v-e41b9a3e]:not(.rem-disable) {\n  opacity: 0.75;\n}\n.srgdev-appt-warning-h3-rem[data-v-e41b9a3e] {\n  background: var(--color-warning);\n  padding: 0.2em 0.3em;\n  font-weight: bold;\n}\n.srgdev-appt-warning-div[data-v-e41b9a3e] {\n  margin-left: -4%;\n  padding-bottom: 1em;\n  margin-bottom: 1.5em;\n  border-bottom: 2px solid var(--color-warning);\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".rem-disable[data-v-e41b9a3e] {\n  opacity: 0.5;\n}\n.rem-disable .rem-disable-inner[data-v-e41b9a3e] {\n  pointer-events: none;\n}\n.rem-unused[data-v-e41b9a3e]:not(.rem-disable) {\n  opacity: 0.75;\n}\n.srgdev-appt-warning-h3-rem[data-v-e41b9a3e] {\n  background: var(--color-warning);\n  padding: 0.2em 0.3em;\n  font-weight: bold;\n}\n.srgdev-appt-warning-div[data-v-e41b9a3e] {\n  margin-left: -4%;\n  padding-bottom: 1em;\n  margin-bottom: 1.5em;\n  border-bottom: 2px solid var(--color-warning);\n}\n.srgdev-appt-error-h3-rem[data-v-e41b9a3e] {\n  background: var(--color-error);\n  padding: 0.2em 0.3em;\n  font-weight: bold;\n  color: var(--color-primary-text-dark);\n}\n.srgdev-appt-error-div[data-v-e41b9a3e] {\n  margin-left: -4%;\n  padding-bottom: 1em;\n  margin-bottom: 2em;\n  border-bottom: 2px solid var(--color-error);\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -57905,284 +57912,391 @@ var render = function() {
             class: { sb_disable: _vm.isSending }
           },
           [
-            _vm.reminderInfo.bjm !== "cron" &&
-            _vm.reminderInfo.bjm !== "webcron"
-              ? _c("div", { staticClass: "srgdev-appt-warning-div" }, [
-                  _c("h3", { staticClass: "srgdev-appt-warning-h3-rem" }, [
-                    _vm._v("Warning")
+            _vm.reminderInfo.bjm === "none"
+              ? _c("div", { staticClass: "srgdev-appt-error-div" }, [
+                  _c("h3", { staticClass: "srgdev-appt-error-h3-rem" }, [
+                    _vm._v("Error")
                   ]),
-                  _vm._v("\n        You are using "),
-                  _c("strong", [_vm._v("AJAX")]),
-                  _vm._v(" scheduling method, which "),
-                  _c("span", { staticStyle: { "font-style": "italic" } }, [
-                    _vm._v('"is the least reliable"')
-                  ]),
-                  _vm._v(".\n        Please consider use "),
-                  _c("strong", [_vm._v("Webcron")]),
-                  _vm._v(" or\n        "),
-                  _c("strong", [_vm._v("Cron")]),
                   _vm._v(
-                    " scheduling methods. More information is available in "
-                  ),
-                  _c(
-                    "a",
-                    {
-                      staticStyle: { "text-decoration": "underline" },
-                      attrs: {
-                        href:
-                          "https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/background_jobs_configuration.html#parameters",
-                        target: "_blank"
-                      }
-                    },
-                    [_vm._v("Admin Manual: Cron jobs")]
-                  ),
-                  _vm._v(" section.\n      ")
+                    "\n        Looks Like Background Jobs are disabled :(\n      "
+                  )
                 ])
-              : _vm._e(),
-            _vm._v(" "),
-            _vm._l(_vm.reminderInfo.data, function(item, index) {
-              return _c(
-                "div",
-                {
-                  key: index,
-                  class: {
-                    "rem-disable": !_vm.hasKey && index > 0,
-                    "rem-unused": item.seconds === "0"
-                  },
-                  staticStyle: { "margin-bottom": "1.5em" },
-                  on: { click: _vm.checkKey }
-                },
-                [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "rem-disable-inner",
-                      attrs: { for: "srgdev-appt_rem-data" + index + "-sec" }
-                    },
-                    [
-                      _vm._v(
-                        "\n          " +
-                          _vm._s(
-                            index +
-                              1 +
-                              ". " +
-                              _vm.t("appointments", "Time before appointment")
-                          ) +
-                          ":"
+              : _c(
+                  "div",
+                  [
+                    _vm.reminderInfo.bjm !== "cron" &&
+                    _vm.reminderInfo.bjm !== "webcron"
+                      ? _c("div", { staticClass: "srgdev-appt-warning-div" }, [
+                          _c(
+                            "h3",
+                            { staticClass: "srgdev-appt-warning-h3-rem" },
+                            [_vm._v("Warning")]
+                          ),
+                          _vm._v("\n          You are using "),
+                          _c("strong", [_vm._v("AJAX")]),
+                          _vm._v(" scheduling method, which "),
+                          _c(
+                            "span",
+                            { staticStyle: { "font-style": "italic" } },
+                            [_vm._v('"is the least reliable"')]
+                          ),
+                          _vm._v(".\n          Please consider "),
+                          _c("strong", [_vm._v("Webcron")]),
+                          _vm._v(" or\n          "),
+                          _c("strong", [_vm._v("Cron")]),
+                          _vm._v(
+                            " scheduling methods. More information is available in "
+                          ),
+                          _c(
+                            "a",
+                            {
+                              staticStyle: { "text-decoration": "underline" },
+                              attrs: {
+                                href:
+                                  "https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/background_jobs_configuration.html#parameters",
+                                target: "_blank"
+                              }
+                            },
+                            [_vm._v("Admin Manual: Cron jobs")]
+                          ),
+                          _vm._v(" section.\n        ")
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm._l(_vm.reminderInfo.data, function(item, index) {
+                      return _c(
+                        "div",
+                        {
+                          key: index,
+                          class: {
+                            "rem-disable": !_vm.hasKey && index > 0,
+                            "rem-unused": item.seconds === "0"
+                          },
+                          staticStyle: { "margin-bottom": "1.5em" },
+                          on: { click: _vm.checkKey }
+                        },
+                        [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "rem-disable-inner",
+                              attrs: {
+                                for: "srgdev-appt_rem-data" + index + "-sec"
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n            " +
+                                  _vm._s(
+                                    index +
+                                      1 +
+                                      ". " +
+                                      _vm.t(
+                                        "appointments",
+                                        "Time before appointment"
+                                      )
+                                  ) +
+                                  ":"
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: item.seconds,
+                                  expression: "item.seconds"
+                                }
+                              ],
+                              staticClass:
+                                "srgdev-appt-sb-input-select rem-disable-inner",
+                              staticStyle: { "margin-bottom": "4px" },
+                              attrs: {
+                                id: "srgdev-appt_rem-data" + index + "-sec"
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    item,
+                                    "seconds",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _c("option", { attrs: { value: "0" } }, [
+                                _vm._v(
+                                  _vm._s(_vm.t("appointments", "Not Used"))
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "3600" } }, [
+                                _vm._v(_vm._s(_vm.t("appointments", "1 Hour")))
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "7200" } }, [
+                                _vm._v(_vm._s(_vm.t("appointments", "2 Hours")))
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "14400" } }, [
+                                _vm._v(_vm._s(_vm.t("appointments", "4 Hours")))
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "28800" } }, [
+                                _vm._v(_vm._s(_vm.t("appointments", "8 Hours")))
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "86400" } }, [
+                                _vm._v(
+                                  _vm._s(_vm.t("appointments", "24 hours"))
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    value: "172800",
+                                    disabled: !_vm.hasKey
+                                  },
+                                  on: { click: _vm.checkKey }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(_vm.t("appointments", "2 Days"))
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    value: "259200",
+                                    disabled: !_vm.hasKey
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(_vm.t("appointments", "3 Days"))
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    value: "345600",
+                                    disabled: !_vm.hasKey
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(_vm.t("appointments", "4 Days"))
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    value: "432000",
+                                    disabled: !_vm.hasKey
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(_vm.t("appointments", "5 Days"))
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    value: "518400",
+                                    disabled: !_vm.hasKey
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(_vm.t("appointments", "6 Days"))
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    value: "604800",
+                                    disabled: !_vm.hasKey
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(_vm.t("appointments", "7 Days"))
+                                  )
+                                ]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: item.actions,
+                                expression: "item.actions"
+                              }
+                            ],
+                            staticClass: "checkbox rem-disable-inner",
+                            attrs: {
+                              type: "checkbox",
+                              disabled: !_vm.hasKey && index > 0,
+                              id: "srgdev-appt_rem-data" + index + "-act"
+                            },
+                            domProps: {
+                              checked: Array.isArray(item.actions)
+                                ? _vm._i(item.actions, null) > -1
+                                : item.actions
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = item.actions,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(
+                                        item,
+                                        "actions",
+                                        $$a.concat([$$v])
+                                      )
+                                  } else {
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        item,
+                                        "actions",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
+                                  }
+                                } else {
+                                  _vm.$set(item, "actions", $$c)
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass:
+                                "srgdev-appt-sb-label-inline rem-disable-inner",
+                              staticStyle: { "margin-left": "-3px" },
+                              attrs: {
+                                for: "srgdev-appt_rem-data" + index + "-act"
+                              }
+                            },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.t("appointments", "Add action links")
+                                )
+                              )
+                            ]
+                          )
+                        ]
                       )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "select",
-                    {
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "srgdev-appt-sb-label",
+                        attrs: { for: "srgdev-appt_rem-more-text" }
+                      },
+                      [
+                        _vm._v(
+                          "\n          " +
+                            _vm._s(
+                              _vm.t(
+                                "appointments",
+                                "Additional reminder email text:"
+                              )
+                            )
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("textarea", {
                       directives: [
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: item.seconds,
-                          expression: "item.seconds"
+                          value: _vm.reminderInfo.moreText,
+                          expression: "reminderInfo.moreText"
                         }
                       ],
-                      staticClass:
-                        "srgdev-appt-sb-input-select rem-disable-inner",
-                      staticStyle: { "margin-bottom": "4px" },
-                      attrs: { id: "srgdev-appt_rem-data" + index + "-sec" },
+                      staticClass: "srgdev-appt-sb-textarea",
+                      attrs: { id: "srgdev-appt_rem-more-text" },
+                      domProps: { value: _vm.reminderInfo.moreText },
                       on: {
-                        change: function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
                           _vm.$set(
-                            item,
-                            "seconds",
-                            $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
+                            _vm.reminderInfo,
+                            "moreText",
+                            $event.target.value
                           )
                         }
                       }
-                    },
-                    [
-                      _c("option", { attrs: { value: "0" } }, [
-                        _vm._v(_vm._s(_vm.t("appointments", "Not Used")))
-                      ]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "3600" } }, [
-                        _vm._v(_vm._s(_vm.t("appointments", "1 Hour")))
-                      ]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "7200" } }, [
-                        _vm._v(_vm._s(_vm.t("appointments", "2 Hours")))
-                      ]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "14400" } }, [
-                        _vm._v(_vm._s(_vm.t("appointments", "4 Hours")))
-                      ]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "28800" } }, [
-                        _vm._v(_vm._s(_vm.t("appointments", "8 Hours")))
-                      ]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "86400" } }, [
-                        _vm._v(_vm._s(_vm.t("appointments", "24 hours")))
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "option",
-                        {
-                          attrs: { value: "172800", disabled: !_vm.hasKey },
-                          on: { click: _vm.checkKey }
-                        },
-                        [_vm._v(_vm._s(_vm.t("appointments", "2 Days")))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "option",
-                        { attrs: { value: "259200", disabled: !_vm.hasKey } },
-                        [_vm._v(_vm._s(_vm.t("appointments", "3 Days")))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "option",
-                        { attrs: { value: "345600", disabled: !_vm.hasKey } },
-                        [_vm._v(_vm._s(_vm.t("appointments", "4 Days")))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "option",
-                        { attrs: { value: "432000", disabled: !_vm.hasKey } },
-                        [_vm._v(_vm._s(_vm.t("appointments", "5 Days")))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "option",
-                        { attrs: { value: "518400", disabled: !_vm.hasKey } },
-                        [_vm._v(_vm._s(_vm.t("appointments", "6 Days")))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "option",
-                        { attrs: { value: "604800", disabled: !_vm.hasKey } },
-                        [_vm._v(_vm._s(_vm.t("appointments", "7 Days")))]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "button",
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: item.actions,
-                        expression: "item.actions"
-                      }
-                    ],
-                    staticClass: "checkbox rem-disable-inner",
-                    attrs: {
-                      type: "checkbox",
-                      disabled: !_vm.hasKey && index > 0,
-                      id: "srgdev-appt_rem-data" + index + "-act"
-                    },
-                    domProps: {
-                      checked: Array.isArray(item.actions)
-                        ? _vm._i(item.actions, null) > -1
-                        : item.actions
-                    },
-                    on: {
-                      change: function($event) {
-                        var $$a = item.actions,
-                          $$el = $event.target,
-                          $$c = $$el.checked ? true : false
-                        if (Array.isArray($$a)) {
-                          var $$v = null,
-                            $$i = _vm._i($$a, $$v)
-                          if ($$el.checked) {
-                            $$i < 0 &&
-                              _vm.$set(item, "actions", $$a.concat([$$v]))
-                          } else {
-                            $$i > -1 &&
-                              _vm.$set(
-                                item,
-                                "actions",
-                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                              )
-                          }
-                        } else {
-                          _vm.$set(item, "actions", $$c)
-                        }
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "label",
-                    {
-                      staticClass:
-                        "srgdev-appt-sb-label-inline rem-disable-inner",
-                      staticStyle: { "margin-left": "-3px" },
-                      attrs: { for: "srgdev-appt_rem-data" + index + "-act" }
-                    },
-                    [_vm._v(_vm._s(_vm.t("appointments", "Add action links")))]
-                  )
-                ]
-              )
-            }),
-            _vm._v(" "),
-            _c(
-              "label",
-              {
-                staticClass: "srgdev-appt-sb-label",
-                attrs: { for: "srgdev-appt_rem-more-text" }
-              },
-              [
-                _vm._v(
-                  "\n        " +
-                    _vm._s(
-                      _vm.t("appointments", "Additional reminder email text:")
+                        staticClass: "primary srgdev-appt-sb-genbtn",
+                        class: { "appt-btn-loading": _vm.isSending },
+                        on: { click: _vm.apply }
+                      },
+                      [
+                        _vm._v(
+                          _vm._s(_vm.t("appointments", "Apply")) + "\n        "
+                        )
+                      ]
                     )
+                  ],
+                  2
                 )
-              ]
-            ),
-            _vm._v(" "),
-            _c("textarea", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.reminderInfo.moreText,
-                  expression: "reminderInfo.moreText"
-                }
-              ],
-              staticClass: "srgdev-appt-sb-textarea",
-              attrs: { id: "srgdev-appt_rem-more-text" },
-              domProps: { value: _vm.reminderInfo.moreText },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.reminderInfo, "moreText", $event.target.value)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "primary srgdev-appt-sb-genbtn",
-                class: { "appt-btn-loading": _vm.isSending },
-                on: { click: _vm.apply }
-              },
-              [_vm._v(_vm._s(_vm.t("appointments", "Apply")) + "\n      ")]
-            )
-          ],
-          2
+          ]
         )
       ])
     ],

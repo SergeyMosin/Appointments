@@ -16,6 +16,7 @@ use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Controller;
 use OCP\Mail\IMailer;
 use OCP\Util;
+use Psr\Log\LoggerInterface;
 
 class PageController extends Controller {
     const RND_SPS = 'abcdefghijklmnopqrstuvwxyz1234567890';
@@ -28,6 +29,7 @@ class PageController extends Controller {
     /** @var \OCA\Appointments\Backend\IBackendConnector $bc */
     private $bc;
     private $utils;
+    private $logger;
 
 	public function __construct($AppName,
                                 IRequest $request,
@@ -36,7 +38,9 @@ class PageController extends Controller {
                                 IMailer $mailer,
                                 IL10N $l,
                                 BackendManager $backendManager,
-                                BackendUtils $utils){
+                                BackendUtils $utils,
+                                LoggerInterface $logger
+    ){
 		parent::__construct($AppName, $request);
 		$this->userId = $UserId;
         $this->c=$c;
@@ -45,6 +49,7 @@ class PageController extends Controller {
         /** @noinspection PhpUnhandledExceptionInspection */
         $this->bc=$backendManager->getConnector();
         $this->utils=$utils;
+        $this->logger=$logger;
 	}
 
     /**
@@ -322,12 +327,12 @@ class PageController extends Controller {
                 list($sts, $date_time, $dt_info, $tz_data,$title) = $this->bc->deleteCalendarObject($userId, $r_cal_id, $uri);
 
                 if(empty($dt_info)){
-                    \OC::$server->getLogger()->warning('can not re-create appointment, no dt_info');
+                    $this->logger->warning('can not re-create appointment, no dt_info');
                 }else if($cms[BackendUtils::CLS_TS_MODE]==='0'){
                     // this is only needed in simple/manual mode
                     $cr=$this->addAppointments($userId,$pageId,$dt_info,$tz_data,$title);
                     if($cr[0]!=='0'){
-                        \OC::$server->getLogger()->error('addAppointments() failed '.$cr);
+                        $this->logger->error('addAppointments() failed '.$cr);
                     }
                 }
             }
@@ -494,7 +499,7 @@ class PageController extends Controller {
      * @return RedirectResponse
      * @throws \ErrorException
      */
-    public function showFormPost($userId,$pageId, $embed=false){
+    public function showFormPost($userId, $pageId, $embed = false): RedirectResponse {
 
         // sts: 0=OK, 1=bad input, 2=server error
         $ok_uri="form?sts=0";
@@ -864,7 +869,7 @@ class PageController extends Controller {
         try {
             $t_start = new \DateTime('now +'.$cls[BackendUtils::CLS_PREP_TIME]."mins", $utz);
         } catch (\Exception $e) {
-            \OC::$server->getLogger()->error($e->getMessage().", timezone: ".$utz->getName());
+            $this->logger->error($e->getMessage().", timezone: ".$utz->getName());
             $params['appt_state']='6';
             $tr->setParams($params);
             return $tr;
@@ -888,7 +893,7 @@ class PageController extends Controller {
             $cid.=chr(31).$cms[BackendUtils::CLS_XTM_SRC_ID];
         }
 
-        if($ts_mode==="2") {
+        if($ts_mode===BackendUtils::CLS_TS_MODE_TEMPLATE) {
             $out = $this->bc->queryTemplate($cms, $t_start, $t_end, $uid, $pageId);
         }else{
             $out = $this->bc->queryRange($cid, $t_start, $t_end, $ts_mode . $uid);

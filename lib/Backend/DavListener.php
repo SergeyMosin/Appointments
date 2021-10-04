@@ -13,7 +13,6 @@ use OCP\AppFramework\QueryException;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use Sabre\VObject\Reader;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 class DavListener implements IEventListener
 {
@@ -21,9 +20,9 @@ class DavListener implements IEventListener
     private $appName;
     private $l10N;
 
-    public function __construct() {
+    public function __construct(\OCP\IL10N $l10N) {
         $this->appName = Application::APP_ID;
-        $this->l10N = \OC::$server->getL10N($this->appName);
+        $this->l10N = $l10N;
     }
 
     function handle(Event $event): void {
@@ -34,8 +33,12 @@ class DavListener implements IEventListener
         }
     }
 
-    public function handleOld(GenericEvent $event, string $eventName): void {
+    public function handleOld(\Symfony\Component\EventDispatcher\GenericEvent $event, string $eventName): void {
         $this->handler($event['objectData'], $event['calendarData'], $eventName === '\OCA\DAV\CalDAV\CalDavBackend::deleteCalendarObject');
+    }
+
+    public function handleReminder(string $str): void {
+        \OC::$server->getLogger()->error("handleReminder: " . $str);
     }
 
     private function handler(array $objectData, array $calendarData, bool $isDelete): void {
@@ -495,7 +498,7 @@ class DavListener implements IEventListener
             }
 
             // Update hash
-            $utils->setApptHash($evt,$userId);
+            $utils->setApptHash($evt, $userId);
 
             if (($eml_settings[BackendUtils::EML_ADEL] === false && $isDelete)
                 || ($eml_settings[BackendUtils::EML_AMOD] === false && $isDelete)) {
