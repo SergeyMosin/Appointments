@@ -35,6 +35,8 @@
     "Your appointment is canceled." : "Tapaaminen on peruttu.",
     "All done." : "Kaikki valmista.",
     "Info" : "Tietoa",
+    "Link Expired …" : "Linkki vanhentunut…",
+    "Almost done …" : "Melkein valmis…",
     "We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request" : "Lähetimme sinulle sähköpostiviestin osoitteeseen %s. Avaa viesti ja napsauta vahvistuslinkkiä, jotta tapaaminen vahvistetaan",
     "Organization Name" : "Organisaation nimi",
     "Book Your Appointment" : "Varaa tapaaminen",
