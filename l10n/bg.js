@@ -239,7 +239,7 @@ OC.L10N.register(
     "Chat/Call link:" : "Връзка за Чат/Обаждане:",
     "Add \"Meeting Type\" form field" : "Добавяне на поле за формуляр „Тип среща“",
     "Label text:" : "Текст на етикета:",
-    "Placeholder text:" : "Текст на контейнер",
+    "Placeholder text:" : "Текст заместител",
     "\"In-person\" option text:" : "Текст на опцията „Лично“:",
     "\"Online\" option text:" : "Текст на опцията „Онлайн“:",
     "Type change email text:" : "Начин за промяна на текста на имейла:",
