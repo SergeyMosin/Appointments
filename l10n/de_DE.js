@@ -98,7 +98,7 @@ OC.L10N.register(
     "Public link copied to clipboard" : "Öffentlicher Link wurde in die Zwischenablage kopiert",
     "Copy Error" : "Kopierfehler",
     "Public Page" : "Öffentliche Seite",
-    "Add Appointment Slots" : "Termin-Slots hinzufügen",
+    "Add Appointment Slots" : "Termin-Zeitfenster hinzufügen",
     "Loading" : "Lade",
     "Select Dates:" : "Termine auswählen:",
     "Select Dates" : "Woche auswählen",
