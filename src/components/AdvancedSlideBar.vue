@@ -34,6 +34,8 @@
             <option value="1440">{{ t('appointments', '1 day') }}</option>
             <option value="2880">{{ t('appointments', '2 days') }}</option>
             <option value="5760">{{ t('appointments', '4 days') }}</option>
+            <option value="10080">{{ t('appointments', '1 week') }}</option>
+            <option value="20160">{{ t('appointments', '2 weeks') }}</option>
           </select>
           <label
               class="tsb-label"
