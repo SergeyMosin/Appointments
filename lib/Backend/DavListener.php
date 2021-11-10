@@ -43,7 +43,7 @@ class DavListener implements IEventListener
 
     private function handler(array $objectData, array $calendarData, bool $isDelete): void {
 
-//        \OC::$server->getLogger()->error('DL Debug: M0 '.$eventName);
+//        \OC::$server->getLogger()->error('DL Debug: M0');
 
         // objectUri
         if (!isset($objectData['calendardata']) ||

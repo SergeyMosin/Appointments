@@ -6,6 +6,7 @@ use ErrorException;
 use OCA\Appointments\AppInfo\Application;
 use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
+use OCA\Appointments\Backend\BCSabreImpl;
 use OCA\Appointments\Controller\CalendarsController;
 use OCA\Appointments\Controller\PageController;
 use OCA\Appointments\Controller\StateController;
@@ -15,6 +16,7 @@ use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\IRequest;
+use OCP\IURLGenerator;
 use OCP\Mail\IMailer;
 use OCP\PreConditionNotMetException;
 use PHPUnit\Framework\TestCase;
@@ -38,82 +40,90 @@ class RemindersTest extends TestCase
     private $attendeeEmail;
     private $testCalId;
 
-    protected function setUp(): void {
-        parent::setUp();
+    private $userIdsArray;
 
-        $this->userId = TestConstants::USER_ID;
 
-        $app = new Application();
-
-        $this->logger = new TestLogger();
-
-        $container = $app->getContainer();
-
-        $this->config = $container->get(IConfig::class);
-        $this->l10n = $container->get(IL10N::class);
-        $this->mailer = $container->get(IMailer::class);
-
-        $db = $container->get(IDBConnection::class);
-        $this->utils = new BackendUtils($this->logger, $db);
-
-        $dav = new \OCA\DAV\AppInfo\Application();
-        $dav->getContainer()->get(CalDavBackend::class);
-        $this->backendManager = new BackendManager();
-        $this->backendConnector = $this->backendManager->getConnector();
+    function testReminders() {
 
         $this->attendeeEmail = getenv('TEST_ATTENDEE_EMAIL');
         $this->assertNotEquals(false, $this->attendeeEmail, "missing TEST_ATTENDEE_EMAIL environment var");
         $this->consoleLog($this->attendeeEmail);
 
-        $this->checkSetup();
+        $this->userIdsArray = [TestConstants::USER_ID, TestConstants::USER_ID2];
+
+
+        // cleanup loop
+        for ($i = 0; $i < count($this->userIdsArray); $i++) {
+            $this->userId = $this->userIdsArray[$i];
+
+            $this->consoleLog("Cleanup for userId: " . $this->userId);
+
+            $this->checkSetup();
+
+            // delete old appointments
+            $cdt = new \DateTime();
+            $cdt->modify("+45 days");
+            $cr = $this->backendConnector->queryRangePast([$this->testCalId], $cdt, false, true);
+            $this->consoleLog('cleaned up: ' . $cr);
+        }
+
+        $this->consoleLog('--------------------------');
+
+        // Setup
+        for ($i = 0; $i < count($this->userIdsArray); $i++) {
+
+            $this->userId = $this->userIdsArray[$i];
+
+            $this->consoleLog("Running test with userId: " . $this->userId);
+
+            $this->checkSetup();
+
+            $this->consoleLog("testCalId: " . $this->testCalId);
+
+            // Start...
+            $now = time();
+
+            $allowed_seconds = ["3600", "7200", "14400", "28800", "86400", "172800", "259200", "345600", "432000", "518400", "604800"];
+            // 1 hour, 1 day, 1 week
+            $selected_seconds = [0, 4, 10];
+
+            // update template
+            $reminder_time_diff = 60; // Ex. 10 = reminders will have 10 seconds lead time. -10 = reminders will appear 10 seconds after appointments, 1800 max
+            $timestamps = [];
+            foreach ($selected_seconds as $seconds) {
+                $timestamps[] = (int)$allowed_seconds[$seconds] + $reminder_time_diff + $now;
+            }
+            $this->setTemplateFromTimestamps($timestamps);
+            // create actual appointments
+            $this->createAppointmentsForReminders();
+
+            // set reminders
+            $rd = [
+                BackendUtils::REMINDER_DATA => [
+                    [
+                        BackendUtils::REMINDER_DATA_TIME => $allowed_seconds[$selected_seconds[0]],
+                        BackendUtils::REMINDER_DATA_ACTIONS => true
+                    ],
+                    [
+                        BackendUtils::REMINDER_DATA_TIME => $allowed_seconds[$selected_seconds[1]],
+                        BackendUtils::REMINDER_DATA_ACTIONS => true
+                    ],
+                    [
+                        BackendUtils::REMINDER_DATA_TIME => $allowed_seconds[$selected_seconds[2]],
+                        BackendUtils::REMINDER_DATA_ACTIONS => true
+                    ],
+                ],
+                BackendUtils::REMINDER_MORE_TEXT => "test more reminder text"
+            ];
+            $r = $this->callStateController([
+                'a' => 'set_reminder',
+                'd' => json_encode($rd)
+            ]);
+            $this->assertEquals(200, $r->getStatus(), self::SC_ERR);
+
+
+        }
     }
-
-    function testReminders() {
-
-        $now = time() + 3600;
-
-        // delete old appointments
-        $cdt = new \DateTime();
-        $cdt->modify("+45 days");
-
-        $cr = $this->backendConnector->queryRangePast([$this->testCalId], $cdt, false, true);
-        $this->consoleLog($cr);
-
-
-        // update template
-        $this->setTemplateFromTimestamps([$now, $now + 86400, $now + 2 * 86400]);
-
-        // create actual appointments
-        $this->createAppointmentsForReminders();
-
-        // set reminders
-        $allowed_seconds = ["3600", "7200", "14400", "28800", "86400", "172800", "259200", "345600", "432000", "518400", "604800"];
-        $rd = [
-            BackendUtils::REMINDER_DATA => [
-                [
-                    BackendUtils::REMINDER_DATA_TIME => $allowed_seconds[0],
-                    BackendUtils::REMINDER_DATA_ACTIONS => true
-                ],
-                [
-                    BackendUtils::REMINDER_DATA_TIME => $allowed_seconds[4],
-                    BackendUtils::REMINDER_DATA_ACTIONS => true
-                ],
-                [
-                    BackendUtils::REMINDER_DATA_TIME => $allowed_seconds[10],
-                    BackendUtils::REMINDER_DATA_ACTIONS => true
-                ],
-            ],
-            BackendUtils::REMINDER_MORE_TEXT => "test more reminder text"
-        ];
-        $r = $this->callStateController([
-            'a' => 'set_reminder',
-            'd' => json_encode($rd)
-        ]);
-        $this->assertEquals(200, $r->getStatus(), self::SC_ERR);
-
-
-    }
-
 
     function createAppointmentsForReminders() {
 
@@ -122,9 +132,11 @@ class RemindersTest extends TestCase
         $utz = $this->utils->getUserTimezone($this->userId, $this->config);
         $t_start = new \DateTime('now +' . $cls[BackendUtils::CLS_PREP_TIME] . "mins", $utz);
 
-        // + one week
+        $this->consoleLog($cls);
+
+        // + 7 days
         $t_end = clone $t_start;
-        $t_end->setTimestamp($t_start->getTimestamp() + (7 * 86400));
+        $t_end->setTimestamp($t_start->getTimestamp() + (8 * 86400));
         $t_end->setTime(0, 0);
 
         $out = $this->backendConnector->queryTemplate(
@@ -136,13 +148,18 @@ class RemindersTest extends TestCase
 
         $oac = count($outArr);
 
+        $start_after = time() + 1800;
+        $cc = 0;
         for ($i = 0; $i < $oac; $i++) {
 
             $outParts = explode(':', $outArr[$i]);
+
+            if ((int)substr($outParts[0], 1) < $start_after) continue;
+
             $pc = $this->getPageController([
                 'adatetime' => $outParts[2],
                 'appt_dur' => 0,
-                'name' => 'Test name 1',
+                'name' => 'Test ' . $this->userId,
                 'email' => $this->attendeeEmail,
                 'phone' => '1234567890',
                 'tzi' => 'T' . 'America/New_York'
@@ -166,6 +183,9 @@ class RemindersTest extends TestCase
             $this->assertEquals(200, $res->getStatus(), self::SC_ERR);
 
             $this->consoleLog($res->getParams());
+
+            $cc++;
+            if ($cc === 3) break;
         }
     }
 
@@ -185,7 +205,7 @@ class RemindersTest extends TestCase
             $tar[$weekDay][] = [
                 "start" => $hours * 3600 + $minutes * 60,
                 "dur" => [15, 45],
-                "title" => "test_appointment"
+                "title" => $this->userId . "_test_appointment"
             ];
         }
         $r = $this->callStateController([
@@ -199,7 +219,42 @@ class RemindersTest extends TestCase
 
     function checkSetup() {
 
+
+        $app = new Application();
+
+        $this->logger = new TestLogger();
+
+        $container = $app->getContainer();
+
+        $this->config = $container->get(IConfig::class);
+        $this->l10n = $container->get(IL10N::class);
+        $this->mailer = $container->get(IMailer::class);
+
+        $dav = new \OCA\DAV\AppInfo\Application();
+        $davBE = $dav->getContainer()->get(CalDavBackend::class);
+
+        $this->backendManager = new BackendManager();
+
+        $db = $container->get(IDBConnection::class);
+        $urlGenerator = $container->get(IURLGenerator::class);
+        $this->utils = new BackendUtils($this->logger, $db, $urlGenerator);
+
+        // because of cache
+        $container->registerService(BackendUtils::class,function (){
+            return $this->utils;
+        });
+
+        $this->backendConnector = new BCSabreImpl(
+            Application::APP_ID,
+            $davBE,
+            $this->config,
+            $this->utils,
+            $db,
+            $this->logger
+        );
+
         $r = $this->callStateController(['a' => 'get_uci']);
+
         $this->assertEquals(200, $r->getStatus(), self::SC_ERR);
         $uci = json_decode($r->render(), true);
         $this->assertNotEquals(false, $uci);
@@ -253,7 +308,6 @@ class RemindersTest extends TestCase
             $this->utils,
             $this->backendManager
         );
-
         return $c->index();
     }
 
@@ -305,7 +359,6 @@ class RemindersTest extends TestCase
         }
         return $cals;
     }
-
 
     /** @param mixed $data */
     function consoleLog($data) {

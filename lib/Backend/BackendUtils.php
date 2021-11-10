@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpMissingReturnTypeInspection */
+<?php /** @noinspection PhpUndefinedFieldInspection */
+/** @noinspection PhpMissingParamTypeInspection */
+/** @noinspection PhpMissingReturnTypeInspection */
 /** @noinspection PhpPossiblePolymorphicInvocationInspection */
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 /** @noinspection PhpComposerExtensionStubsInspection */
@@ -8,6 +10,7 @@ namespace OCA\Appointments\Backend;
 
 use OCA\Appointments\AppInfo\Application;
 use OCP\IDBConnection;
+use OCP\IURLGenerator;
 use Psr\Log\LoggerInterface;
 use Sabre\VObject\Reader;
 
@@ -160,10 +163,15 @@ class BackendUtils
     /** @var IDBConnection */
     private $db;
 
+    private $urlGenerator;
+
     public function __construct(LoggerInterface $logger,
-                                IDBConnection   $db) {
+                                IDBConnection   $db,
+                                IURLGenerator   $urlGenerator
+    ) {
         $this->logger = $logger;
         $this->db = $db;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -1504,7 +1512,7 @@ class BackendUtils
 
 
     function getPublicWebBase() {
-        return \OC::$server->getURLGenerator()->getBaseUrl() . '/index.php/apps/appointments';
+        return $this->urlGenerator->getBaseUrl() . '/index.php/apps/appointments';
     }
 
 

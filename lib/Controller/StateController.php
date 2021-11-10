@@ -544,7 +544,7 @@ class StateController extends Controller
             }
         } else if ($action === 'get_reminder') {
             $a = $this->utils->getUserSettings(BackendUtils::KEY_REMINDERS, $this->userId);
-            $a['bjm'] = $this->config->getAppValue("core", "backgroundjobs_mode");
+            $a[BackendUtils::REMINDER_BJM] = $this->config->getAppValue("core", "backgroundjobs_mode");
             $j = json_encode($a);
             if ($j !== false) {
                 $r->setData($j);
