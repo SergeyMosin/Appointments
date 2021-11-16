@@ -1085,7 +1085,7 @@ class BCSabreImpl implements IBackendConnector
             }
 
             if ($ec === 0) {
-                $newData = $this->utils->dataSetAttendee($d, $info, $userId);
+                $newData = $this->utils->dataSetAttendee($d, $info, $userId, $uri);
                 if ($newData === "1") {
                     $ec = 1;
                     $err = "Bad appointment status, [select different time]";

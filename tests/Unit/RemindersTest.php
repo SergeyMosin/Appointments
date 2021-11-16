@@ -11,6 +11,7 @@ use OCA\Appointments\Controller\CalendarsController;
 use OCA\Appointments\Controller\PageController;
 use OCA\Appointments\Controller\StateController;
 use OCA\Appointments\SendDataResponse;
+use OCA\Appointments\Tests\ConsoleLoger;
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCP\IConfig;
 use OCP\IDBConnection;
@@ -21,6 +22,7 @@ use OCP\Mail\IMailer;
 use OCP\PreConditionNotMetException;
 use PHPUnit\Framework\TestCase;
 use OCA\Appointments\Tests\TestConstants;
+use Psr\Log\AbstractLogger;
 use Psr\Log\Test\TestLogger;
 
 
@@ -28,6 +30,9 @@ class RemindersTest extends TestCase
 {
     const SC_ERR = 'bad StateController status';
 
+    /**
+     * @var BackendUtils
+     */
     private $utils;
     private $config;
     private $userId;
@@ -35,6 +40,9 @@ class RemindersTest extends TestCase
     private $backendManager;
     private $backendConnector;
     private $mailer;
+    /**
+     * @var AbstractLogger
+     */
     private $logger;
 
     private $attendeeEmail;
@@ -45,15 +53,51 @@ class RemindersTest extends TestCase
 
     function testReminders() {
 
+        $this->logger = new ConsoleLoger();
+
         $this->attendeeEmail = getenv('TEST_ATTENDEE_EMAIL');
         $this->assertNotEquals(false, $this->attendeeEmail, "missing TEST_ATTENDEE_EMAIL environment var");
         $this->consoleLog($this->attendeeEmail);
 
         $this->userIdsArray = [TestConstants::USER_ID, TestConstants::USER_ID2];
 
+        $app = new Application();
+
+        $container = $app->getContainer();
+
+        $this->config = $container->get(IConfig::class);
+        $this->l10n = $container->get(IL10N::class);
+        $this->mailer = $container->get(IMailer::class);
+        $this->utils = $container->get(BackendUtils::class);
+        $db = $container->get(IDBConnection::class);
+
+        $dav = new \OCA\DAV\AppInfo\Application();
+        $davBE = $dav->getContainer()->get(CalDavBackend::class);
+
+        $this->backendManager = new BackendManager();
+
+//        $urlGenerator = $container->get(IURLGenerator::class);
+//        $this->utils = new BackendUtils($this->logger, $db, $urlGenerator);
+////         because of cache
+//        $container->registerService(BackendUtils::class, function () {
+//            return $this->utils;
+//        });
+//        $this->utils->clearSettingsCache();
+
+        $this->backendConnector = new BCSabreImpl(
+            Application::APP_ID,
+            $davBE,
+            $this->config,
+            $this->utils,
+            $db,
+            $this->logger
+        );
 
         // cleanup loop
         for ($i = 0; $i < count($this->userIdsArray); $i++) {
+
+            $this->utils->clearSettingsCache();
+
             $this->userId = $this->userIdsArray[$i];
 
             $this->consoleLog("Cleanup for userId: " . $this->userId);
@@ -72,6 +116,8 @@ class RemindersTest extends TestCase
         // Setup
         for ($i = 0; $i < count($this->userIdsArray); $i++) {
 
+            $this->utils->clearSettingsCache();
+
             $this->userId = $this->userIdsArray[$i];
 
             $this->consoleLog("Running test with userId: " . $this->userId);
@@ -88,7 +134,7 @@ class RemindersTest extends TestCase
             $selected_seconds = [0, 4, 10];
 
             // update template
-            $reminder_time_diff = 60; // Ex. 10 = reminders will have 10 seconds lead time. -10 = reminders will appear 10 seconds after appointments, 1800 max
+            $reminder_time_diff = 30; // Ex. 10 = reminders will have 10 seconds lead time. -10 = reminders will appear 10 seconds after appointments, 1800 max
             $timestamps = [];
             foreach ($selected_seconds as $seconds) {
                 $timestamps[] = (int)$allowed_seconds[$seconds] + $reminder_time_diff + $now;
@@ -121,7 +167,7 @@ class RemindersTest extends TestCase
             ]);
             $this->assertEquals(200, $r->getStatus(), self::SC_ERR);
 
-
+            $this->consoleLog('---------------------------');
         }
     }
 
@@ -132,7 +178,7 @@ class RemindersTest extends TestCase
         $utz = $this->utils->getUserTimezone($this->userId, $this->config);
         $t_start = new \DateTime('now +' . $cls[BackendUtils::CLS_PREP_TIME] . "mins", $utz);
 
-        $this->consoleLog($cls);
+        $this->consoleLog("t_start: " . date(DATE_RFC2822, $t_start->format("U")));
 
         // + 7 days
         $t_end = clone $t_start;
@@ -144,17 +190,21 @@ class RemindersTest extends TestCase
         $this->assertNotEquals(null, $out, "no dates");
 
         $outArr = explode(',', $out);
-        $this->consoleLog($outArr);
+//        $this->consoleLog($outArr);
 
         $oac = count($outArr);
 
-        $start_after = time() + 1800;
+        $start_after = time() + 3600;
+
+        $this->consoleLog("start_after: " . date(DATE_RFC2822, $start_after));
         $cc = 0;
         for ($i = 0; $i < $oac; $i++) {
 
             $outParts = explode(':', $outArr[$i]);
 
-            if ((int)substr($outParts[0], 1) < $start_after) continue;
+            $apptTime = (int)substr($outParts[0], 1);
+//            if ($apptTime < $start_after) continue;
+            $this->consoleLog("apptTime: " . date(DATE_RFC2822, $apptTime));
 
             $pc = $this->getPageController([
                 'adatetime' => $outParts[2],
@@ -169,9 +219,10 @@ class RemindersTest extends TestCase
             $this->assertEquals(303, $rr->getStatus(), self::SC_ERR);
 
             $rUrl = $rr->getRedirectURL();
-            $this->assertNotEquals('form?sts=1', $rUrl, "bad input");
 
             $this->consoleLog($rUrl);
+
+            $this->assertNotEquals(-1, strpos($rUrl, 'cncf?d='), "bad input");
 
             $uParts = explode('/', $rUrl);
             $c = count($uParts);
@@ -182,10 +233,10 @@ class RemindersTest extends TestCase
             $res = $pc->cncf();
             $this->assertEquals(200, $res->getStatus(), self::SC_ERR);
 
-            $this->consoleLog($res->getParams());
+//            $this->consoleLog($res->getParams());
 
             $cc++;
-            if ($cc === 3) break;
+            if ($cc === 5) break;
         }
     }
 
@@ -198,12 +249,16 @@ class RemindersTest extends TestCase
         $dt->setTimezone($tz);
         $tar = [[], [], [], [], [], [], []];
         foreach ($timestamps as $ts) {
+
+            $this->consoleLog("d: " . date(DATE_RFC2822, $ts));
+
             $dt->setTimestamp($ts);
             $weekDay = $dt->format("N") - 1;
             $hours = +$dt->format("G");
             $minutes = (int)$dt->format("i");
+            $seconds = (int)$dt->format("s");
             $tar[$weekDay][] = [
-                "start" => $hours * 3600 + $minutes * 60,
+                "start" => $hours * 3600 + $minutes * 60 + $seconds,
                 "dur" => [15, 45],
                 "title" => $this->userId . "_test_appointment"
             ];
@@ -219,39 +274,6 @@ class RemindersTest extends TestCase
 
     function checkSetup() {
 
-
-        $app = new Application();
-
-        $this->logger = new TestLogger();
-
-        $container = $app->getContainer();
-
-        $this->config = $container->get(IConfig::class);
-        $this->l10n = $container->get(IL10N::class);
-        $this->mailer = $container->get(IMailer::class);
-
-        $dav = new \OCA\DAV\AppInfo\Application();
-        $davBE = $dav->getContainer()->get(CalDavBackend::class);
-
-        $this->backendManager = new BackendManager();
-
-        $db = $container->get(IDBConnection::class);
-        $urlGenerator = $container->get(IURLGenerator::class);
-        $this->utils = new BackendUtils($this->logger, $db, $urlGenerator);
-
-        // because of cache
-        $container->registerService(BackendUtils::class,function (){
-            return $this->utils;
-        });
-
-        $this->backendConnector = new BCSabreImpl(
-            Application::APP_ID,
-            $davBE,
-            $this->config,
-            $this->utils,
-            $db,
-            $this->logger
-        );
 
         $r = $this->callStateController(['a' => 'get_uci']);
 
@@ -269,9 +291,6 @@ class RemindersTest extends TestCase
             }
         }
         $this->assertNotEquals('-1', $this->testCalId, "test calendar is missing");
-
-        $this->consoleLog(TestConstants::USER_TEMPLATE_CALENDAR . " id: " . $this->testCalId);
-
 
         $r = $this->callStateController(['a' => 'get_cls']);
         $this->assertEquals(200, $r->getStatus(), self::SC_ERR);

@@ -51,6 +51,20 @@ class Version010201Date20210919000001 extends SimpleMigrationStep
                 ]);
             }
 
+            if(!$table->hasColumn("page_id")){
+                $table->addColumn('page_id', 'string', [
+                    'notnull' => false,
+                    'length' => 4,
+                ]);
+            }
+
+            if(!$table->hasColumn("uri")){
+                $table->addColumn('uri', 'string', [
+                    'notnull' => false,
+                    'length' => 255,
+                ]);
+            }
+
             $user_index_name=BackendUtils::HASH_TABLE_NAME . '_user_index';
             if(!$table->hasIndex($user_index_name)){
                 $table->addIndex(['user_id'],$user_index_name);

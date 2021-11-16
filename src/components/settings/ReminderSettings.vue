@@ -27,6 +27,15 @@
               href="https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/background_jobs_configuration.html#parameters"
               target="_blank">Admin Manual: Cron jobs</a> section.
           </div>
+          <div v-if="reminderInfo.cliUrl===''"
+               class="srgdev-appt-warning-div">
+            <h3 class="srgdev-appt-warning-h3-rem">Warning</h3>
+            The <strong>'overwrite.cli.url'</strong> is not set, <strong>'action links'</strong> will not be included in the reminder emails.
+            More information is available in <a
+              style="text-decoration: underline"
+              href="https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html#proxy-configurations"
+              target="_blank">Admin Manual</a>.
+          </div>
           <div v-for="(item,index) in reminderInfo.data" style="margin-bottom: 1.5em"
                @click="checkKey"
                :key="index"
@@ -55,7 +64,7 @@
             <input
                 v-model="item.actions"
                 type="checkbox"
-                :disabled="!hasKey && index>0"
+                :disabled="(!hasKey && index>0) || reminderInfo.cliUrl===''"
                 :id="'srgdev-appt_rem-data'+index+'-act'"
                 class="checkbox rem-disable-inner">
             <label
@@ -122,6 +131,7 @@ export default {
         // friday: false,
         moreText: "",
         bjm: "",
+        cliUrl: "",
       },
     }
   },

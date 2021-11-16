@@ -151,8 +151,10 @@ class BackendUtils
     public const REMINDER_DATA_ACTIONS = "actions";
     public const REMINDER_SEND_ON_FRIDAY = "friday";
     public const REMINDER_MORE_TEXT = "moreText";
-    // Read only background_job_mode from appconfig
+    // Read only background_job_mode from appconfig and overwrite.cli.url from getSystemValue
     public const REMINDER_BJM = "bjm";
+    public const REMINDER_CLI_URL = "cliUrl";
+
 
     private $appName = Application::APP_ID;
     /** @var array */
@@ -208,11 +210,12 @@ class BackendUtils
      * @param $data
      * @param $info
      * @param $userId
+     * @param $uri
      * @return string   Event Data |
      *                  "1"=Bad Status (Most likely booked while waiting),
      *                  "2"=Other Error
      */
-    function dataSetAttendee($data, $info, $userId) {
+    function dataSetAttendee($data, $info, $userId, $uri) {
 
         $vo = Reader::read($data);
 
@@ -303,7 +306,7 @@ class BackendUtils
 
         $this->setSEQ($evt);
 
-        $this->setApptHash($evt, $userId);
+        $this->setApptHash($evt, $userId, $info['_page_id'], $uri);
 
         return $vo->serialize();
     }
@@ -417,7 +420,7 @@ class BackendUtils
 
         $this->setSEQ($evt);
 
-        $this->setApptHash($evt, $xad[0]);
+        $this->setApptHash($evt, $xad[0], $pageId);
 
         return [$vo->serialize(), $dts, $pageId];
     }
@@ -564,7 +567,7 @@ class BackendUtils
 
         $this->setSEQ($evt);
 
-        $this->setApptHash($evt, $xad[0]);
+        $this->setApptHash($evt, $xad[0], $pageId);
 
         return [$vo->serialize(), $dts, $pageId];
     }
@@ -705,7 +708,7 @@ class BackendUtils
         }
     }
 
-    function setApptHash(\Sabre\VObject\Component\VEvent $evt, string $userId) {
+    function setApptHash(\Sabre\VObject\Component\VEvent $evt, string $userId, string $pageId, $uri = null) {
         if (!isset($evt->UID)) {
             $this->logger->error("can't set appt_hash, no UID");
             return;
@@ -738,15 +741,22 @@ class BackendUtils
 
         $start_ts = $evt->DTSTART->getDateTime()->getTimestamp();
         if ($this->getApptHash($uid) === null) {
+
+            $values = [
+                'uid' => $query->createNamedParameter($uid),
+                'hash' => $query->createNamedParameter(
+                    $this->makeApptHash($evt)),
+                'user_id' => $query->createNamedParameter($userId),
+                'start' => $query->createNamedParameter($start_ts),
+                'status' => $query->createNamedParameter($status),
+                'page_id' => $query->createNamedParameter($pageId),
+            ];
+            if ($uri !== null) {
+                $values['uri'] = $query->createNamedParameter($pageId);
+            }
+
             $query->insert(self::HASH_TABLE_NAME)
-                ->values([
-                    'uid' => $query->createNamedParameter($uid),
-                    'hash' => $query->createNamedParameter(
-                        $this->makeApptHash($evt)),
-                    'user_id' => $query->createNamedParameter($userId),
-                    'start' => $query->createNamedParameter($start_ts),
-                    'status' => $query->createNamedParameter($status)
-                ])
+                ->values($values)
                 ->execute();
         } else {
             $query->update(self::HASH_TABLE_NAME)
@@ -755,7 +765,12 @@ class BackendUtils
                     $this->makeApptHash($evt)))
                 ->set('start', $query->createNamedParameter($start_ts))
                 ->set('status', $query->createNamedParameter($status))
-                ->where($query->expr()->eq('uid', $query->createNamedParameter($uid)))
+                ->set('page_id', $query->createNamedParameter($pageId));
+            if ($uri !== null) {
+                $query->set('uri', $query->createNamedParameter($uri));
+            }
+
+            $query->where($query->expr()->eq('uid', $query->createNamedParameter($uid)))
                 ->execute();
         }
     }
@@ -1063,6 +1078,10 @@ class BackendUtils
         }
     }
 
+    function clearSettingsCache() {
+        $this->settings = null;
+    }
+
     /**
      * @param string $key
      * @param string $userId
@@ -1242,10 +1261,10 @@ class BackendUtils
 
         // What mode are we in ??
         $ts_mode = $csProvider[self::CLS_TS_MODE];
-        if ($ts_mode === "2") {
+        if ($ts_mode === self::CLS_TS_MODE_TEMPLATE) {
             $dst = $csProvider[self::CLS_TMM_DST_ID];
             return ($bc !== null && $bc->getCalendarById($dst, $userId) === null) ? '-1' : $dst;
-        } else if ($ts_mode === "1") {
+        } else if ($ts_mode === self::CLS_TS_MODE_EXTERNAL) {
             $dst = $csProvider[self::CLS_XTM_DST_ID];
             $src = $csProvider[self::CLS_XTM_SRC_ID];
             // External mode - main calendar is destination calendar
@@ -1512,9 +1531,9 @@ class BackendUtils
 
 
     function getPublicWebBase() {
-        return $this->urlGenerator->getBaseUrl() . '/index.php/apps/appointments';
+//        return $this->urlGenerator->getBaseUrl() . '/index.php/apps/appointments';
+        return $this->urlGenerator->getAbsoluteURL('/index.php/apps/appointments');
     }
-
 
     /**
      * @param string $token
