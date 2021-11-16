@@ -1,3 +1,13 @@
+## 1.11.2 - 2021-11-16
+### Fixed
+- Max appointment duration in weekly template" mode - issue #230
+### Changed
+- Removed some deprecated \OC::$server->... calls
+- Vue components directory structure
+### Added
+- "Quick Start Guide" + some more help
+- Reminders - issue #68
+
 ## 1.10.2 - 2021-09-05
 ### Fixed
 - Quotes escape in additional form field - issue #202
