@@ -18,10 +18,9 @@ class DebugController extends Controller
 
     public function __construct($AppName,
                                 IRequest $request,
-                                $UserId,
+        $UserId,
                                 IConfig $config,
-                                BackendUtils $utils)
-    {
+                                BackendUtils $utils) {
         parent::__construct($AppName, $request);
         $this->userId = $UserId;
         $this->config = $config;
@@ -31,8 +30,7 @@ class DebugController extends Controller
     /**
      * @NoAdminRequired
      */
-    function settingsDump()
-    {
+    function settingsDump() {
 
         $keys = [
             BackendUtils::KEY_ORG,
@@ -42,6 +40,7 @@ class DebugController extends Controller
             BackendUtils::KEY_MPS_COL,
             BackendUtils::KEY_PAGES,
             BackendUtils::KEY_DIR,
+            BackendUtils::KEY_REMINDERS,
             BackendUtils::KEY_TALK,
             BackendUtils::KEY_FORM_INPUTS_JSON,
             BackendUtils::KEY_FORM_INPUTS_HTML,
@@ -51,9 +50,10 @@ class DebugController extends Controller
             BackendUtils::KEY_TMPL_DATA,
         ];
 
-        $data ='<strong>Nextcloud Version</strong>: '.OC_Util::getVersionString()."\n"
-            .'<strong>Appointments Version</strong>: '.$this->config->getAppValue($this->appName, 'installed_version', "N/A")."\n"
-            .'<strong>Key</strong>: ' . ($this->config->getUserValue($this->userId, $this->appName, "cnk") !== "" ? "Yes" : "No") . "\n\n";
+        $data = '<strong>Nextcloud Version</strong>: ' . OC_Util::getVersionString() . "\n"
+            . '<strong>Appointments Version</strong>: ' . $this->config->getAppValue($this->appName, 'installed_version', "N/A") . "\n"
+            . '<strong>Timezone</strong>: ' . $this->utils->getUserTimezone($this->userId, $this->config)->getName() . "\n"
+            . '<strong>Key</strong>: ' . ($this->config->getUserValue($this->userId, $this->appName, "cnk") !== "" ? "Yes" : "No") . "\n\n";
 
         foreach ($keys as $k) {
             $data .= '<strong>' . $k . '</strong>: ' . var_export($this->utils->getUserSettings(
