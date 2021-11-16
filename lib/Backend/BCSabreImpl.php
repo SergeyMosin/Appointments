@@ -83,7 +83,6 @@ class BCSabreImpl implements IBackendConnector
                 BackendUtils::APPT_SES_KEY_HINT,
                 BackendUtils::APPT_SES_SKIP);
 
-            // TODO: add cleanup to cron
             // Cleanup hash table
             if ($only_empty === false) {
                 $cutoff_str = $end->modify('-35 days')->format(BackendUtils::FLOAT_TIME_FORMAT);

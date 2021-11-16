@@ -726,6 +726,16 @@ class BackendUtils
                     break;
                 case "CONFIRMED":
                     $status = self::PREF_STATUS_CONFIRMED;
+                    if (rand(0, 10) > 5) {
+                        // cleanup hash table once in while
+                        // TODO: use "start" instead of hash after 2022-01-02
+                        $cutoff_str = (new \DateTime())->modify('-42 days')->format(BackendUtils::FLOAT_TIME_FORMAT);
+                        $query = $this->db->getQueryBuilder();
+                        $query->delete(BackendUtils::HASH_TABLE_NAME)
+                            ->where($query->expr()->lt('hash',
+                                $query->createNamedParameter($cutoff_str)))
+                            ->execute();
+                    }
                     break;
                 case "CANCELLED":
                     $status = self::PREF_STATUS_CANCELLED;
