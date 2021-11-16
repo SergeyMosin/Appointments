@@ -51,7 +51,7 @@ class DavListener implements IEventListener
      */
     public function handleReminders(int $lastStart, IDBConnection $db, IBackendConnector $bc): void {
 
-        // we need to pull all pending appointments between now + 1 hour(min delta) and now + 7 days(max delta)
+        // we need to pull all pending appointments between now + 42 min( 1 hour [min delta] - 18 min [time between jobs]) and now + 7 days(max delta)
         $now = time();
         $qb = $db->getQueryBuilder();
         try {
@@ -60,7 +60,7 @@ class DavListener implements IEventListener
                 ->leftJoin('hash', BackendUtils::PREF_TABLE_NAME, 'pref', $qb->expr()->eq('hash.user_id', 'pref.user_id'))
                 ->where($qb->expr()->isNotNull('pref.reminders'))
                 ->andWhere($qb->expr()->eq('hash.status', $qb->createNamedParameter(BackendUtils::PREF_STATUS_CONFIRMED, IQueryBuilder::PARAM_INT)))
-                ->andWhere($qb->expr()->gte('hash.start', $qb->createNamedParameter($now + 3600, IQueryBuilder::PARAM_INT)))
+                ->andWhere($qb->expr()->gte('hash.start', $qb->createNamedParameter($now + 2520, IQueryBuilder::PARAM_INT)))
                 ->andWhere($qb->expr()->lte('hash.start', $qb->createNamedParameter($now + 604800, IQueryBuilder::PARAM_INT)))
                 ->andWhere($qb->expr()->isNotNull('hash.user_id'))
                 ->andWhere($qb->expr()->isNotNull('hash.page_id'))

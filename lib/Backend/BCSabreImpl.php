@@ -1015,6 +1015,8 @@ class BCSabreImpl implements IBackendConnector
                 $this->logger->error("Bad Data: not an event");
                 return 1;
             }
+            /** @var \Sabre\VObject\Component\VEvent $evt */
+            $evt = $vo->VEVENT;
             if (!isset($evt->DTSTART)) {
                 $this->logger->error("Bad Data: no DTSTART");
                 return 1;

@@ -14,6 +14,7 @@ use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\AppFramework\IAppContainer;
 use OCP\IServerContainer;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Application extends App implements IBootstrap
@@ -47,8 +48,10 @@ class Application extends App implements IBootstrap
 
 
         try {
-            $l10n = $this->getContainer()->query(\OCP\IL10N::class);
-            $listener = new DavListener($l10n);
+            $l10n = $container->query(\OCP\IL10N::class);
+            $logger = $container->query(LoggerInterface::class);
+            $utils = $container->query(\OCA\Appointments\Backend\BackendUtils::class);
+            $listener = new DavListener($l10n, $logger, $utils);
         } catch (\Exception $e) {
             \OC::$server->getLogger()->error("Can't Init DavListener");
             \OC::$server->getLogger()->error($e->getMessage());
