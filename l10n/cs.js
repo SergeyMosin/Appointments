@@ -123,6 +123,7 @@ OC.L10N.register(
     "When Attendee Cancels" : "Když účastník zruší",
     "Mark the appointment as canceled" : "Označit schůzku jako zrušenou",
     "Reset (make the timeslot available)" : "Resetovat (učinit časový slot volný)",
+    "All day events can block" : "Celodenní události mohou blokovat",
     "External Mode Settings" : "Nastavení externího režimu",
     "Optimize recurrence" : "Optimalizovat opakovanost",
     "Require \"Appointment\" category" : "Vyžadovat kategorii „Schůzka“",

@@ -123,6 +123,7 @@ OC.L10N.register(
     "When Attendee Cancels" : "当与会者取消时",
     "Mark the appointment as canceled" : "把预约标记为已取消",
     "Reset (make the timeslot available)" : "重置（使该时间段可用）",
+    "All day events can block" : "全天事件可以阻止",
     "External Mode Settings" : "外部模式设置",
     "Optimize recurrence" : "优化循环",
     "Require \"Appointment\" category" : "需要 ”预约“ 分类",

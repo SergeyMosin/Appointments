@@ -123,6 +123,7 @@ OC.L10N.register(
     "When Attendee Cancels" : "Katılımcı iptal ettiğinde",
     "Mark the appointment as canceled" : "Randevu iptal edilmiş olarak işaretlensin",
     "Reset (make the timeslot available)" : "Sıfırlansın (zaman aralığı boşaltılsın)",
+    "All day events can block" : "Tüm gün etkinlikleri şunları engelleyebilir",
     "External Mode Settings" : "Dış kip ayarları",
     "Optimize recurrence" : "Yinelemeyi iyileştir",
     "Require \"Appointment\" category" : "\"Randevu\" kategorisi zorunlu olsun",

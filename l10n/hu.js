@@ -123,6 +123,7 @@ OC.L10N.register(
     "When Attendee Cancels" : "Ha a résztvevő lemondja",
     "Mark the appointment as canceled" : "A találkozó lemondottnak jelölése",
     "Reset (make the timeslot available)" : "Visszaállítás (elérhetővé teszi az idősávot)",
+    "All day events can block" : "Az egész napos események blokkolhatnak",
     "External Mode Settings" : "Külső mód beállításai",
     "Optimize recurrence" : "Ismétlődés optimalizálása",
     "Require \"Appointment\" category" : "„Találkozó” kategória megkövetelése",
