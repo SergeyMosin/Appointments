@@ -48,18 +48,18 @@
                 class="srgdev-appt-sb-input-select rem-disable-inner"
                 v-model="item.seconds"
                 :id="'srgdev-appt_rem-data'+index+'-sec'">
-              <option value="0">{{ t('appointments', 'Not Used') }}</option>
-              <option value="3600">{{ t('appointments', '1 Hour') }}</option>
-              <option value="7200">{{ t('appointments', '2 Hours') }}</option>
-              <option value="14400">{{ t('appointments', '4 Hours') }}</option>
-              <option value="28800">{{ t('appointments', '8 Hours') }}</option>
+              <option value="0">{{ t('appointments', 'Not set') }}</option>
+              <option value="3600">{{ t('appointments', '1 hour') }}</option>
+              <option value="7200">{{ t('appointments', '2 hours') }}</option>
+              <option value="14400">{{ t('appointments', '4 hours') }}</option>
+              <option value="28800">{{ t('appointments', '8 hours') }}</option>
               <option value="86400">{{ t('appointments', '24 hours') }}</option>
-              <option value="172800" @click="checkKey" :disabled="!hasKey">{{ t('appointments', '2 Days') }}</option>
-              <option value="259200" :disabled="!hasKey">{{ t('appointments', '3 Days') }}</option>
-              <option value="345600" :disabled="!hasKey">{{ t('appointments', '4 Days') }}</option>
-              <option value="432000" :disabled="!hasKey">{{ t('appointments', '5 Days') }}</option>
-              <option value="518400" :disabled="!hasKey">{{ t('appointments', '6 Days') }}</option>
-              <option value="604800" :disabled="!hasKey">{{ t('appointments', '7 Days') }}</option>
+              <option value="172800" @click="checkKey" :disabled="!hasKey">{{ t('appointments', '2 days') }}</option>
+              <option value="259200" :disabled="!hasKey">{{ t('appointments', '3 days') }}</option>
+              <option value="345600" :disabled="!hasKey">{{ t('appointments', '4 days') }}</option>
+              <option value="432000" :disabled="!hasKey">{{ t('appointments', '5 days') }}</option>
+              <option value="518400" :disabled="!hasKey">{{ t('appointments', '6 days') }}</option>
+              <option value="604800" :disabled="!hasKey">{{ t('appointments', '7 days') }}</option>
             </select>
             <input
                 v-model="item.actions"
