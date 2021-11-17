@@ -10,12 +10,12 @@ OC.L10N.register(
     "Remove" : "چىقىرىۋەت",
     "Save" : "ساقلا",
     "Loading" : "Loading",
-    "Warning" : "ئاگاھلاندۇرۇش",
-    "Error" : "خاتالىق",
     "Edit" : "تەھرىر",
     "Title" : "ماۋزۇ",
     "URL" : "URL",
+    "Error" : "خاتالىق",
     "Deleted" : "ئۆچۈرۈلدى",
+    "Warning" : "ئاگاھلاندۇرۇش",
     "Next" : "كېيىنكى"
 },
 "nplurals=2; plural=(n != 1);");

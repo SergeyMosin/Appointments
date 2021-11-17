@@ -9,12 +9,12 @@ OC.L10N.register(
     "Close" : "بند ",
     "Save" : "حفظ",
     "Loading" : "Loading",
-    "Warning" : "انتباہ",
-    "Error" : "ایرر",
     "Edit" : "تدوین کریں",
     "Title" : "عنوان",
     "URL" : "یو ار ایل",
+    "Error" : "ایرر",
     "Deleted" : "حذف شدہ ",
+    "Warning" : "انتباہ",
     "Next" : "اگلا"
 },
 "nplurals=2; plural=(n != 1);");
