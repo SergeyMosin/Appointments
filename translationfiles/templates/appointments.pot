@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2021-11-17 03:59+0000\n"
+"POT-Creation-Date: 2021-11-18 03:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -597,22 +597,18 @@ msgid "30 Minutes"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:68
-#: /app/specialVueFakeDummyForL10nScript.js:144
 msgid "1 Hour"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:69
-#: /app/specialVueFakeDummyForL10nScript.js:145
 msgid "2 Hours"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:70
-#: /app/specialVueFakeDummyForL10nScript.js:146
 msgid "4 Hours"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:71
-#: /app/specialVueFakeDummyForL10nScript.js:147
 msgid "8 Hours"
 msgstr ""
 
@@ -625,10 +621,12 @@ msgid "1 day"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:74
+#: /app/specialVueFakeDummyForL10nScript.js:149
 msgid "2 days"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:75
+#: /app/specialVueFakeDummyForL10nScript.js:151
 msgid "4 days"
 msgstr ""
 
@@ -875,35 +873,43 @@ msgid "Time before appointment"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:143
-msgid "Not Used"
+msgid "Not set"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:144
+msgid "1 hour"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:145
+msgid "2 hours"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:146
+msgid "4 hours"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:147
+msgid "8 hours"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:148
 msgid "24 hours"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:149
-msgid "2 Days"
-msgstr ""
-
 #: /app/specialVueFakeDummyForL10nScript.js:150
-msgid "3 Days"
-msgstr ""
-
-#: /app/specialVueFakeDummyForL10nScript.js:151
-msgid "4 Days"
+msgid "3 days"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:152
-msgid "5 Days"
+msgid "5 days"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:153
-msgid "6 Days"
+msgid "6 days"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:154
-msgid "7 Days"
+msgid "7 days"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:155
