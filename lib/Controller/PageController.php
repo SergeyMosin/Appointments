@@ -566,17 +566,24 @@ class PageController extends Controller {
 
         if(!empty($fij)){
             $f0=$fij[0];
-            if(!empty($f0) && isset($post[$f0['name']])){
-                $n=$post[$f0['name']];
-                // TODO: check "number" type
-                $v=htmlspecialchars(strip_tags(preg_replace('/\s+/', ' ',trim(substr($n,0,512)))),ENT_NOQUOTES);
-
-                if(isset($f0['required']) && $f0['required']===true && $v===''){
+	    if (is_array($f0) && array_key_exists(0,$f0) && is_array($f0[0])) {
+                foreach($f0 as $index => $field) {
+                    $fieldResult = $this->showFormCustomField($field,$post,$index);
+                    if ($fieldResult === false) {
+                        $rr=new RedirectResponse($bad_input_url);
+                        $rr->setStatus(303);
+                        return $rr;
+                    } 
+                    $v .= $fieldResult;
+                }
+            } else {
+                $fieldResult = $this->showFormCustomField($f0, $post);
+                if ($fieldResult === false) {
                     $rr=new RedirectResponse($bad_input_url);
                     $rr->setStatus(303);
                     return $rr;
-                }
-                $v="\n".rtrim($f0['label'],':').": ".$v;
+                } 
+                $v = $fieldResult;
             }
         }
         $post['_more_data']=$v;
@@ -702,6 +709,31 @@ class PageController extends Controller {
         $rr=new RedirectResponse($uri);
         $rr->setStatus(303);
         return $rr;
+    }
+	
+    /**
+     * @param array $field
+     * @param array $post
+     * @param int   $index 
+     * @return string|bool 
+     */
+    private function showFormCustomField($field, $post, $index = 0) {
+
+        $v = '';
+        if(!empty($field) && isset($post[$field['name']])){
+            $n=$post[$field['name']];
+            // TODO: check "number" type
+            $v=htmlspecialchars(strip_tags(preg_replace('/\s+/', ' ',trim(substr($n,0,512)))),ENT_NOQUOTES);
+
+            if(isset($field['required']) && $field['required']===true && $v===''){
+               /*  $rr=new RedirectResponse($bad_input_url);
+                $rr->setStatus(303);*/
+                return false;
+            }
+            $v="\n".rtrim($field['label'],':').": ".$v;
+        }
+
+        return $v;
     }
 
     /**
