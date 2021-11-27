@@ -59,7 +59,7 @@ form{
     <div style="margin-left: 2em">
         <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_destcal_tmm">Destination Calendar (Weekly Template)</strong> - Booked/pending appointments will be placed into this calendar.</p>
         <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_conflicts_tmm">Check for conflicts in…</strong> - these calendars will be checked for conflicting events in addition to the Destination Calendar.</p>
-        <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_props_tmm">Appointment Properties</strong> - <em>Duration</em>: if you set multiple duration choices for an appointment, then a visitor will be able to pick on of them. <em>Title</em>: if this is set then the title will be displayed next or below the time in the form.</p>
+        <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_props_tmm">Appointment Properties</strong> - <em>Duration</em>: if you set multiple duration choices for an appointment, then a visitor will be able to pick one of them. <em>Title</em>: if this is set then the title will be displayed next or below the time in the form.</p>
     </div>
     <p class="srgdev-appt-hs-p-h"><strong>Simple mode</strong> - Use provided "Add Appointment Slots" dialog to add "available" time slots. Recurrence is not suported in this mode.</p>
     <div style="margin-left: 2em">

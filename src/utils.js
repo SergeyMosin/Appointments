@@ -1,5 +1,6 @@
 import {linkTo} from "@nextcloud/router";
 import axios from "@nextcloud/axios";
+import {showWarning} from "@nextcloud/dialogs"
 
 /**
  * Detects a color from a given string
@@ -33,6 +34,9 @@ const getTimezone = async (getState, calId) => {
 
         if (res.toLowerCase() === 'utc') {
             res = "Europe/London"
+            showWarning(window.t('appointments', 'Using fallback time zone: {timeZoneName}', {
+                timeZoneName: res
+            }))
             console.error("can not get user timezone for this calendar using " + res)
         }
 
