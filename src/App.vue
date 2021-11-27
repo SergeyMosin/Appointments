@@ -247,7 +247,7 @@
             <div
                 style="float:right; font-style: italic; font-size: 75%; color: var(--color-text-light); padding-right: 1.5em; text-align: right; line-height: normal; margin-left: -9em">
               {{ t('appointments', 'Hint: right-click on appointment to edit.') }}<br>
-              Timezone: {{ gridTzName }}
+              {{ t('appointments', 'Time zone') }}: {{ gridTzName }}
             </div>
           </div>
           <div class="srgdev-appt-grid-flex-lower">

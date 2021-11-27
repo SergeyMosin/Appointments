@@ -22,7 +22,7 @@
               :formatter="weekFormat"
               type="week"></DatePicker>
           <div class="srgdev-appt-info-lcont srgdev-appt-tz-cont">
-            {{ t('appointments', 'Timezone:') + ' ' + tzName }}
+            {{ t('appointments', 'Time zone:') + ' ' + tzName }}
           </div>
           <label for="appt_dur-select" class="select-label">{{ t('appointments', 'Appointment Duration:') }}</label>
           <vue-slider
@@ -187,9 +187,9 @@ export default {
         this.isLoading = false
       } catch (e) {
         this.isLoading = false
-        console.error("Can't get timezone")
+        console.error("Can't get time zone")
         console.log(e)
-        showError(this.t('appointments', "Can't load timezones"))
+        showError(this.t('appointments', "Can't load time zones"))
       }
     },
 

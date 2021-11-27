@@ -52,7 +52,7 @@ class DebugController extends Controller
 
         $data = '<strong>Nextcloud Version</strong>: ' . OC_Util::getVersionString() . "\n"
             . '<strong>Appointments Version</strong>: ' . $this->config->getAppValue($this->appName, 'installed_version', "N/A") . "\n"
-            . '<strong>Timezone</strong>: ' . $this->utils->getUserTimezone($this->userId, $this->config)->getName() . " ("
+            . '<strong>Time zone</strong>: ' . $this->utils->getUserTimezone($this->userId, $this->config)->getName() . " ("
             . "calendar: " . $this->config->getUserValue($this->userId, 'calendar', 'timezone', "N/A") . ", "
             . "core: " . $this->config->getUserValue($this->userId, 'core', 'timezone', "N/A") . ")\n"
             . '<strong>Key</strong>: ' . ($this->config->getUserValue($this->userId, $this->appName, "cnk") !== "" ? "Yes" : "No") . "\n\n";

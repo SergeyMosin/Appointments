@@ -314,7 +314,7 @@ export default {
         this.isLoading = false
         console.error("Can't get timezone")
         console.log(e)
-        showError(this.t('appointments', "Can't load timezones"))
+        showError(this.t('appointments', "Can't load time zones"))
         return
       }
 
@@ -373,7 +373,7 @@ export default {
           } else {
             this.$emit("showModal", [
               this.t('appointments', 'Error'),
-              this.t('appointments', 'Timezone data is empty')])
+              this.t('appointments', 'Time zone data is empty')])
             return
           }
         }
