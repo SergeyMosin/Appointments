@@ -10,11 +10,11 @@ OC.L10N.register(
     "Remove" : "ತೆಗೆದುಹಾಕಿ",
     "Save" : "﻿ಉಳಿಸಿ",
     "Loading" : "Loading",
-    "Warning" : "﻿ಎಚ್ಚರಿಕೆ",
-    "Error" : "﻿ತಪ್ಪಾಗಿದೆ",
     "Edit" : "ಸಂಪಾದಿಸು",
     "Title" : "ಶೀರ್ಷಿಕೆ",
     "URL" : "ಜಾಲದ ಕೊಂಡಿ",
+    "Error" : "﻿ತಪ್ಪಾಗಿದೆ",
+    "Warning" : "﻿ಎಚ್ಚರಿಕೆ",
     "Next" : "ಮುಂದೆ"
 },
 "nplurals=2; plural=(n > 1);");

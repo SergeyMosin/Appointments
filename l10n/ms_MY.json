@@ -8,12 +8,12 @@
     "Remove" : "Buang",
     "Save" : "Simpan",
     "Loading" : "Loading",
-    "Warning" : "Amaran",
-    "Error" : "Ralat",
     "Edit" : "Sunting",
     "Title" : "Judul",
     "URL" : "URL",
+    "Error" : "Ralat",
     "Deleted" : "Dipadam",
+    "Warning" : "Amaran",
     "Back" : "Kembali",
     "Next" : "Seterus"
 },"pluralForm" :"nplurals=1; plural=0;"

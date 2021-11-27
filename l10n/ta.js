@@ -10,11 +10,11 @@ OC.L10N.register(
     "Remove" : "அகற்றுக",
     "Save" : "சேமிக்க ",
     "Loading" : "Loading",
-    "Warning" : "எச்சரிக்கை",
-    "Error" : "வழு",
     "Edit" : "தொகுக்க",
     "Title" : "தலைப்பு",
     "URL" : "URL",
+    "Error" : "வழு",
+    "Warning" : "எச்சரிக்கை",
     "Location:" : "இடம்:",
     "Back" : "பின்னுக்கு",
     "Next" : "அடுத்த"
