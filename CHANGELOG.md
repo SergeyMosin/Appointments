@@ -1,3 +1,10 @@
+## 1.11.3 - 2021-11-27
+### Fixed
+- Increase hash_table.uid column length to 255 (same as calendarobjects.uid length) - issue #253
+### Changed
+- Use calendar timezone whenever possible - issue #243
+- Moved time zone indicator to Template Edit screen
+
 ## 1.11.2 - 2021-11-16
 ### Fixed
 - Max appointment duration in weekly template" mode - issue #230
