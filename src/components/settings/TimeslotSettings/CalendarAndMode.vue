@@ -132,11 +132,11 @@
               </div>
             </template>
           </ApptAccordion>
-          <label class="tsb-label">
-            {{ t('appointments', 'Timezone:') }}</label>
-          <div class="tsb-input">
-            {{ tzName === "" ? t('appointments', 'Loading…') : tzName }}
-          </div>
+          <!--          <label class="tsb-label">-->
+          <!--            {{ t('appointments', 'Timezone:') }}</label>-->
+          <!--          <div class="tsb-input">-->
+          <!--            {{ tzName === "" ? t('appointments', 'Loading…') : tzName }}-->
+          <!--          </div>-->
         </template>
         <div style="margin-top: 2em" class="srgdev-appt-info-lcont">
           <label
@@ -174,8 +174,8 @@
 import SlideBar from "../../SlideBar.vue"
 import ApptIconButton from "../../ApptIconButton";
 import ApptAccordion from "../../ApptAccordion.vue";
-import {linkTo} from '@nextcloud/router'
 import {showError, showWarning} from "@nextcloud/dialogs"
+import {getTimezone} from "../../../utils";
 
 import {
   ActionButton,
@@ -268,27 +268,11 @@ export default {
         return
       }
 
-      if (this.calInfo.tsMode === "2") {
-        // TODO: check if server and client TZs are the same
-        try {
-          const d = await this.getTimeZone()
-          this.tzName = d.name
-          this.tzData = d.data
-          this.isLoading = false
-        } catch (e) {
-          this.isLoading = false
-          console.error("Can't get timezone")
-          console.log(e)
-          showError(this.t('appointments', "Can't load timezones"))
-        }
-      } else {
-        this.isLoading = false
-      }
+      this.isLoading = false
 
       this.getState("get_k").then(k => {
         this.hasKey = k !== ""
       })
-
     },
 
     handleMoreCals(evt) {
@@ -301,11 +285,39 @@ export default {
       }
     },
 
-    handleEditTemplate() {
+    async handleEditTemplate() {
       if (this.realTmmId !== this.calInfo.tmmDstCalId) {
         showWarning(this.t('appointments', "Please apply calendar changes first"))
         return
       }
+
+      this.isLoading = true
+      try {
+        const d = await getTimezone(this.getState, this.calInfo.tmmDstCalId)
+        this.tzName = d.name
+        this.tzData = d.data
+
+        // sync timezones
+        const ttzRes = await this.getState("get_t_tz")
+        if (ttzRes.tzName !== this.tzName) {
+          this.calInfo.tzData = this.tzData
+          this.calInfo.tzName = this.tzName
+          // noinspection ES6MissingAwait
+          this.setState(
+              "set_" + this.curPageData.stateAction,
+              this.calInfo,
+              this.curPageData.pageId, {noToast: true})
+        }
+
+        this.isLoading = false
+      } catch (e) {
+        this.isLoading = false
+        console.error("Can't get timezone")
+        console.log(e)
+        showError(this.t('appointments', "Can't load timezones"))
+        return
+      }
+
       this.$emit('editTemplate', {
         pageId: this.curPageData.pageId,
         tzName: this.tzName,
@@ -401,60 +413,6 @@ export default {
 
     removeFromTMM(calId) {
       this.calInfo.tmmMoreCals = this.calInfo.tmmMoreCals.filter(cid => cid !== calId)
-    },
-
-    async getTimeZone() {
-      const ttzRes = await this.getState("get_t_tz")
-      let res = await this.getState("get_tz")
-      if (res !== null && res.toLowerCase() !== 'utc') {
-        let url = linkTo('appointments', 'ajax/zones.js')
-        const tzr = await axios.get(url)
-        if (tzr.status === 200) {
-
-          let tzd = tzr.data
-          if (typeof tzd === "object"
-              && tzd.hasOwnProperty('aliases')
-              && tzd.hasOwnProperty('zones')) {
-
-            let tzs = ""
-            if (tzd.zones[res] !== undefined) {
-              tzs = tzd.zones[res].ics.join("\r\n")
-
-            } else if (tzd.aliases[res] !== undefined) {
-              let alias = tzd.aliases[res].aliasTo
-              if (tzd.zones[alias] !== undefined) {
-                res = alias
-                tzs = tzd.zones[alias].ics.join("\r\n")
-              }
-            }
-
-            const tzName = res
-            const tzData = "BEGIN:VTIMEZONE\r\nTZID:" + res.trim() + "\r\n" + tzs.trim() + "\r\nEND:VTIMEZONE"
-
-            // sync timezones
-            if (ttzRes.tzName !== tzName) {
-              this.calInfo.tzData = tzData
-              this.calInfo.tzName = tzName
-              // noinspection ES6MissingAwait
-              this.setState(
-                  "set_" + this.curPageData.stateAction,
-                  this.calInfo,
-                  this.curPageData.pageId,{noToast:true})
-            }
-
-            return {
-              name: tzName,
-              data: tzData
-            }
-          } else {
-            throw new Error("Bad tzr.data")
-          }
-        } else {
-          throw new Error("Bad status: " + tzr.status)
-        }
-      } else {
-        throw new Error("Can't get_tz")
-      }
     },
 
     close() {

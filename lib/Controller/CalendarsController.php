@@ -140,20 +140,19 @@ class CalendarsController extends Controller{
             return $r;
         }
 
-        // Because of floating timezones...
-        $utz=$this->utils->getUserTimezone($this->userId,$this->config);
+        $dcl_id='-1';
+        $cal_id=$this->utils->getMainCalId($this->userId,$pageId,$this->bc,$dcl_id);
+        if($cal_id==="-1"){
+            $r->setStatus(400);
+            return $r;
+        }
+
+        $utz=$this->utils->getCalendarTimezone($this->userId,$this->config,$this->bc->getCalendarById($cal_id,$this->userId));
         try {
             $t_start=\DateTime::createFromFormat(
                 'j-m-Y H:i:s',$t.' 00:00:00',$utz);
         } catch (\Exception $e) {
             \OC::$server->getLogger()->error($e->getMessage().", timezone: ".$utz->getName());
-            $r->setStatus(400);
-            return $r;
-        }
-
-        $dcl_id='-1';
-        $cal_id=$this->utils->getMainCalId($this->userId,$pageId,$this->bc,$dcl_id);
-        if($cal_id==="-1"){
             $r->setStatus(400);
             return $r;
         }

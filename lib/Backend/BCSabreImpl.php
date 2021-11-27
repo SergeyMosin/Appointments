@@ -826,7 +826,7 @@ class BCSabreImpl implements IBackendConnector
         $ca = $this->backend->getCalendarsForUser(BackendManager::PRINCIPAL_PREFIX . $userId);
         $ret = [];
         foreach ($ca as $c) {
-            $ci = $this->transformCalInfo($c);
+            $ci = $this->utils->transformCalInfo($c);
             if ($ci !== null) {
                 $ret[] = $ci;
             }
@@ -842,7 +842,7 @@ class BCSabreImpl implements IBackendConnector
         foreach ($ca as $c) {
             // $c['id'] can be a string or an int
             if ($calId == $c['id']) {
-                return $this->transformCalInfo($c);
+                return $this->utils->transformCalInfo($c);
             }
         }
         return null;
@@ -915,7 +915,7 @@ class BCSabreImpl implements IBackendConnector
                 $ctz = new \DateTimeZone($tza[BackendUtils::TMPL_TZ_NAME]);
             } catch (\Exception $e) {
                 $this->logger->warning('Can not set timezone from template, using default...');
-                $ctz = $this->utils->getUserTimezone($userId, $this->config);
+                $ctz = $this->utils->getCalendarTimezone($userId, $this->config, $this->getCalendarById($calId, $userId));
             }
 
             $dt = new \DateTime('now', $ctz);
@@ -986,8 +986,8 @@ class BCSabreImpl implements IBackendConnector
                 substr($h, 19, 6) . "-aa" .
                 substr($h, 25);
 
+            $utz = $this->utils->getCalendarTimezone($userId, $this->config, $this->getCalendarById($calId, $userId));
 
-            $utz = $this->utils->getUserTimezone($userId, $this->config);
             $dt = $dt_start->getDateTime($utz);
             // Insert the UID, start and end
             $d = $parts['1_before_uid'] . $uid .
@@ -1248,22 +1248,6 @@ class BCSabreImpl implements IBackendConnector
             }
         }
         return false;
-    }
-
-    private function transformCalInfo($c) {
-        // Do not use read only calendars
-        if (isset($c['{http://owncloud.org/ns}read-only']) && $c['{http://owncloud.org/ns}read-only'] === true) {
-            return null;
-        }
-
-        $a = [];
-        $a['id'] = (string)$c["id"];
-        $a['displayName'] = isset($c['{DAV:}displayname']) ? $c['{DAV:}displayname'] : "Calendar";
-        $a['color'] = isset($c['{http://apple.com/ns/ical/}calendar-color']) ? $c['{http://apple.com/ns/ical/}calendar-color'] : "#000000";
-        $a['uri'] = $c['uri'];
-        $a['timezone'] = isset($c['{urn:ietf:params:xml:ns:caldav}calendar-timezone']) ?
-            $c['{urn:ietf:params:xml:ns:caldav}calendar-timezone'] : '';
-        return $a;
     }
 
     /**

@@ -983,8 +983,8 @@ class BackendUtils
                     self::PSN_PAGE_STYLE => "");
                 break;
             case self::KEY_MPS_COL:
-//                $d=null;
-//                break;
+                $d = null;
+                break;
             case self::KEY_MPS:
                 $d = array(
                     self::CLS_MAIN_ID => '-1',
@@ -1112,7 +1112,7 @@ class BackendUtils
         } else if (strpos($key, self::KEY_MPS) === 0) {
             $pn = substr($key, strlen(self::KEY_MPS));
             $key = self::KEY_MPS_COL;
-            $default = $this->getDefaultForKey($key);
+            $default = $this->getDefaultForKey(self::KEY_MPS);
         } else if ($key === self::KEY_TALK) {
             // Translate defaults
             $l10n = \OC::$server->getL10N($this->appName);
@@ -1408,6 +1408,50 @@ class BackendUtils
     }
 
     /**
+     * Try to get calendar timezone if it is not available fall back to getUserTimezone
+     *
+     * @param string $userId
+     * @param \OCP\IConfig $config
+     * @param array|null $cal
+     * @return \DateTimeZone
+     *
+     * @see getUserTimezone
+     */
+    function getCalendarTimezone(string $userId, \OCP\IConfig $config, array $cal = null): \DateTimeZone {
+
+        $err = "";
+        $tz = null;
+
+        if ($cal === null || empty($cal['timezone'])) {
+            $err = "Calendar with ID " . $cal['id'] . " for user " . $userId . " not found: using default timezone";
+        } else {
+            $token = 'TZID:';
+            $tokenPos = strpos($cal['timezone'], $token);
+            if ($tokenPos === false) {
+                $err = "Bad timezone data, calendarId: " . $cal['id'] . ", userId: " . $userId;
+            } else {
+                try {
+                    $tz_start = $tokenPos + strlen($token);
+                    $tz_name = trim(substr(
+                        $cal['timezone'],
+                        $tz_start,
+                        strpos($cal['timezone'], "\n", $tz_start) - $tz_start));
+                    $tz = new \DateTimeZone($tz_name);
+                } catch (\Exception $e) {
+                    $this->logger->error("getUserTimezone error: " . $e->getMessage());
+                    $tz = new \DateTimeZone('utc'); // fallback to utc
+                }
+            }
+        }
+
+        if ($tz === null) {
+            $this->logger->error("getUserOrCalendarTimezone error: " . $err);
+            return $this->getUserTimezone($userId, $config);
+        }
+        return $tz;
+    }
+
+    /**
      * @param $userId
      * @param \OCP\IConfig $config
      * @return \DateTimeZone
@@ -1417,18 +1461,15 @@ class BackendUtils
         if (empty($tz_name) || strpos($tz_name, 'auto') !== false) {
             // Try Nextcloud default timezone
             $tz_name = $config->getUserValue($userId, 'core', 'timezone');
-            if (empty($tz_name) || strpos($tz_name, 'auto')) {
+            if (empty($tz_name) || strpos($tz_name, 'auto') !== false) {
                 return \OC::$server->getDateTimeZone()->getTimeZone();
-                // Use UTC
-//                $this->logger->warning("no timezone for floating time found - using date_default_timezone_get(): ".date_default_timezone_get());
-//                $tz_name=date_default_timezone_get();
             }
         }
 
         try {
             $tz = new \DateTimeZone($tz_name);
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
+            $this->logger->error("getUserTimezone error: " . $e->getMessage());
             $tz = new \DateTimeZone('utc'); // fallback to utc
         }
 
@@ -1638,5 +1679,21 @@ class BackendUtils
         }
         return urlencode(str_replace("/", "_", $bd));
     }
+
+    function transformCalInfo($c) {
+        // Do not use read only calendars
+        if (isset($c['{http://owncloud.org/ns}read-only']) && $c['{http://owncloud.org/ns}read-only'] === true) {
+            return null;
+        }
+
+        $a = [];
+        $a['id'] = (string)$c["id"];
+        $a['displayName'] = $c['{DAV:}displayname'] ?? "Calendar";
+        $a['color'] = $c['{http://apple.com/ns/ical/}calendar-color'] ?? "#000000";
+        $a['uri'] = $c['uri'];
+        $a['timezone'] = $c['{urn:ietf:params:xml:ns:caldav}calendar-timezone'] ?? '';
+        return $a;
+    }
+
 }
 

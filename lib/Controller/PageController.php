@@ -83,14 +83,14 @@ class PageController extends Controller {
                 }
             }
         }
-        
+
         $csp = $t->getContentSecurityPolicy();
         if ($csp === null) {
             $csp = new ContentSecurityPolicy();
             $t->setContentSecurityPolicy($csp);
         }
         $csp->addAllowedFrameDomain('\'self\'');
-        
+
         return  $t;// templates/index.php
     }
 
@@ -844,8 +844,8 @@ class PageController extends Controller {
             return $tr;
         }
 
-        $cid=$this->utils->getMainCalId($uid,$pageId,$this->bc);
-        if($cid==="-1"){
+        $calId=$this->utils->getMainCalId($uid,$pageId,$this->bc);
+        if($calId==="-1"){
             $tr->setParams($params);
             return $tr;
         }
@@ -864,8 +864,7 @@ class PageController extends Controller {
         $cms=$cls=$this->utils->getUserSettings(
             BackendUtils::KEY_CLS,$uid);
 
-        // Because of utc
-        $utz=$this->utils->getUserTimezone($uid,$this->c);
+        $utz = $this->utils->getCalendarTimezone($uid, $this->c, $this->bc->getCalendarById($calId, $uid));
         try {
             $t_start = new \DateTime('now +'.$cls[BackendUtils::CLS_PREP_TIME]."mins", $utz);
         } catch (\Exception $e) {
@@ -880,23 +879,19 @@ class PageController extends Controller {
         }
         $ts_mode=$cms[BackendUtils::CLS_TS_MODE];
 
-//        if($ts_mode==='2'){
-//            $nw=min(8,$nw);
-//        }
-
         $t_end=clone $t_start;
         $t_end->setTimestamp($t_start->getTimestamp()+(7*$nw*86400));
         $t_end->setTime(0,0);
 
         if($ts_mode==="1"){ // external mode
             // @see BCSabreImpl->queryRange()
-            $cid.=chr(31).$cms[BackendUtils::CLS_XTM_SRC_ID];
+            $calId.=chr(31).$cms[BackendUtils::CLS_XTM_SRC_ID];
         }
 
         if($ts_mode===BackendUtils::CLS_TS_MODE_TEMPLATE) {
             $out = $this->bc->queryTemplate($cms, $t_start, $t_end, $uid, $pageId);
         }else{
-            $out = $this->bc->queryRange($cid, $t_start, $t_end, $ts_mode . $uid);
+            $out = $this->bc->queryRange($calId, $t_start, $t_end, $ts_mode . $uid);
         }
 
         if(empty($out)) {
