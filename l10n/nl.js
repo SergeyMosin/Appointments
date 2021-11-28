@@ -252,7 +252,6 @@ OC.L10N.register(
     "Source calendar is required" : "Bronkalender is vereist",
     "Destination calendar is required" : "Bestemmingskalender is vereist",
     "Source and Destination calendars must be different" : "De bron- en bestemmingskalenders moeten verschillend zijn",
-    "Timezone data is empty" : "Tijdzone gegevens leeg",
     "Select Dates:" : "Selecteer datums:",
     "Select Dates" : "Selecteer datums",
     "Appointment Duration:" : "Afspraak duur:",

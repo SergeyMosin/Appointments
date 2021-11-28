@@ -228,7 +228,6 @@
     "Source calendar is required" : "مصدر التقويم مطلوب",
     "Destination calendar is required" : "تقويم المواعيد مطلوب",
     "Source and Destination calendars must be different" : "يجب تحديد تقويم رئيسي مصدر و تقويم للمواعيد لا يمكن استخدام واحد لكلاهما",
-    "Timezone data is empty" : "بيانات المنطقة الزمنية فارغة",
     "Select Dates:" : "اختر التواريخ:",
     "Select Dates" : "اختر التواريخ",
     "Appointment Duration:" : "مدة الموعد",

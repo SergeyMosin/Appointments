@@ -252,7 +252,6 @@ OC.L10N.register(
     "Source calendar is required" : "Kaynak takvim zorunludur",
     "Destination calendar is required" : "Hedef takvim zorunludur",
     "Source and Destination calendars must be different" : "Kaynak ve hedef takvimler farklı olmalı",
-    "Timezone data is empty" : "Saat dilimi verileri yok",
     "Select Dates:" : "Tarihleri seçin:",
     "Select Dates" : "Tarihleri seçin",
     "Appointment Duration:" : "Randevu süresi:",

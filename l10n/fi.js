@@ -164,7 +164,6 @@ OC.L10N.register(
     "Source calendar is required" : "Lähdekalenteri vaaditaan",
     "Destination calendar is required" : "Kohdekalenteri vaaditaan",
     "Source and Destination calendars must be different" : "Lähde- ja kohdekalenterit eivät voi olla sama kalenteri",
-    "Timezone data is empty" : "Aikavyöhykkeen data puuttuu",
     "Select Dates:" : "Valitse päivät:",
     "Select Dates" : "Valitse päivät",
     "Appointment Duration:" : "Tapaamisen kesto:",

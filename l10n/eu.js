@@ -247,7 +247,6 @@ OC.L10N.register(
     "Source calendar is required" : "Jatorriko egutegia beharrezkoa da",
     "Destination calendar is required" : "Helburuko egutegia beharrezkoa da",
     "Source and Destination calendars must be different" : "Jatorriko eta Helburuko egutegiek ezberdinak izan behar dute",
-    "Timezone data is empty" : "Ordu-zona datua hutsik dago",
     "Select Dates:" : "Hautatu datak:",
     "Select Dates" : "Hautatu datak",
     "Appointment Duration:" : "Hitzorduaren iraupena",

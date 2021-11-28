@@ -250,7 +250,6 @@
     "Source calendar is required" : "Нужен е Изходен календар",
     "Destination calendar is required" : "Нужен е календар на Дестинация",
     "Source and Destination calendars must be different" : "Календарите на Източника и на Дестинацията трябва да са различни",
-    "Timezone data is empty" : "Няма данни за часовата зона.",
     "Select Dates:" : "Избор на дати:",
     "Select Dates" : "Избор на дати",
     "Appointment Duration:" : "Продължителност на срещата:",

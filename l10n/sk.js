@@ -252,7 +252,6 @@ OC.L10N.register(
     "Source calendar is required" : "Zdrojový kalendár je povinný",
     "Destination calendar is required" : "Cieľový kalendár je povinný",
     "Source and Destination calendars must be different" : "Kalendáre zdroja a cieľa sa musia líšiť",
-    "Timezone data is empty" : "Dáta časovej zóny sú prázdne",
     "Select Dates:" : "Vybrať dátumy:",
     "Select Dates" : "Vybrať dátumy",
     "Appointment Duration:" : "Trvanie stretnutia:",

@@ -252,7 +252,6 @@ OC.L10N.register(
     "Source calendar is required" : "源日曆是必需的",
     "Destination calendar is required" : "目標日曆是必需的",
     "Source and Destination calendars must be different" : "源日曆和目標日曆必須不同",
-    "Timezone data is empty" : "時區是空的",
     "Select Dates:" : "選擇日期：",
     "Select Dates" : "選擇日期",
     "Appointment Duration:" : "預約為期：",

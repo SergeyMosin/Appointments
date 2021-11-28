@@ -221,7 +221,6 @@ OC.L10N.register(
     "External" : "Внешний",
     "Time slot mode has changed. Public page is going offline …" : "Изменился режим временного интервала. Открытая страница переходит в офлайн…",
     "Main calendar is required" : "Требуется основной календарь",
-    "Timezone data is empty" : "Данные часового пояса пусты",
     "Select Dates:" : "Выбрать даты:",
     "Select Dates" : "Выбрать даты",
     "Appointment Duration:" : "Продолжительность записи:",

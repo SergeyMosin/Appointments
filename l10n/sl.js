@@ -231,7 +231,6 @@ OC.L10N.register(
     "Source calendar is required" : "Zahtevan je izvorni koledar",
     "Destination calendar is required" : "Zahtevan je ciljni koledar",
     "Source and Destination calendars must be different" : "izvorni in ciljni koledar morata biti različna",
-    "Timezone data is empty" : "Podatki časovnega pasu so prazni",
     "Select Dates:" : "Izbor datumov:",
     "Select Dates" : "Izbor datumov",
     "Appointment Duration:" : "Trajanje sestanka:",

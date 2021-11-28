@@ -231,7 +231,6 @@ OC.L10N.register(
     "Source calendar is required" : "Calendário de origem é obrigatório",
     "Destination calendar is required" : "Calendário de destino é obrigatório",
     "Source and Destination calendars must be different" : "Calendário de origem e destino, têm de ser diferentes",
-    "Timezone data is empty" : "Dados do fuso horário vazios",
     "Select Dates:" : "Escolha a data",
     "Select Dates" : "Escolha a data",
     "Appointment Duration:" : "Duração da Reunião:",
