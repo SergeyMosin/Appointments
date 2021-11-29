@@ -159,7 +159,6 @@ OC.L10N.register(
     "Loading…" : "Įkeliama…",
     "Simple" : "Paprastas",
     "Main calendar is required" : "Reikalingas pagrindinis kalendorius",
-    "Timezone data is empty" : "Laiko juostos duomenys tušti",
     "Select Dates:" : "Pasirinkite datas:",
     "Select Dates" : "Pasirinkite datas",
     "Appointment Duration:" : "Susitikimo trukmė:",

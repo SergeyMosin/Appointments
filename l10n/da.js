@@ -231,7 +231,6 @@ OC.L10N.register(
     "Source calendar is required" : "Kildekalender er påkrævet",
     "Destination calendar is required" : "Destinationskalender er påkrævet",
     "Source and Destination calendars must be different" : "Kilde- og destinationskalendere skal være forskellige",
-    "Timezone data is empty" : "Tidszonedata er tomme",
     "Select Dates:" : "Vælg datoer:",
     "Select Dates" : "Vælg Datoer",
     "Appointment Duration:" : "Aftalevarighed:",

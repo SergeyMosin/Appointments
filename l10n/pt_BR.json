@@ -229,7 +229,6 @@
     "Source calendar is required" : "O calendário de origem é obrigatório",
     "Destination calendar is required" : "O calendário de destino é obrigatório",
     "Source and Destination calendars must be different" : "Os calendários de Origem e Destino devem ser diferentes",
-    "Timezone data is empty" : "Os dados de fuso horário estão em branco",
     "Select Dates:" : "Selecionar Datas:",
     "Select Dates" : "Selecionar Datas",
     "Appointment Duration:" : "Duração do Compromisso:",

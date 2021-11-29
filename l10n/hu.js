@@ -231,7 +231,6 @@ OC.L10N.register(
     "Source calendar is required" : "Forrásnaptár szükséges",
     "Destination calendar is required" : "Célnaptár szükséges",
     "Source and Destination calendars must be different" : "A forrás- és a célnaptárnak különböznie kell",
-    "Timezone data is empty" : "Az időzóna adatai üresek",
     "Select Dates:" : "Dátumok kiválasztása:",
     "Select Dates" : "Dátumok kiválasztása",
     "Appointment Duration:" : "Találkozó időtartama:",

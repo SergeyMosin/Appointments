@@ -229,7 +229,6 @@
     "Source calendar is required" : "Απαιτείται το πηγαίο ημερολόγιο",
     "Destination calendar is required" : "Απαιτείται το ημερολόγιο προορισμού",
     "Source and Destination calendars must be different" : "Το πηγαίο ημερολόγιο και το ημερολόγιο προορισμού πρέπει να είναι διαφορετικά",
-    "Timezone data is empty" : "Τα δεδομένα ζώνης ώρας είναι κενά",
     "Select Dates:" : "Επιλογή Ημερομηνιών:",
     "Select Dates" : "Επιλογή Ημερομηνιών",
     "Appointment Duration:" : "Διάρκεια Ραντεβού:",
