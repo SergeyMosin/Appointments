@@ -328,13 +328,16 @@ class PageController extends Controller
                 // Delete and Reset ($date_time can be an empty string here)
                 list($sts, $date_time, $dt_info, $tz_data, $title) = $this->bc->deleteCalendarObject($userId, $r_cal_id, $uri);
 
-                if (empty($dt_info)) {
-                    $this->logger->warning('can not re-create appointment, no dt_info');
-                } else if ($cms[BackendUtils::CLS_TS_MODE] === '0') {
-                    // this is only needed in simple/manual mode
-                    $cr = $this->addAppointments($userId, $pageId, $dt_info, $tz_data, $title);
-                    if ($cr[0] !== '0') {
-                        $this->logger->error('addAppointments() failed ' . $cr);
+                if ($cms[BackendUtils::CLS_TS_MODE] === '0') {
+
+                    if (empty($dt_info)) {
+                        $this->logger->warning('can not re-create appointment, no dt_info or this is a repeated request');
+                    }else {
+                        // this is only needed in simple/manual mode
+                        $cr = $this->addAppointments($userId, $pageId, $dt_info, $tz_data, $title);
+                        if ($cr[0] !== '0') {
+                            $this->logger->error('addAppointments() failed ' . $cr);
+                        }
                     }
                 }
             }
@@ -990,7 +993,7 @@ class PageController extends Controller
         if ($cal === null) return '1:' . $this->l->t("Selected calendar not found");
 
         $evt_parts = $this->utils->makeAppointmentParts(
-            $this->userId, $pageId, $this->appName, $tz_data_str, $data[0], $title);
+            $userId, $pageId, $this->appName, $tz_data_str, $data[0], $title);
         if (isset($evt_parts['err'])) {
             return '1:' . $evt_parts['err'];
         }
