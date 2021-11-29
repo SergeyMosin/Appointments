@@ -366,17 +366,18 @@ export default {
               this.t('appointments', 'Source and Destination calendars must be different')])
             return
           }
-        } else if (this.calInfo.tsMode === '2') {
-          if (this.tzData !== "") {
-            this.calInfo.tzData = this.tzData
-            this.calInfo.tzName = this.tzName
-          } else {
-            this.$emit("showModal", [
-              this.t('appointments', 'Error'),
-              this.t('appointments', 'Time zone data is empty')])
-            return
-          }
         }
+          // else if (this.calInfo.tsMode === '2') {
+          // if (this.tzData !== "") {
+          //   this.calInfo.tzData = this.tzData
+          //   this.calInfo.tzName = this.tzName
+          // } else {
+          //   this.$emit("showModal", [
+          //     this.t('appointments', 'Error'),
+          //     this.t('appointments', 'Time zone data is empty')])
+          //   return
+          // }
+        // }
       }
 
       this.isSending = true

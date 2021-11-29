@@ -1224,10 +1224,10 @@ class BCSabreImpl implements IBackendConnector
         $d = $this->getObjectData($calId, $uri);
         if ($d !== null) {
             $ra = $this->utils->dataDeleteAppt($d);
-            $ret[1] = $ra[0];
-            $ret[2] = $ra[1];
-            $ret[3] = $ra[2];
-            $ret[4] = $ra[3];
+            $ret[1] = $ra[0]; // $date_time
+            $ret[2] = $ra[1]; // $dt_info
+            $ret[3] = $ra[2]; // $tz_data
+            $ret[4] = $ra[3]; // $title
             $this->backend->deleteCalendarObject($calId, $uri);
         }
         return $ret;
