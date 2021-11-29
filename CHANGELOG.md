@@ -1,3 +1,7 @@
+## 1.11.4 - 2021-11-29
+### Fixed
+- Remove time zone check on apply because the logic is moved to Template Edit Screen - issue #243
+
 ## 1.11.3 - 2021-11-27
 ### Fixed
 - Increase hash_table.uid column length to 255 (same as calendarobjects.uid length) - issue #253
