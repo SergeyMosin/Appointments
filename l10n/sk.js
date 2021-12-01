@@ -147,7 +147,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Add New Link" : "Pridať nový odkaz",
     "Error" : "Chyba",
-    "Title and URL can be empty" : "Nadpis a URL môžu ostať prázdne",
     "Emails and Notifications" : "E-maily a upozornenia",
     "Control when emails and notifications are sent" : "Riadi, kedy sa budú odosielať e-maily a oznámenia",
     "Attach .ics file to confirm/cancel emails" : "K e-mailom s potvrdením/zrušením pripojiť .ics súbor",

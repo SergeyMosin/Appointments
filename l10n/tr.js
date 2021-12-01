@@ -146,7 +146,6 @@ OC.L10N.register(
     "URL" : "Adres",
     "Add New Link" : "Yeni bağlantı ekle",
     "Error" : "Hata",
-    "Title and URL can be empty" : "Başlık ve adres boş olamaz",
     "Emails and Notifications" : "E-postalar ve bildirimler",
     "Control when emails and notifications are sent" : "E-posta ve bildirimlerin gönderileceği durumları belirleyin",
     "Attach .ics file to confirm/cancel emails" : "Onay ve iptal e-postalarına .ics dosyaları eklensin",

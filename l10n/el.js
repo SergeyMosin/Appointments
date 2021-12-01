@@ -141,7 +141,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Add New Link" : "Προσθήκη νέου συνδέσμου",
     "Error" : "Σφάλμα",
-    "Title and URL can be empty" : "Ο τίτλος και το URL μπορούν να είναι κενά",
     "Emails and Notifications" : "Ηλεκτρονική αλληλογραφία και Ειδοποιήσεις",
     "Control when emails and notifications are sent" : "Ελέγξτε πότε αποστέλλονται ηλεκτρονική αλληλογραφία και ειδοποιήσεις",
     "Attach .ics file to confirm/cancel emails" : "Επισύναψη αρχείου .ics σε επιβεβαιωμένα/ακυρωμένα μηνύματα ηλεκτρονικής αλληλογραφίας",

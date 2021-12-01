@@ -141,7 +141,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Add New Link" : "Új hivatkozás hozzáadása",
     "Error" : "Hiba",
-    "Title and URL can be empty" : "A cím és az URL lehet üres",
     "Emails and Notifications" : "E-mailek és értesítések",
     "Control when emails and notifications are sent" : "E-mailek és értesítések küldési idejének beállítása",
     "Attach .ics file to confirm/cancel emails" : ".Ics fájl csatolása a megerősítő/lemondó e-mailekhez",

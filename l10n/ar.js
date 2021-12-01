@@ -140,7 +140,6 @@ OC.L10N.register(
     "URL" : "رابط",
     "Add New Link" : "اضافة رابط جديد",
     "Error" : "خطأ",
-    "Title and URL can be empty" : "العنوان والرابط مطلوبة",
     "Emails and Notifications" : "البريد والتنبيهات",
     "Control when emails and notifications are sent" : "تحكم بإرسال البريد والتنبيهات",
     "Attach .ics file to confirm/cancel emails" : "ارفق ملف .ics لإضافة المواعيد في تقويم العميل في بريد التأكيد/الالغاء.",
