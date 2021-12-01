@@ -147,6 +147,7 @@ OC.L10N.register(
     "URL" : "URL",
     "Add New Link" : "添加新链接",
     "Error" : "错误",
+    "Title and URL cannot be empty" : "标题和 URL 不可以为空",
     "Emails and Notifications" : "邮件和通知",
     "Control when emails and notifications are sent" : "控制邮件和通知何时发送",
     "Attach .ics file to confirm/cancel emails" : "附加 .ics 文件到确认/取消邮件",

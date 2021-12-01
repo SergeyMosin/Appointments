@@ -145,6 +145,7 @@ OC.L10N.register(
     "URL" : "URLa",
     "Add New Link" : "Gehitu Esteka Berria",
     "Error" : "Errorea",
+    "Title and URL cannot be empty" : "Izenburua eta URLa ezin dira hutsik egon",
     "Emails and Notifications" : "E-posta eta jakinarazpenak",
     "Control when emails and notifications are sent" : "Kontrolatu mezu elektronikoak eta jakinarazpenak noiz bidaltzen diren",
     "Attach .ics file to confirm/cancel emails" : "Erantsi .ics fitxategia mezu elektronikoa baieztatu/bertan behera uzteko",

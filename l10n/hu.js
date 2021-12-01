@@ -11,6 +11,7 @@ OC.L10N.register(
     "A location, address or URL is required for this operation. Check User/Organization settings." : "Ehhez a művelethez hely, cím vagy URL szükséges. Ellenőrizze a felhasználó/szervezet beállításait.",
     "Can't find your name. Check User/Organization settings." : "Nem található a neve. Ellenőrizze a felhasználó/szervezet beállításait.",
     "Available" : "Elérhető",
+    "%s appointment reminder" : "%s találkozóemlékeztető",
     "Dear %s," : "Kedves %s!",
     "%s appointment (action needed)" : "%s találkozó (intézkedés szükséges)",
     "The %1$s appointment scheduled for %2$s is awaiting your confirmation." : "A(z) %2$s időpontra ütemezett %1$s találkozó megerősítésre vár.",
