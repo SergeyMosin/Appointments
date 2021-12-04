@@ -1,3 +1,7 @@
+## 1.11.6 - 2021-12-04
+### Change
+- max-version="22" -> max-version="23"
+
 ## 1.11.4 - 2021-11-29
 ### Fixed
 - Remove time zone check on apply because the logic is moved to Template Edit Screen - issue #243
