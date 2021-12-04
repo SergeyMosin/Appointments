@@ -147,7 +147,7 @@ OC.L10N.register(
     "URL" : "URL",
     "Add New Link" : "Neuen Link hinzufügen",
     "Error" : "Fehler",
-    "Title and URL can be empty" : "Titel und URL können leer sein",
+    "Title and URL cannot be empty" : "Titel und URL dürfen nicht leer sein",
     "Emails and Notifications" : "E-Mails und Benachrichtigungen",
     "Control when emails and notifications are sent" : "Steuerung, wann E-Mails und Benachrichtigungen gesendet werden",
     "Attach .ics file to confirm/cancel emails" : "Füge eine .ics-Datei an Bestätigung/Absage an",

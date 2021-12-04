@@ -144,7 +144,6 @@ OC.L10N.register(
     "URL" : "Naslov URL",
     "Add New Link" : "Dodaj novo povezavo",
     "Error" : "Napaka",
-    "Title and URL can be empty" : "Polji naslova in naziva ne smeta biti prazni",
     "Emails and Notifications" : "Elektronski naslovi in obvestila",
     "Control when emails and notifications are sent" : "Nastavitve pošiljanja elektronske pošte in obvestil",
     "Attach .ics file to confirm/cancel emails" : "K sporočilu priloži datoteko koledarja .ics",

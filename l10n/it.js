@@ -141,7 +141,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Add New Link" : "Aggiungi nuovo collegamento",
     "Error" : "Errore",
-    "Title and URL can be empty" : "Titolo e URL possono essere vuoti",
     "Emails and Notifications" : "Email e notifiche",
     "Control when emails and notifications are sent" : "Controlla l'invio di email e notifiche",
     "Attach .ics file to confirm/cancel emails" : "Allega file .ics all'email di conferma/annullamento",

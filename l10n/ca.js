@@ -127,7 +127,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Add New Link" : "Afegeix un enllaç",
     "Error" : "Error",
-    "Title and URL can be empty" : "El títol i l'adreça URL poden estar buits",
     "Emails and Notifications" : "Correus electrònics i notificacions",
     "Control when emails and notifications are sent" : "Controlar quan s'envien correus electrònics i notificacions",
     "Attach .ics file to confirm/cancel emails" : "Adjunta un fitxer. ics per confirmar/cancel·lar correus electrònics",
