@@ -983,7 +983,7 @@ export default {
       }).then(response => {
         this.stateInProgress = false
         if (response.status === 200) {
-          if (action !== 'set_fi') this.getFormData(pageId)
+          if (opt.noFormData === undefined) this.getFormData(pageId)
           if (opt.noToast === undefined) showSuccess(this.t('appointments', 'New Settings Applied.'))
           return action !== 'set_fi' ? true : response.data
         } else if (response.status === 202) {

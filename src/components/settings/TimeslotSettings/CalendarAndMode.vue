@@ -306,7 +306,10 @@ export default {
           this.setState(
               "set_" + this.curPageData.stateAction,
               this.calInfo,
-              this.curPageData.pageId, {noToast: true})
+              this.curPageData.pageId, {
+                noToast: true,
+                noFormData: true
+              })
         }
 
         this.isLoading = false
@@ -367,16 +370,16 @@ export default {
             return
           }
         }
-          // else if (this.calInfo.tsMode === '2') {
-          // if (this.tzData !== "") {
-          //   this.calInfo.tzData = this.tzData
-          //   this.calInfo.tzName = this.tzName
-          // } else {
-          //   this.$emit("showModal", [
-          //     this.t('appointments', 'Error'),
-          //     this.t('appointments', 'Time zone data is empty')])
-          //   return
-          // }
+        // else if (this.calInfo.tsMode === '2') {
+        // if (this.tzData !== "") {
+        //   this.calInfo.tzData = this.tzData
+        //   this.calInfo.tzName = this.tzName
+        // } else {
+        //   this.$emit("showModal", [
+        //     this.t('appointments', 'Error'),
+        //     this.t('appointments', 'Time zone data is empty')])
+        //   return
+        // }
         // }
       }
 
