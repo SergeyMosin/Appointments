@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2021-12-04 03:47+0000\n"
+"POT-Creation-Date: 2021-12-05 03:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -250,66 +250,66 @@ msgid "Your appointment scheduled for %s is confirmed."
 msgstr ""
 
 #. TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is canceled.
-#: /app/lib/Controller/PageController.php:345
+#: /app/lib/Controller/PageController.php:348
 #, php-format
 msgid "Your appointment scheduled for %s is canceled."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:347
+#: /app/lib/Controller/PageController.php:350
 msgid "Your appointment is canceled."
 msgstr ""
 
 #. TRANSLATORS Ex: Your {{meeting type}} has been changed to {{online(video/audio)}}
-#: /app/lib/Controller/PageController.php:394
+#: /app/lib/Controller/PageController.php:397
 #, php-format
 msgid "Your %s has been changed to %s"
 msgstr ""
 
 #. TRANSLATORS Meaning the booking process is finished
-#: /app/lib/Controller/PageController.php:405
+#: /app/lib/Controller/PageController.php:408
 msgid "All done."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:424
-#: /app/lib/Controller/PageController.php:751
+#: /app/lib/Controller/PageController.php:427
+#: /app/lib/Controller/PageController.php:754
 msgid "Info"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:425
-#: /app/lib/Controller/PageController.php:752
+#: /app/lib/Controller/PageController.php:428
+#: /app/lib/Controller/PageController.php:755
 msgid "Link Expired …"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:723
+#: /app/lib/Controller/PageController.php:726
 msgid "Almost done …"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:745
+#: /app/lib/Controller/PageController.php:748
 #, php-format
 msgid ""
 "We have sent an email to %s, please open it and click on the confirmation "
 "link to finalize your appointment request"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:808
+#: /app/lib/Controller/PageController.php:811
 msgid "Organization Name"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:814
+#: /app/lib/Controller/PageController.php:817
 #: /app/specialVueFakeDummyForL10nScript.js:117
 #: /app/specialVueFakeDummyForL10nScript.js:260
 msgid "Book Your Appointment"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:984
+#: /app/lib/Controller/PageController.php:987
 msgid "Please add time slots first."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:987
+#: /app/lib/Controller/PageController.php:990
 msgid "Please select a calendar first"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:990
+#: /app/lib/Controller/PageController.php:993
 msgid "Selected calendar not found"
 msgstr ""
 
