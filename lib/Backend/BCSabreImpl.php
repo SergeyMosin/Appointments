@@ -631,7 +631,9 @@ class BCSabreImpl implements IBackendConnector
             }
         }
 
-        $ti = $this->utils->getUserSettings(BackendUtils::KEY_TMPL_INFO, $userId);
+//        $ti = $this->utils->getUserSettings(BackendUtils::KEY_TMPL_INFO, $userId);
+        $ti = $this->utils->getTemplateInfo($userId, $pageId);
+
         if ($start->getTimezone()->getName() !== $ti[BackendUtils::TMPL_TZ_NAME]) {
             try {
                 $start->setTimezone(new \DateTimeZone($ti[BackendUtils::TMPL_TZ_NAME]));
@@ -887,7 +889,8 @@ class BCSabreImpl implements IBackendConnector
                 return 1;
             }
 
-            $tza = $this->utils->getUserSettings(BackendUtils::KEY_TMPL_INFO, $userId);
+//            $tza = $this->utils->getUserSettings(BackendUtils::KEY_TMPL_INFO, $userId);
+            $tza = $this->utils->getTemplateInfo($userId, $pageId);
             if (!isset($tza[BackendUtils::TMPL_TZ_DATA])) {
                 $this->logErr("Can't find timezone data, tza: " . var_export($tza, true));
                 return 2;

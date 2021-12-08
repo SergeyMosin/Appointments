@@ -536,13 +536,19 @@ class StateController extends Controller
                 $r->setStatus(500);
             }
         } else if ($action === 'get_t_tz') {
-            $a = $this->utils->getUserSettings(BackendUtils::KEY_TMPL_INFO, $this->userId);
-            $j = json_encode($a);
-            if ($j !== false) {
-                $r->setData($j);
-                $r->setStatus(200);
+            $pageId = $this->request->getParam("p");
+            if (!empty($pageId)) {
+//                $a = $this->utils->getUserSettings(BackendUtils::KEY_TMPL_INFO, $this->userId);
+                $a = $this->utils->getTemplateInfo($this->userId, $pageId);
+                $j = json_encode($a);
+                if ($j !== false) {
+                    $r->setData($j);
+                    $r->setStatus(200);
+                } else {
+                    $r->setStatus(500);
+                }
             } else {
-                $r->setStatus(500);
+                $r->setStatus(400);
             }
         } else if ($action === 'get_reminder') {
             $a = $this->utils->getUserSettings(BackendUtils::KEY_REMINDERS, $this->userId);
@@ -706,10 +712,23 @@ class StateController extends Controller
 
         //check if we have BackendUtils::KEY_TMPL_INFO
         if (strpos($value, BackendUtils::TMPL_TZ_DATA)) {
-            $this->utils->setUserSettings(
-                BackendUtils::KEY_TMPL_INFO, $value,
-                $this->utils->getDefaultForKey(BackendUtils::KEY_TMPL_INFO),
-                $this->userId, $this->appName);
+
+            $va = json_decode($value, true);
+            if ($va === null) {
+                \OC::$server->getLogger()->error("can not set KEY_TMPL_INFO, json_decode failed");
+                return false;
+            }
+            if (!isset($va[BackendUtils::TMPL_TZ_NAME]) || !isset($va[BackendUtils::TMPL_TZ_DATA])) {
+                \OC::$server->getLogger()->error("can not set KEY_TMPL_INFO, invalid TMPL_TZ data");
+                return false;
+            }
+
+            if (!$this->utils->setTemplateInfo($this->userId, $pageId, array(
+                BackendUtils::TMPL_TZ_NAME => $va[BackendUtils::TMPL_TZ_NAME],
+                BackendUtils::TMPL_TZ_DATA => $va[BackendUtils::TMPL_TZ_DATA]))) {
+                \OC::$server->getLogger()->error("can not set KEY_TMPL_INFO, setTemplateInfo failed");
+                return false;
+            }
         }
 
         if ($this->utils->setUserSettings(

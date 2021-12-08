@@ -298,7 +298,7 @@ export default {
         this.tzData = d.data
 
         // sync timezones
-        const ttzRes = await this.getState("get_t_tz")
+        const ttzRes = await this.getState("get_t_tz",this.curPageData.pageId)
         if (ttzRes.tzName !== this.tzName) {
           this.calInfo.tzData = this.tzData
           this.calInfo.tzName = this.tzName

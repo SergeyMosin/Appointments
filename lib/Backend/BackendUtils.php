@@ -1027,9 +1027,10 @@ class BackendUtils
                 $d = array();
                 break;
             case self::KEY_TMPL_INFO:
-                $d = array(
+                $d = array('p0' => array(
                     self::TMPL_TZ_NAME => "",
-                    self::TMPL_TZ_DATA => "");
+                    self::TMPL_TZ_DATA => "")
+                );
                 break;
             case self::KEY_REMINDERS:
                 $d = array(
@@ -1131,6 +1132,8 @@ class BackendUtils
         } else if ($key === self::KEY_FORM_INPUTS_HTML) {
             // this is a special case
             return [$this->settings[$key] ?? ''];
+        } else if ($key === self::KEY_TMPL_INFO) {
+            return json_decode($this->settings[self::KEY_TMPL_INFO] ?? null, true) ?? $default;
         }
 
         $sa = json_decode(($this->settings[$key] ?? null), true);
@@ -1150,6 +1153,65 @@ class BackendUtils
 
         return $sa;
     }
+
+    // This is a temp work-around for multiple "template mode" pages, use this instead getUserSettings(BackendUtils::KEY_TMPL_INFO, $userId) until data is normalized.
+    function getTemplateInfo(string $userId, string $pageId): array {
+
+        $templateInfo = $this->getUserSettings(BackendUtils::KEY_TMPL_INFO, $userId);
+
+        if (isset($templateInfo[self::TMPL_TZ_NAME]) || isset($templateInfo[self::TMPL_TZ_DATA])) {
+            // we have old ( single page data ), fix/normalize...
+            $newData = array(
+                'old_info' => $templateInfo
+            );
+            // This is not perfect but since we only have one data, we just duplicate it for other pages
+            $newData[$pageId] = $templateInfo;
+            $this->setTemplateInfo($userId, null, $newData);
+
+            return $newData[$pageId];
+
+        } else if (!isset($templateInfo[$pageId])) {
+            // This is not perfect, but we use 'old_info' and if that does not exist just use default
+            if (isset($templateInfo['old_info'])) {
+                return $templateInfo['old_info'];
+            } else {
+                // 'p0' has defaults
+                return $this->getDefaultForKey(BackendUtils::KEY_TMPL_INFO)['p0'];
+            }
+        }
+        return $templateInfo[$pageId];
+    }
+
+    /**
+     * @param string $userId
+     * @param string|null $pageId
+     * @param array $value
+     * @return bool
+     */
+    function setTemplateInfo($userId, $pageId, $value) {
+
+        if ($pageId !== null) {
+            $td = $this->getUserSettings(self::KEY_TMPL_INFO, $userId);
+
+            if (isset($templateInfo[self::TMPL_TZ_NAME]) || isset($templateInfo[self::TMPL_TZ_DATA])) {
+                // we have old ( single page data ), fix/normalize...
+                $td = array(
+                    'old_info' => $td
+                );
+            }
+            $td[$pageId] = $value;
+        } else {
+            // $pageId can be null when the multipage fix is first applied and in that case value contains data with page Id(s)
+            $td = $value;
+        }
+        $jv = json_encode($td);
+        if ($jv === false) {
+            return false;
+        } else {
+            return $this->setDBValue($userId, self::KEY_TMPL_INFO, $jv);
+        }
+    }
+
 
     /**
      * @param string $userId
