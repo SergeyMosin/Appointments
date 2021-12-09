@@ -145,6 +145,7 @@
     "URL" : "URL",
     "Add New Link" : "Ajouter un nouveau lien",
     "Error" : "Erreur",
+    "Title and URL cannot be empty" : "Le titre et l'URL ne peuvent pas être vides",
     "Emails and Notifications" : "Courriels et notifications",
     "Control when emails and notifications are sent" : "Contrôlez l’envoi des courriels et des notifications",
     "Attach .ics file to confirm/cancel emails" : "Joindre un fichier .ics pour confirmer/annuler les courriels",
