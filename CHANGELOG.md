@@ -1,3 +1,7 @@
+## 1.11.7 - 2021-12-09
+### Fix
+- multiple template mode pages might throw errors if in different timezones, possibly related to #272
+
 ## 1.11.6 - 2021-12-04
 ### Change
 - max-version="22" -> max-version="23"
