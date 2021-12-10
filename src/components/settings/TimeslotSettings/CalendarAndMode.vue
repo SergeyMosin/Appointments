@@ -111,7 +111,7 @@
               class="tsb-input"
               id="appt_tsb-dest-tmm-cal-id">
             <option value="-1">{{ t('appointments', 'Calendar Required') }}</option>
-            <option v-for="cal in cals" :value="cal.id">{{ cal.name }}</option>
+            <option v-for="cal in cals" v-if="cal.isReadOnly==='0'" :value="cal.id">{{ cal.name }}</option>
           </select>
           <ApptAccordion
               :title="t('appointments', 'Check for conflicts in…')"
@@ -132,11 +132,6 @@
               </div>
             </template>
           </ApptAccordion>
-          <!--          <label class="tsb-label">-->
-          <!--            {{ t('appointments', 'Timezone:') }}</label>-->
-          <!--          <div class="tsb-input">-->
-          <!--            {{ tzName === "" ? t('appointments', 'Loading…') : tzName }}-->
-          <!--          </div>-->
         </template>
         <div style="margin-top: 2em" class="srgdev-appt-info-lcont">
           <label
@@ -252,13 +247,14 @@ export default {
 
       this.cals.splice(0, this.cals.length)
       try {
-        const res = await axios.get('callist')
+        const res = await axios.get('callist?mode=' + this.calInfo.tsMode)
         const cals = res.data.split(String.fromCharCode(31))
         for (let i = 0, l = cals.length; i < l; i++) {
           let cal = cals[i].split(String.fromCharCode(30))
           this.cals.push({
             name: cal[0],
             id: cal[2],
+            isReadOnly: cal[3],
           })
         }
       } catch (e) {
@@ -298,7 +294,7 @@ export default {
         this.tzData = d.data
 
         // sync timezones
-        const ttzRes = await this.getState("get_t_tz",this.curPageData.pageId)
+        const ttzRes = await this.getState("get_t_tz", this.curPageData.pageId)
         if (ttzRes.tzName !== this.tzName) {
           this.calInfo.tzData = this.tzData
           this.calInfo.tzName = this.tzName

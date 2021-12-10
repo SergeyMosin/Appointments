@@ -450,7 +450,7 @@ class BCSabreImpl implements IBackendConnector
      */
     function checkRangeTemplate($cms, $start, $end, $userId): int {
 
-        $cals = array_merge([$cms[BackendUtils::CLS_TMM_DST_ID]], $cms[BackendUtils::CLS_TMM_MORE_CALS]);
+        $cals = $this->getCalsForConflictCheck($cms, $userId);
 
         $utz = $start->getTimezone();
 
@@ -546,7 +546,7 @@ class BCSabreImpl implements IBackendConnector
             return null;
         }
 
-        $cals = array_merge([$cms[BackendUtils::CLS_TMM_DST_ID]], $cms[BackendUtils::CLS_TMM_MORE_CALS]);
+        $cals = $this->getCalsForConflictCheck($cms, $userId);
 
         $utz = $start->getTimezone();
 
@@ -689,6 +689,32 @@ class BCSabreImpl implements IBackendConnector
         return $out !== '' ? substr($out, 0, -1) : null;
     }
 
+    private function getCalsForConflictCheck(array $cms, string $userId): array {
+
+        $conflictCalIds = $cms[BackendUtils::CLS_TMM_MORE_CALS];
+
+        if (count($conflictCalIds) === 0) {
+            // just return array with dst cal
+            return [$cms[BackendUtils::CLS_TMM_DST_ID]];
+        }
+
+        // We need to do this check because calendars can get unshared or deleted and when that happens we skip them
+        $userCals = $this->getCalendarsForUser($userId, false);
+        // convert to array with calIds as keys
+        $userCalIds = [];
+        for ($i = 0, $l = count($userCals); $i < $l; $i++) {
+            $userCalIds[$userCals[$i]['id']] = true;
+        }
+
+        $realConflictCalIds = [$cms[BackendUtils::CLS_TMM_DST_ID]];
+        for ($i = 0, $l = count($conflictCalIds); $i < $l; $i++) {
+            $calId = $conflictCalIds[$i];
+            if (isset($userCalIds[$calId])) {
+                $realConflictCalIds[] = $calId;
+            }
+        }
+        return $realConflictCalIds;
+    }
 
     /**
      * @inheritDoc
@@ -824,11 +850,11 @@ class BCSabreImpl implements IBackendConnector
     /**
      * @inheritDoc
      */
-    function getCalendarsForUser($userId) {
+    function getCalendarsForUser($userId, $skipReadOnly = true) {
         $ca = $this->backend->getCalendarsForUser(BackendManager::PRINCIPAL_PREFIX . $userId);
         $ret = [];
         foreach ($ca as $c) {
-            $ci = $this->utils->transformCalInfo($c);
+            $ci = $this->utils->transformCalInfo($c, $skipReadOnly);
             if ($ci !== null) {
                 $ret[] = $ci;
             }

@@ -347,6 +347,11 @@ class StateController extends Controller
             $a = $this->utils->getUserSettings(
                 BackendUtils::KEY_CLS, $this->userId);
 
+            // we can have stale calendars in BackendUtils::CLS_TMM_MORE_CALS we do purge here
+            if ($a[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_TEMPLATE) {
+                $this->purgeStaleConflictCals($a);
+            }
+
             $j = json_encode($this->getMoreProps($a));
             if ($j !== false) {
                 $r->setData($j);
@@ -378,6 +383,11 @@ class StateController extends Controller
 //            {
                 $a = $this->utils->getUserSettings(
                     BackendUtils::KEY_MPS . $pageId, $this->userId);
+
+                // we can have stale calendars in BackendUtils::CLS_TMM_MORE_CALS we do purge here
+                if ($a[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_TEMPLATE) {
+                    $this->purgeStaleConflictCals($a);
+                }
 
                 $j = json_encode($this->getMoreProps($a));
                 if ($j !== false) {
@@ -830,5 +840,33 @@ class StateController extends Controller
         return $mps !== null && array_key_exists($p, $mps);
     }
 
+    private function purgeStaleConflictCals(&$cls) {
+        $conflictCalIds = $cls[BackendUtils::CLS_TMM_MORE_CALS];
+        $ccl = count($conflictCalIds);
 
+        if ($ccl === 0) {
+            return;
+        }
+
+        $userCals = $this->bc->getCalendarsForUser($this->userId, false);
+
+        // convert to array with calIds as keys
+        $userCalIds = [];
+        for ($i = 0, $l = count($userCals); $i < $l; $i++) {
+            $userCalIds[$userCals[$i]['id']] = true;
+        }
+
+        $realConflictCalIds = [];
+        for ($i = 0; $i < $ccl; $i++) {
+            $calId = $conflictCalIds[$i];
+            if (isset($userCalIds[$calId])) {
+                $realConflictCalIds[] = $calId;
+            }
+        }
+
+        if (count($realConflictCalIds) !== $ccl) {
+            // let's hope user clicks apply :)
+            $cls[BackendUtils::CLS_TMM_MORE_CALS] = $realConflictCalIds;
+        }
+    }
 }

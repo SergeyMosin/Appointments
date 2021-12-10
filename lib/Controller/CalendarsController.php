@@ -13,7 +13,8 @@ use OCP\AppFramework\Controller;
 use OCP\IConfig;
 use OCP\IRequest;
 
-class CalendarsController extends Controller{
+class CalendarsController extends Controller
+{
 
     private $userId;
     private $config;
@@ -23,16 +24,16 @@ class CalendarsController extends Controller{
 
     public function __construct($AppName,
                                 IRequest $request,
-                                $UserId,
+        $UserId,
                                 IConfig $config,
                                 BackendUtils $utils,
-                                BackendManager $backendManager){
+                                BackendManager $backendManager) {
         parent::__construct($AppName, $request);
         $this->userId = $UserId;
-        $this->config=$config;
-        $this->utils=$utils;
+        $this->config = $config;
+        $this->utils = $utils;
         /** @noinspection PhpUnhandledExceptionInspection */
-        $this->bc=$backendManager->getConnector();
+        $this->bc = $backendManager->getConnector();
     }
 
 
@@ -45,9 +46,9 @@ class CalendarsController extends Controller{
      * @param string $pageId
      * @return SendDataResponse
      */
-    function calGetOld($t,$pageId){
+    function calGetOld($t, $pageId) {
 
-        $r=new SendDataResponse();
+        $r = new SendDataResponse();
 
         $jo = json_decode($t);
         if ($jo === null) {
@@ -56,43 +57,43 @@ class CalendarsController extends Controller{
         }
 
         // Because of floating timezones...
-        $utz=$this->utils->getUserTimezone($this->userId,$this->config);
-        try{
-            if($jo->before===1){
-                $rs='yesterday';
-            }else{
-                $rs='today -7 days';
+        $utz = $this->utils->getUserTimezone($this->userId, $this->config);
+        try {
+            if ($jo->before === 1) {
+                $rs = 'yesterday';
+            } else {
+                $rs = 'today -7 days';
             }
-            $end=new \DateTime($rs,$utz);
+            $end = new \DateTime($rs, $utz);
 
         } catch (\Exception $e) {
-            \OC::$server->getLogger()->error($e->getMessage().", timezone: ".$utz->getName());
+            \OC::$server->getLogger()->error($e->getMessage() . ", timezone: " . $utz->getName());
             $r->setStatus(400);
             return $r;
         }
 
-        $cals=[];
+        $cals = [];
 
-        $dst_cal_id="-1";
-        $main_cal_id=$this->utils->getMainCalId($this->userId,$pageId,$this->bc,$dst_cal_id);
+        $dst_cal_id = "-1";
+        $main_cal_id = $this->utils->getMainCalId($this->userId, $pageId, $this->bc, $dst_cal_id);
 
-        if($main_cal_id!=="-1"){
-            $cals[]=$main_cal_id;
+        if ($main_cal_id !== "-1") {
+            $cals[] = $main_cal_id;
         }
         // dest calendar
-        if($jo->type==="both" && $dst_cal_id !== "-1") {
-            $cals[]=$dst_cal_id;
+        if ($jo->type === "both" && $dst_cal_id !== "-1") {
+            $cals[] = $dst_cal_id;
         }
 
-        $ots=$end->getTimestamp();
+        $ots = $end->getTimestamp();
 
-        $out=$this->bc->queryRangePast($cals,$end, $jo->type==='empty',isset($jo->delete));
+        $out = $this->bc->queryRangePast($cals, $end, $jo->type === 'empty', isset($jo->delete));
 
-        $r=new SendDataResponse();
-        if($out!==null) {
-            $r->setData($out."|".$ots);
+        $r = new SendDataResponse();
+        if ($out !== null) {
+            $r->setData($out . "|" . $ots);
             $r->setStatus(200);
-        }else{
+        } else {
             $r->setStatus(500);
         }
 
@@ -101,84 +102,83 @@ class CalendarsController extends Controller{
     }
 
 
-
     /**
      * @NoAdminRequired
      * @noinspection PhpUnused
      */
-    public function calgetweek(){
+    public function calgetweek() {
 
-        $pageId = $this->request->getParam("p","p0");
-        if(empty($pageId)) $pageId="p0";
+        $pageId = $this->request->getParam("p", "p0");
+        if (empty($pageId)) $pageId = "p0";
 
-        $pgs=$this->utils->getUserSettings(
-            BackendUtils::KEY_PAGES,$this->userId);
+        $pgs = $this->utils->getUserSettings(
+            BackendUtils::KEY_PAGES, $this->userId);
 
-        $key=$pageId==='p0'?BackendUtils::KEY_CLS:BackendUtils::KEY_MPS.$pageId;
-        $cms=$this->utils->getUserSettings($key,$this->userId);
+        $key = $pageId === 'p0' ? BackendUtils::KEY_CLS : BackendUtils::KEY_MPS . $pageId;
+        $cms = $this->utils->getUserSettings($key, $this->userId);
 
-        if($cms[BackendUtils::CLS_TS_MODE]!=="0"
-            || !isset($pgs[$pageId]) ){
-            $r=new SendDataResponse();
+        if ($cms[BackendUtils::CLS_TS_MODE] !== "0"
+            || !isset($pgs[$pageId])) {
+            $r = new SendDataResponse();
             $r->setStatus(400);
             return $r;
         }
 
         // t must be d[d]-mm-yyyy
-        $t = $this->request->getParam("t","");
+        $t = $this->request->getParam("t", "");
 
         //Reusing the url for deleting old appointments
-        if(strpos($t,"before")!==false){
-            return $this->calGetOld($t,$pageId);
+        if (strpos($t, "before") !== false) {
+            return $this->calGetOld($t, $pageId);
         }
 
 
-        $r=new SendDataResponse();
+        $r = new SendDataResponse();
 
-        if(empty($t)){
+        if (empty($t)) {
             $r->setStatus(400);
             return $r;
         }
 
-        $dcl_id='-1';
-        $cal_id=$this->utils->getMainCalId($this->userId,$pageId,$this->bc,$dcl_id);
-        if($cal_id==="-1"){
+        $dcl_id = '-1';
+        $cal_id = $this->utils->getMainCalId($this->userId, $pageId, $this->bc, $dcl_id);
+        if ($cal_id === "-1") {
             $r->setStatus(400);
             return $r;
         }
 
-        $utz=$this->utils->getCalendarTimezone($this->userId,$this->config,$this->bc->getCalendarById($cal_id,$this->userId));
+        $utz = $this->utils->getCalendarTimezone($this->userId, $this->config, $this->bc->getCalendarById($cal_id, $this->userId));
         try {
-            $t_start=\DateTime::createFromFormat(
-                'j-m-Y H:i:s',$t.' 00:00:00',$utz);
+            $t_start = \DateTime::createFromFormat(
+                'j-m-Y H:i:s', $t . ' 00:00:00', $utz);
         } catch (\Exception $e) {
-            \OC::$server->getLogger()->error($e->getMessage().", timezone: ".$utz->getName());
+            \OC::$server->getLogger()->error($e->getMessage() . ", timezone: " . $utz->getName());
             $r->setStatus(400);
             return $r;
         }
 
         $r->setStatus(200);
 
-        $t_end=clone $t_start;
-        $t_end->setTimestamp($t_start->getTimestamp()+(7*86400));
+        $t_end = clone $t_start;
+        $t_end->setTimestamp($t_start->getTimestamp() + (7 * 86400));
 
-        $data_out="";
+        $data_out = "";
 
-        $out=$this->bc->queryRange($cal_id,$t_start,$t_end,'no_url');
-        if($out!==null){
-            $data_out.=$out;
+        $out = $this->bc->queryRange($cal_id, $t_start, $t_end, 'no_url');
+        if ($out !== null) {
+            $data_out .= $out;
         }
 
         // check dest calendar
-        if($dcl_id!=="-1"){
-            $dc=$this->bc->getCalendarById($dcl_id, $this->userId);
-            $out=$this->bc->queryRange($dcl_id,$t_start,$t_end,'no_url');
-            if($out!==null){
-                $data_out.=chr(31).$dc['color'].chr(30).$out;
+        if ($dcl_id !== "-1") {
+            $dc = $this->bc->getCalendarById($dcl_id, $this->userId);
+            $out = $this->bc->queryRange($dcl_id, $t_start, $t_end, 'no_url');
+            if ($out !== null) {
+                $data_out .= chr(31) . $dc['color'] . chr(30) . $out;
             }
         }
 
-        if(!empty($data_out)){
+        if (!empty($data_out)) {
             $r->setData($data_out);
         }
 
@@ -189,19 +189,20 @@ class CalendarsController extends Controller{
      * @NoAdminRequired
      * @noinspection PhpUnused
      */
-    public function callist(){
-
-        $cals=$this->bc->getCalendarsForUser($this->userId);
-        $out='';
-        $c30=chr(30);
-        $c31=chr(31);
-        foreach ($cals as $c){
-            $out.=
-                $c['displayName'].$c30.
-                $c['color'].$c30.
-                $c['id'].$c31;
+    public function callist() {
+        $mode = $this->request->getParam("mode", "");
+        $cals = $this->bc->getCalendarsForUser($this->userId, $mode !== BackendUtils::CLS_TS_MODE_TEMPLATE);
+        $out = '';
+        $c30 = chr(30);
+        $c31 = chr(31);
+        foreach ($cals as $c) {
+            $out .=
+                $c['displayName'] . $c30 .
+                $c['color'] . $c30 .
+                $c['id'] . $c30 .
+                $c['isReadOnly'] . $c31;
         }
-        return substr($out,0,-1);
+        return substr($out, 0, -1);
     }
 
 }

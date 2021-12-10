@@ -1742,9 +1742,13 @@ class BackendUtils
         return urlencode(str_replace("/", "_", $bd));
     }
 
-    function transformCalInfo($c) {
-        // Do not use read only calendars
-        if (isset($c['{http://owncloud.org/ns}read-only']) && $c['{http://owncloud.org/ns}read-only'] === true) {
+    function transformCalInfo($c, $skipReadOnly = true) {
+
+        $isReadOnlyCal = isset($c['{http://owncloud.org/ns}read-only'])
+            && $c['{http://owncloud.org/ns}read-only'] === true;
+
+        if ($skipReadOnly && $isReadOnlyCal) {
+            // Do not use read only calendars
             return null;
         }
 
@@ -1754,6 +1758,7 @@ class BackendUtils
         $a['color'] = $c['{http://apple.com/ns/ical/}calendar-color'] ?? "#000000";
         $a['uri'] = $c['uri'];
         $a['timezone'] = $c['{urn:ietf:params:xml:ns:caldav}calendar-timezone'] ?? '';
+        $a['isReadOnly'] = $isReadOnlyCal?'1':'0';
         return $a;
     }
 

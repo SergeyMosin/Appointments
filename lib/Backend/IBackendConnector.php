@@ -1,7 +1,9 @@
 <?php
+
 namespace OCA\Appointments\Backend;
 
-interface IBackendConnector{
+interface IBackendConnector
+{
 
 
     /**
@@ -11,7 +13,7 @@ interface IBackendConnector{
      * @param bool $delete if false just count
      * @return mixed
      */
-    function queryRangePast($calIds,$end,$only_empty,$delete);
+    function queryRangePast($calIds, $end, $only_empty, $delete);
 
     /**
      * @param string $calId
@@ -20,7 +22,7 @@ interface IBackendConnector{
      * @param string $mode 1char(mode)+userId or 'no_url'
      * @return string|null
      */
-    function queryRange($calId,$start,$end,$mode);
+    function queryRange($calId, $start, $end, $mode);
 
     /**
      * @param array $cms
@@ -38,7 +40,7 @@ interface IBackendConnector{
      * @param string $data
      * @return bool
      */
-    function updateObject($calId,$uri,$data);
+    function updateObject($calId, $uri, $data);
 
     /**
      * @param string $calId
@@ -46,7 +48,7 @@ interface IBackendConnector{
      * @param string $data
      * @return bool
      */
-    function createObject($calId,$uri,$data);
+    function createObject($calId, $uri, $data);
 
 //    /**
 //     * @param string $calId
@@ -57,14 +59,16 @@ interface IBackendConnector{
 
     /**
      * @param $userId
+     * @param bool $skipReadOnly
      * @return array[[
      *          'id'=>string,
      *          'color'=>string,
      *          'displayName'=>string,
      *          'uri'=>string,
-     *          'timezone'=string]]
+     *          'timezone'=>string,
+     *          'isReadOnly'=>string]]
      */
-    function getCalendarsForUser($userId);
+    function getCalendarsForUser($userId, $skipReadOnly = true);
 
     /**
      * @param string $calId
@@ -76,7 +80,7 @@ interface IBackendConnector{
      *          'uri'=>string,
      *          'timezone'=string]|null
      */
-    function getCalendarById($calId,$userId);
+    function getCalendarById($calId, $userId);
 
     /**
      * @param $calId
@@ -96,7 +100,7 @@ interface IBackendConnector{
      *             1=User Should Try again (no Lock, or time has been booked)
      *             err>1=Other error
      */
-    function setAttendee($userId, $calId,$uri,$info);
+    function setAttendee($userId, $calId, $uri, $info);
 
     /**
      * Returns array [int,string|null]
