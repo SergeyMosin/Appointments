@@ -1,3 +1,7 @@
+## 1.11.8 - 2021-12-11
+### Added
+- Read-only and linked/subscription calendars are available for conflict checks in "Weekly Template" mode now.
+
 ## 1.11.7 - 2021-12-09
 ### Fix
 - multiple template mode pages might throw errors if in different timezones, possibly related to #272
