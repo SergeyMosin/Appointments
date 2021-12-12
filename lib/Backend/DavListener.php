@@ -9,6 +9,7 @@ use OCA\Appointments\Email\EMailTemplateNC;
 use OCA\Appointments\Email\EMailTemplateNC20;
 use OCA\DAV\Events\CalendarObjectMovedToTrashEvent;
 use OCA\DAV\Events\CalendarObjectUpdatedEvent;
+use OCA\DAV\Events\SubscriptionDeletedEvent;
 use OCP\DB\Exception;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\EventDispatcher\Event;
@@ -39,6 +40,9 @@ class DavListener implements IEventListener
             $this->handler($event->getObjectData(), $event->getCalendarData(), false);
         } elseif ($event instanceof CalendarObjectMovedToTrashEvent) {
             $this->handler($event->getObjectData(), $event->getCalendarData(), true);
+        } elseif ($event instanceof SubscriptionDeletedEvent){
+            // clean BackendUtils::SYNC_TABLE_NAME
+            $this->utils->removeSubscriptionSync($event->getSubscriptionId());
         }
     }
 

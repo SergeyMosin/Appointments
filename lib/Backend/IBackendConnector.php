@@ -71,6 +71,14 @@ interface IBackendConnector
     function getCalendarsForUser($userId, $skipReadOnly = true);
 
     /**
+     * @param string $userId
+     * @return array[[
+     *          'id'=>string,
+     *          'displayName'=>string]
+     */
+    function getSubscriptionsForUser($userId);
+
+    /**
      * @param string $calId
      * @param string $userId
      * @return array|null [

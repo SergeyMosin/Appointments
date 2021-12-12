@@ -7,11 +7,14 @@
 namespace OCA\Appointments\Backend;
 
 
+use OC\OCS\Exception;
 use OCA\Appointments\IntervalTree\AVLIntervalTree;
 use OCA\DAV\CalDAV\CalDavBackend;
+use OCA\DAV\CalDAV\WebcalCaching\RefreshWebcalService;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use Sabre\CalDAV\Backend\BackendInterface;
+use Sabre\CalDAV\Backend\SubscriptionSupport;
 use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Xml\Service as XmlService;
 use Sabre\VObject\Recur\EventIterator;
@@ -41,7 +44,7 @@ class BCSabreImpl implements IBackendConnector
                                 BackendUtils $utils,
                                 IDBConnection $db,
                                 LoggerInterface $logger) {
-        /** @var BackendInterface $backend */
+        /** @var SubscriptionSupport|BackendInterface $backend */
         $this->backend = $backend;
         $this->config = $config;
         $this->appName = $AppName;
@@ -450,8 +453,6 @@ class BCSabreImpl implements IBackendConnector
      */
     function checkRangeTemplate($cms, $start, $end, $userId): int {
 
-        $cals = $this->getCalsForConflictCheck($cms, $userId);
-
         $utz = $start->getTimezone();
 
         $start_ts = $start->getTimestamp();
@@ -476,15 +477,17 @@ class BCSabreImpl implements IBackendConnector
             return -1;
         }
 
+        $cals = $this->getCalsForConflictCheck($cms, $userId);
+
         $cls = $this->utils->getUserSettings(
             BackendUtils::KEY_CLS, $userId);
         $all_day_block = $cls[BackendUtils::CLS_ALL_DAY_BLOCK];
 
         // get booked & busy timeslots
-        foreach ($cals as $calId) {
-            $urls = $this->backend->calendarQuery($calId, $result->filters);
+        foreach ($cals as $cal) {
+            $urls = $this->backend->calendarQuery($cal['id'], $result->filters, $cal['type']);
             if (count($urls) > 0) {
-                $objs = $this->backend->getMultipleCalendarObjects($calId, $urls);
+                $objs = $this->backend->getMultipleCalendarObjects($cal['id'], $urls, $cal['type']);
                 foreach ($objs as $obj) {
                     /** @var \Sabre\VObject\Component\VCalendar $vo */
                     $vo = Reader::read($obj['calendardata']);
@@ -546,8 +549,6 @@ class BCSabreImpl implements IBackendConnector
             return null;
         }
 
-        $cals = $this->getCalsForConflictCheck($cms, $userId);
-
         $utz = $start->getTimezone();
 
         $start_ts = $start->getTimestamp();
@@ -572,6 +573,8 @@ class BCSabreImpl implements IBackendConnector
             return null;
         }
 
+        $cals = $this->getCalsForConflictCheck($cms, $userId);
+
         $booked_tree = null;
         $itc = new AVLIntervalTree();
 
@@ -580,10 +583,14 @@ class BCSabreImpl implements IBackendConnector
         $all_day_block = $cls[BackendUtils::CLS_ALL_DAY_BLOCK];
 
         // get booked & busy timeslots
-        foreach ($cals as $calId) {
-            $urls = $this->backend->calendarQuery($calId, $result->filters);
+        foreach ($cals as $cal) {
+            $urls = $this->backend->calendarQuery(
+                $cal['id'],
+                $result->filters,
+                $cal['type']);
             if (count($urls) > 0) {
-                $objs = $this->backend->getMultipleCalendarObjects($calId, $urls);
+                $objs = $this->backend->getMultipleCalendarObjects(
+                    $cal['id'], $urls, $cal['type']);
                 foreach ($objs as $obj) {
                     /** @var \Sabre\VObject\Component\VCalendar $vo */
                     $vo = Reader::read($obj['calendardata']);
@@ -689,31 +696,125 @@ class BCSabreImpl implements IBackendConnector
         return $out !== '' ? substr($out, 0, -1) : null;
     }
 
+    /**
+     * @param array $cms
+     * @param string $userId
+     * @return array [['id'=>'x','type'=>CalDavBackend::CALENDAR_TYPE_x]]
+     */
     private function getCalsForConflictCheck(array $cms, string $userId): array {
 
-        $conflictCalIds = $cms[BackendUtils::CLS_TMM_MORE_CALS];
+        // stars with destination cal
+        $ret = [[
+            'id' => $cms[BackendUtils::CLS_TMM_DST_ID],
+            'type' => CalDavBackend::CALENDAR_TYPE_CALENDAR
+        ]];
 
-        if (count($conflictCalIds) === 0) {
-            // just return array with dst cal
-            return [$cms[BackendUtils::CLS_TMM_DST_ID]];
-        }
-
-        // We need to do this check because calendars can get unshared or deleted and when that happens we skip them
-        $userCals = $this->getCalendarsForUser($userId, false);
-        // convert to array with calIds as keys
-        $userCalIds = [];
-        for ($i = 0, $l = count($userCals); $i < $l; $i++) {
-            $userCalIds[$userCals[$i]['id']] = true;
-        }
-
-        $realConflictCalIds = [$cms[BackendUtils::CLS_TMM_DST_ID]];
-        for ($i = 0, $l = count($conflictCalIds); $i < $l; $i++) {
-            $calId = $conflictCalIds[$i];
-            if (isset($userCalIds[$calId])) {
-                $realConflictCalIds[] = $calId;
+        $currentCalIds = $cms[BackendUtils::CLS_TMM_MORE_CALS];
+        if (count($currentCalIds) > 0) {
+            $filteredIds = $this->utils->filterCalsAndSubs(
+                $currentCalIds,
+                $this->getCalendarsForUser($userId, false));
+            foreach ($filteredIds as $id) {
+                $ret[] = [
+                    'id' => $id,
+                    'type' => CalDavBackend::CALENDAR_TYPE_CALENDAR
+                ];
             }
         }
-        return $realConflictCalIds;
+
+        $currentSubIds = $cms[BackendUtils::CLS_TMM_SUBSCRIPTIONS];
+        if (count($currentSubIds) > 0) {
+
+            $ids = []; // convert to array with ids as keys for fast look up
+            for ($i = 0, $l = count($currentSubIds); $i < $l; $i++) {
+                $ids[$currentSubIds[$i]] = true;
+            }
+
+            $hadSync = false; // only one sync per-request
+
+            $syncInterval = intval($this->utils->getUserSettings(BackendUtils::KEY_CLS, $userId)[BackendUtils::CLS_TMM_SUBSCRIPTIONS_SYNC]);
+
+            // we need to add real(not transformed) subscription objects here
+            $allSubs = $this->backend->getSubscriptionsForUser(BackendManager::PRINCIPAL_PREFIX . $userId);
+            for ($i = 0, $l = count($allSubs); $i < $l; $i++) {
+                $sub = $allSubs[$i];
+                if (isset($ids[hash("crc32", $sub['principaluri'] . $sub['source'], false)])) {
+
+                    if ($syncInterval > 59) { // << 1 hour minimum
+
+                        $qb = $this->db->getQueryBuilder();
+                        try {
+                            $c = $qb->select('*')
+                                ->from(BackendUtils::SYNC_TABLE_NAME)
+                                ->where($qb->expr()->eq('id', $qb->createNamedParameter($sub['id'])))
+                                ->execute();
+                            $sd = $c->fetch();
+                            $c->closeCursor();
+                        } catch (\OCP\DB\Exception $e) {
+                            $this->logErr("can not get sync data: " . $e->getMessage());
+                            continue;
+                        }
+
+                        if ($sd === false) {
+                            $lastSync = 0;
+                        } else {
+                            $lastSync = intval($sd['lastsync']);
+                        }
+
+                        $now = time();
+
+                        if (!$hadSync && ($now - $lastSync) > ($syncInterval * 60)) {
+
+                            $hadSync = true;
+
+                            // update sync timestamp and token
+                            try {
+                                $qb = $this->db->getQueryBuilder();
+                                $rows = $qb->update(BackendUtils::SYNC_TABLE_NAME)
+                                    ->set('lastsync', $qb->createNamedParameter($now))
+                                    ->set('synctoken', $qb->createNamedParameter($sub['{http://sabredav.org/ns}sync-token']))
+                                    ->where($qb->expr()->eq('id', $qb->createNamedParameter($sub['id'])))
+                                    ->execute();
+                                if ($rows === 0) {
+                                    // first run: insert
+                                    $qb = $this->db->getQueryBuilder();
+                                    $qb->insert(BackendUtils::SYNC_TABLE_NAME)
+                                        ->values([
+                                            'id' => $qb->createNamedParameter($sub['id']),
+                                            'lastsync' => $qb->createNamedParameter($now),
+                                            'synctoken' => $qb->createNamedParameter($sub['{http://sabredav.org/ns}sync-token'])
+                                        ])
+                                        ->execute();
+                                }
+
+                            } catch (\OCP\DB\Exception $e) {
+                                $this->logErr("can not update sync table " . $e->getMessage());
+                                continue;
+                            }
+
+                            // lets sync
+                            try {
+                                /** @var RefreshWebcalService $rws */
+                                $rws = \OC::$server->get(RefreshWebcalService::class);
+                                $rws->refreshSubscription(
+                                    (string)$sub['principaluri'],
+                                    (string)$sub['uri']
+                                );
+                            } catch (Exception $e) {
+                                $this->logErr("can not sync subscription " . $sub['id']);
+                                $this->logErr($e->getMessage());
+                            }
+                        }
+                    }
+
+                    $ret[] = [
+                        'id' => $sub['id'],
+                        'type' => CalDavBackend::CALENDAR_TYPE_SUBSCRIPTION
+                    ];
+                }
+            }
+        }
+        return $ret;
     }
 
     /**
@@ -858,6 +959,23 @@ class BCSabreImpl implements IBackendConnector
             if ($ci !== null) {
                 $ret[] = $ci;
             }
+        }
+        return $ret;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    function getSubscriptionsForUser($userId): array {
+
+        $ret = [];
+
+        $sa = $this->backend->getSubscriptionsForUser(BackendManager::PRINCIPAL_PREFIX . $userId);
+        foreach ($sa as $s) {
+            $ret[] = [
+                'id' => hash("crc32", $s['principaluri'] . $s['source'], false),
+                'displayName' => $s['{DAV:}displayname'],
+            ];
         }
         return $ret;
     }
@@ -1267,11 +1385,14 @@ class BCSabreImpl implements IBackendConnector
      * @return bool
      */
     static function checkCompatibility() {
-        $c = CalDavBackend::class;
-        if (class_exists($c, false)) {
-            $ins = class_implements($c, false);
-            foreach ($ins as $i) {
-                if ($i === BackendInterface::class) {
+
+        $className = 'OCA\DAV\CalDAV\CalDavBackend';
+        $interfaceName = 'Sabre\CalDAV\Backend\SubscriptionSupport';
+
+        if (class_exists($className, false) && defined($className . '::CALENDAR_TYPE_SUBSCRIPTION')) {
+            $interfaces = class_implements($className, false);
+            foreach ($interfaces as $i) {
+                if ($i === $interfaceName) {
                     return true;
                 }
             }

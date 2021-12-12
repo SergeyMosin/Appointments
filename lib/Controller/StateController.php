@@ -349,7 +349,7 @@ class StateController extends Controller
 
             // we can have stale calendars in BackendUtils::CLS_TMM_MORE_CALS we do purge here
             if ($a[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_TEMPLATE) {
-                $this->purgeStaleConflictCals($a);
+                $this->purgeStaleConflictCalsAndSubs($a);
             }
 
             $j = json_encode($this->getMoreProps($a));
@@ -386,7 +386,7 @@ class StateController extends Controller
 
                 // we can have stale calendars in BackendUtils::CLS_TMM_MORE_CALS we do purge here
                 if ($a[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_TEMPLATE) {
-                    $this->purgeStaleConflictCals($a);
+                    $this->purgeStaleConflictCalsAndSubs($a);
                 }
 
                 $j = json_encode($this->getMoreProps($a));
@@ -711,23 +711,31 @@ class StateController extends Controller
         $o_cms = $this->utils->getUserSettings(
             $key, $this->userId);
 
+        $va = json_decode($value, true);
+        if ($va === null) {
+            \OC::$server->getLogger()->error("can not set KEY_TMPL_INFO, json_decode failed");
+            return false;
+        }
+
+
         $d = $this->config->getUserValue($this->userId, $this->appName, "cnk");
         if ($d === "" || ((hexdec(substr($d, 0, 4)) >> 15) & 1) !== ((hexdec(substr($d, 4, 4)) >> 12) & 1)) {
-            $vo = json_decode($value, true);
-            if (isset($vo[BackendUtils::CLS_TMM_MORE_CALS]) && count($vo[BackendUtils::CLS_TMM_MORE_CALS]) > 2) {
-                $vo[BackendUtils::CLS_TMM_MORE_CALS] = array_slice($vo[BackendUtils::CLS_TMM_MORE_CALS], 0, 2);
-                $value = json_encode($vo);
+            if (isset($va[BackendUtils::CLS_TMM_MORE_CALS]) && count($va[BackendUtils::CLS_TMM_MORE_CALS]) > 2) {
+                $va[BackendUtils::CLS_TMM_MORE_CALS] = array_slice($va[BackendUtils::CLS_TMM_MORE_CALS], 0, 2);
+            }
+        }
+
+
+        if (isset($va[BackendUtils::CLS_TMM_SUBSCRIPTIONS_SYNC])) {
+            // sync value must be one of the following
+            if (!isset(["0" => true, "60" => true, "120" => true, "240" => true, "480" => true, "720" => true, "1440" => true][$va[BackendUtils::CLS_TMM_SUBSCRIPTIONS_SYNC]])) {
+                $va[BackendUtils::CLS_TMM_SUBSCRIPTIONS_SYNC] = '0';
             }
         }
 
         //check if we have BackendUtils::KEY_TMPL_INFO
         if (strpos($value, BackendUtils::TMPL_TZ_DATA)) {
 
-            $va = json_decode($value, true);
-            if ($va === null) {
-                \OC::$server->getLogger()->error("can not set KEY_TMPL_INFO, json_decode failed");
-                return false;
-            }
             if (!isset($va[BackendUtils::TMPL_TZ_NAME]) || !isset($va[BackendUtils::TMPL_TZ_DATA])) {
                 \OC::$server->getLogger()->error("can not set KEY_TMPL_INFO, invalid TMPL_TZ data");
                 return false;
@@ -740,6 +748,8 @@ class StateController extends Controller
                 return false;
             }
         }
+
+        $value = json_encode($va);
 
         if ($this->utils->setUserSettings(
                 $key, $value, $def,
@@ -840,33 +850,22 @@ class StateController extends Controller
         return $mps !== null && array_key_exists($p, $mps);
     }
 
-    private function purgeStaleConflictCals(&$cls) {
-        $conflictCalIds = $cls[BackendUtils::CLS_TMM_MORE_CALS];
-        $ccl = count($conflictCalIds);
-
-        if ($ccl === 0) {
-            return;
+    private function purgeStaleConflictCalsAndSubs(&$cls) {
+        $currentCalIds = $cls[BackendUtils::CLS_TMM_MORE_CALS];
+        if (count($currentCalIds) > 0) {
+            // we have calendars to check/filter
+            $cls[BackendUtils::CLS_TMM_MORE_CALS] = $this->utils->filterCalsAndSubs(
+                $currentCalIds,
+                $this->bc->getCalendarsForUser($this->userId, false)
+            );
         }
-
-        $userCals = $this->bc->getCalendarsForUser($this->userId, false);
-
-        // convert to array with calIds as keys
-        $userCalIds = [];
-        for ($i = 0, $l = count($userCals); $i < $l; $i++) {
-            $userCalIds[$userCals[$i]['id']] = true;
-        }
-
-        $realConflictCalIds = [];
-        for ($i = 0; $i < $ccl; $i++) {
-            $calId = $conflictCalIds[$i];
-            if (isset($userCalIds[$calId])) {
-                $realConflictCalIds[] = $calId;
-            }
-        }
-
-        if (count($realConflictCalIds) !== $ccl) {
-            // let's hope user clicks apply :)
-            $cls[BackendUtils::CLS_TMM_MORE_CALS] = $realConflictCalIds;
+        $currentSubIds = $cls[BackendUtils::CLS_TMM_SUBSCRIPTIONS];
+        if (count($currentSubIds) > 0) {
+            // we have calendars to check/filter
+            $cls[BackendUtils::CLS_TMM_SUBSCRIPTIONS] = $this->utils->filterCalsAndSubs(
+                $currentSubIds,
+                $this->bc->getSubscriptionsForUser($this->userId)
+            );
         }
     }
 }

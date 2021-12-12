@@ -123,11 +123,12 @@
               <div v-for="cal in cals" v-show="cal.id!==calInfo.tmmDstCalId">
                 <input
                     type="checkbox"
-                    :value="cal.id"
-                    v-model="calInfo.tmmMoreCals"
+                    :value="cal"
+                    v-model="calendarsAndSubscriptions"
                     @click="handleMoreCals"
                     :id="'srgdev-appt_tmm_more_'+cal.id"
                     class="checkbox"><label class="srgdev-appt-sb-label-inline"
+                                            :class="{'label-subscription':cal.isSubscription==='1'}"
                                             :for="'srgdev-appt_tmm_more_'+cal.id">{{ cal.name }}</label>
               </div>
             </template>
@@ -217,6 +218,7 @@ export default {
         nrDstCalId: "-1",
         tmmDstCalId: "-1",
         tmmMoreCals: [],
+        tmmSubscriptions: [],
         tsMode: "2",
       },
       realCalIDs: "-1-1",
@@ -224,6 +226,8 @@ export default {
 
       tzName: "",
       tzData: "",
+
+      calendarsAndSubscriptions: [],
 
       cals: [],
       hasKey: false,
@@ -249,13 +253,21 @@ export default {
       try {
         const res = await axios.get('callist?mode=' + this.calInfo.tsMode)
         const cals = res.data.split(String.fromCharCode(31))
-        for (let i = 0, l = cals.length; i < l; i++) {
-          let cal = cals[i].split(String.fromCharCode(30))
-          this.cals.push({
+        for (let i = 0, cal, d, l = cals.length; i < l; i++) {
+          cal = cals[i].split(String.fromCharCode(30))
+          d = {
             name: cal[0],
             id: cal[2],
             isReadOnly: cal[3],
-          })
+            isSubscription: cal[4] || '0'
+          }
+          this.cals.push(d)
+          if ((d.isSubscription === '0'
+                  && this.calInfo.tmmMoreCals.indexOf(d.id) !== -1)
+              || (d.isSubscription === '1'
+                  && this.calInfo.tmmSubscriptions.indexOf(d.id) !== -1)) {
+            this.calendarsAndSubscriptions.push(d)
+          }
         }
       } catch (e) {
         this.isLoading = false
@@ -272,7 +284,7 @@ export default {
     },
 
     handleMoreCals(evt) {
-      if (this.hasKey === false && this.calInfo.tmmMoreCals.length > 1) {
+      if (this.hasKey === false && this.calendarsAndSubscriptions.length > 1) {
         if (evt.currentTarget.checked === true) {
           this.$emit('showCModal', this.t('appointments', "More than 2 additional calendars."))
           evt.preventDefault()
@@ -365,18 +377,17 @@ export default {
               this.t('appointments', 'Source and Destination calendars must be different')])
             return
           }
+        } else if (this.calInfo.tsMode === '2') {
+          this.calInfo.tmmMoreCals.splice(0, this.calInfo.tmmMoreCals.length)
+          this.calInfo.tmmSubscriptions.splice(0, this.calInfo.tmmSubscriptions.length)
+          this.calendarsAndSubscriptions.forEach(cs => {
+            if (cs['isSubscription'] === '0') {
+              this.calInfo.tmmMoreCals.push(cs['id'])
+            } else {
+              this.calInfo.tmmSubscriptions.push(cs['id'])
+            }
+          })
         }
-        // else if (this.calInfo.tsMode === '2') {
-        // if (this.tzData !== "") {
-        //   this.calInfo.tzData = this.tzData
-        //   this.calInfo.tzName = this.tzName
-        // } else {
-        //   this.$emit("showModal", [
-        //     this.t('appointments', 'Error'),
-        //     this.t('appointments', 'Time zone data is empty')])
-        //   return
-        // }
-        // }
       }
 
       this.isSending = true
@@ -412,7 +423,10 @@ export default {
     },
 
     removeFromTMM(calId) {
-      this.calInfo.tmmMoreCals = this.calInfo.tmmMoreCals.filter(cid => cid !== calId)
+      this.calendarsAndSubscriptions = this.calendarsAndSubscriptions.filter(cs => {
+        const isSub = cs['isSubscription'] === '1'
+        return isSub || (!isSub && cs['id'] !== calId)
+      })
     },
 
     close() {
@@ -449,5 +463,14 @@ export default {
   color: var(--color-main-text)
 }
 
+.label-subscription {
+  opacity: .7;
+}
+.label-subscription:after{
+  content: '↗';
+  margin-left: .5em;
+  vertical-align: top;
+  font-size: 75%;
+}
 
 </style>

@@ -9,6 +9,7 @@
 namespace OCA\Appointments\Backend;
 
 use OCA\Appointments\AppInfo\Application;
+use OCP\DB\Exception;
 use OCP\IDBConnection;
 use OCP\IURLGenerator;
 use Psr\Log\LoggerInterface;
@@ -26,6 +27,7 @@ class BackendUtils
     const CIPHER = "AES-128-CFB";
     const HASH_TABLE_NAME = "appointments_hash";
     const PREF_TABLE_NAME = "appointments_pref";
+    const SYNC_TABLE_NAME = "appointments_sync";
 
     const PREF_STATUS_TENTATIVE = 0;
     const PREF_STATUS_CONFIRMED = 1;
@@ -77,6 +79,8 @@ class BackendUtils
     // template mode
     public const CLS_TMM_DST_ID = 'tmmDstCalId';
     public const CLS_TMM_MORE_CALS = 'tmmMoreCals';
+    public const CLS_TMM_SUBSCRIPTIONS = 'tmmSubscriptions';
+    public const CLS_TMM_SUBSCRIPTIONS_SYNC = 'tmmSubscriptionsSync';
     // --
     public const CLS_PREP_TIME = 'prepTime';
     public const CLS_ON_CANCEL = 'whenCanceled';
@@ -958,12 +962,14 @@ class BackendUtils
 
                     self::CLS_TMM_DST_ID => '-1',
                     self::CLS_TMM_MORE_CALS => [],
+                    self::CLS_TMM_SUBSCRIPTIONS => [],
+                    self::CLS_TMM_SUBSCRIPTIONS_SYNC => '0',
 
                     self::CLS_PREP_TIME => "0",
                     self::CLS_ON_CANCEL => 'mark',
                     self::CLS_ALL_DAY_BLOCK => false,
-                    // 0=simple/manual, 1=external/XTM, (2=template)
-                    self::CLS_TS_MODE => '2');
+
+                    self::CLS_TS_MODE => self::CLS_TS_MODE_TEMPLATE);
                 break;
             case self::KEY_PSN:
                 $d = array(
@@ -993,8 +999,9 @@ class BackendUtils
                     self::CLS_XTM_DST_ID => '-1',
                     self::CLS_TMM_DST_ID => '-1',
                     self::CLS_TMM_MORE_CALS => [],
+                    self::CLS_TMM_SUBSCRIPTIONS => [],
 
-                    self::CLS_TS_MODE => '2',
+                    self::CLS_TS_MODE => self::CLS_TS_MODE_TEMPLATE,
 
                     self::ORG_NAME => "",
                     self::ORG_EMAIL => "",
@@ -1758,8 +1765,44 @@ class BackendUtils
         $a['color'] = $c['{http://apple.com/ns/ical/}calendar-color'] ?? "#000000";
         $a['uri'] = $c['uri'];
         $a['timezone'] = $c['{urn:ietf:params:xml:ns:caldav}calendar-timezone'] ?? '';
-        $a['isReadOnly'] = $isReadOnlyCal?'1':'0';
+        $a['isReadOnly'] = $isReadOnlyCal ? '1' : '0';
         return $a;
+    }
+
+    /**
+     * @param array $currentIds Ex: ['1','2',...]
+     * @param array $real Ex: [['id'=>'1','x'=>'y'],['id'=>'2','x'=>'y'],...]
+     * @return array
+     */
+    function filterCalsAndSubs(array $currentIds, array $real): array {
+        // convert to array with ids as keys for fast look up
+        $ids = [];
+        for ($i = 0, $l = count($real); $i < $l; $i++) {
+            $ids[$real[$i]['id']] = true;
+        }
+
+        $curLen = count($currentIds);
+        $realIds = [];
+        for ($i = 0; $i < $curLen; $i++) {
+            $id = $currentIds[$i];
+            if (isset($ids[$id])) {
+                $realIds[] = $id;
+            }
+        }
+        return $realIds;
+    }
+
+    function removeSubscriptionSync($subscriptionId) {
+        $this->logger->info("removeSubscriptionSync, subscriptionId: " . $subscriptionId);
+        $qb = $this->db->getQueryBuilder();
+        try {
+            $qb->delete(self::SYNC_TABLE_NAME)
+                ->where($qb->expr()->eq('id',
+                    $qb->createNamedParameter($subscriptionId)))
+                ->execute();
+        } catch (Exception $e) {
+            $this->logger->error("removeSubscriptionSync error: " . $e->getMessage());
+        }
     }
 
 }

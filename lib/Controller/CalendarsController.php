@@ -98,7 +98,6 @@ class CalendarsController extends Controller
         }
 
         return $r;
-
     }
 
 
@@ -131,7 +130,6 @@ class CalendarsController extends Controller
         if (strpos($t, "before") !== false) {
             return $this->calGetOld($t, $pageId);
         }
-
 
         $r = new SendDataResponse();
 
@@ -190,8 +188,8 @@ class CalendarsController extends Controller
      * @noinspection PhpUnused
      */
     public function callist() {
-        $mode = $this->request->getParam("mode", "");
-        $cals = $this->bc->getCalendarsForUser($this->userId, $mode !== BackendUtils::CLS_TS_MODE_TEMPLATE);
+        $isTemplateMode = $this->request->getParam("mode", "") === BackendUtils::CLS_TS_MODE_TEMPLATE;
+        $cals = $this->bc->getCalendarsForUser($this->userId, !$isTemplateMode);
         $out = '';
         $c30 = chr(30);
         $c31 = chr(31);
@@ -200,8 +198,22 @@ class CalendarsController extends Controller
                 $c['displayName'] . $c30 .
                 $c['color'] . $c30 .
                 $c['id'] . $c30 .
-                $c['isReadOnly'] . $c31;
+                $c['isReadOnly'] . $c30 .
+                '0' . $c31; // isSubscription;
         }
+        if($isTemplateMode) {
+            // Subscriptions are only for template mode
+            $sa = $this->bc->getSubscriptionsForUser($this->userId);
+            foreach ($sa as $s) {
+                $out .=
+                    $s['displayName'] . $c30 .
+                    '#000000' . $c30 .
+                    $s['id'] . $c30 .
+                    '1' . $c30 . // isReadOnly
+                    '1' . $c31; // isSubscription
+            }
+        }
+
         return substr($out, 0, -1);
     }
 
