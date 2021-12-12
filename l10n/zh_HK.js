@@ -150,7 +150,7 @@ OC.L10N.register(
     "Title and URL cannot be empty" : "標題和 URL 不可以為空",
     "Emails and Notifications" : "電郵和通知",
     "Control when emails and notifications are sent" : "控制何時發送電子郵件和通告",
-    "Attach .ics file to confirm/cancel emails" : "將 。ics 文件附加到確認/取消電子郵件",
+    "Attach .ics file to confirm/cancel emails" : "將 .ics 文件附加到確認/取消電子郵件",
     "Email Attendee when the appointment is:" : "當約會更改為以下狀態時，向與會者發送電子郵件：",
     "Modified (Time, Status, Location)" : "已修改（時間，狀態，位置）",
     "Deleted" : "已刪除",

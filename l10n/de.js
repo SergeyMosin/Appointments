@@ -280,6 +280,7 @@ OC.L10N.register(
     "Name is required." : "Name wird benötigt.",
     "Email is required." : "E-Mail wird benötigt.",
     "Minutes" : "Minuten",
+    "Using fallback time zone: {timeZoneName}" : "Verwenden der Standard-Zeitzone: {timeZoneName}",
     "No Appointments Available" : "Keine Termine verfügbar",
     "Date & Time" : "Datum und Zeit",
     "Select Date & Time" : "Datum & Uhrzeit auswählen",

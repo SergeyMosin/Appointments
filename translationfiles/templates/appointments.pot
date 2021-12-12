@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2021-12-09 03:41+0000\n"
+"POT-Creation-Date: 2021-12-12 03:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,37 +25,37 @@ msgstr ""
 msgid "Talk integration error: check logs"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1119
+#: /app/lib/Backend/BackendUtils.php:1120
 msgid "Meeting Type"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1120
+#: /app/lib/Backend/BackendUtils.php:1121
 msgid "Select meeting type"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1121
+#: /app/lib/Backend/BackendUtils.php:1122
 msgid "In-person meeting"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1122
+#: /app/lib/Backend/BackendUtils.php:1123
 msgid "Online (audio/video)"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1360
+#: /app/lib/Backend/BackendUtils.php:1422
 msgid "Your email address is required for this operation."
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1363
+#: /app/lib/Backend/BackendUtils.php:1425
 msgid ""
 "A location, address or URL is required for this operation. Check User/"
 "Organization settings."
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1370
+#: /app/lib/Backend/BackendUtils.php:1432
 msgid "Can't find your name. Check User/Organization settings."
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1374
+#: /app/lib/Backend/BackendUtils.php:1436
 msgid "Available"
 msgstr ""
 
