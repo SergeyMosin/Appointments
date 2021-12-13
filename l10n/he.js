@@ -145,8 +145,6 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "לוח שנה יעד (עם זימון)",
     "Edit Template" : "עריכת תבנית",
     "Check for conflicts in…" : "לחפש סתירות עם…",
-    "Timezone:" : "אזור זמן:",
-    "Loading…" : "בטעינה…",
     "Time slot mode" : "מצב חלונות זמן",
     "Weekly Template" : "תבנית שבועית",
     "Simple" : "פשוט",

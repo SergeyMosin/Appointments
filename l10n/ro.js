@@ -58,7 +58,6 @@ OC.L10N.register(
     "Show time in two columns" : "Afișază timpul pe două coloane",
     "Customize Public Page" : "Personalizează Pagina Publică",
     "Warning" : "Atenție",
-    "Timezone:" : "Fus Orar:",
     "Select Dates:" : "Selectează datele:",
     "Select Dates" : "Selectează datele",
     "Appointment Duration:" : "Durata întâlnirii:",

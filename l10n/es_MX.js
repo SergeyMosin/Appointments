@@ -92,7 +92,6 @@ OC.L10N.register(
     "Email Settings" : "Configuración de correo",
     "Warning" : "Advertencia",
     "Add Appointment Slots" : "Añadir espacio para citas",
-    "Timezone:" : "Zona Horaria:",
     "Simple" : "Simple",
     "Select Dates:" : "Selecionar Fechas:",
     "Select Dates" : "Seleccionar Fechas",

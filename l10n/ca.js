@@ -203,7 +203,6 @@ OC.L10N.register(
     "Use Main calendar" : "Utiliza  el calendari principal",
     "Source Calendar (Free Slots)" : "Calendari font (Slots gratuïts)",
     "Destination Calendar (Booked)" : "Calendari de destinació (Reservat)",
-    "Timezone:" : "Zona horària:",
     "Time slot mode" : "Mode de interval de temps",
     "Simple" : "Simple",
     "External" : "Extern",

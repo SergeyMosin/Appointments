@@ -218,8 +218,6 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "تقويم المواعيد (الاوقات المحجوزة)",
     "Edit Template" : "تعديل القالب",
     "Check for conflicts in…" : "تحقق من وجود تعارضات في ...",
-    "Timezone:" : "المنطقة الزمنية:",
-    "Loading…" : "التحميل جارٍ…",
     "Time slot mode" : "نمط الاوقات المحددة",
     "Weekly Template" : "القالب الأسبوعي",
     "Simple" : "بسيط",

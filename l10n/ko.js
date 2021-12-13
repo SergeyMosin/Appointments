@@ -146,7 +146,6 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "목적지 캘린더 (예약 됨)",
     "Edit Template" : "템플릿 편집",
     "Check for conflicts in…" : "충돌 확인…",
-    "Timezone:" : "시간대:",
     "Simple" : "간단히",
     "Select Dates:" : "날짜 선택:",
     "Select Dates" : "날짜 선택",

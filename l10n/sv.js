@@ -95,7 +95,6 @@ OC.L10N.register(
     "Enable lobby" : "Aktivera lobbyn",
     "Customize email text:" : "Anpassa e-posttext:",
     "Warning" : "Varning",
-    "Timezone:" : "Tidszon:",
     "Simple" : "Enkel",
     "Select Dates:" : "Välj datum:",
     "Select Dates" : "Välj datum",

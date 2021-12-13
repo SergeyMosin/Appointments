@@ -240,8 +240,6 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "Calendario de destino (Reservado)",
     "Edit Template" : "Editar Plantilla",
     "Check for conflicts in…" : "Comprobar si hay conflictos en...",
-    "Timezone:" : "Huso horario:",
-    "Loading…" : "Cargando…",
     "Time slot mode" : "Modo de franja horaria",
     "Weekly Template" : "Plantilla semanal",
     "Simple" : "Simple",

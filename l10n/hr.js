@@ -219,8 +219,6 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "Kalendar odredišta (zakazano)",
     "Edit Template" : "Uredi predložak",
     "Check for conflicts in…" : "Provjeri za nepodudaranja u…",
-    "Timezone:" : "Vremenska zona:",
-    "Loading…" : "Učitavanje…",
     "Time slot mode" : "Način rada s vremenskim razdobljima",
     "Weekly Template" : "Tjedni predložak",
     "Simple" : "Jednostavno",
