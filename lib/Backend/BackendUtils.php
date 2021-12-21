@@ -1488,11 +1488,19 @@ class BackendUtils
      */
     function getCalendarTimezone(string $userId, \OCP\IConfig $config, array $cal = null): \DateTimeZone {
 
+        // TODO: Double check if the following is the Calendar App order (#1 and #2 might be reversed):
+        // 1. $config->getUserValue($userId, 'calendar', 'timezone');
+        // 2. $cal['timezone']
+        // 3. $config->getUserValue($userId, 'core', 'timezone')
+        // 4. \OC::$server->getDateTimeZone()->getTimeZone();
+
         $err = "";
         $tz = null;
 
-        if ($cal === null || empty($cal['timezone'])) {
-            $err = "Calendar with ID " . $cal['id'] . " for user " . $userId . " not found: using default timezone";
+        if ($cal === null) {
+            $err = "Calendar for user " . $userId . " is null";
+        } elseif (empty($cal['timezone'])) {
+            $err = "Calendar with ID " . $cal['id'] . " for user " . $userId . " missing 'timezone' prop";
         } else {
             $token = 'TZID:';
             $tokenPos = strpos($cal['timezone'], $token);
@@ -1507,14 +1515,13 @@ class BackendUtils
                         strpos($cal['timezone'], "\n", $tz_start) - $tz_start));
                     $tz = new \DateTimeZone($tz_name);
                 } catch (\Exception $e) {
-                    $this->logger->error("getUserTimezone error: " . $e->getMessage());
+                    $this->logger->error("getCalendarTimezone error: " . $e->getMessage());
                     $tz = new \DateTimeZone('utc'); // fallback to utc
                 }
             }
         }
-
         if ($tz === null) {
-            $this->logger->error("getUserOrCalendarTimezone error: " . $err);
+            $this->logger->error("getCalendarTimezone fallback to getUserTimezone: " . $err);
             return $this->getUserTimezone($userId, $config);
         }
         return $tz;
@@ -1534,7 +1541,6 @@ class BackendUtils
                 return \OC::$server->getDateTimeZone()->getTimeZone();
             }
         }
-
         try {
             $tz = new \DateTimeZone($tz_name);
         } catch (\Exception $e) {
