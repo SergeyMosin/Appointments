@@ -1,3 +1,8 @@
+## 1.11.9 - 2021-12-30
+### Added
+- Raw calendar data dump debugging option
+- More logging in timezone detection
+
 ## 1.11.8 - 2021-12-11
 ### Added
 - Read-only and linked/subscription calendars are available for conflict checks in "Weekly Template" mode now.
