@@ -155,8 +155,6 @@ OC.L10N.register(
     "Main calendar" : "Pääkalenteri",
     "Calendar Required" : "Kalenteri vaaditaan",
     "Use Main calendar" : "Käytä pääkalenteria",
-    "Timezone:" : "Aikavyöhyke:",
-    "Loading…" : "Ladataan...",
     "Weekly Template" : "Viikkopohja",
     "Simple" : "Yksinkertainen",
     "External" : "Ulkoinen",

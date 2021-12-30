@@ -219,8 +219,6 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "Destinationskalender (booket)",
     "Edit Template" : "Rediger skabelon",
     "Check for conflicts in…" : "Tjek for konflikter i...",
-    "Timezone:" : "Tidszone:",
-    "Loading…" : "Indlæser…",
     "Time slot mode" : "Tidsrumstilstand",
     "Weekly Template" : "Ugentlig skabelon",
     "Simple" : "Simpel",

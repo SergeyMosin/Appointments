@@ -241,8 +241,6 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "Ziel-Kalender (gebucht)",
     "Edit Template" : "Vorlage bearbeiten",
     "Check for conflicts in…" : "Auf Konflikte prüfen…",
-    "Timezone:" : "Zeitzone:",
-    "Loading…" : "Lade…",
     "Time slot mode" : "Zeitfenstermodus",
     "Weekly Template" : "Wöchentliche Vorlage",
     "Simple" : "Einfach",

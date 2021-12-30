@@ -240,8 +240,6 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "Календар на дестинация (резервиран)",
     "Edit Template" : "Редактиране на шаблон",
     "Check for conflicts in…" : "Проверка за конфликти в…",
-    "Timezone:" : "Часови пояс:",
-    "Loading…" : "Зареждане…",
     "Time slot mode" : "Режим на времеви слот",
     "Weekly Template" : "Седмичен шаблон",
     "Simple" : "Обикновен",

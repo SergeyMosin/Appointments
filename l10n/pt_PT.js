@@ -219,8 +219,6 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "Calendário de destino (Reuniões agendadas)",
     "Edit Template" : "Editar tema",
     "Check for conflicts in…" : "Verificar se há conflitos em...",
-    "Timezone:" : "Fuso horário:",
-    "Loading…" : "A carregar...",
     "Time slot mode" : "Modo de Vagas Temporais",
     "Weekly Template" : "Tema Semanal",
     "Simple" : "Simples",

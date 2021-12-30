@@ -219,8 +219,6 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "Calendàriu de destinatzione (Prenotadu)",
     "Edit Template" : "Modìfica modellu",
     "Check for conflicts in…" : "Controlla si ddoe at cunflitos in...",
-    "Timezone:" : "Fusu oràriu:",
-    "Loading…" : "Carrighende...",
     "Time slot mode" : "Modalidade postu temporale",
     "Weekly Template" : "Modellu de sa chida",
     "Simple" : "Simpre",

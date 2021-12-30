@@ -219,8 +219,6 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "Ημερολόγιο προορισμού (Κράτηση)",
     "Edit Template" : "Επεξεργασία προτύπου",
     "Check for conflicts in…" : "Έλεγχος για διενέξεις σε…",
-    "Timezone:" : "Χρονική ζώνη:",
-    "Loading…" : "Φόρτωση…",
     "Time slot mode" : "Λειτουργία χρονικής κράτησης",
     "Weekly Template" : "Εβδομαδιαίο πρότυπο",
     "Simple" : "Απλή",
