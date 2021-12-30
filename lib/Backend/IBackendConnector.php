@@ -90,6 +90,8 @@ interface IBackendConnector
      */
     function getCalendarById($calId, $userId);
 
+    function getRawCalData($calInfo, $userId);
+
     /**
      * @param $calId
      * @param $uri

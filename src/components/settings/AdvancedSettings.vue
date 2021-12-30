@@ -125,9 +125,9 @@
             @click.native="toggleSection(2)"
             :text="t('appointments','Debugging')"
             icon="icon-category-monitoring"/>
-        <div v-show="sections[2]===1"
+        <div v-if="sections[2]===1"
              class="srgdev-appt-sb-indent">
-          <span @click="$root.$emit('dumpSettings')" class="srgdev-appt-sb-linker">Settings Dump</span>
+          <Debugging/>
         </div>
         <button
             @click="apply"
@@ -143,10 +143,12 @@
 import SlideBar from "../SlideBar.vue"
 import ApptIconLabel from "../ApptIconLabel";
 import {showError} from "@nextcloud/dialogs"
+import Debugging from "./Debugging";
 
 export default {
   name: "AdvancedSettings",
   components: {
+    Debugging,
     ApptIconLabel,
     SlideBar
   },
@@ -222,10 +224,5 @@ export default {
   min-width: 80%;
   margin-bottom: 1em;
   color: var(--color-text-lighter);
-}
-
-.srgdev-appt-sb-linker:hover {
-  text-decoration: underline;
-  cursor: pointer;
 }
 </style>

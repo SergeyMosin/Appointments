@@ -464,6 +464,7 @@ import PagePickerSlideBar from "./components/PagePickerSlideBar"
 
 import FormInputsDesigner from "./components/FormInputsDesigner"
 import TemplateApptOptions from "./components/TemplateApptOptions";
+import * as debug from "./use/debugging"
 
 export default {
   name: 'App',
@@ -611,7 +612,7 @@ export default {
     this.getPages(1, 'p0')
 
     this.$root.$on('helpWanted', this.helpWantedHandler)
-    this.$root.$on('dumpSettings', this.dumpSettings)
+    this.$root.$on('startDebug', this.startDebug)
 
     // ------- testing --
     // if(!this.isGridReady){
@@ -626,7 +627,7 @@ export default {
 
   beforeDestroy() {
     this.$root.$off('helpWanted', this.helpWantedHandler)
-    this.$root.$off('dumpSettings', this.dumpSettings)
+    this.$root.$off('startDebug', this.startDebug)
   },
   provide: function () {
     return {
@@ -964,6 +965,7 @@ export default {
      * @param {string} action
      * @param {Object} value
      * @param {string} pageId
+     * @param opt
      */
     async setState(action, value, pageId = '', opt = {}) {
       let ji = ""
@@ -1077,22 +1079,21 @@ export default {
           })
     },
 
-    dumpSettings() {
+    startDebug(data = undefined) {
+
       this.toggleSlideBar(0)
       this.visibleSection = 3
 
-      axios.get('settings_dump')
-          .then(response => {
-            if (response.status === 200) {
-              this.helpContent = response.data
-            } else {
-              this.helpContent = 'Error occurred: bad status (' + response.status + ')'
-            }
-          })
-          .catch((error) => {
-            console.log(error)
-            this.helpContent = 'Error occurred, check console.'
-          })
+      let prm
+      if (data === undefined) {
+        prm = debug.settingsDump()
+      } else if (data.type === "raw_cal") {
+        prm = debug.getRawCalData(data.cal_info)
+      }
+      prm.then(data => {
+        this.helpContent = data
+      })
+
     },
 
 

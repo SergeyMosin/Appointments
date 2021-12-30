@@ -909,6 +909,72 @@ class BCSabreImpl implements IBackendConnector
         return $ret !== '' ? substr($ret, 0, -1) : null;
     }
 
+
+    function getRawCalData($calInfo, $userId) {
+
+        $r = [];
+
+        $fake_cms = [
+            BackendUtils::CLS_TMM_DST_ID => '0'
+        ];
+
+        if ($calInfo["isSubscription"] === '1') {
+            // linked
+            $fake_cms[BackendUtils::CLS_TMM_SUBSCRIPTIONS] = [$calInfo["id"]];
+            $fake_cms[BackendUtils::CLS_TMM_MORE_CALS] = [];
+        } else {
+            // local
+            $fake_cms[BackendUtils::CLS_TMM_MORE_CALS] = [$calInfo["id"]];
+            $fake_cms[BackendUtils::CLS_TMM_SUBSCRIPTIONS] = [];
+        }
+
+        $cals = $this->getCalsForConflictCheck($fake_cms, $userId);
+        if (count($cals) !== 2) {
+            return 'error: calendar ' . $calInfo['id'] . ' not found';
+        }
+        $cal = $cals[1];
+        $r['cal'] = $cal;
+
+        $start = new \DateTime('now - 1 day');
+        $end = new \DateTime('now + 21 days');
+
+        $start_str = $start->format(self::TIME_FORMAT);
+        $end_str = $end->format(self::TIME_FORMAT);
+
+        $r['range'] = [
+            'start' => $start_str,
+            'end' => $end_str
+        ];
+
+        $parser = new XmlService();
+        $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
+
+        try {
+            $result = $parser->parse($this::makeTrDavReport($start_str, $end_str, false));
+        } catch (ParseException $e) {
+            $this->logger->error($e);
+            return 'error: ' . var_export($e, true);
+        }
+
+        $urls = $this->backend->calendarQuery(
+            $cal['id'],
+            $result->filters,
+            $cal['type']);
+        $r['urls'] = $urls;
+        $events = [];
+
+        if (count($urls) > 0) {
+            $objs = $this->backend->getMultipleCalendarObjects(
+                $cal['id'], $urls, $cal['type']);
+            foreach ($objs as $obj) {
+                $events[] = $obj['calendardata'];
+            }
+        }
+
+        $r['events'] = $events;
+        return $r;
+    }
+
     /**
      * @inheritDoc
      * @noinspection PhpRedundantCatchClauseInspection
