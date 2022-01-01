@@ -139,6 +139,8 @@
     "Require \"Appointment\" category" : "Vyžadovat kategorii „Schůzka“",
     "Auto-fix \"Source\" timeslots" : "Automaticky opravovat „Zdrojové“ časové sloty",
     "Debugging" : "Ladění",
+    "Loading…" : "Načítání…",
+    "Get raw calendar data" : "Získat nezpracovaná kalendářová data",
     "Calendar Required" : "Kalendář je povinný",
     "Directory Page Settings" : "Nastavení stránky adresáře",
     "Add, remove and edit directory page links" : "Přidat, odebrat nebo upravit odkazy stránky adresáře",

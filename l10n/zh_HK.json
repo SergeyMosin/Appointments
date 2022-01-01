@@ -139,6 +139,8 @@
     "Require \"Appointment\" category" : "需要 “約會” 類別",
     "Auto-fix \"Source\" timeslots" : "自動修復 “源” 時隙",
     "Debugging" : "調試",
+    "Loading…" : "加載中...",
+    "Get raw calendar data" : "獲取原始日曆數據",
     "Calendar Required" : "需要日曆",
     "Directory Page Settings" : "目錄頁面設定",
     "Add, remove and edit directory page links" : "添加，刪除和編輯目錄頁面連結",

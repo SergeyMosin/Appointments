@@ -141,6 +141,8 @@ OC.L10N.register(
     "Require \"Appointment\" category" : "Termin-Kategorie wird benötigt",
     "Auto-fix \"Source\" timeslots" : "Zeitfenster automatisch setzen",
     "Debugging" : "Fehlersuche",
+    "Loading…" : "Lade…",
+    "Get raw calendar data" : "Abrufen der Kalenderrohdaten",
     "Calendar Required" : "Kalender erforderlich",
     "Directory Page Settings" : "Einstellungen für Verzeichnisseite",
     "Add, remove and edit directory page links" : "Hinzufügen, Entfernen und Bearbeiten von Verzeichnisseiten-Links",
