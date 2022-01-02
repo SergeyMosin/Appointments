@@ -1,3 +1,7 @@
+## 1.11.10 - 2022-01-02
+### Added
+- Log remote blockers debugging option
+
 ## 1.11.9 - 2021-12-30
 ### Added
 - Raw calendar data dump debugging option
