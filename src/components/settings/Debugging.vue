@@ -19,6 +19,16 @@
           <option v-for="(cal,idx) in cals" :value="idx">{{ cal.name }}</option>
         </select>
       </div>
+      <div class="dbg-section">
+        <input
+            type="checkbox"
+            :disabled="isSending"
+            v-model="dbgInfo.log_rem_blocker"
+            @change="handleSetLogBlockers"
+            id="appt_debug-log-blockers"
+            class="checkbox"><label
+          for="appt_debug-log-blockers">{{ t('appointments', 'Log remote blockers') }}</label>
+      </div>
     </div>
   </div>
 </template>
@@ -33,11 +43,16 @@ export default {
     this.isLoading = true
     this.start()
   },
+  inject: ['getState', 'setState'],
   data: function () {
     return {
       isLoading: true,
       cals: [],
-      calsIdx: -1
+      calsIdx: -1,
+      dbgInfo: {
+        log_rem_blocker: false
+      },
+      isSending: false,
     }
   },
   methods: {
@@ -57,17 +72,30 @@ export default {
           }
           this.cals.push(d)
         }
+
+        this.dbgInfo = await this.getState("get_dbg", "")
+
       } catch (e) {
         console.log(e)
-        showError(this.t('appointments', "Can not load calendars"))
+        showError(this.t('appointments', "Can not load calendars or settings"))
       }
       this.isLoading = false
     },
     handleGetCalendarData() {
-      if(this.calsIdx>-1){
+      if (this.calsIdx > -1) {
         console.log("cal:", this.cals[this.calsIdx])
-        this.$root.$emit('startDebug',{type:"raw_cal",cal_info:this.cals[this.calsIdx]})
+        this.$root.$emit('startDebug', {type: "raw_cal", cal_info: this.cals[this.calsIdx]})
       }
+    },
+    handleSetLogBlockers() {
+      if(this.isSending===true){
+        return
+      }
+
+      this.isSending = true
+      this.setState('set_dbg', this.dbgInfo,'',{noFormData:true}).then(() => {
+        this.isSending = false
+      })
     }
   },
 }
@@ -80,7 +108,8 @@ export default {
 }
 
 .dbg-section {
-  margin-top: .5em;
+  margin-top: 1em;
+  padding-bottom: .125em;
 }
 
 .dbg-input {

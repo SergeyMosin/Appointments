@@ -643,6 +643,29 @@ class StateController extends Controller
                     }
                 }
             }
+        } else if ($action === "get_dbg") {
+            $a = $this->utils->getUserSettings(
+                BackendUtils::KEY_DEBUGGING, $this->userId);
+            $j = json_encode($a);
+            if ($j !== false) {
+                $r->setData($j);
+                $r->setStatus(200);
+            } else {
+                $r->setStatus(500);
+            }
+        } else if ($action === "set_dbg") {
+            $d = $this->request->getParam("d");
+            if ($d !== null && strlen($d) < 256) {
+                if ($this->utils->setUserSettings(
+                        BackendUtils::KEY_DEBUGGING,
+                        $d, $this->utils->getDefaultForKey(BackendUtils::KEY_DEBUGGING),
+                        $this->userId, $this->appName) === true
+                ) {
+                    $r->setStatus(200);
+                } else {
+                    $r->setStatus(500);
+                }
+            }
         }
         return $r;
     }

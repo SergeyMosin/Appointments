@@ -582,6 +582,8 @@ class BCSabreImpl implements IBackendConnector
             BackendUtils::KEY_CLS, $userId);
         $all_day_block = $cls[BackendUtils::CLS_ALL_DAY_BLOCK];
 
+        $log_remote_blockers = $this->utils->getUserSettings(BackendUtils::KEY_DEBUGGING, $userId)[BackendUtils::DEBUGGING_LOG_REM_BLOCKER];
+
         // get booked & busy timeslots
         foreach ($cals as $cal) {
             $urls = $this->backend->calendarQuery(
@@ -629,6 +631,16 @@ class BCSabreImpl implements IBackendConnector
                         $s_ts = $it->getDtStart()->getTimestamp();
                         $e_ts = $it->getDtEnd()->getTimestamp();
                         if ($start_ts <= $e_ts && $s_ts <= $end_ts) {
+
+                            if ($log_remote_blockers && $cal['type'] === CalDavBackend::CALENDAR_TYPE_SUBSCRIPTION) {
+                                $this->logErr("debug: ".var_export([
+                                    'blocker_uid' => $_evt->UID->getValue(),
+                                    'start_timestamp' => $s_ts,
+                                    'start_value' => $_evt->DTSTART->getValue(),
+                                    'time_zone' => $it->getDtStart()->getTimezone()->getName(),
+                                ], true));
+                            }
+
                             $itc->insert($booked_tree, $s_ts, $e_ts);
                         }
                         $it->next();

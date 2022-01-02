@@ -159,6 +159,8 @@ class BackendUtils
     public const REMINDER_BJM = "bjm";
     public const REMINDER_CLI_URL = "cliUrl";
 
+    public const KEY_DEBUGGING = "debugging";
+    public const DEBUGGING_LOG_REM_BLOCKER = "log_rem_blocker";
 
     private $appName = Application::APP_ID;
     /** @var array */
@@ -1057,6 +1059,11 @@ class BackendUtils
                     ],
                     self::REMINDER_SEND_ON_FRIDAY => false,
                     self::REMINDER_MORE_TEXT => "");
+                break;
+            case self::KEY_DEBUGGING:
+                $d = array(
+                    self::DEBUGGING_LOG_REM_BLOCKER => false
+                );
                 break;
             default:
                 $d = null;
