@@ -141,6 +141,8 @@ OC.L10N.register(
     "Require \"Appointment\" category" : "需要 ”预约“ 分类",
     "Auto-fix \"Source\" timeslots" : "自动修复 ”源“ 时间空挡",
     "Debugging" : "调试中",
+    "Loading…" : "加载中…",
+    "Get raw calendar data" : "获取原始日历数据",
     "Calendar Required" : "需要日历",
     "Directory Page Settings" : "目录页面设置",
     "Add, remove and edit directory page links" : "添加、删除和编辑目录页链接",

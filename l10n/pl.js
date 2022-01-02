@@ -141,6 +141,8 @@ OC.L10N.register(
     "Require \"Appointment\" category" : "Wymagaj kategorii \"Spotkanie\"",
     "Auto-fix \"Source\" timeslots" : "Automatycznie napraw przedziały czasowe \"Źródła\"",
     "Debugging" : "Debugowanie",
+    "Loading…" : "Wczytywanie…",
+    "Get raw calendar data" : "Uzyskaj nieprzetworzone dane kalendarza",
     "Calendar Required" : "Wymagany kalendarz",
     "Directory Page Settings" : "Ustawienia strony katalogu",
     "Add, remove and edit directory page links" : "Dodawaj, usuwaj i edytuj linki do stron katalogu",
