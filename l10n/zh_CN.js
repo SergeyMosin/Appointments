@@ -144,6 +144,7 @@ OC.L10N.register(
     "Loading…" : "加载中…",
     "Get raw calendar data" : "获取原始日历数据",
     "Calendar Required" : "需要日历",
+    "Log remote blockers" : "记录远程阻拦",
     "Directory Page Settings" : "目录页面设置",
     "Add, remove and edit directory page links" : "添加、删除和编辑目录页链接",
     "Edit" : "编辑",

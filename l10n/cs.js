@@ -144,6 +144,7 @@ OC.L10N.register(
     "Loading…" : "Načítání…",
     "Get raw calendar data" : "Získat nezpracovaná kalendářová data",
     "Calendar Required" : "Kalendář je povinný",
+    "Log remote blockers" : "Zaznamenat blokující na protějšku",
     "Directory Page Settings" : "Nastavení stránky adresáře",
     "Add, remove and edit directory page links" : "Přidat, odebrat nebo upravit odkazy stránky adresáře",
     "Edit" : "Upravit",
