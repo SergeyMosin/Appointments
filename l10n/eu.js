@@ -136,6 +136,7 @@ OC.L10N.register(
     "Require \"Appointment\" category" : "Eskatu \"Hitzordu\" kategoria",
     "Auto-fix \"Source\" timeslots" : "Konpondu automatikoki \"Jatorriko\" ordu-tarteak",
     "Debugging" : "Arazketa",
+    "Loading…" : "Kargatzen…",
     "Calendar Required" : "Egutegia beharrezkoa",
     "Directory Page Settings" : "Direktorio-orriko ezarpenak",
     "Add, remove and edit directory page links" : "Gehitu, kendu eta editatu direktorio-orriko estekak",
