@@ -141,6 +141,7 @@ OC.L10N.register(
     "Require \"Appointment\" category" : "Vyžadovať kategóriu „schôdzka“",
     "Auto-fix \"Source\" timeslots" : "Automaticky opravovať „Zdrojové“ časové okná",
     "Debugging" : "Ladenie",
+    "Loading…" : "Nahrávam...",
     "Calendar Required" : "Vyžaduje sa kalendár",
     "Directory Page Settings" : "Nastavenie Stránky adresára",
     "Add, remove and edit directory page links" : "Pridať, odobrať a upraviť odkazy na adresárové stránky",

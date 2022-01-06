@@ -141,7 +141,7 @@ OC.L10N.register(
     "Require \"Appointment\" category" : "Termin-Kategorie wird benötigt",
     "Auto-fix \"Source\" timeslots" : "Zeitfenster automatisch setzen",
     "Debugging" : "Fehlersuche",
-    "Loading…" : "Lade …",
+    "Loading…" : "Lade…",
     "Get raw calendar data" : "Kalenderrohdaten abrufen",
     "Calendar Required" : "Kalender erforderlich",
     "Log remote blockers" : "Remote-Blocker protokollieren",
