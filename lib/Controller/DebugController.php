@@ -74,6 +74,9 @@ class DebugController extends Controller
         return $tr;
     }
 
+    /**
+     * @NoAdminRequired
+     */
     function getRawCalendarData() {
         $data = "";
         $status = 400;
