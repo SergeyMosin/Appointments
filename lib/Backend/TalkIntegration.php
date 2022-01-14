@@ -9,9 +9,10 @@ use OCA\Talk\Webinary;
 use OCA\Talk\Room;
 use ReflectionMethod;
 
-class TalkIntegration{
+class TalkIntegration
+{
 
-    private $appName=Application::APP_ID;
+    private $appName = Application::APP_ID;
     private $tlk;
     private $utils;
     private $config;
@@ -20,8 +21,7 @@ class TalkIntegration{
      * @param array $tlk
      * @param BackendUtils $utils
      */
-    public function __construct($tlk,$utils)
-    {
+    public function __construct($tlk, $utils) {
         $this->utils = $utils;
         $this->tlk = $tlk;
         $this->config = \OC::$server->getConfig();
@@ -29,7 +29,7 @@ class TalkIntegration{
 
 
     /** @return \OCA\Talk\Manager|null */
-    private function getTalkManager(){
+    private function getTalkManager() {
         try {
             /** @type \OCA\Talk\Manager $tm */
             $tm = \OC::$server->getRegisteredAppContainer($this->appName)->query(\OCA\Talk\Manager::class);
@@ -47,37 +47,37 @@ class TalkIntegration{
      * @param string $userId
      * @return string room token[chr(31)password], "" = error, "-" = error (should inform user via description)
      */
-    function createRoomForEvent($attendeeName,$dateTime,$userId){
-        if($dateTime->isFloating()===true){
+    function createRoomForEvent($attendeeName, $dateTime, $userId) {
+        if ($dateTime->isFloating() === true) {
             \OC::$server->getLogger()->error("Talk room error: TalkIntegration - floating timezones are not supported");
             return "-";
         }
 
-        $roomName=$this->formatRoomName($attendeeName,$dateTime,$userId);
-        $room=null;
-        
+        $roomName = $this->formatRoomName($attendeeName, $dateTime, $userId);
+        $room = null;
+
         // in Talk 10.1.* $room->addUser does no exist so, we are going to use OCA\Talk\Service\RoomService->createConversation first if available
         try {
             /** @type OCA\Talk\Service\RoomService $rs */
             $rs = \OC::$server->getRegisteredAppContainer($this->appName)->query(\OCA\Talk\Service\RoomService::class);
         } catch (\Exception $e) {
             \OC::$server->getLogger()->error($e);
-            $rs=null;
+            $rs = null;
         }
 
-        if($rs!==null) {
-            try{
-                $user=\OC::$server->getUserManager()->get($userId);
-                if($user!==null) {
-                    $room=$rs->createConversation(Room::PUBLIC_CALL, $roomName, $user);
+        if ($rs !== null) {
+            try {
+                $user = \OC::$server->getUserManager()->get($userId);
+                if ($user !== null) {
+                    $room = $rs->createConversation(Room::PUBLIC_CALL, $roomName, $user);
                 }
-            }catch (\Exception $e){
+            } catch (\Exception $e) {
                 \OC::$server->getLogger()->error($e);
             }
-        }else {
+        } else {
             // use old $room->addUsers()
-            $tm=$this->getTalkManager();
-            if($tm!==null) {
+            $tm = $this->getTalkManager();
+            if ($tm !== null) {
                 try {
                     $m = new ReflectionMethod($tm, 'createRoom');
                     if ($m->isPublic()) {
@@ -89,37 +89,38 @@ class TalkIntegration{
                         'userId' => $userId,
                         'participantType' => Participant::OWNER,
                     ]);
-                }catch (\Exception $e){
+                } catch (\Exception $e) {
                     \OC::$server->getLogger()->error($e);
                 }
             }
         }
-        
-        if($room===null){
+
+        if ($room === null) {
             \OC::$server->getLogger()->error("TalkIntegration: can not create public room");
             return '-';
         }
-        
-        $roomToken=$room->getToken();
 
-        $n="getUs"."erValue";$hd='he'."xdec";
-        $c=$this->config->$n($userId, $this->appName, 'c'."nk");
-        $sss="su".'bstr';
-        if(!empty($roomToken) && $c!=='' && (($hd($sss($c,0,0b100))>>14)& 1)===(($hd($sss($c,4,4))>>  6) & 1) && isset($c[5])){
-            if($this->tlk[BackendUtils::TALK_LOBBY]===true){
-                $this->setLobby($room,null);
-            }else if($this->tlk[BackendUtils::TALK_PASSWORD]===true){
-                $p=$this->setPassword($room);
-                if($p==='-'){
+        $roomToken = $room->getToken();
+
+        $n = "getUs" . "erValue";
+        $hd = 'he' . "xdec";
+        $c = $this->config->$n($userId, $this->appName, 'c' . "nk");
+        $sss = "su" . 'bstr';
+        if (!empty($roomToken) && $c !== '' && (($hd($sss($c, 0, 0b100)) >> 14) & 1) === (($hd($sss($c, 4, 4)) >> 6) & 1) && isset($c[5])) {
+            if ($this->tlk[BackendUtils::TALK_LOBBY] === true) {
+                $this->setLobby($room, null);
+            } else if ($this->tlk[BackendUtils::TALK_PASSWORD] === true) {
+                $p = $this->setPassword($room);
+                if ($p === '-') {
                     // error
-                    $roomToken="-";
-                }else{
+                    $roomToken = "-";
+                } else {
                     // ok
-                    $roomToken.=chr(31).$p;
+                    $roomToken .= chr(31) . $p;
                 }
             }
         }
- 
+
         return $roomToken;
     }
 
@@ -127,27 +128,27 @@ class TalkIntegration{
      * @param \OCA\Talk\Room $room
      * @param \DateTime $dateTime
      */
-    function setLobby($room,$dateTime){
+    function setLobby($room, $dateTime) {
         // $room->setLobby wants utc timezone ?!?
         // @see OCA\Talk\Controller\WebinarController->setLobby
 //        $_dt=new \DateTime(null,new \DateTimeZone('UTC'));
 //        $_dt->setTimestamp($dateTime->getTimestamp());
         // Lets not do timer for now..., davListener needs update if this is implemented
 
-        $room->setLobby(Webinary::LOBBY_NON_MODERATORS,null);
+        $room->setLobby(Webinary::LOBBY_NON_MODERATORS, null);
     }
 
     /**
      * @param \OCA\Talk\Room $room
      * @return string
      */
-    function setPassword($room){
-        $p=substr(str_replace(['+', '/', '='], '', base64_encode(md5(rand(), true))),0,9);
+    function setPassword($room) {
+        $p = substr(str_replace(['+', '/', '='], '', base64_encode(md5(rand(), true))), 0, 9);
 
-        if($room->setPassword($p)===true){
+        if ($room->setPassword($p) === true) {
             // So that davListener can attach pass to the email
             return $p;
-        }else{
+        } else {
             \OC::$server->getLogger()->error("Talk room error: TalkIntegration - can not set password");
             return '-';
         }
@@ -161,18 +162,18 @@ class TalkIntegration{
      * @param string $pref optional prefix
      * @return bool
      */
-    function renameRoom($token,$guestName,$dateTime,$userId,$pref=""){
-        $tm=$this->getTalkManager();
-        $r=false;
-        if($tm!==null){
-            if(!empty($pref)) $pref=trim($pref).' ';
+    function renameRoom($token, $guestName, $dateTime, $userId, $pref = "") {
+        $tm = $this->getTalkManager();
+        $r = false;
+        if ($tm !== null) {
+            if (!empty($pref)) $pref = trim($pref) . ' ';
             try {
                 $room = $tm->getRoomByToken($token);
-                $r=$room->setName($pref.
-                    $this->formatRoomName($guestName,$dateTime,$userId)
+                $r = $room->setName($pref .
+                    $this->formatRoomName($guestName, $dateTime, $userId)
                 );
-            }catch (\Exception $e){
-                \OC::$server->getLogger()->error("Room not found, token: ".$token);
+            } catch (\Exception $e) {
+                \OC::$server->getLogger()->error("Room not found, token: " . $token);
                 \OC::$server->getLogger()->error($e);
             }
         }
@@ -185,18 +186,18 @@ class TalkIntegration{
      * @param string $userId
      * @return string
      */
-    private function formatRoomName($guestName,$dateTime,$userId){
-        $f=$this->tlk[BackendUtils::TALK_NAME_FORMAT];
-        if($this->config->getUserValue($userId, $this->appName, 'cnk')==='') $f=0;
-        if($f<2){
-            $dt=$this->formatDateTime($dateTime,$userId);
-            if($f===0){
-                $r=$guestName.' '.$dt;
-            }else{
-                $r=$dt.' '.$guestName;
+    private function formatRoomName($guestName, $dateTime, $userId) {
+        $f = $this->tlk[BackendUtils::TALK_NAME_FORMAT];
+        if ($this->config->getUserValue($userId, $this->appName, 'cnk') === '') $f = 0;
+        if ($f < 2) {
+            $dt = $this->formatDateTime($dateTime, $userId);
+            if ($f === 0) {
+                $r = $guestName . ' ' . $dt;
+            } else {
+                $r = $dt . ' ' . $guestName;
             }
-        }else{
-            $r=$guestName;
+        } else {
+            $r = $guestName;
         }
         return $r;
     }
@@ -205,8 +206,8 @@ class TalkIntegration{
      * @param string $roomToken
      * @return string
      */
-    function getRoomURL($roomToken){
-        return \OC::$server->getURLGenerator()->getAbsoluteURL("index.php/call/".$roomToken);
+    function getRoomURL($roomToken) {
+        return \OC::$server->getURLGenerator()->getAbsoluteURL("index.php/call/" . $roomToken);
     }
 
     /**
@@ -215,48 +216,48 @@ class TalkIntegration{
      * @return string
      * @noinspection PhpDocMissingThrowsInspection
      */
-    private function formatDateTime($dateTime,$userId){
-        if($dateTime->isFloating()){
+    private function formatDateTime($dateTime, $userId) {
+        if ($dateTime->isFloating()) {
             return "";
-        }else{
+        } else {
             // convert from DateTimeImmutable + set user's timezone
-            $tz=$this->utils->getUserTimezone($userId,$this->config);
+            $tz = $this->utils->getUserTimezone($userId, $this->config);
             /** @noinspection PhpUnhandledExceptionInspection */
-            $_dt = new \DateTime('now',$tz);
-            $tz_str=' '.$_dt->format('T');
+            $_dt = new \DateTime('now', $tz);
+            $tz_str = ' ' . $_dt->format('T');
         }
         $_dt->setTimestamp($dateTime->getDateTime()->getTimestamp());
 
-        $l10N=\OC::$server->getL10N($this->appName);
-        return $l10N->l('date', $_dt, ['width' => 'short']).' '
-            .str_replace([' AM',' PM'],['AM','PM'],$l10N->l('time', $_dt, ['width' => 'short'])).$tz_str;
+        $l10N = \OC::$server->getL10N($this->appName);
+        return $l10N->l('date', $_dt, ['width' => 'short']) . ' '
+            . str_replace([' AM', ' PM'], ['AM', 'PM'], $l10N->l('time', $_dt, ['width' => 'short'])) . $tz_str;
     }
 
     /**
      * @param string $token
      */
-    function deleteRoom($token){
-        $tm=$this->getTalkManager();
-        if($tm!==null) {
+    function deleteRoom($token) {
+        $tm = $this->getTalkManager();
+        if ($tm !== null) {
             try {
                 $room = $tm->getRoomByToken($token);
                 $room->deleteRoom();
-            }catch (\Exception $e){
-                \OC::$server->getLogger()->error("Room not found, token: ".$token);
+            } catch (\Exception $e) {
+                \OC::$server->getLogger()->error("Room not found, token: " . $token);
                 \OC::$server->getLogger()->error($e);
             }
         }
     }
 
-    static public function canTalk(){
+    static public function canTalk() {
         try {
             /** @type \OCA\Talk\Manager $tm */
             $tm = \OC::$server->getRegisteredAppContainer(Application::APP_ID)->query(\OCA\Talk\Manager::class);
-            $r=true;
-            if(!method_exists($tm,'createPublicRoom') && !method_exists($tm,'createRoom')){
-                $r=false;
-            }elseif(!method_exists($tm,'getRoomByToken')){
-                $r=false;
+            $r = true;
+            if (!method_exists($tm, 'createPublicRoom') && !method_exists($tm, 'createRoom')) {
+                $r = false;
+            } elseif (!method_exists($tm, 'getRoomByToken')) {
+                $r = false;
             }
             return $r;
         } catch (\Exception $e) {

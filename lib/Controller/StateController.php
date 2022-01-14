@@ -337,13 +337,20 @@ class StateController extends Controller
                 }
             }
         } else if ($action === "get_tz") {
-            $tz = $this->utils->getUserTimezone($this->userId, $this->config);
+
+            $calId = $this->request->getParam("p", "-1");
+            $tz = $this->utils->getCalendarTimezone($this->userId, $this->config, $this->bc->getCalendarById($calId, $this->userId));
             $r->setData($tz->getName());
             $r->setStatus(200);
 
         } else if ($action === "get_cls") {
             $a = $this->utils->getUserSettings(
                 BackendUtils::KEY_CLS, $this->userId);
+
+            // we can have stale calendars in BackendUtils::CLS_TMM_MORE_CALS we do purge here
+            if ($a[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_TEMPLATE) {
+                $this->purgeStaleConflictCalsAndSubs($a);
+            }
 
             $j = json_encode($this->getMoreProps($a));
             if ($j !== false) {
@@ -376,6 +383,11 @@ class StateController extends Controller
 //            {
                 $a = $this->utils->getUserSettings(
                     BackendUtils::KEY_MPS . $pageId, $this->userId);
+
+                // we can have stale calendars in BackendUtils::CLS_TMM_MORE_CALS we do purge here
+                if ($a[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_TEMPLATE) {
+                    $this->purgeStaleConflictCalsAndSubs($a);
+                }
 
                 $j = json_encode($this->getMoreProps($a));
                 if ($j !== false) {
@@ -534,18 +546,24 @@ class StateController extends Controller
                 $r->setStatus(500);
             }
         } else if ($action === 'get_t_tz') {
-            $a = $this->utils->getUserSettings(BackendUtils::KEY_TMPL_INFO, $this->userId);
-            $j = json_encode($a);
-            if ($j !== false) {
-                $r->setData($j);
-                $r->setStatus(200);
+            $pageId = $this->request->getParam("p");
+            if (!empty($pageId)) {
+//                $a = $this->utils->getUserSettings(BackendUtils::KEY_TMPL_INFO, $this->userId);
+                $a = $this->utils->getTemplateInfo($this->userId, $pageId);
+                $j = json_encode($a);
+                if ($j !== false) {
+                    $r->setData($j);
+                    $r->setStatus(200);
+                } else {
+                    $r->setStatus(500);
+                }
             } else {
-                $r->setStatus(500);
+                $r->setStatus(400);
             }
         } else if ($action === 'get_reminder') {
             $a = $this->utils->getUserSettings(BackendUtils::KEY_REMINDERS, $this->userId);
             $a[BackendUtils::REMINDER_BJM] = $this->config->getAppValue("core", "backgroundjobs_mode");
-            $a[BackendUtils::REMINDER_CLI_URL] = $this->config->getSystemValue('overwrite.cli.url')===''?'':'1';
+            $a[BackendUtils::REMINDER_CLI_URL] = $this->config->getSystemValue('overwrite.cli.url') === '' ? '' : '1';
 
             $j = json_encode($a);
             if ($j !== false) {
@@ -623,6 +641,29 @@ class StateController extends Controller
                             $r->setStatus(500);
                         }
                     }
+                }
+            }
+        } else if ($action === "get_dbg") {
+            $a = $this->utils->getUserSettings(
+                BackendUtils::KEY_DEBUGGING, $this->userId);
+            $j = json_encode($a);
+            if ($j !== false) {
+                $r->setData($j);
+                $r->setStatus(200);
+            } else {
+                $r->setStatus(500);
+            }
+        } else if ($action === "set_dbg") {
+            $d = $this->request->getParam("d");
+            if ($d !== null && strlen($d) < 256) {
+                if ($this->utils->setUserSettings(
+                        BackendUtils::KEY_DEBUGGING,
+                        $d, $this->utils->getDefaultForKey(BackendUtils::KEY_DEBUGGING),
+                        $this->userId, $this->appName) === true
+                ) {
+                    $r->setStatus(200);
+                } else {
+                    $r->setStatus(500);
                 }
             }
         }
@@ -710,22 +751,45 @@ class StateController extends Controller
         $o_cms = $this->utils->getUserSettings(
             $key, $this->userId);
 
+        $va = json_decode($value, true);
+        if ($va === null) {
+            \OC::$server->getLogger()->error("can not set KEY_TMPL_INFO, json_decode failed");
+            return false;
+        }
+
+
         $d = $this->config->getUserValue($this->userId, $this->appName, "cnk");
         if ($d === "" || ((hexdec(substr($d, 0, 4)) >> 15) & 1) !== ((hexdec(substr($d, 4, 4)) >> 12) & 1)) {
-            $vo = json_decode($value, true);
-            if (isset($vo[BackendUtils::CLS_TMM_MORE_CALS]) && count($vo[BackendUtils::CLS_TMM_MORE_CALS]) > 2) {
-                $vo[BackendUtils::CLS_TMM_MORE_CALS] = array_slice($vo[BackendUtils::CLS_TMM_MORE_CALS], 0, 2);
-                $value = json_encode($vo);
+            if (isset($va[BackendUtils::CLS_TMM_MORE_CALS]) && count($va[BackendUtils::CLS_TMM_MORE_CALS]) > 2) {
+                $va[BackendUtils::CLS_TMM_MORE_CALS] = array_slice($va[BackendUtils::CLS_TMM_MORE_CALS], 0, 2);
+            }
+        }
+
+
+        if (isset($va[BackendUtils::CLS_TMM_SUBSCRIPTIONS_SYNC])) {
+            // sync value must be one of the following
+            if (!isset(["0" => true, "60" => true, "120" => true, "240" => true, "480" => true, "720" => true, "1440" => true][$va[BackendUtils::CLS_TMM_SUBSCRIPTIONS_SYNC]])) {
+                $va[BackendUtils::CLS_TMM_SUBSCRIPTIONS_SYNC] = '0';
             }
         }
 
         //check if we have BackendUtils::KEY_TMPL_INFO
         if (strpos($value, BackendUtils::TMPL_TZ_DATA)) {
-            $this->utils->setUserSettings(
-                BackendUtils::KEY_TMPL_INFO, $value,
-                $this->utils->getDefaultForKey(BackendUtils::KEY_TMPL_INFO),
-                $this->userId, $this->appName);
+
+            if (!isset($va[BackendUtils::TMPL_TZ_NAME]) || !isset($va[BackendUtils::TMPL_TZ_DATA])) {
+                \OC::$server->getLogger()->error("can not set KEY_TMPL_INFO, invalid TMPL_TZ data");
+                return false;
+            }
+
+            if (!$this->utils->setTemplateInfo($this->userId, $pageId, array(
+                BackendUtils::TMPL_TZ_NAME => $va[BackendUtils::TMPL_TZ_NAME],
+                BackendUtils::TMPL_TZ_DATA => $va[BackendUtils::TMPL_TZ_DATA]))) {
+                \OC::$server->getLogger()->error("can not set KEY_TMPL_INFO, setTemplateInfo failed");
+                return false;
+            }
         }
+
+        $value = json_encode($va);
 
         if ($this->utils->setUserSettings(
                 $key, $value, $def,
@@ -826,5 +890,22 @@ class StateController extends Controller
         return $mps !== null && array_key_exists($p, $mps);
     }
 
-
+    private function purgeStaleConflictCalsAndSubs(&$cls) {
+        $currentCalIds = $cls[BackendUtils::CLS_TMM_MORE_CALS];
+        if (count($currentCalIds) > 0) {
+            // we have calendars to check/filter
+            $cls[BackendUtils::CLS_TMM_MORE_CALS] = $this->utils->filterCalsAndSubs(
+                $currentCalIds,
+                $this->bc->getCalendarsForUser($this->userId, false)
+            );
+        }
+        $currentSubIds = $cls[BackendUtils::CLS_TMM_SUBSCRIPTIONS];
+        if (count($currentSubIds) > 0) {
+            // we have calendars to check/filter
+            $cls[BackendUtils::CLS_TMM_SUBSCRIPTIONS] = $this->utils->filterCalsAndSubs(
+                $currentSubIds,
+                $this->bc->getSubscriptionsForUser($this->userId)
+            );
+        }
+    }
 }

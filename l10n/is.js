@@ -118,7 +118,6 @@ OC.L10N.register(
     "Warning" : "Aðvörun",
     "Main calendar" : "Aðal-dagatal",
     "Use Main calendar" : "Nota aðal-dagatal",
-    "Timezone:" : "Tímabelti:",
     "Simple" : "Einfalt",
     "External" : "Utanaðkomandi",
     "Select Dates:" : "Veldu dagsetningar:",

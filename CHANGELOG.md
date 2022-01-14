@@ -1,3 +1,35 @@
+## 1.11.10 - 2022-01-02
+### Added
+- Log remote blockers debugging option
+
+## 1.11.9 - 2021-12-30
+### Added
+- Raw calendar data dump debugging option
+- More logging in timezone detection
+
+## 1.11.8 - 2021-12-11
+### Added
+- Read-only and linked/subscription calendars are available for conflict checks in "Weekly Template" mode now.
+
+## 1.11.7 - 2021-12-09
+### Fix
+- multiple template mode pages might throw errors if in different timezones, possibly related to #272
+
+## 1.11.6 - 2021-12-04
+### Change
+- max-version="22" -> max-version="23"
+
+## 1.11.4 - 2021-11-29
+### Fixed
+- Remove time zone check on apply because the logic is moved to Template Edit Screen - issue #243
+
+## 1.11.3 - 2021-11-27
+### Fixed
+- Increase hash_table.uid column length to 255 (same as calendarobjects.uid length) - issue #253
+### Changed
+- Use calendar timezone whenever possible - issue #243
+- Moved time zone indicator to Template Edit screen
+
 ## 1.11.2 - 2021-11-16
 ### Fixed
 - Max appointment duration in weekly template" mode - issue #230

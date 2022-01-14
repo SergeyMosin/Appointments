@@ -165,7 +165,7 @@ export default {
 
         this.$emit("showModal", [
           this.t('appointments', 'Error'),
-          this.t('appointments', 'Title and URL can be empty')])
+          this.t('appointments', 'Title and URL cannot be empty')])
         return
       }
       this.sendToServer()

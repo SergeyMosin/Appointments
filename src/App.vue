@@ -245,8 +245,9 @@
               {{ t('appointments', 'Cancel') }}
             </button>
             <div
-                style="float:right; font-style: italic; font-size: 75%; color: var(--color-text-light); padding-right: 1.5em;">
-              {{ t('appointments', 'Hint: right-click on appointment to edit.') }}
+                style="float:right; font-style: italic; font-size: 75%; color: var(--color-text-light); padding-right: 1.5em; text-align: right; line-height: normal; margin-left: -9em">
+              {{ t('appointments', 'Hint: right-click on appointment to edit.') }}<br>
+              {{ t('appointments', 'Time zone') }}: {{ gridTzName }}
             </div>
           </div>
           <div class="srgdev-appt-grid-flex-lower">
@@ -441,7 +442,7 @@ import {
 import {showError, showSuccess} from "@nextcloud/dialogs"
 import SettingsSlideBar from "./components/settings/SettingsSlideBar";
 import SimpleDelAppointments from "./components/settings/TimeslotSettings/SimpleDelAppointments";
-import SimpleAddAppointents from "./components/settings/TimeslotSettings/SimpleAddAppointents";
+import SimpleAddAppointents from "./components/settings/TimeslotSettings/SimpleAddAppointments";
 import ActionInput from "./components/ActionInputExt.vue";
 import NavAccountItem from "./components/NavAccountItem.vue";
 
@@ -463,6 +464,7 @@ import PagePickerSlideBar from "./components/PagePickerSlideBar"
 
 import FormInputsDesigner from "./components/FormInputsDesigner"
 import TemplateApptOptions from "./components/TemplateApptOptions";
+import * as debug from "./use/debugging"
 
 export default {
   name: 'App',
@@ -610,7 +612,7 @@ export default {
     this.getPages(1, 'p0')
 
     this.$root.$on('helpWanted', this.helpWantedHandler)
-    this.$root.$on('dumpSettings', this.dumpSettings)
+    this.$root.$on('startDebug', this.startDebug)
 
     // ------- testing --
     // if(!this.isGridReady){
@@ -625,7 +627,7 @@ export default {
 
   beforeDestroy() {
     this.$root.$off('helpWanted', this.helpWantedHandler)
-    this.$root.$off('dumpSettings', this.dumpSettings)
+    this.$root.$off('startDebug', this.startDebug)
   },
   provide: function () {
     return {
@@ -963,6 +965,7 @@ export default {
      * @param {string} action
      * @param {Object} value
      * @param {string} pageId
+     * @param opt
      */
     async setState(action, value, pageId = '', opt = {}) {
       let ji = ""
@@ -982,7 +985,7 @@ export default {
       }).then(response => {
         this.stateInProgress = false
         if (response.status === 200) {
-          if (action !== 'set_fi') this.getFormData(pageId)
+          if (opt.noFormData === undefined) this.getFormData(pageId)
           if (opt.noToast === undefined) showSuccess(this.t('appointments', 'New Settings Applied.'))
           return action !== 'set_fi' ? true : response.data
         } else if (response.status === 202) {
@@ -1043,7 +1046,7 @@ export default {
                 this.$nextTick(function () {
 
                   // We need to re-scroll when images finsh loading otherwise the scroll position is wrong
-                  const scrollToHelpSec=function () {
+                  const scrollToHelpSec = function () {
                     const elm = document.getElementById("srgdev-appt_help-cont")
                     if (elm !== null && elm.hasAttribute("data-sec-elm")) {
                       const secElm = document.getElementById(elm.getAttribute("data-sec-elm"))
@@ -1076,22 +1079,21 @@ export default {
           })
     },
 
-    dumpSettings() {
+    startDebug(data = undefined) {
+
       this.toggleSlideBar(0)
       this.visibleSection = 3
 
-      axios.get('settings_dump')
-          .then(response => {
-            if (response.status === 200) {
-              this.helpContent = response.data
-            } else {
-              this.helpContent = 'Error occurred: bad status (' + response.status + ')'
-            }
-          })
-          .catch((error) => {
-            console.log(error)
-            this.helpContent = 'Error occurred, check console.'
-          })
+      let prm
+      if (data === undefined) {
+        prm = debug.settingsDump()
+      } else if (data.type === "raw_cal") {
+        prm = debug.getRawCalData(data.cal_info)
+      }
+      prm.then(data => {
+        this.helpContent = data
+      })
+
     },
 
 

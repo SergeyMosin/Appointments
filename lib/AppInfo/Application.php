@@ -7,6 +7,7 @@ use OC_Util;
 use OCA\Appointments\Backend\DavListener;
 use OCA\DAV\Events\CalendarObjectMovedToTrashEvent;
 use OCA\DAV\Events\CalendarObjectUpdatedEvent;
+use OCA\DAV\Events\SubscriptionDeletedEvent;
 use OCA\DAV\HookManager;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
@@ -31,6 +32,7 @@ class Application extends App implements IBootstrap
         if (OC_Util::getVersion()[0] >= 22) {
             $context->registerEventListener(CalendarObjectUpdatedEvent::class, DavListener::class);
             $context->registerEventListener(CalendarObjectMovedToTrashEvent::class, DavListener::class);
+            $context->registerEventListener(SubscriptionDeletedEvent::class, DavListener::class);
         }
     }
 

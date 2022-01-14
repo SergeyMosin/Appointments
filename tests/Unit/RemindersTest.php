@@ -7,6 +7,7 @@ use OCA\Appointments\AppInfo\Application;
 use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
 use OCA\Appointments\Backend\BCSabreImpl;
+use OCA\Appointments\Backend\IBackendConnector;
 use OCA\Appointments\Controller\CalendarsController;
 use OCA\Appointments\Controller\PageController;
 use OCA\Appointments\Controller\StateController;
@@ -17,13 +18,11 @@ use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\IRequest;
-use OCP\IURLGenerator;
 use OCP\Mail\IMailer;
 use OCP\PreConditionNotMetException;
 use PHPUnit\Framework\TestCase;
 use OCA\Appointments\Tests\TestConstants;
 use Psr\Log\AbstractLogger;
-use Psr\Log\Test\TestLogger;
 
 
 class RemindersTest extends TestCase
@@ -38,6 +37,9 @@ class RemindersTest extends TestCase
     private $userId;
     private $l10n;
     private $backendManager;
+    /**
+     * @var IBackendConnector
+     */
     private $backendConnector;
     private $mailer;
     /**
@@ -49,7 +51,6 @@ class RemindersTest extends TestCase
     private $testCalId;
 
     private $userIdsArray;
-
 
     function testReminders() {
 
@@ -175,7 +176,8 @@ class RemindersTest extends TestCase
 
         $cls = $this->utils->getUserSettings(BackendUtils::KEY_CLS, $this->userId);
 
-        $utz = $this->utils->getUserTimezone($this->userId, $this->config);
+        $utz = $this->utils->getCalendarTimezone($this->userId, $this->config,$this->backendConnector->getCalendarById($this->testCalId,$this->userId));
+
         $t_start = new \DateTime('now +' . $cls[BackendUtils::CLS_PREP_TIME] . "mins", $utz);
 
         $this->consoleLog("t_start: " . date(DATE_RFC2822, $t_start->format("U")));
@@ -242,7 +244,9 @@ class RemindersTest extends TestCase
 
 
     function setTemplateFromTimestamps(array $timestamps) {
-        $tz = $this->utils->getUserTimezone($this->userId, $this->config);
+
+        $tz = $this->utils->getCalendarTimezone($this->userId, $this->config,$this->backendConnector->getCalendarById($this->testCalId,$this->userId));
+
         $this->consoleLog("tz name: " . $tz->getName());
 
         $dt = new \DateTime();

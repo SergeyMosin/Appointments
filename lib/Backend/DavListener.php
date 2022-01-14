@@ -9,6 +9,7 @@ use OCA\Appointments\Email\EMailTemplateNC;
 use OCA\Appointments\Email\EMailTemplateNC20;
 use OCA\DAV\Events\CalendarObjectMovedToTrashEvent;
 use OCA\DAV\Events\CalendarObjectUpdatedEvent;
+use OCA\DAV\Events\SubscriptionDeletedEvent;
 use OCP\DB\Exception;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\EventDispatcher\Event;
@@ -39,6 +40,9 @@ class DavListener implements IEventListener
             $this->handler($event->getObjectData(), $event->getCalendarData(), false);
         } elseif ($event instanceof CalendarObjectMovedToTrashEvent) {
             $this->handler($event->getObjectData(), $event->getCalendarData(), true);
+        } elseif ($event instanceof SubscriptionDeletedEvent){
+            // clean BackendUtils::SYNC_TABLE_NAME
+            $this->utils->removeSubscriptionSync($event->getSubscriptionId());
         }
     }
 
@@ -90,7 +94,6 @@ class DavListener implements IEventListener
             if ($userId !== $row['user_id']) {
                 $userId = $row['user_id'];
                 $utils->clearSettingsCache();
-                $utz = $this->utils->getUserTimezone($userId, $config);
             }
 
             $pageId = $row['page_id'];
@@ -245,6 +248,9 @@ class DavListener implements IEventListener
 
                     try {
                         $mailer->send($msg);
+
+                        $utz = $this->utils->getCalendarTimezone($userId, $config, $bc->getCalendarById($calId, $userId));
+
                         if (!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
                         $description = $evt->DESCRIPTION->getValue();
                         // TRANSLATORS Ex: Reminder sent on {{Date and Time}},
@@ -380,7 +386,7 @@ class DavListener implements IEventListener
 
 //        \OC::$server->getLogger()->error('DL Debug: M7');
 
-        $utz = $utils->getUserTimezone($userId, $config);
+        $utz = $utils->getCalendarTimezone($userId, $config, $utils->transformCalInfo($calendarData));
         try {
             $now = new \DateTime('now', $utz);
         } catch (\Exception $e) {
@@ -841,7 +847,8 @@ class DavListener implements IEventListener
 
                 $evt_dt = $evt->DTSTART->getDateTime();
                 // Here we need organizer's timezone for getDateTimeString()
-                $utz_info .= $utils->getUserTimezone($userId, $config)->getName();
+//                $utz_info .= $utils->getUserTimezone($userId, $config)->getName();
+                $utz_info .= $utz->getName();
 
 //                $tmpl = $mailer->createEMailTemplate("ID_" . time());
                 $tmpl = $this->getEmailTemplate();

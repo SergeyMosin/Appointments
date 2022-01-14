@@ -29,7 +29,6 @@ OC.L10N.register(
     "Edit" : "සංස්කරණය",
     "Error" : "දෝෂය",
     "Warning" : "අවවාදයයි",
-    "Loading…" : "පූරණය වෙමින්…",
     "Location:" : "ස්ථානය:",
     "Back" : "ආපසු",
     "Next" : "ඊළඟ"

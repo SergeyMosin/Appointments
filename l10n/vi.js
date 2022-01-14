@@ -68,7 +68,6 @@ OC.L10N.register(
     "GDPR Compliance" : "Sự tuân thủ về Qui Định Chung Về Bảo Vệ Dữ Liêu của Châu Âu GDPR",
     "Customize Public Page" : "Cá nhân hóa trang công khai",
     "Warning" : "Cảnh báo",
-    "Timezone:" : "Múi giờ:",
     "Select Dates:" : "Chọn ngày:",
     "Select Dates" : "Chọn ngày",
     "Appointment Duration:" : "Thời lượng cuộc hẹn:",

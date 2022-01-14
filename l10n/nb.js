@@ -110,7 +110,6 @@ OC.L10N.register(
     "Canceled" : "Avbrutt",
     "Warning" : "Advarsel",
     "Add Appointment Slots" : "Legg til Avtaleplasser",
-    "Timezone:" : "Tidssone:",
     "Simple" : "Enkel",
     "External" : "Ekstern",
     "Select Dates:" : "Velg Datoer:",

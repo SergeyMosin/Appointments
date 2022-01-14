@@ -14,7 +14,7 @@
         <ApptIconLabel
             :text="t('appointments','Time Slot Settings')"
             icon="icon-appt-timeslot-settings"/>
-        <div class="srgdev-appt-sb-indent_small">
+        <div class="srgdev-appt-sb-indent_small" style="margin-bottom: 1.25em;">
           <label
               class="tsb-label"
               for="appt_tsb-appt-prep-time">
@@ -47,19 +47,48 @@
             <option value="reset">{{ t('appointments', 'Reset (make the timeslot available)') }}</option>
           </select>
           <div style="margin-top: 1.2em">
-          <input
-              v-model="calInfo.allDayBlock"
-              type="checkbox"
-              id="appt_tsb-allday-block"
-              class="checkbox"><label style="margin-left: -3px;" class="srgdev-appt-sb-label-inline" for="appt_tsb-allday-block">{{t('appointments','Include all day events in conflict check')}}</label>
+            <input
+                v-model="calInfo.allDayBlock"
+                type="checkbox"
+                id="appt_tsb-allday-block"
+                class="checkbox"><label style="margin-left: -3px;" class="srgdev-appt-sb-label-inline"
+                                        for="appt_tsb-allday-block">{{ t('appointments', 'Include all day events in conflict check') }}</label>
           </div>
         </div>
         <ApptIconLabel
             class="toggler" :class="{'toggler--closed':sections[0]===0}"
             @click.native="toggleSection(0)"
+            :text="t('appointments','Weekly Template Settings')"
+            icon="icon-sched-mode-wt"/>
+        <div v-show="sections[0]===1"
+             class="srgdev-appt-sb-indent_small">
+          <div class="srgdev-appt-info-lcont">
+          <label
+              class="tsb-label"
+              for="appt_tsb-appt-sub-refresh">
+            {{ t('appointments', 'Subscriptions Sync Interval') }}:</label><a
+              class="icon-info srgdev-appt-info-link"
+              @click="$root.$emit('helpWanted','tmm_subs_sync')"></a>
+          </div>
+          <select
+              v-model="calInfo.tmmSubscriptionsSync"
+              class="tsb-input"
+              id="appt_tsb-appt-sub-refresh">
+            <option value="0">{{ t('appointments', 'Nextcloud Only Sync') }}</option>
+            <option value="60">{{ t('appointments', '1 Hour') }}</option>
+            <option value="120">{{ t('appointments', '2 Hours') }}</option>
+            <option value="240">{{ t('appointments', '4 Hours') }}</option>
+            <option value="480">{{ t('appointments', '8 Hours') }}</option>
+            <option value="720">{{ t('appointments', '12 Hours') }}</option>
+            <option value="1440">{{ t('appointments', '1 day') }}</option>
+          </select>
+        </div>
+        <ApptIconLabel
+            class="toggler" :class="{'toggler--closed':sections[0]===0}"
+            @click.native="toggleSection(1)"
             :text="t('appointments','External Mode Settings')"
             icon="icon-sched-mode"/>
-        <div v-show="sections[0]===1"
+        <div v-show="sections[1]===1"
              class="srgdev-appt-sb-indent_small">
           <div class="srgdev-appt-info-lcont srgdev-appt-sb-chb-cont" style="margin-top: 1em"><input
               type="checkbox"
@@ -93,12 +122,12 @@
         </div>
         <ApptIconLabel
             class="toggler" :class="{'toggler--closed':sections[1]===0}"
-            @click.native="toggleSection(1)"
+            @click.native="toggleSection(2)"
             :text="t('appointments','Debugging')"
             icon="icon-category-monitoring"/>
-        <div v-show="sections[1]===1"
+        <div v-if="sections[2]===1"
              class="srgdev-appt-sb-indent">
-          <span @click="$root.$emit('dumpSettings')" class="srgdev-appt-sb-linker">Settings Dump</span>
+          <Debugging/>
         </div>
         <button
             @click="apply"
@@ -114,10 +143,12 @@
 import SlideBar from "../SlideBar.vue"
 import ApptIconLabel from "../ApptIconLabel";
 import {showError} from "@nextcloud/dialogs"
+import Debugging from "./Debugging";
 
 export default {
   name: "AdvancedSettings",
   components: {
+    Debugging,
     ApptIconLabel,
     SlideBar
   },
@@ -134,7 +165,7 @@ export default {
     return {
       isLoading: true,
       isSending: false,
-      sections: [0, 0],
+      sections: [0, 0, 0],
       calInfo: {
         prepTime: "0",
         whenCanceled: "mark",
@@ -142,6 +173,7 @@ export default {
         nrPushRec: true,
         nrRequireCat: false,
         nrAutoFix: false,
+        tmmSubscriptionsSync: "0",
       },
     }
   },
@@ -177,18 +209,20 @@ export default {
 .tsb-label {
   display: block;
 }
-.toggler{
+
+.toggler {
   cursor: pointer;
 }
+
+.toggler--closed {
+  margin-bottom: .625em;
+}
+
 .tsb-input {
   margin-top: 0;
   display: block;
   min-width: 80%;
   margin-bottom: 1em;
   color: var(--color-text-lighter);
-}
-.srgdev-appt-sb-linker:hover{
-  text-decoration: underline;
-  cursor: pointer;
 }
 </style>
