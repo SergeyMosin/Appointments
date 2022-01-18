@@ -133,6 +133,7 @@ OC.L10N.register(
     "Mark the appointment as canceled" : "Markeer de afspraak als geannuleerd",
     "Reset (make the timeslot available)" : "Reset (maak het tijdstip weer beschikbaar)",
     "Include all day events in conflict check" : "Betrek hele-dag afspraken in conflict controle",
+    "Weekly Template Settings" : "Instellingen weeksjabloon",
     "Subscriptions Sync Interval" : "Abonnement sync interval",
     "Nextcloud Only Sync" : "Nextcloud alleen Sync",
     "External Mode Settings" : "Instellingen externe modus",
