@@ -1,3 +1,9 @@
+## 1.11.11 - 2022-01-19
+### Fixed
+- Interval tree bug: lookup might report busy slot as free under certain circumstances - issue #282
+### Changed
+- Allow non admin users to debug/dump own raw calendar data
+
 ## 1.11.10 - 2022-01-02
 ### Added
 - Log remote blockers debugging option
