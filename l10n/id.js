@@ -22,8 +22,6 @@ OC.L10N.register(
     "Save" : "Simpan",
     "Loading" : "Memuat",
     "Apply" : "Terapkan",
-    "15 Minutes" : "15 Menit",
-    "30 Minutes" : "30 Menit",
     "1 Hour" : "1 Jam",
     "2 Hours" : "2 Jam",
     "Edit" : "Sunting",

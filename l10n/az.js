@@ -10,8 +10,6 @@ OC.L10N.register(
     "Remove" : "Sil",
     "Save" : "Saxla",
     "Loading" : "Loading",
-    "15 Minutes" : "15 Dəqiqqə",
-    "30 Minutes" : "30 Dəqiqqə",
     "1 Hour" : "1 Saat",
     "2 Hours" : "2 Saat",
     "Edit" : "Dəyişiklik et",

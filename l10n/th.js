@@ -11,8 +11,6 @@ OC.L10N.register(
     "Save" : "บันทึก",
     "Loading" : "Loading",
     "Apply" : "นำไปใช้",
-    "15 Minutes" : "15 นาที",
-    "30 Minutes" : "30 นาที",
     "1 Hour" : "1 ชั่วโมง",
     "2 Hours" : "2 ชั่วโมง",
     "Edit" : "แก้ไข",

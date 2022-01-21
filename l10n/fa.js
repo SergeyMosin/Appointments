@@ -15,8 +15,6 @@ OC.L10N.register(
     "Loading" : "در حال بار گزاری",
     "Apply" : "اعمال",
     "close" : "بستن",
-    "15 Minutes" : "یک ربع",
-    "30 Minutes" : "نیم ساعت",
     "1 Hour" : "۱ ساعت",
     "2 Hours" : "۲ ساعت",
     "Edit" : "ویرایش",

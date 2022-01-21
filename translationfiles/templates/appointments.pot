@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2022-01-20 03:40+0000\n"
+"POT-Creation-Date: 2022-01-21 03:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -593,36 +593,35 @@ msgid "No lead time"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:67
-msgid "15 Minutes"
+msgid "15 minutes"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:68
-msgid "30 Minutes"
+msgid "30 minutes"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:69
-#: /app/specialVueFakeDummyForL10nScript.js:84
-msgid "1 Hour"
+#: /app/specialVueFakeDummyForL10nScript.js:158
+msgid "1 hour"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:70
-#: /app/specialVueFakeDummyForL10nScript.js:85
-msgid "2 Hours"
+#: /app/specialVueFakeDummyForL10nScript.js:159
+msgid "2 hours"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:71
-#: /app/specialVueFakeDummyForL10nScript.js:86
-msgid "4 Hours"
+#: /app/specialVueFakeDummyForL10nScript.js:160
+msgid "4 hours"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:72
-#: /app/specialVueFakeDummyForL10nScript.js:87
-msgid "8 Hours"
+#: /app/specialVueFakeDummyForL10nScript.js:161
+msgid "8 hours"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:73
-#: /app/specialVueFakeDummyForL10nScript.js:88
-msgid "12 Hours"
+msgid "12 hours"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:74
@@ -666,6 +665,26 @@ msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:83
 msgid "Nextcloud Only Sync"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:84
+msgid "1 Hour"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:85
+msgid "2 Hours"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:86
+msgid "4 Hours"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:87
+msgid "8 Hours"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:88
+msgid "12 Hours"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:90
@@ -915,22 +934,6 @@ msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:157
 msgid "Not set"
-msgstr ""
-
-#: /app/specialVueFakeDummyForL10nScript.js:158
-msgid "1 hour"
-msgstr ""
-
-#: /app/specialVueFakeDummyForL10nScript.js:159
-msgid "2 hours"
-msgstr ""
-
-#: /app/specialVueFakeDummyForL10nScript.js:160
-msgid "4 hours"
-msgstr ""
-
-#: /app/specialVueFakeDummyForL10nScript.js:161
-msgid "8 hours"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:162

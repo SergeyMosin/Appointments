@@ -14,8 +14,6 @@ OC.L10N.register(
     "Loading" : "Duke ngarkuar",
     "Apply" : "Apliko",
     "close" : "mbyll",
-    "15 Minutes" : "15 Minuta",
-    "30 Minutes" : "30 Minuta",
     "1 Hour" : "1 Orë",
     "2 Hours" : "2 Orë",
     "Edit" : "Përpuno",

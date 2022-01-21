@@ -39,8 +39,6 @@ OC.L10N.register(
     "Save" : "Save",
     "Loading" : "Loading",
     "Apply" : "Apply",
-    "15 Minutes" : "15 Minutes",
-    "30 Minutes" : "30 Minutes",
     "1 Hour" : "1 Hour",
     "2 Hours" : "2 Hours",
     "Edit" : "Edit",

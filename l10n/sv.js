@@ -64,8 +64,6 @@ OC.L10N.register(
     "Apply" : "Tillämpa",
     "close" : "stäng",
     "Advanced Settings" : "Avancerade inställningar",
-    "15 Minutes" : "15 minuter",
-    "30 Minutes" : "30 minuter",
     "1 Hour" : "1 timme",
     "2 Hours" : "2 timmar",
     "Edit" : "Redigera",

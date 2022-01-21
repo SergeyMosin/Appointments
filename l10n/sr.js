@@ -16,8 +16,6 @@ OC.L10N.register(
     "Apply" : "Примени",
     "close" : "затвори",
     "Advanced Settings" : "Напредне поставке",
-    "15 Minutes" : "15 минута",
-    "30 Minutes" : "30 минута",
     "1 Hour" : "1 сат",
     "2 Hours" : "2 сата",
     "Edit" : "Измени",

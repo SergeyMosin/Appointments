@@ -14,8 +14,6 @@ OC.L10N.register(
     "Loading" : "Cargando",
     "Apply" : "Aplicar",
     "close" : "Cerrar",
-    "15 Minutes" : "15 Minutos",
-    "30 Minutes" : "30 Minutos",
     "1 Hour" : "1 Hora",
     "2 Hours" : "2 Horas",
     "Edit" : "Editar",

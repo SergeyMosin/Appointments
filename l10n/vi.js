@@ -42,8 +42,6 @@ OC.L10N.register(
     "Loading" : "Đang tải",
     "Apply" : "Áp dụng",
     "close" : "đóng",
-    "15 Minutes" : "15 Minutes",
-    "30 Minutes" : "30 Minutes",
     "1 Hour" : "1 Hour",
     "2 Hours" : "2 Hours",
     "Edit" : "Sửa",

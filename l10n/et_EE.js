@@ -13,8 +13,6 @@ OC.L10N.register(
     "Save" : "Salvesta",
     "Loading" : "Laadimine",
     "Apply" : "Rakenda",
-    "15 Minutes" : "15 minutit",
-    "30 Minutes" : "30 minutit",
     "1 Hour" : "1 tund",
     "2 Hours" : "2 tundi",
     "Edit" : "Redigeeri",

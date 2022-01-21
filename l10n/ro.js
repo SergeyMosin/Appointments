@@ -32,8 +32,6 @@ OC.L10N.register(
     "Loading" : "Loading",
     "Apply" : "Aplică",
     "close" : "închide",
-    "15 Minutes" : "15 Minute",
-    "30 Minutes" : "30 Minute",
     "1 Hour" : "1 Oră",
     "2 Hours" : "2 Ore",
     "Edit" : "Editare",
