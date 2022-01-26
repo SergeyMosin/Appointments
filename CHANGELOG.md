@@ -1,3 +1,7 @@
+## 1.11.12 - 2022-01-26
+### Added
+- Option to add custom text to event/appointment DESCRIPTION property (the text is also added to .ics email attachment)
+
 ## 1.11.11 - 2022-01-19
 ### Fixed
 - Interval tree bug: lookup might report busy slot as free under certain circumstances - issue #282
