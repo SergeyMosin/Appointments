@@ -64,6 +64,7 @@ class BackendUtils
     public const EML_MCNCL = 'meCancel';
     public const EML_VLD_TXT = 'vldNote';
     public const EML_CNF_TXT = 'cnfNote';
+    public const EML_ICS_TXT = 'icsNote';
 
     // Calendar Settings
     public const KEY_CLS = 'calendar_settings';
@@ -271,6 +272,11 @@ class BackendUtils
         $evt->SUMMARY->setValue("⌛ " . $info['name']);
 
         $dsr = $info['name'] . "\n" . (empty($info['phone']) ? "" : ($info['phone'] . "\n")) . $info['email'] . $info['_more_data'];
+
+        if (isset($info["_more_ics_text"])) {
+            // custom ICS text from per settings
+            $dsr .= "\n" . $info["_more_ics_text"];
+        }
         if (!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
         $evt->DESCRIPTION->setValue($dsr);
 
@@ -949,7 +955,8 @@ class BackendUtils
                     self::EML_MCONF => false,
                     self::EML_MCNCL => false,
                     self::EML_VLD_TXT => "",
-                    self::EML_CNF_TXT => "");
+                    self::EML_CNF_TXT => "",
+                    self::EML_ICS_TXT => "");
                 break;
             case self::KEY_CLS:
                 $d = array(

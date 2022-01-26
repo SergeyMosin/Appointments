@@ -633,12 +633,12 @@ class BCSabreImpl implements IBackendConnector
                         if ($start_ts <= $e_ts && $s_ts <= $end_ts) {
 
                             if ($log_remote_blockers && $cal['type'] === CalDavBackend::CALENDAR_TYPE_SUBSCRIPTION) {
-                                $this->logErr("debug: ".var_export([
-                                    'blocker_uid' => $_evt->UID->getValue(),
-                                    'start_timestamp' => $s_ts,
-                                    'start_value' => $_evt->DTSTART->getValue(),
-                                    'time_zone' => $it->getDtStart()->getTimezone()->getName(),
-                                ], true));
+                                $this->logErr("debug: " . var_export([
+                                        'blocker_uid' => $_evt->UID->getValue(),
+                                        'start_timestamp' => $s_ts,
+                                        'start_value' => $_evt->DTSTART->getValue(),
+                                        'time_zone' => $it->getDtStart()->getTimezone()->getName(),
+                                    ], true));
                             }
 
                             $itc->insert($booked_tree, $s_ts, $e_ts);
@@ -1311,6 +1311,11 @@ class BCSabreImpl implements IBackendConnector
             }
 
             if ($ec === 0) {
+
+                $eml_settings = $this->utils->getUserSettings(
+                    BackendUtils::KEY_EML, $userId);
+                $info["_more_ics_text"] = $eml_settings[BackendUtils::EML_ICS_TXT];
+
                 $newData = $this->utils->dataSetAttendee($d, $info, $userId, $uri);
                 if ($newData === "1") {
                     $ec = 1;

@@ -40,7 +40,7 @@ class DavListener implements IEventListener
             $this->handler($event->getObjectData(), $event->getCalendarData(), false);
         } elseif ($event instanceof CalendarObjectMovedToTrashEvent) {
             $this->handler($event->getObjectData(), $event->getCalendarData(), true);
-        } elseif ($event instanceof SubscriptionDeletedEvent){
+        } elseif ($event instanceof SubscriptionDeletedEvent) {
             // clean BackendUtils::SYNC_TABLE_NAME
             $this->utils->removeSubscriptionSync($event->getSubscriptionId());
         }
@@ -750,10 +750,13 @@ class DavListener implements IEventListener
                     }
                 } else {
                     if (!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
+
+                    $more_ics_text = $eml_settings[BackendUtils::EML_ICS_TXT];
                     $evt->DESCRIPTION->setValue(
                         $org_name . "\n"
                         . (!empty($org_phone) ? $org_phone . "\n" : "")
                         . (!empty($talk_link_txt) ? "\n" . $talk_link_txt . "\n" : "")
+                        . (!empty($more_ics_text) ? "\n" . $more_ics_text . "\n" : "")
                     );
                 }
             } else {
