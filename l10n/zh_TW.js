@@ -173,6 +173,7 @@ OC.L10N.register(
     "Skip email validation step" : "跳過電子郵件驗證步驟",
     "Additional VALIDATION email text:" : "額外的驗證電子郵件正文：",
     "Additional CONFIRMATION email text:" : "額外確認電子郵件文字：",
+    "Additional ICS file description:" : "其他 ICS 檔案描述：",
     "Public Page Settings" : "公開頁面設定",
     "Control what your visitors see" : "控制您的訪客看到的內容",
     "Form Title" : "表單標題",

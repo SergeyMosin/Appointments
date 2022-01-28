@@ -173,6 +173,7 @@ OC.L10N.register(
     "Skip email validation step" : "Přeskočit krok ověřování e-mailu",
     "Additional VALIDATION email text:" : "Text dodatečného OVĚŘOVACÍHO e-mailu:",
     "Additional CONFIRMATION email text:" : "Text dodatečného POTVRZOVACÍHO e-mailu:",
+    "Additional ICS file description:" : "Popis dalšího ICS souboru:",
     "Public Page Settings" : "Nastavení veřejné stránky",
     "Control what your visitors see" : "Určete, co vaši návštěvníci uvidí",
     "Form Title" : "Nadpis formuláře",
