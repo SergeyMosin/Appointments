@@ -171,6 +171,7 @@
     "Skip email validation step" : "Az e-mail ellenőrzési lépés kihagyása",
     "Additional VALIDATION email text:" : "További ellenőrző e-mail szöveg:",
     "Additional CONFIRMATION email text:" : "További megerősítő e-mail szöveg:",
+    "Additional ICS file description:" : "További ICS-fájl leírás:",
     "Public Page Settings" : "Nyilvános oldal beállításai",
     "Control what your visitors see" : "Állítsa be, mit lássanak a látogatók",
     "Form Title" : "Űrlap címe",
