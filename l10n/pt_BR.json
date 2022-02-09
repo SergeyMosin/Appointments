@@ -171,6 +171,7 @@
     "Skip email validation step" : "Pular a validação de e-mail",
     "Additional VALIDATION email text:" : "Texto adicional do e-mail de VALIDAÇÃO:",
     "Additional CONFIRMATION email text:" : "Texto adicional do email de CONFIRMAÇÃO:",
+    "Additional ICS file description:" : "Descrição adicional do arquivo ICS:",
     "Public Page Settings" : "Configurações da Página Pública",
     "Control what your visitors see" : "Controle o que seus visitantes veem",
     "Form Title" : "Título do Formulário",

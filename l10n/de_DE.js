@@ -173,6 +173,7 @@ OC.L10N.register(
     "Skip email validation step" : "E-Mail-Validierungsschritt überspringen",
     "Additional VALIDATION email text:" : "Zusätzlicher E-Mail-Text zur ÜBERPRÜFUNG:",
     "Additional CONFIRMATION email text:" : "Zusätzlicher E-Mail-Text zur BESTÄTIGUNG:",
+    "Additional ICS file description:" : "Zusätzliche ICS-Datei-Beschreibung:",
     "Public Page Settings" : "Einstellungen für öffentliche Seite",
     "Control what your visitors see" : "Kontrollieren Sie, was Ihre Besucher sehen",
     "Form Title" : "Formulartitel",

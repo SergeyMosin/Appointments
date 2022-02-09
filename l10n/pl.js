@@ -173,6 +173,7 @@ OC.L10N.register(
     "Skip email validation step" : "Pomiń krok weryfikacji adresu e-mail",
     "Additional VALIDATION email text:" : "Dodatkowy tekst e-maila z WALIDACJĄ:",
     "Additional CONFIRMATION email text:" : "Dodatkowa wiadomość e-mail z POTWIERDZENIEM:",
+    "Additional ICS file description:" : "Dodatkowy opis pliku ICS:",
     "Public Page Settings" : "Ustawienia strony publicznej",
     "Control what your visitors see" : "Kontroluj co widzą odwiedzający",
     "Form Title" : "Tytuł formularza",

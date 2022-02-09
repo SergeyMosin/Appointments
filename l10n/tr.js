@@ -173,6 +173,7 @@ OC.L10N.register(
     "Skip email validation step" : "E-posta doğrulama adımı atlansın",
     "Additional VALIDATION email text:" : "Ek DOĞRULAMA e-postası metni:",
     "Additional CONFIRMATION email text:" : "Ek ONAYLAMA e-postası metni:",
+    "Additional ICS file description:" : "Ek ICS dosyası açıklaması:",
     "Public Page Settings" : "Herkese açık sayfa ayarları",
     "Control what your visitors see" : "Konuklara görüntülenecekleri seçin",
     "Form Title" : "Form başlığı",

@@ -173,6 +173,7 @@ OC.L10N.register(
     "Skip email validation step" : "Пропустить шаг проверки адреса эл. почты",
     "Additional VALIDATION email text:" : "Дополнительный текст ПРОВЕРКИ электронной почты:",
     "Additional CONFIRMATION email text:" : "Дополнительный текст ПОДТВЕРЖДЕНИЯ электронного письма:",
+    "Additional ICS file description:" : "Дополнительное описание файла ICS:",
     "Public Page Settings" : "Настройки публичной страницы",
     "Control what your visitors see" : "Выберите, что увидят ваши посетители",
     "Form Title" : "Заголовок формы",
