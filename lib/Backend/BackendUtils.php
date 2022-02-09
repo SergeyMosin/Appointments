@@ -326,9 +326,10 @@ class BackendUtils
     /**
      * @param $uri
      * @param $userId
+     * @param $noChanges - if true, no changes will be made,  this will only return meeting type
      * @return string[] [new meeting type, '' === error, data]
      */
-    function dataChangeApptType($data, $userId) {
+    function dataChangeApptType($data, $userId, $noChanges = false) {
         $r = ['', ''];
 
         $vo = $this->getAppointment($data, 'CONFIRMED');
@@ -351,17 +352,34 @@ class BackendUtils
                 }
 
                 if ($xad[4] === 'f') {
-                    // the appointment was previously finalized as "in-person"
+                    // the appointment was previously finalized as "in-person ..."
+                    if($noChanges){
+                        $tlk = $this->getUserSettings(self::KEY_TALK, $userId);
+                        // new_type = virtual
+                        $r[0] = (!empty($tlk[self::TALK_FORM_VIRTUAL_TXT])
+                            ? $tlk[self::TALK_FORM_VIRTUAL_TXT]
+                            : $tlk[self::TALK_FORM_DEF_VIRTUAL]);
+                        return $r;
+                    }
+
                     // ... so, set $xad[4]='_' @see BackendUtils->dataSetAttendee
-                    // this will add a talk room and description when a addTalkInfo is called
+                    // this will add a talk room and description when addTalkInfo is called
                     $xad[4] = '_';
 
                 } elseif (strlen($xad[4]) > 1) {
                     // this was a virtual appointment...
                     // ... $xad[4] is the room token.
-                    // delete the room first...
 
                     $tlk = $this->getUserSettings(self::KEY_TALK, $userId);
+
+                    if($noChanges){
+                        $r[0] = (!empty($tlk[self::TALK_FORM_REAL_TXT])
+                            ? $tlk[self::TALK_FORM_REAL_TXT]
+                            : $tlk[self::TALK_FORM_DEF_REAL]);
+                        return $r;
+                    }
+
+                    // delete the room first...
                     $ti = new TalkIntegration($tlk, $this);
                     $ti->deleteRoom($xad[4]);
 
@@ -472,7 +490,7 @@ class BackendUtils
             $ret[1] = self::PREF_STATUS_CONFIRMED;
         }
 
-        $ret[0]=$this->getDateTimeString(
+        $ret[0] = $this->getDateTimeString(
             $evt->DTSTART->getDateTime(),
             $evt->{self::TZI_PROP}->getValue()
         );

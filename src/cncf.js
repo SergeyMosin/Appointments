@@ -24,6 +24,12 @@
                     }
                 }
             })
+        } else {
+            if (typeof URL === "function" && window.history && window.history.replaceState) {
+                const u = new URL(window.location)
+                u.searchParams.delete("h")
+                window.history.replaceState({}, '', u.toString())
+            }
         }
     })
 })()

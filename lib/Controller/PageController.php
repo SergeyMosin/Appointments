@@ -452,10 +452,10 @@ class PageController extends Controller
 
                 $tlk = $this->utils->getUserSettings(BackendUtils::KEY_TALK, $userId);
 
-                list($new_type, $new_data) = $this->utils->dataChangeApptType($data, $userId);
-                if (!empty($new_type) && !empty($new_data)) {
+                if ($take_action) {
 
-                    if ($take_action) {
+                    list($new_type, $new_data) = $this->utils->dataChangeApptType($data, $userId);
+                    if (!empty($new_type) && !empty($new_data)) {
 
                         if ($this->bc->updateObject($cId, $uri, $new_data) !== false) {
                             $sts = 0;
@@ -467,10 +467,17 @@ class PageController extends Controller
                             // TRANSLATORS Ex: Your {{meeting type}} has been changed to {{online(video/audio)}}
                             $page_text = $this->l->t("Your %s has been changed to %s", [$lbl, $new_type]);
                         }
+                    }
+                } else {
+                    // show the "Would you like to change..." text and button
+                    list($new_type, $none) = $this->utils->dataChangeApptType($data, $userId, true);
 
+                    if (empty($new_type)) {
+                        // error
+                        $sts = 1;
                     } else {
-                        // show the "Would you like to change..." text and button
-                        $sts=0;
+
+                        $sts = 0;
 
                         $lbl = !empty($tlk[BackendUtils::TALK_FORM_LABEL])
                             ? $tlk[BackendUtils::TALK_FORM_LABEL]

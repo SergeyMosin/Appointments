@@ -243,8 +243,10 @@ class TalkIntegration
                 $room = $tm->getRoomByToken($token);
                 $room->deleteRoom();
             } catch (\Exception $e) {
-                \OC::$server->getLogger()->error("Room not found, token: " . $token);
-                \OC::$server->getLogger()->error($e);
+                \OC::$server->getLogger()->error("deleteRoom: Room not found, token: " . $token);
+                if (get_class($e) !== \OCA\Talk\Exceptions\RoomNotFoundException::class) {
+                    \OC::$server->getLogger()->error($e);
+                }
             }
         }
     }
