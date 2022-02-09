@@ -137,6 +137,7 @@ echo '&lt;iframe src = "'.$src.'"&gt;&lt;/iframe&gt;';
         Nextcloud <strong>occ</strong>: <a style="color: blue; text-decoration: underline" target="_blank" href="https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html">https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html</a><br>
         Frame Ancestors: <a style="color: blue; text-decoration: underline" target="_blank" href="https://w3c.github.io/webappsec-csp/#directive-frame-ancestors">https://w3c.github.io/webappsec-csp/#directive-frame-ancestors</a><br>
         Additional information can be found here: <a style="color: blue; text-decoration: underline" target="_blank" href="https://github.com/SergeyMosin/Appointments/issues/191#issuecomment-909210230">https://github.com/SergeyMosin/Appointments/issues/191#issuecomment-909210230</a><br>
+        Some more information is here: <a style="color: blue; text-decoration: underline" target="_blank" href="https://github.com/SergeyMosin/Appointments/issues/268#issue-1067123944">https://github.com/SergeyMosin/Appointments/issues/268#issue-1067123944</a><br>
     </div>
 
   <h2 id="srgdev-sec_contrib_info" class="srgdev-appt-hs-h1">Contributor Features</h2>

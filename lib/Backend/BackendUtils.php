@@ -438,6 +438,49 @@ class BackendUtils
     }
 
     /**
+     * @param $data
+     * @param string $userId
+     * @return array [string|null, int]
+     *                  date_time: Localized DateTime string or null on error
+     *                  state: one of self::PREF_STATUS_*
+     */
+    function dataApptGetInfo($data, $userId) {
+        $ret = [null, self::PREF_STATUS_TENTATIVE];
+
+        if ($data === null) {
+            return $ret;
+        }
+
+        $vo = $this->getAppointment($data, '*');
+        if ($vo === null) {
+            return $ret;
+        }
+
+        /** @var \Sabre\VObject\Component\VEvent $evt */
+        $evt = $vo->VEVENT;
+
+        $a = $this->getAttendee($evt);
+        if ($a === null) {
+            return $ret;
+        }
+
+        if ($a->parameters['PARTSTAT']->getValue() === 'DECLINED'
+            || $evt->STATUS->getValue() === 'CANCELLED') {
+            // cancelled
+            $ret[1] = self::PREF_STATUS_CANCELLED;
+        } else if ($a->parameters['PARTSTAT']->getValue() === 'ACCEPTED') {
+            $ret[1] = self::PREF_STATUS_CONFIRMED;
+        }
+
+        $ret[0]=$this->getDateTimeString(
+            $evt->DTSTART->getDateTime(),
+            $evt->{self::TZI_PROP}->getValue()
+        );
+
+        return $ret;
+    }
+
+    /**
      * @param $userId
      * @param $xad
      * @param $evt

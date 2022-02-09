@@ -7,6 +7,7 @@ module.exports = {
 	entry:{
 		script: path.join(__dirname, 'src', 'main.js'),
 		form: path.join(__dirname, 'src', 'form.js'),
+		cncf: path.join(__dirname, 'src', 'cncf.js'),
 	},
 	output: {
 		path: path.resolve(__dirname, './js'),

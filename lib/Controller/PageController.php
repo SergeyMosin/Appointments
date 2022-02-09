@@ -214,6 +214,20 @@ class PageController extends Controller
         return $this->showFormPost($userId, $pageId);
     }
 
+    private function getPageText($date_time, $state) {
+        if ($state === BackendUtils::PREF_STATUS_CONFIRMED) {
+            // TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is confirmed.
+            return $this->l->t("Your appointment scheduled for %s is confirmed.", [$date_time]);
+        } else {
+            if (!empty($date_time)) {
+                // TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is canceled.
+                return $this->l->t("Your appointment scheduled for %s is canceled.", [$date_time]);
+            } else {
+                return $this->l->t("Your appointment is canceled.");
+            }
+        }
+    }
+
     /**
      * @NoAdminRequired
      * @PublicPage
@@ -241,6 +255,27 @@ class PageController extends Controller
         $cal_id = $this->utils->getMainCalId($userId, $pageId, $this->bc, $otherCalId);
         if ($cal_id === '-1') {
             return $this->pubErrResponse($userId, $embed);
+        }
+
+        $tr_params = [];
+
+        // take action automatically if "Skip email verification step" is set
+        $take_action = $a === '2';
+        $appt_action_url = '';
+        // issue https://github.com/SergeyMosin/Appointments/issues/293
+        if (!$take_action) {
+            // we only take action if we have $dh param and $dh matches $pd adler32 hash
+            $dh = $this->request->getParam("h");
+            if ($dh !== null) {
+                if (!isset($dh[8]) && $dh === hash('adler32', $pd, false)) {
+                    $take_action = true;
+                } else {
+                    // something fishy is going on
+                    return new NotFoundResponse();
+                }
+            } else {
+                $appt_action_url = $this->request->getRequestUri() . "&h=" . hash('adler32', $pd, false);
+            }
         }
 
         $page_text = '';
@@ -275,79 +310,114 @@ class PageController extends Controller
 
             if ($a_ok) {
 
-                // Emails are handled by the DavListener... set the Hint
-                $ses = \OC::$server->getSession();
-                $ses->set(
-                    BackendUtils::APPT_SES_KEY_HINT,
-                    BackendUtils::APPT_SES_CONFIRM);
+                if ($take_action) {
+                    // Emails are handled by the DavListener... set the Hint
+                    $ses = \OC::$server->getSession();
+                    $ses->set(
+                        BackendUtils::APPT_SES_KEY_HINT,
+                        BackendUtils::APPT_SES_CONFIRM);
 
-                list($sts, $date_time) = $this->bc->confirmAttendee($userId, $cal_id, $uri);
+                    list($sts, $date_time) = $this->bc->confirmAttendee($userId, $cal_id, $uri);
 
-                if ($sts === 0) { // Appointment is confirmed successfully
-                    // TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is confirmed.
-                    $page_text = $this->l->t("Your appointment scheduled for %s is confirmed.", [$date_time]) . " " . $skip_evs_text;
+                    if ($sts === 0) { // Appointment is confirmed successfully
+                        $page_text = $this->getPageText($date_time, BackendUtils::PREF_STATUS_CONFIRMED) . " " . $skip_evs_text;
+                    }
+                } else {
+                    // user needs to click the button to take_action if not confirmed already
+                    list($date_time, $state) = $this->utils->dataApptGetInfo(
+                        $this->bc->getObjectData($cal_id, $uri), $userId);
+                    if ($date_time === null) {
+                        // error
+                        $sts = 1;
+                    } else {
+                        $sts = 0;
+                        if ($state === BackendUtils::PREF_STATUS_CONFIRMED) {
+                            // already confirmed
+                            $take_action = true; // << overrides header
+                            $page_text = $this->getPageText($date_time, $state);
+                        } else {
+                            // TRANSLATORS Ex: Please confirm your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}}.
+                            $page_text = $this->l->t('Please confirm your appointment scheduled for %s.', [$date_time]);
+                            // TRANSLATORS This is a button label
+                            $tr_params['appt_action_url_text'] = $this->l->t("Confirm");
+                            $tr_params['appt_action_url'] = $appt_action_url;
+                        }
+                    }
                 }
             }
         } elseif ($a === "0") {
             // Cancel
 
-            // Emails are handled by the DavListener... set the Hint
-            $ses = \OC::$server->getSession();
-            $ses->set(
-                BackendUtils::APPT_SES_KEY_HINT,
-                BackendUtils::APPT_SES_CANCEL);
+            if ($take_action) {
+                // Emails are handled by the DavListener... set the Hint
+                $ses = \OC::$server->getSession();
+                $ses->set(
+                    BackendUtils::APPT_SES_KEY_HINT,
+                    BackendUtils::APPT_SES_CANCEL);
 
-            $cls = $this->utils->getUserSettings(
-                BackendUtils::KEY_CLS, $userId);
+                $cls = $this->utils->getUserSettings(
+                    BackendUtils::KEY_CLS, $userId);
 
-            $cms = $this->utils->getUserSettings(
-                $pageId === 'p0'
-                    ? BackendUtils::KEY_CLS
-                    : BackendUtils::KEY_MPS . $pageId,
-                $userId);
+                $cms = $this->utils->getUserSettings(
+                    $pageId === 'p0'
+                        ? BackendUtils::KEY_CLS
+                        : BackendUtils::KEY_MPS . $pageId,
+                    $userId);
 
-            // The appointment can be in the destination calendar (manual mode)
-            // this needs to be done here just in case we need to 'reset'
-            $r_cal_id = $cal_id;
-            if ($cms[BackendUtils::CLS_TS_MODE] === '0' && $otherCalId !== "-1") {
-                // !! Pending appointments are in the MAIN calendar
-                // !! Confirmed appointments are in the DEST ($otherCalId)
-                if ($this->bc->getObjectData($otherCalId, $uri) !== null) {
-                    // The appointment has previously been confirmed and moved to the DEST calendar
-                    $r_cal_id = $otherCalId;
-                } // else the appointment is still pending in the MAIN calendar
-            }
+                // The appointment can be in the destination calendar (manual mode)
+                // this needs to be done here just in case we need to 'reset'
+                $r_cal_id = $cal_id;
+                if ($cms[BackendUtils::CLS_TS_MODE] === '0' && $otherCalId !== "-1") {
+                    // !! Pending appointments are in the MAIN calendar
+                    // !! Confirmed appointments are in the DEST ($otherCalId)
+                    if ($this->bc->getObjectData($otherCalId, $uri) !== null) {
+                        // The appointment has previously been confirmed and moved to the DEST calendar
+                        $r_cal_id = $otherCalId;
+                    } // else the appointment is still pending in the MAIN calendar
+                }
 
-            // This can be 'mark' or 'reset'
-            $mr = $cls[BackendUtils::CLS_ON_CANCEL];
-            if ($mr === 'mark') {
-                // Just Cancel
-                list($sts, $date_time) = $this->bc->cancelAttendee($userId, $r_cal_id, $uri);
-            } else {
+                // This can be 'mark' or 'reset'
+                $mr = $cls[BackendUtils::CLS_ON_CANCEL];
+                if ($mr === 'mark') {
+                    // Just Cancel
+                    list($sts, $date_time) = $this->bc->cancelAttendee($userId, $r_cal_id, $uri);
+                } else {
 
-                // Delete and Reset ($date_time can be an empty string here)
-                list($sts, $date_time, $dt_info, $tz_data, $title) = $this->bc->deleteCalendarObject($userId, $r_cal_id, $uri);
+                    // Delete and Reset ($date_time can be an empty string here)
+                    list($sts, $date_time, $dt_info, $tz_data, $title) = $this->bc->deleteCalendarObject($userId, $r_cal_id, $uri);
 
-                if ($cms[BackendUtils::CLS_TS_MODE] === '0') {
+                    if ($cms[BackendUtils::CLS_TS_MODE] === '0') {
 
-                    if (empty($dt_info)) {
-                        $this->logger->warning('can not re-create appointment, no dt_info or this is a repeated request');
-                    }else {
-                        // this is only needed in simple/manual mode
-                        $cr = $this->addAppointments($userId, $pageId, $dt_info, $tz_data, $title);
-                        if ($cr[0] !== '0') {
-                            $this->logger->error('addAppointments() failed ' . $cr);
+                        if (empty($dt_info)) {
+                            $this->logger->warning('can not re-create appointment, no dt_info or this is a repeated request');
+                        } else {
+                            // this is only needed in simple/manual mode
+                            $cr = $this->addAppointments($userId, $pageId, $dt_info, $tz_data, $title);
+                            if ($cr[0] !== '0') {
+                                $this->logger->error('addAppointments() failed ' . $cr);
+                            }
                         }
                     }
                 }
-            }
 
-            if ($sts === 0) { // Appointment is cancelled successfully
-                if (!empty($date_time)) {
-                    // TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is canceled.
-                    $page_text = $this->l->t("Your appointment scheduled for %s is canceled.", [$date_time]);
+                if ($sts === 0) { // Appointment is cancelled successfully
+                    $page_text = $this->getPageText($date_time, BackendUtils::PREF_STATUS_CANCELLED);
+                }
+            } else {
+                // user needs to click the button to take_action if not canceled already
+                list($date_time, $state) = $this->utils->dataApptGetInfo(
+                    $this->bc->getObjectData($cal_id, $uri), $userId);
+                $sts = 0;
+                if ($date_time === null || $state === BackendUtils::PREF_STATUS_CANCELLED) {
+                    // already canceled
+                    $take_action = true; // << overrides header
+                    $page_text = $this->getPageText($date_time || '', BackendUtils::PREF_STATUS_CANCELLED);
                 } else {
-                    $page_text = $this->l->t("Your appointment is canceled.");
+                    // TRANSLATORS Ex: Would you like to cancel appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} ?
+                    $page_text = $this->l->t('Would you like to cancel appointment scheduled for %s ?', [$date_time]);
+                    // TRANSLATORS This is a button label
+                    $tr_params['appt_action_url_text'] = $this->l->t("Yes, Cancel");
+                    $tr_params['appt_action_url'] = $appt_action_url;
                 }
             }
         } else if ($a === '3') {
@@ -376,7 +446,6 @@ class PageController extends Controller
                     // try the destination calendar
                     $data = $this->bc->getObjectData($otherCalId, $uri);
                 }
-
             }
 
             if ($data !== null) {
@@ -386,15 +455,32 @@ class PageController extends Controller
                 list($new_type, $new_data) = $this->utils->dataChangeApptType($data, $userId);
                 if (!empty($new_type) && !empty($new_data)) {
 
-                    if ($this->bc->updateObject($cId, $uri, $new_data) !== false) {
-                        $sts = 0;
+                    if ($take_action) {
+
+                        if ($this->bc->updateObject($cId, $uri, $new_data) !== false) {
+                            $sts = 0;
+
+                            $lbl = !empty($tlk[BackendUtils::TALK_FORM_LABEL])
+                                ? $tlk[BackendUtils::TALK_FORM_LABEL]
+                                : $tlk[BackendUtils::TALK_FORM_DEF_LABEL];
+
+                            // TRANSLATORS Ex: Your {{meeting type}} has been changed to {{online(video/audio)}}
+                            $page_text = $this->l->t("Your %s has been changed to %s", [$lbl, $new_type]);
+                        }
+
+                    } else {
+                        // show the "Would you like to change..." text and button
+                        $sts=0;
 
                         $lbl = !empty($tlk[BackendUtils::TALK_FORM_LABEL])
                             ? $tlk[BackendUtils::TALK_FORM_LABEL]
                             : $tlk[BackendUtils::TALK_FORM_DEF_LABEL];
 
-                        // TRANSLATORS Ex: Your {{meeting type}} has been changed to {{online(video/audio)}}
-                        $page_text = $this->l->t("Your %s has been changed to %s", [$lbl, $new_type]);
+                        // TRANSLATORS Ex: Would you like to change your {{meeting type}} to {{online(video/audio)}} ?
+                        $page_text = $this->l->t("Would you like to change your %s to %s ?", [$lbl, $new_type]);
+                        // TRANSLATORS This is a button label
+                        $tr_params['appt_action_url_text'] = $this->l->t("Yes, Change");
+                        $tr_params['appt_action_url'] = $appt_action_url;
                     }
                 }
             }
@@ -403,11 +489,15 @@ class PageController extends Controller
         if ($sts === 0) {
             // Confirm/Cancel OK.
             $tr_name = "public/thanks";
-            $tr_params = [
+
+            if ($take_action) {
                 // TRANSLATORS Meaning the booking process is finished
-                'appt_c_head' => $this->l->t("All done."),
-                'appt_c_msg' => $page_text
-            ];
+                $tr_params['appt_c_head'] = $this->l->t("All done.");
+            } else {
+                // TRANSLATORS Meaning the visitor need to click a button or take some other action to finalize/save something
+                $tr_params['appt_c_head'] = $this->l->t("Action Needed");
+            }
+            $tr_params['appt_c_msg'] = $page_text;
             $tr_sts = 200;
         } else {
             // Error
@@ -418,15 +508,13 @@ class PageController extends Controller
             if ($sts !== 2) {
                 // general error
                 $tr_name = "public/formerr";
-                $tr_params = ['appt_e_ne' => $org_email];
+                $tr_params['appt_e_ne'] = $org_email;
                 $tr_sts = 500;
             } else {
                 // link expired
                 $tr_name = "public/thanks";
-                $tr_params = [
-                    'appt_c_head' => $this->l->t("Info"),
-                    'appt_c_msg' => $this->l->t("Link Expired …")
-                ];
+                $tr_params['appt_c_head'] = $this->l->t("Info");
+                $tr_params['appt_c_msg'] = $this->l->t("Link Expired …");
                 $tr_sts = 409;
             }
         }
