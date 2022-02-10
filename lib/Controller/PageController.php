@@ -502,7 +502,7 @@ class PageController extends Controller
                 $tr_params['appt_c_head'] = $this->l->t("All done.");
             } else {
                 // TRANSLATORS Meaning the visitor need to click a button or take some other action to finalize/save something
-                $tr_params['appt_c_head'] = $this->l->t("Action Needed");
+                $tr_params['appt_c_head'] = $this->l->t("Action needed");
             }
             $tr_params['appt_c_msg'] = $page_text;
             $tr_sts = 200;
