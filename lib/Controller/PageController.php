@@ -484,7 +484,7 @@ class PageController extends Controller
                             : $tlk[BackendUtils::TALK_FORM_DEF_LABEL];
 
                         // TRANSLATORS Ex: Would you like to change your {{meeting type}} to {{online(video/audio)}} ?
-                        $page_text = $this->l->t("Would you like to change your %s to %s ?", [$lbl, $new_type]);
+                        $page_text = $this->l->t("Would you like to change your %s to %s?", [$lbl, $new_type]);
                         // TRANSLATORS This is a button label
                         $tr_params['appt_action_url_text'] = $this->l->t("Yes, Change");
                         $tr_params['appt_action_url'] = $appt_action_url;
