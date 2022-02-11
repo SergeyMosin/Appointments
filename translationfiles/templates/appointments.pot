@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2022-02-10 03:44+0000\n"
+"POT-Creation-Date: 2022-02-11 03:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -287,7 +287,7 @@ msgstr ""
 #. TRANSLATORS Ex: Would you like to change your {{meeting type}} to {{online(video/audio)}} ?
 #: /app/lib/Controller/PageController.php:487
 #, php-format
-msgid "Would you like to change your %s to %s ?"
+msgid "Would you like to change your %s to %s?"
 msgstr ""
 
 #. TRANSLATORS This is a button label
@@ -302,7 +302,7 @@ msgstr ""
 
 #. TRANSLATORS Meaning the visitor need to click a button or take some other action to finalize/save something
 #: /app/lib/Controller/PageController.php:505
-msgid "Action Needed"
+msgid "Action needed"
 msgstr ""
 
 #: /app/lib/Controller/PageController.php:523
