@@ -50,7 +50,7 @@ OC.L10N.register(
     "An email with additional details is on its way to you at %s" : "Eine E-Mail mit weiteren Einzelheiten ist auf dem Weg zu Ihnen an %s",
     "Please confirm your appointment scheduled for %s." : "Bitte bestätigen Sie Ihren Termin, der für %s geplant ist.",
     "Would you like to cancel appointment scheduled for %s ?" : "Möchten Sie den für den %s geplanten Termin stornieren?",
-    "Yes, Cancel" : "Ja, stornieren",
+    "Yes, Cancel" : "Ja, abbrechen",
     "Your %s has been changed to %s" : "Ihr %s wurde in %s geändert",
     "Would you like to change your %s to %s?" : "Möchten Sie Ihr %s zu %s ändern?",
     "Yes, Change" : "Ja, ändern",
