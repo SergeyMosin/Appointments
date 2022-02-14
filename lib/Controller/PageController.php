@@ -920,6 +920,7 @@ class PageController extends Controller
             'appt_form_title' => $ft,
             'appt_pps' => '',
             'appt_gdpr' => '',
+            'appt_gdpr_no_chb' => false,
             'appt_inline_style' => $pps[BackendUtils::PSN_PAGE_STYLE],
             'appt_hide_phone' => $pps[BackendUtils::PSN_HIDE_TEL],
             'more_html' => ''
@@ -1011,6 +1012,7 @@ class PageController extends Controller
 
         // GDPR
         $params['appt_gdpr'] = $pps[BackendUtils::PSN_GDPR];
+        $params['appt_gdpr_no_chb'] = $pps[BackendUtils::PSN_GDPR_NO_CHB];
 
         if (!empty($this->c->getUserValue($uid, $this->appName, chr(99) . "n" . 'k'))) {
             $tlk = $this->utils->getUserSettings(BackendUtils::KEY_TALK, $uid);

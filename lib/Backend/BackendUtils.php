@@ -102,6 +102,7 @@ class BackendUtils
     public const PSN_FNED = "startFNED";
     public const PSN_PAGE_STYLE = "pageStyle";
     public const PSN_GDPR = "gdpr";
+    public const PSN_GDPR_NO_CHB ="gdprNoChb";
     public const PSN_FORM_TITLE = "formTitle";
     public const PSN_META_NO_INDEX = "metaNoIndex";
     public const PSN_EMPTY = "showEmpty";
@@ -1053,6 +1054,7 @@ class BackendUtils
                     self::PSN_HIDE_TEL => false,
                     self::PSN_SHOW_TZ => false,
                     self::PSN_GDPR => "",
+                    self::PSN_GDPR_NO_CHB => false,
                     self::PSN_PAGE_TITLE => "",
                     self::PSN_PAGE_SUB_TITLE => "",
                     self::PSN_META_NO_INDEX => false,
