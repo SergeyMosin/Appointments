@@ -1,3 +1,11 @@
+## 1.11.14 - 2022-02-14
+### Changed
+- Confirm, Cancel and ChangeType pages now have a "confirm" button to prevent antivirus / antimalware scans from taking action automatically - issue #293
+### Added
+- "GDPR text only (no checkbox)" to page settings - issue #292
+### Fixed
+- Dark theme styles in "Quick Start Guide" - issue #289
+
 ## 1.11.12 - 2022-01-26
 ### Added
 - Option to add custom text to event/appointment DESCRIPTION property (the text is also added to .ics email attachment)
