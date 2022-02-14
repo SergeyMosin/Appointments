@@ -800,7 +800,7 @@ textarea.appt-stn-txt-ta{
 	width: 96%;
 	margin: .5em 0 .75em;
 	padding: .75em 0 .75em 1em;
-	background: var(--color-placeholder-light);
+	background: var(--color-background-darker);
 	display: block;
 	font-size: 95%;
 	cursor: text;
@@ -810,6 +810,11 @@ textarea.appt-stn-txt-ta{
 	padding: .5em;
 	margin: 0;
 	width: auto;
+}
+
+.srgdev-appt-hs-link {
+	text-decoration: underline;
+	color: var(--color-primary-element);
 }
 
 .srgdev-appt-hs-tz-img{
