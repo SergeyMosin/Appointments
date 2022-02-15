@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2022-02-14 03:40+0000\n"
+"POT-Creation-Date: 2022-02-15 05:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,45 +17,45 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: /app/lib/Backend/BackendUtils.php:532
+#: /app/lib/Backend/BackendUtils.php:533
 msgid "Guest password:"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:548
+#: /app/lib/Backend/BackendUtils.php:549
 msgid "Talk integration error: check logs"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1202
+#: /app/lib/Backend/BackendUtils.php:1204
 msgid "Meeting Type"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1203
+#: /app/lib/Backend/BackendUtils.php:1205
 msgid "Select meeting type"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1204
+#: /app/lib/Backend/BackendUtils.php:1206
 msgid "In-person meeting"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1205
+#: /app/lib/Backend/BackendUtils.php:1207
 msgid "Online (audio/video)"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1504
+#: /app/lib/Backend/BackendUtils.php:1506
 msgid "Your email address is required for this operation."
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1507
+#: /app/lib/Backend/BackendUtils.php:1509
 msgid ""
 "A location, address or URL is required for this operation. Check User/"
 "Organization settings."
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1514
+#: /app/lib/Backend/BackendUtils.php:1516
 msgid "Can't find your name. Check User/Organization settings."
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1518
+#: /app/lib/Backend/BackendUtils.php:1520
 msgid "Available"
 msgstr ""
 
@@ -331,20 +331,20 @@ msgid "Organization Name"
 msgstr ""
 
 #: /app/lib/Controller/PageController.php:912
-#: /app/specialVueFakeDummyForL10nScript.js:131
-#: /app/specialVueFakeDummyForL10nScript.js:270
+#: /app/specialVueFakeDummyForL10nScript.js:132
+#: /app/specialVueFakeDummyForL10nScript.js:272
 msgid "Book Your Appointment"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1082
+#: /app/lib/Controller/PageController.php:1084
 msgid "Please add time slots first."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1085
+#: /app/lib/Controller/PageController.php:1087
 msgid "Please select a calendar first"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1088
+#: /app/lib/Controller/PageController.php:1090
 msgid "Selected calendar not found"
 msgstr ""
 
@@ -428,7 +428,7 @@ msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:13
 #: /app/specialVueFakeDummyForL10nScript.js:46
-#: /app/specialVueFakeDummyForL10nScript.js:177
+#: /app/specialVueFakeDummyForL10nScript.js:179
 msgid "Directory Page"
 msgstr ""
 
@@ -461,8 +461,8 @@ msgid "Close"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:22
-#: /app/specialVueFakeDummyForL10nScript.js:210
-#: /app/specialVueFakeDummyForL10nScript.js:246
+#: /app/specialVueFakeDummyForL10nScript.js:212
+#: /app/specialVueFakeDummyForL10nScript.js:248
 msgid "Remove Old Appointments"
 msgstr ""
 
@@ -544,24 +544,24 @@ msgstr ""
 #: /app/specialVueFakeDummyForL10nScript.js:63
 #: /app/specialVueFakeDummyForL10nScript.js:101
 #: /app/specialVueFakeDummyForL10nScript.js:114
-#: /app/specialVueFakeDummyForL10nScript.js:129
-#: /app/specialVueFakeDummyForL10nScript.js:156
-#: /app/specialVueFakeDummyForL10nScript.js:184
-#: /app/specialVueFakeDummyForL10nScript.js:208
-#: /app/specialVueFakeDummyForL10nScript.js:240
-#: /app/specialVueFakeDummyForL10nScript.js:247
-#: /app/specialVueFakeDummyForL10nScript.js:265
+#: /app/specialVueFakeDummyForL10nScript.js:130
+#: /app/specialVueFakeDummyForL10nScript.js:158
+#: /app/specialVueFakeDummyForL10nScript.js:186
+#: /app/specialVueFakeDummyForL10nScript.js:210
+#: /app/specialVueFakeDummyForL10nScript.js:242
+#: /app/specialVueFakeDummyForL10nScript.js:249
+#: /app/specialVueFakeDummyForL10nScript.js:267
 msgid "Loading"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:48
 #: /app/specialVueFakeDummyForL10nScript.js:95
 #: /app/specialVueFakeDummyForL10nScript.js:127
-#: /app/specialVueFakeDummyForL10nScript.js:153
-#: /app/specialVueFakeDummyForL10nScript.js:172
-#: /app/specialVueFakeDummyForL10nScript.js:202
-#: /app/specialVueFakeDummyForL10nScript.js:228
-#: /app/specialVueFakeDummyForL10nScript.js:273
+#: /app/specialVueFakeDummyForL10nScript.js:155
+#: /app/specialVueFakeDummyForL10nScript.js:174
+#: /app/specialVueFakeDummyForL10nScript.js:204
+#: /app/specialVueFakeDummyForL10nScript.js:230
+#: /app/specialVueFakeDummyForL10nScript.js:275
 msgid "Apply"
 msgstr ""
 
@@ -606,8 +606,8 @@ msgid "More than two duration choices"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:61
-#: /app/specialVueFakeDummyForL10nScript.js:179
-#: /app/specialVueFakeDummyForL10nScript.js:227
+#: /app/specialVueFakeDummyForL10nScript.js:181
+#: /app/specialVueFakeDummyForL10nScript.js:229
 msgid "Advanced Settings"
 msgstr ""
 
@@ -636,22 +636,22 @@ msgid "30 minutes"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:69
-#: /app/specialVueFakeDummyForL10nScript.js:159
+#: /app/specialVueFakeDummyForL10nScript.js:161
 msgid "1 hour"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:70
-#: /app/specialVueFakeDummyForL10nScript.js:160
+#: /app/specialVueFakeDummyForL10nScript.js:162
 msgid "2 hours"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:71
-#: /app/specialVueFakeDummyForL10nScript.js:161
+#: /app/specialVueFakeDummyForL10nScript.js:163
 msgid "4 hours"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:72
-#: /app/specialVueFakeDummyForL10nScript.js:162
+#: /app/specialVueFakeDummyForL10nScript.js:164
 msgid "8 hours"
 msgstr ""
 
@@ -665,12 +665,12 @@ msgid "1 day"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:75
-#: /app/specialVueFakeDummyForL10nScript.js:164
+#: /app/specialVueFakeDummyForL10nScript.js:166
 msgid "2 days"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:76
-#: /app/specialVueFakeDummyForL10nScript.js:166
+#: /app/specialVueFakeDummyForL10nScript.js:168
 msgid "4 days"
 msgstr ""
 
@@ -751,10 +751,10 @@ msgid "Get raw calendar data"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:98
-#: /app/specialVueFakeDummyForL10nScript.js:212
-#: /app/specialVueFakeDummyForL10nScript.js:216
+#: /app/specialVueFakeDummyForL10nScript.js:214
 #: /app/specialVueFakeDummyForL10nScript.js:218
-#: /app/specialVueFakeDummyForL10nScript.js:221
+#: /app/specialVueFakeDummyForL10nScript.js:220
+#: /app/specialVueFakeDummyForL10nScript.js:223
 msgid "Calendar Required"
 msgstr ""
 
@@ -795,10 +795,10 @@ msgid "Add New Link"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:111
-#: /app/specialVueFakeDummyForL10nScript.js:231
 #: /app/specialVueFakeDummyForL10nScript.js:233
 #: /app/specialVueFakeDummyForL10nScript.js:235
 #: /app/specialVueFakeDummyForL10nScript.js:237
+#: /app/specialVueFakeDummyForL10nScript.js:239
 msgid "Error"
 msgstr ""
 
@@ -866,448 +866,452 @@ msgstr ""
 msgid "Public Page Settings"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:128
+#: /app/specialVueFakeDummyForL10nScript.js:129
 msgid "Control what your visitors see"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:130
-#: /app/specialVueFakeDummyForL10nScript.js:269
+#: /app/specialVueFakeDummyForL10nScript.js:131
+#: /app/specialVueFakeDummyForL10nScript.js:271
 msgid "Form Title"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:132
+#: /app/specialVueFakeDummyForL10nScript.js:133
 msgid "Show appointments for next"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:133
+#: /app/specialVueFakeDummyForL10nScript.js:134
 msgid "One Week"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:134
+#: /app/specialVueFakeDummyForL10nScript.js:135
 msgid "Two Weeks"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:135
+#: /app/specialVueFakeDummyForL10nScript.js:136
 msgid "Three Weeks"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:136
+#: /app/specialVueFakeDummyForL10nScript.js:137
 msgid "Four Weeks"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:137
+#: /app/specialVueFakeDummyForL10nScript.js:138
 msgid "Five Weeks"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:138
+#: /app/specialVueFakeDummyForL10nScript.js:139
 msgid "Eight Weeks"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:139
+#: /app/specialVueFakeDummyForL10nScript.js:140
 msgid "Twelve Weeks"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:140
+#: /app/specialVueFakeDummyForL10nScript.js:141
 msgid "Show Empty Days"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:141
+#: /app/specialVueFakeDummyForL10nScript.js:142
 msgid "Start on current day instead of Monday"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:142
+#: /app/specialVueFakeDummyForL10nScript.js:143
 msgid "Show Empty Weekends"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:143
+#: /app/specialVueFakeDummyForL10nScript.js:144
 msgid "Show time in two columns"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:144
+#: /app/specialVueFakeDummyForL10nScript.js:145
 msgid "Show end time"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:145
+#: /app/specialVueFakeDummyForL10nScript.js:146
 msgid "GDPR Compliance"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:146
+#: /app/specialVueFakeDummyForL10nScript.js:147
 msgid "See Tutorial …"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:147
-msgid "Hide phone number field"
-msgstr ""
-
 #: /app/specialVueFakeDummyForL10nScript.js:148
-msgid "Show timezone"
+msgid "GDPR text only (no checkbox)"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:149
-msgid "Add {taginfo} tag"
+msgid "Hide phone number field"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:150
-msgid "Page Header Title:"
+msgid "Show timezone"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:151
-msgid "Page Header Subtitle:"
+msgid "Add {taginfo} tag"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:152
-msgid "Style Override:"
+msgid "Page Header Title:"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:153
+msgid "Page Header Subtitle:"
 msgstr ""
 
 #: /app/specialVueFakeDummyForL10nScript.js:154
+msgid "Style Override:"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:156
 msgid "Appointment Reminders"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:155
+#: /app/specialVueFakeDummyForL10nScript.js:157
 msgid "Send appointment reminders to attendees"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:157
+#: /app/specialVueFakeDummyForL10nScript.js:159
 msgid "Time before appointment"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:158
+#: /app/specialVueFakeDummyForL10nScript.js:160
 msgid "Not set"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:163
+#: /app/specialVueFakeDummyForL10nScript.js:165
 msgid "24 hours"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:165
+#: /app/specialVueFakeDummyForL10nScript.js:167
 msgid "3 days"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:167
+#: /app/specialVueFakeDummyForL10nScript.js:169
 msgid "5 days"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:168
+#: /app/specialVueFakeDummyForL10nScript.js:170
 msgid "6 days"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:169
+#: /app/specialVueFakeDummyForL10nScript.js:171
 msgid "7 days"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:170
+#: /app/specialVueFakeDummyForL10nScript.js:172
 msgid "Add action links"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:171
+#: /app/specialVueFakeDummyForL10nScript.js:173
 msgid "Additional reminder email text:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:173
+#: /app/specialVueFakeDummyForL10nScript.js:175
 msgid "Additional Settings"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:173
+#: /app/specialVueFakeDummyForL10nScript.js:175
 msgid "Customize and configure the app"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:174
+#: /app/specialVueFakeDummyForL10nScript.js:176
 msgid "Customize Public Page"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:175
+#: /app/specialVueFakeDummyForL10nScript.js:177
 msgid "Email Settings"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:176
+#: /app/specialVueFakeDummyForL10nScript.js:178
 msgid "Talk Integration"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:178
+#: /app/specialVueFakeDummyForL10nScript.js:180
 msgid "Reminders"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:180
+#: /app/specialVueFakeDummyForL10nScript.js:182
 msgid "Contributor Key"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:181
+#: /app/specialVueFakeDummyForL10nScript.js:183
 msgid "Thank You"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:182
+#: /app/specialVueFakeDummyForL10nScript.js:184
 msgid "Key accepted. All contributor only features are unlocked."
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:183
+#: /app/specialVueFakeDummyForL10nScript.js:185
 msgid "Talk App Integration"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:183
+#: /app/specialVueFakeDummyForL10nScript.js:185
 msgid "Talk room settings for appointments"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:185
+#: /app/specialVueFakeDummyForL10nScript.js:187
 msgid "Create rooms for confirmed appointments"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:186
+#: /app/specialVueFakeDummyForL10nScript.js:188
 msgid "Delete when appointments is removed"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:187
+#: /app/specialVueFakeDummyForL10nScript.js:189
 msgid "Enable lobby"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:188
+#: /app/specialVueFakeDummyForL10nScript.js:190
 msgid "Guest password"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:189
+#: /app/specialVueFakeDummyForL10nScript.js:191
 msgid "Talk room name"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:190
+#: /app/specialVueFakeDummyForL10nScript.js:192
 msgid "Guest name + Date/Time"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:191
+#: /app/specialVueFakeDummyForL10nScript.js:193
 msgid "Date/Time + Guest name"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:192
+#: /app/specialVueFakeDummyForL10nScript.js:194
 msgid "Guest name only"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:193
+#: /app/specialVueFakeDummyForL10nScript.js:195
 msgid "Customize email text:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:194
+#: /app/specialVueFakeDummyForL10nScript.js:196
 msgid "Chat/Call link:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:195
+#: /app/specialVueFakeDummyForL10nScript.js:197
 msgid "Add \"Meeting Type\" form field"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:196
+#: /app/specialVueFakeDummyForL10nScript.js:198
 msgid "Label text:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:197
+#: /app/specialVueFakeDummyForL10nScript.js:199
 msgid "Placeholder text:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:198
+#: /app/specialVueFakeDummyForL10nScript.js:200
 msgid "\"In-person\" option text:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:199
+#: /app/specialVueFakeDummyForL10nScript.js:201
 msgid "\"Online\" option text:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:200
+#: /app/specialVueFakeDummyForL10nScript.js:202
 msgid "Type change email text:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:201
+#: /app/specialVueFakeDummyForL10nScript.js:203
 msgid "See documentation …"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:203
+#: /app/specialVueFakeDummyForL10nScript.js:205
 msgid "\"Meeting type\" form field."
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:204
-#: /app/specialVueFakeDummyForL10nScript.js:229
+#: /app/specialVueFakeDummyForL10nScript.js:206
+#: /app/specialVueFakeDummyForL10nScript.js:231
 msgid "Warning"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:205
+#: /app/specialVueFakeDummyForL10nScript.js:207
 msgid ""
 "Guest will be placed in the lobby until you allow access to the Room "
 "manually via Talk app side menu."
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:206
+#: /app/specialVueFakeDummyForL10nScript.js:208
 msgid "Calendars and Schedule"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:207
+#: /app/specialVueFakeDummyForL10nScript.js:209
 msgid "Manage appointments and calendar settings"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:209
-#: /app/specialVueFakeDummyForL10nScript.js:239
+#: /app/specialVueFakeDummyForL10nScript.js:211
+#: /app/specialVueFakeDummyForL10nScript.js:241
 msgid "Add Appointment Slots"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:211
+#: /app/specialVueFakeDummyForL10nScript.js:213
 msgid "Main calendar"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:213
+#: /app/specialVueFakeDummyForL10nScript.js:215
 msgid "Calendar for booked appointments"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:214
+#: /app/specialVueFakeDummyForL10nScript.js:216
 msgid "Use Main calendar"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:215
+#: /app/specialVueFakeDummyForL10nScript.js:217
 msgid "Source Calendar (Free Slots)"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:217
-#: /app/specialVueFakeDummyForL10nScript.js:220
+#: /app/specialVueFakeDummyForL10nScript.js:219
+#: /app/specialVueFakeDummyForL10nScript.js:222
 msgid "Destination Calendar (Booked)"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:219
+#: /app/specialVueFakeDummyForL10nScript.js:221
 msgid "Edit Template"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:222
+#: /app/specialVueFakeDummyForL10nScript.js:224
 msgid "Check for conflicts in…"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:223
+#: /app/specialVueFakeDummyForL10nScript.js:225
 msgid "Time slot mode"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:224
+#: /app/specialVueFakeDummyForL10nScript.js:226
 msgid "Weekly Template"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:225
+#: /app/specialVueFakeDummyForL10nScript.js:227
 msgid "Simple"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:226
+#: /app/specialVueFakeDummyForL10nScript.js:228
 msgid "External"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:230
+#: /app/specialVueFakeDummyForL10nScript.js:232
 msgid "Time slot mode has changed. Public page is going offline …"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:232
+#: /app/specialVueFakeDummyForL10nScript.js:234
 msgid "Main calendar is required"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:234
+#: /app/specialVueFakeDummyForL10nScript.js:236
 msgid "Source calendar is required"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:236
+#: /app/specialVueFakeDummyForL10nScript.js:238
 msgid "Destination calendar is required"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:238
+#: /app/specialVueFakeDummyForL10nScript.js:240
 msgid "Source and Destination calendars must be different"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:241
+#: /app/specialVueFakeDummyForL10nScript.js:243
 msgid "Select Dates:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:242
+#: /app/specialVueFakeDummyForL10nScript.js:244
 msgid "Select Dates"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:243
+#: /app/specialVueFakeDummyForL10nScript.js:245
 msgid "Time zone:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:244
+#: /app/specialVueFakeDummyForL10nScript.js:246
 msgid "Appointment Duration:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:245
-#: /app/specialVueFakeDummyForL10nScript.js:251
+#: /app/specialVueFakeDummyForL10nScript.js:247
+#: /app/specialVueFakeDummyForL10nScript.js:253
 msgid "Start"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:248
+#: /app/specialVueFakeDummyForL10nScript.js:250
 msgid "Scheduled before"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:249
+#: /app/specialVueFakeDummyForL10nScript.js:251
 msgid "Remove empty slots only"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:250
+#: /app/specialVueFakeDummyForL10nScript.js:252
 msgid "Remove empty and booked"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:252
+#: /app/specialVueFakeDummyForL10nScript.js:254
 msgid "Gathering calendar information"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:253
+#: /app/specialVueFakeDummyForL10nScript.js:255
 msgid "Remove empty appointment slots created before {fullDate} ?"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:254
+#: /app/specialVueFakeDummyForL10nScript.js:256
 msgid "Remove empty slots and booked appointments created before {fullDate} ?"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:255
+#: /app/specialVueFakeDummyForL10nScript.js:257
 msgid "two calendars affected"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:256
+#: /app/specialVueFakeDummyForL10nScript.js:258
 msgid "Number of expired appointments/slots: "
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:257
+#: /app/specialVueFakeDummyForL10nScript.js:259
 msgid "Can not get calendar data"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:258
+#: /app/specialVueFakeDummyForL10nScript.js:260
 msgid "This action can NOT be undone. Continue?"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:259
+#: /app/specialVueFakeDummyForL10nScript.js:261
 msgid "Removing Appointment Slots"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:260
+#: /app/specialVueFakeDummyForL10nScript.js:262
 msgid "Can not delete old appointments/slots"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:261
+#: /app/specialVueFakeDummyForL10nScript.js:263
 msgid "All empty appointment slots created before {fullDate} are removed"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:262
+#: /app/specialVueFakeDummyForL10nScript.js:264
 msgid ""
 "All empty slots and booked appointments created before {fullDate} are removed"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:263
+#: /app/specialVueFakeDummyForL10nScript.js:265
 msgid "Your Contact Information"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:264
+#: /app/specialVueFakeDummyForL10nScript.js:266
 msgid "Form header and event organizer settings"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:266
+#: /app/specialVueFakeDummyForL10nScript.js:268
 msgid "Name:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:267
-#: /app/specialVueFakeDummyForL10nScript.js:272
+#: /app/specialVueFakeDummyForL10nScript.js:269
+#: /app/specialVueFakeDummyForL10nScript.js:274
 msgid "Email:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:268
+#: /app/specialVueFakeDummyForL10nScript.js:270
 msgid "Location:"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:271
+#: /app/specialVueFakeDummyForL10nScript.js:273
 msgid "Phone:"
 msgstr ""
 
@@ -1391,12 +1395,12 @@ msgstr ""
 msgid "Enter phone number"
 msgstr ""
 
-#: /app/templates/public/form.php:67
+#: /app/templates/public/form.php:75
 msgid "Session Timeout. Reload."
 msgstr ""
 
 #. TRANSLATORS This is the text for the "Book Now" button, on the appointment form.
-#: /app/templates/public/form.php:69
+#: /app/templates/public/form.php:77
 msgid "Book Now"
 msgstr ""
 
