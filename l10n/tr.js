@@ -198,6 +198,7 @@ OC.L10N.register(
     "Show end time" : "Bitiş zamanı görüntülensin",
     "GDPR Compliance" : "KVKK uyumluluğu",
     "See Tutorial …" : "Eğitime bakın …",
+    "GDPR text only (no checkbox)" : "Yalnız GDPR metni (onay kutusu olmadan)",
     "Hide phone number field" : "Telefon numarası alanı gizlensin",
     "Show timezone" : "Saat dilimi görüntülensin",
     "Add {taginfo} tag" : "{taginfo} etiketini ekle",

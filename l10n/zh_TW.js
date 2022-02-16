@@ -198,6 +198,7 @@ OC.L10N.register(
     "Show end time" : "顯示結束時間",
     "GDPR Compliance" : "GDPR 遵守",
     "See Tutorial …" : "參見教學...",
+    "GDPR text only (no checkbox)" : "僅 GDPR 文字（無核取方塊）",
     "Hide phone number field" : "隱藏電話號碼欄位",
     "Show timezone" : "顯示時區",
     "Add {taginfo} tag" : "加入 {taginfo} 標籤",

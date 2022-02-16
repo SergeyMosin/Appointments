@@ -198,6 +198,7 @@ OC.L10N.register(
     "Show end time" : "Pokaż czas zakończenia",
     "GDPR Compliance" : "Zgodność z RODO",
     "See Tutorial …" : "Zobacz samouczka…",
+    "GDPR text only (no checkbox)" : "Tylko tekst RODO (bez pola wyboru)",
     "Hide phone number field" : "Ukryj pole numeru telefonu",
     "Show timezone" : "Pokaż strefę czasową",
     "Add {taginfo} tag" : "Dodaj etykietę {taginfo}",

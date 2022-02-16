@@ -198,6 +198,7 @@ OC.L10N.register(
     "Show end time" : "Zobrazit čas konce",
     "GDPR Compliance" : "Shoda s nařízením GDPR",
     "See Tutorial …" : "Viz návod…",
+    "GDPR text only (no checkbox)" : "Pouze text ohledně GDPR (bez zaškrtávacích kolonek)",
     "Hide phone number field" : "Skrýt kolonku telefonní číslo",
     "Show timezone" : "Zobrazit časové pásmo",
     "Add {taginfo} tag" : "Přidat štítek {taginfo}",

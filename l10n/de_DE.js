@@ -198,6 +198,7 @@ OC.L10N.register(
     "Show end time" : "Endzeit anzeigen",
     "GDPR Compliance" : "Einhaltung der DSGVO",
     "See Tutorial …" : "Siehe Tutorial …",
+    "GDPR text only (no checkbox)" : "Nur DSGVO-Text (kein Check-Häkchen)",
     "Hide phone number field" : "Telefonnummernfeld ausblenden",
     "Show timezone" : "Zeitzone anzeigen",
     "Add {taginfo} tag" : "Schlagwort {taginfo} hinzufügen",
