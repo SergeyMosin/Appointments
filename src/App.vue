@@ -16,7 +16,7 @@
               )"
                 :icon="pageInfoLoading!==1?
                       (page0.enabled===1
-                        ?'icon-screen'
+                        ?(!page0.privatePage?'icon-screen':'icon-appt-private-mode-page')
                         :'icon-screen-off'):''"
                 :loading="pageInfoLoading===1">
               <template slot="actions">
@@ -61,7 +61,7 @@
               )"
                 :icon="pageInfoLoading!==(idx+2)?
                       (page.enabled===1
-                        ?'icon-screen'
+                        ?(!page.privatePage?'icon-screen':'icon-appt-private-mode-page')
                         :'icon-screen-off'):''"
                 :loading="pageInfoLoading===idx+2"
                 :key="page.pageId">

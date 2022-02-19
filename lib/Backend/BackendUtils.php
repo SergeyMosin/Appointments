@@ -86,6 +86,7 @@ class BackendUtils
     public const CLS_PREP_TIME = 'prepTime';
     public const CLS_ON_CANCEL = 'whenCanceled';
     public const CLS_ALL_DAY_BLOCK = 'allDayBlock';
+    public const CLS_PRIVATE_PAGE = 'privatePage';
     public const CLS_TS_MODE = 'tsMode';
     // values for tsMode
     public const CLS_TS_MODE_SIMPLE = '0';
@@ -1040,6 +1041,7 @@ class BackendUtils
                     self::CLS_ON_CANCEL => 'mark',
                     self::CLS_ALL_DAY_BLOCK => false,
 
+                    self::CLS_PRIVATE_PAGE => false,
                     self::CLS_TS_MODE => self::CLS_TS_MODE_TEMPLATE);
                 break;
             case self::KEY_PSN:
@@ -1073,6 +1075,7 @@ class BackendUtils
                     self::CLS_TMM_MORE_CALS => [],
                     self::CLS_TMM_SUBSCRIPTIONS => [],
 
+                    self::CLS_PRIVATE_PAGE => false,
                     self::CLS_TS_MODE => self::CLS_TS_MODE_TEMPLATE,
 
                     self::ORG_NAME => "",

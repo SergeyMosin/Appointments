@@ -69,8 +69,11 @@ class StateController extends Controller
                     $other_cal = "-1";
                     $main_cal = $this->utils->getMainCalId($this->userId, $pageId, $this->bc, $other_cal);
 
-                    $ts_mode = $this->utils->getUserSettings($key, $this->userId)[BackendUtils::CLS_TS_MODE];
+                    $cms = $this->utils->getUserSettings($key, $this->userId);
 
+                    $pgs[$pageId][BackendUtils::CLS_PRIVATE_PAGE] = $cms[BackendUtils::CLS_PRIVATE_PAGE];
+
+                    $ts_mode = $cms[BackendUtils::CLS_TS_MODE];
                     if ((($ts_mode === "0" || $ts_mode === "2") && $main_cal === "-1") ||
                         ($ts_mode === "1" && ($main_cal === "-1" || $other_cal === "-1"))
                     ) {
@@ -740,14 +743,12 @@ class StateController extends Controller
             return false;
         }
 
-
         $d = $this->config->getUserValue($this->userId, $this->appName, "cnk");
         if ($d === "" || ((hexdec(substr($d, 0, 4)) >> 15) & 1) !== ((hexdec(substr($d, 4, 4)) >> 12) & 1)) {
             if (isset($va[BackendUtils::CLS_TMM_MORE_CALS]) && count($va[BackendUtils::CLS_TMM_MORE_CALS]) > 2) {
                 $va[BackendUtils::CLS_TMM_MORE_CALS] = array_slice($va[BackendUtils::CLS_TMM_MORE_CALS], 0, 2);
             }
         }
-
 
         if (isset($va[BackendUtils::CLS_TMM_SUBSCRIPTIONS_SYNC])) {
             // sync value must be one of the following

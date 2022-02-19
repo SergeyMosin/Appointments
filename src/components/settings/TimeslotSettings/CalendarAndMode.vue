@@ -152,6 +152,17 @@
           <option value="0">{{ t('appointments', 'Simple') }}</option>
           <option value="1">{{ t('appointments', 'External') }}</option>
         </select>
+        <div>
+          <input
+              type="checkbox"
+              v-model="calInfo.privatePage"
+              id="srgdev-appt_tmm_private_page"
+              class="checkbox">
+          <label class="srgdev-appt-sb-label-inline"
+                 for="srgdev-appt_tmm_private_page">
+            {{ t('appointments', 'Private (visitors must be logged-in)') }}
+          </label>
+        </div>
         <div class="tsb-adv-settings-link">
           <span @click="gotoEvt('gotoAdvStn')"
                 class="tsb-adv-settings-link_span">{{ t('appointments', 'Advanced Settings') }} &raquo;</span>
@@ -219,6 +230,7 @@ export default {
         tmmDstCalId: "-1",
         tmmMoreCals: [],
         tmmSubscriptions: [],
+        privatePage: false,
         tsMode: "2",
       },
       realCalIDs: "-1-1",
@@ -466,7 +478,8 @@ export default {
 .label-subscription {
   opacity: .7;
 }
-.label-subscription:after{
+
+.label-subscription:after {
   content: '↗';
   margin-left: .5em;
   vertical-align: top;

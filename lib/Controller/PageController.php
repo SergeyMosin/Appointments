@@ -4,6 +4,7 @@
 
 namespace OCA\Appointments\Controller;
 
+use OC\AppFramework\Middleware\Security\Exceptions\NotLoggedInException;
 use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
@@ -15,6 +16,7 @@ use OCP\IL10N;
 use OCP\IRequest;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Controller;
+use OCP\IUserSession;
 use OCP\Mail\IMailer;
 use OCP\Util;
 use Psr\Log\LoggerInterface;
@@ -32,6 +34,7 @@ class PageController extends Controller
     private $bc;
     private $utils;
     private $logger;
+    private $userSession;
 
     public function __construct($AppName,
                                 IRequest $request,
@@ -39,6 +42,7 @@ class PageController extends Controller
                                 IConfig $c,
                                 IMailer $mailer,
                                 IL10N $l,
+                                IUserSession $userSession,
                                 BackendManager $backendManager,
                                 BackendUtils $utils,
                                 LoggerInterface $logger
@@ -48,6 +52,7 @@ class PageController extends Controller
         $this->c = $c;
         $this->mailer = $mailer;
         $this->l = $l;
+        $this->userSession = $userSession;
         /** @noinspection PhpUnhandledExceptionInspection */
         $this->bc = $backendManager->getConnector();
         $this->utils = $utils;
@@ -104,6 +109,7 @@ class PageController extends Controller
      * @PublicPage
      * @NoCSRFRequired
      * @throws \ErrorException
+     * @throws NotLoggedInException
      */
     public function formEmb() {
         list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"), $this->c);
@@ -112,6 +118,8 @@ class PageController extends Controller
             $tr->setStatus(404);
             return $tr;
         }
+
+        $this->throwIfPrivateModeNotLoggedIn($pageId, $userId);
 
         if ($this->request->getParam("sts") !== null) {
             $tr = $this->showFinish('base', $userId);
@@ -129,6 +137,7 @@ class PageController extends Controller
      * @NoCSRFRequired
      * @NoAdminRequired
      * @throws \ErrorException
+     * @throws NotLoggedInException
      * @noinspection PhpUnused
      */
     public function formPostEmb() {
@@ -137,6 +146,9 @@ class PageController extends Controller
             $tr = new TemplateResponse($this->appName, "public/r404", [], "base");
             $tr->setStatus(404);
         }
+
+        $this->throwIfPrivateModeNotLoggedIn($pageId, $userId);
+
         $tr = $this->showFormPost($userId, $pageId, true);
         $this->setEmbCsp($tr, $userId);
         return $tr;
@@ -148,6 +160,7 @@ class PageController extends Controller
      * @NoCSRFRequired
      * @NoAdminRequired
      * @throws \ErrorException
+     * @throws NotLoggedInException
      * @noinspection PhpUnused
      */
     public function cncfEmb() {
@@ -184,12 +197,15 @@ class PageController extends Controller
      * @PublicPage
      * @NoCSRFRequired
      * @throws \ErrorException
+     * @throws NotLoggedInException
      */
     public function form() {
         list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"), $this->c);
         if ($userId === null) {
             return new NotFoundResponse();
         }
+
+        $this->throwIfPrivateModeNotLoggedIn($pageId, $userId);
 
         if ($this->request->getParam("sts") !== null) {
             $tr = $this->showFinish('public', $userId);
@@ -204,6 +220,7 @@ class PageController extends Controller
      * @NoCSRFRequired
      * @NoAdminRequired
      * @throws \ErrorException
+     * @throws NotLoggedInException
      * @noinspection PhpUnused
      */
     public function formPost() {
@@ -211,6 +228,9 @@ class PageController extends Controller
         if ($userId === null) {
             return new NotFoundResponse();
         }
+
+        $this->throwIfPrivateModeNotLoggedIn($pageId, $userId);
+
         return $this->showFormPost($userId, $pageId);
     }
 
@@ -236,6 +256,7 @@ class PageController extends Controller
      * @param bool $embed
      * @return NotFoundResponse|PublicTemplateResponse|TemplateResponse
      * @throws \ErrorException
+     * @throws NotLoggedInException
      */
     public function cncf($embed = false) {
         list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"), $this->c);
@@ -244,6 +265,8 @@ class PageController extends Controller
             || (($a = substr($pd, 0, 1)) !== '0') && $a !== '1' && $a !== '2' && $a !== '3') {
             return new NotFoundResponse();
         }
+
+        $this->throwIfPrivateModeNotLoggedIn($pageId, $userId);
 
         $key = hex2bin($this->c->getAppValue($this->appName, 'hk'));
         $uri = $this->utils->decrypt(substr($pd, 1), $key) . ".ics";
@@ -1189,5 +1212,20 @@ class PageController extends Controller
 
 
         return $tr;
+    }
+
+    /**
+     * @throws NotLoggedInException
+     */
+    private function throwIfPrivateModeNotLoggedIn(string $pageId, string $userId) {
+        if ($pageId === 'p0') {
+            $key = BackendUtils::KEY_CLS;
+        } else {
+            $key = BackendUtils::KEY_MPS . $pageId;
+        }
+        if ($this->utils->getUserSettings($key, $userId)[BackendUtils::CLS_PRIVATE_PAGE]
+            && !$this->userSession->isLoggedIn()) {
+            throw new NotLoggedInException();
+        }
     }
 }
