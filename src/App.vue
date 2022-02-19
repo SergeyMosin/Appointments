@@ -1138,9 +1138,9 @@ export default {
       const ok_txt = this.t('appointments', 'Public link copied to clipboard')
       const err_txt = this.t('appointments', 'Copy Error')
       if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(function () {
+        navigator.clipboard.writeText(text).then(()=> {
           this.showGeneralModalPop(ok_txt)
-        }, function (err) {
+        }, (err)=>{
           console.error('copy error:', err);
           this.showGeneralModalPop(err_txt)
         });
