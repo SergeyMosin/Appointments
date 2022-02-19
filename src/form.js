@@ -443,12 +443,15 @@
                  ia = s.getAttribute("data-info").split(','),
                  l = ia.length, i = 0, ds; i < l; i++) {
 
-            //TODO: remove 'U' from ds
+            //TODO: remove 'U' from ds ????
             ds = ia[i]
 
             sp = ds.indexOf(":", 8);
             md.setTime(+ds.substr(1, sp - 1) * 1000)
             tzo = md.getTimezoneOffset()
+
+            // t='U' in simple and external modes
+            // t='T' in template mode
             t = ds.charAt(0)
 
             tStr = atStr = tf(md)
@@ -463,7 +466,7 @@
 
                 if (t === "T") {
                     dur = ds.substr(sp2, sp - sp2).split(';').map(n => n | 0)
-                    if (dur.length < 2) {
+                    if (endTime===1 && dur.length < 2) {
                         md.setTime(ts + dur[0] * 60000)
                         tStr += ' - ' + tf(md)
                     }
