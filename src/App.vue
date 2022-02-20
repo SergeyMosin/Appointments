@@ -103,7 +103,7 @@
                 </ActionButton>
               </template>
             </AppNavigationItem>
-            <AppNavigationSpacer/>
+            <li style="height: 16px"></li>
             <AppNavigationItem
                 @click="openViaPicker(6,$event)"
                 :title="t('appointments','Manage Appointment Slots')"
@@ -129,7 +129,7 @@
     </AppNavigation>
     <AppContent style="transition: none;" class="srgdev-app-content" :aria-expanded="navOpen">
       <div v-show="visibleSection===2" class="srgdev-appt-cal-view-cont">
-        <Modal v-if="generalModal!==0" :canClose="false">
+        <Modal v-if="generalModal!==0" class="srgdev-appt-modal-container" :canClose="false">
           <div class="srgdev-appt-modal_pop">
             <span :data-pop="generalModalPop" class="srgdev-appt-modal_pop_txt">{{ generalModalPopTxt }}</span>
           </div>
@@ -157,7 +157,7 @@
                            style="cursor: text;position: absolute;left: 0;width: 100%;text-align: center;margin: 0;">
                         {{ generalModalTxt[1] }}
                       </div>
-                      <br>
+                      <br><br>
                     </template>
                   </ApptAccordion>
                 </div>
@@ -286,7 +286,7 @@
             <div @gridContext="editSingleAppt" ref="grid_cont" class="srgdev-appt-grid-cont"></div>
           </div>
         </div>
-        <Modal v-if="evtGridModal!==0" :canClose="false">
+        <Modal v-if="evtGridModal!==0" class="srgdev-appt-modal-container" :canClose="false">
           <div :class="evtGridModal===5?'srgdev-appt-modal_content_tmpl':'srgdev-appt-modal_content'">
             <div v-if="evtGridModal===1" class="srgdev-appt-modal-lbl">
               {{
@@ -328,13 +328,17 @@
       </div>
       <div v-show="visibleSection===0" class="srgdev-appt-main-sec">
         <ul class="srgdev-appt-main-info">
-          <li>{{ pagePreviewLabel + ' ' + t('appointments', 'Preview') }}<span style="margin-left: 1.25em"
-                                                                               v-show="pagePreviewLoading===true"
-                                                                               class="icon-loading-small"></span></li>
+          <li>{{ pagePreviewLabel + ' ' + t('appointments', 'Preview') }}<span
+              style="margin-left: 1.25em"
+              v-show="pagePreviewLoading===true"
+              class="icon-loading-small"></span></li>
         </ul>
         <div class="srgdev-appt-main-frame-cont">
-          <iframe class="srgdev-appt-main-frame" @load="pagePreviewLoading=false" ref="pubPageRef"
-                  :src="pubPage"></iframe>
+          <iframe
+              class="srgdev-appt-main-frame"
+              @load="pagePreviewLoading=false"
+              ref="pubPageRef"
+              :src="pubPage"></iframe>
         </div>
       </div>
       <div v-show="visibleSection===3" v-html="helpContent" class="srgdev-appt-help-sec">
@@ -435,7 +439,6 @@ import {
   AppNavigation,
   AppNavigationIconBullet,
   AppNavigationItem,
-  AppNavigationSpacer,
   Modal,
   Content,
 } from '@nextcloud/vue'
@@ -483,7 +486,6 @@ export default {
     AppNavigation,
     AppNavigationItem,
     NavAccountItem,
-    AppNavigationSpacer,
     ActionButton,
     AppContent,
     ActionCheckbox,
@@ -1002,11 +1004,14 @@ export default {
     toggleSlideBar(sbn, pageId) {
 
       // CLose nav
-      let elm = document.getElementById("app-navigation-toggle")
-      if (elm !== null && elm.hasAttribute('aria-expanded')
-          && elm.getAttribute('aria-expanded') === 'true') {
-        elm.dispatchEvent(new Event('click'))
-      }
+      // const lst = document.getElementsByClassName("app-navigation-toggle")
+      // if (lst.length > 0) {
+      //   let elm = lst.item(0)
+      //   if (elm.hasAttribute('aria-expanded')
+      //       && elm.getAttribute('aria-expanded') === 'true') {
+      //     elm.dispatchEvent(new Event('click'))
+      //   }
+      // }
 
       if (sbn === 0) {
         this.sbShow = 0
@@ -1138,9 +1143,9 @@ export default {
       const ok_txt = this.t('appointments', 'Public link copied to clipboard')
       const err_txt = this.t('appointments', 'Copy Error')
       if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(()=> {
+        navigator.clipboard.writeText(text).then(() => {
           this.showGeneralModalPop(ok_txt)
-        }, (err)=>{
+        }, (err) => {
           console.error('copy error:', err);
           this.showGeneralModalPop(err_txt)
         });
@@ -1472,6 +1477,10 @@ export default {
 </script>
 
 <style scoped>
+.srgdev-appt-modal-container >>> .modal-container {
+  width: auto;
+  height: auto;
+}
 </style>
 
 

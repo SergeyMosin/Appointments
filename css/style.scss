@@ -15,7 +15,7 @@
 	background-size: 8px;
 }
 
-.srgdev-slider-open .app-navigation-toggle{
+.srgdev-slider-open .action-item.app-navigation-toggle{
 	display: none;
 }
 
@@ -35,6 +35,7 @@
 	overflow: hidden;
 	text-align: center;
 }
+
 //#srgdev-appt-grid-scroll_cont{
 //	height: 100%;
 //	overflow: scroll;
@@ -103,11 +104,6 @@ $appt_grid_ml:6em;
 	min-width: 64px !important;
 	width: 64px !important;
 }
-
-.srgdev-appt-gh-act-inp .action-input__label::before{
-	content: "\ea05" !important;
-}
-
 
 .srgdev-appt-grd-grid_layer{
 	margin-left: 1em;
