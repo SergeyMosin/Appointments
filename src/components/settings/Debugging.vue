@@ -20,6 +20,21 @@
         </select>
       </div>
       <div class="dbg-section">
+        <label
+            style="display: block"
+            for="appt_debug-sync-remote">
+          {{ t('appointments', 'Sync Remote Calendar Now') }}:</label>
+        <select
+            :disabled="!hasSubscriptions"
+            v-model="calsIdx"
+            @change="handleSyncRemote"
+            class="dbg-input"
+            id="appt_debug-sync-remote">
+          <option :value="-1">{{ t('appointments', 'Calendar Required') }}</option>
+          <option v-for="(cal,idx) in cals" v-if="cal.isSubscription==='1'" :value="idx">{{ cal.name }}</option>
+        </select>
+      </div>
+      <div class="dbg-section">
         <input
             type="checkbox"
             :disabled="isSending"
@@ -53,6 +68,7 @@ export default {
         log_rem_blocker: false
       },
       isSending: false,
+      hasSubscriptions: false,
     }
   },
   methods: {
@@ -69,6 +85,9 @@ export default {
             id: cal[2],
             isReadOnly: cal[3],
             isSubscription: cal[4] || '0'
+          }
+          if (d.isSubscription === '1') {
+            this.hasSubscriptions = true
           }
           this.cals.push(d)
         }
@@ -87,13 +106,19 @@ export default {
         this.$root.$emit('startDebug', {type: "raw_cal", cal_info: this.cals[this.calsIdx]})
       }
     },
+    handleSyncRemote(){
+      if (this.calsIdx > -1) {
+        console.log("handleSyncRemote cal:", this.cals[this.calsIdx])
+        this.$root.$emit('startDebug', {type: "sync_remote", cal_info: this.cals[this.calsIdx]})
+      }
+    },
     handleSetLogBlockers() {
-      if(this.isSending===true){
+      if (this.isSending === true) {
         return
       }
 
       this.isSending = true
-      this.setState('set_dbg', this.dbgInfo,'',{noFormData:true}).then(() => {
+      this.setState('set_dbg', this.dbgInfo, '', {noFormData: true}).then(() => {
         this.isSending = false
       })
     }

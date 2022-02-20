@@ -102,4 +102,44 @@ class DebugController extends Controller
 
     }
 
+    /**
+     * @NoAdminRequired
+     */
+    function syncRemoteNow() {
+
+        $data = "";
+        $status = 400;
+
+        $calInfoStr = $this->request->getParam("cal_info");
+        if ($calInfoStr !== null) {
+            $calInfo = json_decode($calInfoStr, true);
+            if ($calInfo !== null &&
+                isset($calInfo["id"]) &&
+                isset($calInfo["isSubscription"]) &&
+                $calInfo["isSubscription"] === '1') {
+
+                $a = [
+                    "name" => $calInfo["name"],
+                    "syncStart" => microtime(true)
+                ];
+
+                $calInfo['syncRemoteNow_call'] = true;
+                $this->bc->getRawCalData($calInfo, $this->userId);
+
+                $a["syncEnd"] = microtime(true);
+                $a["syncDuration"] = $a["syncEnd"] - $a["syncStart"];
+
+                $data = var_export($a, true);
+
+                $status = 200;
+            }
+        }
+
+        $tr = new TemplateResponse($this->appName, 'settings_dump', [], "base");
+        $tr->setParams(['data' => $data]);
+        $tr->setStatus($status);
+        return $tr;
+
+    }
+
 }

@@ -1089,11 +1089,15 @@ export default {
       this.toggleSlideBar(0)
       this.visibleSection = 3
 
+      this.helpContent='<pre style="font-size:90%; padding: 50px 1em 0"><code>Sending Request. Please Wait.</code></pre>';
+
       let prm
       if (data === undefined) {
         prm = debug.settingsDump()
       } else if (data.type === "raw_cal") {
         prm = debug.getRawCalData(data.cal_info)
+      }else if (data.type === "sync_remote") {
+        prm = debug.syncRemoteNow(data.cal_info)
       }
       prm.then(data => {
         this.helpContent = data

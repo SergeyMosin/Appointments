@@ -711,9 +711,10 @@ class BCSabreImpl implements IBackendConnector
     /**
      * @param array $cms
      * @param string $userId
+     * @param bool $forceSync
      * @return array [['id'=>'x','type'=>CalDavBackend::CALENDAR_TYPE_x]]
      */
-    private function getCalsForConflictCheck(array $cms, string $userId): array {
+    private function getCalsForConflictCheck(array $cms, string $userId, bool $forceSync = false): array {
 
         // stars with destination cal
         $ret = [[
@@ -775,7 +776,7 @@ class BCSabreImpl implements IBackendConnector
 
                         $now = time();
 
-                        if (!$hadSync && ($now - $lastSync) > ($syncInterval * 60)) {
+                        if ($forceSync || (!$hadSync && ($now - $lastSync) > ($syncInterval * 60))) {
 
                             $hadSync = true;
 
@@ -940,10 +941,16 @@ class BCSabreImpl implements IBackendConnector
             $fake_cms[BackendUtils::CLS_TMM_SUBSCRIPTIONS] = [];
         }
 
-        $cals = $this->getCalsForConflictCheck($fake_cms, $userId);
+        $cals = $this->getCalsForConflictCheck(
+            $fake_cms, $userId, isset($calInfo['syncRemoteNow_call']));
         if (count($cals) !== 2) {
             return 'error: calendar ' . $calInfo['id'] . ' not found';
         }
+
+        if (isset($calInfo['syncRemoteNow_call'])) {
+            return $cals[1];
+        }
+
         $cal = $cals[1];
         $r['cal'] = $cal;
 
