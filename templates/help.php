@@ -143,10 +143,13 @@ echo '&lt;iframe src = "'.$src.'"&gt;&lt;/iframe&gt;';
 
   <h2 id="srgdev-sec_contrib_info" class="srgdev-appt-hs-h1">Contributor Features</h2>
   <div class="srgdev-appt-hs-p">
-    The following features are restricted to users that contributed to the development of this app:
+    The following features are only available to users that contributed to the development of this app:
       <ol type="a" style="margin: .5em 0 1em 2em">
           <li>Add more than 3 public pages (up to 10) to your setup</li>
           <li>Use the directory webpage to publicly display multiple links</li>
+          <li>Additional Reminder options</li>
+          <li>More "Talk" integration options</li>
+          <li>And some others</li>
       </ol>
       Contributor features can be unlocked by obtaining a <i>contributor key</i> in any of the following ways:
     <ol type="a" style="margin: .5em 0 1em 2em">

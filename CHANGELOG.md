@@ -1,3 +1,15 @@
+## 1.12.0 - 2022-02-21
+### Added
+- Sunday is available now in "Edit Template" and "Add Appointments" - issue #13
+- New "Private Page" mode: visitors must be logged-in to NC - issue #298
+- Debugging: add "Sync Remote Calendar Now" option
+### Fixed
+- "Show end time" option is always ON in "weekly template mode" - issue #299
+- JS: errors and "this" scope in doCopyPubLink function
+- Cancellations and reminders not working in "simple" mode with dual calendars (regression from v1.11.14 ) - issue #302
+### Changed
+- dev: updated dependencies and config files
+
 ## 1.11.14 - 2022-02-14
 ### Changed
 - Confirm, Cancel and ChangeType pages now have a "confirm" button to prevent antivirus / antimalware scans from taking action automatically - issue #293
