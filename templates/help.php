@@ -143,12 +143,17 @@ echo '&lt;iframe src = "'.$src.'"&gt;&lt;/iframe&gt;';
 
   <h2 id="srgdev-sec_contrib_info" class="srgdev-appt-hs-h1">Contributor Features</h2>
   <div class="srgdev-appt-hs-p">
-    Contributor feature can be unlocked by obtaining a contributor key in any of the following ways:
+    The following features are restricted to users that contributed to the development of this app:
+      <ol type="a" style="margin: .5em 0 1em 2em">
+          <li>Add more than 3 public pages (up to 10) to your setup</li>
+          <li>Use the directory webpage to publicly display multiple links</li>
+      </ol>
+      Contributor features can be unlocked by obtaining a <i>contributor key</i> in any of the following ways:
     <ol type="a" style="margin: .5em 0 1em 2em">
       <li>Contribute any amount to this app development or sponsor a feature over at the <a class="srgdev-appt-hs-link" target="_blank" href="https://www.srgdev.com/gh-support/nextcloudapps">Funding page</a>.</li>
       <li>Contribute code via a pull request on <a class="srgdev-appt-hs-link" target="_blank" href="https://github.com/SergeyMosin/Appointments">GitHub</a>.</li>
       <li>If you are a member of the Nexcloud team on transifex.com please <a class="srgdev-appt-hs-link" target="_blank" href="https://www.srgdev.com/contact.html#cnt_ancr">contact me</a> directly.</li>
-      <li>Contact me if any of the above methods do not work for you.</li>
+      <li>Contact me if none of the above methods works for you.</li>
     </ol>
     Once you receive your key/code you can enter it in the <code class="srgdev-appt-hs-code_short">Settings &gt; Contributor Key</code> section.<br>
   </div>
