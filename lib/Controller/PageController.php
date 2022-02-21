@@ -371,6 +371,24 @@ class PageController extends Controller
         } elseif ($a === "0") {
             // Cancel
 
+            $cms = $this->utils->getUserSettings(
+                $pageId === 'p0'
+                    ? BackendUtils::KEY_CLS
+                    : BackendUtils::KEY_MPS . $pageId,
+                $userId);
+            // The appointment can be in the destination calendar (manual mode)
+            // this needs to be done here just in case we need to 'reset'
+            $r_cal_id = $cal_id;
+            if ($cms[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_SIMPLE
+                && $otherCalId !== "-1") {
+                // !! Pending appointments are in the MAIN calendar
+                // !! Confirmed appointments are in the DEST ($otherCalId)
+                if ($this->bc->getObjectData($otherCalId, $uri) !== null) {
+                    // The appointment has previously been confirmed and moved to the DEST calendar
+                    $r_cal_id = $otherCalId;
+                } // else the appointment is still pending in the MAIN calendar
+            }
+
             if ($take_action) {
                 // Emails are handled by the DavListener... set the Hint
                 $ses = \OC::$server->getSession();
@@ -380,24 +398,6 @@ class PageController extends Controller
 
                 $cls = $this->utils->getUserSettings(
                     BackendUtils::KEY_CLS, $userId);
-
-                $cms = $this->utils->getUserSettings(
-                    $pageId === 'p0'
-                        ? BackendUtils::KEY_CLS
-                        : BackendUtils::KEY_MPS . $pageId,
-                    $userId);
-
-                // The appointment can be in the destination calendar (manual mode)
-                // this needs to be done here just in case we need to 'reset'
-                $r_cal_id = $cal_id;
-                if ($cms[BackendUtils::CLS_TS_MODE] === '0' && $otherCalId !== "-1") {
-                    // !! Pending appointments are in the MAIN calendar
-                    // !! Confirmed appointments are in the DEST ($otherCalId)
-                    if ($this->bc->getObjectData($otherCalId, $uri) !== null) {
-                        // The appointment has previously been confirmed and moved to the DEST calendar
-                        $r_cal_id = $otherCalId;
-                    } // else the appointment is still pending in the MAIN calendar
-                }
 
                 // This can be 'mark' or 'reset'
                 $mr = $cls[BackendUtils::CLS_ON_CANCEL];
@@ -429,7 +429,7 @@ class PageController extends Controller
             } else {
                 // user needs to click the button to take_action if not canceled already
                 list($date_time, $state) = $this->utils->dataApptGetInfo(
-                    $this->bc->getObjectData($cal_id, $uri), $userId);
+                    $this->bc->getObjectData($r_cal_id, $uri), $userId);
                 $sts = 0;
                 if ($date_time === null || $state === BackendUtils::PREF_STATUS_CANCELLED) {
                     // already canceled

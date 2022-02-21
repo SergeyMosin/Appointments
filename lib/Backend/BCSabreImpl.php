@@ -1106,7 +1106,7 @@ class BCSabreImpl implements IBackendConnector
 
         $ts_mode = $cms[BackendUtils::CLS_TS_MODE];
 
-        if ($ts_mode === '2') {
+        if ($ts_mode === BackendUtils::CLS_TS_MODE_TEMPLATE) {
             // weekly template
             $td = $this->utils->getTemplateData($pageId, $userId);
             if (!isset($td[$info['tmpl_day']])
@@ -1163,7 +1163,7 @@ class BCSabreImpl implements IBackendConnector
 
             $start_ts = $info['tmpl_start_ts'];
 
-        } elseif ($ts_mode === '1') {
+        } elseif ($ts_mode === BackendUtils::CLS_TS_MODE_EXTERNAL) {
             // external mode...
             // ... query source cal for source uri
             $srcId = $cms[BackendUtils::CLS_XTM_SRC_ID];
@@ -1413,7 +1413,7 @@ class BCSabreImpl implements IBackendConnector
                         : BackendUtils::KEY_MPS . $pageId,
                     $userId);
 
-                if ($do_confirm && $cms[BackendUtils::CLS_TS_MODE] === '0'
+                if ($do_confirm && $cms[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_SIMPLE
                     && $cms[BackendUtils::CLS_DEST_ID] !== "-1") {
                     // confirming in regular mode into different calendar
                     $dcl_id = $cms[BackendUtils::CLS_DEST_ID];

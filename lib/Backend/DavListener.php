@@ -97,10 +97,24 @@ class DavListener implements IEventListener
             }
 
             $pageId = $row['page_id'];
-            $calId = $utils->getMainCalId($userId, $pageId, null);
+            $otherCalId = '-1';
+            $calId = $utils->getMainCalId($userId, $pageId, null, $otherCalId);
             if ($calId === '-1') {
                 $this->logger->error("can not find main calendar, userId: " . $userId . ", pageId: " . $pageId);
                 continue;
+            }
+            if ($otherCalId !== '-1' && $utils->getUserSettings(
+                    $pageId === 'p0'
+                        ? BackendUtils::KEY_CLS
+                        : BackendUtils::KEY_MPS . $pageId,
+                    $userId)[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_SIMPLE) {
+                // if we have a dst calendar in simple mode than it will hold confirmed appointments, so we should check it first and then check the src calendar just in-case settings have been changed after the appointment was booked
+                $temp = $calId;
+                $calId = $otherCalId;
+                $otherCalId = $temp;
+            } else {
+                // dst calendar is only valid in simple mode
+                $otherCalId = '-1';
             }
 
             $remDataArray = $remObj[BackendUtils::REMINDER_DATA];
@@ -110,6 +124,11 @@ class DavListener implements IEventListener
                     // send reminder
 
                     $data = $bc->getObjectData($calId, $row['uri']);
+
+                    if ($data === null && $otherCalId !== '-1') {
+                        $data = $bc->getObjectData($otherCalId, $row['uri']);
+                    }
+
                     if ($data === null) {
                         $this->logger->error("can not get object data, uri: " . $row['uri'] . ", calId: " . $calId);
                         break;
