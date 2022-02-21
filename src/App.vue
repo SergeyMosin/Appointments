@@ -603,6 +603,26 @@ export default {
     this.gridApptsPageId = "p0"
     this.gridCID = 0
     this.evtGridElm = null
+
+    // calculate grid shift for template, because a week can start on different in some countries
+    // in template data array 0 = Monday, so when the week start on:
+    //  Monday:   gridShift = 0
+    //  Sunday:   gridShift = 1
+    //  Saturday: gridShift = 2
+
+    switch (window.firstDay) {
+      case 0:
+        // Sunday
+        this.gridShift = 1
+        break
+      case 6:
+        // Saturday
+        this.gridShift = 2
+        break
+      default:
+        // default to Monday
+        this.gridShift = 0
+    }
   },
 
   beforeMount() {
@@ -647,9 +667,8 @@ export default {
     },
 
     async editApptTemplate(info) {
-      if (!this.isGridReady) {
-        this.gridSetup()
-      }
+
+      this.gridSetup()
 
       this.getState("get_k").then(k => {
         this.hasKey = k !== ""
@@ -657,6 +676,7 @@ export default {
 
       this.gridTzName = info.tzName
 
+      // wd must be 00:00 on a Monday
       const wd = new Date()
       wd.setHours(0, 0, 0)
       let day = wd.getDay()
@@ -668,7 +688,7 @@ export default {
 
       const d = {
         dur: 0,
-        week: wd.setTime(wd.getTime() + (day * 86400000)),
+        week: wd.setDate(wd.getDate() + day),
         tz: null,
         pageId: info.pageId
       }
@@ -677,7 +697,7 @@ export default {
     },
 
     saveTemplate() {
-      this.setState('set_t_data', gridMaker.getTemplateData(), this.curPageData.pageId)
+      this.setState('set_t_data', gridMaker.getTemplateData(this.gridShift), this.curPageData.pageId)
     },
 
     openViaPicker(sbn, evt) {
@@ -938,8 +958,10 @@ export default {
     },
 
     gridSetup() {
-      gridMaker.setup(this.$refs["grid_cont"], 6, "srgdev-appt-grd-")
-      this.isGridReady = true
+      if (this.isGridReady === false) {
+        gridMaker.setup(this.$refs["grid_cont"], 7, "srgdev-appt-grd-")
+        this.isGridReady = true
+      }
     },
 
     /** @return {Promise<JSON|string|Array|null>} */
@@ -1089,14 +1111,14 @@ export default {
       this.toggleSlideBar(0)
       this.visibleSection = 3
 
-      this.helpContent='<pre style="font-size:90%; padding: 50px 1em 0"><code>Sending Request. Please Wait.</code></pre>';
+      this.helpContent = '<pre style="font-size:90%; padding: 50px 1em 0"><code>Sending Request. Please Wait.</code></pre>';
 
       let prm
       if (data === undefined) {
         prm = debug.settingsDump()
       } else if (data.type === "raw_cal") {
         prm = debug.getRawCalData(data.cal_info)
-      }else if (data.type === "sync_remote") {
+      } else if (data.type === "sync_remote") {
         prm = debug.syncRemoteNow(data.cal_info)
       }
       prm.then(data => {
@@ -1241,7 +1263,7 @@ export default {
 
       gridMaker.resetAllColumns()
 
-      const NBR_DAYS = 6
+      const NBR_DAYS = 7
       // Generate local names for days and month(s)
       let tff
       const lang = document.documentElement.lang
@@ -1263,17 +1285,20 @@ export default {
         }
       }
 
-      let ws = d.week
-      let td = new Date(ws)
+      let td = new Date(d.week)
+      if (this.gridMode === gridMaker.MODE_TEMPLATE && this.gridShift !== 0) {
+        // d.week is Monday 00:00:00 in grid mode
+        // we need to adjust because a week can start on Mon, Sun or Sat
+        td.setDate(td.getDate() - this.gridShift)
+      }
 
-      let pd = td.getDate() + "-" + (td.getMonth() + 1) + "-" + td.getFullYear()
+      // we need this for simple mode
+      const pd = td.getDate() + "-" + (td.getMonth() + 1) + "-" + td.getFullYear()
 
       // Same formula as @see grid.js#makeColumns(n)
       let w = Math.floor((100 - 1) / NBR_DAYS) + "%"
 
-      for (let ts, i = 0; i < NBR_DAYS; i++) {
-        ts = ws + i * 86400000
-        td.setTime(ts)
+      for (let ts = td.getTime(), i = 0; i < NBR_DAYS; i++) {
         this.$set(this.gridHeader, i, {
           ts: ts,
           txt: tff(td),
@@ -1281,6 +1306,7 @@ export default {
           n: '8', // Initial value for "add" input must be string
           hasAppts: false,
         })
+        ts = td.setDate(td.getDate() + 1)
       }
 
       this.gridApptLen = d.dur
@@ -1301,7 +1327,7 @@ export default {
         }).then(response => {
           if (response.status === 200) {
             if (response.data !== "") {
-              gridMaker.addPastAppts(response.data, this.calInfo.curCal_color)
+              gridMaker.addPastAppts(pd + String.fromCharCode(31) + response.data, this.calInfo.curCal_color)
             }
           }
         }).catch(error => {
@@ -1317,11 +1343,12 @@ export default {
         // get template data
         this.getState('get_t_data', d.pageId)
             .then(data => {
-              gridMaker.addPastAppts(data, null)
-              //activate non empty columns
+              gridMaker.addPastAppts(data, null, this.gridShift)
+              //activate non-empty columns
               data.forEach((c, i) => {
-                if (this.gridHeader[i] !== undefined) {
-                  this.gridHeader[i].hasAppts = c.length > 0
+                const iMod = (i + this.gridShift) % 7
+                if (this.gridHeader[iMod] !== undefined) {
+                  this.gridHeader[iMod].hasAppts = c.length > 0
                 }
               })
             })

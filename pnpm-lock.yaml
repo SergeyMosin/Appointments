@@ -40,7 +40,7 @@ specifiers:
   vue-slider-component: v3.1.0
   vue-style-loader: ^4.1.3
   vue-template-compiler: '>=2.0.0 <3.0.0'
-  vue2-datepicker: ^3.9.1
+  vue2-datepicker: ^3.10.4
   webpack: ^5.69.1
   webpack-cli: ^4.9.2
   webpack-merge: ^5.8.0
@@ -55,7 +55,7 @@ dependencies:
   npm: 7.17.0
   vue: 2.6.14
   vue-slider-component: 3.1.0_vue@2.6.14
-  vue2-datepicker: 3.9.1_vue@2.6.14
+  vue2-datepicker: 3.10.4_vue@2.6.14
 
 devDependencies:
   '@babel/core': 7.17.5
@@ -1645,7 +1645,7 @@ packages:
       vue-material-design-icons: 5.0.0
       vue-multiselect: 2.1.6
       vue-visible: 1.0.2
-      vue2-datepicker: 3.9.1_vue@2.6.14
+      vue2-datepicker: 3.10.4_vue@2.6.14
     transitivePeerDependencies:
       - debug
       - ical.js
@@ -3050,8 +3050,8 @@ packages:
       assert-plus: 1.0.0
     dev: true
 
-  /date-format-parse/0.2.6:
-    resolution: {integrity: sha512-sdxnYAWmLopeb+6Hmw+vo3or4OCJOnh4+YoJ9p+Id3o2EnNP0INpTqx7wr8UregfMpgaSZAH473R/ytiaB3gVg==}
+  /date-format-parse/0.2.7:
+    resolution: {integrity: sha512-/+lyMUKoRogMuTeOVii6lUwjbVlesN9YRYLzZT/g3TEZ3uD9QnpjResujeEqUW+OSNbT7T1+SYdyEkTcRv+KDQ==}
     dev: false
 
   /de-indent/1.0.2:
@@ -6656,12 +6656,12 @@ packages:
     resolution: {integrity: sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ==}
     dev: false
 
-  /vue2-datepicker/3.9.1_vue@2.6.14:
-    resolution: {integrity: sha512-LuvcgGR+sDYKcih0z+cyvYufGyBwUtIiwzJPwxE63C8gOsAWiE09KuGtZ3OxdQXJEQM2MGQ9t9t1t7382FiFOg==}
+  /vue2-datepicker/3.10.4_vue@2.6.14:
+    resolution: {integrity: sha512-WIdYa1fSF9rQCXOGG+qvTiE7q7+K1FIpUUZ/r6Q/tUP+NO7IePEoDAY+Lpy73ofj/4zmrT2FjD5O5QChVKFOSQ==}
     peerDependencies:
       vue: ^2.5.0
     dependencies:
-      date-format-parse: 0.2.6
+      date-format-parse: 0.2.7
       vue: 2.6.14
     dev: false
 
