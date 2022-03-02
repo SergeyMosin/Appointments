@@ -1,3 +1,7 @@
+## 1.12.1 - 2022-03-02
+### Fixed
+- PHP: error when "Skip email validation step" option enabled - issue #304
+
 ## 1.12.0 - 2022-02-21
 ### Added
 - Sunday is available now in "Edit Template" and "Add Appointments" - issue #13
