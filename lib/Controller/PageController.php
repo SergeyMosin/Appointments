@@ -312,13 +312,13 @@ class PageController extends Controller
 
             if ($a === '2') {
                 $a_ok = false;
-                $sp = strpos($uri, chr(31));
+                $sp = strpos(substr($uri, 4), chr(31));
                 if ($sp !== false) {
                     $ts = unpack('Lint', substr($uri, 0, 4))['int'];
                     if ($ts + 8 >= time()) {
-                        $em = substr($uri, 4, $sp - 4);
+                        $em = substr($uri, 4, $sp);
                         if ($this->mailer->validateMailAddress($em)) {
-                            $uri = substr($uri, $sp + 1);
+                            $uri = substr($uri, $sp + 1 + 4);
                             // TRANSLATORS the '%s' is an email address
                             $skip_evs_text = $this->l->t("An email with additional details is on its way to you at %s", [$em]);
                             $a_ok = true; // :)
@@ -800,6 +800,8 @@ class PageController extends Controller
         $r = $this->bc->setAttendee($userId, $cal_id, $evt_uri, $post);
 
         if ($r > 0) {
+            $this->logger->error("setAttendee error status: " . $r);
+
             // &r=1 means there was a race and someone else has booked that slot
             $rr = new RedirectResponse($server_err_url . ($r === 1 ? "&r=1" : "") . "&eml=1");
             $rr->setStatus(303);
