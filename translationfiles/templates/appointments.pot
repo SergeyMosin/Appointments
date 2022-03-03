@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2022-03-02 04:02+0000\n"
+"POT-Creation-Date: 2022-03-03 03:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -306,45 +306,45 @@ msgid "Action needed"
 msgstr ""
 
 #: /app/lib/Controller/PageController.php:546
-#: /app/lib/Controller/PageController.php:872
+#: /app/lib/Controller/PageController.php:874
 msgid "Info"
 msgstr ""
 
 #: /app/lib/Controller/PageController.php:547
-#: /app/lib/Controller/PageController.php:873
+#: /app/lib/Controller/PageController.php:875
 msgid "Link Expired …"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:844
+#: /app/lib/Controller/PageController.php:846
 msgid "Almost done …"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:866
+#: /app/lib/Controller/PageController.php:868
 #, php-format
 msgid ""
 "We have sent an email to %s, please open it and click on the confirmation "
 "link to finalize your appointment request"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:929
+#: /app/lib/Controller/PageController.php:931
 msgid "Organization Name"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:935
+#: /app/lib/Controller/PageController.php:937
 #: /app/specialVueFakeDummyForL10nScript.js:134
 #: /app/specialVueFakeDummyForL10nScript.js:275
 msgid "Book Your Appointment"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1107
+#: /app/lib/Controller/PageController.php:1109
 msgid "Please add time slots first."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1110
+#: /app/lib/Controller/PageController.php:1112
 msgid "Please select a calendar first"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1113
+#: /app/lib/Controller/PageController.php:1115
 msgid "Selected calendar not found"
 msgstr ""
 
