@@ -83,7 +83,13 @@ class BackendUtils
     public const CLS_TMM_SUBSCRIPTIONS = 'tmmSubscriptions';
     public const CLS_TMM_SUBSCRIPTIONS_SYNC = 'tmmSubscriptionsSync';
     // --
+    // this is global prep time (Minimum lead time)
     public const CLS_PREP_TIME = 'prepTime';
+
+    // per-appointment block times for pending or booked appointmets
+    public const CLS_BUFFER_BEFORE = 'bufferBefore';
+    public const CLS_BUFFER_AFTER = 'bufferAfter';
+
     public const CLS_ON_CANCEL = 'whenCanceled';
     public const CLS_ALL_DAY_BLOCK = 'allDayBlock';
     public const CLS_PRIVATE_PAGE = 'privatePage';
@@ -103,7 +109,7 @@ class BackendUtils
     public const PSN_FNED = "startFNED";
     public const PSN_PAGE_STYLE = "pageStyle";
     public const PSN_GDPR = "gdpr";
-    public const PSN_GDPR_NO_CHB ="gdprNoChb";
+    public const PSN_GDPR_NO_CHB = "gdprNoChb";
     public const PSN_FORM_TITLE = "formTitle";
     public const PSN_META_NO_INDEX = "metaNoIndex";
     public const PSN_EMPTY = "showEmpty";
@@ -355,7 +361,7 @@ class BackendUtils
 
                 if ($xad[4] === 'f') {
                     // the appointment was previously finalized as "in-person ..."
-                    if($noChanges){
+                    if ($noChanges) {
                         $tlk = $this->getUserSettings(self::KEY_TALK, $userId);
                         // new_type = virtual
                         $r[0] = (!empty($tlk[self::TALK_FORM_VIRTUAL_TXT])
@@ -374,7 +380,7 @@ class BackendUtils
 
                     $tlk = $this->getUserSettings(self::KEY_TALK, $userId);
 
-                    if($noChanges){
+                    if ($noChanges) {
                         $r[0] = (!empty($tlk[self::TALK_FORM_REAL_TXT])
                             ? $tlk[self::TALK_FORM_REAL_TXT]
                             : $tlk[self::TALK_FORM_DEF_REAL]);
@@ -1038,6 +1044,8 @@ class BackendUtils
                     self::CLS_TMM_SUBSCRIPTIONS_SYNC => '0',
 
                     self::CLS_PREP_TIME => "0",
+                    self::CLS_BUFFER_BEFORE => 0,
+                    self::CLS_BUFFER_AFTER => 0,
                     self::CLS_ON_CANCEL => 'mark',
                     self::CLS_ALL_DAY_BLOCK => false,
 
@@ -1074,6 +1082,9 @@ class BackendUtils
                     self::CLS_TMM_DST_ID => '-1',
                     self::CLS_TMM_MORE_CALS => [],
                     self::CLS_TMM_SUBSCRIPTIONS => [],
+
+                    self::CLS_BUFFER_BEFORE => 0,
+                    self::CLS_BUFFER_AFTER => 0,
 
                     self::CLS_PRIVATE_PAGE => false,
                     self::CLS_TS_MODE => self::CLS_TS_MODE_TEMPLATE,

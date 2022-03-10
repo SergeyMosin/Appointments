@@ -773,6 +773,22 @@ class StateController extends Controller
             }
         }
 
+        // ensure positive values for buffers and for now the "after" buffer must be the same as the "before" buffer because there is really no good way to deal with buffer overlap when bufferBefore != afterBuffer
+        if (isset($va[BackendUtils::CLS_BUFFER_BEFORE])){
+
+            if(isset($va[BackendUtils::CLS_TS_MODE]) && $va[BackendUtils::CLS_TS_MODE]===BackendUtils::CLS_TS_MODE_SIMPLE){
+                // in simple mode buffers must be 0
+                $va[BackendUtils::CLS_BUFFER_BEFORE]=0;
+            }
+            if($va[BackendUtils::CLS_BUFFER_BEFORE]<0){
+                $va[BackendUtils::CLS_BUFFER_BEFORE]=0;
+            }
+
+            $va[BackendUtils::CLS_BUFFER_AFTER]=$va[BackendUtils::CLS_BUFFER_BEFORE];
+        }else{
+            unset($va[BackendUtils::CLS_BUFFER_AFTER]);
+        }
+
         $value = json_encode($va);
 
         if ($this->utils->setUserSettings(

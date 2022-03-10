@@ -141,6 +141,13 @@ echo '&lt;iframe src = "'.$src.'"&gt;&lt;/iframe&gt;';
         Some more information is here: <a class="srgdev-appt-hs-link" target="_blank" href="https://github.com/SergeyMosin/Appointments/issues/268#issue-1067123944">https://github.com/SergeyMosin/Appointments/issues/268#issue-1067123944</a><br>
     </div>
 
+    <h2 id="srgdev-sec_buffers" class="srgdev-appt-hs-h1">Booked and Pending Appointment Buffers</h2>
+    <div class="srgdev-appt-hs-p">
+        It is possible to block-off a period of time before and after a booked(<strong>and pending</strong>) appointment. This could be useful when some preparation/travel time is required before or cleanup/cool-off time needs to be blocked-off after an appointment.<br><br>
+        Buffer blocking logic:<br>
+        <img class="quick-start-guide-img" alt="appointment buffers" style="max-width: 700px" src="<?php print_unescaped(image_path('appointments', 'appointment-buffers.jpg')); ?>" />
+    </div>
+
   <h2 id="srgdev-sec_contrib_info" class="srgdev-appt-hs-h1">Contributor Features</h2>
   <div class="srgdev-appt-hs-p">
     The following features are only available to users that contributed to the development of this app:

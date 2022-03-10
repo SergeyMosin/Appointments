@@ -466,7 +466,7 @@
 
                 if (t === "T") {
                     dur = ds.substr(sp2, sp - sp2).split(';').map(n => n | 0)
-                    if (endTime===1 && dur.length < 2) {
+                    if (endTime === 1 && dur.length < 2) {
                         md.setTime(ts + dur[0] * 60000)
                         tStr += ' - ' + tf(md)
                     }
