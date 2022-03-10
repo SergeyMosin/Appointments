@@ -75,7 +75,7 @@
         </div>
         <br>
         <ApptAccordion
-            title="Advanced Settings"
+            :title="t('appointments','Advanced Settings')"
             :open="false">
           <template slot="content">
             <div class="srgdev-appt-info-lcont">
