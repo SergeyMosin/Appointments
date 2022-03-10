@@ -1,8 +1,16 @@
-## 1.12.1 - 2022-03-02
+## v1.12.2 - 2022-03-10
+### Added
+- option to add booked/pending appointment buffers (before/after blockers)
+### Fixed
+- missing translation - issue #190
+### Changed
+- trailing/filler empty days are not shown - issue #306
+
+## v1.12.1 - 2022-03-02
 ### Fixed
 - PHP: error when "Skip email validation step" option enabled - issue #304
 
-## 1.12.0 - 2022-02-21
+## v1.12.0 - 2022-02-21
 ### Added
 - Sunday is available now in "Edit Template" and "Add Appointments" - issue #13
 - New "Private Page" mode: visitors must be logged-in to NC - issue #298
