@@ -258,6 +258,7 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "Ziel-Kalender (gebucht)",
     "Edit Template" : "Vorlage bearbeiten",
     "Check for conflicts in…" : "Auf Konflikte prüfen…",
+    "Booked Appointment Buffers" : "Gebuchte Terminpuffer",
     "Before:" : "Vor:",
     "After:" : "Nach:",
     "Time slot mode" : "Zeitfenstermodus",
