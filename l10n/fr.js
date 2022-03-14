@@ -258,6 +258,8 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "Agenda de destination (Réservé)",
     "Edit Template" : "Modifier le modèle",
     "Check for conflicts in…" : "Vérifiez s’il y a des conflits dans…",
+    "Before:" : "Avant :",
+    "After:" : "Après :",
     "Time slot mode" : "Mode par créneau horaire ",
     "Weekly Template" : "Modèle hebdomadaire",
     "Simple" : "Simple",
