@@ -49,6 +49,7 @@ OC.L10N.register(
     "An email with additional details is on its way to you at %s" : "E-posta bat bidali da xehetasun gehiagorekin %s(e)ra",
     "Your %s has been changed to %s" : "Zure %s hona aldatu da: %s",
     "All done." : "Dena eginda.",
+    "Action needed" : "Ekintza beharrezkoa",
     "Info" : "Informazioa",
     "Link Expired …" : "Esteka iraungi da ...",
     "Almost done …" : "Ia eginda …",

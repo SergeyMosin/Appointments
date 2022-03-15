@@ -11,6 +11,7 @@ OC.L10N.register(
     "A location, address or URL is required for this operation. Check User/Organization settings." : "Η τοποθεσία, διεύθυνση ή URL απαιτείται για αυτήν την ενέργεια. Ελέγξτε τις ρυθμίσεις χρήστη/ομάδας.",
     "Can't find your name. Check User/Organization settings." : "Το όνομά σας δεν βρέθηκε. Ελέγξτε τις ρυθμίσεις χρήστη/ομάδας.",
     "Available" : "Διαθέσιμα",
+    "%s appointment reminder" : "%s υπενθύμιση συνάντησης",
     "Dear %s," : "Αγαπητέ %s,",
     "%s appointment (action needed)" : "%s ραντεβού (απαιτείται ενέργεια)",
     "The %1$s appointment scheduled for %2$s is awaiting your confirmation." : "Το %1$s ραντεβού σας που προγραμματίστηκε για %2$s εκκρεμή επιβεβαίωση.",
