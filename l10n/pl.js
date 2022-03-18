@@ -275,7 +275,7 @@ OC.L10N.register(
     "Select Dates" : "Wybierz daty",
     "Time zone:" : "Strefa czasowa:",
     "Appointment Duration:" : "Czas trwania spotkania:",
-    "Start" : "Start",
+    "Start" : "Rozpocznij",
     "Scheduled before" : "Zaplanowane wcześniej",
     "Remove empty slots only" : "Usuń tylko puste terminy",
     "Remove empty and booked" : "Usuń puste i zarezerwowane",
