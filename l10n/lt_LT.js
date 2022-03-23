@@ -125,6 +125,7 @@ OC.L10N.register(
     "12 Hours" : "12 valandų",
     "Optimize recurrence" : "Optimizuoti pasikartojimus",
     "Debugging" : "Derinimas",
+    "Loading…" : "Įkeliama…",
     "Calendar Required" : "Reikalingas kalendorius",
     "Directory Page Settings" : "Katalogo puslapio nustatymai",
     "Add, remove and edit directory page links" : "Pridėkite, šalinkite ir taisykite katalogo puslapio nuorodas",
