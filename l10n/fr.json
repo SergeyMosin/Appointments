@@ -318,5 +318,5 @@
     "Please %1$stry again%2$s and select a different date." : "Veuillez %1$sré-essayer%2$s et sélectionner une date différente.",
     "Please contact us directly at" : "Veuillez nous contacter directement à ",
     "Please try again later" : "Veuillez réessayer plus tard"
-},"pluralForm" :"nplurals=3; plural=(n==0 || n==1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
 }
