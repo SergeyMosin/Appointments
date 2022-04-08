@@ -244,6 +244,8 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "Helburuko egutegia (erreserbatuta)",
     "Edit Template" : "Editatu txantiloia",
     "Check for conflicts in…" : "Begiratu gatazkarik dagoen hemen: ...",
+    "Before:" : "Lehenago:",
+    "After:" : "Gero:",
     "Time slot mode" : "Ordu-tarte modua",
     "Weekly Template" : "Asteko txantiloia",
     "Simple" : "Sinplea",
