@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS Embedding Test</title>
+    <style>
+        .iframe_form {
+            height: 45em;
+            width: 30em;
+        }
+
+        .iframe_confirm {
+            height: 20em;
+            width: 40em;
+        }
+
+        .iframe_small {
+            height: 18em;
+            width: 30em;
+        }
+
+        .iframe_error {
+            border-color: red;
+        }
+    </style>
+    <script>
+        const domReady = () => {
+            const keyName = "my_param_key";
+
+            let iframeClass = "iframe_form"
+            let src = 'http://nc22.localhost:9090/index.php/apps/appointments/embed/_o2wHj4yTTtQm9E%3D/form'
+
+            const q = new URLSearchParams(window.location.search)
+            if (q.has(keyName)) {
+                // Email Confirm/Cancel button was clicked
+                src = src.slice(0, -4) + 'cncf?d=' + encodeURIComponent(q.get(keyName));
+                iframeClass = "iframe_confirm";
+            }
+
+            /**
+             * @type {HTMLIFrameElement}
+             */
+            const iframe = document.getElementById("my_iframe")
+            if (iframe !== null) {
+                iframe.src = src
+                iframe.className = iframeClass
+            }
+        }
+        window.addEventListener('DOMContentLoaded', domReady)
+
+        // this is optional
+        window.addEventListener("message", (evt) => {
+            let cls = ""
+            switch (evt.data) {
+                case "appt:error_page":
+                    // "An error has occurred..." message is shoving in the iframe
+                    cls = "iframe_error "
+                case "appt:almost_done":
+                    // "Almost done..." message is showing in the iframe
+                    cls += "iframe_small"
+                    const frame = document.getElementById("my_iframe")
+                    if (frame !== null) {
+                        frame.className = cls
+                    }
+                    break
+                case "appt:action_needed":
+                    console.log("'Action needed...' page")
+                    break
+                case "appt:all_done":
+                    console.log("'All done...' page")
+                    break
+            }
+        })
+    </script>
+</head>
+<body>
+<div>
+    Parent Content Above
+</div>
+<iframe id="my_iframe"></iframe>
+<div>
+    Parent Content Below
+</div>
+</body>
+</html>

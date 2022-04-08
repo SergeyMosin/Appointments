@@ -122,7 +122,7 @@ form{
         1. If the iframe is under a different domain use <strong>occ</strong> to set allowed Frame Ancestor Domain:
         <code style="white-space: pre" class="srgdev-appt-hs-code">php occ config:app:set appointments "emb_afad_YourUserName" --value "your.domain.com"</code>
     2. Email confirm/cancel buttons need to be redirected.<br>Use <strong>occ</strong> to set base URL for the host page with <strong>a query parameter available at the end of the URL</strong>:
-        <code style="white-space: pre" class="srgdev-appt-hs-code">php occ config:app:set appointments "emb_cncf_YourUserName" --value "your.domain.com/page_url?some_param_name="</code>
+        <code style="white-space: pre" class="srgdev-appt-hs-code">php occ config:app:set appointments "emb_cncf_YourUserName" --value "http(s)://your.domain.com/page_url?some_param_name="</code>
 
 Example using PHP:
         <code style="white-space: pre" class="srgdev-appt-hs-code">...

@@ -1,4 +1,5 @@
 <?php
+script('appointments', 'cncf');
 style('appointments', 'form');
 ?>
 
