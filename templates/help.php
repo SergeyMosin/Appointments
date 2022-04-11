@@ -38,23 +38,24 @@
     <p class="srgdev-appt-hs-p">Insert custom
         <code>&lt;style&gt;&lt;/style&gt;</code> element to override default page style. Try something like this for example:
     </p>
-    <code style="white-space: pre;" class="srgdev-appt-hs-code">&lt;style&gt;
-        #header{
-        background: transparent !important;
-        }
-        #content{
-        background: linear-gradient(to bottom, #ff00cc, #333399) !important;
-        }
-        #body-public #content {
-        min-height: 100%;
-        }
-        form{
-        background:whitesmoke;box-shadow: 3px 3px 25px 0px rgba(0,0,0,0.75);
-        }
-        .srgdev-ncfp-form-header{
-        border-bottom: 3px solid #961AB1;
-        }
-        &lt;/style&gt;</code>
+    <pre><code class="srgdev-appt-hs-code">&lt;style&gt;
+#header{
+    background: transparent !important;
+}
+#content{
+    background: linear-gradient(to bottom, #ff00cc, #333399) !important;
+}
+#body-public #content {
+    min-height: 100%;
+}
+form{
+    background:whitesmoke;box-shadow: 3px 3px 25px 0px rgba(0,0,0,0.75);
+}
+.srgdev-ncfp-form-header{
+    border-bottom: 3px solid #961AB1;
+}
+&lt;/style&gt;</code></pre>
+    <span style="font-style: italic">* Don't forget to style confirm and error pages</span>
     <h2 class="srgdev-appt-hs-h1">Email Settings</h2>
     <p class="srgdev-appt-hs-p-h">
         <strong id="srgdev-sec_emailatt">Email Attendee when the appointment is modified and/or deleted</strong> - Attendees will be notified via email when their
@@ -183,7 +184,7 @@
     <p class="srgdev-appt-hs-p">Talk rooms will be created and deleted automatically when a meeting type changes.</p>
     <br>
 
-    <h2 class="srgdev-appt-hs-h1">Redirect to a Custom Page "All Done" After Confirm</h2>
+    <h2 class="srgdev-appt-hs-h1">Redirect to a Custom "All Done" Page After Confirm</h2>
     <p class="srgdev-appt-hs-p">
         <strong id="srgdev-sec_confirmedUrl">Redirect Confirmed URL</strong> - when this URL is specified visitors will be redirected there after they confirm their email address. A base64 encoded
         <code class="srgdev-appt-hs-code_short">d=...</code> query parameter containing a JSON object will be added to the URL. Final URL for
@@ -191,7 +192,8 @@
         <span style="font-style: italic; white-space: nowrap">https://your-cool-domain.com/finish.html?d=eyJpbml0aWFsQ29uZmlybSI6dHJ1ZSwiaWQiOiI4YjhkOD...</span>
     </p>
     <p class="srgdev-appt-hs-p">
-        When the <code class="srgdev-appt-hs-code_short">d=...</code> param data is base64 decoded the JSON object might be similar to this:
+        When the
+        <code class="srgdev-appt-hs-code_short">d=...</code> param data is base64 decoded the JSON object might be similar to this:
     <pre><code class="srgdev-appt-hs-code">{
     "initialConfirm": true,
     "id": "8b8d87915a32bc4f48eb14439cd52cef",
@@ -215,16 +217,18 @@
         <code style="white-space: pre" class="srgdev-appt-hs-code">php occ config:app:set appointments "emb_cncf_YourUserName" --value "http(s)://your.domain.com/page_url?some_param_name="</code>
 
         Example using PHP:
-        <code style="white-space: pre" class="srgdev-appt-hs-code">...
-            &lt;?php
-            $src='PROVIDED_EMBEDDABLE_URL';
-            if(isset($_GET['some_param_name'])){
-            // Email Confirm/Cancel button was clicked
-            $src=substr($src,0,-4).'cncf?d='.urlencode($_GET['some_param_name']);
-            }
-            echo '&lt;iframe src = "'.$src.'"&gt;&lt;/iframe&gt;';
-            ?&gt;
-            ...</code>
+        <pre><code class="srgdev-appt-hs-code">...
+    &lt;?php
+    $src='PROVIDED_EMBEDDABLE_URL';
+    if(isset($_GET['some_param_name'])){
+    // Email Confirm/Cancel button was clicked
+    $src=substr($src,0,-4).'cncf?d='.urlencode($_GET['some_param_name']);
+    }
+    echo '&lt;iframe src = "'.$src.'"&gt;&lt;/iframe&gt;';
+    ?&gt;
+...</code></pre>
+        More examples:
+        <a class="srgdev-appt-hs-link" target="_blank" href="https://github.com/SergeyMosin/Appointments/tree/master/tests/embedding">https://github.com/SergeyMosin/Appointments/tree/master/tests/embedding</a><br>
         Nextcloud <strong>occ</strong>:
         <a class="srgdev-appt-hs-link" target="_blank" href="https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html">https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html</a><br>
         Frame Ancestors:
