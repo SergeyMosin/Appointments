@@ -609,6 +609,10 @@ class PageController extends Controller
             $tr = $this->getPublicTemplate($tr_name, $userId);
         }
 
+        $pps = $this->utils->getUserSettings(
+            BackendUtils::KEY_PSN, $userId);
+        $tr_params['appt_inline_style'] = $pps[BackendUtils::PSN_PAGE_STYLE];
+
         $tr->setParams($tr_params);
         $tr->setStatus($tr_sts);
 
@@ -622,6 +626,11 @@ class PageController extends Controller
         } else {
             $tr = $this->getPublicTemplate($tn, $userId);
         }
+
+        $pps = $this->utils->getUserSettings(
+            BackendUtils::KEY_PSN, $userId);
+        $tr->setParams(['appt_inline_style' => $pps[BackendUtils::PSN_PAGE_STYLE]]);
+
         $tr->setStatus(500);
         return $tr;
     }
@@ -936,6 +945,11 @@ class PageController extends Controller
         } else {
             $tr = new TemplateResponse($this->appName, $tmpl, [], $render);
         }
+
+        $pps = $this->utils->getUserSettings(
+            BackendUtils::KEY_PSN, $uid);
+        $param['appt_inline_style'] = $pps[BackendUtils::PSN_PAGE_STYLE];
+
         $tr->setParams($param);
         $tr->setStatus($rs);
         return $tr;

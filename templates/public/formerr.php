@@ -1,6 +1,8 @@
 <?php
 script('appointments', 'cncf');
 style('appointments', 'form');
+/** @noinspection PhpUndefinedVariableInspection */
+echo $_['appt_inline_style'];
 ?>
 
 <div class="srgdev-ncfp-wrap">
