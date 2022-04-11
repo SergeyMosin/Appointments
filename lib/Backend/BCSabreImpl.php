@@ -1258,10 +1258,8 @@ class BCSabreImpl implements IBackendConnector
     }
 
     private function confirmCancel($userId, $calId, $uri, $do_confirm) {
-        $ret = [1, null];
+        $ret = [1, null, ""];
         $err = '';
-
-        // TODO: when simple mode has destination calendar confirm page reload shows error ...
 
         // for manual mode:
         //  if confirming:
@@ -1275,10 +1273,11 @@ class BCSabreImpl implements IBackendConnector
         $d = $this->getObjectData($calId, $uri);
 
         if ($d === null) {
-            $err = "Object does not exist: " . $uri;
+            $err = "Object does not exist: " . $uri . ", calId: " . $calId;
         } else {
+            $attendeeName = "";
             if ($do_confirm) {
-                list($newData, $date, $pageId) = $this->utils->dataConfirmAttendee($d, $userId);
+                list($newData, $date, $pageId, $attendeeName) = $this->utils->dataConfirmAttendee($d, $userId);
             } else {
                 list($newData, $date, $pageId) = $this->utils->dataCancelAttendee($d);
             }
@@ -1286,7 +1285,7 @@ class BCSabreImpl implements IBackendConnector
                 $err = "Can not set attendee data";
             } elseif (empty($newData)) {
                 // Already confirmed
-                $ret = [0, $date];
+                $ret = [0, $date, $attendeeName];
             } else {
 
                 $cms = $this->utils->getUserSettings(
@@ -1314,7 +1313,7 @@ class BCSabreImpl implements IBackendConnector
                                 $err = "Can not update object: " . $uri . ", dcl=" . $dcl_id;
                             } else {
                                 // Object Update: SUCCESS
-                                $ret = [0, $date];
+                                $ret = [0, $date, $attendeeName];
                             }
                         }
                     }
@@ -1324,7 +1323,7 @@ class BCSabreImpl implements IBackendConnector
                         $err = "Can not update object: " . $uri;
                     } else {
                         // Object Update: SUCCESS
-                        $ret = [0, $date];
+                        $ret = [0, $date, $attendeeName];
                     }
                 }
             }

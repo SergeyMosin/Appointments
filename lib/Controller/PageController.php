@@ -254,7 +254,7 @@ class PageController extends Controller
      * @NoCSRFRequired
      * @noinspection PhpUnused
      * @param bool $embed
-     * @return NotFoundResponse|PublicTemplateResponse|TemplateResponse
+     * @return NotFoundResponse|PublicTemplateResponse|TemplateResponse|RedirectResponse
      * @throws \ErrorException
      * @throws NotLoggedInException
      */
@@ -301,6 +301,14 @@ class PageController extends Controller
             }
         }
 
+        $cms = $this->utils->getUserSettings(
+            $pageId === 'p0'
+                ? BackendUtils::KEY_CLS
+                : BackendUtils::KEY_MPS . $pageId,
+            $userId);
+
+        // TODO: check if trying to deal with a past appointment.
+
         $page_text = '';
         $sts = 1; // <- assume fail
         $a_base = false; // are we in preview mode (renderAs base)
@@ -333,6 +341,8 @@ class PageController extends Controller
 
             if ($a_ok) {
 
+                $initial_confirm = true;
+
                 if ($take_action) {
                     // Emails are handled by the DavListener... set the Hint
                     $ses = \OC::$server->getSession();
@@ -340,15 +350,42 @@ class PageController extends Controller
                         BackendUtils::APPT_SES_KEY_HINT,
                         BackendUtils::APPT_SES_CONFIRM);
 
-                    list($sts, $date_time) = $this->bc->confirmAttendee($userId, $cal_id, $uri);
+                    list($sts, $date_time, $attendeeName) = $this->bc->confirmAttendee($userId, $cal_id, $uri);
 
-                    if ($sts === 0) { // Appointment is confirmed successfully
+                    if ($sts === 0) {
+                        // Appointment is confirmed successfully
                         $page_text = $this->getPageText($date_time, BackendUtils::PREF_STATUS_CONFIRMED) . " " . $skip_evs_text;
+                    } elseif ($otherCalId !== '-1' && $cms[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_SIMPLE) {
+                        // edge case (simple mode): this could be a page reload and we need to check DEST calendar just in-case the appointment has been confirmed already
+
+                        //TODO: better way todo this to keep the code DRY ???
+                        if (($data = $this->bc->getObjectData($otherCalId, $uri)) !== null) {
+                            // this appointment is confirmed already
+
+                            list($date_time, $state, $attendeeName) = $this->utils->dataApptGetInfo($data, $userId);
+
+                            if ($date_time !== null && $state === BackendUtils::PREF_STATUS_CONFIRMED) {
+                                $sts = 0;
+                                $take_action = true; // << overrides header
+                                $page_text = $this->getPageText($date_time, $state);
+
+                                $initial_confirm = false;
+                            }
+                        }
                     }
                 } else {
                     // user needs to click the button to take_action if not confirmed already
-                    list($date_time, $state) = $this->utils->dataApptGetInfo(
-                        $this->bc->getObjectData($cal_id, $uri), $userId);
+
+                    $data = $this->bc->getObjectData($cal_id, $uri);
+
+                    // Confirmed appointments are in the DEST ($otherCalId) in manual mode
+                    if ($data === null && $otherCalId !== '-1' && $cms[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_SIMPLE) {
+                        // check DEST cal
+                        $data = $this->bc->getObjectData($otherCalId, $uri);
+                    }
+
+                    list($date_time, $state, $attendeeName) = $this->utils->dataApptGetInfo($data, $userId);
+
                     if ($date_time === null) {
                         // error
                         $sts = 1;
@@ -358,6 +395,8 @@ class PageController extends Controller
                             // already confirmed
                             $take_action = true; // << overrides header
                             $page_text = $this->getPageText($date_time, $state);
+
+                            $initial_confirm = false;
                         } else {
                             // TRANSLATORS Ex: Please confirm your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}}.
                             $page_text = $this->l->t('Please confirm your appointment scheduled for %s.', [$date_time]);
@@ -367,15 +406,34 @@ class PageController extends Controller
                         }
                     }
                 }
+
+                if ($take_action && $sts === 0) {
+                    // check if we have a custom redirect
+                    $oms = $pageId === 'p0' ? $this->utils->getUserSettings(BackendUtils::KEY_ORG, $userId) : $cms;
+                    if (($r_url = trim($oms[BackendUtils::ORG_CONFIRMED_RDR_URL])) !== "") {
+
+                        $d = ["initialConfirm" => $initial_confirm];
+
+                        if ($oms[BackendUtils::ORG_CONFIRMED_RDR_ID] === true) {
+                            $d["id"] = hash("md5", str_replace("-", "", substr($uri, 0, -4)));
+                        }
+                        if ($oms[BackendUtils::ORG_CONFIRMED_RDR_DATA] === true) {
+                            $d["name"] = $attendeeName;
+                            $d["dateTimeString"] = $date_time;
+                        }
+
+                        $r_url .= (strpos($r_url, "?") === false ? "?" : "&") . "d=" . base64_encode(json_encode($d));
+
+                        // redirect
+                        $rr = new RedirectResponse($r_url);
+                        $rr->setStatus(303);
+                        return $rr;
+                    }
+                }
             }
         } elseif ($a === "0") {
             // Cancel
 
-            $cms = $this->utils->getUserSettings(
-                $pageId === 'p0'
-                    ? BackendUtils::KEY_CLS
-                    : BackendUtils::KEY_MPS . $pageId,
-                $userId);
             // The appointment can be in the destination calendar (manual mode)
             // this needs to be done here just in case we need to 'reset'
             $r_cal_id = $cal_id;
@@ -457,12 +515,6 @@ class PageController extends Controller
             if ($data === null) {
 
                 // The appointment can be in the destination calendar (manual mode)
-                $cms = $this->utils->getUserSettings(
-                    $pageId === 'p0'
-                        ? BackendUtils::KEY_CLS
-                        : BackendUtils::KEY_MPS . $pageId,
-                    $userId);
-
                 if ($cms[BackendUtils::CLS_TS_MODE] === '0' && $otherCalId !== "-1") {
                     $cId = $otherCalId;
 

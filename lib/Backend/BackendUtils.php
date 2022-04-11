@@ -52,6 +52,10 @@ class BackendUtils
     public const ORG_EMAIL = 'email';
     public const ORG_ADDR = 'address';
     public const ORG_PHONE = 'phone';
+    // redirect to url after an appointment is confirmed
+    public const ORG_CONFIRMED_RDR_URL = 'confirmedRdrUrl';
+    public const ORG_CONFIRMED_RDR_ID = 'confirmedRdrId';
+    public const ORG_CONFIRMED_RDR_DATA = 'confirmedRdrData';
 
     // Email Settings
     public const KEY_EML = 'email_options';
@@ -411,18 +415,19 @@ class BackendUtils
      *                  null=error|""=already confirmed,
      *                  Localized DateTime string
      *                  $pageId
+     *                  $attendeeName
      */
     function dataConfirmAttendee($data, $userId) {
 
         $vo = $this->getAppointment($data, 'CONFIRMED');
-        if ($vo === null) return [null, null, null];
+        if ($vo === null) return [null, null, null, ""];
 
         /** @var \Sabre\VObject\Component\VEvent $evt */
         $evt = $vo->VEVENT;
 
         $a = $this->getAttendee($evt);
         if ($a === null) {
-            return [null, null, null];
+            return [null, null, null, ""];
         }
 
         if (isset($evt->{BackendUtils::XAD_PROP})) {
@@ -436,7 +441,7 @@ class BackendUtils
                 $pageId = 'p0';
             }
         } else {
-            return [null, null, null];
+            return [null, null, null, ""];
         }
 
         $dts = $this->getDateTimeString(
@@ -444,14 +449,16 @@ class BackendUtils
             $evt->{self::TZI_PROP}->getValue()
         );
 
+        $attendeeName = $a->parameters['CN']->getValue();
+
         if ($a->parameters['PARTSTAT']->getValue() === 'ACCEPTED') {
-            return ["", $dts, $pageId];
+            return ["", $dts, $pageId, $attendeeName];
         }
 
         $a->parameters['PARTSTAT']->setValue('ACCEPTED');
 
         if (!isset($evt->SUMMARY)) $evt->add('SUMMARY'); // ???
-        $evt->SUMMARY->setValue("✔️ " . $a->parameters['CN']->getValue());
+        $evt->SUMMARY->setValue("✔️ " . $attendeeName);
 
         //Talk link
         $this->addEvtTalkInfo($userId, $xad, $evt, $a);
@@ -460,18 +467,19 @@ class BackendUtils
 
         $this->setApptHash($evt, $xad[0], $pageId);
 
-        return [$vo->serialize(), $dts, $pageId];
+        return [$vo->serialize(), $dts, $pageId, $attendeeName];
     }
 
     /**
      * @param $data
      * @param string $userId
-     * @return array [string|null, int]
+     * @return array [string|null, int, string]
      *                  date_time: Localized DateTime string or null on error
      *                  state: one of self::PREF_STATUS_*
+     *                  attendeeName: or empty if error
      */
     function dataApptGetInfo($data, $userId) {
-        $ret = [null, self::PREF_STATUS_TENTATIVE];
+        $ret = [null, self::PREF_STATUS_TENTATIVE, ""];
 
         if ($data === null) {
             return $ret;
@@ -502,6 +510,9 @@ class BackendUtils
             $evt->DTSTART->getDateTime(),
             $evt->{self::TZI_PROP}->getValue()
         );
+
+        // Attendee Name
+        $ret[2] = $a->parameters['CN']->getValue();
 
         return $ret;
     }
@@ -1012,7 +1023,11 @@ class BackendUtils
                     self::ORG_NAME => "",
                     self::ORG_EMAIL => "",
                     self::ORG_ADDR => "",
-                    self::ORG_PHONE => "");
+                    self::ORG_PHONE => "",
+                    self::ORG_CONFIRMED_RDR_URL => "",
+                    self::ORG_CONFIRMED_RDR_ID => false,
+                    self::ORG_CONFIRMED_RDR_DATA => false,
+                );
                 break;
             case self::KEY_EML:
                 $d = array(
@@ -1093,6 +1108,10 @@ class BackendUtils
                     self::ORG_EMAIL => "",
                     self::ORG_ADDR => "",
                     self::ORG_PHONE => "",
+
+                    self::ORG_CONFIRMED_RDR_URL => "",
+                    self::ORG_CONFIRMED_RDR_ID => false,
+                    self::ORG_CONFIRMED_RDR_DATA => false,
 
                     self::PSN_FORM_TITLE => "");
                 break;

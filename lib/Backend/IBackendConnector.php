@@ -118,9 +118,10 @@ interface IBackendConnector
      * @param $userId
      * @param $calId
      * @param $uri
-     * @return array [int, string|null]
+     * @return array [int, string|null, string]
      *                  Status: 0=OK,1=Error,
-     *                  Localized DateTime string or null.
+     *                  Localized DateTime string or null,
+     *                  attendee name: string
      */
     function confirmAttendee($userId, $calId, $uri);
 

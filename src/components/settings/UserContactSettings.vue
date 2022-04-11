@@ -27,7 +27,9 @@
             <label class="srgdev-appt-sb-label"
                    for="srgdev-appt_uci-org-email">{{ t('appointments', 'Email:') }}</label><a style="right: 4%"
                                                                                                class="icon-info srgdev-appt-info-link"
-                                                                                               @click="$root.$emit('helpWanted','emaildef')"><span>{{ uciInfo.useDefaultEmail === 'yes' ? 'useDefaultEmail=yes' : '' }}</span></a>
+                                                                                               @click="$root.$emit('helpWanted','emaildef')"><span>{{
+              uciInfo.useDefaultEmail === 'yes' ? 'useDefaultEmail=yes' : ''
+            }}</span></a>
           </div>
           <input
               v-model="uciInfo.email"
@@ -68,9 +70,52 @@
             id="srgdev-appt_uci-org-phone"
             style="max-width: 20em"
             type="tel">
-        <div v-if="curPageData.pageId!=='p0'" style="color: gray">
+        <div v-if="curPageData.pageId!=='p0'" style="color: gray; margin-bottom: 1em">
           {{ t('appointments', 'Email:') + " " + uciInfo.email }}
         </div>
+        <ApptAccordion
+            :title="t('appointments','Advanced Settings')"
+            :open="false">
+          <template slot="content">
+            <div style="margin-top: 1em">
+              <div class="srgdev-appt-info-lcont">
+                <label class="srgdev-appt-sb-label"
+                       for="srgdev-appt_uci-rdr-url">
+                  {{ t('appointments', 'Redirect Confirmed URL:') }}
+                </label>
+                <a style="right: 4%" class="icon-info srgdev-appt-info-link"
+                   @click="$root.$emit('helpWanted','confirmedUrl')"></a>
+              </div>
+              <input
+                  v-model="uciInfo.confirmedRdrUrl"
+                  class="srgdev-appt-sb-input-text"
+                  style="margin-bottom: .2em"
+                  id="srgdev-appt_uci-rdr-url">
+              <input
+                  v-model="uciInfo.confirmedRdrId"
+                  type="checkbox"
+                  id="srgdev-appt_uci-rdr-id"
+                  class="checkbox">
+              <label
+                  for="srgdev-appt_uci-rdr-id"
+                  style="margin-left: -3px;"
+                  class="srgdev-appt-sb-label-inline">{{
+                  t('appointments', 'Generate ID')
+                }}</label><br>
+              <input
+                  v-model="uciInfo.confirmedRdrData"
+                  type="checkbox"
+                  id="srgdev-appt_uci-rdr-data"
+                  class="checkbox">
+              <label
+                  for="srgdev-appt_uci-rdr-data"
+                  style="margin-left: -3px;"
+                  class="srgdev-appt-sb-label-inline">{{
+                  t('appointments', 'Include Form Data')
+                }}</label>
+            </div>
+          </template>
+        </ApptAccordion>
         <button
             @click="apply"
             :disabled="curPageData.pageId==='p0' && (uciInfo.email==='' || uciInfo.organization==='' || uciInfo.address==='')"
@@ -84,12 +129,14 @@
 
 <script>
 import SlideBar from "../SlideBar.vue"
+import ApptAccordion from "../ApptAccordion.vue";
 import {showError} from "@nextcloud/dialogs"
 
 export default {
   name: "UserContactSettings",
   components: {
-    SlideBar
+    SlideBar,
+    ApptAccordion
   },
   props: {
     title: '',
@@ -111,6 +158,11 @@ export default {
         address: "",
         phone: "",
         useDefaultEmail: "yes",
+
+        confirmedRdrUrl: "",
+        confirmedRdrId: false,
+        confirmedRdrData: false,
+
         // Secondary pages only (same as ppsInfo.formTitle for the main)
         formTitle: "",
       },
