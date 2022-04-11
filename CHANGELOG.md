@@ -1,3 +1,10 @@
+## v1.12.3 - 2022-04-11
+### Added
+- redirect to a custom "All Done" page after confirm option - issue #315
+- improve iframe embedding (window.parent.postMessage) and more examples  - issue #313
+### Fixed
+- custom styles not applied to all pages - issue #313
+
 ## v1.12.2 - 2022-03-10
 ### Added
 - option to add booked/pending appointment buffers (before/after blockers)
