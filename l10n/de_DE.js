@@ -296,6 +296,8 @@ OC.L10N.register(
     "Email:" : "E-Mail:",
     "Location:" : "Ort:",
     "Phone:" : "Telefon:",
+    "Redirect Confirmed URL:" : "Bestätigte URL umleiten:",
+    "Generate ID" : "ID erzeugen",
     "Name is required." : "Name ist erforderlich.",
     "Email is required." : "E-Mail ist erforderlich",
     "Minutes" : "Minuten",
