@@ -296,7 +296,7 @@ OC.L10N.register(
     "Email:" : "E-mail:",
     "Location:" : "Hely:",
     "Phone:" : "Telefon:",
-    "Redirect Confirmed URL:" : "Átirányítás megerősítési URL:",
+    "Redirect Confirmed URL:" : "Megerősítési utáni átirányítási URL:",
     "Generate ID" : "Azonosító előállítása",
     "Include Form Data" : "Űrlapadatok belevétele",
     "Name is required." : "A név kötelező.",
