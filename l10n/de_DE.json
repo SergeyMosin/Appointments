@@ -296,6 +296,7 @@
     "Phone:" : "Telefon:",
     "Redirect Confirmed URL:" : "Bestätigte URL umleiten:",
     "Generate ID" : "ID erzeugen",
+    "Include Form Data" : "Formulardaten einschließen",
     "Name is required." : "Name ist erforderlich.",
     "Email is required." : "E-Mail ist erforderlich",
     "Minutes" : "Minuten",
