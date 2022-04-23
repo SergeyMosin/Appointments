@@ -203,6 +203,7 @@ OC.L10N.register(
     "6 days" : "6 egun",
     "7 days" : "7 egun",
     "Add action links" : "Gehitu ekintza estekak",
+    "Additional reminder email text:" : "Gogorarazpen e-posta testu gehigarria:",
     "Additional Settings" : "Ezarpen gehiagarriak",
     "Customize and configure the app" : "Pertsonalizatu eta konfiguratu aplikazioa",
     "Customize Public Page" : "Pertsonalizatu orri publikoa",
