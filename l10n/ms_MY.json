@@ -8,6 +8,8 @@
     "Remove" : "Buang",
     "Save" : "Simpan",
     "Loading" : "Loading",
+    "Add" : "Tambah",
+    "OK" : "OK",
     "Edit" : "Sunting",
     "Title" : "Judul",
     "URL" : "URL",
@@ -15,6 +17,9 @@
     "Deleted" : "Dipadam",
     "Warning" : "Amaran",
     "Back" : "Kembali",
-    "Next" : "Seterus"
+    "Next" : "Seterus",
+    "Name" : "Nama",
+    "Email" : "Email",
+    "Phone" : "Telefon"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

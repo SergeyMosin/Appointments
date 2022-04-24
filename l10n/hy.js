@@ -1,0 +1,28 @@
+OC.L10N.register(
+    "appointments",
+    {
+    "Cancel" : "ընդհատել",
+    "Password" : "Գաղտնաբառ",
+    "Info" : "Info",
+    "Delete" : "հեռացնել",
+    "Settings" : "կարգավորումներ",
+    "Close" : "Փակել",
+    "Save" : "Պահպանել",
+    "Loading" : "Loading",
+    "Add" : "Ավելացնել",
+    "OK" : "Լավ",
+    "Edit" : "մշակել",
+    "Title" : "Վերնագիր",
+    "URL" : "URL",
+    "Error" : "Սխալ",
+    "Deleted" : "Ջնջված",
+    "Confirmed" : "Հաստատված",
+    "Reminders" : "Հիշեցումներ",
+    "Warning" : "Զգուշացում",
+    "Minutes" : "Րոպե",
+    "Next" : "Հաջորդ",
+    "min" : "րոպե",
+    "Name" : "Անուն",
+    "Email" : "Էլ․փոստ"
+},
+"nplurals=2; plural=(n != 1);");
