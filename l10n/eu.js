@@ -281,6 +281,7 @@ OC.L10N.register(
     "Email:" : "E-posta:",
     "Location:" : "Kokapena:",
     "Phone:" : "Telefonoa:",
+    "Generate ID" : "Sortu IDa",
     "Name is required." : "Izena beharrezkoa da",
     "Email is required." : "E-posta beharrezkoa da",
     "Minutes" : "Minutuak",
