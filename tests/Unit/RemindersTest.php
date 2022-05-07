@@ -18,6 +18,7 @@ use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\IRequest;
+use OCP\IUserSession;
 use OCP\Mail\IMailer;
 use OCP\PreConditionNotMetException;
 use PHPUnit\Framework\TestCase;
@@ -37,6 +38,8 @@ class RemindersTest extends TestCase
     private $userId;
     private $l10n;
     private $backendManager;
+    /** @var IUserSession */
+    private $userSession;
     /**
      * @var IBackendConnector
      */
@@ -70,6 +73,8 @@ class RemindersTest extends TestCase
         $this->l10n = $container->get(IL10N::class);
         $this->mailer = $container->get(IMailer::class);
         $this->utils = $container->get(BackendUtils::class);
+        $this->userSession = $container->get(IUserSession::class);
+
         $db = $container->get(IDBConnection::class);
 
         $dav = new \OCA\DAV\AppInfo\Application();
@@ -351,6 +356,7 @@ class RemindersTest extends TestCase
             $this->config,
             $this->mailer,
             $this->l10n,
+            $this->userSession,
             $this->backendManager,
             $this->utils,
             $this->logger
