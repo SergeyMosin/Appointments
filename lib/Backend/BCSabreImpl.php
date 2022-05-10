@@ -508,7 +508,12 @@ class BCSabreImpl implements IBackendConnector
                     /** @var \Sabre\VObject\Component\VEvent $evt */
                     $evt = $vo->VEVENT;
                     /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-                    if ((!$all_day_block && !$evt->DTSTART->hasTime()) || (isset($evt->CLASS) && $evt->CLASS->getValue() !== 'PUBLIC')) {
+                    if ((!$all_day_block && !$evt->DTSTART->hasTime()) ||
+                        // Classes in NC:
+                        //  PRIVATE = when shared hide this event (not checked here)
+                        //  CONFIDENTIAL = when shared show when busy
+                        //  PUBLIC = when shared show full event
+                        (isset($evt->CLASS) && $evt->CLASS->getValue() === 'PRIVATE')) {
                         $vo->destroy();
                         continue;
                     }

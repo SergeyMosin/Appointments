@@ -63,10 +63,10 @@
         <div v-show="sections[0]===1"
              class="srgdev-appt-sb-indent_small">
           <div class="srgdev-appt-info-lcont">
-          <label
-              class="tsb-label"
-              for="appt_tsb-appt-sub-refresh">
-            {{ t('appointments', 'Subscriptions Sync Interval') }}:</label><a
+            <label
+                class="tsb-label"
+                for="appt_tsb-appt-sub-refresh">
+              {{ t('appointments', 'Subscriptions Sync Interval') }}:</label><a
               class="icon-info srgdev-appt-info-link"
               @click="$root.$emit('helpWanted','tmm_subs_sync')"></a>
           </div>
