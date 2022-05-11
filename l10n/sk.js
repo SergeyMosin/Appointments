@@ -296,6 +296,8 @@ OC.L10N.register(
     "Email:" : "E-mail:",
     "Location:" : "Miesto:",
     "Phone:" : "Telefón:",
+    "Generate ID" : "Vygenerovať ID",
+    "Include Form Data" : "Obsahuje formulárové údaje",
     "Name is required." : "Meno je povinné.",
     "Email is required." : "E-mail je povinný.",
     "Minutes" : "Minúty",

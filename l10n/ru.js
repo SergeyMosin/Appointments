@@ -50,6 +50,7 @@ OC.L10N.register(
     "An email with additional details is on its way to you at %s" : "Письмо с дополнительными сведениями отправлено вам на адрес %s",
     "Your %s has been changed to %s" : "Ваш %s изменен на %s",
     "All done." : "Готово.",
+    "Action needed" : "Требуется действие",
     "Info" : "Информация",
     "Link Expired …" : "Срок действия ссылки истек ...",
     "Almost done …" : "Почти готово ...",

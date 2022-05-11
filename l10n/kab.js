@@ -1,0 +1,25 @@
+OC.L10N.register(
+    "appointments",
+    {
+    "Cancel" : "Sefsex",
+    "Password" : "Awal uffir",
+    "Delete" : "Kkes",
+    "Settings" : "Iɣewwaṛen",
+    "Close" : "Mdel",
+    "Remove" : "Kkes",
+    "Save" : "Sekles",
+    "Add" : "Rnu",
+    "OK" : "IH",
+    "30 minutes" : "30 n tesdatin",
+    "1 hour" : "1 n usrag",
+    "Loading…" : "Asali...",
+    "Edit" : "Ẓreg",
+    "Title" : "Azwel",
+    "Error" : "Erreur",
+    "Deleted" : "Yettwakkes",
+    "Location:" : "Adig:",
+    "Back" : "Retour",
+    "Name" : "Nom",
+    "Email" : "Imayl"
+},
+"nplurals=2; plural=(n != 1);");
