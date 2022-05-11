@@ -1,3 +1,12 @@
+## v1.12.4 - 2022-05-11
+### Fixed
+- Template/grid editor header dark theme compatibility - issue #327
+- Reminders test
+### Changed
+- Nextcloud min version is 22 now (max version is 24) - issue #324
+- Include 'CLASS: CONFIDENTIAL' (but not 'PRIVATE') events in conflict checks - issue #321
+- Template/grid editor range is extended to start at 6:00 and end at 23:00 - issue #332
+
 ## v1.12.3 - 2022-04-11
 ### Added
 - redirect to a custom "All Done" page after confirm option - issue #315
