@@ -1353,6 +1353,7 @@ export default {
               })
             })
       }
+      this.$nextTick(gridMaker.scrollGridToTopElm)
     },
 
     addScheduleToCalendar() {

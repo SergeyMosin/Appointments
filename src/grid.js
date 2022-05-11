@@ -1,12 +1,15 @@
 function _apptGridMaker() {
-    // !!! meke sure that the .grid-line height is 2px less thant this is !!!
+    // !!! make sure that the .grid-line height is 2px less thant this is !!!
     const LINE_HEIGHT_5M = 7
     const MPH = 3600000
     const MP5 = 300000
-    // Start at 8AM
-    const SH = 8 // if this is lest than 4 there might be a problem on daylight savings day.
-    // 14 hours
-    const DH = 14
+    // Start at 6AM
+    const SH = 6 // if this is lest than 4 there might be a problem on daylight savings day.
+    // 17 hours
+    const DH = 17
+
+    // SH + 2 = 8AM, The grid will be scrolled to here and newly added slots will start at this time
+    const SH_OFFSET = 2
 
     const MODE_SIMPLE = 0
     const MODE_TEMPLATE = 1
@@ -87,6 +90,8 @@ function _apptGridMaker() {
         let uLen = Math.floor(len / 5)
         let uMax = mData.uMax - uLen + 1
 
+        start += (SH_OFFSET * 60) / 5
+
         if (start < 0) start = 0
         else if (start > uMax) return
 
@@ -103,6 +108,12 @@ function _apptGridMaker() {
         const colElms = mData.mc_elm[cID]
         setSorted(colElms, colElms[colElms.length - 1])
         setMargins(colElms)
+
+        scrollGridToTopElm()
+    }
+
+    function scrollGridToTopElm() {
+        mData.scrollCont.scrollTop = document.getElementById("grid-scroll-top").offsetTop
     }
 
     /**
@@ -346,13 +357,13 @@ function _apptGridMaker() {
 
                 cID = Math.floor(Math.abs(
                     Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - startDateUTC) / 86400000);
-                console.log("cID:", cID)
+                // console.log("cID:", cID)
                 if (cID < 0 || cID > 6) {
                     console.log("invalid cID:", cID)
                     continue
                 }
 
-                uTop = Math.floor((((d.getHours() - 8) * 60) / 5)
+                uTop = Math.floor((((d.getHours() - (SH)) * 60) / 5)
                     + ((d.getMinutes() / 5)))
 
                 if (uTop >= 0 && uTop + uLen <= btm) {
@@ -571,8 +582,9 @@ function _apptGridMaker() {
         d.setMilliseconds(0)
         d.setSeconds(0)
         d.setMinutes(0)
-        d.setHours(SH)
-        let tss = d.getTime()
+
+        const gridScrollTopTs = d.setHours(SH + SH_OFFSET)
+        let tss = d.setHours(SH)
 
         for (let els = mData.elms, vc = VS_LINE, dxt, ce,
                  l = DH * 12, i = 0; i < l; i++) {
@@ -583,6 +595,9 @@ function _apptGridMaker() {
             dxt = timeFormat(d)
             if (vc === VS_LINE) {
                 ce.className = sP + "grid-line " + sP + "line-vis"
+                if (tss === gridScrollTopTs) {
+                    ce.id = "grid-scroll-top"
+                }
                 ce.appendChild(document.createTextNode(dxt))
                 vc = 0
             } else {
@@ -634,7 +649,7 @@ function _apptGridMaker() {
         for (let d = new Date(), ds_ts, i = 0, l = mData.mc_cols.length; i < l; i++) {
             d.setTime(ts) // ts hourse:minutes are always midnight
             d.setHours(SH) // set initial hours
-            ds_ts=d.setDate(d.getDate()+i)
+            ds_ts = d.setDate(d.getDate() + i)
             for (let ofs = 0, elm, ea = mData.mc_elm[i], j = 0, k = ea.length; j < k; j++) {
                 // Start
                 elm = ea[j]
@@ -693,7 +708,8 @@ function _apptGridMaker() {
         addPastAppts: addPastAppts,
         setMode: setMode,
         updateAppt: updateAppt,
-        getTemplateData: getTemplateData
+        getTemplateData: getTemplateData,
+        scrollGridToTopElm: scrollGridToTopElm,
     }
 }
 
