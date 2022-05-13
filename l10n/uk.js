@@ -118,6 +118,7 @@ OC.L10N.register(
     "Page Header Title:" : "Заголовок сторінки:",
     "Page Header Subtitle:" : "Підзаголовок сторінки:",
     "Style Override:" : "Стиль відхилення:",
+    "Not set" : "Не встановлено",
     "24 hours" : "24 години",
     "Customize Public Page" : "Налаштувати вигляд публічної сторінки",
     "Email Settings" : "Налаштування пошти",
