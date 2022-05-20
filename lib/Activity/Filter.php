@@ -49,7 +49,7 @@ class Filter implements IFilter
 	 */
 	public function getIdentifier()
 	{
-		return 'apppointments';
+		return 'appointment';
 	}
 
 	/**
