@@ -185,7 +185,7 @@ export default {
       }).catch(error => {
         this.$emit('closeGM')
         console.log(error)
-        showError(this.t('appointments', 'Can not get calendar data'))
+        showError(this.t('appointments', 'Cannot get calendar data'))
       })
     },
 
