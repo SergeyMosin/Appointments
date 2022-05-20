@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpFullyQualifiedNameUsageInspection */
+<?php
+
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 
 
 namespace OCA\Appointments\Backend;
@@ -17,6 +19,7 @@ use OCP\EventDispatcher\IEventListener;
 use OCP\IDBConnection;
 use Psr\Log\LoggerInterface;
 use Sabre\VObject\Reader;
+use OCP\Activity\IManager as IActivityManager;
 
 class DavListener implements IEventListener
 {
@@ -25,17 +28,25 @@ class DavListener implements IEventListener
     private $l10N;
     private $logger;
     private $utils;
+    /** @var IActivityManager */
+    protected $activityManager;
 
-    public function __construct(\OCP\IL10N      $l10N,
-                                LoggerInterface $logger,
-                                BackendUtils    $utils) {
+
+    public function __construct(
+        IActivityManager $activityManager,
+        \OCP\IL10N      $l10N,
+        LoggerInterface $logger,
+        BackendUtils    $utils
+    ) {
         $this->appName = Application::APP_ID;
         $this->l10N = $l10N;
         $this->logger = $logger;
         $this->utils = $utils;
+        $this->activityManager = $activityManager;
     }
 
-    function handle(Event $event): void {
+    function handle(Event $event): void
+    {
         if ($event instanceof CalendarObjectUpdatedEvent) {
             $this->handler($event->getObjectData(), $event->getCalendarData(), false);
         } elseif ($event instanceof CalendarObjectMovedToTrashEvent) {
@@ -46,14 +57,16 @@ class DavListener implements IEventListener
         }
     }
 
-    public function handleOld(\Symfony\Component\EventDispatcher\GenericEvent $event, string $eventName): void {
+    public function handleOld(\Symfony\Component\EventDispatcher\GenericEvent $event, string $eventName): void
+    {
         $this->handler($event['objectData'], $event['calendarData'], $eventName === '\OCA\DAV\CalDAV\CalDavBackend::deleteCalendarObject');
     }
 
     /**
      * @param int $lastStart timestamp set by IJonList->setLastRun() producto of time() func
      */
-    public function handleReminders(int $lastStart, IDBConnection $db, IBackendConnector $bc): void {
+    public function handleReminders(int $lastStart, IDBConnection $db, IBackendConnector $bc): void
+    {
 
         // we need to pull all pending appointments between now + 42 min( 1 hour [min delta] - 18 min [time between jobs]) and now + 7 days(max delta)
         $now = time();
@@ -104,10 +117,11 @@ class DavListener implements IEventListener
                 continue;
             }
             if ($otherCalId !== '-1' && $utils->getUserSettings(
-                    $pageId === 'p0'
-                        ? BackendUtils::KEY_CLS
-                        : BackendUtils::KEY_MPS . $pageId,
-                    $userId)[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_SIMPLE) {
+                $pageId === 'p0'
+                    ? BackendUtils::KEY_CLS
+                    : BackendUtils::KEY_MPS . $pageId,
+                $userId
+            )[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_SIMPLE) {
                 // if we have a dst calendar in simple mode than it will hold confirmed appointments, so we should check it first and then check the src calendar just in-case settings have been changed after the appointment was booked
                 $temp = $calId;
                 $calId = $otherCalId;
@@ -134,8 +148,10 @@ class DavListener implements IEventListener
                         break;
                     }
 
-                    if (strpos($data, "\r\nATTENDEE;") === false
-                        || strpos($data, "\r\n" . BackendUtils::TZI_PROP . ":") === false) {
+                    if (
+                        strpos($data, "\r\nATTENDEE;") === false
+                        || strpos($data, "\r\n" . BackendUtils::TZI_PROP . ":") === false
+                    ) {
                         $this->logger->error('bad event data');
                         break;
                     }
@@ -148,7 +164,8 @@ class DavListener implements IEventListener
 
                     /** @var \Sabre\VObject\Component\VEvent $evt */
                     $evt = $vObject->VEVENT;
-                    if (!isset($evt->UID)
+                    if (
+                        !isset($evt->UID)
                         || !isset($evt->ATTENDEE)
                         || !isset($evt->STATUS)
                         || !isset($evt->DTEND)
@@ -201,7 +218,8 @@ class DavListener implements IEventListener
                     // @see BackendUtils->dataSetAttendee for BackendUtils::XAD_PROP
                     $xad = explode(chr(31), $utils->decrypt(
                         $evt->{BackendUtils::XAD_PROP}->getValue(),
-                        $evt->UID->getValue()));
+                        $evt->UID->getValue()
+                    ));
                     if (count($xad) > 2) {
                         $embed = $xad[3] === "1";
                     } else {
@@ -215,9 +233,12 @@ class DavListener implements IEventListener
                         if ($embed || $config->getSystemValue('overwrite.cli.url') !== '') {
 
                             list($btn_url, $btn_tkn) = $this->makeBtnInfo(
-                                $userId, $pageId, $embed,
+                                $userId,
+                                $pageId,
+                                $embed,
                                 $row['uri'],
-                                $config);
+                                $config
+                            );
                             $cnl_lnk_url = $btn_url . "0" . $btn_tkn;
 
                             if (count($xad) > 4) {
@@ -230,8 +251,12 @@ class DavListener implements IEventListener
                                             $ti = new TalkIntegration($tlk, $utils);
                                             // add talk link info
                                             $this->addTalkInfo(
-                                                $tmpl, $xad, $ti, $tlk,
-                                                $config->getUserValue($userId, $this->appName, "c" . "nk"));
+                                                $tmpl,
+                                                $xad,
+                                                $ti,
+                                                $tlk,
+                                                $config->getUserValue($userId, $this->appName, "c" . "nk")
+                                            );
                                         }
                                         $this->addTypeChangeLink($tmpl, $tlk, $btn_url . "3" . $btn_tkn, $has_link);
                                     }
@@ -254,9 +279,11 @@ class DavListener implements IEventListener
 
                     $msg = $mailer->createMessage();
 
-                    if ($config->getAppValue($this->appName,
-                            BackendUtils::KEY_USE_DEF_EMAIL,
-                            'yes') === 'no') {
+                    if ($config->getAppValue(
+                        $this->appName,
+                        BackendUtils::KEY_USE_DEF_EMAIL,
+                        'yes'
+                    ) === 'no') {
                         $msg->setFrom(array($org_email));
                     } else {
                         $msg->setFrom(array($def_email));
@@ -274,10 +301,10 @@ class DavListener implements IEventListener
                         $description = $evt->DESCRIPTION->getValue();
                         // TRANSLATORS Ex: Reminder sent on {{Date and Time}},
                         $description .= "\n" . $this->l10N->t("Reminder sent on %s", [$utils->getDateTimeString(
-                                new \DateTimeImmutable('now', $utz),
-                                "T" . $utz->getName()
-                                , 1
-                            )]);
+                            new \DateTimeImmutable('now', $utz),
+                            "T" . $utz->getName(),
+                            1
+                        )]);
                         $evt->DESCRIPTION->setValue($description);
                         if ($bc->updateObject($calId, $row['uri'], $vObject->serialize()) === false) {
                             $this->logger->error("Can not update object uid: " . $row['uid']);
@@ -295,38 +322,44 @@ class DavListener implements IEventListener
         $result->closeCursor();
     }
 
-    private function handler(array $objectData, array $calendarData, bool $isDelete): void {
+    private function handler(array $objectData, array $calendarData, bool $isDelete): void
+    {
 
-//        \OC::$server->getLogger()->error('DL Debug: M0');
+        //        \OC::$server->getLogger()->error('DL Debug: M0');
 
         // objectUri
-        if (!isset($objectData['calendardata']) ||
-            !isset($objectData['uri'])) {
+        if (
+            !isset($objectData['calendardata']) ||
+            !isset($objectData['uri'])
+        ) {
             return;
         }
         $cd = $objectData['calendardata'];
 
-        if (strpos($cd, "\r\nATTENDEE;") === false
+        if (
+            strpos($cd, "\r\nATTENDEE;") === false
             || strpos($cd, "\r\nCATEGORIES:" . BackendUtils::APPT_CAT . "\r\n") === false
             || strpos($cd, "\r\n" . BackendUtils::TZI_PROP . ":") === false
             || strpos($cd, "\r\nORGANIZER;") === false
-            || strpos($cd, "\r\nUID:") === false) {
+            || strpos($cd, "\r\nUID:") === false
+        ) {
             // Not a good appointment, bail early...
             return;
         }
 
-//        \OC::$server->getLogger()->error('DL Debug: M1');
+        //        \OC::$server->getLogger()->error('DL Debug: M1');
 
         $ses = \OC::$server->getSession();
         $hint = $ses->get(BackendUtils::APPT_SES_KEY_HINT);
-        if ($hint === BackendUtils::APPT_SES_SKIP
+        if (
+            $hint === BackendUtils::APPT_SES_SKIP
             || ($isDelete && $hint === BackendUtils::APPT_SES_CONFIRM) // <-- booking in to a different calendar NOT deleting
         ) {
             // no need for email
             return;
         }
 
-//        \OC::$server->getLogger()->error('DL Debug: M2');
+        //        \OC::$server->getLogger()->error('DL Debug: M2');
 
         $vObject = Reader::read($cd);
         if (!isset($vObject->VEVENT)) {
@@ -340,7 +373,7 @@ class DavListener implements IEventListener
             return;
         }
 
-//        \OC::$server->getLogger()->error('DL Debug: M3');
+        //        \OC::$server->getLogger()->error('DL Debug: M3');
 
         $utils = $this->utils;
         $config = \OC::$server->getConfig();
@@ -349,7 +382,8 @@ class DavListener implements IEventListener
             // @see BackendUtils->dataSetAttendee for BackendUtils::XAD_PROP
             $xad = explode(chr(31), $utils->decrypt(
                 $evt->{BackendUtils::XAD_PROP}->getValue(),
-                $evt->UID->getValue()));
+                $evt->UID->getValue()
+            ));
             $userId = $xad[0];
             if (count($xad) > 2) {
                 $pageId = $xad[2];
@@ -363,7 +397,7 @@ class DavListener implements IEventListener
             return;
         }
 
-//        \OC::$server->getLogger()->error('DL Debug: M5');
+        //        \OC::$server->getLogger()->error('DL Debug: M5');
 
         $other_cal = '-1';
         $cal_id = $utils->getMainCalId($userId, $pageId, null, $other_cal);
@@ -371,10 +405,11 @@ class DavListener implements IEventListener
         if ($other_cal !== '-1') {
             // only allowed in simple
             if ($utils->getUserSettings(
-                    $pageId === 'p0'
-                        ? BackendUtils::KEY_CLS
-                        : BackendUtils::KEY_MPS . $pageId,
-                    $userId)[BackendUtils::CLS_TS_MODE] !== '0') {
+                $pageId === 'p0'
+                    ? BackendUtils::KEY_CLS
+                    : BackendUtils::KEY_MPS . $pageId,
+                $userId
+            )[BackendUtils::CLS_TS_MODE] !== '0') {
                 $other_cal = '-1';
             }
         }
@@ -386,14 +421,15 @@ class DavListener implements IEventListener
             return;
         }
 
-//        \OC::$server->getLogger()->error('DL Debug: M6');
+        //        \OC::$server->getLogger()->error('DL Debug: M6');
 
         $hash = $utils->getApptHash($evt->UID->getValue());
         if ($isDelete) {
             $utils->deleteApptHash($evt);
         }
 
-        if ($hash === null
+        if (
+            $hash === null
             || !isset($evt->ATTENDEE)
             || !isset($evt->STATUS)
             || !isset($evt->DTEND)
@@ -403,7 +439,7 @@ class DavListener implements IEventListener
             return;
         }
 
-//        \OC::$server->getLogger()->error('DL Debug: M7');
+        //        \OC::$server->getLogger()->error('DL Debug: M7');
 
         $utz = $utils->getCalendarTimezone($userId, $config, $utils->transformCalInfo($calendarData));
         try {
@@ -415,33 +451,38 @@ class DavListener implements IEventListener
 
         // TODO: this needs to be fixed @see BackendUtils->encodeCalendarData
         $now_f = (float)$now->format(BackendUtils::FLOAT_TIME_FORMAT);
-        if ($now_f > (float)str_replace("T", ".", $evt->DTEND->getRawMimeDirValue())
+        if (
+            $now_f > (float)str_replace("T", ".", $evt->DTEND->getRawMimeDirValue())
             && $now_f > $utils->getHashDTStart($hash)
         ) {
             // Event is in the past
             return;
         }
 
-//        \OC::$server->getLogger()->error('DL Debug: M8');
+        //        \OC::$server->getLogger()->error('DL Debug: M8');
 
         $hash_ch = $utils->getHashChanges($hash, $evt);
 
         $eml_settings = $utils->getUserSettings(
-            BackendUtils::KEY_EML, $userId);
+            BackendUtils::KEY_EML,
+            $userId
+        );
 
         $att = $utils->getAttendee($evt);
-        if ($att === null
+        if (
+            $att === null
             || ($hint === null
                 && ($att->parameters['PARTSTAT']->getValue() === 'DECLINED'
                     || ($hash_ch === null && !$isDelete)
                     || $utils->isApptCancelled($hash, $evt) === true
                 )
-            )) {
+            )
+        ) {
             // Bad attendee value or no significant external changes
             return;
         }
 
-//        \OC::$server->getLogger()->error('DL Debug: M9');
+        //        \OC::$server->getLogger()->error('DL Debug: M9');
 
         $to_name = $att->parameters['CN']->getValue();
         if (empty($to_name) || preg_match('/[^\PC ]/u', $to_name)) {
@@ -449,7 +490,7 @@ class DavListener implements IEventListener
             return;
         }
 
-//        \OC::$server->getLogger()->error('DL Debug: M10');
+        //        \OC::$server->getLogger()->error('DL Debug: M10');
 
         $mailer = \OC::$server->getMailer();
 
@@ -460,7 +501,7 @@ class DavListener implements IEventListener
             return;
         }
 
-//        \OC::$server->getLogger()->error('DL Debug: M11');
+        //        \OC::$server->getLogger()->error('DL Debug: M11');
 
         $date_time = $utils->getDateTimeString(
             $evt->DTSTART->getDateTime(),
@@ -471,7 +512,7 @@ class DavListener implements IEventListener
 
         $is_cancelled = false;
 
-//        $tmpl=$mailer->createEMailTemplate("ID_".time());
+        //        $tmpl=$mailer->createEMailTemplate("ID_".time());
         $tmpl = $this->getEmailTemplate();
 
         // Message the organizer
@@ -487,7 +528,7 @@ class DavListener implements IEventListener
         $no_ics = false;
         $talk_link_txt = '';
 
-//        \OC::$server->getLogger()->error('DL Debug: M12');
+        //        \OC::$server->getLogger()->error('DL Debug: M12');
 
         if ($hint === BackendUtils::APPT_SES_BOOK) {
             // Just booked, send email to the attendee requesting confirmation...
@@ -501,9 +542,12 @@ class DavListener implements IEventListener
             $tmpl->addBodyText($this->l10N->t('The %1$s appointment scheduled for %2$s is awaiting your confirmation.', [$org_name, $date_time]));
 
             list($btn_url, $btn_tkn) = $this->makeBtnInfo(
-                $userId, $pageId, $embed,
+                $userId,
+                $pageId,
+                $embed,
                 $objectData['uri'],
-                $config);
+                $config
+            );
 
             $tmpl->addBodyButtonGroup(
                 $this->l10N->t("Confirm"),
@@ -519,7 +563,6 @@ class DavListener implements IEventListener
             if ($eml_settings[BackendUtils::EML_MREQ]) {
                 $om_prefix = $this->l10N->t("Appointment pending");
             }
-
         } elseif ($hint === BackendUtils::APPT_SES_CONFIRM) {
             // Confirm link in the email is clicked ...
             // ... or the email validation step is skipped
@@ -532,9 +575,12 @@ class DavListener implements IEventListener
 
             // add cancellation link
             list($btn_url, $btn_tkn) = $this->makeBtnInfo(
-                $userId, $pageId, $embed,
+                $userId,
+                $pageId,
+                $embed,
                 $objectData['uri'],
-                $config);
+                $config
+            );
             $cnl_lnk_url = $btn_url . "0" . $btn_tkn;
 
             if (count($xad) > 4) {
@@ -546,8 +592,12 @@ class DavListener implements IEventListener
                         $ti = new TalkIntegration($tlk, $utils);
                         // add talk link info
                         $talk_link_txt = $this->addTalkInfo(
-                            $tmpl, $xad, $ti, $tlk,
-                            $config->getUserValue($userId, $this->appName, "c" . "nk"));
+                            $tmpl,
+                            $xad,
+                            $ti,
+                            $tlk,
+                            $config->getUserValue($userId, $this->appName, "c" . "nk")
+                        );
                     }
 
                     if ($tlk[BackendUtils::TALK_FORM_ENABLED] === true) {
@@ -567,7 +617,6 @@ class DavListener implements IEventListener
             if ($eml_settings[BackendUtils::EML_MCONF]) {
                 $om_prefix = $this->l10N->t("Appointment confirmed");
             }
-
         } elseif ($hint === BackendUtils::APPT_SES_CANCEL || $isDelete) {
             // Canceled or deleted
 
@@ -599,7 +648,6 @@ class DavListener implements IEventListener
                     $ti->deleteRoom($xad[4]);
                 }
             }
-
         } elseif ($hint === BackendUtils::APPT_SES_TYPE_CHANGE) {
 
             $tmpl->setSubject($this->l10N->t("%s Appointment update", [$org_name]));
@@ -619,14 +667,21 @@ class DavListener implements IEventListener
                 // add talk link info
                 $ti = new TalkIntegration($tlk, $utils);
                 $talk_link_txt = $this->addTalkInfo(
-                    $tmpl, $xad, $ti, $tlk,
-                    $config->getUserValue($userId, $this->appName, "c" . "nk"));
+                    $tmpl,
+                    $xad,
+                    $ti,
+                    $tlk,
+                    $config->getUserValue($userId, $this->appName, "c" . "nk")
+                );
             }
 
             list($btn_url, $btn_tkn) = $this->makeBtnInfo(
-                $userId, $pageId, $embed,
+                $userId,
+                $pageId,
+                $embed,
                 $objectData['uri'],
-                $config);
+                $config
+            );
 
             $this->addTypeChangeLink($tmpl, $tlk, $btn_url . "3" . $btn_tkn, $has_link);
 
@@ -635,7 +690,6 @@ class DavListener implements IEventListener
             if ($eml_settings[BackendUtils::EML_MCONF]) {
                 $om_prefix = $this->l10N->t("Appointment updated");
             }
-
         } elseif ($hint === null) {
             // Organizer or External Action (something changed...)
 
@@ -658,7 +712,10 @@ class DavListener implements IEventListener
                 // if we have a Talk room we need to update the room's name (and lobby time if implemented)
                 if (count($xad) > 4 && strlen($xad[4]) > 1) {
                     $ti->renameRoom(
-                        $xad[4], $to_name, $evt->DTSTART, $userId
+                        $xad[4],
+                        $to_name,
+                        $evt->DTSTART,
+                        $userId
                     );
                 }
             }
@@ -682,9 +739,12 @@ class DavListener implements IEventListener
             }
 
             list($btn_url, $btn_tkn) = $this->makeBtnInfo(
-                $userId, $pageId, $embed,
+                $userId,
+                $pageId,
+                $embed,
                 $objectData['uri'],
-                $config);
+                $config
+            );
 
             // if NOT cancelled and PARTSTAT:NEEDS-ACTION we ADD BUTTONS before the "If you have any questions..." text
             if ($is_cancelled === false && $pst === 'NEEDS-ACTION') {
@@ -703,8 +763,12 @@ class DavListener implements IEventListener
                 if ($has_link === 1) {
                     // add talk link info
                     $talk_link_txt = $this->addTalkInfo(
-                        $tmpl, $xad, $ti, $tlk,
-                        $config->getUserValue($userId, $this->appName, "c" . "nk"));
+                        $tmpl,
+                        $xad,
+                        $ti,
+                        $tlk,
+                        $config->getUserValue($userId, $this->appName, "c" . "nk")
+                    );
                 }
                 $this->addTypeChangeLink($tmpl, $tlk, $btn_url . "3" . $btn_tkn, $has_link);
             }
@@ -726,24 +790,28 @@ class DavListener implements IEventListener
             $utils->setApptHash($evt, $userId, $pageId);
 
             if (($eml_settings[BackendUtils::EML_ADEL] === false && $isDelete)
-                || ($eml_settings[BackendUtils::EML_AMOD] === false && $isDelete)) {
+                || ($eml_settings[BackendUtils::EML_AMOD] === false && $isDelete)
+            ) {
                 // no need to go further if we don want to email attendees on change
                 return;
             }
-
         } else return;
 
         $this->finalizeEmailText($tmpl, $cnl_lnk_url);
 
+        $object = $this->getObjectNameAndType($objectData);
+        $this->publishActivity($object);
         ///-------------------
 
         $def_email = \OCP\Util::getDefaultEmailAddress('appointments-noreply');
 
         $msg = $mailer->createMessage();
 
-        if ($config->getAppValue($this->appName,
-                BackendUtils::KEY_USE_DEF_EMAIL,
-                'yes') === 'no') {
+        if ($config->getAppValue(
+            $this->appName,
+            BackendUtils::KEY_USE_DEF_EMAIL,
+            'yes'
+        ) === 'no') {
             $msg->setFrom(array($org_email));
         } else {
             $msg->setFrom(array($def_email));
@@ -755,9 +823,11 @@ class DavListener implements IEventListener
         $utz_info = $evt->{BackendUtils::TZI_PROP}->getValue()[0];
 
         // .ics attachment
-        if ($hint !== BackendUtils::APPT_SES_BOOK
+        if (
+            $hint !== BackendUtils::APPT_SES_BOOK
             && $eml_settings[BackendUtils::EML_ICS] === true
-            && $no_ics === false) {
+            && $no_ics === false
+        ) {
 
             // method https://tools.ietf.org/html/rfc5546#section-3.2
             if (!$is_cancelled) {
@@ -773,9 +843,9 @@ class DavListener implements IEventListener
                     $more_ics_text = $eml_settings[BackendUtils::EML_ICS_TXT];
                     $evt->DESCRIPTION->setValue(
                         $org_name . "\n"
-                        . (!empty($org_phone) ? $org_phone . "\n" : "")
-                        . (!empty($talk_link_txt) ? "\n" . $talk_link_txt . "\n" : "")
-                        . (!empty($more_ics_text) ? "\n" . $more_ics_text . "\n" : "")
+                            . (!empty($org_phone) ? $org_phone . "\n" : "")
+                            . (!empty($talk_link_txt) ? "\n" . $talk_link_txt . "\n" : "")
+                            . (!empty($more_ics_text) ? "\n" . $more_ics_text . "\n" : "")
                     );
                 }
             } else {
@@ -803,15 +873,14 @@ class DavListener implements IEventListener
             // Servers MUST NOT include this parameter in any scheduling messages sent as the result of a scheduling operation.
             // Clients MUST NOT include this parameter in any scheduling messages that they themselves send.
 
-//            if(isset($evt->ORGANIZER->parameters['SCHEDULE-AGENT'])){
-//                unset($evt->ORGANIZER->parameters['SCHEDULE-AGENT']);
-//            }
+            //            if(isset($evt->ORGANIZER->parameters['SCHEDULE-AGENT'])){
+            //                unset($evt->ORGANIZER->parameters['SCHEDULE-AGENT']);
+            //            }
 
             // Some external clients set SCHEDULE-STATUS to 3.7 because of the "acct" scheme
             if (isset($evt->ATTENDEE)) {
                 foreach ($evt->ATTENDEE as $k => $v) {
-                    if (isset($evt->ATTENDEE[$k]->parameters['SCHEDULE-STATUS'])
-                    ) {
+                    if (isset($evt->ATTENDEE[$k]->parameters['SCHEDULE-STATUS'])) {
                         unset($evt->ATTENDEE[$k]->parameters['SCHEDULE-STATUS']);
                     }
                     if (isset($evt->ATTENDEE[$k]->parameters['SCHEDULE-AGENT'])) {
@@ -869,10 +938,10 @@ class DavListener implements IEventListener
 
                 $evt_dt = $evt->DTSTART->getDateTime();
                 // Here we need organizer's timezone for getDateTimeString()
-//                $utz_info .= $utils->getUserTimezone($userId, $config)->getName();
+                //                $utz_info .= $utils->getUserTimezone($userId, $config)->getName();
                 $utz_info .= $utz->getName();
 
-//                $tmpl = $mailer->createEMailTemplate("ID_" . time());
+                //                $tmpl = $mailer->createEMailTemplate("ID_" . time());
                 $tmpl = $this->getEmailTemplate();
 
                 $tmpl->setSubject($om_prefix . ": " . $to_name . ", "
@@ -917,7 +986,8 @@ class DavListener implements IEventListener
      * @return string[] - [btn_url,btn_tkn]
      * @noinspection PhpDocMissingThrowsInspection
      */
-    private function makeBtnInfo($userId, $pageId, $embed, $uri, $config) {
+    private function makeBtnInfo($userId, $pageId, $embed, $uri, $config)
+    {
         $key = hex2bin($config->getAppValue($this->appName, 'hk'));
         if (empty($key)) return ["", ""];
 
@@ -930,7 +1000,9 @@ class DavListener implements IEventListener
         if ($embed) {
             $btn_url = $config->getAppValue(
                 $this->appName,
-                'emb_cncf_' . $userId, $btn_url);
+                'emb_cncf_' . $userId,
+                $btn_url
+            );
         }
         return [
             $btn_url,
@@ -946,7 +1018,8 @@ class DavListener implements IEventListener
      * @param $c
      * @return string
      */
-    private function addTalkInfo($tmpl, $xad, $ti, $tlk, $c) {
+    private function addTalkInfo($tmpl, $xad, $ti, $tlk, $c)
+    {
         $url = $ti->getRoomURL($xad[4]);
         $url_html = '<a target="_blank" href="' . $url . '">' . $url . '</a>';
 
@@ -992,24 +1065,25 @@ class DavListener implements IEventListener
      * @param $typeChangeLink
      * @param int $newType 0=virtual, 1=real
      */
-    private function addTypeChangeLink($tmpl, $tlk, $typeChangeLink, $newType) {
+    private function addTypeChangeLink($tmpl, $tlk, $typeChangeLink, $newType)
+    {
         $txt = strip_tags(trim($tlk[BackendUtils::TALK_FORM_TYPE_CHANGE_TXT]));
         if (!empty($txt)) {
 
             if ($newType === 0) {
                 // need virtual text
-                $nt = htmlspecialchars((
-                !empty($tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT])
-                    ? $tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT]
-                    : $tlk[BackendUtils::TALK_FORM_DEF_VIRTUAL]),
-                    ENT_NOQUOTES);
+                $nt = htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT])
+                        ? $tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT]
+                        : $tlk[BackendUtils::TALK_FORM_DEF_VIRTUAL]),
+                    ENT_NOQUOTES
+                );
             } else {
                 // real txt
-                $nt = htmlspecialchars((
-                !empty($tlk[BackendUtils::TALK_FORM_REAL_TXT])
-                    ? $tlk[BackendUtils::TALK_FORM_REAL_TXT]
-                    : $tlk[BackendUtils::TALK_FORM_DEF_REAL]),
-                    ENT_NOQUOTES);
+                $nt = htmlspecialchars((!empty($tlk[BackendUtils::TALK_FORM_REAL_TXT])
+                        ? $tlk[BackendUtils::TALK_FORM_REAL_TXT]
+                        : $tlk[BackendUtils::TALK_FORM_DEF_REAL]),
+                    ENT_NOQUOTES
+                );
             }
 
             $txt = str_replace('{{new_type}}', $nt, $txt);
@@ -1032,23 +1106,25 @@ class DavListener implements IEventListener
         }
     }
 
-    private function makeMeetingTypeInfo($tlk, $has_link) {
+    private function makeMeetingTypeInfo($tlk, $has_link)
+    {
         $info = !empty($tlk[BackendUtils::TALK_FORM_LABEL])
             ? $tlk[BackendUtils::TALK_FORM_LABEL]
             : $tlk[BackendUtils::TALK_FORM_DEF_LABEL];
         if ($has_link) {
             $info .= ': ' . (!empty($tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT])
-                    ? $tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT]
-                    : $tlk[BackendUtils::TALK_FORM_DEF_VIRTUAL]);
+                ? $tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT]
+                : $tlk[BackendUtils::TALK_FORM_DEF_VIRTUAL]);
         } else {
             $info .= ': ' . (!empty($tlk[BackendUtils::TALK_FORM_REAL_TXT])
-                    ? $tlk[BackendUtils::TALK_FORM_REAL_TXT]
-                    : $tlk[BackendUtils::TALK_FORM_DEF_REAL]);
+                ? $tlk[BackendUtils::TALK_FORM_REAL_TXT]
+                : $tlk[BackendUtils::TALK_FORM_DEF_REAL]);
         }
         return htmlspecialchars($info, ENT_NOQUOTES);
     }
 
-    private function getEmailTemplate() {
+    private function getEmailTemplate()
+    {
         $r = new \ReflectionMethod('OCP\Mail\IEMailTemplate', 'addBodyListItem');
         if ($r->getNumberOfParameters() === 6) {
             //NC20+
@@ -1071,9 +1147,12 @@ class DavListener implements IEventListener
         return $tmpl;
     }
 
-    private function getOrgInfo($userId, $pageId) {
+    private function getOrgInfo($userId, $pageId)
+    {
         $org = $this->utils->getUserSettings(
-            BackendUtils::KEY_ORG, $userId);
+            BackendUtils::KEY_ORG,
+            $userId
+        );
 
         $email = $org[BackendUtils::ORG_EMAIL];
         $name = $org[BackendUtils::ORG_NAME];
@@ -1081,7 +1160,9 @@ class DavListener implements IEventListener
 
         if ($pageId !== 'p0') {
             $cms = $this->utils->getUserSettings(
-                BackendUtils::KEY_MPS . $pageId, $userId);
+                BackendUtils::KEY_MPS . $pageId,
+                $userId
+            );
             if (!empty($cms[BackendUtils::ORG_NAME])) {
                 $name = $cms[BackendUtils::ORG_NAME];
             }
@@ -1094,7 +1175,8 @@ class DavListener implements IEventListener
     }
 
 
-    function finalizeEmailText(&$tmpl, $cnl_lnk_url) {
+    function finalizeEmailText(&$tmpl, $cnl_lnk_url)
+    {
 
         $tmpl->addBodyText($this->l10N->t("Thank you"));
 
@@ -1102,16 +1184,64 @@ class DavListener implements IEventListener
         if (!empty($cnl_lnk_url)) {
             $tmpl->addBodyText(
                 '<div style="font-size: 80%;color: #989898">' .
-                // TRANSLATORS This is a part of an email message. %1$s Cancel Appointment %2$s is a link to the cancellation page (HTML format).
-                $this->l10N->t('To cancel your appointment please click: %1$s Cancel Appointment %2$s', ['<a style="color: #989898" href="' . $cnl_lnk_url . '">', '</a>'])
-                . "</div>",
+                    // TRANSLATORS This is a part of an email message. %1$s Cancel Appointment %2$s is a link to the cancellation page (HTML format).
+                    $this->l10N->t('To cancel your appointment please click: %1$s Cancel Appointment %2$s', ['<a style="color: #989898" href="' . $cnl_lnk_url . '">', '</a>'])
+                    . "</div>",
                 // TRANSLATORS This is a part of an email message. %s is a URL of the cancellation page (PLAIN TEXT format).
                 $this->l10N->t('To cancel your appointment please visit: %s', $cnl_lnk_url)
             );
         }
 
         $tmpl->addFooter("Booked via Nextcloud Appointments App");
-
     }
 
+    function publishActivity(array $object)
+    {
+        $bookingStatus = "booking_add";
+
+        $event = $this->activityManager->generateEvent();
+
+        $event->setApp('adminly_clients')
+            ->setObject('object', $object['id'])
+            ->setType('booking')
+            ->setAffectedUser($this->userId)
+            ->setSubject(
+                $bookingStatus,
+                [
+                    'object' => [
+                        'id' => $object['id'],
+                        'name' => $object['name'],
+                        'classified' => false,
+                    ],
+                ]
+            );
+
+        $this->activityManager->publish($event);
+    }
+
+    /**
+     * @param array $objectData
+     * @return string[]|bool
+     */
+    protected function getObjectNameAndType(array $objectData)
+    {
+        $vObject = Reader::read($objectData['calendardata']);
+        $component = $componentType = null;
+        foreach ($vObject->getComponents() as $component) {
+            if (in_array($component->name, ['VEVENT', 'VTODO'])) {
+                $componentType = $component->name;
+                break;
+            }
+        }
+
+        if (!$componentType) {
+            // Calendar objects must have a VEVENT or VTODO component
+            return false;
+        }
+
+        if ($componentType === 'VEVENT') {
+            return ['id' => (string) $component->UID, 'name' => (string) $component->SUMMARY, 'type' => 'event'];
+        }
+        return ['id' => (string) $component->UID, 'name' => (string) $component->SUMMARY, 'type' => 'todo', 'status' => (string) $component->STATUS];
+    }
 }
