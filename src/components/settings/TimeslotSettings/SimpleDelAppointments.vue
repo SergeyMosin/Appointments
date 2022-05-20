@@ -195,14 +195,14 @@ export default {
         showError('Can not remove appointments: bad info')
       }
 
-      if (!confirm(this.t('appointments', 'This action can NOT be undone. Continue?'))) return;
+      if (!confirm(this.t('appointments', 'This action CANNOT be undone. Continue?'))) return;
 
       this.$emit('openGM', 2)
       this.$emit('updateGM', {
         generalModalLoadingTxt: this.t('appointments', 'Removing Appointment Slots') + "..."
       })
 
-      const errTxt = this.t('appointments', 'Can not delete old appointments/slots')
+      const errTxt = this.t('appointments', 'Cannot delete old appointments/slots')
 
       const str = this.roaData.str.slice(0, -1) + ',"delete":true}';
       const pageId = this.roaData.pageId
