@@ -44,6 +44,19 @@
             <route>appointments.page.index</route>
         </navigation>
     </navigations>
+	<activity>
+		<settings>
+			<setting>OCA\Appointments\Activity\Setting</setting>
+		</settings>
+
+		<filters>
+			<filter>OCA\Appointments\Activity\Filter</filter>
+		</filters>
+
+		<providers>
+			<provider>OCA\Appointments\Activity\Provider</provider>
+		</providers>
+	</activity>
     <sabre>
         <plugins>
             <plugin>OCA\Appointments\Backend\ExternalModeSabrePlugin</plugin>
@@ -52,4 +65,5 @@
     <background-jobs>
         <job>OCA\Appointments\Cron\Reminders</job>
     </background-jobs>
+
 </info>
