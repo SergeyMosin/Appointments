@@ -171,6 +171,7 @@ class BackendUtils
     // Read only background_job_mode from appconfig and overwrite.cli.url from getSystemValue
     public const REMINDER_BJM = "bjm";
     public const REMINDER_CLI_URL = "cliUrl";
+    public const REMINDER_LANG = "defaultLang";
 
     public const KEY_DEBUGGING = "debugging";
     public const DEBUGGING_LOG_REM_BLOCKER = "log_rem_blocker";

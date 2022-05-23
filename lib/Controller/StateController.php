@@ -567,6 +567,7 @@ class StateController extends Controller
             $a = $this->utils->getUserSettings(BackendUtils::KEY_REMINDERS, $this->userId);
             $a[BackendUtils::REMINDER_BJM] = $this->config->getAppValue("core", "backgroundjobs_mode");
             $a[BackendUtils::REMINDER_CLI_URL] = $this->config->getSystemValue('overwrite.cli.url') === '' ? '' : '1';
+            $a[BackendUtils::REMINDER_LANG] = $this->config->getSystemValue('default_language', 'en');
 
             $j = json_encode($a);
             if ($j !== false) {
