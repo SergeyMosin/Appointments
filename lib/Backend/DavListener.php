@@ -1232,6 +1232,9 @@ class DavListener implements IEventListener
             case BackendUtils::APPT_SES_TYPE_CHANGE:
                 $bookingStatus = "booking_type_change";
                 break;
+            default:
+                $bookingStatus = "booking_other";
+                break;
         }
 
         $event = $this->activityManager->generateEvent();

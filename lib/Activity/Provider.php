@@ -38,6 +38,7 @@ class Provider implements IProvider
 	public const SUBJECT_CANCEL = 'booking_cancel';
 	public const SUBJECT_SKIP = 'booking_skip';
 	public const SUBJECT_TYPE_CHANGE = 'booking_type_change';
+	public const SUBJECT_OTHER = 'booking_other';
 
 	/** @var IFactory */
 	protected $languageFactory;
@@ -91,9 +92,11 @@ class Provider implements IProvider
 		if ($event->getSubject() === self::SUBJECT_ADD) {
 			$subject = $this->l->t('{booking} has created a new booking');
 		} elseif ($event->getSubject() === self::SUBJECT_CONFIRM) {
-			$subject = $this->l->t('{booking} has confimed a booking');
+			$subject = $this->l->t('{booking} has confirmed a booking');
 		} elseif ($event->getSubject() === self::SUBJECT_CANCEL) {
 			$subject = $this->l->t('{booking} has cancelled a booking');
+		} elseif ($event->getSubject() === self::SUBJECT_OTHER) {
+			$subject = $this->l->t('Booking for {booking} has been modified');
 		} else {
 			throw new \InvalidArgumentException();
 		}
