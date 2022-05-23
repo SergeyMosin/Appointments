@@ -800,7 +800,7 @@ class DavListener implements IEventListener
         $this->finalizeEmailText($tmpl, $cnl_lnk_url);
 
         $object = $this->getObjectNameAndType($objectData);
-        $this->publishActivity($object, $userId);
+        $this->publishActivity($hint, $object, $userId);
         ///-------------------
 
         $def_email = \OCP\Util::getDefaultEmailAddress('appointments-noreply');
@@ -1195,9 +1195,25 @@ class DavListener implements IEventListener
         $tmpl->addFooter("Booked via Nextcloud Appointments App");
     }
 
-    function publishActivity(array $object, $userId)
+    function publishActivity($hint, array $object, $userId)
     {
-        $bookingStatus = "booking_add";
+        switch ($hint) {
+            case BackendUtils::APPT_SES_BOOK:
+                $bookingStatus = "booking_add";
+                break;
+            case BackendUtils::APPT_SES_CONFIRM:
+                $bookingStatus = "booking_confirm";
+                break;
+            case BackendUtils::APPT_SES_CANCEL:
+                $bookingStatus = "booking_cancel";
+                break;
+            case BackendUtils::APPT_SES_SKIP:
+                $bookingStatus = "booking_skip";
+                break;
+            case BackendUtils::APPT_SES_TYPE_CHANGE:
+                $bookingStatus = "booking_type_change";
+                break;
+        }
 
         $event = $this->activityManager->generateEvent();
 

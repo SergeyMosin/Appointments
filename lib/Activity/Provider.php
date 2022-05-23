@@ -34,8 +34,10 @@ use OCP\L10N\IFactory;
 class Provider implements IProvider
 {
 	public const SUBJECT_ADD = 'booking_add';
-	public const SUBJECT_UPDATE = 'booking_update';
-	public const SUBJECT_DELETE = 'booking_delete';
+	public const SUBJECT_CONFIRM = 'booking_confirm';
+	public const SUBJECT_CANCEL = 'booking_cancel';
+	public const SUBJECT_SKIP = 'booking_skip';
+	public const SUBJECT_TYPE_CHANGE = 'booking_type_change';
 
 	/** @var IFactory */
 	protected $languageFactory;
@@ -83,15 +85,15 @@ class Provider implements IProvider
 		if ($this->activityManager->getRequirePNG()) {
 			$event->setIcon($this->url->getAbsoluteURL($this->url->imagePath('core', 'places/calendar-dark.png')));
 		} else {
-			$event->setIcon($this->url->getAbsoluteURL($this->url->imagePath('core', 'places/calendar.svg')));
+			$event->setIcon($this->url->getAbsoluteURL($this->url->imagePath('/custom_apps/appointments/', 'app-dark.svg')));
 		}
 
 		if ($event->getSubject() === self::SUBJECT_ADD) {
-			$subject = $this->l->t('You created the booking {booking}');
-		} elseif ($event->getSubject() === self::SUBJECT_DELETE) {
-			$subject = $this->l->t('You deleted the booking {booking}');
-		} elseif ($event->getSubject() === self::SUBJECT_UPDATE) {
-			$subject = $this->l->t('You updated the booking {booking}');
+			$subject = $this->l->t('{booking} has created a new booking');
+		} elseif ($event->getSubject() === self::SUBJECT_CONFIRM) {
+			$subject = $this->l->t('{booking} has confimed a booking');
+		} elseif ($event->getSubject() === self::SUBJECT_CANCEL) {
+			$subject = $this->l->t('{booking} has cancelled a booking');
 		} else {
 			throw new \InvalidArgumentException();
 		}

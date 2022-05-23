@@ -76,8 +76,7 @@ class Filter implements IFilter
 	 */
 	public function getIcon()
 	{
-		// TODO
-		return $this->url->getAbsoluteURL($this->url->imagePath('core', 'actions/comment.svg'));
+		return $this->url->getAbsoluteURL($this->url->imagePath('/custom_apps/appointments/', 'app-dark.svg'));
 	}
 
 	/**
