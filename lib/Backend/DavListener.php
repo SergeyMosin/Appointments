@@ -20,6 +20,7 @@ use OCP\IDBConnection;
 use Psr\Log\LoggerInterface;
 use Sabre\VObject\Reader;
 use OCP\Activity\IManager as IActivityManager;
+use OCP\IURLGenerator;
 
 class DavListener implements IEventListener
 {
@@ -30,19 +31,23 @@ class DavListener implements IEventListener
     private $utils;
     /** @var IActivityManager */
     protected $activityManager;
+    /** @var IURLGenerator */
+    protected $url;
 
 
     public function __construct(
         IActivityManager $activityManager,
         \OCP\IL10N      $l10N,
         LoggerInterface $logger,
-        BackendUtils    $utils
+        BackendUtils    $utils,
+        IURLGenerator $url,
     ) {
         $this->appName = Application::APP_ID;
         $this->l10N = $l10N;
         $this->logger = $logger;
         $this->utils = $utils;
         $this->activityManager = $activityManager;
+        $this->url = $url;
     }
 
     function handle(Event $event): void
@@ -799,7 +804,21 @@ class DavListener implements IEventListener
 
         $this->finalizeEmailText($tmpl, $cnl_lnk_url);
 
+        // Activity app integration
+
         $object = $this->getObjectNameAndType($objectData);
+        // creates activity event link
+        $objectId = base64_encode('/remote.php/dav/calendars/' . $userId . '/' . $calendarData['uri'] . '/' . $objectData['uri']);
+        $link = [
+            'view' => 'dayGridMonth',
+            'timeRange' => 'now',
+            'mode' => 'popover',
+            'objectId' => $objectId,
+            'recurrenceId' => 'next'
+        ];
+
+        $object['link'] = $this->url->linkToRouteAbsolute('calendar.view.indexview.timerange.edit', $link);
+
         $this->publishActivity($hint, $object, $userId);
         ///-------------------
 
@@ -1228,7 +1247,7 @@ class DavListener implements IEventListener
                         'type' => 'calendar-event',
                         'id' => $object['id'],
                         'name' => $object['name'],
-                        'link' => 'http://localhost/index.php/apps/calendar/dayGridMonth/2020-01-20/edit/sidebar/base64string/1579046400',
+                        'link' => $object['link'],
                     ],
                 ]
             );
