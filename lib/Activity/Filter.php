@@ -96,6 +96,6 @@ class Filter implements IFilter
 	 */
 	public function allowedApps()
 	{
-		return ['apppointments'];
+		return ['appointments'];
 	}
 }

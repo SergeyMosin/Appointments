@@ -1202,16 +1202,17 @@ class DavListener implements IEventListener
         $event = $this->activityManager->generateEvent();
 
         $event->setApp('appointments')
-            ->setObject('object', (int) $object['id'])
+            ->setObject('booking', (int) $object['id'])
             ->setType('appointment')
             ->setAffectedUser($userId)
             ->setSubject(
                 $bookingStatus,
                 [
-                    'object' => [
+                    'booking' => [
+                        'type' => 'calendar-event',
                         'id' => $object['id'],
                         'name' => $object['name'],
-                        'classified' => false,
+                        'link' => 'http://localhost/index.php/apps/calendar/dayGridMonth/2020-01-20/edit/sidebar/base64string/1579046400',
                     ],
                 ]
             );

@@ -96,7 +96,7 @@ class Provider implements IProvider
 			throw new \InvalidArgumentException();
 		}
 
-		$event->setParsedSubject(str_replace(["{booking}"], $subjectParameters['object'], $subject))->setRichSubject($subject, $subjectParameters);
+		$event->setParsedSubject(str_replace(["{booking}"], $subjectParameters['booking'], $subject))->setRichSubject($subject, $subjectParameters);
 
 		return $event;
 	}

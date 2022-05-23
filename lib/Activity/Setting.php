@@ -47,7 +47,7 @@ class Setting implements ISetting
 	 */
 	public function getIdentifier()
 	{
-		return 'apppointments';
+		return 'appointment';
 	}
 
 	/**
