@@ -1159,7 +1159,7 @@ export default {
       }).catch((error) => {
         this.closeGeneralModal()
         console.log(error)
-        showError(this.t('appointments', 'Can not get public URL from server'))
+        showError(this.t('appointments', 'Cannot get public URL from server'))
       })
 
     },
