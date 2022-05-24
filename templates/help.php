@@ -246,9 +246,16 @@ form{
         <img class="quick-start-guide-img" alt="appointment buffers" style="max-width: 700px" src="<?php print_unescaped(image_path('appointments', 'appointment-buffers.jpg')); ?>"/>
     </div><br>
 
-    <h2 id="srgdev-sec_rem_lang" class="srgdev-appt-hs-h1">Default Reminders languga</h2>
+    <h2 id="srgdev-sec_rem_lang" class="srgdev-appt-hs-h1">Default Reminders language</h2>
     <div class="srgdev-appt-hs-p">
         Nextcloud Cron uses <code style="padding: .25em" class="srgdev-appt-hs-code_short">default_language</code> setting for internal calls as per here: <a class="srgdev-appt-hs-link" href="https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html#user-experience" target="_blank">https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html#user-experience</a> which defaults to English. It might be different than the language selected in your user preferences.
+    </div>
+
+    <h2 class="srgdev-appt-hs-h1">Advanced/Notification Extensions</h2>
+    <div class="srgdev-appt-hs-p">
+        See <a class="srgdev-appt-hs-link" href="https://github.com/SergeyMosin/Appointments/issues/26" target="_blank">https://github.com/SergeyMosin/Appointments/issues/26</a><br><br>
+        Ensure the <span style="font-style: italic">ext_notify_YourUserName</span> app config variable is set like so:
+        <code style="white-space: pre" class="srgdev-appt-hs-code">php occ config:app:set appointments "ext_notify_YourUserName" --value "/absolute/path/to/file.php"</code>
     </div>
 
     <h2 id="srgdev-sec_contrib_info" class="srgdev-appt-hs-h1">Contributor Features</h2>
