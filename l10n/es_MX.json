@@ -43,7 +43,6 @@
     "Copy to Next" : "Copiar al Siguiente",
     "Preview" : "Previsualizar",
     "New Settings Applied." : "Nueva configuración aplicada.",
-    "Can not get public URL from server" : "No se puede obtener URL desde el servidor",
     "Public link copied to clipboard" : "Enlace púlico copiado al portapapeles",
     "Loading" : "Cargando",
     "Apply" : "Aplicar",
@@ -129,5 +128,5 @@
     "Please %1$stry again%2$s and select a different date." : "Por favor %1$sintente de nuevo %2$s y seleccione una fecha diferente.",
     "Please contact us directly at" : "Por favor contáctenos directamente en ",
     "Please try again later" : "Por favor intente de nuevo más tarde"
-},"pluralForm" :"nplurals=2; plural=(n != 1);"
+},"pluralForm" :"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }

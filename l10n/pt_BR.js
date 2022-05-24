@@ -104,7 +104,6 @@ OC.L10N.register(
     "Preview" : "Visualizar",
     "New Settings Applied." : "Novas Configurações Aplicadas.",
     "Fetching URL from the server …" : "Buscando URL do servidor…",
-    "Can not get public URL from server" : "Não pude obter a URL pública do servidor",
     "Public link copied to clipboard" : "Link público copiado para a área de transferência",
     "Copy Error" : "Erro na Cópia",
     "Public Page" : "Página Pública",
@@ -284,10 +283,7 @@ OC.L10N.register(
     "Remove empty slots and booked appointments created before {fullDate} ?" : "Excluir agendamentos marcados e horários vazios criados antes de {fullDate} ?",
     "two calendars affected" : "dois calendários afetados",
     "Number of expired appointments/slots: " : "Número de agendamentos/horários expirados:",
-    "Can not get calendar data" : "Não pude obter os dados do calendário",
-    "This action can NOT be undone. Continue?" : "Esta ação não pode ser desfeita. Continuar?",
     "Removing Appointment Slots" : "Remover Horários de Agendamento",
-    "Can not delete old appointments/slots" : "Não pode excluir agendamentos/horários antigos",
     "All empty appointment slots created before {fullDate} are removed" : "Todos os agendamentos criados antes de {fullDate} foram removidos",
     "All empty slots and booked appointments created before {fullDate} are removed" : "Todos os agendamentos marcados e horários vazios antes de {fullDate} foram excluídos",
     "Your Contact Information" : "Sua Informação de Contato",
@@ -325,4 +321,4 @@ OC.L10N.register(
     "Please contact us directly at" : "Contacte-nos diretamente em",
     "Please try again later" : "Tente novamente mais tarde."
 },
-"nplurals=2; plural=(n > 1);");
+"nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

@@ -79,7 +79,6 @@ OC.L10N.register(
     "Error occurred. Check console …" : "Tapahtui virhe. Tarkista konsoli…",
     "Preview" : "Esikatselu",
     "New Settings Applied." : "Uudet asetukset toteutettu",
-    "Can not get public URL from server" : "Julkista verkko-osoitetta ei voitu noutaa palvelimelta",
     "Public link copied to clipboard" : "Julkinen linkki kopioitu leikepöydälle",
     "Copy Error" : "Kopiointivirhe",
     "Public Page" : "Julkinen sivu",

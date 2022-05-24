@@ -45,7 +45,6 @@ OC.L10N.register(
     "Copy to Next" : "Copiar al Siguiente",
     "Preview" : "Previsualizar",
     "New Settings Applied." : "Nueva configuración aplicada.",
-    "Can not get public URL from server" : "No se puede obtener URL desde el servidor",
     "Public link copied to clipboard" : "Enlace púlico copiado al portapapeles",
     "Loading" : "Cargando",
     "Apply" : "Aplicar",
@@ -132,4 +131,4 @@ OC.L10N.register(
     "Please contact us directly at" : "Por favor contáctenos directamente en ",
     "Please try again later" : "Por favor intente de nuevo más tarde"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
