@@ -1,3 +1,10 @@
+## v1.12.5 - 2022-05-24
+### Added
+- Default reminders language indicator - issue #323
+- Rudimentary notification extension system - issue #26
+### Fixed
+- Ignore "trash bin"(deleted) calendars - issue #64
+
 ## v1.12.4 - 2022-05-11
 ### Fixed
 - Template/grid editor header dark theme compatibility - issue #327
