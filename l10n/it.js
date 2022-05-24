@@ -104,7 +104,6 @@ OC.L10N.register(
     "Preview" : "Anteprima",
     "New Settings Applied." : "Nuove impostazioni applicate.",
     "Fetching URL from the server …" : "Recupero dell'URL dal server...",
-    "Can not get public URL from server" : "Impossibile ottenere l'URL pubblico dal server.",
     "Public link copied to clipboard" : "Collegamento pubblico copiato negli appunti",
     "Copy Error" : "Errore di copia",
     "Public Page" : "Pagina pubblica",
@@ -281,10 +280,7 @@ OC.L10N.register(
     "Remove empty slots and booked appointments created before {fullDate} ?" : "TVuoi rimuovere gli slot vuoti e gli appuntamenti prenotati creati prima di {fullDate}?",
     "two calendars affected" : "due calendari interessati",
     "Number of expired appointments/slots: " : "Numero di appuntamenti/slot scaduti:",
-    "Can not get calendar data" : "Impossibile ottenere i dati di calendario",
-    "This action can NOT be undone. Continue?" : "Questa azione NON può essere annullata. Vuoi continuare?",
     "Removing Appointment Slots" : "Rimozione slot di appuntamenti",
-    "Can not delete old appointments/slots" : "Impossibile eliminare i vecchi appuntamenti/slot",
     "All empty appointment slots created before {fullDate} are removed" : "Tutti gli slot di appuntamenti creati prima di {fullDate} sono rimossi",
     "All empty slots and booked appointments created before {fullDate} are removed" : "Tutti gli slot vuoti e gli appuntamenti prenotati creati prima di {fullDate} sono rimossi",
     "Your Contact Information" : "Le tue informazioni di contatto",
@@ -319,4 +315,4 @@ OC.L10N.register(
     "Please contact us directly at" : "Contattaci direttamente a",
     "Please try again later" : "Riprova più tardi"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

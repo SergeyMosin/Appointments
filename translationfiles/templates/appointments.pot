@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2022-05-23 03:57+0000\n"
+"POT-Creation-Date: 2022-05-24 04:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -566,7 +566,7 @@ msgstr ""
 
 #. TRANSLATORS vue:1162
 #: /app/specialVueFakeDummyForL10nScript.js:84
-msgid "Can not get public URL from server"
+msgid "Cannot get public URL from server"
 msgstr ""
 
 #. TRANSLATORS vue:1169
@@ -1541,12 +1541,12 @@ msgstr ""
 
 #. TRANSLATORS onents/settings/TimeslotSettings/SimpleDelAppointments.vue:188
 #: /app/specialVueFakeDummyForL10nScript.js:532
-msgid "Can not get calendar data"
+msgid "Cannot get calendar data"
 msgstr ""
 
 #. TRANSLATORS onents/settings/TimeslotSettings/SimpleDelAppointments.vue:198
 #: /app/specialVueFakeDummyForL10nScript.js:534
-msgid "This action can NOT be undone. Continue?"
+msgid "This action CANNOT be undone. Continue?"
 msgstr ""
 
 #. TRANSLATORS onents/settings/TimeslotSettings/SimpleDelAppointments.vue:202
@@ -1556,7 +1556,7 @@ msgstr ""
 
 #. TRANSLATORS onents/settings/TimeslotSettings/SimpleDelAppointments.vue:205
 #: /app/specialVueFakeDummyForL10nScript.js:538
-msgid "Can not delete old appointments/slots"
+msgid "Cannot delete old appointments/slots"
 msgstr ""
 
 #. TRANSLATORS onents/settings/TimeslotSettings/SimpleDelAppointments.vue:231

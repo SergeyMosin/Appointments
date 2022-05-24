@@ -78,7 +78,6 @@
     "All appointments have been added to {calendarName} calendar." : "Alle avtaler har blitt lagt til i kalender {calendarName}.",
     "Preview" : "Forhåndsvis",
     "New Settings Applied." : "Nye Innstillinger Lagret",
-    "Can not get public URL from server" : "Kunne ikke motta offentlig URL fra tjeneren",
     "Public link copied to clipboard" : "Offentlig lenke kopiert fra utklippstavlen",
     "Copy Error" : "Kopieringsfeil",
     "Public Page" : "Offentlig side",

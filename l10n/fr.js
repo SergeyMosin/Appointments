@@ -104,7 +104,6 @@ OC.L10N.register(
     "Preview" : "Aperçu",
     "New Settings Applied." : "Nouveaux paramètres appliqués.",
     "Fetching URL from the server …" : "Récupération de l’URL depuis le serveur…",
-    "Can not get public URL from server" : "Impossible d’obtenir l’URL publique du serveur",
     "Public link copied to clipboard" : "Lien public copié dans le presse-papiers",
     "Copy Error" : "Erreur de copie",
     "Public Page" : "Page publique",
@@ -283,10 +282,7 @@ OC.L10N.register(
     "Remove empty slots and booked appointments created before {fullDate} ?" : "Retirer les créneaux vides et les rendez-vous confirmés créés avant le {fullDate} ?",
     "two calendars affected" : "deux calendriers modifiés",
     "Number of expired appointments/slots: " : "Nombre de rendez-vous/créneaux expirés :",
-    "Can not get calendar data" : "Impossible de récupérer les données de l’agenda",
-    "This action can NOT be undone. Continue?" : "Cette action ne pourra pas être annulée. Souhaitez-vous continuer ?",
     "Removing Appointment Slots" : "Retirer des créneaux de rendez-vous",
-    "Can not delete old appointments/slots" : "Impossible de supprimer d’anciens rendez-vous/créneaux",
     "All empty appointment slots created before {fullDate} are removed" : "Tous les créneaux de rendez-vous vides créés avant le {fullDate} sont retirés",
     "All empty slots and booked appointments created before {fullDate} are removed" : "Tous les créneaux vides et les rendez-vous confirmés avant le {fullDate} sont supprimés",
     "Your Contact Information" : "Vos coordonnées :",
@@ -321,4 +317,4 @@ OC.L10N.register(
     "Please contact us directly at" : "Veuillez nous contacter directement à ",
     "Please try again later" : "Veuillez réessayer plus tard"
 },
-"nplurals=2; plural=(n > 1);");
+"nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
