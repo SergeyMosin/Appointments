@@ -73,7 +73,6 @@ OC.L10N.register(
     "Preview" : "תצוגה מקדימה",
     "New Settings Applied." : "חלו הגדרות חדשות.",
     "Fetching URL from the server …" : "הכתובת נמשכת מהשרת…",
-    "Can not get public URL from server" : "נא ניתן לקבל כתובת ציבורית מהשרת",
     "Public link copied to clipboard" : "הקישור הציבורי הועתק ללוח הגזירים",
     "Copy Error" : "שגיאת העתקה",
     "Public Page" : "עמוד ציבורי",

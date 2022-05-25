@@ -566,7 +566,9 @@ class StateController extends Controller
         } else if ($action === 'get_reminder') {
             $a = $this->utils->getUserSettings(BackendUtils::KEY_REMINDERS, $this->userId);
             $a[BackendUtils::REMINDER_BJM] = $this->config->getAppValue("core", "backgroundjobs_mode");
-            $a[BackendUtils::REMINDER_CLI_URL] = $this->config->getSystemValue('overwrite.cli.url') === '' ? '' : '1';
+            $cliUrl=$this->config->getSystemValue('overwrite.cli.url');
+            $a[BackendUtils::REMINDER_CLI_URL] = $cliUrl === '' || $cliUrl==='localhost' ? '' : '1';
+            $a[BackendUtils::REMINDER_LANG] = $this->config->getSystemValue('default_language', 'en');
 
             $j = json_encode($a);
             if ($j !== false) {

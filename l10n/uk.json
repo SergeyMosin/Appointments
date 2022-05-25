@@ -60,7 +60,6 @@
     "All appointments have been added to {calendarName} calendar." : "Нові зустрічі додано до календаря {calendarName}.",
     "Preview" : "Перегляд",
     "New Settings Applied." : "Застосовано нові налаштування.",
-    "Can not get public URL from server" : "Неможливо отримати публічне посилання з сервера",
     "Public link copied to clipboard" : "Скопійовано публічне посилання",
     "Loading" : "Завантаження",
     "Apply" : "Застосувати",

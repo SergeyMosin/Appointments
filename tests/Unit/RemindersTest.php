@@ -63,7 +63,8 @@ class RemindersTest extends TestCase
         $this->assertNotEquals(false, $this->attendeeEmail, "missing TEST_ATTENDEE_EMAIL environment var");
         $this->consoleLog($this->attendeeEmail);
 
-        $this->userIdsArray = [TestConstants::USER_ID, TestConstants::USER_ID2];
+//        $this->userIdsArray = [TestConstants::USER_ID, TestConstants::USER_ID2];
+        $this->userIdsArray = [TestConstants::USER_ID];
 
         $app = new Application();
 

@@ -94,6 +94,7 @@ class DavListener implements IEventListener
         $utz = new \DateTimeZone('utc');
 
         $userId = '';
+        $extNotifyFilePath='';
         while ($row = $result->fetch()) {
 
             $remObj = json_decode($row['reminders'], true);
@@ -105,6 +106,8 @@ class DavListener implements IEventListener
             if ($userId !== $row['user_id']) {
                 $userId = $row['user_id'];
                 $utils->clearSettingsCache();
+
+                $extNotifyFilePath = $config->getAppValue($this->appName, 'ext_notify_' . $userId);
             }
 
             $pageId = $row['page_id'];
@@ -276,6 +279,8 @@ class DavListener implements IEventListener
                     $msg->setTo(array($to_email));
                     $msg->useTemplate($tmpl);
 
+                    $description='';
+
                     try {
                         $mailer->send($msg);
 
@@ -297,6 +302,22 @@ class DavListener implements IEventListener
                         $this->logger->error("Can not send email to " . $to_email . ", event uid: " . $row['uid']);
                         $this->logger->error($e->getMessage());
                     }
+
+                    // advanced/extensions
+                    if ($extNotifyFilePath !== "") {
+                        $data = [
+                            'eventType' => 4,
+                            'dateTime' => $evt->DTSTART->getDateTime(),
+                            'attendeeName' => $to_name,
+                            'attendeeEmail' => $to_email,
+                            'attendeeTel' => $this->getPhoneFromDescription($description),
+                            'pageId' => $pageId
+                        ];
+                        $this->extNotify($data, $userId, $extNotifyFilePath);
+                    }
+
+                    // remove all circular references, so PHP can easily clean it up.
+                    $vObject->destroy();
 
                     usleep(750000);
                     break;
@@ -490,6 +511,8 @@ class DavListener implements IEventListener
         // Description can get overwritten when the .ics attachment is constructed, so get it here
         if (isset($evt->DESCRIPTION)) {
             $om_info = $evt->DESCRIPTION->getValue();
+        }else{
+            $om_info="";
         }
 
         // cancellation link for confirmation emails
@@ -499,6 +522,8 @@ class DavListener implements IEventListener
         $talk_link_txt = '';
 
 //        \OC::$server->getLogger()->error('DL Debug: M12');
+
+        $ext_event_type = -1;
 
         if ($hint === BackendUtils::APPT_SES_BOOK) {
             // Just booked, send email to the attendee requesting confirmation...
@@ -579,6 +604,8 @@ class DavListener implements IEventListener
                 $om_prefix = $this->l10N->t("Appointment confirmed");
             }
 
+            $ext_event_type = 0;
+
         } elseif ($hint === BackendUtils::APPT_SES_CANCEL || $isDelete) {
             // Canceled or deleted
 
@@ -610,6 +637,8 @@ class DavListener implements IEventListener
                     $ti->deleteRoom($xad[4]);
                 }
             }
+
+            $ext_event_type = 1;
 
         } elseif ($hint === BackendUtils::APPT_SES_TYPE_CHANGE) {
 
@@ -647,6 +676,8 @@ class DavListener implements IEventListener
                 $om_prefix = $this->l10N->t("Appointment updated");
             }
 
+            $ext_event_type = 3;
+
         } elseif ($hint === null) {
             // Organizer or External Action (something changed...)
 
@@ -674,16 +705,21 @@ class DavListener implements IEventListener
                 }
             }
 
+            $ext_event_type = 2;
+
             if ($hash_ch[1] === true) { //STATUS changed
                 if ($evt->STATUS->getValue() === 'CANCELLED') {
                     $tmpl->addBodyListItem($this->l10N->t('Status: Canceled'));
                     $is_cancelled = true;
+                    $ext_event_type = 1;
                 } else {
                     // Non cancelled status is determined by the attendee's PARTSTAT
                     if ($pst === 'NEEDS-ACTION') {
                         $tmpl->addBodyListItem($this->l10N->t('Status: Pending confirmation'));
+                        $ext_event_type = -1; // no extNotify when pending
                     } elseif ($pst === 'ACCEPTED') {
                         $tmpl->addBodyListItem($this->l10N->t('Status: Confirmed'));
+                        $ext_event_type = 0;
                     }
                 }
             }
@@ -932,6 +968,22 @@ class DavListener implements IEventListener
                 }
             } else {
                 $this->logger->error("Bad oma count");
+            }
+        }
+
+        // advanced/extensions
+        if ($ext_event_type >= 0) {
+            $filePath = $config->getAppValue($this->appName, 'ext_notify_' . $userId);
+            if ($filePath !== "") {
+                $data = [
+                    'eventType' => $ext_event_type,
+                    'dateTime' => $evt->DTSTART->getDateTime(),
+                    'attendeeName' => $to_name,
+                    'attendeeEmail' => $to_email,
+                    'attendeeTel' => $this->getPhoneFromDescription($om_info),
+                    'pageId' => $pageId
+                ];
+                $this->extNotify($data, $userId, $filePath);
             }
         }
     }
@@ -1216,6 +1268,43 @@ class DavListener implements IEventListener
             return ['id' => (string) $component->UID, 'name' => (string) $component->SUMMARY, 'dtStart' => (string) $component->DTSTART, 'type' => 'event'];
         }
         return ['id' => (string) $component->UID, 'name' => (string) $component->SUMMARY, 'dtStart' => (string) $component->DTSTART, 'type' => 'todo', 'status' => (string) $component->STATUS];
+    }
+
+    /**
+     * @see https://github.com/SergeyMosin/Appointments/issues/26 for more info
+     *
+     * @param array $data
+     * @param string $userId
+     * @param string $filePath
+     * @return void
+     */
+    private function extNotify(array $data, string $userId, string $filePath) {
+
+        if ($filePath !== "") {
+            try {
+                require_once $filePath;
+            } catch (\Exception $e) {
+                $this->logger->error("Extension file '" . $filePath . "' for user '" . $userId . "' not found");
+                $this->logger->error($e);
+                return;
+            }
+
+            try {
+                notificationEventListener($data, $this->logger);
+            } catch (\Exception $e) {
+                $this->logger->error("User '" . $userId . "' extension file error: " . $e);
+                return;
+            }
+        }
+    }
+
+    private function getPhoneFromDescription(string $description): string {
+        $ret = "";
+        $da = explode("\n", $description);
+        if (count($da) > 2 && preg_match('/[0-9 .()\-+,\/]/', $da[1])) {
+            $ret = $da[1];
+        }
+        return $ret;
     }
 
 }

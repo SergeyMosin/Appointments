@@ -171,6 +171,7 @@ class BackendUtils
     // Read only background_job_mode from appconfig and overwrite.cli.url from getSystemValue
     public const REMINDER_BJM = "bjm";
     public const REMINDER_CLI_URL = "cliUrl";
+    public const REMINDER_LANG = "defaultLang";
 
     public const KEY_DEBUGGING = "debugging";
     public const DEBUGGING_LOG_REM_BLOCKER = "log_rem_blocker";
@@ -1866,6 +1867,11 @@ class BackendUtils
     }
 
     function transformCalInfo($c, $skipReadOnly = true) {
+
+        if(isset($c['{http://nextcloud.com/ns}deleted-at'])) {
+            // skip "trash bin" calendars (calendars are placed into the "trash bin" and the deleted after 30 days)
+            return null;
+        }
 
         $isReadOnlyCal = isset($c['{http://owncloud.org/ns}read-only'])
             && $c['{http://owncloud.org/ns}read-only'] === true;

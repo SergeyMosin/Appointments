@@ -68,6 +68,9 @@ class DebugController extends Controller
                     $k, $this->userId), true);
             $data .= "\n\n";
         }
+
+        $data.="<strong>ExtNotify:</strong> ".($this->config->getAppValue($this->appName, 'ext_notify_' . $this->userId)!==""?"Yes":"No")."\n\n";
+
         $tr = new TemplateResponse($this->appName, 'settings_dump', [], "base");
         $params['data'] = $data;
         $tr->setParams($params);
