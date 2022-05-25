@@ -1,0 +1,10 @@
+{
+    "editor.formatOnSave": false,
+    "intelephense.environment.includePaths": [
+        "../nextcloud-server/apps/dav/lib/",
+        "../nextcloud-server/3rdparty/psr/log/",
+        "../nextcloud-server/3rdparty/sabre/vobject/lib/",
+        "../nextcloud-server/3rdparty/symfony/event-dispatcher/",
+        "../nextcloud-server/lib/",
+    ]
+}

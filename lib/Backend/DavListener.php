@@ -17,6 +17,9 @@ use OCP\EventDispatcher\IEventListener;
 use OCP\IDBConnection;
 use Psr\Log\LoggerInterface;
 use Sabre\VObject\Reader;
+use OCP\Activity\IManager as IActivityManager;
+use OCP\IURLGenerator;
+use DateTime;
 
 class DavListener implements IEventListener
 {
@@ -25,14 +28,22 @@ class DavListener implements IEventListener
     private $l10N;
     private $logger;
     private $utils;
+    /** @var IActivityManager */
+    protected $activityManager;
+    /** @var IURLGenerator */
+    protected $url;
 
     public function __construct(\OCP\IL10N      $l10N,
                                 LoggerInterface $logger,
-                                BackendUtils    $utils) {
+                                BackendUtils    $utils,
+								IActivityManager $activityManager,
+								IURLGenerator $url) {
         $this->appName = Application::APP_ID;
         $this->l10N = $l10N;
         $this->logger = $logger;
         $this->utils = $utils;
+        $this->activityManager = $activityManager;
+        $this->url = $url;
     }
 
     function handle(Event $event): void {
@@ -734,6 +745,24 @@ class DavListener implements IEventListener
         } else return;
 
         $this->finalizeEmailText($tmpl, $cnl_lnk_url);
+		
+		
+        // Activity app integration
+
+        $object = $this->getObjectNameAndType($objectData);
+        // creates activity event link
+        $objectId = base64_encode('/remote.php/dav/calendars/' . $userId . '/' . $calendarData['uri'] . '/' . $objectData['uri']);
+        $link = [
+            'view' => 'dayGridMonth',
+            'timeRange' => 'now',
+            'mode' => 'popover',
+            'objectId' => $objectId,
+            'recurrenceId' => 'next'
+        ];
+
+        $object['link'] = $this->url->linkToRouteAbsolute('calendar.view.indexview.timerange.edit', $link);
+
+        $this->publishActivity($hint, $object, $userId);
 
         ///-------------------
 
@@ -1112,6 +1141,81 @@ class DavListener implements IEventListener
 
         $tmpl->addFooter("Booked via Nextcloud Appointments App");
 
+    }
+    function publishActivity($hint, array $object, $userId) {
+		
+        switch ($hint) {
+            case BackendUtils::APPT_SES_BOOK:
+                $bookingStatus = "booking_add";
+                break;
+            case BackendUtils::APPT_SES_CONFIRM:
+                $bookingStatus = "booking_confirm";
+                break;
+            case BackendUtils::APPT_SES_CANCEL:
+                $bookingStatus = "booking_cancel";
+                break;
+            case BackendUtils::APPT_SES_SKIP:
+                $bookingStatus = "booking_skip";
+                break;
+            case BackendUtils::APPT_SES_TYPE_CHANGE:
+                $bookingStatus = "booking_type_change";
+                break;
+            default:
+                $bookingStatus = "booking_other";
+                break;
+        }
+
+        $event = $this->activityManager->generateEvent();
+		$dtStart = new DateTime($object['dtStart']);
+		
+        $event->setApp('appointments')
+            ->setObject('booking', (int) $object['id'])
+            ->setType('appointment')
+            ->setAffectedUser($userId)
+            ->setSubject(
+                $bookingStatus,
+                [				
+					'dtStart' => [
+                        'type' => 'calendar',
+                        'id' => $object['dtStart'],
+                        'name' =>  $dtStart->format('Y-m-d H:i'),
+                    ],				
+                    'booking' => [
+                        'type' => 'calendar-event',
+                        'id' => $object['id'],
+                        'name' => $object['name'],
+                        'link' => $object['link'],
+                    ],
+                ]
+            );
+
+        $this->activityManager->publish($event);
+    }
+
+    /**
+     * @param array $objectData
+     * @return string[]|bool
+     */
+    protected function getObjectNameAndType(array $objectData) {
+		
+        $vObject = Reader::read($objectData['calendardata']);
+        $component = $componentType = null;
+        foreach ($vObject->getComponents() as $component) {
+            if (in_array($component->name, ['VEVENT', 'VTODO'])) {
+                $componentType = $component->name;
+                break;
+            }
+        }
+
+        if (!$componentType) {
+            // Calendar objects must have a VEVENT or VTODO component
+            return false;
+        }
+
+        if ($componentType === 'VEVENT') {
+            return ['id' => (string) $component->UID, 'name' => (string) $component->SUMMARY, 'dtStart' => (string) $component->DTSTART, 'type' => 'event'];
+        }
+        return ['id' => (string) $component->UID, 'name' => (string) $component->SUMMARY, 'dtStart' => (string) $component->DTSTART, 'type' => 'todo', 'status' => (string) $component->STATUS];
     }
 
 }
