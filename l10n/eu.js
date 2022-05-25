@@ -133,6 +133,7 @@ OC.L10N.register(
     "When Attendee Cancels" : "Partaideak bertan behera uzten duenean",
     "Mark the appointment as canceled" : "Markatu hitzordua bertan behera utzita bezala",
     "Reset (make the timeslot available)" : "Berrezarri (jarri ordu-tartea erabilgarri)",
+    "Weekly Template Settings" : "Asteko txantiloi ezarpenak",
     "1 Hour" : "Ordu 1",
     "2 Hours" : "2 ordu",
     "4 Hours" : "4 Ordu",
