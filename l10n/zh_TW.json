@@ -215,6 +215,7 @@
     "7 days" : "7天",
     "Add action links" : "新增動作連結",
     "Additional reminder email text:" : "額外提醒電子郵件文字：",
+    "Default Cron/Email Language: {langCode}" : "預設 Cron/電子郵件語言：{langCode}",
     "Additional Settings" : "額外設定",
     "Customize and configure the app" : "自訂與設定應用程式",
     "Customize Public Page" : "自訂公開頁面",

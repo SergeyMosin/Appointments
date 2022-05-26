@@ -217,6 +217,7 @@ OC.L10N.register(
     "7 days" : "7 Tage",
     "Add action links" : "Aktionslinks hinzufügen",
     "Additional reminder email text:" : "Zusätzlicher E-Mail-Text zur Erinnerung:",
+    "Default Cron/Email Language: {langCode}" : "Standardsprache für Cron/E-Mail: {langCode}",
     "Additional Settings" : "Zusätzliche Einstellungen",
     "Customize and configure the app" : "Anpassen und Konfigurieren der App",
     "Customize Public Page" : "Öffentliche Seiten anpassen",

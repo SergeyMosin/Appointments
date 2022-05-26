@@ -215,6 +215,7 @@
     "7 days" : "7 gün",
     "Add action links" : "İşlem bağlantıları eklensin",
     "Additional reminder email text:" : "Ek anımsatıcı e-postası metni:",
+    "Default Cron/Email Language: {langCode}" : "Varsayılan zamanlanmış görev / e-posta dili: {langCode}",
     "Additional Settings" : "Diğer ayarlar",
     "Customize and configure the app" : "Uygulamayı özelleştir ve yapılandır",
     "Customize Public Page" : "Herkese açık sayfayı özelleştir",
