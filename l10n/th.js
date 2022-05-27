@@ -16,6 +16,7 @@ OC.L10N.register(
     "Optional" : "ตัวเลือก",
     "Add" : "เพิ่ม",
     "OK" : "ตกลง",
+    "Advanced Settings" : "การตั้งค่าขั้นสูง",
     "30 minutes" : "30 นาที",
     "1 hour" : "1 ชั่วโมง",
     "4 hours" : "4 ชั่วโมง",
