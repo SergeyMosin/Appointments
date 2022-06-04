@@ -73,6 +73,7 @@ OC.L10N.register(
     "15 minutes" : "15 хвилин",
     "30 minutes" : "30 хвилин",
     "1 hour" : "1 година",
+    "2 hours" : "2 години",
     "4 hours" : "4 години",
     "12 hours" : "12 годин",
     "When Attendee Cancels" : "Коли учасник відхиляє",
