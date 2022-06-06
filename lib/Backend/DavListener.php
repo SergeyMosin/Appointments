@@ -83,7 +83,7 @@ class DavListener implements IEventListener
         $utz = new \DateTimeZone('utc');
 
         $userId = '';
-        $extNotifyFilePath='';
+        $extNotifyFilePath = '';
         while ($row = $result->fetch()) {
 
             $remObj = json_decode($row['reminders'], true);
@@ -268,7 +268,7 @@ class DavListener implements IEventListener
                     $msg->setTo(array($to_email));
                     $msg->useTemplate($tmpl);
 
-                    $description='';
+                    $description = '';
 
                     try {
                         $mailer->send($msg);
@@ -500,8 +500,8 @@ class DavListener implements IEventListener
         // Description can get overwritten when the .ics attachment is constructed, so get it here
         if (isset($evt->DESCRIPTION)) {
             $om_info = $evt->DESCRIPTION->getValue();
-        }else{
-            $om_info="";
+        } else {
+            $om_info = "";
         }
 
         // cancellation link for confirmation emails
@@ -799,14 +799,15 @@ class DavListener implements IEventListener
             if (!$is_cancelled) {
                 $method = 'PUBLISH';
 
-                if (empty($org_phone) && empty($talk_link_txt)) {
+                $more_ics_text = $eml_settings[BackendUtils::EML_ICS_TXT];
+
+                if (empty($org_phone) && empty($talk_link_txt) && empty($more_ics_text)) {
                     if (isset($evt->DESCRIPTION)) {
                         $evt->remove($evt->DESCRIPTION);
                     }
                 } else {
                     if (!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
 
-                    $more_ics_text = $eml_settings[BackendUtils::EML_ICS_TXT];
                     $evt->DESCRIPTION->setValue(
                         $org_name . "\n"
                         . (!empty($org_phone) ? $org_phone . "\n" : "")
@@ -1180,15 +1181,15 @@ class DavListener implements IEventListener
 
             include_once $filePath;
 
-            if(function_exists('notificationEventListener')) {
+            if (function_exists('notificationEventListener')) {
                 try {
                     notificationEventListener($data, $this->logger);
                 } catch (\Exception $e) {
                     $this->logger->error("User '" . $userId . "' extension file error: " . $e);
                     return;
                 }
-            }else{
-                $this->logger->error("User '" . $userId . "' can not find 'notificationEventListener' in ".$filePath." or the file does not exist");
+            } else {
+                $this->logger->error("User '" . $userId . "' can not find 'notificationEventListener' in " . $filePath . " or the file does not exist");
             }
         }
     }
