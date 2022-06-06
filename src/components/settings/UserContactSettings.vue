@@ -48,7 +48,7 @@
             id="srgdev-appt_uci-org-address"
             style="overflow: auto;resize: none"
         ></textarea>
-        <template v-show="curPageData.pageId!=='p0'">
+        <template v-if="curPageData.pageId!=='p0'">
           <label
               class="srgdev-appt-sb-label"
               for="srgdev-appt_uci-form-title">{{ t('appointments', 'Form Title') }}:</label>
