@@ -4,8 +4,8 @@
 namespace OCA\Appointments\Backend;
 
 
+use OC\Mail\EMailTemplate;
 use OCA\Appointments\AppInfo\Application;
-use OCA\Appointments\Email\EMailTemplateNC;
 use OCA\Appointments\Email\EMailTemplateNC20;
 use OCA\DAV\Events\CalendarObjectMovedToTrashEvent;
 use OCA\DAV\Events\CalendarObjectUpdatedEvent;
@@ -14,8 +14,11 @@ use OCP\DB\Exception;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
+use OCP\IConfig;
 use OCP\IDBConnection;
+use OCP\IURLGenerator;
 use OCP\Mail\IEMailTemplate;
+use OCP\Mail\IMailer;
 use Psr\Log\LoggerInterface;
 use Sabre\VObject\Reader;
 
@@ -27,6 +30,12 @@ class DavListener implements IEventListener
     private $logger;
     private $utils;
 
+    /** @type IMailer */
+    private $mailer;
+
+    /** @type IConfig */
+    private $config;
+
     public function __construct(\OCP\IL10N      $l10N,
                                 LoggerInterface $logger,
                                 BackendUtils    $utils) {
@@ -34,6 +43,9 @@ class DavListener implements IEventListener
         $this->l10N = $l10N;
         $this->logger = $logger;
         $this->utils = $utils;
+
+        $this->mailer = \OC::$server->get(IMailer::class);
+        $this->config = \OC::$server->get(IConfig::class);
     }
 
     function handle(Event $event): void {
@@ -77,8 +89,8 @@ class DavListener implements IEventListener
             return;
         }
 
-        $config = \OC::$server->getConfig();
-        $mailer = \OC::$server->getMailer();
+        $config = $this->config;
+        $mailer = $this->mailer;
 
         $utils = $this->utils;
         $utz = new \DateTimeZone('utc');
@@ -365,7 +377,7 @@ class DavListener implements IEventListener
 //        \OC::$server->getLogger()->error('DL Debug: M3');
 
         $utils = $this->utils;
-        $config = \OC::$server->getConfig();
+        $config = $this->config;
 
         if (isset($evt->{BackendUtils::XAD_PROP})) {
             // @see BackendUtils->dataSetAttendee for BackendUtils::XAD_PROP
@@ -473,7 +485,7 @@ class DavListener implements IEventListener
 
 //        \OC::$server->getLogger()->error('DL Debug: M10');
 
-        $mailer = \OC::$server->getMailer();
+        $mailer = $this->mailer;
 
         $att_v = $att->getValue();
         $to_email = substr($att_v, strpos($att_v, ":") + 1);
@@ -1103,26 +1115,28 @@ class DavListener implements IEventListener
     }
 
     private function getEmailTemplate() {
-        $r = new \ReflectionMethod('OCP\Mail\IEMailTemplate', 'addBodyListItem');
-        if ($r->getNumberOfParameters() === 6) {
-            //NC20+
-            $tmpl = new EMailTemplateNC20(
+
+        $urlGenerator = \OC::$server->get(IURLGenerator::class);
+
+        // NC settings compliance
+        $class = $this->config->getSystemValue('mail_template_class', '');
+        if ($class !== '' && class_exists($class) && is_a($class, EMailTemplate::class, true)) {
+            return new $class(
                 new \OCP\Defaults(),
-                \OC::$server->getURLGenerator(),
-                $this->l10N,
-                "ID_" . time(),
-                []
-            );
-        } else {
-            $tmpl = new EMailTemplateNC(
-                new \OCP\Defaults(),
-                \OC::$server->getURLGenerator(),
+                $urlGenerator,
                 $this->l10N,
                 "ID_" . time(),
                 []
             );
         }
-        return $tmpl;
+
+        return new EMailTemplateNC20(
+            new \OCP\Defaults(),
+            $urlGenerator,
+            $this->l10N,
+            "ID_" . time(),
+            []
+        );
     }
 
     private function getOrgInfo($userId, $pageId) {
