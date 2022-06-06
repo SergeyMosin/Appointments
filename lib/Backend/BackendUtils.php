@@ -1698,7 +1698,7 @@ class BackendUtils
             if ($short_dt === 0) {
                 $date_time = $l10N->l('date', $d, ['width' => 'full']) . ', ' .
                     str_replace(':00 ', ' ',
-                        $l10N->l('time', $d, ['width' => 'long']));
+                        $l10N->l('time', $d, ['width' => 'full']));
             } else if ($short_dt === 1) {
                 $date_time = $l10N->l('datetime', $d, ['width' => 'short']);
             } else {
