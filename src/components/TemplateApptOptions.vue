@@ -72,13 +72,15 @@ export default {
     header() {
       let str = ""
       if (window.Intl && typeof window.Intl === "object") {
-        const lang = document.documentElement.lang
+        const lang = document.documentElement.hasAttribute('data-locale')
+            ? [document.documentElement.getAttribute('data-locale').replaceAll('_', '-'), document.documentElement.lang]
+            : [document.documentElement.lang]
         if (this.elm === null) {
           // adding
           if (this.cid > -1) {
             const d = new Date()
             d.setDate(d.getDate() - d.getDay() + 1 + this.cid)
-            str = new Intl.DateTimeFormat([lang],
+            str = new Intl.DateTimeFormat(lang,
                 {weekday: "long"}).format(d)
           }
         } else if (this.elm.uTop !== undefined && this.elm.cID !== undefined) {
@@ -93,7 +95,7 @@ export default {
           const minTotal = SH * 60 + this.elm.uTop * 5
           const hours = (minTotal / 60) | 0
           d.setHours(hours, minTotal - hours * 60)
-          str = new Intl.DateTimeFormat([lang],
+          str = new Intl.DateTimeFormat(lang,
               {weekday: "long", hour: "2-digit", minute: "2-digit"}).format(d)
         }
       }

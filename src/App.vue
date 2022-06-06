@@ -1266,14 +1266,17 @@ export default {
       const NBR_DAYS = 7
       // Generate local names for days and month(s)
       let tff
-      const lang = document.documentElement.lang
+      const lang = document.documentElement.hasAttribute('data-locale')
+          ? [document.documentElement.getAttribute('data-locale').replaceAll('_', '-'), document.documentElement.lang]
+          : [document.documentElement.lang]
+
       if (window.Intl && typeof window.Intl === "object") {
         let f
         if (mode === gridMaker.MODE_SIMPLE) {
-          f = new Intl.DateTimeFormat([lang],
+          f = new Intl.DateTimeFormat(lang,
               {weekday: "short", month: "2-digit", day: "2-digit"})
         } else {
-          f = new Intl.DateTimeFormat([lang],
+          f = new Intl.DateTimeFormat(lang,
               {weekday: "long"})
         }
         tff = f.format

@@ -371,10 +371,13 @@
         }
 
         const has_intl = window.Intl && typeof window.Intl === "object"
-        const lang = document.documentElement.lang
+        const lang = document.documentElement.hasAttribute('data-locale')
+            ? [document.documentElement.getAttribute('data-locale').replaceAll('_', '-'), document.documentElement.lang]
+            : [document.documentElement.lang]
+
         let tf
         if (has_intl) {
-            let f = new Intl.DateTimeFormat([lang],
+            let f = new Intl.DateTimeFormat(lang,
                 {hour: "numeric", minute: "2-digit"})
             tf = f.format
         } else {
@@ -385,7 +388,7 @@
 
         let df
         if (has_intl) {
-            let f = new Intl.DateTimeFormat([lang],
+            let f = new Intl.DateTimeFormat(lang,
                 {month: "long"})
             df = f.format
         } else {
@@ -396,7 +399,7 @@
 
         let wf
         if (has_intl) {
-            let f = new Intl.DateTimeFormat([lang],
+            let f = new Intl.DateTimeFormat(lang,
                 {weekday: "short"})
             wf = f.format
         } else {
@@ -407,7 +410,7 @@
 
         let wft
         if (has_intl) {
-            let f = new Intl.DateTimeFormat([lang],
+            let f = new Intl.DateTimeFormat(lang,
                 {weekday: "short", month: "long", day: "2-digit"})
             wft = f.format
         } else {
@@ -418,7 +421,7 @@
 
         let wff
         if (has_intl) {
-            let f = new Intl.DateTimeFormat([lang],
+            let f = new Intl.DateTimeFormat(lang,
                 {weekday: "long", month: "long", day: "numeric", year: "numeric"})
             wff = f.format
         } else {
@@ -624,8 +627,8 @@
         if (pso[PPS_SHOWTZ] === 1 && has_intl) {
             // getTzName=
             getTzName = function (d) {
-                const short = d.toLocaleDateString([lang]);
-                const full = d.toLocaleDateString([lang], {timeZoneName: 'long'});
+                const short = d.toLocaleDateString(lang);
+                const full = d.toLocaleDateString(lang, {timeZoneName: 'long'});
 
                 // Trying to remove date from the string in a locale-agnostic way
                 const shortIndex = full.indexOf(short);
