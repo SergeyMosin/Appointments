@@ -1,3 +1,15 @@
+## v1.12.6 - 2022-06-06
+### Fixed
+- Ensure 'Additional ICS file description' is included - issue #342
+- 'Form Title' settings display (single page mode) - issue #343
+### Changed
+- Use full time zone names(Eastern Daylight Time) instead of abbreviations(GMT-4) in PHP
+- NC 'Locale' settings (instead of 'Language') is now used for JS i18n Dates/Times - issue #244
+- HTML is now allowed in 'Additional Email Text' - issue #132
+- Better error handling in extNotify function
+- Update node dependencies (npm -> pnpm)
+
+
 ## v1.12.5 - 2022-05-24
 ### Added
 - Default reminders language indicator - issue #323
