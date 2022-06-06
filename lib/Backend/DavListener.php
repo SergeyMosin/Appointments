@@ -1177,19 +1177,18 @@ class DavListener implements IEventListener
     private function extNotify(array $data, string $userId, string $filePath) {
 
         if ($filePath !== "") {
-            try {
-                require_once $filePath;
-            } catch (\Exception $e) {
-                $this->logger->error("Extension file '" . $filePath . "' for user '" . $userId . "' not found");
-                $this->logger->error($e);
-                return;
-            }
 
-            try {
-                notificationEventListener($data, $this->logger);
-            } catch (\Exception $e) {
-                $this->logger->error("User '" . $userId . "' extension file error: " . $e);
-                return;
+            include_once $filePath;
+
+            if(function_exists('notificationEventListener')) {
+                try {
+                    notificationEventListener($data, $this->logger);
+                } catch (\Exception $e) {
+                    $this->logger->error("User '" . $userId . "' extension file error: " . $e);
+                    return;
+                }
+            }else{
+                $this->logger->error("User '" . $userId . "' can not find 'notificationEventListener' in ".$filePath." or the file does not exist");
             }
         }
     }
