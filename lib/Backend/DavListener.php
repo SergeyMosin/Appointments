@@ -15,6 +15,7 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IDBConnection;
+use OCP\Mail\IEMailTemplate;
 use Psr\Log\LoggerInterface;
 use Sabre\VObject\Reader;
 
@@ -538,7 +539,7 @@ class DavListener implements IEventListener
             );
 
             if (!empty($eml_settings[BackendUtils::EML_VLD_TXT])) {
-                $tmpl->addBodyText($eml_settings[BackendUtils::EML_VLD_TXT]);
+                $this->addMoreEmailText($tmpl, $eml_settings[BackendUtils::EML_VLD_TXT]);
             }
 
             if ($eml_settings[BackendUtils::EML_MREQ]) {
@@ -586,7 +587,7 @@ class DavListener implements IEventListener
             }
 
             if (!empty($eml_settings[BackendUtils::EML_CNF_TXT])) {
-                $tmpl->addBodyText($eml_settings[BackendUtils::EML_CNF_TXT]);
+                $this->addMoreEmailText($tmpl, $eml_settings[BackendUtils::EML_CNF_TXT]);
             }
 
             if ($eml_settings[BackendUtils::EML_MCONF]) {
@@ -1203,4 +1204,13 @@ class DavListener implements IEventListener
         return $ret;
     }
 
+    private function addMoreEmailText(IEMailTemplate $template, string $text) {
+        $text_striped = strip_tags($text);
+        if ($text === $text_striped) {
+            // non html
+            $template->addBodyText($text);
+        } else {
+            $template->addBodyText($text, $text);
+        }
+    }
 }
