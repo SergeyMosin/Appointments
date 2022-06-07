@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2022-06-06 04:07+0000\n"
+"POT-Creation-Date: 2022-06-07 04:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,20 +60,20 @@ msgid "Available"
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} appointment reminder
-#: /app/lib/Backend/DavListener.php:195
+#: /app/lib/Backend/DavListener.php:208
 #, php-format
 msgid "%s appointment reminder"
 msgstr ""
 
 #. TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
-#: /app/lib/Backend/DavListener.php:197 /app/lib/Backend/DavListener.php:523
-#: /app/lib/Backend/DavListener.php:636 /app/lib/Backend/DavListener.php:676
+#: /app/lib/Backend/DavListener.php:210 /app/lib/Backend/DavListener.php:536
+#: /app/lib/Backend/DavListener.php:649 /app/lib/Backend/DavListener.php:689
 #, php-format
 msgid "Dear %s,"
 msgstr ""
 
 #. TRANSLATORS Main part of email, Ex: This is a reminder from {{Organization Name}} about your upcoming appointment on {{Date And Time}}. If you need to reschedule, please call {{Organization Phone}}.
-#: /app/lib/Backend/DavListener.php:200
+#: /app/lib/Backend/DavListener.php:213
 #, php-format
 msgid ""
 "This is a reminder from %1$s about your upcoming appointment on %2$s. If you "
@@ -81,25 +81,25 @@ msgid ""
 msgstr ""
 
 #. TRANSLATORS Ex: Reminder sent on {{Date and Time}},
-#: /app/lib/Backend/DavListener.php:281
+#: /app/lib/Backend/DavListener.php:294
 #, php-format
 msgid "Reminder sent on %s"
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment (action needed)
-#: /app/lib/Backend/DavListener.php:521
+#: /app/lib/Backend/DavListener.php:534
 #, php-format
 msgid "%s appointment (action needed)"
 msgstr ""
 
 #. TRANSLATORS Main part of email, Ex: The {{Organization Name}} appointment scheduled for {{Date Time}} is awaiting your confirmation.
-#: /app/lib/Backend/DavListener.php:526
+#: /app/lib/Backend/DavListener.php:539
 #, php-format
 msgid "The %1$s appointment scheduled for %2$s is awaiting your confirmation."
 msgstr ""
 
 #. TRANSLATORS This is a button label
-#: /app/lib/Backend/DavListener.php:534 /app/lib/Backend/DavListener.php:729
+#: /app/lib/Backend/DavListener.php:547 /app/lib/Backend/DavListener.php:742
 #: /app/lib/Controller/PageController.php:404
 msgid "Confirm"
 msgstr ""
@@ -107,7 +107,7 @@ msgstr ""
 #. TRANSLATORS vue:193
 #. TRANSLATORS onents/TemplateApptOptions.vue:37
 #. TRANSLATORS onents/settings/DirectoryPageSettings.vue:77
-#: /app/lib/Backend/DavListener.php:536 /app/lib/Backend/DavListener.php:731
+#: /app/lib/Backend/DavListener.php:549 /app/lib/Backend/DavListener.php:744
 #: /app/specialVueFakeDummyForL10nScript.js:48
 #: /app/specialVueFakeDummyForL10nScript.js:60
 #: /app/specialVueFakeDummyForL10nScript.js:118
@@ -115,129 +115,129 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:545
+#: /app/lib/Backend/DavListener.php:558
 msgid "Appointment pending"
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Confirmed
-#: /app/lib/Backend/DavListener.php:553
+#: /app/lib/Backend/DavListener.php:566
 #, php-format
 msgid "%s Appointment is confirmed"
 msgstr ""
 
 #. TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now confirmed.
-#: /app/lib/Backend/DavListener.php:556
+#: /app/lib/Backend/DavListener.php:569
 #, php-format
 msgid "Your %1$s appointment scheduled for %2$s is now confirmed."
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:593
+#: /app/lib/Backend/DavListener.php:606
 msgid "Appointment confirmed"
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Canceled
-#: /app/lib/Backend/DavListener.php:605
+#: /app/lib/Backend/DavListener.php:618
 #, php-format
 msgid "%s Appointment is canceled"
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment Status Changed
-#: /app/lib/Backend/DavListener.php:610
+#: /app/lib/Backend/DavListener.php:623
 #, php-format
 msgid "%s appointment status changed"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:615
+#: /app/lib/Backend/DavListener.php:628
 #, php-format
 msgid "Your %1$s appointment scheduled for %2$s is now canceled."
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:619
+#: /app/lib/Backend/DavListener.php:632
 msgid "Appointment canceled"
 msgstr ""
 
 #. TRANSLATORS Subject for email, Ex: {{Organization Name}} appointment status update
-#: /app/lib/Backend/DavListener.php:634 /app/lib/Backend/DavListener.php:674
+#: /app/lib/Backend/DavListener.php:647 /app/lib/Backend/DavListener.php:687
 #, php-format
 msgid "%s Appointment update"
 msgstr ""
 
 #. TRANSLATORS Main part of email
-#: /app/lib/Backend/DavListener.php:638 /app/lib/Backend/DavListener.php:678
+#: /app/lib/Backend/DavListener.php:651 /app/lib/Backend/DavListener.php:691
 msgid "Your appointment details have changed. Please review information below."
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:645 /app/lib/Backend/DavListener.php:688
+#: /app/lib/Backend/DavListener.php:658 /app/lib/Backend/DavListener.php:701
 #, php-format
 msgid "Date/Time: %s"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:665
+#: /app/lib/Backend/DavListener.php:678
 msgid "Appointment updated"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:701
+#: /app/lib/Backend/DavListener.php:714
 msgid "Status: Canceled"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:707
+#: /app/lib/Backend/DavListener.php:720
 msgid "Status: Pending confirmation"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:710
+#: /app/lib/Backend/DavListener.php:723
 msgid "Status: Confirmed"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:717
+#: /app/lib/Backend/DavListener.php:730
 #, php-format
 msgid "Location: %s"
 msgstr ""
 
 #. TRANSLATORS Additional part of email - contact information WITHOUT phone number (only email). The last argument is email address.
-#: /app/lib/Backend/DavListener.php:750
+#: /app/lib/Backend/DavListener.php:763
 #, php-format
 msgid "If you have any questions please write to %s"
 msgstr ""
 
 #. TRANSLATORS Additional part of email - contact information WITH email AND phone number: If you have any questions please feel free to call {123-456-7890} or write to {email@example.com}
-#: /app/lib/Backend/DavListener.php:753
+#: /app/lib/Backend/DavListener.php:766
 #, php-format
 msgid ""
 "If you have any questions please feel free to call %1$s or write to %2$s"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:832
+#: /app/lib/Backend/DavListener.php:846
 msgid "Appointment is canceled"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:869
+#: /app/lib/Backend/DavListener.php:883
 #, php-format
 msgid "%s Appointment"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:1020 /app/lib/Backend/DavListener.php:1033
+#: /app/lib/Backend/DavListener.php:1034 /app/lib/Backend/DavListener.php:1047
 msgid "Password"
 msgstr ""
 
 #. TRANSLATORS This a link to chat/(video)call, Ex: Chat/Call link: https://my_domain.com/call/kzu6e4uv
-#: /app/lib/Backend/DavListener.php:1030
+#: /app/lib/Backend/DavListener.php:1044
 #, php-format
 msgid "Chat/Call link: %s"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:1151 /app/templates/public/formerr.php:23
+#: /app/lib/Backend/DavListener.php:1167 /app/templates/public/formerr.php:23
 #: /app/templates/public/thanks.php:18
 msgid "Thank you"
 msgstr ""
 
 #. TRANSLATORS This is a part of an email message. %1$s Cancel Appointment %2$s is a link to the cancellation page (HTML format).
-#: /app/lib/Backend/DavListener.php:1158
+#: /app/lib/Backend/DavListener.php:1174
 #, php-format
 msgid "To cancel your appointment please click: %1$s Cancel Appointment %2$s"
 msgstr ""
 
 #. TRANSLATORS This is a part of an email message. %s is a URL of the cancellation page (PLAIN TEXT format).
-#: /app/lib/Backend/DavListener.php:1161
+#: /app/lib/Backend/DavListener.php:1177
 #, php-format
 msgid "To cancel your appointment please visit: %s"
 msgstr ""
@@ -377,7 +377,6 @@ msgstr ""
 msgid "Can't find Talk app. Is it installed and enabled ?"
 msgstr ""
 
-#: /app/lib/Email/EMailTemplateNC.php:612
 #: /app/lib/Email/EMailTemplateNC20.php:579
 msgid "This is an automatically sent email, please do not reply."
 msgstr ""
@@ -675,7 +674,7 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#. TRANSLATORS onents/TemplateApptOptions.vue:145
+#. TRANSLATORS onents/TemplateApptOptions.vue:147
 #: /app/specialVueFakeDummyForL10nScript.js:120
 msgid "More than two duration choices"
 msgstr ""
