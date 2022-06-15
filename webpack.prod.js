@@ -12,7 +12,7 @@ module.exports = merge(common, {
 					comments: false,
 				}
 			},
-			sourceMap: false,
+			// sourceMap: false,
 		})],
 		// splitChunks: {
 		// 	chunks: 'all',

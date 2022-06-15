@@ -10,10 +10,11 @@ OC.L10N.register(
     "Remove" : "অপসারণ",
     "Save" : "সংরক্ষণ",
     "Loading" : "Loading",
-    "15 Minutes" : "15 Minutes",
-    "30 Minutes" : "30 Minutes",
+    "Add" : "যোগ করুন",
+    "OK" : "তথাস্তু",
     "1 Hour" : "1 Hour",
     "2 Hours" : "2 Hours",
+    "12 Hours" : "12 Hours",
     "Edit" : "সম্পাদনা",
     "Title" : "শিরোনাম",
     "URL" : "URL",
@@ -21,7 +22,11 @@ OC.L10N.register(
     "Deleted" : "মুছে ফেলা",
     "Warning" : "সতর্কবাণী",
     "Location:" : "অবস্থান:",
+    "Minutes" : "মিনিট",
     "Back" : "পেছনে যাও",
-    "Next" : "পরবর্তী"
+    "Next" : "পরবর্তী",
+    "Name" : "নাম",
+    "Email" : "ইমেইল",
+    "Phone" : "ফোন"
 },
 "nplurals=2; plural=(n != 1);");

@@ -83,6 +83,11 @@
               class="srgdev-appt-sb-textarea"
               id="srgdev-appt_rem-more-text"
           ></textarea>
+          <div class="srgdev-appt-info-lcont" style="position: relative">
+            <span style="font-style: italic;">{{ t('appointments', 'Default Cron/Email Language: {langCode}',{langCode: reminderInfo.defaultLang}) }}</span><a
+              class="icon-info srgdev-appt-info-link"
+              @click="$root.$emit('helpWanted','rem_lang')"></a>
+          </div>
           <button
               @click="apply"
               class="primary srgdev-appt-sb-genbtn"
@@ -132,6 +137,7 @@ export default {
         moreText: "",
         bjm: "",
         cliUrl: "",
+        defaultLang: "",
       },
     }
   },

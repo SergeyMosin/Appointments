@@ -35,4 +35,22 @@ function getRawCalData(calInfo) {
         })
 }
 
-export {settingsDump, getRawCalData}
+function syncRemoteNow(calInfo) {
+
+    return axios.post('sync_remote_now', {
+        cal_info: JSON.stringify(calInfo)
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response.data
+            } else {
+                return errPrefix + 'bad status (' + response.status + ')'
+            }
+        })
+        .catch((error) => {
+            console.error(error)
+            return errPrefix + 'check console.'
+        })
+}
+
+export {settingsDump, getRawCalData, syncRemoteNow}

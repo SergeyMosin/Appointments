@@ -68,12 +68,18 @@ class DebugController extends Controller
                     $k, $this->userId), true);
             $data .= "\n\n";
         }
+
+        $data.="<strong>ExtNotify:</strong> ".($this->config->getAppValue($this->appName, 'ext_notify_' . $this->userId)!==""?"Yes":"No")."\n\n";
+
         $tr = new TemplateResponse($this->appName, 'settings_dump', [], "base");
         $params['data'] = $data;
         $tr->setParams($params);
         return $tr;
     }
 
+    /**
+     * @NoAdminRequired
+     */
     function getRawCalendarData() {
         $data = "";
         $status = 400;
@@ -88,6 +94,46 @@ class DebugController extends Controller
                 $d = $this->bc->getRawCalData($calInfo, $this->userId);
 
                 $data = $calData . '<br>' . var_export($d, true);
+                $status = 200;
+            }
+        }
+
+        $tr = new TemplateResponse($this->appName, 'settings_dump', [], "base");
+        $tr->setParams(['data' => $data]);
+        $tr->setStatus($status);
+        return $tr;
+
+    }
+
+    /**
+     * @NoAdminRequired
+     */
+    function syncRemoteNow() {
+
+        $data = "";
+        $status = 400;
+
+        $calInfoStr = $this->request->getParam("cal_info");
+        if ($calInfoStr !== null) {
+            $calInfo = json_decode($calInfoStr, true);
+            if ($calInfo !== null &&
+                isset($calInfo["id"]) &&
+                isset($calInfo["isSubscription"]) &&
+                $calInfo["isSubscription"] === '1') {
+
+                $a = [
+                    "name" => $calInfo["name"],
+                    "syncStart" => microtime(true)
+                ];
+
+                $calInfo['syncRemoteNow_call'] = true;
+                $this->bc->getRawCalData($calInfo, $this->userId);
+
+                $a["syncEnd"] = microtime(true);
+                $a["syncDuration"] = $a["syncEnd"] - $a["syncStart"];
+
+                $data = var_export($a, true);
+
                 $status = 200;
             }
         }

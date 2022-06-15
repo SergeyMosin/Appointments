@@ -10,6 +10,8 @@ OC.L10N.register(
     "Remove" : "Buang",
     "Save" : "Simpan",
     "Loading" : "Loading",
+    "Add" : "Tambah",
+    "OK" : "OK",
     "Edit" : "Sunting",
     "Title" : "Judul",
     "URL" : "URL",
@@ -17,6 +19,9 @@ OC.L10N.register(
     "Deleted" : "Dipadam",
     "Warning" : "Amaran",
     "Back" : "Kembali",
-    "Next" : "Seterus"
+    "Next" : "Seterus",
+    "Name" : "Nama",
+    "Email" : "Email",
+    "Phone" : "Telefon"
 },
 "nplurals=1; plural=0;");

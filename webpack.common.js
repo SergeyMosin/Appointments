@@ -7,6 +7,7 @@ module.exports = {
 	entry:{
 		script: path.join(__dirname, 'src', 'main.js'),
 		form: path.join(__dirname, 'src', 'form.js'),
+		cncf: path.join(__dirname, 'src', 'cncf.js'),
 	},
 	output: {
 		path: path.resolve(__dirname, './js'),
@@ -52,7 +53,7 @@ module.exports = {
 		new CopyPlugin(
 			{
 				patterns: [
-					{from: 'node_modules/@nextcloud/vue/src/assets/variables.scss', to: '../css/variables.scss'},
+					// {from: 'node_modules/@nextcloud/vue/src/assets/variables.scss', to: '../css/variables.scss'},
 					{from: '../../core/css/variables.scss', to: '../css/svariables.scss'},
 				]
 			}

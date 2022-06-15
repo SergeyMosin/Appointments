@@ -100,7 +100,7 @@
 
 <style lang="scss" scoped>
     @use "sass:math";
-    @import '../../node_modules/@nextcloud/vue/src/assets/variables.scss';
+    @import '../../css/variables';
 
     $header-height: 50px;
     $slidebar-min-width: 360px;

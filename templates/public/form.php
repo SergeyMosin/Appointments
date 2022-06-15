@@ -60,7 +60,15 @@ style('appointments', 'form');
         if(empty($disabled)) echo $_['more_html'];
 
         if(!empty($_['appt_gdpr'])){
-            echo '<div class="srgdev-ncfp-chb-cont"><input class="checkbox" type="checkbox" id="appt_gdpr_id"/>'.(strpos($_['appt_gdpr'],'appt_gdpr_id')===false?'<label for="appt_gdpr_id">'.$_['appt_gdpr'].'</label>':$_['appt_gdpr']).'</div>';
+            echo '<div class="srgdev-ncfp-chb-cont">';
+            if ($_['appt_gdpr_no_chb']===false) {
+                // show check box
+                echo '<input class="checkbox" type="checkbox" id="appt_gdpr_id"/>' . (strpos($_['appt_gdpr'], 'appt_gdpr_id') === false ? '<label for="appt_gdpr_id">' . $_['appt_gdpr'] . '</label>' : $_['appt_gdpr']);
+            }else{
+                // no check box
+                echo $_['appt_gdpr'];
+            }
+            echo '</div>';
         }
         ?>
         <button id="srgdev-ncfp_fbtn" <?php echo $disabled ?>class="primary srgdev-ncfp-form-btn" data-tr-ses-to="<?php

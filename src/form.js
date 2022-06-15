@@ -371,10 +371,13 @@
         }
 
         const has_intl = window.Intl && typeof window.Intl === "object"
-        const lang = document.documentElement.lang
+        const lang = document.documentElement.hasAttribute('data-locale')
+            ? [document.documentElement.getAttribute('data-locale').replaceAll('_', '-'), document.documentElement.lang]
+            : [document.documentElement.lang]
+
         let tf
         if (has_intl) {
-            let f = new Intl.DateTimeFormat([lang],
+            let f = new Intl.DateTimeFormat(lang,
                 {hour: "numeric", minute: "2-digit"})
             tf = f.format
         } else {
@@ -385,7 +388,7 @@
 
         let df
         if (has_intl) {
-            let f = new Intl.DateTimeFormat([lang],
+            let f = new Intl.DateTimeFormat(lang,
                 {month: "long"})
             df = f.format
         } else {
@@ -396,7 +399,7 @@
 
         let wf
         if (has_intl) {
-            let f = new Intl.DateTimeFormat([lang],
+            let f = new Intl.DateTimeFormat(lang,
                 {weekday: "short"})
             wf = f.format
         } else {
@@ -407,7 +410,7 @@
 
         let wft
         if (has_intl) {
-            let f = new Intl.DateTimeFormat([lang],
+            let f = new Intl.DateTimeFormat(lang,
                 {weekday: "short", month: "long", day: "2-digit"})
             wft = f.format
         } else {
@@ -418,7 +421,7 @@
 
         let wff
         if (has_intl) {
-            let f = new Intl.DateTimeFormat([lang],
+            let f = new Intl.DateTimeFormat(lang,
                 {weekday: "long", month: "long", day: "numeric", year: "numeric"})
             wff = f.format
         } else {
@@ -443,12 +446,15 @@
                  ia = s.getAttribute("data-info").split(','),
                  l = ia.length, i = 0, ds; i < l; i++) {
 
-            //TODO: remove 'U' from ds
+            //TODO: remove 'U' from ds ????
             ds = ia[i]
 
             sp = ds.indexOf(":", 8);
             md.setTime(+ds.substr(1, sp - 1) * 1000)
             tzo = md.getTimezoneOffset()
+
+            // t='U' in simple and external modes
+            // t='T' in template mode
             t = ds.charAt(0)
 
             tStr = atStr = tf(md)
@@ -463,7 +469,7 @@
 
                 if (t === "T") {
                     dur = ds.substr(sp2, sp - sp2).split(';').map(n => n | 0)
-                    if (dur.length < 2) {
+                    if (endTime === 1 && dur.length < 2) {
                         md.setTime(ts + dur[0] * 60000)
                         tStr += ' - ' + tf(md)
                     }
@@ -621,8 +627,8 @@
         if (pso[PPS_SHOWTZ] === 1 && has_intl) {
             // getTzName=
             getTzName = function (d) {
-                const short = d.toLocaleDateString([lang]);
-                const full = d.toLocaleDateString([lang], {timeZoneName: 'long'});
+                const short = d.toLocaleDateString(lang);
+                const full = d.toLocaleDateString(lang, {timeZoneName: 'long'});
 
                 // Trying to remove date from the string in a locale-agnostic way
                 const shortIndex = full.indexOf(short);
@@ -748,29 +754,29 @@
         d.setTime(d.getTime() + 86400000)
 
         // lcc%=5
-        if (lcc % 5 > 0) {
-            for (let ti, l = 5 - (lcc % 5), i = 0; i < l; i++) {
-
-                ti = d.getDay()
-
-                // Deal with weekends
-                if (pso[PPS_WEEKEND] === 0) {
-                    // only show weekdays
-                    ti = d.getDay()
-                } else {
-                    // show all days
-                    ti = 1
-                }
-
-                if (ti !== 0 && ti !== 6) {
-                    lcd.appendChild(makeDateCont(d, true))
-                } else {
-                    //skipping weekend
-                    i--
-                }
-                d.setTime(d.getTime() + 86400000)
-            }
-        }
+        // if (lcc % 5 > 0) {
+        //     for (let ti, l = 5 - (lcc % 5), i = 0; i < l; i++) {
+        //
+        //         ti = d.getDay()
+        //
+        //         // Deal with weekends
+        //         if (pso[PPS_WEEKEND] === 0) {
+        //             // only show weekdays
+        //             ti = d.getDay()
+        //         } else {
+        //             // show all days
+        //             ti = 1
+        //         }
+        //
+        //         if (ti !== 0 && ti !== 6) {
+        //             lcd.appendChild(makeDateCont(d, true))
+        //         } else {
+        //             //skipping weekend
+        //             i--
+        //         }
+        //         d.setTime(d.getTime() + 86400000)
+        //     }
+        // }
 
 
         // Make empty time cont

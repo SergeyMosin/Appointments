@@ -1,12 +1,15 @@
 function _apptGridMaker() {
-    // !!! meke sure that the .grid-line height is 2px less thant this is !!!
+    // !!! make sure that the .grid-line height is 2px less thant this is !!!
     const LINE_HEIGHT_5M = 7
     const MPH = 3600000
     const MP5 = 300000
-    // Start at 8AM
-    const SH = 8
-    // 14 hours
-    const DH = 14
+    // Start at 6AM
+    const SH = 6 // if this is lest than 4 there might be a problem on daylight savings day.
+    // 17 hours
+    const DH = 17
+
+    // SH + 2 = 8AM, The grid will be scrolled to here and newly added slots will start at this time
+    const SH_OFFSET = 2
 
     const MODE_SIMPLE = 0
     const MODE_TEMPLATE = 1
@@ -87,6 +90,8 @@ function _apptGridMaker() {
         let uLen = Math.floor(len / 5)
         let uMax = mData.uMax - uLen + 1
 
+        start += (SH_OFFSET * 60) / 5
+
         if (start < 0) start = 0
         else if (start > uMax) return
 
@@ -103,6 +108,12 @@ function _apptGridMaker() {
         const colElms = mData.mc_elm[cID]
         setSorted(colElms, colElms[colElms.length - 1])
         setMargins(colElms)
+
+        scrollGridToTopElm()
+    }
+
+    function scrollGridToTopElm() {
+        mData.scrollCont.scrollTop = document.getElementById("grid-scroll-top").offsetTop
     }
 
     /**
@@ -277,35 +288,47 @@ function _apptGridMaker() {
         }
     }
 
-    function addTemplateData(data) {
+    function addTemplateData(data, gridShift) {
         const day_start_ts = SH * 3600
-        for (let f, colElms, l = data.length, i = 0; i < l; i++) {
+        for (let f, iMod, colElms, l = data.length, i = 0; i < l; i++) {
             if (data[i].length !== 0) {
+
+                // @see gridShift in App.vue
+                iMod = (i + gridShift) % 7
+
                 f = document.createDocumentFragment()
                 for (let uTop, uLen, info, d = data[i], k = d.length, j = 0; j < k; j++) {
                     info = d[j]
                     uTop = Math.floor((info.start - day_start_ts) / 300)
                     uLen = Math.floor(info.dur[0] / 5)
-                    f.appendChild(makeApptElement(uTop, uLen, j, i, info))
+                    f.appendChild(makeApptElement(uTop, uLen, j, iMod, info))
                 }
 
-                mData.mc_cols[i].appendChild(f)
-                colElms = mData.mc_elm[i]
+                mData.mc_cols[iMod].appendChild(f)
+                colElms = mData.mc_elm[iMod]
                 setSorted(colElms, colElms[0])
                 setMargins(colElms)
             }
         }
     }
 
-    function addPastAppts(data, clr) {
+    function addPastAppts(data, clr, gridShift = 0) {
+
+        if (!data) return
 
         if (clr === null) {
-            addTemplateData(data)
+            addTemplateData(data, gridShift)
             return
         }
 
         const btm = DH * 12; // 12*5min=1hour
         const pd = data.split(String.fromCharCode(31))
+        // [d,m+1,yyyy]
+        const startDateArr = pd.shift().split('-')
+        const startDateUTC = Date.UTC(startDateArr[2],
+            startDateArr[1] - 1,
+            startDateArr[0])
+
         for (let pds, j = 0, ll = pd.length; j < ll; j++) {
             pds = pd[j]
             if (pds.length < 3) continue
@@ -332,14 +355,15 @@ function _apptGridMaker() {
 
                 uLen = Math.floor((ets - d.getTime()) / 300000)
 
-                cID = d.getDay() - 1
-                if (cID < 0) {
-                    // this is sunday
+                cID = Math.floor(Math.abs(
+                    Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - startDateUTC) / 86400000);
+                // console.log("cID:", cID)
+                if (cID < 0 || cID > 6) {
+                    console.log("invalid cID:", cID)
                     continue
                 }
-                // console.log("cID:",cID)
 
-                uTop = Math.floor((((d.getHours() - 8) * 60) / 5)
+                uTop = Math.floor((((d.getHours() - (SH)) * 60) / 5)
                     + ((d.getMinutes() / 5)))
 
                 if (uTop >= 0 && uTop + uLen <= btm) {
@@ -538,10 +562,12 @@ function _apptGridMaker() {
 
         // Ever 3rd line visible i.e. 15min
         const VS_LINE = 2
-        const lang = document.documentElement.lang
+        const lang = document.documentElement.hasAttribute('data-locale')
+            ? [document.documentElement.getAttribute('data-locale').replaceAll('_', '-'), document.documentElement.lang]
+            : [document.documentElement.lang]
         let timeFormat
         if (window.Intl && typeof window.Intl === "object") {
-            let f = new Intl.DateTimeFormat([lang],
+            let f = new Intl.DateTimeFormat(lang,
                 {hour: "numeric", minute: "2-digit"})
             timeFormat = f.format
         } else {
@@ -558,8 +584,9 @@ function _apptGridMaker() {
         d.setMilliseconds(0)
         d.setSeconds(0)
         d.setMinutes(0)
-        d.setHours(SH)
-        let tss = d.getTime()
+
+        const gridScrollTopTs = d.setHours(SH + SH_OFFSET)
+        let tss = d.setHours(SH)
 
         for (let els = mData.elms, vc = VS_LINE, dxt, ce,
                  l = DH * 12, i = 0; i < l; i++) {
@@ -570,6 +597,9 @@ function _apptGridMaker() {
             dxt = timeFormat(d)
             if (vc === VS_LINE) {
                 ce.className = sP + "grid-line " + sP + "line-vis"
+                if (tss === gridScrollTopTs) {
+                    ce.id = "grid-scroll-top"
+                }
                 ce.appendChild(document.createTextNode(dxt))
                 vc = 0
             } else {
@@ -614,14 +644,14 @@ function _apptGridMaker() {
                 + "T" + (h < 10 ? "0" + h : "" + h) + (m < 10 ? "0" + m : "" + m) + "00"
         }
 
-        const day_start_ms = MPH * SH
-        const ms_per_day = MPH * 24
-
         // First element is the "create date" in UTC
         let r = [(new Date).toISOString().slice(0, -5).replace(/[\-:]/g, '') + 'Z']
         let rc = 0
+
         for (let d = new Date(), ds_ts, i = 0, l = mData.mc_cols.length; i < l; i++) {
-            ds_ts = ts + day_start_ms + ms_per_day * i
+            d.setTime(ts) // ts hourse:minutes are always midnight
+            d.setHours(SH) // set initial hours
+            ds_ts = d.setDate(d.getDate() + i)
             for (let ofs = 0, elm, ea = mData.mc_elm[i], j = 0, k = ea.length; j < k; j++) {
                 // Start
                 elm = ea[j]
@@ -643,13 +673,19 @@ function _apptGridMaker() {
         mData.mode = mode
     }
 
-    function getTemplateData() {
+    /**
+     * @param gridShift - here we shift the grid so that grid Monday is at index 0 in template data, @see gridShift in App.vue
+     * @returns {*[]}
+     */
+    function getTemplateData(gridShift) {
         const day_start_ts = SH * 3600
 
         const wa = []
-        for (let da, i = 0, l = mData.mc_cols.length; i < l; i++) {
+        for (let da, i = 0 + gridShift, l = mData.mc_cols.length + gridShift; i < l; i++) {
             da = []
-            for (let elm, ea = mData.mc_elm[i], j = 0, k = ea.length; j < k; j++) {
+
+            // the (i % 7) is because of the gridShift
+            for (let elm, ea = mData.mc_elm[(i % 7)], j = 0, k = ea.length; j < k; j++) {
                 elm = ea[j]
                 da.push({
                     start: day_start_ts + elm.uTop * 300,
@@ -674,7 +710,8 @@ function _apptGridMaker() {
         addPastAppts: addPastAppts,
         setMode: setMode,
         updateAppt: updateAppt,
-        getTemplateData: getTemplateData
+        getTemplateData: getTemplateData,
+        scrollGridToTopElm: scrollGridToTopElm,
     }
 }
 

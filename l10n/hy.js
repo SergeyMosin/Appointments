@@ -9,13 +9,20 @@ OC.L10N.register(
     "Close" : "Փակել",
     "Save" : "Պահպանել",
     "Loading" : "Loading",
+    "Add" : "Ավելացնել",
+    "OK" : "Լավ",
     "Edit" : "մշակել",
     "Title" : "Վերնագիր",
     "URL" : "URL",
     "Error" : "Սխալ",
     "Deleted" : "Ջնջված",
     "Confirmed" : "Հաստատված",
+    "Reminders" : "Հիշեցումներ",
     "Warning" : "Զգուշացում",
-    "Next" : "Հաջորդ"
+    "Minutes" : "Րոպե",
+    "Next" : "Հաջորդ",
+    "min" : "րոպե",
+    "Name" : "Անուն",
+    "Email" : "Էլ․փոստ"
 },
 "nplurals=2; plural=(n != 1);");

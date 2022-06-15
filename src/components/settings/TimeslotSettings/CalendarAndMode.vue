@@ -134,6 +134,40 @@
             </template>
           </ApptAccordion>
         </template>
+        <ApptAccordion
+            v-if="calInfo.tsMode!=='0'"
+            :title="t('appointments', 'Booked Appointment Buffers')"
+            help="buffers"
+            help-style="right:9%"
+            style="margin-bottom: 1em"
+            :open="false">
+          <template slot="content">
+            <label for="appt_buffer-before" style="display:block; margin-top: .5em"
+                   class="select-label">{{ t('appointments', 'Before:') }}</label>
+            <vue-slider
+                :min="0"
+                :max="120"
+                :interval="5"
+                tooltip="always"
+                tooltipPlacement="right"
+                :tooltip-formatter="'{value} '+minute"
+                id="appt_buffer-before"
+                class="appt-buffer-slider"
+                style="margin-bottom: .75em"
+                v-model="calInfo.bufferBefore"></vue-slider>
+            <label for="appt_buffer-after" class="select-label">{{ t('appointments', 'After:') }}</label>
+            <vue-slider
+                :min="0"
+                :max="120"
+                :interval="5"
+                tooltip="always"
+                tooltipPlacement="right"
+                :tooltip-formatter="'{value} '+minute"
+                id="appt_buffer-after"
+                class="appt-buffer-slider"
+                v-model="calInfo.bufferBefore"></vue-slider>
+          </template>
+        </ApptAccordion>
         <div style="margin-top: 2em" class="srgdev-appt-info-lcont">
           <label
               class="tsb-label"
@@ -152,6 +186,17 @@
           <option value="0">{{ t('appointments', 'Simple') }}</option>
           <option value="1">{{ t('appointments', 'External') }}</option>
         </select>
+        <div>
+          <input
+              type="checkbox"
+              v-model="calInfo.privatePage"
+              id="srgdev-appt_tmm_private_page"
+              class="checkbox">
+          <label class="srgdev-appt-sb-label-inline"
+                 for="srgdev-appt_tmm_private_page">
+            {{ t('appointments', 'Private (visitors must be logged-in)') }}
+          </label>
+        </div>
         <div class="tsb-adv-settings-link">
           <span @click="gotoEvt('gotoAdvStn')"
                 class="tsb-adv-settings-link_span">{{ t('appointments', 'Advanced Settings') }} &raquo;</span>
@@ -211,6 +256,9 @@ export default {
       isLoading: true,
       isSending: false,
 
+      // TRANSLATORS "Min" is short for Minute(s)
+      minute: this.t('appointments', "Min"),
+
       calInfo: {
         mainCalId: "-1",
         destCalId: "-1",
@@ -219,6 +267,9 @@ export default {
         tmmDstCalId: "-1",
         tmmMoreCals: [],
         tmmSubscriptions: [],
+        bufferBefore: 0,
+        bufferAfter: 0,
+        privatePage: false,
         tsMode: "2",
       },
       realCalIDs: "-1-1",
@@ -466,11 +517,17 @@ export default {
 .label-subscription {
   opacity: .7;
 }
-.label-subscription:after{
+
+.label-subscription:after {
   content: '↗';
   margin-left: .5em;
   vertical-align: top;
   font-size: 75%;
+}
+
+.appt-buffer-slider {
+  margin: .25em 5.5em 1.5em 0;
+  box-sizing: content-box;
 }
 
 </style>

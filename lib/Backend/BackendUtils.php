@@ -52,6 +52,10 @@ class BackendUtils
     public const ORG_EMAIL = 'email';
     public const ORG_ADDR = 'address';
     public const ORG_PHONE = 'phone';
+    // redirect to url after an appointment is confirmed
+    public const ORG_CONFIRMED_RDR_URL = 'confirmedRdrUrl';
+    public const ORG_CONFIRMED_RDR_ID = 'confirmedRdrId';
+    public const ORG_CONFIRMED_RDR_DATA = 'confirmedRdrData';
 
     // Email Settings
     public const KEY_EML = 'email_options';
@@ -64,6 +68,7 @@ class BackendUtils
     public const EML_MCNCL = 'meCancel';
     public const EML_VLD_TXT = 'vldNote';
     public const EML_CNF_TXT = 'cnfNote';
+    public const EML_ICS_TXT = 'icsNote';
 
     // Calendar Settings
     public const KEY_CLS = 'calendar_settings';
@@ -82,9 +87,16 @@ class BackendUtils
     public const CLS_TMM_SUBSCRIPTIONS = 'tmmSubscriptions';
     public const CLS_TMM_SUBSCRIPTIONS_SYNC = 'tmmSubscriptionsSync';
     // --
+    // this is global prep time (Minimum lead time)
     public const CLS_PREP_TIME = 'prepTime';
+
+    // per-appointment block times for pending or booked appointmets
+    public const CLS_BUFFER_BEFORE = 'bufferBefore';
+    public const CLS_BUFFER_AFTER = 'bufferAfter';
+
     public const CLS_ON_CANCEL = 'whenCanceled';
     public const CLS_ALL_DAY_BLOCK = 'allDayBlock';
+    public const CLS_PRIVATE_PAGE = 'privatePage';
     public const CLS_TS_MODE = 'tsMode';
     // values for tsMode
     public const CLS_TS_MODE_SIMPLE = '0';
@@ -101,6 +113,7 @@ class BackendUtils
     public const PSN_FNED = "startFNED";
     public const PSN_PAGE_STYLE = "pageStyle";
     public const PSN_GDPR = "gdpr";
+    public const PSN_GDPR_NO_CHB = "gdprNoChb";
     public const PSN_FORM_TITLE = "formTitle";
     public const PSN_META_NO_INDEX = "metaNoIndex";
     public const PSN_EMPTY = "showEmpty";
@@ -158,6 +171,7 @@ class BackendUtils
     // Read only background_job_mode from appconfig and overwrite.cli.url from getSystemValue
     public const REMINDER_BJM = "bjm";
     public const REMINDER_CLI_URL = "cliUrl";
+    public const REMINDER_LANG = "defaultLang";
 
     public const KEY_DEBUGGING = "debugging";
     public const DEBUGGING_LOG_REM_BLOCKER = "log_rem_blocker";
@@ -271,6 +285,11 @@ class BackendUtils
         $evt->SUMMARY->setValue("⌛ " . $info['name']);
 
         $dsr = $info['name'] . "\n" . (empty($info['phone']) ? "" : ($info['phone'] . "\n")) . $info['email'] . $info['_more_data'];
+
+        if (isset($info["_more_ics_text"])) {
+            // custom ICS text from per settings
+            $dsr .= "\n" . $info["_more_ics_text"];
+        }
         if (!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
         $evt->DESCRIPTION->setValue($dsr);
 
@@ -320,9 +339,10 @@ class BackendUtils
     /**
      * @param $uri
      * @param $userId
+     * @param $noChanges - if true, no changes will be made,  this will only return meeting type
      * @return string[] [new meeting type, '' === error, data]
      */
-    function dataChangeApptType($data, $userId) {
+    function dataChangeApptType($data, $userId, $noChanges = false) {
         $r = ['', ''];
 
         $vo = $this->getAppointment($data, 'CONFIRMED');
@@ -345,17 +365,34 @@ class BackendUtils
                 }
 
                 if ($xad[4] === 'f') {
-                    // the appointment was previously finalized as "in-person"
+                    // the appointment was previously finalized as "in-person ..."
+                    if ($noChanges) {
+                        $tlk = $this->getUserSettings(self::KEY_TALK, $userId);
+                        // new_type = virtual
+                        $r[0] = (!empty($tlk[self::TALK_FORM_VIRTUAL_TXT])
+                            ? $tlk[self::TALK_FORM_VIRTUAL_TXT]
+                            : $tlk[self::TALK_FORM_DEF_VIRTUAL]);
+                        return $r;
+                    }
+
                     // ... so, set $xad[4]='_' @see BackendUtils->dataSetAttendee
-                    // this will add a talk room and description when a addTalkInfo is called
+                    // this will add a talk room and description when addTalkInfo is called
                     $xad[4] = '_';
 
                 } elseif (strlen($xad[4]) > 1) {
                     // this was a virtual appointment...
                     // ... $xad[4] is the room token.
-                    // delete the room first...
 
                     $tlk = $this->getUserSettings(self::KEY_TALK, $userId);
+
+                    if ($noChanges) {
+                        $r[0] = (!empty($tlk[self::TALK_FORM_REAL_TXT])
+                            ? $tlk[self::TALK_FORM_REAL_TXT]
+                            : $tlk[self::TALK_FORM_DEF_REAL]);
+                        return $r;
+                    }
+
+                    // delete the room first...
                     $ti = new TalkIntegration($tlk, $this);
                     $ti->deleteRoom($xad[4]);
 
@@ -379,18 +416,19 @@ class BackendUtils
      *                  null=error|""=already confirmed,
      *                  Localized DateTime string
      *                  $pageId
+     *                  $attendeeName
      */
     function dataConfirmAttendee($data, $userId) {
 
         $vo = $this->getAppointment($data, 'CONFIRMED');
-        if ($vo === null) return [null, null, null];
+        if ($vo === null) return [null, null, null, ""];
 
         /** @var \Sabre\VObject\Component\VEvent $evt */
         $evt = $vo->VEVENT;
 
         $a = $this->getAttendee($evt);
         if ($a === null) {
-            return [null, null, null];
+            return [null, null, null, ""];
         }
 
         if (isset($evt->{BackendUtils::XAD_PROP})) {
@@ -404,7 +442,7 @@ class BackendUtils
                 $pageId = 'p0';
             }
         } else {
-            return [null, null, null];
+            return [null, null, null, ""];
         }
 
         $dts = $this->getDateTimeString(
@@ -412,14 +450,16 @@ class BackendUtils
             $evt->{self::TZI_PROP}->getValue()
         );
 
+        $attendeeName = $a->parameters['CN']->getValue();
+
         if ($a->parameters['PARTSTAT']->getValue() === 'ACCEPTED') {
-            return ["", $dts, $pageId];
+            return ["", $dts, $pageId, $attendeeName];
         }
 
         $a->parameters['PARTSTAT']->setValue('ACCEPTED');
 
         if (!isset($evt->SUMMARY)) $evt->add('SUMMARY'); // ???
-        $evt->SUMMARY->setValue("✔️ " . $a->parameters['CN']->getValue());
+        $evt->SUMMARY->setValue("✔️ " . $attendeeName);
 
         //Talk link
         $this->addEvtTalkInfo($userId, $xad, $evt, $a);
@@ -428,7 +468,54 @@ class BackendUtils
 
         $this->setApptHash($evt, $xad[0], $pageId);
 
-        return [$vo->serialize(), $dts, $pageId];
+        return [$vo->serialize(), $dts, $pageId, $attendeeName];
+    }
+
+    /**
+     * @param $data
+     * @param string $userId
+     * @return array [string|null, int, string]
+     *                  date_time: Localized DateTime string or null on error
+     *                  state: one of self::PREF_STATUS_*
+     *                  attendeeName: or empty if error
+     */
+    function dataApptGetInfo($data, $userId) {
+        $ret = [null, self::PREF_STATUS_TENTATIVE, ""];
+
+        if ($data === null) {
+            return $ret;
+        }
+
+        $vo = $this->getAppointment($data, '*');
+        if ($vo === null) {
+            return $ret;
+        }
+
+        /** @var \Sabre\VObject\Component\VEvent $evt */
+        $evt = $vo->VEVENT;
+
+        $a = $this->getAttendee($evt);
+        if ($a === null) {
+            return $ret;
+        }
+
+        if ($a->parameters['PARTSTAT']->getValue() === 'DECLINED'
+            || $evt->STATUS->getValue() === 'CANCELLED') {
+            // cancelled
+            $ret[1] = self::PREF_STATUS_CANCELLED;
+        } else if ($a->parameters['PARTSTAT']->getValue() === 'ACCEPTED') {
+            $ret[1] = self::PREF_STATUS_CONFIRMED;
+        }
+
+        $ret[0] = $this->getDateTimeString(
+            $evt->DTSTART->getDateTime(),
+            $evt->{self::TZI_PROP}->getValue()
+        );
+
+        // Attendee Name
+        $ret[2] = $a->parameters['CN']->getValue();
+
+        return $ret;
     }
 
     /**
@@ -937,7 +1024,11 @@ class BackendUtils
                     self::ORG_NAME => "",
                     self::ORG_EMAIL => "",
                     self::ORG_ADDR => "",
-                    self::ORG_PHONE => "");
+                    self::ORG_PHONE => "",
+                    self::ORG_CONFIRMED_RDR_URL => "",
+                    self::ORG_CONFIRMED_RDR_ID => false,
+                    self::ORG_CONFIRMED_RDR_DATA => false,
+                );
                 break;
             case self::KEY_EML:
                 $d = array(
@@ -949,7 +1040,8 @@ class BackendUtils
                     self::EML_MCONF => false,
                     self::EML_MCNCL => false,
                     self::EML_VLD_TXT => "",
-                    self::EML_CNF_TXT => "");
+                    self::EML_CNF_TXT => "",
+                    self::EML_ICS_TXT => "");
                 break;
             case self::KEY_CLS:
                 $d = array(
@@ -968,9 +1060,12 @@ class BackendUtils
                     self::CLS_TMM_SUBSCRIPTIONS_SYNC => '0',
 
                     self::CLS_PREP_TIME => "0",
+                    self::CLS_BUFFER_BEFORE => 0,
+                    self::CLS_BUFFER_AFTER => 0,
                     self::CLS_ON_CANCEL => 'mark',
                     self::CLS_ALL_DAY_BLOCK => false,
 
+                    self::CLS_PRIVATE_PAGE => false,
                     self::CLS_TS_MODE => self::CLS_TS_MODE_TEMPLATE);
                 break;
             case self::KEY_PSN:
@@ -985,6 +1080,7 @@ class BackendUtils
                     self::PSN_HIDE_TEL => false,
                     self::PSN_SHOW_TZ => false,
                     self::PSN_GDPR => "",
+                    self::PSN_GDPR_NO_CHB => false,
                     self::PSN_PAGE_TITLE => "",
                     self::PSN_PAGE_SUB_TITLE => "",
                     self::PSN_META_NO_INDEX => false,
@@ -1003,12 +1099,20 @@ class BackendUtils
                     self::CLS_TMM_MORE_CALS => [],
                     self::CLS_TMM_SUBSCRIPTIONS => [],
 
+                    self::CLS_BUFFER_BEFORE => 0,
+                    self::CLS_BUFFER_AFTER => 0,
+
+                    self::CLS_PRIVATE_PAGE => false,
                     self::CLS_TS_MODE => self::CLS_TS_MODE_TEMPLATE,
 
                     self::ORG_NAME => "",
                     self::ORG_EMAIL => "",
                     self::ORG_ADDR => "",
                     self::ORG_PHONE => "",
+
+                    self::ORG_CONFIRMED_RDR_URL => "",
+                    self::ORG_CONFIRMED_RDR_ID => false,
+                    self::ORG_CONFIRMED_RDR_DATA => false,
 
                     self::PSN_FORM_TITLE => "");
                 break;
@@ -1528,7 +1632,7 @@ class BackendUtils
             }
         }
         if ($tz === null) {
-            $this->logger->error("getCalendarTimezone fallback to getUserTimezone: " . $err);
+            $this->logger->error("warning: getCalendarTimezone fallback to getUserTimezone: " . $err);
             return $this->getUserTimezone($userId, $config);
         }
         return $tz;
@@ -1594,7 +1698,7 @@ class BackendUtils
             if ($short_dt === 0) {
                 $date_time = $l10N->l('date', $d, ['width' => 'full']) . ', ' .
                     str_replace(':00 ', ' ',
-                        $l10N->l('time', $d, ['width' => 'long']));
+                        $l10N->l('time', $d, ['width' => 'full']));
             } else if ($short_dt === 1) {
                 $date_time = $l10N->l('datetime', $d, ['width' => 'short']);
             } else {
@@ -1763,6 +1867,11 @@ class BackendUtils
     }
 
     function transformCalInfo($c, $skipReadOnly = true) {
+
+        if(isset($c['{http://nextcloud.com/ns}deleted-at'])) {
+            // skip "trash bin" calendars (calendars are placed into the "trash bin" and the deleted after 30 days)
+            return null;
+        }
 
         $isReadOnlyCal = isset($c['{http://owncloud.org/ns}read-only'])
             && $c['{http://owncloud.org/ns}read-only'] === true;

@@ -196,7 +196,7 @@ class AVLIntervalTree{
 
             // !($tree->next[0]!==null && $tree->next[0]->m >= $low );
             $tree = $tree->next[
-                (int)($tree->next[0]===null || $tree->next[0]->m < $low)];
+                (int)($tree->next[0]===null || $tree->next[0]->m <= $low)];
         }
         return $tree;
     }

@@ -1,3 +1,80 @@
+## v1.12.6 - 2022-06-06
+### Fixed
+- Ensure 'Additional ICS file description' is included - issue #342
+- 'Form Title' settings display (single page mode) - issue #343
+### Changed
+- Use full time zone names(Eastern Daylight Time) instead of abbreviations(GMT-4) in PHP
+- NC 'Locale' settings (instead of 'Language') is now used for JS i18n Dates/Times - issue #244
+- HTML is now allowed in 'Additional Email Text' - issue #132
+- Better error handling in extNotify function
+- Update node dependencies (npm -> pnpm)
+
+
+## v1.12.5 - 2022-05-24
+### Added
+- Default reminders language indicator - issue #323
+- Rudimentary notification extension system - issue #26
+### Fixed
+- Ignore "trash bin"(deleted) calendars - issue #64
+
+## v1.12.4 - 2022-05-11
+### Fixed
+- Template/grid editor header dark theme compatibility - issue #327
+- Reminders test
+### Changed
+- Nextcloud min version is 22 now (max version is 24) - issue #324
+- Include 'CLASS: CONFIDENTIAL' (but not 'PRIVATE') events in conflict checks - issue #321
+- Template/grid editor range is extended to start at 6:00 and end at 23:00 - issue #332
+
+## v1.12.3 - 2022-04-11
+### Added
+- redirect to a custom "All Done" page after confirm option - issue #315
+- improve iframe embedding (window.parent.postMessage) and more examples  - issue #313
+### Fixed
+- custom styles not applied to all pages - issue #313
+
+## v1.12.2 - 2022-03-10
+### Added
+- option to add booked/pending appointment buffers (before/after blockers)
+### Fixed
+- missing translation - issue #190
+### Changed
+- trailing/filler empty days are not shown - issue #306
+
+## v1.12.1 - 2022-03-02
+### Fixed
+- PHP: error when "Skip email validation step" option enabled - issue #304
+
+## v1.12.0 - 2022-02-21
+### Added
+- Sunday is available now in "Edit Template" and "Add Appointments" - issue #13
+- New "Private Page" mode: visitors must be logged-in to NC - issue #298
+- Debugging: add "Sync Remote Calendar Now" option
+### Fixed
+- "Show end time" option is always ON in "weekly template mode" - issue #299
+- JS: errors and "this" scope in doCopyPubLink function
+- Cancellations and reminders not working in "simple" mode with dual calendars (regression from v1.11.14 ) - issue #302
+### Changed
+- dev: updated dependencies and config files
+
+## 1.11.14 - 2022-02-14
+### Changed
+- Confirm, Cancel and ChangeType pages now have a "confirm" button to prevent antivirus / antimalware scans from taking action automatically - issue #293
+### Added
+- "GDPR text only (no checkbox)" to page settings - issue #292
+### Fixed
+- Dark theme styles in "Quick Start Guide" - issue #289
+
+## 1.11.12 - 2022-01-26
+### Added
+- Option to add custom text to event/appointment DESCRIPTION property (the text is also added to .ics email attachment)
+
+## 1.11.11 - 2022-01-19
+### Fixed
+- Interval tree bug: lookup might report busy slot as free under certain circumstances - issue #282
+### Changed
+- Allow non admin users to debug/dump own raw calendar data
+
 ## 1.11.10 - 2022-01-02
 ### Added
 - Log remote blockers debugging option

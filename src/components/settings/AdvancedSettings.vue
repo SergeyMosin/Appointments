@@ -24,13 +24,13 @@
               class="tsb-input"
               id="appt_tsb-appt-prep-time">
             <option value="0">{{ t('appointments', 'No lead time') }}</option>
-            <option value="15">{{ t('appointments', '15 Minutes') }}</option>
-            <option value="30">{{ t('appointments', '30 Minutes') }}</option>
-            <option value="60">{{ t('appointments', '1 Hour') }}</option>
-            <option value="120">{{ t('appointments', '2 Hours') }}</option>
-            <option value="240">{{ t('appointments', '4 Hours') }}</option>
-            <option value="480">{{ t('appointments', '8 Hours') }}</option>
-            <option value="720">{{ t('appointments', '12 Hours') }}</option>
+            <option value="15">{{ t('appointments', '15 minutes') }}</option>
+            <option value="30">{{ t('appointments', '30 minutes') }}</option>
+            <option value="60">{{ t('appointments', '1 hour') }}</option>
+            <option value="120">{{ t('appointments', '2 hours') }}</option>
+            <option value="240">{{ t('appointments', '4 hours') }}</option>
+            <option value="480">{{ t('appointments', '8 hours') }}</option>
+            <option value="720">{{ t('appointments', '12 hours') }}</option>
             <option value="1440">{{ t('appointments', '1 day') }}</option>
             <option value="2880">{{ t('appointments', '2 days') }}</option>
             <option value="5760">{{ t('appointments', '4 days') }}</option>
@@ -63,10 +63,10 @@
         <div v-show="sections[0]===1"
              class="srgdev-appt-sb-indent_small">
           <div class="srgdev-appt-info-lcont">
-          <label
-              class="tsb-label"
-              for="appt_tsb-appt-sub-refresh">
-            {{ t('appointments', 'Subscriptions Sync Interval') }}:</label><a
+            <label
+                class="tsb-label"
+                for="appt_tsb-appt-sub-refresh">
+              {{ t('appointments', 'Subscriptions Sync Interval') }}:</label><a
               class="icon-info srgdev-appt-info-link"
               @click="$root.$emit('helpWanted','tmm_subs_sync')"></a>
           </div>

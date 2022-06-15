@@ -10,10 +10,11 @@ OC.L10N.register(
     "Remove" : "Sil",
     "Save" : "Saxla",
     "Loading" : "Loading",
-    "15 Minutes" : "15 Dəqiqqə",
-    "30 Minutes" : "30 Dəqiqqə",
+    "Add" : "Əlavə etmək",
+    "OK" : "Oldu",
     "1 Hour" : "1 Saat",
     "2 Hours" : "2 Saat",
+    "12 Hours" : "12 Saat",
     "Edit" : "Dəyişiklik et",
     "Title" : "Başlıq",
     "URL" : "URL",
@@ -21,6 +22,9 @@ OC.L10N.register(
     "Deleted" : "Silinib",
     "Warning" : "Xəbərdarlıq",
     "Location:" : "Ərazi:",
-    "Next" : "Növbəti"
+    "Minutes" : "Dəqiqələr",
+    "Next" : "Növbəti",
+    "Name" : "Ad",
+    "Email" : "Email"
 },
 "nplurals=2; plural=(n != 1);");

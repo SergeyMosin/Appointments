@@ -87,7 +87,10 @@ export default {
       let days = undefined
       let months = undefined
       const formatLocale = {
-        firstDayOfWeek: window.firstDay || 0
+        // 1 (Mon) = default/fallback, or 0 (Sun) or 6 (Sat)
+        firstDayOfWeek: window.firstDay === 0
+            ? 0
+            : (window.firstDay === 6 ? 6 : 1)
       }
       if (window.Intl && typeof window.Intl === "object") {
         days = []
@@ -111,10 +114,9 @@ export default {
       return {days: days, formatLocale: formatLocale}
     },
     notBeforeDate() {
-      let d = new Date()
-      d.setHours(0)
-      d.setMinutes(0)
-      d.setTime(this.getStartOfWeek(d).getTime() - 90000000)
+      const d = this.getStartOfWeek(new Date())
+      // because of daylight savings
+      d.setHours(1, 30, 0, 0)
       return d
     }
   },
@@ -142,13 +144,14 @@ export default {
         stringify: (date, fmt) => {
 
           if (date) {
-            const ts = date.getTime() + 6 * 86400000;
+            const endDate = new Date(date.getTime())
+            endDate.setDate(endDate.getDate() + 6);
             if (window.Intl && typeof window.Intl === "object") {
               let f = new Intl.DateTimeFormat([],
                   {month: "short", day: "2-digit",})
-              return f.format(date) + ' - ' + f.format(new Date(ts))
+              return f.format(date) + ' - ' + f.format(endDate)
             } else {
-              return date.toLocaleDateString() + ' - ' + (new Date(ts)).toLocaleDateString()
+              return date.toLocaleDateString() + ' - ' + (endDate).toLocaleDateString()
             }
           } else return ''
         }
@@ -208,17 +211,27 @@ export default {
     },
     getStartOfWeek(d) {
 
-      let gd = d.getDay()
-      if (this.lang.formatLocale.firstDayOfWeek === 1) {
-        // Sunday (0) is last
-        if (gd === 0) gd = 6
-        else gd--
-      } else {
-        gd--
-      }
-      return new Date(d.getTime() - gd * 86400000)
+      d.setHours(0, 0, 0, 0)
+
+      // this.lang.formatLocale.firstDayOfWeek can be:
+      //  0: Sunday
+      //  1: Monday
+      //  6: Saturday
+      const fdw = this.lang.formatLocale.firstDayOfWeek
+
+      //  fdw=0 : 0 1 2 3 4 5 6 | adjust: d.getDay()
+      //  fdw=1 : 1 2 3 4 5 6 0 | adjust: (d.getDay() + 6) % 7
+      //  fdw=6 : 6 0 1 2 3 4 5 | adjust: (d.getDay() + 1) % 7
+      //  delta : 0 1 2 3 4 5 6
+
+      const deltaDays = (d.getDay() + (7 - fdw)) % 7
+
+      const nd = new Date(d.getTime())
+      nd.setDate(nd.getDate() - deltaDays)
+      return nd
     },
     compNotBefore(d) {
+      d.setHours(1, 30, 0, 0)
       return d < this.notBeforeDate
     },
     resetAppt() {

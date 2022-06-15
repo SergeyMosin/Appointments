@@ -25,5 +25,6 @@ return [
 
         ['name' => 'Debug#settingsDump', 'url' => '/settings_dump', 'verb' => 'GET'],
         ['name' => 'Debug#getRawCalendarData', 'url' => '/raw_calendar_data', 'verb' => 'POST'],
+        ['name' => 'Debug#syncRemoteNow', 'url' => '/sync_remote_now', 'verb' => 'POST'],
     ]
 ];

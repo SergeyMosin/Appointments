@@ -11,6 +11,8 @@ OC.L10N.register(
     "Save" : "រក្សាទុក",
     "Loading" : "Loading",
     "Apply" : "អនុវត្ត",
+    "Add" : "បញ្ចូល",
+    "OK" : "ព្រម",
     "Edit" : "កែប្រែ",
     "Title" : "ចំណងជើង",
     "URL" : "URL",
@@ -19,6 +21,8 @@ OC.L10N.register(
     "Warning" : "បម្រាម",
     "Location:" : "ទីតាំងៈ",
     "Back" : "ត្រឡប់ក្រោយ",
-    "Next" : "បន្ទាប់"
+    "Next" : "បន្ទាប់",
+    "Name" : "ឈ្មោះ",
+    "Email" : "អ៊ីមែល"
 },
 "nplurals=1; plural=0;");

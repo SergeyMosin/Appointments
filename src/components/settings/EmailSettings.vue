@@ -88,6 +88,19 @@
                         class="srgdev-appt-sb-textarea"
                         id="srgdev-appt_emn-cnf-note"
                 ></textarea>
+              <div class="srgdev-appt-info-lcont">
+                <label
+                    class="srgdev-appt-sb-label-inline"
+                    for="srgdev-appt_emn-ics-note">
+                  {{t('appointments','Additional ICS file description:')}}</label><a
+                  class="icon-info srgdev-appt-info-link"
+                  @click="$root.$emit('helpWanted','icsmoretext')"></a>
+              </div>
+              <textarea
+                  v-model="emlInfo.icsNote"
+                  class="srgdev-appt-sb-textarea"
+                  id="srgdev-appt_emn-ics-note"
+              ></textarea>
               <button
                   @click="apply"
                   class="primary srgdev-appt-sb-genbtn"
@@ -130,7 +143,8 @@
             meConfirm: false,
             meCancel: false,
             vldNote: "",
-            cnfNote: ""
+            cnfNote: "",
+            icsNote: ""
           }
         }
       },
