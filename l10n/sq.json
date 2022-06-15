@@ -63,6 +63,7 @@
     "Action failed. Select calendar(s) first." : "Veprimi dështoi. Zgjidhni një(apo më shumë) kalendar fillimisht.",
     "More than 2 additional pages (10 maximum)" : "Më shumë se 2 faqe shtesë (10 maksimumi)",
     "Page not added: 10 pages maximum" : "Faqja nuk u shtua: 10 faqe maksimumi",
+    "Can't find Talk app. Is it installed and enabled ?" : "Nuk e gjej programin \"Talk\". Është i instaluar dhe aktiv?",
     "This is an automatically sent email, please do not reply." : "Ky është një email i dërguar automatikisht, ju lutem mos u përgjigjni.",
     "Appointments" : "Takime",
     "[Online]" : "[Online]",
