@@ -17,6 +17,7 @@ use OCP\EventDispatcher\IEventListener;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IURLGenerator;
+use OCP\L10N\IFactory;
 use OCP\Mail\IEMailTemplate;
 use OCP\Mail\IMailer;
 use Psr\Log\LoggerInterface;
@@ -1124,7 +1125,7 @@ class DavListener implements IEventListener
             return new $class(
                 new \OCP\Defaults(),
                 $urlGenerator,
-                $this->l10N,
+                \OC::$server->get(IFactory::class),
                 "ID_" . time(),
                 []
             );
