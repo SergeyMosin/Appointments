@@ -1,9 +1,12 @@
 OC.L10N.register(
     "appointments",
     {
+    "Available" : "Ar gael?",
+    "Confirm" : "Cadarnhau",
     "Cancel" : "Diddymu",
     "Password" : "Cyfrinair",
     "Info" : "Info",
+    "Appointments" : "Apwyntiadau",
     "Delete" : "Dileu",
     "Settings" : "Gosodiadau",
     "Close" : "Cau",
@@ -21,12 +24,14 @@ OC.L10N.register(
     "Error" : "Gwall",
     "Deleted" : "Wedi dileu",
     "Confirmed" : "Cadarnhawyd",
+    "Canceled" : "Wedi diddymu",
     "Reminders" : "Nodau atgoffa",
     "Warning" : "Rhybudd",
     "Location:" : "Lleoliad:",
     "Back" : "Nôl",
     "Next" : "Nesaf",
     "min" : "mun",
+    "Duration" : "Hyd",
     "Name" : "Enw",
     "Email" : "E-bost",
     "Phone" : "Ffôn"
