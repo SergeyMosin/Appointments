@@ -1,3 +1,7 @@
+## v1.12.7 - 2022-06-23
+### Fixed
+- Wrong L10N class is passed to EMailTemplate::class constructor when custom 'mail_template_class' is used - issue #344
+
 ## v1.12.6 - 2022-06-06
 ### Fixed
 - Ensure 'Additional ICS file description' is included - issue #342
@@ -8,7 +12,6 @@
 - HTML is now allowed in 'Additional Email Text' - issue #132
 - Better error handling in extNotify function
 - Update node dependencies (npm -> pnpm)
-
 
 ## v1.12.5 - 2022-05-24
 ### Added
