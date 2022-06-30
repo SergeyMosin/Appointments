@@ -43,6 +43,7 @@ OC.L10N.register(
     "Reminders" : "Потсетници",
     "Enable lobby" : "Овозможи лоби",
     "Warning" : "Предупредување",
+    "Time zone:" : "Временска зона:",
     "Start" : "Почеток",
     "Name:" : "Име:",
     "Email:" : "Е-пошта:",
