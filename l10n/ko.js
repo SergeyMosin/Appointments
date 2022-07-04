@@ -162,6 +162,7 @@ OC.L10N.register(
     "Simple" : "간단히",
     "Select Dates:" : "날짜 선택:",
     "Select Dates" : "날짜 선택",
+    "Time zone:" : "시간대:",
     "Appointment Duration:" : "예약 기간:",
     "Start" : "시작",
     "Gathering calendar information" : "달력 일정 모으기",
