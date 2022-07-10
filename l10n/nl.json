@@ -102,6 +102,7 @@
     "Preview" : "Voorbeeld",
     "New Settings Applied." : "Nieuwe instellingen toegepast.",
     "Fetching URL from the server …" : "URL ophalen van de server …",
+    "Cannot get public URL from server" : "Kan geen publieke URL krijgen van de server",
     "Public link copied to clipboard" : "Publieke link gekopieerd naar klembord",
     "Copy Error" : "Kopieerfout",
     "Public Page" : "Openbare Pagina",

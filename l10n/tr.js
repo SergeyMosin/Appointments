@@ -324,6 +324,6 @@ OC.L10N.register(
     "An error has occurred" : "Bir sorun çıktı",
     "Please %1$stry again%2$s and select a different date." : "Lütfen %1$syeniden deneyin%2$s ve farklı bir tarih seçin.",
     "Please contact us directly at" : "Lütfen şuradan doğrudan bize ulaşın",
-    "Please try again later" : "Lütfen daha sonra yeniden deneyin"
+    "Please try again later" : "Lütfen bir süre sonra yeniden deneyin"
 },
 "nplurals=2; plural=(n > 1);");
