@@ -25,6 +25,7 @@ OC.L10N.register(
     "Reminders" : "Påminningar",
     "Warning" : "Åtvaring",
     "Start" : "Start",
+    "Location:" : "Plassering:",
     "Back" : "Tilbake",
     "Next" : "Neste",
     "Name" : "Namn",
