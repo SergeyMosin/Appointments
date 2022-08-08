@@ -101,6 +101,7 @@ OC.L10N.register(
     "2 hours" : "2 timer",
     "4 hours" : "4 timer",
     "12 hours" : "12 timer",
+    "1 day" : "En dag",
     "When Attendee Cancels" : "Når Deltakere Kansellerer",
     "Mark the appointment as canceled" : "Merk avtalen som kansellert",
     "Reset (make the timeslot available)" : "Tilbakestill (gjør tidsplassen tilgjengelig)",
