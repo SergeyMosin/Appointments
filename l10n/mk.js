@@ -8,6 +8,7 @@ OC.L10N.register(
     "Action needed" : "Потребна е акција",
     "Info" : "Info",
     "This is an automatically sent email, please do not reply." : "Ова е автоматски испратена порака, не одговарајте на истата.",
+    "Appointments" : "Состаноци",
     "Delete" : "Избриши",
     "Settings" : "Параметри",
     "Close" : "Затвори",
