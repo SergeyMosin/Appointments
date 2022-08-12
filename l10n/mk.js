@@ -1,6 +1,7 @@
 OC.L10N.register(
     "appointments",
     {
+    "Guest password:" : "Лозинка за гостин:",
     "Available" : "Достапно",
     "Confirm" : "Потврди",
     "Cancel" : "Откажи",
@@ -43,7 +44,12 @@ OC.L10N.register(
     "24 hours" : "24 часа",
     "Reminders" : "Потсетници",
     "Enable lobby" : "Овозможи лоби",
+    "Guest password" : "Лозинка за гостин",
+    "Guest name + Date/Time" : "Име на гостинот + Датим/Време",
+    "Date/Time + Guest name" : "Датум/Време + Име на гостин",
+    "Guest name only" : "Само име на гостинот",
     "Warning" : "Предупредување",
+    "Guest will be placed in the lobby until you allow access to the Room manually via Talk app side menu." : "Гостите ќе бидат во лоби за чекање додека рачно не им дозволите пристап до собата преку Talk апликацијата од страничното мени.",
     "Time zone:" : "Временска зона:",
     "Start" : "Почеток",
     "Name:" : "Име:",
