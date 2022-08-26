@@ -55,6 +55,7 @@ OC.L10N.register(
     "Name:" : "Име:",
     "Email:" : "Е-пошта:",
     "Location:" : "Локација:",
+    "Name is required." : "Потребно е име.",
     "Minutes" : "Минути",
     "Back" : "Назад",
     "Next" : "Следно",
