@@ -24,6 +24,7 @@ OC.L10N.register(
     "Preview" : "Pratinjau",
     "Loading" : "Memuat",
     "Apply" : "Terapkan",
+    "close" : "tutup",
     "Add" : "Masukkan",
     "OK" : "OK",
     "Advanced Settings" : "Pengaturan Tambahan",
