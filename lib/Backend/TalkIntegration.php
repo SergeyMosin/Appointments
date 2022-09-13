@@ -113,7 +113,7 @@ class TalkIntegration
      * @param Room $room
      * @param \DateTime $dateTime
      */
-    function setLobby(Room $room, \DateTime $dateTime) {
+    function setLobby(Room $room, ?\DateTime $dateTime) {
         // $room->setLobby wants utc timezone ?!?
         // @see OCA\Talk\Controller\WebinarController->setLobby
 //        $_dt=new \DateTime(null,new \DateTimeZone('UTC'));
