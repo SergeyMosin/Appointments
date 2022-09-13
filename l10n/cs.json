@@ -215,7 +215,7 @@
     "7 days" : "7 dnů",
     "Add action links" : "Přidat odkazy na akce",
     "Additional reminder email text:" : "Další text e-mailu s připomínkou:",
-    "Default Cron/Email Language: {langCode}" : "Výchozí jazyk cronu/e-mailu: {langCode}",
+    "Default Cron/Email Language: {langCode}" : "Výchozí jazyk pro cron/e-mail: {langCode}",
     "Additional Settings" : "Další nastavení",
     "Customize and configure the app" : "Přizpůsobit si a nastavit tuto aplikaci",
     "Customize Public Page" : "Přizpůsobit si veřejnou stránku",

@@ -75,6 +75,7 @@ OC.L10N.register(
     "1 hour" : "1 година",
     "2 hours" : "2 години",
     "4 hours" : "4 години",
+    "8 hours" : "8 годин",
     "12 hours" : "12 годин",
     "When Attendee Cancels" : "Коли учасник відхиляє",
     "Mark the appointment as canceled" : "Позначити зустріч скасованою",
