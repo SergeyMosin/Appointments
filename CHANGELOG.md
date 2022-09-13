@@ -1,3 +1,7 @@
+## v1.12.8 - 2022-09-12
+### Fixed
+- Expected parameter of type '\DateTime', 'null' provided in Talk Integration
+
 ## v1.12.7 - 2022-06-23
 ### Fixed
 - Wrong L10N class is passed to EMailTemplate::class constructor when custom 'mail_template_class' is used - issue #344
