@@ -220,6 +220,8 @@ OC.L10N.register(
     "Start" : "Pradėti",
     "Scheduled before" : "Suplanuotus iki",
     "Gathering calendar information" : "Renkama informacija apie kalendorių",
+    "Cannot get calendar data" : "Nepavyksta gauti kalendoriaus duomenų",
+    "This action CANNOT be undone. Continue?" : "Šio veiksmo NEĮMANOMA bus atšaukti. Tęsti?",
     "Your Contact Information" : "Jūsų kontaktinė informacija",
     "Form header and event organizer settings" : "Formos antraštės ir įvykio organizatoriaus nustatymai",
     "Name:" : "Pavadinimas:",
