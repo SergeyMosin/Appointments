@@ -140,6 +140,7 @@ OC.L10N.register(
     "Name:" : "Navn:",
     "Email:" : "E-post:",
     "Location:" : "Sted:",
+    "Name is required." : "Navn er påkrevd",
     "Minutes" : "Minutter",
     "Back" : "Tilbake",
     "Next" : "Neste",

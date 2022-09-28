@@ -150,6 +150,7 @@ OC.L10N.register(
     "Next" : "Наступний",
     "Select Date and Time" : "Виберіть дату та час",
     "min" : "хв",
+    "Duration" : "Тривалість",
     "Name" : "Ім'я",
     "Enter name" : "Зазначте ім'я",
     "Email" : "Електронна пошта",
