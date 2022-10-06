@@ -13,7 +13,7 @@
     "Your %1$s appointment scheduled for %2$s is now confirmed." : "Підтверджено вашу участь у зустрічі %1$s, запланованій для %2$s.",
     "Appointment confirmed" : "Участь у зустрічі підтверджено",
     "%s Appointment is canceled" : "Зустріч %s скасовано",
-    "%s appointment status changed" : "Статус зустрічі %s змінився",
+    "%s appointment status changed" : "Статус зустрічі %s було змінено",
     "Your %1$s appointment scheduled for %2$s is now canceled." : "Скасовано зустріч %1$s, яку було заплановано для %2$s.",
     "Appointment canceled" : "Зустріч скасовано",
     "%s Appointment update" : "Оновлення зустрічі %s",
