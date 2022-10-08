@@ -129,6 +129,7 @@ OC.L10N.register(
     "Reminders" : "Нагадування",
     "Enable lobby" : "Увімкнути схвалення входу",
     "Warning" : "Увага",
+    "Manage appointments and calendar settings" : "Керування запрошеннями та налаштуваннями календаря",
     "Add Appointment Slots" : "Виберіть діапазони участі у зустрічі",
     "Select Dates:" : "Виберіть дати:",
     "Select Dates" : "Виберіть дати",
