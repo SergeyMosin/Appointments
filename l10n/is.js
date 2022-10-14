@@ -79,6 +79,7 @@ OC.L10N.register(
     "15 minutes" : "15 mínútur",
     "30 minutes" : "30 mínútur",
     "1 hour" : "1 klukkustund",
+    "2 hours" : "2 klukkustundir",
     "4 hours" : "4 klukkustundir",
     "12 hours" : "12 klukkustundir",
     "When Attendee Cancels" : "Þegar þáttakandi aflýsir",

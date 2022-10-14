@@ -168,7 +168,7 @@ OC.L10N.register(
     "Error" : "Fehler",
     "Title and URL cannot be empty" : "Titel und URL dürfen nicht leer sein",
     "Emails and Notifications" : "E-Mails und Benachrichtigungen",
-    "Control when emails and notifications are sent" : "Einstellen, wann E-Mails und Benachrichtigungen versendet werden",
+    "Control when emails and notifications are sent" : "Einstellen, wann E-Mails und Benachrichtigungen gesendet werden",
     "Attach .ics file to confirm/cancel emails" : ".ics-Datei an die Bestätigungs- bzw. Absage-E-Mail anhängen",
     "Email Attendee when the appointment is:" : "E-Mail an Teilnehmer senden wenn der Termin stattfindet:",
     "Modified (Time, Status, Location)" : "Geändert (Zeit, Status, Ort)",
