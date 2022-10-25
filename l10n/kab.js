@@ -1,6 +1,7 @@
 OC.L10N.register(
     "appointments",
     {
+    "Confirm" : "Serggeg",
     "Cancel" : "Sefsex",
     "Password" : "Awal uffir",
     "Delete" : "Kkes",
