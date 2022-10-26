@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2022-10-25 03:18+0000\n"
+"POT-Creation-Date: 2022-10-26 03:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -440,7 +440,7 @@ msgid "Delete"
 msgstr ""
 
 #. TRANSLATORS vue:95
-#. TRANSLATORS vue:1233
+#. TRANSLATORS vue:1238
 #. TRANSLATORS onents/settings/SettingsSlideBar.vue:18
 #: /app/specialVueFakeDummyForL10nScript.js:26
 #: /app/specialVueFakeDummyForL10nScript.js:92
@@ -554,32 +554,32 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
-#. TRANSLATORS vue:1013
+#. TRANSLATORS vue:1018
 #: /app/specialVueFakeDummyForL10nScript.js:80
 msgid "New Settings Applied."
 msgstr ""
 
-#. TRANSLATORS vue:1133
+#. TRANSLATORS vue:1138
 #: /app/specialVueFakeDummyForL10nScript.js:82
 msgid "Fetching URL from the server …"
 msgstr ""
 
-#. TRANSLATORS vue:1162
+#. TRANSLATORS vue:1167
 #: /app/specialVueFakeDummyForL10nScript.js:84
 msgid "Cannot get public URL from server"
 msgstr ""
 
-#. TRANSLATORS vue:1169
+#. TRANSLATORS vue:1174
 #: /app/specialVueFakeDummyForL10nScript.js:86
 msgid "Public link copied to clipboard"
 msgstr ""
 
-#. TRANSLATORS vue:1170
+#. TRANSLATORS vue:1175
 #: /app/specialVueFakeDummyForL10nScript.js:88
 msgid "Copy Error"
 msgstr ""
 
-#. TRANSLATORS vue:1221
+#. TRANSLATORS vue:1226
 #. TRANSLATORS onents/PagePickerSlideBar.vue:12
 #: /app/specialVueFakeDummyForL10nScript.js:90
 #: /app/specialVueFakeDummyForL10nScript.js:102
