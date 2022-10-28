@@ -1,3 +1,9 @@
+## v1.13.0 - 2022-10-25
+### Added
+- Next release possible breaking changes notice (prep for NC25)
+### Changed
+- Nextcloud 23 is min version now
+
 ## v1.12.8 - 2022-09-12
 ### Fixed
 - Expected parameter of type '\DateTime', 'null' provided in Talk Integration
