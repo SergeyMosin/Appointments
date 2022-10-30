@@ -60,7 +60,7 @@ class DirController  extends Controller
 
     function showIndex($userId,$isPublic){
         if($isPublic) {
-            Util::addStyle($this->appName, "form-xl-screen");
+//            Util::addStyle($this->appName, "form-xl-screen");
             $pps = $this->utils->getUserSettings(BackendUtils::KEY_PSN, $userId);
             $s=$this->config->getUserValue($userId, $this->appName, "cn"."k");$f="hex"."dec";
             $tr = new PublicTemplateResponse($this->appName, 'public/directory'.(($s===""||(($f(substr($s,0,0b100))>>0xf)&1)!==(($f(substr($s,0b100,4))>>  12) &1))?"_":""), []);

@@ -322,7 +322,7 @@ class DavListener implements IEventListener
                     // remove all circular references, so PHP can easily clean it up.
                     $vObject->destroy();
 
-                    usleep(750000);
+                    usleep(500000);
                     break;
                 }
             }
@@ -1179,8 +1179,8 @@ class DavListener implements IEventListener
             );
         }
 
-        $tmpl->addFooter("Booked via Nextcloud Appointments App");
-
+        $theme = new \OCP\Defaults();
+        $tmpl->addFooter("Booked via " . $theme->getEntity() . " Appointments");
     }
 
     /**

@@ -73,7 +73,7 @@ class TalkIntegration
                 $um = \OC::$server->get(IUserManager::class);
                 $user = $um->get($userId);
                 if ($user !== null) {
-                    $room = $rs->createConversation(Room::PUBLIC_CALL, $roomName, $user);
+                    $room = $rs->createConversation(Room::TYPE_PUBLIC, $roomName, $user);
                 }
             } catch (\Exception $e) {
                 $this->logError($e);

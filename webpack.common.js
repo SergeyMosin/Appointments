@@ -1,13 +1,16 @@
 const path = require('path')
 const webpack = require('webpack')
-const { VueLoaderPlugin } = require('vue-loader')
-const CopyPlugin = require('copy-webpack-plugin');
+const {VueLoaderPlugin} = require('vue-loader')
+
+const scssDir = path.join(__dirname, 'scss')
 
 module.exports = {
-	entry:{
+	entry: {
 		script: path.join(__dirname, 'src', 'main.js'),
 		form: path.join(__dirname, 'src', 'form.js'),
 		cncf: path.join(__dirname, 'src', 'cncf.js'),
+		form_css: path.join(scssDir, 'form.scss'),
+		style_css: path.join(scssDir, 'style.scss'),
 	},
 	output: {
 		path: path.resolve(__dirname, './js'),
@@ -22,8 +25,30 @@ module.exports = {
 				use: ['vue-style-loader', 'css-loader']
 			},
 			{
-				test: /\.scss$/,
+				// test: /\.scss$/,
+				// match only vue's scss
+				test: /^((?!.*scss\/)).*\.scss$/,
 				use: ['vue-style-loader', 'css-loader', 'sass-loader']
+			},
+			{
+				test: /scss\/.*\.scss$/,
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							outputPath: '../css/',
+							name: '[name].css'
+						}
+					},
+					{
+						loader: 'sass-loader',
+						options: this.mode === 'production' ? {
+							sassOptions: {
+								outputStyle: 'compressed',
+							}
+						} : {}
+					}
+				]
 			},
 			{
 				test: /\.vue$/,
@@ -50,17 +75,7 @@ module.exports = {
 		new webpack.DefinePlugin({
 			appVersion: JSON.stringify(require('./package.json').version)
 		}),
-		new CopyPlugin(
-			{
-				patterns: [
-					// {from: 'node_modules/@nextcloud/vue/src/assets/variables.scss', to: '../css/variables.scss'},
-					{from: '../../core/css/variables.scss', to: '../css/svariables.scss'},
-				]
-			}
-		),
-
-	]
-	,
+	],
 	resolve: {
 		alias: {
 			Components: path.resolve(__dirname, 'src/components/'),

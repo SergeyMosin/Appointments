@@ -115,7 +115,7 @@
             <AppNavigationItem
                 @click="toggleSlideBar(9)"
                 :title="t('appointments','Settings')"
-                icon="icon-settings"/>
+                icon="icon-settings-dark"/>
           </ul>
         </li>
       </template>
@@ -333,11 +333,6 @@
               v-show="pagePreviewLoading===true"
               class="icon-loading-small"></span></li>
         </ul>
-        <div style="border: 3px solid goldenrod; text-align: center; margin: 0 5px; padding: .25em;">
-          <span style="font-weight: bold">Upcoming Update Notice</span><br>
-          Next update ( v1.14.* ) will include changes that might be incompatible with custom CSS "Style Overrides". If you don not use "Style Overrides" please ignore this notice. <br>
-          Next update release date is planed for October 30, 2022.
-        </div>
         <div class="srgdev-appt-main-frame-cont">
           <iframe
               class="srgdev-appt-main-frame"

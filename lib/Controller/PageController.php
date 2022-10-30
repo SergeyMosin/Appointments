@@ -612,6 +612,7 @@ class PageController extends Controller
         $pps = $this->utils->getUserSettings(
             BackendUtils::KEY_PSN, $userId);
         $tr_params['appt_inline_style'] = $pps[BackendUtils::PSN_PAGE_STYLE];
+        $tr_params['application'] = $this->l->t('Appointments');
 
         $tr->setParams($tr_params);
         $tr->setStatus($tr_sts);
@@ -629,7 +630,10 @@ class PageController extends Controller
 
         $pps = $this->utils->getUserSettings(
             BackendUtils::KEY_PSN, $userId);
-        $tr->setParams(['appt_inline_style' => $pps[BackendUtils::PSN_PAGE_STYLE]]);
+        $tr->setParams([
+            'appt_inline_style' => $pps[BackendUtils::PSN_PAGE_STYLE],
+            'application' => $this->l->t('Appointments')
+        ]);
 
         $tr->setStatus(500);
         return $tr;
@@ -905,6 +909,7 @@ class PageController extends Controller
         $rs = 500;
         $param = [
             'appt_c_head' => $this->l->t("Almost done …"),
+            'application' => $this->l->t('Appointments')
         ];
 
         $sts = $this->request->getParam('sts');
@@ -1014,7 +1019,8 @@ class PageController extends Controller
             'appt_gdpr_no_chb' => false,
             'appt_inline_style' => $pps[BackendUtils::PSN_PAGE_STYLE],
             'appt_hide_phone' => $pps[BackendUtils::PSN_HIDE_TEL],
-            'more_html' => ''
+            'more_html' => '',
+            'application' => $this->l->t('Appointments')
         ];
 
         // google recaptcha
@@ -1276,7 +1282,7 @@ class PageController extends Controller
             Util::addHeader("meta", ['name' => 'robots', 'content' => 'noindex']);
         }
 
-        Util::addStyle($this->appName, "form-xl-screen");
+//        Util::addStyle($this->appName, "form-xl-screen");
 
 
         return $tr;

@@ -1,0 +1,213 @@
+:root {
+  --original-icon-appt-public-page-dark: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogPHBhdGggZD0ibTEuNSAyYy0wLjI4IDIuOGUtNSAtMC41IDAuMjItMC41IDAuNXYxMWMyLjhlLTUgMC4yOCAwLjIyIDAuNSAwLjUgMC41aDEzYzAuMjgtMi44ZS01IDAuNS0wLjIyIDAuNS0wLjV2LTExYy0yLjhlLTUgLTAuMjgtMC4yMi0wLjUtMC41LTAuNWgtMTN6bTAuNSAzaDEydjhoLTEydi04em0zIDF2MWg2di0xaC02em0wIDJ2MWg2di0xaC02em0wIDJ2MWg0di0xaC0zeiIgZmlsbD0iIzAwMDAwMCIvPgo8L3N2Zz4K);
+  --original-icon-appt-public-page-white: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogPHBhdGggZD0ibTEuNSAyYy0wLjI4IDIuOGUtNSAtMC41IDAuMjItMC41IDAuNXYxMWMyLjhlLTUgMC4yOCAwLjIyIDAuNSAwLjUgMC41aDEzYzAuMjgtMi44ZS01IDAuNS0wLjIyIDAuNS0wLjV2LTExYy0yLjhlLTUgLTAuMjgtMC4yMi0wLjUtMC41LTAuNWgtMTN6bTAuNSAzaDEydjhoLTEydi04em0zIDF2MWg2di0xaC02em0wIDJ2MWg2di0xaC02em0wIDJ2MWg0di0xaC0zeiIgZmlsbD0iI2ZmZmZmZiIvPgo8L3N2Zz4K);
+  --original-icon-appt-public-pages-dark: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogPHBhdGggZD0ibTAuNSAyYy0wLjI4IDIuN2UtNSAtMC41IDAuMjItMC41IDAuNXY5YzIuN2UtNSAwLjI4IDAuMjIgMC41IDAuNSAwLjVoMTJjMC4yOC0yLjhlLTUgMC41LTAuMjIgMC41LTAuNXYtOWMtMi44ZS01IC0wLjI4LTAuMjItMC41LTAuNS0wLjV6bTAuNDkgMmgxMWwwLjAwNzggN2gtMTF6bTEyLjUgMmgxbDAuMDA3OCA3aC0xMWwtMC4wMDc4LTAuNTRoLTFsMC4wMDU5IDFjMi44ZS01IDAuMjggMC4yMiAwLjUgMC41IDAuNWgxMmMwLjI4LTIuOGUtNSAwLjUtMC4yMiAwLjUtMC41di05Yy0yLjhlLTUgLTAuMjgtMC4yMi0wLjQ3NC0wLjUtMC40N2wtMS41IDAuMDJ6bS05LjUtMXYxaDV2LTF6bTAgMnYxaDV2LTF6bTAgMnYxaDN2LTF6IiBmaWxsPSIjMDAwMDAwIi8+Cjwvc3ZnPgo=);
+  --original-icon-appt-public-pages-white: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogPHBhdGggZD0ibTAuNSAyYy0wLjI4IDIuN2UtNSAtMC41IDAuMjItMC41IDAuNXY5YzIuN2UtNSAwLjI4IDAuMjIgMC41IDAuNSAwLjVoMTJjMC4yOC0yLjhlLTUgMC41LTAuMjIgMC41LTAuNXYtOWMtMi44ZS01IC0wLjI4LTAuMjItMC41LTAuNS0wLjV6bTAuNDkgMmgxMWwwLjAwNzggN2gtMTF6bTEyLjUgMmgxbDAuMDA3OCA3aC0xMWwtMC4wMDc4LTAuNTRoLTFsMC4wMDU5IDFjMi44ZS01IDAuMjggMC4yMiAwLjUgMC41IDAuNWgxMmMwLjI4LTIuOGUtNSAwLjUtMC4yMiAwLjUtMC41di05Yy0yLjhlLTUgLTAuMjgtMC4yMi0wLjQ3NC0wLjUtMC40N2wtMS41IDAuMDJ6bS05LjUtMXYxaDV2LTF6bTAgMnYxaDV2LTF6bTAgMnYxaDN2LTF6IiBmaWxsPSIjZmZmZmZmIi8+Cjwvc3ZnPgo=);
+  --original-icon-appt-go-back-dark: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogPHBhdGggZD0ibTcuNSAxLjVjMC44OTcgMCAxLjM0IDEuMDkgMC42OTcgMS43MmwtMy43OCAzLjc4aDkuNTljMS4zNS0wLjAxOTEgMS4zNSAyLjAyIDAgMmgtOS41OWwzLjc4IDMuNzhjMC45ODIgMC45NDMtMC40NzIgMi40LTEuNDEgMS40MWwtNS40OS01LjQ5Yy0wLjM4Ny0wLjM4OC0wLjM5MS0xLjAyIDAtMS40MWw1LjQ5LTUuNDljMC4xODgtMC4xOTQgMC40NDctMC4zMDMgMC43MTctMC4zMDN6IiBmaWxsPSIjMDAwMDAwIi8+Cjwvc3ZnPgo=);
+  --original-icon-appt-go-back-white: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogPHBhdGggZD0ibTcuNSAxLjVjMC44OTcgMCAxLjM0IDEuMDkgMC42OTcgMS43MmwtMy43OCAzLjc4aDkuNTljMS4zNS0wLjAxOTEgMS4zNSAyLjAyIDAgMmgtOS41OWwzLjc4IDMuNzhjMC45ODIgMC45NDMtMC40NzIgMi40LTEuNDEgMS40MWwtNS40OS01LjQ5Yy0wLjM4Ny0wLjM4OC0wLjM5MS0xLjAyIDAtMS40MWw1LjQ5LTUuNDljMC4xODgtMC4xOTQgMC40NDctMC4zMDMgMC43MTctMC4zMDN6IiBmaWxsPSIjZmZmZmZmIi8+Cjwvc3ZnPgo=);
+  --original-icon-appt-calendar-clock-dark: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogICAgPHBhdGggZD0ibTMuNzg1IDFjLTAuNTE0NCAwLTAuOTI3NyAwLjQxMzMtMC45Mjc3IDAuOTI3N3YxLjM2N2MwIDAuNTE0NCAwLjQxMzMgMC45Mjk3IDAuOTI3NyAwLjkyOTcgMC41MTQ0IDAgMC45Mjk3LTAuNDE1MyAwLjkyOTctMC45Mjk3di0xLjM2N2MwLTAuNTE0NC0wLjQxNTMtMC45Mjc3LTAuOTI5Ny0wLjkyNzd6bTcuNDMgMGMtMC41MTQ0IDAtMC45Mjk3IDAuNDEzMy0wLjkyOTcgMC45Mjc3djEuMzY3YzAgMC41MTQ0IDAuNDE1MyAwLjkyOTcgMC45Mjk3IDAuOTI5NyAwLjUxNDQgMCAwLjkyNzctMC40MTUzIDAuOTI3Ny0wLjkyOTd2LTEuMzY3YzAtMC41MTQ0LTAuNDEzMy0wLjkyNzctMC45Mjc3LTAuOTI3N3ptLTYuMDM3IDEuODU3djAuNDM5NWMwIDAuNzcxNi0wLjYyMDkgMS4zOTMtMS4zOTMgMS4zOTMtMC43NzE2IDAtMS4zOTMtMC42MjA5LTEuMzkzLTEuMzkzdi0wLjM4MDljLTAuODAyMyAwLjIwNTQtMS4zOTMgMC45MzA2LTEuMzkzIDEuNzk5djcuNDI4YzAgMS4wMjkgMC44Mjg2IDEuODU3IDEuODU3IDEuODU3aDUuNTI3YzAuNzAzNSAwLjYxNDIgMS42MTIgMSAyLjYxNSAxIDIuMjAzIDAgNC0xLjc5NyA0LTQgMC0xLjAwMy0wLjM4NTgtMS45MTItMS0yLjYxNXYtMy42N2MwLTAuODY4Mi0wLjU5MDMtMS41OTMtMS4zOTMtMS43OTl2MC4zODA5YzAgMC43NzE2LTAuNjIwOSAxLjM5My0xLjM5MyAxLjM5M3MtMS4zOTMtMC42MjA5LTEuMzkzLTEuMzkzdi0wLjQzOTVoLTQuNjQ1em0tMi43NDIgMy4yNzVoMTAuMTNjMC4wMjU3MiAwIDAuMDQyOTcgMC4wMTcyNSAwLjA0Mjk3IDAuMDQyOTd2MS4xNjZjLTAuNDkyNC0wLjIxNzQtMS4wMzQtMC4zNDE4LTEuNjA1LTAuMzQxOC0yLjIwMyAxZS03IC00IDEuNzk3LTQgNCAwIDAuNTcyMiAwLjEyNTcgMS4xMTQgMC4zNDM4IDEuNjA3aC00LjkwOGMtMC4wMjU3MiAwLTAuMDQyOTctMC4wMTcyNi0wLjA0Mjk3LTAuMDQyOTd2LTYuMzg5YzAtMC4wMjU3MiAwLjAxNzI5LTAuMDQyOTcgMC4wNDI5Ny0wLjA0Mjk3em04LjU2NCAxLjkxOGMxLjYzNSAwIDIuOTQ5IDEuMzE0IDIuOTQ5IDIuOTQ5IDAgMS42MzUtMS4zMTQgMi45NDktMi45NDkgMi45NDktMS42MzUgMC0yLjk0OS0xLjMxNC0yLjk0OS0yLjk0OSAzZS03IC0xLjYzNSAxLjMxNC0yLjk0OSAyLjk0OS0yLjk0OXptLTAuNSAwLjY4MTZ2Mi41NzZsMi4yNzcgMS4xMzkgMC40NDUzLTAuODk0NS0xLjcyMy0wLjg2MTN2LTEuOTU5aC0xeiIgZmlsbD0iIzAwMDAwMCIvPgo8L3N2Zz4=);
+  --original-icon-appt-calendar-clock-white: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogICAgPHBhdGggZD0ibTMuNzg1IDFjLTAuNTE0NCAwLTAuOTI3NyAwLjQxMzMtMC45Mjc3IDAuOTI3N3YxLjM2N2MwIDAuNTE0NCAwLjQxMzMgMC45Mjk3IDAuOTI3NyAwLjkyOTcgMC41MTQ0IDAgMC45Mjk3LTAuNDE1MyAwLjkyOTctMC45Mjk3di0xLjM2N2MwLTAuNTE0NC0wLjQxNTMtMC45Mjc3LTAuOTI5Ny0wLjkyNzd6bTcuNDMgMGMtMC41MTQ0IDAtMC45Mjk3IDAuNDEzMy0wLjkyOTcgMC45Mjc3djEuMzY3YzAgMC41MTQ0IDAuNDE1MyAwLjkyOTcgMC45Mjk3IDAuOTI5NyAwLjUxNDQgMCAwLjkyNzctMC40MTUzIDAuOTI3Ny0wLjkyOTd2LTEuMzY3YzAtMC41MTQ0LTAuNDEzMy0wLjkyNzctMC45Mjc3LTAuOTI3N3ptLTYuMDM3IDEuODU3djAuNDM5NWMwIDAuNzcxNi0wLjYyMDkgMS4zOTMtMS4zOTMgMS4zOTMtMC43NzE2IDAtMS4zOTMtMC42MjA5LTEuMzkzLTEuMzkzdi0wLjM4MDljLTAuODAyMyAwLjIwNTQtMS4zOTMgMC45MzA2LTEuMzkzIDEuNzk5djcuNDI4YzAgMS4wMjkgMC44Mjg2IDEuODU3IDEuODU3IDEuODU3aDUuNTI3YzAuNzAzNSAwLjYxNDIgMS42MTIgMSAyLjYxNSAxIDIuMjAzIDAgNC0xLjc5NyA0LTQgMC0xLjAwMy0wLjM4NTgtMS45MTItMS0yLjYxNXYtMy42N2MwLTAuODY4Mi0wLjU5MDMtMS41OTMtMS4zOTMtMS43OTl2MC4zODA5YzAgMC43NzE2LTAuNjIwOSAxLjM5My0xLjM5MyAxLjM5M3MtMS4zOTMtMC42MjA5LTEuMzkzLTEuMzkzdi0wLjQzOTVoLTQuNjQ1em0tMi43NDIgMy4yNzVoMTAuMTNjMC4wMjU3MiAwIDAuMDQyOTcgMC4wMTcyNSAwLjA0Mjk3IDAuMDQyOTd2MS4xNjZjLTAuNDkyNC0wLjIxNzQtMS4wMzQtMC4zNDE4LTEuNjA1LTAuMzQxOC0yLjIwMyAxZS03IC00IDEuNzk3LTQgNCAwIDAuNTcyMiAwLjEyNTcgMS4xMTQgMC4zNDM4IDEuNjA3aC00LjkwOGMtMC4wMjU3MiAwLTAuMDQyOTctMC4wMTcyNi0wLjA0Mjk3LTAuMDQyOTd2LTYuMzg5YzAtMC4wMjU3MiAwLjAxNzI5LTAuMDQyOTcgMC4wNDI5Ny0wLjA0Mjk3em04LjU2NCAxLjkxOGMxLjYzNSAwIDIuOTQ5IDEuMzE0IDIuOTQ5IDIuOTQ5IDAgMS42MzUtMS4zMTQgMi45NDktMi45NDkgMi45NDktMS42MzUgMC0yLjk0OS0xLjMxNC0yLjk0OS0yLjk0OSAzZS03IC0xLjYzNSAxLjMxNC0yLjk0OSAyLjk0OS0yLjk0OXptLTAuNSAwLjY4MTZ2Mi41NzZsMi4yNzcgMS4xMzkgMC40NDUzLTAuODk0NS0xLjcyMy0wLjg2MTN2LTEuOTU5aC0xeiIgZmlsbD0iI2ZmZmZmZiIvPgo8L3N2Zz4=);
+  --original-icon-appt-timeslot-settings-dark: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogPHBhdGggZD0ibTggMWMtMy45IDAtNyAzLjEtNyA3czMuMSA3IDcgNyA3LTMuMSA3LTctMy4xLTctNy03em0wIDJ2NWw0LjkgMC43M2MtMC4zNSAyLjQtMi40IDQuMy00LjkgNC4zLTIuOCAwLTUtMi4yLTUtNXMyLjItNSA1LTV6IiBmaWxsPSIjMDAwMDAwIi8+Cjwvc3ZnPgo=);
+  --original-icon-appt-timeslot-settings-white: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogPHBhdGggZD0ibTggMWMtMy45IDAtNyAzLjEtNyA3czMuMSA3IDcgNyA3LTMuMSA3LTctMy4xLTctNy03em0wIDJ2NWw0LjkgMC43M2MtMC4zNSAyLjQtMi40IDQuMy00LjkgNC4zLTIuOCAwLTUtMi4yLTUtNXMyLjItNSA1LTV6IiBmaWxsPSIjZmZmZmZmIi8+Cjwvc3ZnPgo=);
+  --original-icon-appt-calendar-dark: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KIDxwYXRoIGQ9Im00IDAuNTVjLTAuNSAwLTEgMC41LTEgMXYyYzAgMC41IDAuNSAxIDEgMXMxLTAuNSAxLTF2LTJjMC0wLjUtMC41LTEtMS0xem04IDBjLTAuNSAwLTEgMC41LTEgMXYyYzAgMC41IDAuNSAxIDEgMXMxLTAuNSAxLTF2LTJjMC0wLjUtMC41LTEtMS0xem0tNi41IDJ2MWMwIDAuODMxLTAuNSAxLjUtMS41IDEuNXMtMS41LTAuNS0xLjUtMS41di0wLjkzNzVjLTAuODg0MSAwLjIyNy0xLjUgMS4wMjUtMS41IDEuOTM4djguNDVjMCAxLjEwOCAwLjg5MiAyIDIgMmgxMGMxLjEwOCAwIDItMC44OTIgMi0ydi04LjQ1YzAtMC45MTI4LTAuNjE1OS0xLjcxLTEuNS0xLjkzOHYwLjkzNzVjMCAwLjgzMS0wLjUgMS41LTEuNSAxLjVzLTEuNS0wLjUtMS41LTEuNXYtMXptOCAzLjk1djYuNWgtMTF2LTYuNXoiIGZpbGw9IiMwMDAwMDAiLz4KPC9zdmc+Cg==);
+  --original-icon-appt-calendar-white: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KIDxwYXRoIGQ9Im00IDAuNTVjLTAuNSAwLTEgMC41LTEgMXYyYzAgMC41IDAuNSAxIDEgMXMxLTAuNSAxLTF2LTJjMC0wLjUtMC41LTEtMS0xem04IDBjLTAuNSAwLTEgMC41LTEgMXYyYzAgMC41IDAuNSAxIDEgMXMxLTAuNSAxLTF2LTJjMC0wLjUtMC41LTEtMS0xem0tNi41IDJ2MWMwIDAuODMxLTAuNSAxLjUtMS41IDEuNXMtMS41LTAuNS0xLjUtMS41di0wLjkzNzVjLTAuODg0MSAwLjIyNy0xLjUgMS4wMjUtMS41IDEuOTM4djguNDVjMCAxLjEwOCAwLjg5MiAyIDIgMmgxMGMxLjEwOCAwIDItMC44OTIgMi0ydi04LjQ1YzAtMC45MTI4LTAuNjE1OS0xLjcxLTEuNS0xLjkzOHYwLjkzNzVjMCAwLjgzMS0wLjUgMS41LTEuNSAxLjVzLTEuNS0wLjUtMS41LTEuNXYtMXptOCAzLjk1djYuNWgtMTF2LTYuNXoiIGZpbGw9IiNmZmZmZmYiLz4KPC9zdmc+Cg==);
+  --original-icon-appt-key-dark: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogPGNpcmNsZSBjeD0iNSIgY3k9IjEwIiByPSIzIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMiIvPgogPHBhdGggZD0ibTcuNyA3LjggNS44LTUuOCIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9IiMwMDAwMDAiLz4KIDxwYXRoIGQ9Ik0gMTEuNSwzLjUgMTQsNiIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjEuNSIgZmlsbD0iIzAwMDAwMCIvPgogPHBhdGggZD0ibTkuMyA1IDIuNSAyLjUiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLXdpZHRoPSIxLjUiIGZpbGw9IiMwMDAwMDAiLz4KPC9zdmc+Cg==);
+  --original-icon-appt-key-white: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogPGNpcmNsZSBjeD0iNSIgY3k9IjEwIiByPSIzIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIvPgogPHBhdGggZD0ibTcuNyA3LjggNS44LTUuOCIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9IiNmZmZmZmYiLz4KIDxwYXRoIGQ9Ik0gMTEuNSwzLjUgMTQsNiIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjEuNSIgZmlsbD0iI2ZmZmZmZiIvPgogPHBhdGggZD0ibTkuMyA1IDIuNSAyLjUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIGZpbGw9IiNmZmZmZmYiLz4KPC9zdmc+Cg==);
+  --original-icon-sched-mode-dark: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im0yLjgzMiAxLjE4NTUtMi44MTQ1IDIuODE0NSAyLjgxNDUgMi44MTQ1IDEuMzQxOC0xLjM0NTctMC40NDUzMS0wLjQ0NTMxYzEuMzU3OSAwLjAxMzgyNCAyLjAyNDMgMC4yODkyNyAyLjUwMzkgMC45ODQzOCAwLjE2OTM4LTAuNTk3ODYgMC40MzIxMS0xLjIxNzQgMC44NDU3LTEuODA4Ni0xLjA1NjUtMC44NzA4My0yLjM5NDgtMS4wMzY0LTMuNDg2My0xLjA4NTlsMC41ODIwMy0wLjU4MjAzem0xMC45NTUgMC42MTUyM2MtMC44ODA1MyAwLTEuNjEzMiAwLjU1MTUzLTEuOTYyOSAxLjMwNjYtNy4xOTk0IDAuNzI2MzctMi41MDQxIDcuNjA3Mi03LjcwMzEgNy44NzUtMC4zNzQzNS0wLjY4NTcxLTEuMDY3My0xLjE4MTYtMS44OTY1LTEuMTgxNi0xLjIwNTcgMC0yLjE5OTIgMC45OTM1MS0yLjE5OTIgMi4xOTkyIDAgMS4yMDU3IDAuOTkzNSAyLjE5OTIgMi4xOTkyIDIuMTk5MiAwLjg4MTA5IDAgMS42MTU0LTAuNTUyNjcgMS45NjQ4LTEuMzA4NiA3LjA5MTgtMC42MzY4NyAyLjUzMDItNy42MzE2IDcuNzAzMS03Ljg3MTEgMC4zNzQ1NiAwLjY4NDk4IDEuMDY1OSAxLjE3OTcgMS44OTQ1IDEuMTc5NyAxLjIwNTcgMCAyLjIwMTItMC45OTM1MSAyLjIwMTItMi4xOTkyIDAtMS4yMDU3LTAuOTk1NDEtMi4xOTkyLTIuMjAxMi0yLjE5OTJ6bS0wLjYwNTQ3IDcuMzg0OC0xLjM0MzggMS4zNDU3IDAuNDQ1MzEgMC40NDUzMWMtMS4zNzctMC4wMjA1NjItMi4wMzIzLTAuMjk4LTIuNTIzNC0xLjAwNTktMC4xNjkwMiAwLjYwMDU3LTAuNDI4NjQgMS4yMjQ4LTAuODM1OTQgMS44MjAzIDEuMTI5IDAuOTI1NzIgMi4zNTk4IDEuMDQ1MyAzLjQ4ODMgMS4xMDM1bC0wLjU3NDIyIDAuNTc0MjIgMS4zNDM4IDEuMzQ1NyAyLjgxNDUtMi44MTQ1eiIgZmlsbD0iIzAwMDAwMCIvPjwvc3ZnPg==);
+  --original-icon-sched-mode-white: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im0yLjgzMiAxLjE4NTUtMi44MTQ1IDIuODE0NSAyLjgxNDUgMi44MTQ1IDEuMzQxOC0xLjM0NTctMC40NDUzMS0wLjQ0NTMxYzEuMzU3OSAwLjAxMzgyNCAyLjAyNDMgMC4yODkyNyAyLjUwMzkgMC45ODQzOCAwLjE2OTM4LTAuNTk3ODYgMC40MzIxMS0xLjIxNzQgMC44NDU3LTEuODA4Ni0xLjA1NjUtMC44NzA4My0yLjM5NDgtMS4wMzY0LTMuNDg2My0xLjA4NTlsMC41ODIwMy0wLjU4MjAzem0xMC45NTUgMC42MTUyM2MtMC44ODA1MyAwLTEuNjEzMiAwLjU1MTUzLTEuOTYyOSAxLjMwNjYtNy4xOTk0IDAuNzI2MzctMi41MDQxIDcuNjA3Mi03LjcwMzEgNy44NzUtMC4zNzQzNS0wLjY4NTcxLTEuMDY3My0xLjE4MTYtMS44OTY1LTEuMTgxNi0xLjIwNTcgMC0yLjE5OTIgMC45OTM1MS0yLjE5OTIgMi4xOTkyIDAgMS4yMDU3IDAuOTkzNSAyLjE5OTIgMi4xOTkyIDIuMTk5MiAwLjg4MTA5IDAgMS42MTU0LTAuNTUyNjcgMS45NjQ4LTEuMzA4NiA3LjA5MTgtMC42MzY4NyAyLjUzMDItNy42MzE2IDcuNzAzMS03Ljg3MTEgMC4zNzQ1NiAwLjY4NDk4IDEuMDY1OSAxLjE3OTcgMS44OTQ1IDEuMTc5NyAxLjIwNTcgMCAyLjIwMTItMC45OTM1MSAyLjIwMTItMi4xOTkyIDAtMS4yMDU3LTAuOTk1NDEtMi4xOTkyLTIuMjAxMi0yLjE5OTJ6bS0wLjYwNTQ3IDcuMzg0OC0xLjM0MzggMS4zNDU3IDAuNDQ1MzEgMC40NDUzMWMtMS4zNzctMC4wMjA1NjItMi4wMzIzLTAuMjk4LTIuNTIzNC0xLjAwNTktMC4xNjkwMiAwLjYwMDU3LTAuNDI4NjQgMS4yMjQ4LTAuODM1OTQgMS44MjAzIDEuMTI5IDAuOTI1NzIgMi4zNTk4IDEuMDQ1MyAzLjQ4ODMgMS4xMDM1bC0wLjU3NDIyIDAuNTc0MjIgMS4zNDM4IDEuMzQ1NyAyLjgxNDUtMi44MTQ1eiIgZmlsbD0iI2ZmZmZmZiIvPjwvc3ZnPg==);
+  --original-icon-sched-mode-wt-dark: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KIDxtZXRhZGF0YT4KICA8cmRmOlJERj4KICAgPGNjOldvcmsgcmRmOmFib3V0PSIiPgogICAgPGRjOmZvcm1hdD5pbWFnZS9zdmcreG1sPC9kYzpmb3JtYXQ+CiAgICA8ZGM6dHlwZSByZGY6cmVzb3VyY2U9Imh0dHA6Ly9wdXJsLm9yZy9kYy9kY21pdHlwZS9TdGlsbEltYWdlIi8+CiAgICA8ZGM6dGl0bGUvPgogICA8L2NjOldvcms+CiAgPC9yZGY6UkRGPgogPC9tZXRhZGF0YT4KIDxwYXRoIGQ9Im0xIDN2Mmg0di0yaC00em01IDB2Mmg0di0yaC00em01IDB2Mmg0di0yaC00em0tMTAgNHYyaDR2LTJoLTR6bTUgMHYyaDR2LTJoLTR6bTUgMHYyaDR2LTJoLTR6bS0xMCA0djJoNHYtMmgtNHptNSAwdjJoNHYtMmgtNHoiIGZpbGw9IiMwMDAwMDAiLz4KPC9zdmc+Cg==);
+  --original-icon-sched-mode-wt-white: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KIDxtZXRhZGF0YT4KICA8cmRmOlJERj4KICAgPGNjOldvcmsgcmRmOmFib3V0PSIiPgogICAgPGRjOmZvcm1hdD5pbWFnZS9zdmcreG1sPC9kYzpmb3JtYXQ+CiAgICA8ZGM6dHlwZSByZGY6cmVzb3VyY2U9Imh0dHA6Ly9wdXJsLm9yZy9kYy9kY21pdHlwZS9TdGlsbEltYWdlIi8+CiAgICA8ZGM6dGl0bGUvPgogICA8L2NjOldvcms+CiAgPC9yZGY6UkRGPgogPC9tZXRhZGF0YT4KIDxwYXRoIGQ9Im0xIDN2Mmg0di0yaC00em01IDB2Mmg0di0yaC00em01IDB2Mmg0di0yaC00em0tMTAgNHYyaDR2LTJoLTR6bTUgMHYyaDR2LTJoLTR6bTUgMHYyaDR2LTJoLTR6bS0xMCA0djJoNHYtMmgtNHptNSAwdjJoNHYtMmgtNHoiIGZpbGw9IiNmZmZmZmYiLz4KPC9zdmc+Cg==);
+  --original-icon-appt-reminder-dark: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogPHBhdGggZD0ibTguMDAzOCAxYy0xLjA0NDIgMC0xLjk1MjYgMC42NTkzLTIuMzI0MiAxLjU3OTYtMS41ODk0IDAuODM5MzEtMi42ODE2IDIuNTA4OS0yLjY4MTYgNC40MjA2djIuNzY2OGwtMC44OTI1NyAxLjc4NjZhMS4wMDAxIDAuOTk5ODEgMCAwIDAgMC44OTI1NyAxLjQ0NjloMi42MzY3YzAuMzM3OTUgMC45ODIwNCAxLjI3OSAxLjY5NjggMi4zNjkxIDEuNjk2OCAxLjA5MDIgMCAyLjAyNzItMC43MTQ3MiAyLjM2MzMtMS42OTY4aDIuNjM0OGExLjAwMDEgMC45OTk4MSAwIDAgMCAwLjg5MjU3LTEuNDQ2OWwtMC44OTI1Ny0xLjc4NjZ2LTIuNzY2OGMwLTEuOTE1MS0xLjA5MTctMy41ODY3LTIuNjgzNi00LjQyNDUtMC4zNzA2MS0wLjkxODE1LTEuMjcxOC0xLjU3NTctMi4zMTQ1LTEuNTc1N3ptLTAuMDc4MTI0IDMuMDA1YzAuMDI1OTI4LTYuNDQzZS00IDAuMDUyMDUxIDAgMC4wNzgxMjggMCAxLjY2ODcgOGUtNyAyLjk5NjEgMS4zMjcgMi45OTYxIDIuOTk1MnYzLjAwM2ExLjAwMDEgMC45OTk4MSAwIDAgMCAwLjEwMzUyIDAuNDQzMjNsMC4yODEyNCAwLjU1MjU4aC02Ljc2MTZsMC4yNzM0NC0wLjU1MjU4YTEuMDAwMSAwLjk5OTgxIDAgMCAwIDAuMTAzNTItMC40NDMyM3YtMy4wMDNjMC0xLjY0MjEgMS4yOTM2LTIuOTU0NiAyLjkyNTgtMi45OTUyeiIgZmlsbD0iIzAwMDAwMCIvPgo8L3N2Zz4K);
+  --original-icon-appt-reminder-white: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogPHBhdGggZD0ibTguMDAzOCAxYy0xLjA0NDIgMC0xLjk1MjYgMC42NTkzLTIuMzI0MiAxLjU3OTYtMS41ODk0IDAuODM5MzEtMi42ODE2IDIuNTA4OS0yLjY4MTYgNC40MjA2djIuNzY2OGwtMC44OTI1NyAxLjc4NjZhMS4wMDAxIDAuOTk5ODEgMCAwIDAgMC44OTI1NyAxLjQ0NjloMi42MzY3YzAuMzM3OTUgMC45ODIwNCAxLjI3OSAxLjY5NjggMi4zNjkxIDEuNjk2OCAxLjA5MDIgMCAyLjAyNzItMC43MTQ3MiAyLjM2MzMtMS42OTY4aDIuNjM0OGExLjAwMDEgMC45OTk4MSAwIDAgMCAwLjg5MjU3LTEuNDQ2OWwtMC44OTI1Ny0xLjc4NjZ2LTIuNzY2OGMwLTEuOTE1MS0xLjA5MTctMy41ODY3LTIuNjgzNi00LjQyNDUtMC4zNzA2MS0wLjkxODE1LTEuMjcxOC0xLjU3NTctMi4zMTQ1LTEuNTc1N3ptLTAuMDc4MTI0IDMuMDA1YzAuMDI1OTI4LTYuNDQzZS00IDAuMDUyMDUxIDAgMC4wNzgxMjggMCAxLjY2ODcgOGUtNyAyLjk5NjEgMS4zMjcgMi45OTYxIDIuOTk1MnYzLjAwM2ExLjAwMDEgMC45OTk4MSAwIDAgMCAwLjEwMzUyIDAuNDQzMjNsMC4yODEyNCAwLjU1MjU4aC02Ljc2MTZsMC4yNzM0NC0wLjU1MjU4YTEuMDAwMSAwLjk5OTgxIDAgMCAwIDAuMTAzNTItMC40NDMyM3YtMy4wMDNjMC0xLjY0MjEgMS4yOTM2LTIuOTU0NiAyLjkyNTgtMi45OTUyeiIgZmlsbD0iI2ZmZmZmZiIvPgo8L3N2Zz4K);
+  --original-icon-appt-private-mode-page-dark: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogPHBhdGggZD0ibTIgMmMtMC41NTQgMC0xIDAuNDQ2LTEgMXY4YzAgMC41NTQgMC40NDYgMSAxIDFoNXYxaC0ydjJoNnYtMmgtMnYtMWg1YzAuNTU0IDAgMS0wLjQ0NiAxLTF2LThjMC0wLjU1NC0wLjQ0Ni0xLTEtMXptMSAyaDEwdjZoLTEwem01IDAuNDk5Yy0wLjg0MzMgMC0xLjQ0MyAwLjYwMDctMS40NTUgMS4yODd2MC44MDI3aC0wLjU0NDl2Mi40MWg0di0yLjQxaC0wLjU0NDl2LTAuODAyN2MwLTAuNzI5Ni0wLjY1NTEtMS4yNzktMS40NTUtMS4yODd6bTAgMC42NDQ1YzAuNDU0NSAwIDAuNzI2NiAwLjMwOTMgMC43MjY2IDAuNjQyNnYwLjgwMjdoLTEuNDUzdi0wLjgwMjdjMC0wLjM3NzQgMC4yNzA5LTAuNjQyNiAwLjcyNjYtMC42NDI2eiIgZmlsbD0iIzAwMDAwMCIvPgo8L3N2Zz4K);
+  --original-icon-appt-private-mode-page-white: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDE2IDE2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogPHBhdGggZD0ibTIgMmMtMC41NTQgMC0xIDAuNDQ2LTEgMXY4YzAgMC41NTQgMC40NDYgMSAxIDFoNXYxaC0ydjJoNnYtMmgtMnYtMWg1YzAuNTU0IDAgMS0wLjQ0NiAxLTF2LThjMC0wLjU1NC0wLjQ0Ni0xLTEtMXptMSAyaDEwdjZoLTEwem01IDAuNDk5Yy0wLjg0MzMgMC0xLjQ0MyAwLjYwMDctMS40NTUgMS4yODd2MC44MDI3aC0wLjU0NDl2Mi40MWg0di0yLjQxaC0wLjU0NDl2LTAuODAyN2MwLTAuNzI5Ni0wLjY1NTEtMS4yNzktMS40NTUtMS4yODd6bTAgMC42NDQ1YzAuNDU0NSAwIDAuNzI2NiAwLjMwOTMgMC43MjY2IDAuNjQyNnYwLjgwMjdoLTEuNDUzdi0wLjgwMjdjMC0wLjM3NzQgMC4yNzA5LTAuNjQyNiAwLjcyNjYtMC42NDI2eiIgZmlsbD0iI2ZmZmZmZiIvPgo8L3N2Zz4K);
+}
+
+body {
+  --icon-appt-public-page-dark: var(--original-icon-appt-public-page-dark);
+  --icon-appt-public-page-white: var(--original-icon-appt-public-page-white);
+  --icon-appt-public-pages-dark: var(--original-icon-appt-public-pages-dark);
+  --icon-appt-public-pages-white: var(--original-icon-appt-public-pages-white);
+  --icon-appt-go-back-dark: var(--original-icon-appt-go-back-dark);
+  --icon-appt-go-back-white: var(--original-icon-appt-go-back-white);
+  --icon-appt-calendar-clock-dark: var(--original-icon-appt-calendar-clock-dark);
+  --icon-appt-calendar-clock-white: var(--original-icon-appt-calendar-clock-white);
+  --icon-appt-timeslot-settings-dark: var(--original-icon-appt-timeslot-settings-dark);
+  --icon-appt-timeslot-settings-white: var(--original-icon-appt-timeslot-settings-white);
+  --icon-appt-calendar-dark: var(--original-icon-appt-calendar-dark);
+  --icon-appt-calendar-white: var(--original-icon-appt-calendar-white);
+  --icon-appt-key-dark: var(--original-icon-appt-key-dark);
+  --icon-appt-key-white: var(--original-icon-appt-key-white);
+  --icon-sched-mode-dark: var(--original-icon-sched-mode-dark);
+  --icon-sched-mode-white: var(--original-icon-sched-mode-white);
+  --icon-sched-mode-wt-dark: var(--original-icon-sched-mode-wt-dark);
+  --icon-sched-mode-wt-white: var(--original-icon-sched-mode-wt-white);
+  --icon-appt-reminder-dark: var(--original-icon-appt-reminder-dark);
+  --icon-appt-reminder-white: var(--original-icon-appt-reminder-white);
+  --icon-appt-private-mode-page-dark: var(--original-icon-appt-private-mode-page-dark);
+  --icon-appt-private-mode-page-white: var(--original-icon-appt-private-mode-page-white);
+}
+body .icon-appt-public-page,
+body .icon-appt-public-page-dark {
+  background-image: var(--icon-appt-public-page-dark);
+}
+body .icon-appt-public-page-white,
+body .icon-appt-public-page.icon-white {
+  background-image: var(--icon-appt-public-page-white);
+}
+body .icon-appt-public-pages,
+body .icon-appt-public-pages-dark {
+  background-image: var(--icon-appt-public-pages-dark);
+}
+body .icon-appt-public-pages-white,
+body .icon-appt-public-pages.icon-white {
+  background-image: var(--icon-appt-public-pages-white);
+}
+body .icon-appt-go-back,
+body .icon-appt-go-back-dark {
+  background-image: var(--icon-appt-go-back-dark);
+}
+body .icon-appt-go-back-white,
+body .icon-appt-go-back.icon-white {
+  background-image: var(--icon-appt-go-back-white);
+}
+body .icon-appt-calendar-clock,
+body .icon-appt-calendar-clock-dark {
+  background-image: var(--icon-appt-calendar-clock-dark);
+}
+body .icon-appt-calendar-clock-white,
+body .icon-appt-calendar-clock.icon-white {
+  background-image: var(--icon-appt-calendar-clock-white);
+}
+body .icon-appt-timeslot-settings,
+body .icon-appt-timeslot-settings-dark {
+  background-image: var(--icon-appt-timeslot-settings-dark);
+}
+body .icon-appt-timeslot-settings-white,
+body .icon-appt-timeslot-settings.icon-white {
+  background-image: var(--icon-appt-timeslot-settings-white);
+}
+body .icon-appt-calendar,
+body .icon-appt-calendar-dark {
+  background-image: var(--icon-appt-calendar-dark);
+}
+body .icon-appt-calendar-white,
+body .icon-appt-calendar.icon-white {
+  background-image: var(--icon-appt-calendar-white);
+}
+body .icon-appt-key,
+body .icon-appt-key-dark {
+  background-image: var(--icon-appt-key-dark);
+}
+body .icon-appt-key-white,
+body .icon-appt-key.icon-white {
+  background-image: var(--icon-appt-key-white);
+}
+body .icon-sched-mode,
+body .icon-sched-mode-dark {
+  background-image: var(--icon-sched-mode-dark);
+}
+body .icon-sched-mode-white,
+body .icon-sched-mode.icon-white {
+  background-image: var(--icon-sched-mode-white);
+}
+body .icon-sched-mode-wt,
+body .icon-sched-mode-wt-dark {
+  background-image: var(--icon-sched-mode-wt-dark);
+}
+body .icon-sched-mode-wt-white,
+body .icon-sched-mode-wt.icon-white {
+  background-image: var(--icon-sched-mode-wt-white);
+}
+body .icon-appt-reminder,
+body .icon-appt-reminder-dark {
+  background-image: var(--icon-appt-reminder-dark);
+}
+body .icon-appt-reminder-white,
+body .icon-appt-reminder.icon-white {
+  background-image: var(--icon-appt-reminder-white);
+}
+body .icon-appt-private-mode-page,
+body .icon-appt-private-mode-page-dark {
+  background-image: var(--icon-appt-private-mode-page-dark);
+}
+body .icon-appt-private-mode-page-white,
+body .icon-appt-private-mode-page.icon-white {
+  background-image: var(--icon-appt-private-mode-page-white);
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    --icon-appt-public-page-white: var(--original-icon-appt-public-page-dark);
+    --icon-appt-public-page-dark: var(--original-icon-appt-public-page-white);
+    --icon-appt-public-pages-white: var(--original-icon-appt-public-pages-dark);
+    --icon-appt-public-pages-dark: var(--original-icon-appt-public-pages-white);
+    --icon-appt-go-back-white: var(--original-icon-appt-go-back-dark);
+    --icon-appt-go-back-dark: var(--original-icon-appt-go-back-white);
+    --icon-appt-calendar-clock-white: var(--original-icon-appt-calendar-clock-dark);
+    --icon-appt-calendar-clock-dark: var(--original-icon-appt-calendar-clock-white);
+    --icon-appt-timeslot-settings-white: var(--original-icon-appt-timeslot-settings-dark);
+    --icon-appt-timeslot-settings-dark: var(--original-icon-appt-timeslot-settings-white);
+    --icon-appt-calendar-white: var(--original-icon-appt-calendar-dark);
+    --icon-appt-calendar-dark: var(--original-icon-appt-calendar-white);
+    --icon-appt-key-white: var(--original-icon-appt-key-dark);
+    --icon-appt-key-dark: var(--original-icon-appt-key-white);
+    --icon-sched-mode-white: var(--original-icon-sched-mode-dark);
+    --icon-sched-mode-dark: var(--original-icon-sched-mode-white);
+    --icon-sched-mode-wt-white: var(--original-icon-sched-mode-wt-dark);
+    --icon-sched-mode-wt-dark: var(--original-icon-sched-mode-wt-white);
+    --icon-appt-reminder-white: var(--original-icon-appt-reminder-dark);
+    --icon-appt-reminder-dark: var(--original-icon-appt-reminder-white);
+    --icon-appt-private-mode-page-white: var(--original-icon-appt-private-mode-page-dark);
+    --icon-appt-private-mode-page-dark: var(--original-icon-appt-private-mode-page-white);
+  }
+}
+[data-themes*=light] {
+  --icon-appt-public-page-dark: var(--original-icon-appt-public-page-dark);
+  --icon-appt-public-page-white: var(--original-icon-appt-public-page-white);
+  --icon-appt-public-pages-dark: var(--original-icon-appt-public-pages-dark);
+  --icon-appt-public-pages-white: var(--original-icon-appt-public-pages-white);
+  --icon-appt-go-back-dark: var(--original-icon-appt-go-back-dark);
+  --icon-appt-go-back-white: var(--original-icon-appt-go-back-white);
+  --icon-appt-calendar-clock-dark: var(--original-icon-appt-calendar-clock-dark);
+  --icon-appt-calendar-clock-white: var(--original-icon-appt-calendar-clock-white);
+  --icon-appt-timeslot-settings-dark: var(--original-icon-appt-timeslot-settings-dark);
+  --icon-appt-timeslot-settings-white: var(--original-icon-appt-timeslot-settings-white);
+  --icon-appt-calendar-dark: var(--original-icon-appt-calendar-dark);
+  --icon-appt-calendar-white: var(--original-icon-appt-calendar-white);
+  --icon-appt-key-dark: var(--original-icon-appt-key-dark);
+  --icon-appt-key-white: var(--original-icon-appt-key-white);
+  --icon-sched-mode-dark: var(--original-icon-sched-mode-dark);
+  --icon-sched-mode-white: var(--original-icon-sched-mode-white);
+  --icon-sched-mode-wt-dark: var(--original-icon-sched-mode-wt-dark);
+  --icon-sched-mode-wt-white: var(--original-icon-sched-mode-wt-white);
+  --icon-appt-reminder-dark: var(--original-icon-appt-reminder-dark);
+  --icon-appt-reminder-white: var(--original-icon-appt-reminder-white);
+  --icon-appt-private-mode-page-dark: var(--original-icon-appt-private-mode-page-dark);
+  --icon-appt-private-mode-page-white: var(--original-icon-appt-private-mode-page-white);
+}
+
+[data-themes*=dark] {
+  --icon-appt-public-page-white: var(--original-icon-appt-public-page-dark);
+  --icon-appt-public-page-dark: var(--original-icon-appt-public-page-white);
+  --icon-appt-public-pages-white: var(--original-icon-appt-public-pages-dark);
+  --icon-appt-public-pages-dark: var(--original-icon-appt-public-pages-white);
+  --icon-appt-go-back-white: var(--original-icon-appt-go-back-dark);
+  --icon-appt-go-back-dark: var(--original-icon-appt-go-back-white);
+  --icon-appt-calendar-clock-white: var(--original-icon-appt-calendar-clock-dark);
+  --icon-appt-calendar-clock-dark: var(--original-icon-appt-calendar-clock-white);
+  --icon-appt-timeslot-settings-white: var(--original-icon-appt-timeslot-settings-dark);
+  --icon-appt-timeslot-settings-dark: var(--original-icon-appt-timeslot-settings-white);
+  --icon-appt-calendar-white: var(--original-icon-appt-calendar-dark);
+  --icon-appt-calendar-dark: var(--original-icon-appt-calendar-white);
+  --icon-appt-key-white: var(--original-icon-appt-key-dark);
+  --icon-appt-key-dark: var(--original-icon-appt-key-white);
+  --icon-sched-mode-white: var(--original-icon-sched-mode-dark);
+  --icon-sched-mode-dark: var(--original-icon-sched-mode-white);
+  --icon-sched-mode-wt-white: var(--original-icon-sched-mode-wt-dark);
+  --icon-sched-mode-wt-dark: var(--original-icon-sched-mode-wt-white);
+  --icon-appt-reminder-white: var(--original-icon-appt-reminder-dark);
+  --icon-appt-reminder-dark: var(--original-icon-appt-reminder-white);
+  --icon-appt-private-mode-page-white: var(--original-icon-appt-private-mode-page-dark);
+  --icon-appt-private-mode-page-dark: var(--original-icon-appt-private-mode-page-white);
+}

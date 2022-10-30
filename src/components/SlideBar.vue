@@ -100,7 +100,7 @@
 
 <style lang="scss" scoped>
     @use "sass:math";
-    @import '../../css/variables';
+    @import '../../scss/_variables';
 
     $header-height: 50px;
     $slidebar-min-width: 360px;

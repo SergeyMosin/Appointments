@@ -25,7 +25,7 @@
       <AppNavigationItem
           :title="t('appointments','Advanced Settings')"
           @click="$emit('gotoADV')"
-          icon="icon-settings"/>
+          icon="icon-settings-dark"/>
       <div v-show="hasKey===false">
         <AppNavigationItem
             v-show="showKeyInput===false"
