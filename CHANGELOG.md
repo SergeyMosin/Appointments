@@ -1,3 +1,10 @@
+## v1.14.0 - 2022-10-29
+### Fixed
+- Styles and icons for NC 25 - #366
+### Changed
+- Public page title from `Nextcloud` -> `Appointments - Nextcloud` - #362
+- Email footer uses `$theme->getEntity()` instead of `Nextcloud`
+
 ## v1.13.0 - 2022-10-25
 ### Added
 - Next release possible breaking changes notice (prep for NC25)
