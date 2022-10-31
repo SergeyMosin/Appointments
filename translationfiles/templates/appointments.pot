@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2022-10-30 03:16+0000\n"
+"POT-Creation-Date: 2022-10-31 03:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -309,47 +309,55 @@ msgid "Action needed"
 msgstr ""
 
 #: /app/lib/Controller/PageController.php:598
-#: /app/lib/Controller/PageController.php:935
+#: /app/lib/Controller/PageController.php:940
 msgid "Info"
 msgstr ""
 
 #: /app/lib/Controller/PageController.php:599
-#: /app/lib/Controller/PageController.php:936
+#: /app/lib/Controller/PageController.php:941
 msgid "Link Expired …"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:907
+#: /app/lib/Controller/PageController.php:615
+#: /app/lib/Controller/PageController.php:635
+#: /app/lib/Controller/PageController.php:912
+#: /app/lib/Controller/PageController.php:1023
+#: /app/specialAppInfoFakeDummyForL10nScript.php:2
+msgid "Appointments"
+msgstr ""
+
+#: /app/lib/Controller/PageController.php:911
 msgid "Almost done …"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:929
+#: /app/lib/Controller/PageController.php:934
 #, php-format
 msgid ""
 "We have sent an email to %s, please open it and click on the confirmation "
 "link to finalize your appointment request"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:997
+#: /app/lib/Controller/PageController.php:1002
 msgid "Organization Name"
 msgstr ""
 
 #. TRANSLATORS onents/settings/PublicPageSettings.vue:19
 #. TRANSLATORS onents/settings/UserContactSettings.vue:60
-#: /app/lib/Controller/PageController.php:1003
+#: /app/lib/Controller/PageController.php:1008
 #: /app/specialVueFakeDummyForL10nScript.js:268
 #: /app/specialVueFakeDummyForL10nScript.js:560
 msgid "Book Your Appointment"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1175
+#: /app/lib/Controller/PageController.php:1181
 msgid "Please add time slots first."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1178
+#: /app/lib/Controller/PageController.php:1184
 msgid "Please select a calendar first"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1181
+#: /app/lib/Controller/PageController.php:1187
 msgid "Selected calendar not found"
 msgstr ""
 
@@ -380,10 +388,6 @@ msgstr ""
 #: /app/lib/Email/CustomEmailTemplate.php:639
 #: /app/lib/Email/EMailTemplateNC20.php:579
 msgid "This is an automatically sent email, please do not reply."
-msgstr ""
-
-#: /app/specialAppInfoFakeDummyForL10nScript.php:2
-msgid "Appointments"
 msgstr ""
 
 #: /app/specialAppInfoFakeDummyForL10nScript.php:3
@@ -440,7 +444,7 @@ msgid "Delete"
 msgstr ""
 
 #. TRANSLATORS vue:95
-#. TRANSLATORS vue:1238
+#. TRANSLATORS vue:1233
 #. TRANSLATORS onents/settings/SettingsSlideBar.vue:18
 #: /app/specialVueFakeDummyForL10nScript.js:26
 #: /app/specialVueFakeDummyForL10nScript.js:92
@@ -554,32 +558,32 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
-#. TRANSLATORS vue:1018
+#. TRANSLATORS vue:1013
 #: /app/specialVueFakeDummyForL10nScript.js:80
 msgid "New Settings Applied."
 msgstr ""
 
-#. TRANSLATORS vue:1138
+#. TRANSLATORS vue:1133
 #: /app/specialVueFakeDummyForL10nScript.js:82
 msgid "Fetching URL from the server …"
 msgstr ""
 
-#. TRANSLATORS vue:1167
+#. TRANSLATORS vue:1162
 #: /app/specialVueFakeDummyForL10nScript.js:84
 msgid "Cannot get public URL from server"
 msgstr ""
 
-#. TRANSLATORS vue:1174
+#. TRANSLATORS vue:1169
 #: /app/specialVueFakeDummyForL10nScript.js:86
 msgid "Public link copied to clipboard"
 msgstr ""
 
-#. TRANSLATORS vue:1175
+#. TRANSLATORS vue:1170
 #: /app/specialVueFakeDummyForL10nScript.js:88
 msgid "Copy Error"
 msgstr ""
 
-#. TRANSLATORS vue:1226
+#. TRANSLATORS vue:1221
 #. TRANSLATORS onents/PagePickerSlideBar.vue:12
 #: /app/specialVueFakeDummyForL10nScript.js:90
 #: /app/specialVueFakeDummyForL10nScript.js:102
