@@ -119,6 +119,7 @@ OC.L10N.register(
     "Loading…" : "Laster…",
     "Edit" : "Rediger",
     "Title" : "Tittel",
+    "Subtitle" : "Undertekst",
     "Text" : "Tekst",
     "URL" : "URL",
     "Error" : "Feil",
