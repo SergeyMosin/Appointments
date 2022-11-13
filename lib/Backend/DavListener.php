@@ -1001,7 +1001,7 @@ class DavListener implements IEventListener
         }
         return [
             $btn_url,
-            urlencode($utils->encrypt(substr($uri, 0, -4), $key))
+            urlencode($utils->encrypt(substr($uri, 0, -4), $key)) . "&pageId=" . $pageId
         ];
     }
 
