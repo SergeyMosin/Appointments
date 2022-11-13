@@ -950,6 +950,7 @@ class DavListener implements IEventListener
                     $mailer->send($msg);
                 } catch (\Exception $e) {
                     $this->logger->error("Can not send email to " . $org_email);
+                    $this->logger->error($e->getMessage());
                     return;
                 }
             } else {
