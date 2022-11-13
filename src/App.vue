@@ -1,125 +1,120 @@
 <template>
   <Content app-name="appointments" :class="{'srgdev-slider-open':sbShow!==0}">
-    <AppNavigation>
-      <template #list>
-        <li>
-          <ul :class="{'sb_disable':stateInProgress || visibleSection===1}">
-            <AppNavigationItem
-                :class="{'sb_disable_nav-item':sbShow!==0}"
-                @click="curPageId='p0';getFormData('p0')"
-                class="srgdev-pubpage-nav-item"
-                :title="(
+    <AppNavigation
+        :style="[vLessThan25?{'border-right': '1px solid var(--color-border-dark)'}:{}]">
+      <template #list :class="{'sb_disable':stateInProgress || visibleSection===1}">
+        <AppNavigationItem
+            :class="{'sb_disable_nav-item':sbShow!==0}"
+            @click="curPageId='p0';getFormData('p0')"
+            class="srgdev-pubpage-nav-item"
+            :title="(
               checkPageLabel(page0.label)+' '+
               (page0.enabled===1
                 ?t('appointments','[Online]')
                 :t('appointments','[Disabled]'))
               )"
-                :icon="pageInfoLoading!==1?
+            :icon="pageInfoLoading!==1?
                       (page0.enabled===1
                         ?(!page0.privatePage?'icon-screen':'icon-appt-private-mode-page')
                         :'icon-screen-off'):''"
-                :loading="pageInfoLoading===1">
-              <template slot="actions">
-                <ActionButton
-                    v-show="page0.enabled===0"
-                    @click="setPageEnabled('p0',1)"
-                    icon="icon-checkmark-color"
-                    closeAfterClick>
-                  {{ t('appointments', 'Share Online') }}
-                </ActionButton>
-                <ActionButton
-                    v-show="page0.enabled===1"
-                    @click="setPageEnabled('p0',0)"
-                    icon="icon-category-disabled"
-                    closeAfterClick>
-                  {{ t('appointments', 'Stop Sharing') }}
-                </ActionButton>
-                <ActionButton @click="showPubLink('p0')" icon="icon-public" closeAfterClick>
-                  {{ t('appointments', 'Show URL/link') }}
-                </ActionButton>
-                <ActionInput data-pid="p0" @change="setPageLabel" icon="icon-rename" :value="page0.label">
-                  {{ checkPageLabel("") }}
-                </ActionInput>
-                <ActionButton
-                    @click="addNewPage()"
-                    icon="icon-add"
-                    closeAfterClick>
-                  {{ t('appointments', 'Add New Page') }}
-                </ActionButton>
-              </template>
-            </AppNavigationItem>
-            <AppNavigationItem
-                v-for="(page,idx) in morePages"
-                class="srgdev-pubpage-nav-item"
-                :class="{'sb_disable_nav-item':sbShow!==0}"
-                @click="curPageId=page.pageId;getFormData(page.pageId)"
-                :title="(
+            :loading="pageInfoLoading===1">
+          <template #actions>
+            <ActionButton
+                v-show="page0.enabled===0"
+                @click="setPageEnabled('p0',1)"
+                icon="icon-checkmark-color"
+                closeAfterClick>
+              {{ t('appointments', 'Share Online') }}
+            </ActionButton>
+            <ActionButton
+                v-show="page0.enabled===1"
+                @click="setPageEnabled('p0',0)"
+                icon="icon-category-disabled"
+                closeAfterClick>
+              {{ t('appointments', 'Stop Sharing') }}
+            </ActionButton>
+            <ActionButton @click="showPubLink('p0')" icon="icon-public" closeAfterClick>
+              {{ t('appointments', 'Show URL/link') }}
+            </ActionButton>
+            <ActionInput data-pid="p0" @change="setPageLabel" icon="icon-rename" :value="page0.label">
+              {{ checkPageLabel("") }}
+            </ActionInput>
+            <ActionButton
+                @click="addNewPage()"
+                icon="icon-add"
+                closeAfterClick>
+              {{ t('appointments', 'Add New Page') }}
+            </ActionButton>
+          </template>
+        </AppNavigationItem>
+        <AppNavigationItem
+            v-for="(page,idx) in morePages"
+            class="srgdev-pubpage-nav-item"
+            :class="{'sb_disable_nav-item':sbShow!==0}"
+            @click="curPageId=page.pageId;getFormData(page.pageId)"
+            :title="(
               checkPageLabel(page.label)+' '+
               (page.enabled===1
                 ?t('appointments','[Online]')
                 :t('appointments','[Disabled]'))
               )"
-                :icon="pageInfoLoading!==(idx+2)?
+            :icon="pageInfoLoading!==(idx+2)?
                       (page.enabled===1
                         ?(!page.privatePage?'icon-screen':'icon-appt-private-mode-page')
                         :'icon-screen-off'):''"
-                :loading="pageInfoLoading===idx+2"
-                :key="page.pageId">
-              <template slot="actions">
-                <ActionButton v-show="page.enabled===0" @click="setPageEnabled(page.pageId,1)"
-                              icon="icon-checkmark-color"
-                              closeAfterClick>
-                  {{ t('appointments', 'Share Online') }}
-                </ActionButton>
-                <ActionButton v-show="page.enabled===1" @click="setPageEnabled(page.pageId,0)"
-                              icon="icon-category-disabled"
-                              closeAfterClick>
-                  {{ t('appointments', 'Stop Sharing') }}
-                </ActionButton>
-                <ActionButton @click="showPubLink(page.pageId)" icon="icon-public" closeAfterClick>
-                  {{ t('appointments', 'Show URL/link') }}
-                </ActionButton>
-                <ActionInput :data-pid="page.pageId" @change="setPageLabel" icon="icon-rename" :value="page.label">
-                  {{ checkPageLabel("") }}
-                </ActionInput>
-                <ActionButton @click="deletePage(page.pageId)" icon="icon-delete" closeAfterClick>
-                  {{ t('appointments', 'Delete') }}
-                </ActionButton>
-              </template>
-            </AppNavigationItem>
-            <AppNavigationItem
-                v-show="morePages.length>0"
-                :class="{'sb_disable_nav-item':sbShow!==0}"
-                @click="getFormData('dir')"
-                class="srgdev-pubpage-nav-item"
-                :title="t('appointments','Directory Page')"
-                icon="icon-projects">
-              <template slot="actions">
-                <ActionButton @click="toggleSlideBar(12,'dir');sbGotoBack=0" icon="icon-settings" closeAfterClick>
-                  {{ t('appointments', 'Settings') }}
-                </ActionButton>
-                <ActionButton @click="showPubLink('dir')" icon="icon-public" closeAfterClick>
-                  {{ t('appointments', 'Show URL/link') }}
-                </ActionButton>
-              </template>
-            </AppNavigationItem>
-            <li style="height: 16px"></li>
-            <AppNavigationItem
-                @click="openViaPicker(6,$event)"
-                :title="t('appointments','Manage Appointment Slots')"
-                icon="icon-appt-calendar-clock"/>
-            <AppNavigationItem
-                @click="openViaPicker(3,$event)"
-                :title="t('appointments','User/Organization Info')"
-                icon="icon-user"/>
-            <AppNavigationItem
-                @click="toggleSlideBar(9)"
-                :title="t('appointments','Settings')"
-                icon="icon-settings-dark"/>
-          </ul>
-        </li>
-      </template>
-      <template #footer>
+            :loading="pageInfoLoading===idx+2"
+            :key="page.pageId">
+          <template #actions>
+            <ActionButton v-show="page.enabled===0" @click="setPageEnabled(page.pageId,1)"
+                          icon="icon-checkmark-color"
+                          closeAfterClick>
+              {{ t('appointments', 'Share Online') }}
+            </ActionButton>
+            <ActionButton v-show="page.enabled===1" @click="setPageEnabled(page.pageId,0)"
+                          icon="icon-category-disabled"
+                          closeAfterClick>
+              {{ t('appointments', 'Stop Sharing') }}
+            </ActionButton>
+            <ActionButton @click="showPubLink(page.pageId)" icon="icon-public" closeAfterClick>
+              {{ t('appointments', 'Show URL/link') }}
+            </ActionButton>
+            <ActionInput :data-pid="page.pageId" @change="setPageLabel" icon="icon-rename" :value="page.label">
+              {{ checkPageLabel("") }}
+            </ActionInput>
+            <ActionButton @click="deletePage(page.pageId)" icon="icon-delete" closeAfterClick>
+              {{ t('appointments', 'Delete') }}
+            </ActionButton>
+          </template>
+        </AppNavigationItem>
+        <AppNavigationItem
+            v-show="morePages.length>0"
+            :class="{'sb_disable_nav-item':sbShow!==0}"
+            @click="getFormData('dir')"
+            class="srgdev-pubpage-nav-item"
+            :title="t('appointments','Directory Page')"
+            icon="icon-projects">
+          <template #actions>
+            <ActionButton @click="toggleSlideBar(12,'dir');sbGotoBack=0" icon="icon-settings-dark" closeAfterClick>
+              {{ t('appointments', 'Settings') }}
+            </ActionButton>
+            <ActionButton @click="showPubLink('dir')" icon="icon-public" closeAfterClick>
+              {{ t('appointments', 'Show URL/link') }}
+            </ActionButton>
+          </template>
+        </AppNavigationItem>
+        <li style="height: 16px"></li>
+        <AppNavigationItem
+            @click="openViaPicker(6,$event)"
+            :title="t('appointments','Manage Appointment Slots')"
+            icon="icon-appt-calendar-clock"/>
+        <AppNavigationItem
+            @click="openViaPicker(3,$event)"
+            :title="t('appointments','User/Organization Info')"
+            icon="icon-user"/>
+        <AppNavigationItem
+            @click="toggleSlideBar(9)"
+            :title="t('appointments','Settings')"
+            icon="icon-settings-dark"/>
         <AppNavigationItem
             :pinned="true"
             @click="showHelp"
@@ -127,105 +122,113 @@
             icon="icon-info"/>
       </template>
     </AppNavigation>
-    <AppContent style="transition: none;" class="srgdev-app-content" :aria-expanded="navOpen">
+    <AppContent
+        style="transition: none;"
+        class="srgdev-app-content"
+        :aria-expanded="navOpen">
       <div v-show="visibleSection===2" class="srgdev-appt-cal-view-cont">
-        <Modal v-if="generalModal!==0" class="srgdev-appt-modal-container" :canClose="false">
-          <div class="srgdev-appt-modal_pop">
-            <span :data-pop="generalModalPop" class="srgdev-appt-modal_pop_txt">{{ generalModalPopTxt }}</span>
-          </div>
-          <div v-if="generalModal===1" class="srgdev-appt-modal_content">
-            <div class="srgdev-appt-modal-header">
-              {{
-                t('appointments', 'Public Page URL') + (generalModalBtnTxt !== "" ? (" - " + generalModalBtnTxt) : "")
-              }}
+        <ModalExt
+            v-if="generalModal===1"
+            class="srgdev-appt-modal-container"
+            :canClose="false">
+          <div>
+            <div class="srgdev-appt-modal_pop">
+              <span :data-pop="generalModalPop" class="srgdev-appt-modal_pop_txt">{{ generalModalPopTxt }}</span>
             </div>
-            <div v-if="generalModal===1 && generalModalLoadingTxt===''">
-              <div class="srgdev-appt-modal-lbl" style="user-select: text; cursor: text;">
+            <div v-if="generalModal===1" class="srgdev-appt-modal_content">
+              <div class="srgdev-appt-modal-header">
+                {{
+                  t('appointments', 'Public Page URL') + (generalModalBtnTxt !== "" ? (" - " + generalModalBtnTxt) : "")
+                }}
+              </div>
+              <div v-if="generalModal===1 && generalModalLoadingTxt===''">
+                <div class="srgdev-appt-modal-lbl" style="user-select: text; cursor: text;">
                 <span
                     style="cursor: text; display: inline-block; vertical-align: middle;">{{ generalModalTxt[0] }}</span>
-                <div style="position: relative;">
-                  <div class="srgdev-appt-icon_txt_btn icon-clippy" @click="doCopyPubLink">Copy</div>
-                  <a target="_blank" :href="generalModalTxt[0]"
-                     class="srgdev-appt-icon_txt_btn icon-external">Visit</a>
-                  <ApptAccordion
-                      v-show="generalModalTxt[1]!==''"
-                      style="display: inline-block; margin-top: 1.25em; margin-left: .5em;"
-                      title="Show iframe/embeddable"
-                      :open="false">
-                    <template slot="content">
-                      <div class="srgdev-appt-modal-lbl_dim"
-                           style="cursor: text;position: absolute;left: 0;width: 100%;text-align: center;margin: 0;">
-                        {{ generalModalTxt[1] }}
-                      </div>
-                      <br><br>
-                    </template>
-                  </ApptAccordion>
+                  <div style="position: relative;">
+                    <div class="srgdev-appt-icon_txt_btn icon-clippy" @click="doCopyPubLink">Copy</div>
+                    <a target="_blank" :href="generalModalTxt[0]"
+                       class="srgdev-appt-icon_txt_btn icon-external">Visit</a>
+                    <ApptAccordion
+                        v-show="generalModalTxt[1]!==''"
+                        style="display: inline-block; margin-top: 1.25em; margin-left: .5em;"
+                        title="Show iframe/embeddable"
+                        :open="false">
+                      <template #content>
+                        <div class="srgdev-appt-modal-lbl_dim"
+                             style="cursor: text;position: absolute;left: 0;width: 100%;text-align: center;margin: 0;">
+                          {{ generalModalTxt[1] }}
+                        </div>
+                        <br><br>
+                      </template>
+                    </ApptAccordion>
+                  </div>
+                </div>
+                <button @click="closeGeneralModal" class="primary srgdev-appt-modal-btn">
+                  {{ t('appointments', 'Close') }}
+                </button>
+              </div>
+              <div v-if="generalModal===1 && generalModalLoadingTxt!==''">
+                <div class="srgdev-appt-modal-lbl">{{ generalModalLoadingTxt }}</div>
+                <div class="srgdev-appt-modal-slider">
+                  <div class="srgdev-appt-slider-line"></div>
+                  <div class="srgdev-appt-slider-inc"></div>
+                  <div class="srgdev-appt-slider-dec"></div>
                 </div>
               </div>
-              <button @click="closeGeneralModal" class="primary srgdev-appt-modal-btn">
-                {{ t('appointments', 'Close') }}
-              </button>
             </div>
-            <div v-if="generalModal===1 && generalModalLoadingTxt!==''">
-              <div class="srgdev-appt-modal-lbl">{{ generalModalLoadingTxt }}</div>
-              <div class="srgdev-appt-modal-slider">
-                <div class="srgdev-appt-slider-line"></div>
-                <div class="srgdev-appt-slider-inc"></div>
-                <div class="srgdev-appt-slider-dec"></div>
+            <div v-if="generalModal===2" class="srgdev-appt-modal_content">
+              <div class="srgdev-appt-modal-header">{{ t('appointments', 'Remove Old Appointments') }}</div>
+              <div v-if="generalModal===2 && generalModalLoadingTxt===''">
+                <div class="srgdev-appt-modal-lbl">{{ generalModalTxt[0] }}
+                  <div :class="{'srgdev-appt-modal-lbl_dim':generalModalTxt[0]!==''}">{{ generalModalTxt[1] }}</div>
+                </div>
+                <button
+                    @click="generalModalActionCallback();generalModalActionCallback=undefined"
+                    v-show="generalModalTxt[0]!==''"
+                    style="margin-right: 3em"
+                    class="primary srgdev-appt-modal-btn">{{ t('appointments', 'Remove') }}
+                </button>
+                <button
+                    v-show="generalModalTxt[0]!==''"
+                    @click="closeGeneralModal"
+                    class="srgdev-appt-modal-btn">{{ t('appointments', 'Cancel') }}
+                </button>
+                <button
+                    v-show="generalModalTxt[0]===''"
+                    @click="closeGeneralModal"
+                    class="primary srgdev-appt-modal-btn">{{ t('appointments', 'Close') }}
+                </button>
+              </div>
+              <div v-if="generalModal===2 && generalModalLoadingTxt!==''">
+                <div class="srgdev-appt-modal-lbl">{{ generalModalLoadingTxt }}</div>
+                <div class="srgdev-appt-modal-slider">
+                  <div class="srgdev-appt-slider-line"></div>
+                  <div class="srgdev-appt-slider-inc"></div>
+                  <div class="srgdev-appt-slider-dec"></div>
+                </div>
               </div>
             </div>
-          </div>
-          <div v-if="generalModal===2" class="srgdev-appt-modal_content">
-            <div class="srgdev-appt-modal-header">{{ t('appointments', 'Remove Old Appointments') }}</div>
-            <div v-if="generalModal===2 && generalModalLoadingTxt===''">
-              <div class="srgdev-appt-modal-lbl">{{ generalModalTxt[0] }}
-                <div :class="{'srgdev-appt-modal-lbl_dim':generalModalTxt[0]!==''}">{{ generalModalTxt[1] }}</div>
+            <div v-if="generalModal===3" class="srgdev-appt-modal_content">
+              <div class="srgdev-appt-modal-header">{{ generalModalTxt[0] }}</div>
+              <div class="srgdev-appt-modal-lbl">{{ generalModalTxt[1] }}
               </div>
               <button
-                  @click="generalModalActionCallback();generalModalActionCallback=undefined"
-                  v-show="generalModalTxt[0]!==''"
-                  style="margin-right: 3em"
-                  class="primary srgdev-appt-modal-btn">{{ t('appointments', 'Remove') }}
+                  v-show="generalModalActionCallback!==undefined"
+                  @click="actionGeneralModal"
+                  class="srgdev-appt-modal-btn">{{ generalModalActionTxt }}
               </button>
               <button
-                  v-show="generalModalTxt[0]!==''"
                   @click="closeGeneralModal"
-                  class="srgdev-appt-modal-btn">{{ t('appointments', 'Cancel') }}
+                  class="primary srgdev-appt-modal-btn">{{
+                  generalModalBtnTxt === ""
+                      ? t('appointments', 'Close')
+                      : generalModalBtnTxt
+                }}
               </button>
-              <button
-                  v-show="generalModalTxt[0]===''"
-                  @click="closeGeneralModal"
-                  class="primary srgdev-appt-modal-btn">{{ t('appointments', 'Close') }}
-              </button>
-            </div>
-            <div v-if="generalModal===2 && generalModalLoadingTxt!==''">
-              <div class="srgdev-appt-modal-lbl">{{ generalModalLoadingTxt }}</div>
-              <div class="srgdev-appt-modal-slider">
-                <div class="srgdev-appt-slider-line"></div>
-                <div class="srgdev-appt-slider-inc"></div>
-                <div class="srgdev-appt-slider-dec"></div>
-              </div>
             </div>
           </div>
-          <div v-if="generalModal===3" class="srgdev-appt-modal_content">
-            <div class="srgdev-appt-modal-header">{{ generalModalTxt[0] }}</div>
-            <div class="srgdev-appt-modal-lbl">{{ generalModalTxt[1] }}
-            </div>
-            <button
-                v-show="generalModalActionCallback!==undefined"
-                @click="actionGeneralModal"
-                class="srgdev-appt-modal-btn">{{ generalModalActionTxt }}
-            </button>
-            <button
-                @click="closeGeneralModal"
-                class="primary srgdev-appt-modal-btn">{{
-                generalModalBtnTxt === ""
-                    ? t('appointments', 'Close')
-                    : generalModalBtnTxt
-              }}
-            </button>
-          </div>
-        </Modal>
+        </ModalExt>
       </div>
       <div v-show="visibleSection===1" class="srgdev-appt-cal-view-cont">
         <div class="srgdev-appt-grid-flex">
@@ -286,7 +289,7 @@
             <div @gridContext="editSingleAppt" ref="grid_cont" class="srgdev-appt-grid-cont"></div>
           </div>
         </div>
-        <Modal v-if="evtGridModal!==0" class="srgdev-appt-modal-container" :canClose="false">
+        <ModalExt v-if="evtGridModal!==0" class="srgdev-appt-modal-container" :canClose="false">
           <div :class="evtGridModal===5?'srgdev-appt-modal_content_tmpl':'srgdev-appt-modal_content'">
             <div v-if="evtGridModal===1" class="srgdev-appt-modal-lbl">
               {{
@@ -324,15 +327,15 @@
               {{ t('appointments', 'Close') }}
             </button>
           </div>
-        </Modal>
+        </ModalExt>
       </div>
       <div v-show="visibleSection===0" class="srgdev-appt-main-sec">
-        <ul class="srgdev-appt-main-info">
-          <li>{{ pagePreviewLabel + ' ' + t('appointments', 'Preview') }}<span
-              style="margin-left: 1.25em"
-              v-show="pagePreviewLoading===true"
-              class="icon-loading-small"></span></li>
-        </ul>
+        <div class="srgdev-appt-main-info">
+          {{ pagePreviewLabel + ' ' + t('appointments', 'Preview') }}<span
+            style="margin-left: 1.25em"
+            v-show="pagePreviewLoading===true"
+            class="icon-loading-small srgdev-appt-main-info-span"></span>
+        </div>
         <div class="srgdev-appt-main-frame-cont">
           <iframe
               class="srgdev-appt-main-frame"
@@ -346,102 +349,98 @@
       <div v-show="visibleSection===4" class="srgdev-appt-main-sec_fid">
         <FormInputsDesigner v-if="visibleSection===4"/>
       </div>
-      <div :class="{'sb_disable':stateInProgress}">
-        <PagePickerSlideBar
-            v-if="sbShow===11"
-            :page0="page0"
-            :title="pagePickerTitle"
-            :more-pages="morePages"
-            @pageSelected="curPageId=$event;toggleSlideBar(sbGotoBack,$event);sbGotoBack=0"
-            @close="toggleSlideBar(0)"/>
-        <CalendarAndMode
-            ref="tsbRef"
-            v-if="sbShow===6"
-            :cur-page-data="curPageData"
-            @showCModal="showCModal"
-            @gotoAddAppt="curPageId=$event;toggleSlideBar(7);sbGotoBack=6"
-            @gotoDelAppt="curPageId=$event;toggleSlideBar(8);sbGotoBack=6"
-            @gotoAdvStn="curPageId=$event;toggleSlideBar(10);sbGotoBack=6"
-            @showModal="showSimpleGeneralModal($event)"
-            @editTemplate="editApptTemplate($event)"
-            @reloadPages="getPages(0,curPageData.pageId)"
-            @close="toggleSlideBar(0)"/>
-        <UserContactSettings
-            v-if="sbShow===3"
-            :cur-page-data="curPageData"
-            @close="toggleSlideBar(0)"/>
-        <SettingsSlideBar
-            v-if="sbShow===9"
-            :show-dir-page="morePages.length>0"
-            @gotoPPS="toggleSlideBar(2,'p0');sbGotoBack=9"
-            @gotoEML="toggleSlideBar(4);sbGotoBack=9"
-            @gotoADV="toggleSlideBar(10);sbGotoBack=9"
-            @gotoDIR="toggleSlideBar(12,'dir');sbGotoBack=9"
-            @gotoTALK="toggleSlideBar(14);sbGotoBack=9"
-            @gotoREM="toggleSlideBar(15);sbGotoBack=9"
-            @showModal="showSimpleGeneralModal($event)"
-            :cur-page-data="curPageData"
-            @close="sbShow=0"/>
-        <PublicPageSettings
-            v-if="sbShow===2"
-            @gotoToFid="sbShow=0;visibleSection=4"
-            @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
-        <EmailSettings
-            v-if="sbShow===4"
-            @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
-        <TalkSettings
-            v-if="sbShow===14"
-            @showCModal="showCModal"
-            @showModal="showSimpleGeneralModal($event)"
-            @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
-        <ReminderSettings
-            v-if="sbShow===15"
-            @showCModal="showCModal"
-            @showModal="showSimpleGeneralModal($event)"
-            @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
-        <AdvancedSettings
-            v-if="sbShow===10"
-            @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
-        <SimpleAddAppointents
-            v-if="sbShow===7"
-            :cur-page-data="curPageData"
-            :is-grid-ready="isGridReady"
-            @setupGrid="gridSetup"
-            @agDataReady="makePreviewGrid"
-            @close="toggleSlideBar($event===true?0:sbGotoBack);sbGotoBack=0"/>
-        <SimpleDelAppointments
-            v-if="sbShow===8"
-            :cur-page-data="curPageData"
-            @openGM="openGeneralModal"
-            @closeGM="closeGeneralModal"
-            @updateGM="updateGeneralModal"
-            @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
-        <DirectoryPageSettings
-            v-if="sbShow===12"
-            :page0-label="checkPageLabel(page0.label)"
-            :more-pages="morePages"
-            :icon-go-back="sbGotoBack!==0"
-            @showModal="showSimpleGeneralModal($event)"
-            @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
-      </div>
+      <PagePickerSlideBar
+          v-if="sbShow===11"
+          :page0="page0"
+          :title="pagePickerTitle"
+          :more-pages="morePages"
+          @pageSelected="curPageId=$event;toggleSlideBar(sbGotoBack,$event);sbGotoBack=0"
+          @close="toggleSlideBar(0)"/>
+      <CalendarAndMode
+          ref="tsbRef"
+          v-if="sbShow===6"
+          :cur-page-data="curPageData"
+          @showCModal="showCModal"
+          @gotoAddAppt="curPageId=$event;toggleSlideBar(7);sbGotoBack=6"
+          @gotoDelAppt="curPageId=$event;toggleSlideBar(8);sbGotoBack=6"
+          @gotoAdvStn="curPageId=$event;toggleSlideBar(10);sbGotoBack=6"
+          @showModal="showSimpleGeneralModal($event)"
+          @editTemplate="editApptTemplate($event)"
+          @reloadPages="getPages(0,curPageData.pageId)"
+          @close="toggleSlideBar(0)"/>
+      <UserContactSettings
+          v-if="sbShow===3"
+          :cur-page-data="curPageData"
+          @close="toggleSlideBar(0)"/>
+      <SettingsSlideBar
+          v-if="sbShow===9"
+          :show-dir-page="morePages.length>0"
+          @gotoPPS="toggleSlideBar(2,'p0');sbGotoBack=9"
+          @gotoEML="toggleSlideBar(4);sbGotoBack=9"
+          @gotoADV="toggleSlideBar(10);sbGotoBack=9"
+          @gotoDIR="toggleSlideBar(12,'dir');sbGotoBack=9"
+          @gotoTALK="toggleSlideBar(14);sbGotoBack=9"
+          @gotoREM="toggleSlideBar(15);sbGotoBack=9"
+          @showModal="showSimpleGeneralModal($event)"
+          :cur-page-data="curPageData"
+          @close="sbShow=0"/>
+      <PublicPageSettings
+          v-if="sbShow===2"
+          @gotoToFid="sbShow=0;visibleSection=4"
+          @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
+      <EmailSettings
+          v-if="sbShow===4"
+          @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
+      <TalkSettings
+          v-if="sbShow===14"
+          @showCModal="showCModal"
+          @showModal="showSimpleGeneralModal($event)"
+          @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
+      <ReminderSettings
+          v-if="sbShow===15"
+          @showCModal="showCModal"
+          @showModal="showSimpleGeneralModal($event)"
+          @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
+      <AdvancedSettings
+          v-if="sbShow===10"
+          @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
+      <SimpleAddAppointents
+          v-if="sbShow===7"
+          :cur-page-data="curPageData"
+          :is-grid-ready="isGridReady"
+          @setupGrid="gridSetup"
+          @agDataReady="makePreviewGrid"
+          @close="toggleSlideBar($event===true?0:sbGotoBack);sbGotoBack=0"/>
+      <SimpleDelAppointments
+          v-if="sbShow===8"
+          :cur-page-data="curPageData"
+          @openGM="openGeneralModal"
+          @closeGM="closeGeneralModal"
+          @updateGM="updateGeneralModal"
+          @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
+      <DirectoryPageSettings
+          v-if="sbShow===12"
+          :page0-label="checkPageLabel(page0.label)"
+          :more-pages="morePages"
+          :icon-go-back="sbGotoBack!==0"
+          @showModal="showSimpleGeneralModal($event)"
+          @close="toggleSlideBar(sbGotoBack);sbGotoBack=0"/>
     </AppContent>
   </Content>
 </template>
 
 <script>
-// noinspection ES6CheckImport
-import {
-  ActionButton,
-  ActionCheckbox,
-  Actions,
-  ActionSeparator,
-  AppContent,
-  AppNavigation,
-  AppNavigationIconBullet,
-  AppNavigationItem,
-  Modal,
-  Content,
-} from '@nextcloud/vue'
+import Content from '@nextcloud/vue/dist/Components/NcContent.js'
+import AppNavigation from '@nextcloud/vue/dist/Components/NcAppNavigation.js'
+import AppContent from '@nextcloud/vue/dist/Components/NcAppContent.js'
+import ActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
+import AppNavigationItem from '@nextcloud/vue/dist/Components/NcAppNavigationItem.js'
+import AppSettingsDialog from '@nextcloud/vue/dist/Components/NcAppSettingsDialog.js'
+import Actions from '@nextcloud/vue/dist/Components/NcActions.js'
+// import Modal from '@nextcloud/vue/dist/Components/NcModal.js'
+
+import ModalExt from "./components/ModalExt"
+
 import {showError, showSuccess} from "@nextcloud/dialogs"
 import SettingsSlideBar from "./components/settings/SettingsSlideBar";
 import SimpleDelAppointments from "./components/settings/TimeslotSettings/SimpleDelAppointments";
@@ -472,8 +471,14 @@ import * as debug from "./use/debugging"
 export default {
   name: 'App',
   components: {
-    ReminderSettings,
     Content,
+    AppNavigation,
+    AppContent,
+    AppNavigationItem,
+    AppSettingsDialog,
+    ActionButton,
+    ModalExt,
+    ReminderSettings,
     TemplateApptOptions,
     PagePickerSlideBar,
     CalendarAndMode,
@@ -483,18 +488,10 @@ export default {
     EmailSettings,
     TalkSettings,
     UserContactSettings,
-    AppNavigation,
-    AppNavigationItem,
     NavAccountItem,
-    ActionButton,
-    AppContent,
-    ActionCheckbox,
-    AppNavigationIconBullet,
-    Modal,
     Actions,
     ActionInput,
     ApptAccordion,
-    ActionSeparator,
     SimpleAddAppointents,
     SimpleDelAppointments,
     SettingsSlideBar,
@@ -503,6 +500,8 @@ export default {
 
   data: function () {
     return {
+
+      vLessThan25: false,
 
       pubPage: '',
 
@@ -564,6 +563,7 @@ export default {
       hasKey: false
     };
   },
+
   computed: {
 
     curPageData: function () {
@@ -626,11 +626,23 @@ export default {
   },
 
   beforeMount() {
+
+    const ncVersion = OC?.config?.version
+    if (ncVersion && ncVersion.indexOf("24.") === 0) {
+      // NC24: we need to add some CSS vars for compatibility with "@nextcloud/vue": "^7.0.1"
+      const root = document.documentElement
+      root.style.setProperty('--default-grid-baseline', '4px')
+      root.style.setProperty('--default-clickable-area', '44px')
+      root.style.setProperty('--body-container-margin', '1px')
+      // root.style.setProperty('--body-container-radius', 'calc(var(--default-clickable-area) / 2 + var(--default-grid-baseline) * 2 - 2px)')
+      root.style.setProperty('--body-height', 'calc(100% - env(safe-area-inset-bottom) - 50px - var(--body-container-margin))')
+      this.vLessThan25 = true
+    }
+
     this.resetCalInfo()
   },
 
   mounted() {
-
     this.getPages(1, 'p0')
 
     this.$root.$on('helpWanted', this.helpWantedHandler)
@@ -1126,7 +1138,6 @@ export default {
       })
 
     },
-
 
     showPubLink(page) {
       this.openGeneralModal(1)

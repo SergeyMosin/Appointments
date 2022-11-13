@@ -6,25 +6,21 @@ module.exports = merge(common, {
 	mode: 'production',
 	// devtool: '#source-map',
 	optimization: {
-		minimizer: [new TerserPlugin({
-			terserOptions: {
-				output: {
-					comments: false,
-				}
-			},
-			// sourceMap: false,
-		})],
-		// splitChunks: {
-		// 	chunks: 'all',
-		// },
 		// splitChunks: {
 		// 	cacheGroups: {
-		// 		vendor: {
+		// 		commons: {
 		// 			test: /[\\/]node_modules[\\/]/,
 		// 			name: 'vendors',
 		// 			chunks: 'all',
 		// 		},
 		// 	},
 		// },
+		minimizer: [new TerserPlugin({
+			terserOptions: {
+				output: {
+					comments: false,
+				}
+			},
+		})],
 	}
 })

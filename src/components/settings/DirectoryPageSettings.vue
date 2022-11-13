@@ -12,20 +12,20 @@
           style="padding-left: 0"
           class="srgdev-appt-sb-main-cont">
         <div v-for="(pl,index) in dirInfo" class="srgdev-appt-dir-pl">
-          <Actions
+          <NcActions
               v-show="editNumber===-1"
               menuAlign="right"
               style="position: absolute"
               class="srgdev-appt-dir-pl_actions">
-            <ActionButton
+            <NcActionButton
                 :closeAfterClick="true"
                 @click="editPageLink(index)"
-                icon="icon-edit">{{t('appointments','Edit')}}</ActionButton>
-            <ActionButton
+                icon="icon-edit">{{t('appointments','Edit')}}</NcActionButton>
+            <NcActionButton
                 :closeAfterClick="true"
                 @click="deletePageLink(index)"
-                icon="icon-delete">{{t('appointments','Delete')}}</ActionButton>
-          </Actions>
+                icon="icon-delete">{{t('appointments','Delete')}}</NcActionButton>
+          </NcActions>
           <div v-show="editNumber!==index">
             <div class="srgdev-appt-dir-pl_title">{{pl.title}}</div>
             <div class="srgdev-appt-dir-pl_sub">{{pl.subTitle}}</div>
@@ -61,14 +61,14 @@
                   menuAlign="right"
                   style="position: absolute"
                   class="srgdev-appt-dir-pl_actions srgdev-appt-dir-pl_actions_cmb">
-                <ActionButton
+                <NcActionButton
                     v-for="l in pageLabels" :key="l.id"
                     :data-pid="l.id"
                     @click="urlSelected(l.id)"
                     :closeAfterClick="true"
                     :icon="urlLoadingId===l.id+index?'icon-loading-small':'icon-public'">
                   {{l.label}}
-                </ActionButton>
+                </NcActionButton>
               </ActionsOpenUp>
             </div>
             <button @click="savePageLink()" class="primary"
@@ -85,17 +85,16 @@
 
 <script>
 import SlideBar from "../SlideBar.vue"
-import {ActionButton, Actions, Multiselect} from "@nextcloud/vue"
+import {NcActionButton, NcActions} from "@nextcloud/vue"
 import ActionsOpenUp from "../ActionsOpenUp.vue";
 
 export default {
   name: "DirectoryPageSettings",
   components: {
-    Multiselect,
     SlideBar,
-    Actions,
+    NcActions,
     ActionsOpenUp,
-    ActionButton
+    NcActionButton
   },
   props:{
     title:'',

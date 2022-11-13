@@ -102,7 +102,6 @@
     @use "sass:math";
     @import '../../scss/_variables';
 
-    $header-height: 50px;
     $slidebar-min-width: 360px;
     $sidebar-max-width: 500px;
 
@@ -116,16 +115,14 @@
 
     .app-slidebar {
         z-index: 1500;
-        /** height: calc(100vh - #{$header-height}); */
         height: 100%;
         width: 27vw;
         min-width: $slidebar-min-width;
         max-width: $sidebar-max-width;
         top: 0;
 
-        left: 0;
+        left: auto;
         right: auto;
-
 
         display: flex;
         flex-shrink: 0;

@@ -1,33 +1,33 @@
 <template>
   <SlideBar :title="t('appointments','Additional Settings')" :subtitle="t('appointments','Customize and configure the app')" @close="close">
     <template slot="main-area">
-      <AppNavigationItem
+      <NcAppNavigationItem
           :title="t('appointments','Customize Public Page')"
           @click="$emit('gotoPPS')"
           icon="icon-category-customization"/>
-      <AppNavigationItem
+      <NcAppNavigationItem
           :title="t('appointments','Email Settings')"
           @click="$emit('gotoEML')"
           icon="icon-mail"/>
-      <AppNavigationItem
+      <NcAppNavigationItem
           :title="t('appointments','Talk Integration')"
           @click="$emit('gotoTALK')"
           icon="icon-talk"/>
-      <AppNavigationItem
+      <NcAppNavigationItem
           v-show="showDirPage===true"
           :title="t('appointments','Directory Page')"
           @click="$emit('gotoDIR')"
           icon="icon-projects"/>
-      <AppNavigationItem
+      <NcAppNavigationItem
           :title="t('appointments','Reminders')"
           @click="$emit('gotoREM')"
           icon="icon-appt-reminder"/>
-      <AppNavigationItem
+      <NcAppNavigationItem
           :title="t('appointments','Advanced Settings')"
           @click="$emit('gotoADV')"
           icon="icon-settings-dark"/>
       <div v-show="hasKey===false">
-        <AppNavigationItem
+        <NcAppNavigationItem
             v-show="showKeyInput===false"
             :title="t('appointments','Contributor Key')"
             @click="openKeyInput()"
@@ -49,14 +49,14 @@
 import SlideBar from "../SlideBar.vue"
 import ActionInput from "../ActionInputExt.vue";
 import {
-  AppNavigationItem,
+  NcAppNavigationItem,
 } from '@nextcloud/vue'
 import {showError} from "@nextcloud/dialogs"
 export default {
   name: "SettingsSlideBar",
   components: {
     SlideBar,
-    AppNavigationItem,
+    NcAppNavigationItem,
     ActionInput
   },
   props:{

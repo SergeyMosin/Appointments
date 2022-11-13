@@ -218,11 +218,6 @@ import ApptAccordion from "../../ApptAccordion.vue";
 import {showError, showWarning} from "@nextcloud/dialogs"
 import {getTimezone} from "../../../utils";
 
-import {
-  ActionButton,
-  Actions,
-} from '@nextcloud/vue'
-
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
 
@@ -237,8 +232,6 @@ export default {
     SlideBar,
     ApptIconButton,
     VueSlider,
-    Actions,
-    ActionButton,
     ApptAccordion
   },
   props: {

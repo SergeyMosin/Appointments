@@ -1,9 +1,9 @@
 <script>
-import {Actions} from '@nextcloud/vue'
+import {NcActions} from '@nextcloud/vue'
 export default {
-  components: {Actions},
+  components: {NcActions},
   name: "ActionsOpenUp",
-  extends: Actions,
+  extends: NcActions,
   methods: {
     onOpen() {
       this.offsetX = 0

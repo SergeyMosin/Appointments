@@ -6,8 +6,8 @@
             :style="curCal.rIcon"
             :icon-scale="false"
             :loading="curCal.isCalLoading">
-        <Actions menuAlign="right" @open="getCalendars" forceMenu slot="actions">
-            <ActionButton
+        <NcActions menuAlign="right" @open="getCalendars" forceMenu slot="actions">
+            <NcActionButton
                     v-for="(cal,index) in calendars"
                     @click="setCalendarFromIndex(index)"
                     :key="cal.name"
@@ -16,16 +16,16 @@
                     :disabled="cal.url === ''"
                     class="srgdev_com_circle"
                     closeAfterClick>
-            </ActionButton>
-        </Actions>
+            </NcActionButton>
+        </NcActions>
     </ApptIconButton>
 </template>
 
 <script>
     // noinspection ES6CheckImport
     import{
-        ActionButton,
-        Actions,
+        NcActionButton,
+        NcActions,
      } from '@nextcloud/vue'
     import axios from '@nextcloud/axios'
     import {detectColor} from "../utils.js";
@@ -45,8 +45,8 @@
         },
         components: {
             ApptIconButton,
-            ActionButton,
-            Actions,
+            NcActionButton,
+            NcActions,
         },
         methods: {
             getCalendars: async function () {
