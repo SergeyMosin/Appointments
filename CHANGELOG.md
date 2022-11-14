@@ -1,4 +1,8 @@
-## v1.14.0 - 2022-10-29
+## v1.14.2 - 2022-11-13
+### Fixed
+- "Auto Style" not working with NC 25.0.1 and guest pages
+
+## v1.14.1 - 2022-11-13
 ### Added
 - "Auto Style" toggle to NC25
 - "pageId" to email buttons urls when using embedded form - #372
