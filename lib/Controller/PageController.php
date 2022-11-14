@@ -1008,6 +1008,7 @@ class PageController extends Controller
             $ft = $this->l->t('Book Your Appointment');
         }
 
+        /** @noinspection CssUnresolvedCustomProperty */
         $params = [
             'appt_sel_opts' => '',
             'appt_state' => '0',
@@ -1017,7 +1018,10 @@ class PageController extends Controller
             'appt_pps' => '',
             'appt_gdpr' => '',
             'appt_gdpr_no_chb' => false,
-            'appt_inline_style' => $pps[BackendUtils::PSN_PAGE_STYLE],
+            'appt_inline_style' => (
+                $pps[BackendUtils::PSN_USE_NC_THEME]
+                    ? '<style>body{background-image:var(--image-main-background)}#header{background:0 0}#srgdev-ncfp_frm{background-color:var(--color-main-background-blur);-webkit-backdrop-filter:var(--filter-background-blur);backdrop-filter:var(--filter-background-blur);border-radius:10px;padding:2em}#srgdev-dpu_main-cont{border-radius:8px}@media only screen and (max-width:390px){#srgdev-ncfp_frm{padding:1em;margin-left:0;margin-right:0}.srgdev-ncfp-wrap{font-size:105%}}</style>'
+                    : '') . $pps[BackendUtils::PSN_PAGE_STYLE],
             'appt_hide_phone' => $pps[BackendUtils::PSN_HIDE_TEL],
             'more_html' => '',
             'application' => $this->l->t('Appointments')

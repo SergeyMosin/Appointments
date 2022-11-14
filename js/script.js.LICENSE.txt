@@ -41,6 +41,8 @@
 
 /*! For license information please see NcAppSettingsDialog.js.LICENSE.txt */
 
+/*! For license information please see NcCheckboxRadioSwitch.js.LICENSE.txt */
+
 /*! Hammer.JS - v2.0.7 - 2016-04-22
  * http://hammerjs.github.io/
  *

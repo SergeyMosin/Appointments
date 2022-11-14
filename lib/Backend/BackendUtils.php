@@ -124,6 +124,7 @@ class BackendUtils
     public const PSN_HIDE_TEL = "hidePhone";
     public const PSN_END_TIME = "endTime";
     public const PSN_SHOW_TZ = "showTZ";
+    public const PSN_USE_NC_THEME = "useNcTheme";
 
     public const KEY_MPS_COL = "more_pages";
     public const KEY_MPS = "more_pages_";
@@ -1084,7 +1085,8 @@ class BackendUtils
                     self::PSN_PAGE_TITLE => "",
                     self::PSN_PAGE_SUB_TITLE => "",
                     self::PSN_META_NO_INDEX => false,
-                    self::PSN_PAGE_STYLE => "");
+                    self::PSN_PAGE_STYLE => "",
+                    self::PSN_USE_NC_THEME => false);
                 break;
             case self::KEY_MPS_COL:
                 $d = null;
@@ -1868,7 +1870,7 @@ class BackendUtils
 
     function transformCalInfo($c, $skipReadOnly = true) {
 
-        if(isset($c['{http://nextcloud.com/ns}deleted-at'])) {
+        if (isset($c['{http://nextcloud.com/ns}deleted-at'])) {
             // skip "trash bin" calendars (calendars are placed into the "trash bin" and the deleted after 30 days)
             return null;
         }

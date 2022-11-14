@@ -293,6 +293,32 @@ class StateController extends Controller
             } else {
                 $r->setStatus(500);
             }
+        } else if ($action === "get_use_nc_theme") {
+            $a = $this->utils->getUserSettings(
+                BackendUtils::KEY_PSN, $this->userId);
+            $r->setData($a[BackendUtils::PSN_USE_NC_THEME] === true ? "true" : "false");
+            $r->setStatus(200);
+        } else if ($action === "set_use_nc_theme") {
+            $value = $this->request->getParam("d");
+            if ($value !== null) {
+
+                $a = $this->utils->getUserSettings(
+                    BackendUtils::KEY_PSN, $this->userId);
+
+                $a[BackendUtils::PSN_USE_NC_THEME] = $value === "true";
+
+                $j = json_encode($a);
+                if ($j !== false && $this->utils->setUserSettings(
+                        BackendUtils::KEY_PSN,
+                        $j, $this->utils->getDefaultForKey(BackendUtils::KEY_PSN),
+                        $this->userId, $this->appName) === true
+                ) {
+                    $r->setData("rrrr: " . $j);
+                    $r->setStatus(200);
+                } else {
+                    $r->setStatus(500);
+                }
+            }
         } else if ($action === "get_uci") {
             $a = $this->utils->getUserSettings(
                 BackendUtils::KEY_ORG, $this->userId);
@@ -566,8 +592,8 @@ class StateController extends Controller
         } else if ($action === 'get_reminder') {
             $a = $this->utils->getUserSettings(BackendUtils::KEY_REMINDERS, $this->userId);
             $a[BackendUtils::REMINDER_BJM] = $this->config->getAppValue("core", "backgroundjobs_mode");
-            $cliUrl=$this->config->getSystemValue('overwrite.cli.url');
-            $a[BackendUtils::REMINDER_CLI_URL] = $cliUrl === '' || $cliUrl==='localhost' ? '' : '1';
+            $cliUrl = $this->config->getSystemValue('overwrite.cli.url');
+            $a[BackendUtils::REMINDER_CLI_URL] = $cliUrl === '' || $cliUrl === 'localhost' ? '' : '1';
             $a[BackendUtils::REMINDER_LANG] = $this->config->getSystemValue('default_language', 'en');
 
             $j = json_encode($a);
@@ -776,18 +802,18 @@ class StateController extends Controller
         }
 
         // ensure positive values for buffers and for now the "after" buffer must be the same as the "before" buffer because there is really no good way to deal with buffer overlap when bufferBefore != afterBuffer
-        if (isset($va[BackendUtils::CLS_BUFFER_BEFORE])){
+        if (isset($va[BackendUtils::CLS_BUFFER_BEFORE])) {
 
-            if(isset($va[BackendUtils::CLS_TS_MODE]) && $va[BackendUtils::CLS_TS_MODE]===BackendUtils::CLS_TS_MODE_SIMPLE){
+            if (isset($va[BackendUtils::CLS_TS_MODE]) && $va[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_SIMPLE) {
                 // in simple mode buffers must be 0
-                $va[BackendUtils::CLS_BUFFER_BEFORE]=0;
+                $va[BackendUtils::CLS_BUFFER_BEFORE] = 0;
             }
-            if($va[BackendUtils::CLS_BUFFER_BEFORE]<0){
-                $va[BackendUtils::CLS_BUFFER_BEFORE]=0;
+            if ($va[BackendUtils::CLS_BUFFER_BEFORE] < 0) {
+                $va[BackendUtils::CLS_BUFFER_BEFORE] = 0;
             }
 
-            $va[BackendUtils::CLS_BUFFER_AFTER]=$va[BackendUtils::CLS_BUFFER_BEFORE];
-        }else{
+            $va[BackendUtils::CLS_BUFFER_AFTER] = $va[BackendUtils::CLS_BUFFER_BEFORE];
+        } else {
             unset($va[BackendUtils::CLS_BUFFER_AFTER]);
         }
 

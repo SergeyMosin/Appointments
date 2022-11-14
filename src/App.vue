@@ -115,6 +115,16 @@
             @click="toggleSlideBar(9)"
             :title="t('appointments','Settings')"
             icon="icon-settings-dark"/>
+        <li style="height: 16px"></li>
+        <li style="margin-left: 12px">
+          <NcCheckboxRadioSwitch
+              :checked="useNcTheme"
+              v-if="vLessThan25===false"
+              :loading="stateInProgress"
+              @update:checked="toggleUseNcTheme">
+            &nbsp;{{ t('appointments', 'Auto Style') }}
+          </NcCheckboxRadioSwitch>
+        </li>
         <AppNavigationItem
             :pinned="true"
             @click="showHelp"
@@ -437,6 +447,9 @@ import ActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
 import AppNavigationItem from '@nextcloud/vue/dist/Components/NcAppNavigationItem.js'
 import AppSettingsDialog from '@nextcloud/vue/dist/Components/NcAppSettingsDialog.js'
 import Actions from '@nextcloud/vue/dist/Components/NcActions.js'
+
+import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
+
 // import Modal from '@nextcloud/vue/dist/Components/NcModal.js'
 
 import ModalExt from "./components/ModalExt"
@@ -478,6 +491,7 @@ export default {
     AppSettingsDialog,
     ActionButton,
     ModalExt,
+    NcCheckboxRadioSwitch,
     ReminderSettings,
     TemplateApptOptions,
     PagePickerSlideBar,
@@ -501,6 +515,7 @@ export default {
   data: function () {
     return {
 
+      useNcTheme: false,
       vLessThan25: false,
 
       pubPage: '',
@@ -645,6 +660,10 @@ export default {
   mounted() {
     this.getPages(1, 'p0')
 
+    this.getState("get_use_nc_theme").then(data => {
+      this.useNcTheme = data
+    })
+
     this.$root.$on('helpWanted', this.helpWantedHandler)
     this.$root.$on('startDebug', this.startDebug)
 
@@ -672,6 +691,20 @@ export default {
 
 
   methods: {
+
+    toggleUseNcTheme() {
+      if (this.stateInProgress) {
+        return
+      }
+      const newValue = this.useNcTheme === false
+      this.setState('set_use_nc_theme', newValue)
+          .then(data => {
+            if (data === true) {
+              // toggle ok
+              this.useNcTheme = newValue
+            } // else toggle failed
+          })
+    },
 
     editSingleAppt(e) {
       this.evtGridElm = e.detail
