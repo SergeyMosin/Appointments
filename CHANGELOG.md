@@ -1,4 +1,13 @@
 ## v1.14.0 - 2022-10-29
+### Added
+- "Auto Style" toggle to NC25
+- "pageId" to email buttons urls when using embedded form - #372
+- Log error details when email to organizer fails - #375
+### Changed
+- Update "@nextcloud/vue" to v7.0.1 - #366
+- Min Nextcloud version is 24 now
+
+## v1.14.0 - 2022-10-29
 ### Fixed
 - Styles and icons for NC 25 - #366
 ### Changed
