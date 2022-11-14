@@ -75,7 +75,7 @@ class TalkIntegration
                 if ($user !== null) {
                     $room = $rs->createConversation(Room::TYPE_PUBLIC, $roomName, $user);
                 }
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $this->logError($e);
             }
         }

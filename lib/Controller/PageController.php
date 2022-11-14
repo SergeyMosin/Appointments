@@ -7,6 +7,7 @@ namespace OCA\Appointments\Controller;
 use OC\AppFramework\Middleware\Security\Exceptions\NotLoggedInException;
 use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
+use OCP\App\IAppManager;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\RedirectResponse;
@@ -16,6 +17,8 @@ use OCP\IL10N;
 use OCP\IRequest;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Controller;
+use OCP\IURLGenerator;
+use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Mail\IMailer;
 use OCP\Util;
@@ -35,6 +38,7 @@ class PageController extends Controller
     private $utils;
     private $logger;
     private $userSession;
+    private $userManager;
 
     public function __construct($AppName,
                                 IRequest $request,
@@ -45,6 +49,7 @@ class PageController extends Controller
                                 IUserSession $userSession,
                                 BackendManager $backendManager,
                                 BackendUtils $utils,
+                                IUserManager $userManager,
                                 LoggerInterface $logger
     ) {
         parent::__construct($AppName, $request);
@@ -56,6 +61,7 @@ class PageController extends Controller
         /** @noinspection PhpUnhandledExceptionInspection */
         $this->bc = $backendManager->getConnector();
         $this->utils = $utils;
+        $this->userManager = $userManager;
         $this->logger = $logger;
     }
 
@@ -611,7 +617,7 @@ class PageController extends Controller
 
         $pps = $this->utils->getUserSettings(
             BackendUtils::KEY_PSN, $userId);
-        $tr_params['appt_inline_style'] = $pps[BackendUtils::PSN_PAGE_STYLE];
+        $tr_params['appt_inline_style'] = $this->getInlineStyle($userId, $pps);
         $tr_params['application'] = $this->l->t('Appointments');
 
         $tr->setParams($tr_params);
@@ -631,7 +637,7 @@ class PageController extends Controller
         $pps = $this->utils->getUserSettings(
             BackendUtils::KEY_PSN, $userId);
         $tr->setParams([
-            'appt_inline_style' => $pps[BackendUtils::PSN_PAGE_STYLE],
+            'appt_inline_style' => $this->getInlineStyle($userId, $pps),
             'application' => $this->l->t('Appointments')
         ]);
 
@@ -953,7 +959,7 @@ class PageController extends Controller
 
         $pps = $this->utils->getUserSettings(
             BackendUtils::KEY_PSN, $uid);
-        $param['appt_inline_style'] = $pps[BackendUtils::PSN_PAGE_STYLE];
+        $param['appt_inline_style'] = $this->getInlineStyle($uid, $pps);
 
         $tr->setParams($param);
         $tr->setStatus($rs);
@@ -1008,7 +1014,6 @@ class PageController extends Controller
             $ft = $this->l->t('Book Your Appointment');
         }
 
-        /** @noinspection CssUnresolvedCustomProperty */
         $params = [
             'appt_sel_opts' => '',
             'appt_state' => '0',
@@ -1018,10 +1023,7 @@ class PageController extends Controller
             'appt_pps' => '',
             'appt_gdpr' => '',
             'appt_gdpr_no_chb' => false,
-            'appt_inline_style' => (
-                $pps[BackendUtils::PSN_USE_NC_THEME]
-                    ? '<style>body{background-image:var(--image-main-background)}#header{background:0 0}#srgdev-ncfp_frm{background-color:var(--color-main-background-blur);-webkit-backdrop-filter:var(--filter-background-blur);backdrop-filter:var(--filter-background-blur);border-radius:10px;padding:2em}#srgdev-dpu_main-cont{border-radius:8px}@media only screen and (max-width:390px){#srgdev-ncfp_frm{padding:1em;margin-left:0;margin-right:0}.srgdev-ncfp-wrap{font-size:105%}}</style>'
-                    : '') . $pps[BackendUtils::PSN_PAGE_STYLE],
+            'appt_inline_style' => $this->getInlineStyle($uid, $pps),
             'appt_hide_phone' => $pps[BackendUtils::PSN_HIDE_TEL],
             'more_html' => '',
             'application' => $this->l->t('Appointments')
@@ -1290,6 +1292,67 @@ class PageController extends Controller
 
 
         return $tr;
+    }
+
+    private function getInlineStyle(string $userId, array $pps): string {
+
+        $autoStyle = "";
+
+        if ($pps[BackendUtils::PSN_USE_NC_THEME]) { // NC25+ ...
+            // we need to explicitly set "--image-background" for public pages
+            $imageBackground = "";
+            if (trait_exists(\OCA\Theming\Themes\CommonThemeTrait::class)
+                && class_exists(\OCA\Theming\ThemingDefaults::class)
+            ) {
+                try {
+                    /**@type IUserSession $userSession */
+                    $userSession = \OC::$server->get(IUserSession::class);
+                    $userSession->setUser($this->userManager->get($userId));
+                    $_theming = new class(
+                        $userSession,
+                        $this->c,
+                        \OC::$server->get(\OCA\Theming\ThemingDefaults::class),
+                        \OC::$server->get(IURLGenerator::class),
+                        \OC::$server->get(IAppManager::class)
+                    ) {
+                        use \OCA\Theming\Themes\CommonThemeTrait;
+
+                        private $userSession;
+                        private $config;
+                        private $themingDefaults;
+                        private $urlGenerator;
+                        private $appManager;
+
+                        public function __construct($session, $config,
+                                                    \OCA\Theming\ThemingDefaults $themingDefaults,
+                                                    IURLGenerator $urlGenerator,
+                                                    IAppManager $appManager
+                        ) {
+                            $this->userSession = $session;
+                            $this->config = $config;
+                            $this->themingDefaults = $themingDefaults;
+                            $this->urlGenerator = $urlGenerator;
+                            $this->appManager = $appManager;
+                        }
+
+                        public function getBackgroundVariables() {
+                            return $this->generateUserBackgroundVariables();
+                        }
+                    };
+
+                    $vars = $_theming->getBackgroundVariables();
+                    if (isset($vars['--image-background'])) {
+                        $imageBackground = "--image-background:" . $vars['--image-background'] . ";";
+                    }
+                } catch (\Throwable $e) {
+                    $this->logger->warning($e->getMessage());
+                }
+            }
+
+            /** @noinspection CssUnresolvedCustomProperty */
+            $autoStyle = '<style>body{' . $imageBackground . 'background-image:var(--image-background,var(--image-main-background))}#header{background:0 0}#srgdev-ncfp_frm,.srgdev-appt-info-cont{background-color:var(--color-main-background-blur);-webkit-backdrop-filter:var(--filter-background-blur);backdrop-filter:var(--filter-background-blur);border-radius:10px;padding:2em}#srgdev-dpu_main-cont{border-radius:8px}@media only screen and (max-width:390px){#srgdev-ncfp_frm{padding:1em;margin-left:0;margin-right:0}.srgdev-ncfp-wrap{font-size:105%}}</style>';
+        }
+        return $autoStyle . $pps[BackendUtils::PSN_PAGE_STYLE];
     }
 
     /**

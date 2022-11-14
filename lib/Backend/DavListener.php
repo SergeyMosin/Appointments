@@ -991,6 +991,8 @@ class DavListener implements IEventListener
 
         $utils = $this->utils;
 
+        $pageIdParam = "";
+
         /** @noinspection PhpUnhandledExceptionInspection */
         $btn_url = $raw_url = $utils->getPublicWebBase() . '/'
             . $utils->pubPrx($utils->getToken($userId, $pageId), $embed)
@@ -999,10 +1001,11 @@ class DavListener implements IEventListener
             $btn_url = $config->getAppValue(
                 $this->appName,
                 'emb_cncf_' . $userId, $btn_url);
+            $pageIdParam = "&pageId=" . $pageId;
         }
         return [
             $btn_url,
-            urlencode($utils->encrypt(substr($uri, 0, -4), $key)) . "&pageId=" . $pageId
+            urlencode($utils->encrypt(substr($uri, 0, -4), $key)) . $pageIdParam
         ];
     }
 
