@@ -86,6 +86,7 @@ OC.L10N.register(
     "Settings" : "設定",
     "Manage Appointment Slots" : "管理預約時段",
     "User/Organization Info" : "使用者/機構資訊",
+    "Auto Style" : "自動樣式",
     "Help/Tutorial" : "說明/教學",
     "Public Page URL" : "公開頁面網址",
     "Close" : "關閉",

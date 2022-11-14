@@ -86,6 +86,7 @@ OC.L10N.register(
     "Settings" : "Beállítások",
     "Manage Appointment Slots" : "Találkozók időpontjának kezelése",
     "User/Organization Info" : "Felhasználói/szervezeti információk",
+    "Auto Style" : "Automatikus stílus",
     "Help/Tutorial" : "Súgó/bemutató",
     "Public Page URL" : "Nyilvános oldal URL-je",
     "Close" : "Bezárás",

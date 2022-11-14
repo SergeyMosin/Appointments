@@ -86,6 +86,7 @@ OC.L10N.register(
     "Settings" : "Ayarlar",
     "Manage Appointment Slots" : "Randevu aralıklarını yönet",
     "User/Organization Info" : "Kullanıcı/kuruluş bilgileri",
+    "Auto Style" : "Otomatik biçem",
     "Help/Tutorial" : "Yardım ve eğitim",
     "Public Page URL" : "Herkese açık sayfa adresi",
     "Close" : "Kapat",
