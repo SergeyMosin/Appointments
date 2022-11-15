@@ -86,6 +86,7 @@ OC.L10N.register(
     "Settings" : "Nastavení",
     "Manage Appointment Slots" : "Spravovat sloty pro schůzky",
     "User/Organization Info" : "Informace o uživateli/organizaci",
+    "Auto Style" : "Automatický styl",
     "Help/Tutorial" : "Nápověda/návod",
     "Public Page URL" : "URL adresa veřejné stránky",
     "Close" : "Zavřít",

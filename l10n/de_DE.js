@@ -86,6 +86,7 @@ OC.L10N.register(
     "Settings" : "Einstellungen",
     "Manage Appointment Slots" : "Zeitfenster verwalten",
     "User/Organization Info" : "Benutzer-/Organisationsinfo",
+    "Auto Style" : "Automatischer Stil",
     "Help/Tutorial" : "Hilfe/Anleitung",
     "Public Page URL" : "URL der öffentlichen Seite",
     "Close" : "Schließen",
