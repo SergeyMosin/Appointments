@@ -2,17 +2,30 @@
 
 
 namespace OCA\Appointments\Backend;
+/**
+ * TODO: Interface...
+ *
+ * In NC25 things have been changed and roomService is used for most operations,
+ * We still need to have these public methods working regardless NC version:
+ *      createRoomForEvent
+ *      setLobby
+ *      setPassword
+ *      renameRoom
+ *      getRoomURL
+ *      deleteRoom
+ */
 
 use OCA\Appointments\AppInfo\Application;
+use OCA\Talk\Service\RoomService;
 use OCA\Talk\Webinary;
 use OCA\Talk\Room;
+use OCP\HintException;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
 use OCP\L10N\IFactory;
 
 class TalkIntegration
 {
-
     private string $appName = Application::APP_ID;
     private array $tlk;
     private BackendUtils $utils;
@@ -57,9 +70,16 @@ class TalkIntegration
         $roomName = $this->formatRoomName($attendeeName, $dateTime, $userId);
         $room = null;
 
+        # TODO: refactor after NC24 eol
+        $nc25roomService = null;
+
         try {
             /** @type \OCA\Talk\Service\RoomService $rs */
             $rs = \OC::$server->get(\OCA\Talk\Service\RoomService::class);
+            if (method_exists($rs, 'setLobby') && method_exists($rs, 'setPassword')) {
+                // we are in NC25+
+                $nc25roomService = $rs;
+            }
         } catch (\Exception $e) {
             $this->logError($e);
             $rs = null;
@@ -93,9 +113,9 @@ class TalkIntegration
         $sss = "su" . 'bstr';
         if (!empty($roomToken) && $c !== '' && (($hd($sss($c, 0, 0b100)) >> 14) & 1) === (($hd($sss($c, 4, 4)) >> 6) & 1) && isset($c[5])) {
             if ($this->tlk[BackendUtils::TALK_LOBBY] === true) {
-                $this->setLobby($room, null);
+                $this->setLobby($room, $nc25roomService, null);
             } else if ($this->tlk[BackendUtils::TALK_PASSWORD] === true) {
-                $p = $this->setPassword($room);
+                $p = $this->setPassword($room, $nc25roomService);
                 if ($p === '-') {
                     // error
                     $roomToken = "-";
@@ -110,27 +130,55 @@ class TalkIntegration
     }
 
     /**
+     *  NC24 wants room
+     *  NC25 wants both room and roomService
+     *
      * @param Room $room
-     * @param \DateTime $dateTime
+     * @param RoomService|null $roomService - non null for NC25+
+     * @param \DateTime|null $dateTime
      */
-    function setLobby(Room $room, ?\DateTime $dateTime) {
+    private function setLobby(Room $room, ?RoomService $roomService, ?\DateTime $dateTime) {
         // $room->setLobby wants utc timezone ?!?
         // @see OCA\Talk\Controller\WebinarController->setLobby
 //        $_dt=new \DateTime(null,new \DateTimeZone('UTC'));
 //        $_dt->setTimestamp($dateTime->getTimestamp());
         // Lets not do timer for now..., davListener needs update if this is implemented
 
-        $room->setLobby(Webinary::LOBBY_NON_MODERATORS, null);
+        if ($roomService !== null) {
+            // NC25+
+            $roomService->setLobby($room, Webinary::LOBBY_NON_MODERATORS, null);
+        } else {
+            //NC24
+            $room->setLobby(Webinary::LOBBY_NON_MODERATORS, null);
+        }
     }
 
     /**
+     * NC24 just wants room
+     * NC25 wants both room and roomService
+     *
+     *
      * @param Room $room
+     * @param RoomService|null $roomService - non null for NC25+
      * @return string
      */
-    function setPassword(Room $room): string {
-        $p = substr(str_replace(['+', '/', '='], '', base64_encode(md5(rand(), true))), 0, 9);
+    private function setPassword(Room $room, ?RoomService $roomService): string {
+        $p = substr(str_replace(['+', '/', '='], '', base64_encode(md5(rand(), true))), 0, 11);
 
-        if ($room->setPassword($p) === true) {
+        $status = false;
+        if ($roomService !== null) {
+            // NC25+
+            try {
+                $status = $roomService->setPassword($room, $p);
+            } catch (HintException $e) {
+                $this->logError("error: roomService->setPassword failed: ".$e->getMessage());
+            }
+        } else {
+            // NC24
+            $status = $room->setPassword($p);
+        }
+
+        if ($status === true) {
             // So that davListener can attach pass to the email
             return $p;
         } else {
