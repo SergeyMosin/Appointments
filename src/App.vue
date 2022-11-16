@@ -138,7 +138,7 @@
         :aria-expanded="navOpen">
       <div v-show="visibleSection===2" class="srgdev-appt-cal-view-cont">
         <ModalExt
-            v-if="generalModal===1"
+            v-if="generalModal!==0"
             class="srgdev-appt-modal-container"
             :canClose="false">
           <div>
@@ -942,6 +942,9 @@ export default {
     },
 
     handle202(o) {
+
+      console.log("oooo:", o)
+
       if (o['contrib'] !== undefined) {
         this.showCModal(o['contrib'])
       } else if (o['info'] !== undefined) {
@@ -1504,6 +1507,7 @@ export default {
     },
 
     openGeneralModal(id) {
+      console.log("openGeneralModal",id)
       this.generalModal = id
       this.visibleSection = 2
       this._clearGeneralModal()
