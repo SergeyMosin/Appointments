@@ -1,3 +1,8 @@
+## v1.14.3 - 2022-11-15
+### Fixed
+- NC25 Talk integration errors - #376
+- Modal info popups - #377
+
 ## v1.14.2 - 2022-11-13
 ### Fixed
 - "Auto Style" not working with NC 25.0.1 and guest pages
