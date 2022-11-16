@@ -86,6 +86,7 @@ OC.L10N.register(
     "Settings" : "Настройки",
     "Manage Appointment Slots" : "Управление на слотове за срещи",
     "User/Organization Info" : "Информация за потребител/организация",
+    "Auto Style" : "Автоматичен стил",
     "Help/Tutorial" : "Помощ/Ръководство",
     "Public Page URL" : "URL адрес на публична страница",
     "Close" : "Затваряне",
