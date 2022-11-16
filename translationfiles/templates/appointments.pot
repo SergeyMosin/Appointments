@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2022-11-14 03:17+0000\n"
+"POT-Creation-Date: 2022-11-16 03:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,7 +100,7 @@ msgstr ""
 
 #. TRANSLATORS This is a button label
 #: /app/lib/Backend/DavListener.php:548 /app/lib/Backend/DavListener.php:743
-#: /app/lib/Controller/PageController.php:404
+#: /app/lib/Controller/PageController.php:410
 msgid "Confirm"
 msgstr ""
 
@@ -215,149 +215,149 @@ msgstr ""
 msgid "%s Appointment"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:1036 /app/lib/Backend/DavListener.php:1049
+#: /app/lib/Backend/DavListener.php:1039 /app/lib/Backend/DavListener.php:1052
 msgid "Password"
 msgstr ""
 
 #. TRANSLATORS This a link to chat/(video)call, Ex: Chat/Call link: https://my_domain.com/call/kzu6e4uv
-#: /app/lib/Backend/DavListener.php:1046
+#: /app/lib/Backend/DavListener.php:1049
 #, php-format
 msgid "Chat/Call link: %s"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:1169 /app/templates/public/formerr.php:23
+#: /app/lib/Backend/DavListener.php:1172 /app/templates/public/formerr.php:23
 #: /app/templates/public/thanks.php:18
 msgid "Thank you"
 msgstr ""
 
 #. TRANSLATORS This is a part of an email message. %1$s Cancel Appointment %2$s is a link to the cancellation page (HTML format).
-#: /app/lib/Backend/DavListener.php:1176
+#: /app/lib/Backend/DavListener.php:1179
 #, php-format
 msgid "To cancel your appointment please click: %1$s Cancel Appointment %2$s"
 msgstr ""
 
 #. TRANSLATORS This is a part of an email message. %s is a URL of the cancellation page (PLAIN TEXT format).
-#: /app/lib/Backend/DavListener.php:1179
+#: /app/lib/Backend/DavListener.php:1182
 #, php-format
 msgid "To cancel your appointment please visit: %s"
 msgstr ""
 
 #. TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is confirmed.
-#: /app/lib/Controller/PageController.php:240
+#: /app/lib/Controller/PageController.php:246
 #, php-format
 msgid "Your appointment scheduled for %s is confirmed."
 msgstr ""
 
 #. TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is canceled.
-#: /app/lib/Controller/PageController.php:244
+#: /app/lib/Controller/PageController.php:250
 #, php-format
 msgid "Your appointment scheduled for %s is canceled."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:246
+#: /app/lib/Controller/PageController.php:252
 msgid "Your appointment is canceled."
 msgstr ""
 
 #. TRANSLATORS the '%s' is an email address
-#: /app/lib/Controller/PageController.php:331
+#: /app/lib/Controller/PageController.php:337
 #, php-format
 msgid "An email with additional details is on its way to you at %s"
 msgstr ""
 
 #. TRANSLATORS Ex: Please confirm your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}}.
-#: /app/lib/Controller/PageController.php:402
+#: /app/lib/Controller/PageController.php:408
 #, php-format
 msgid "Please confirm your appointment scheduled for %s."
 msgstr ""
 
 #. TRANSLATORS Ex: Would you like to cancel appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} ?
-#: /app/lib/Controller/PageController.php:498
+#: /app/lib/Controller/PageController.php:504
 #, php-format
 msgid "Would you like to cancel appointment scheduled for %s ?"
 msgstr ""
 
 #. TRANSLATORS This is a button label
-#: /app/lib/Controller/PageController.php:500
+#: /app/lib/Controller/PageController.php:506
 msgid "Yes, Cancel"
 msgstr ""
 
 #. TRANSLATORS Ex: Your {{meeting type}} has been changed to {{online(video/audio)}}
-#: /app/lib/Controller/PageController.php:543
+#: /app/lib/Controller/PageController.php:549
 #, php-format
 msgid "Your %s has been changed to %s"
 msgstr ""
 
 #. TRANSLATORS Ex: Would you like to change your {{meeting type}} to {{online(video/audio)}} ?
-#: /app/lib/Controller/PageController.php:562
+#: /app/lib/Controller/PageController.php:568
 #, php-format
 msgid "Would you like to change your %s to %s?"
 msgstr ""
 
 #. TRANSLATORS This is a button label
-#: /app/lib/Controller/PageController.php:564
+#: /app/lib/Controller/PageController.php:570
 msgid "Yes, Change"
 msgstr ""
 
 #. TRANSLATORS Meaning the booking process is finished
-#: /app/lib/Controller/PageController.php:577
+#: /app/lib/Controller/PageController.php:583
 msgid "All done."
 msgstr ""
 
 #. TRANSLATORS Meaning the visitor need to click a button or take some other action to finalize/save something
-#: /app/lib/Controller/PageController.php:580
+#: /app/lib/Controller/PageController.php:586
 msgid "Action needed"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:598
-#: /app/lib/Controller/PageController.php:940
+#: /app/lib/Controller/PageController.php:604
+#: /app/lib/Controller/PageController.php:946
 msgid "Info"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:599
-#: /app/lib/Controller/PageController.php:941
+#: /app/lib/Controller/PageController.php:605
+#: /app/lib/Controller/PageController.php:947
 msgid "Link Expired …"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:615
-#: /app/lib/Controller/PageController.php:635
-#: /app/lib/Controller/PageController.php:912
-#: /app/lib/Controller/PageController.php:1027
+#: /app/lib/Controller/PageController.php:621
+#: /app/lib/Controller/PageController.php:641
+#: /app/lib/Controller/PageController.php:918
+#: /app/lib/Controller/PageController.php:1029
 #: /app/specialAppInfoFakeDummyForL10nScript.php:2
 msgid "Appointments"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:911
+#: /app/lib/Controller/PageController.php:917
 msgid "Almost done …"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:934
+#: /app/lib/Controller/PageController.php:940
 #, php-format
 msgid ""
 "We have sent an email to %s, please open it and click on the confirmation "
 "link to finalize your appointment request"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1002
+#: /app/lib/Controller/PageController.php:1008
 msgid "Organization Name"
 msgstr ""
 
 #. TRANSLATORS onents/settings/PublicPageSettings.vue:19
 #. TRANSLATORS onents/settings/UserContactSettings.vue:60
-#: /app/lib/Controller/PageController.php:1008
+#: /app/lib/Controller/PageController.php:1014
 #: /app/specialVueFakeDummyForL10nScript.js:270
 #: /app/specialVueFakeDummyForL10nScript.js:562
 msgid "Book Your Appointment"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1185
+#: /app/lib/Controller/PageController.php:1187
 msgid "Please add time slots first."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1188
+#: /app/lib/Controller/PageController.php:1190
 msgid "Please select a calendar first"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1191
+#: /app/lib/Controller/PageController.php:1193
 msgid "Selected calendar not found"
 msgstr ""
 
