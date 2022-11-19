@@ -118,6 +118,7 @@ OC.L10N.register(
     "1 hour" : "1 hora",
     "2 hours" : "2 hores",
     "4 hours" : "4 hores",
+    "8 hours" : "8 hores",
     "12 hours" : "12 hores",
     "1 day" : "1 dia",
     "When Attendee Cancels" : "Quan els assistents anul·len",
