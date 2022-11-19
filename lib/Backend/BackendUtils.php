@@ -1634,7 +1634,7 @@ class BackendUtils
             }
         }
         if ($tz === null) {
-            $this->logger->error("warning: getCalendarTimezone fallback to getUserTimezone: " . $err);
+            $this->logger->warning("getCalendarTimezone fallback to getUserTimezone: " . $err);
             return $this->getUserTimezone($userId, $config);
         }
         return $tz;

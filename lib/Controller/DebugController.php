@@ -69,7 +69,7 @@ class DebugController extends Controller
             $data .= "\n\n";
         }
 
-        $data.="<strong>ExtNotify:</strong> ".($this->config->getAppValue($this->appName, 'ext_notify_' . $this->userId)!==""?"Yes":"No")."\n\n";
+        $data .= "<strong>ExtNotify:</strong> " . ($this->config->getAppValue($this->appName, 'ext_notify_' . $this->userId) !== "" ? "Yes" : "No") . "\n\n";
 
         $tr = new TemplateResponse($this->appName, 'settings_dump', [], "base");
         $params['data'] = $data;
@@ -121,19 +121,26 @@ class DebugController extends Controller
                 isset($calInfo["isSubscription"]) &&
                 $calInfo["isSubscription"] === '1') {
 
-                $a = [
-                    "name" => $calInfo["name"],
-                    "syncStart" => microtime(true)
-                ];
 
-                $calInfo['syncRemoteNow_call'] = true;
-                $this->bc->getRawCalData($calInfo, $this->userId);
+                $syncInterval = intval($this->utils->getUserSettings(BackendUtils::KEY_CLS, $this->userId)[BackendUtils::CLS_TMM_SUBSCRIPTIONS_SYNC]);
 
-                $a["syncEnd"] = microtime(true);
-                $a["syncDuration"] = $a["syncEnd"] - $a["syncStart"];
+                if ($syncInterval < 60) {
+                    $data = "Appointments App sync is disabled.\nSee 'Settings > Advanced Settings > Weekly Template Settings > Subscriptions Sync Interval'";
+                } else {
 
-                $data = var_export($a, true);
+                    $a = [
+                        "name" => $calInfo["name"],
+                        "syncStart" => microtime(true)
+                    ];
 
+                    $calInfo['syncRemoteNow_call'] = true;
+                    $this->bc->getRawCalData($calInfo, $this->userId);
+
+                    $a["syncEnd"] = microtime(true);
+                    $a["syncDuration"] = $a["syncEnd"] - $a["syncStart"];
+
+                    $data = var_export($a, true);
+                }
                 $status = 200;
             }
         }
