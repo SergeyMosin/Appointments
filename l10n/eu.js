@@ -86,6 +86,7 @@ OC.L10N.register(
     "Settings" : "Ezarpenak",
     "Manage Appointment Slots" : "Kudeatu hitzordu-tarteak",
     "User/Organization Info" : "Erabiltzaile/Erakundearen info",
+    "Auto Style" : "Estilo automatikoa",
     "Help/Tutorial" : "Laguntza/Tutoriala",
     "Public Page URL" : "Orri publikoaren URL-a",
     "Close" : "Itxi",
