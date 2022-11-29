@@ -86,6 +86,7 @@ OC.L10N.register(
     "Settings" : "Paramètres",
     "Manage Appointment Slots" : "Gérer les créneaux de rendez-vous",
     "User/Organization Info" : "Informations sur l’utilisateur / l’organisation",
+    "Auto Style" : "Style Auto",
     "Help/Tutorial" : "Aide/Tutoriel",
     "Public Page URL" : "URL de la page publique",
     "Close" : "Fermer",
