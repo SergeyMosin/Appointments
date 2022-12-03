@@ -1,7 +1,13 @@
+## v1.14.5 - 2022-12-03
+### Added
+- Appointment title templating - #382
+### Fixed
+- Organizer email is not sent in some cases - #383
+
 ## v1.14.4 - 2022-12-02
 ### Changed
 - Log warnings instead of errors for missing timezones
-- Optimize "Auto Style" functionality
+- Optimize "Auto Style" functionality (upgrade from v1.14.2 and v1.14.3 to improve performance)
 
 ## v1.14.3 - 2022-11-15
 ### Fixed
