@@ -96,6 +96,7 @@ class BackendUtils
 
     public const CLS_ON_CANCEL = 'whenCanceled';
     public const CLS_ALL_DAY_BLOCK = 'allDayBlock';
+    public const CLS_TITLE_TEMPLATE = 'titleTemplate';
     public const CLS_PRIVATE_PAGE = 'privatePage';
     public const CLS_TS_MODE = 'tsMode';
     // values for tsMode
@@ -283,7 +284,7 @@ class BackendUtils
             $t = $evt->SUMMARY->getValue();
             if ($t[0] === "_") $title = $t;
         }
-        $evt->SUMMARY->setValue("⌛ " . $info['name']);
+        $evt->SUMMARY->setValue("⌛ " . $this->makeEvtTitle($userId, $info['name'], $info['_page_id'], $this->getAttendee($evt)->getValue()));
 
         $dsr = $info['name'] . "\n" . (empty($info['phone']) ? "" : ($info['phone'] . "\n")) . $info['email'] . $info['_more_data'];
 
@@ -460,7 +461,7 @@ class BackendUtils
         $a->parameters['PARTSTAT']->setValue('ACCEPTED');
 
         if (!isset($evt->SUMMARY)) $evt->add('SUMMARY'); // ???
-        $evt->SUMMARY->setValue("✔️ " . $attendeeName);
+        $evt->SUMMARY->setValue("✔️ " . $this->makeEvtTitle($userId, $attendeeName, $pageId, $this->getAttendee($evt)->getValue()));
 
         //Talk link
         $this->addEvtTalkInfo($userId, $xad, $evt, $a);
@@ -1065,6 +1066,7 @@ class BackendUtils
                     self::CLS_BUFFER_AFTER => 0,
                     self::CLS_ON_CANCEL => 'mark',
                     self::CLS_ALL_DAY_BLOCK => false,
+                    self::CLS_TITLE_TEMPLATE => "",
 
                     self::CLS_PRIVATE_PAGE => false,
                     self::CLS_TS_MODE => self::CLS_TS_MODE_TEMPLATE);
@@ -1926,6 +1928,37 @@ class BackendUtils
                 ->execute();
         } catch (Exception $e) {
             $this->logger->error("removeSubscriptionSync error: " . $e->getMessage());
+        }
+    }
+
+    private function makeEvtTitle(string $userId, string $attendeeName, string $pageId, string $av): string {
+        $cls = $this->getUserSettings(self::KEY_CLS, $userId);
+        if (isset($cls[self::CLS_TITLE_TEMPLATE]) && !empty($cls[self::CLS_TITLE_TEMPLATE])) {
+
+            $tmpl = $cls[self::CLS_TITLE_TEMPLATE];
+
+            $pgs = $this->getUserSettings(
+                BackendUtils::KEY_PAGES, $userId);
+
+            $org = $this->getUserSettings(
+                BackendUtils::KEY_ORG, $userId);
+
+            $pageTag = $pageId;
+            if (isset($pgs[$pageId])) {
+                $pageTag = $pgs[$pageId][self::PAGES_LABEL];
+            }
+
+            $tkn = strtoupper(substr(str_replace(' ', '', $attendeeName), 0, 3)) .
+                strtoupper(substr(str_replace(['+', '/', '='], '', base64_encode(sha1($attendeeName . $av . $userId, true))), 0, 8));
+
+            // %N = Attendee Name
+            // %O = Organization Name
+            // %P = Page Tag
+            // %T = Mask Token
+            return str_replace(["%N", "%O", "%P", "%T"],
+                [$attendeeName, $org[self::ORG_NAME], $pageTag, $tkn], $tmpl);
+        } else {
+            return $attendeeName;
         }
     }
 

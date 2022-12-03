@@ -54,6 +54,20 @@
                 class="checkbox"><label style="margin-left: -3px;" class="srgdev-appt-sb-label-inline"
                                         for="appt_tsb-allday-block">{{ t('appointments', 'Include all day events in conflict check') }}</label>
           </div>
+          <div class="srgdev-appt-info-lcont">
+            <label class="tsb-txt-label"
+                   for="appt_tsb-title-template">
+              {{ t('appointments', 'Title Template') }}:</label><a
+              class="icon-info srgdev-appt-info-link"
+              @click="$root.$emit('helpWanted','tmm_title_template')"></a>
+          </div>
+          <input
+              class="tsb-input"
+              style="margin: 0"
+              v-model="calInfo.titleTemplate"
+              id="appt_tsb-title-template"
+              type="text"
+              :placeholder="t('appointments','%N')">
         </div>
         <ApptIconLabel
             class="toggler" :class="{'toggler--closed':sections[0]===0}"
@@ -174,6 +188,7 @@ export default {
         nrRequireCat: false,
         nrAutoFix: false,
         tmmSubscriptionsSync: "0",
+        titleTemplate: "",
       },
     }
   },
@@ -216,6 +231,16 @@ export default {
 
 .toggler--closed {
   margin-bottom: .625em;
+}
+
+
+.tsb-txt-label,
+.tsb-label {
+  display: block;
+}
+
+.tsb-txt-label {
+  margin-top: 1em;
 }
 
 .tsb-input {
