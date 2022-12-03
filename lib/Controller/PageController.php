@@ -18,7 +18,6 @@ use OCP\IRequest;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Controller;
 use OCP\IURLGenerator;
-use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Mail\IMailer;
 use OCP\Util;
@@ -38,7 +37,6 @@ class PageController extends Controller
     private $utils;
     private $logger;
     private $userSession;
-    private $userManager;
 
     public function __construct($AppName,
                                 IRequest $request,
@@ -49,7 +47,6 @@ class PageController extends Controller
                                 IUserSession $userSession,
                                 BackendManager $backendManager,
                                 BackendUtils $utils,
-                                IUserManager $userManager,
                                 LoggerInterface $logger
     ) {
         parent::__construct($AppName, $request);
@@ -61,7 +58,6 @@ class PageController extends Controller
         /** @noinspection PhpUnhandledExceptionInspection */
         $this->bc = $backendManager->getConnector();
         $this->utils = $utils;
-        $this->userManager = $userManager;
         $this->logger = $logger;
     }
 
@@ -758,26 +754,26 @@ class PageController extends Controller
         $v = '';
         $fij = $this->utils->getUserSettings(BackendUtils::KEY_FORM_INPUTS_JSON, $userId);
 
-        if(!empty($fij)){
-            $f0=$fij[0];
-            if (is_array($f0) && array_key_exists(0,$f0) && is_array($f0[0])) {
-                    foreach($f0 as $index => $field) {
-                        $fieldResult = $this->showFormCustomField($field,$post,$index);
-                        if ($fieldResult === false) {
-                            $rr=new RedirectResponse($bad_input_url);
-                            $rr->setStatus(303);
-                            return $rr;
-                        } 
-                        $v .= $fieldResult;
+        if (!empty($fij)) {
+            $f0 = $fij[0];
+            if (is_array($f0) && array_key_exists(0, $f0) && is_array($f0[0])) {
+                foreach ($f0 as $index => $field) {
+                    $fieldResult = $this->showFormCustomField($field, $post, $index);
+                    if ($fieldResult === false) {
+                        $rr = new RedirectResponse($bad_input_url);
+                        $rr->setStatus(303);
+                        return $rr;
                     }
-                  } else {
-                      $fieldResult = $this->showFormCustomField($f0, $post);
-                      if ($fieldResult === false) {
-                          $rr=new RedirectResponse($bad_input_url);
-                          $rr->setStatus(303);
-                          return $rr;
-                      } 
-                    $v = $fieldResult;
+                    $v .= $fieldResult;
+                }
+            } else {
+                $fieldResult = $this->showFormCustomField($f0, $post);
+                if ($fieldResult === false) {
+                    $rr = new RedirectResponse($bad_input_url);
+                    $rr->setStatus(303);
+                    return $rr;
+                }
+                $v = $fieldResult;
             }
         }
         $post['_more_data'] = $v;
@@ -906,27 +902,27 @@ class PageController extends Controller
         $rr->setStatus(303);
         return $rr;
     }
-	
+
     /**
      * @param array $field
      * @param array $post
-     * @param int   $index 
-     * @return string|bool 
+     * @param int $index
+     * @return string|bool
      */
     private function showFormCustomField($field, $post, $index = 0) {
 
         $v = '';
-        if(!empty($field) && isset($post[$field['name']])){
-            $n=$post[$field['name']];
+        if (!empty($field) && isset($post[$field['name']])) {
+            $n = $post[$field['name']];
             // TODO: check "number" type
-            $v=htmlspecialchars(strip_tags(preg_replace('/\s+/', ' ',trim(substr($n,0,512)))),ENT_NOQUOTES);
+            $v = htmlspecialchars(strip_tags(preg_replace('/\s+/', ' ', trim(substr($n, 0, 512)))), ENT_NOQUOTES);
 
-            if(isset($field['required']) && $field['required']===true && $v===''){
-               /*  $rr=new RedirectResponse($bad_input_url);
-                $rr->setStatus(303);*/
+            if (isset($field['required']) && $field['required'] === true && $v === '') {
+                /*  $rr=new RedirectResponse($bad_input_url);
+                 $rr->setStatus(303);*/
                 return false;
             }
-            $v="\n".rtrim($field['label'],':').": ".$v;
+            $v = "\n" . rtrim($field['label'], ':') . ": " . $v;
         }
 
         return $v;

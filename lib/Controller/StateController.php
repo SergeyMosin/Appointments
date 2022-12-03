@@ -704,20 +704,22 @@ class StateController extends Controller
     private function makeFormComponent(&$obj, $index = 0) {
         $r = '';
         $fields = [];
-        if (is_array($obj) && array_key_exists(0,$obj) && is_array($obj[0])) {
+        if (is_array($obj) && array_key_exists(0, $obj) && is_array($obj[0])) {
             foreach ($obj as $ind => $field) {
-                $r = $this->makeFormField($field,$ind);
-                if ($r === '') {return $r;}
+                $r = $this->makeFormField($field, $ind);
+                if ($r === '') {
+                    return $r;
+                }
                 $fields[] = $r;
                 $obj[$ind]['name'] = $field['name'];
                 $r = '';
             }
-            return implode('',$fields);
+            return implode('', $fields);
         } else {
-            return $this->makeFormField($obj,$index);
+            return $this->makeFormField($obj, $index);
         }
     }
-    
+
     private function makeFormField(&$obj, $index = 0) {
         $r = '';
         if (!isset($obj['tag']) || !isset($obj['label'][2])) return $r;

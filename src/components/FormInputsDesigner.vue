@@ -8,9 +8,13 @@
       <div class="srgdev-fid_sec_left">
         <label class="fid-label" for="srgdev-fid-ta">JSON Object</label>
         <textarea v-model="fiInfo" id="srgdev-fid-ta" class="fid-textarea"></textarea>
-        <div style="font-size: 90%; font-style: italic;">GUI is under development. See <a target="_blank"
-                                                                                          href="https://github.com/SergeyMosin/Appointments/issues/24#issuecomment-721103321">https://github.com/SergeyMosin/Appointments/issues/24#issuecomment-721103321</a>
-          for more info.
+        <div style="font-size: 90%; font-style: italic;">GUI is under development. See <a
+            target="_blank"
+            href="https://github.com/SergeyMosin/Appointments/issues/24#issuecomment-721103321">https://github.com/SergeyMosin/Appointments/issues/24#issuecomment-721103321</a>
+          for examples and more info.<br>
+          Multiple extra fields example is here: <a
+              target="_blank"
+              href="https://github.com/SergeyMosin/Appointments/issues/223#issuecomment-975359734">https://github.com/SergeyMosin/Appointments/issues/223#issuecomment-975359734</a>
         </div>
         <div class="srgdev-fid_html" v-show="rawHtml!==''">
           <label class="fid-label">HTML:</label>

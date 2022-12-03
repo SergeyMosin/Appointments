@@ -916,7 +916,7 @@ class DavListener implements IEventListener
             $oma = explode("\n", $om_info);
             // At least two parts (name and email, [phone optional])
             $omc = count($oma);
-            if ($omc > 1 && $omc < 17) {
+            if ($omc > 1) {
 
                 $evt_dt = $evt->DTSTART->getDateTime();
                 // Here we need organizer's timezone for getDateTimeString()
@@ -930,8 +930,15 @@ class DavListener implements IEventListener
                 $tmpl->addHeading(" "); // spacer
                 $tmpl->addBodyText($om_prefix);
                 $tmpl->addBodyListItem($utils->getDateTimeString($evt_dt, $utz_info));
+                $ic = 0;
                 foreach ($oma as $info) {
-                    if (strlen($info) > 2) $tmpl->addBodyListItem($info);
+                    if (strlen($info) > 2) {
+                        $tmpl->addBodyListItem($info);
+                        $ic++;
+                        if ($ic > 16) {
+                            break;
+                        }
+                    }
                 }
 
                 // Add page name
