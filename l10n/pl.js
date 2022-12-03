@@ -86,6 +86,7 @@ OC.L10N.register(
     "Settings" : "Ustawienia",
     "Manage Appointment Slots" : "Zarządzaj terminami spotkań",
     "User/Organization Info" : "Informacje o użytkowniku/organizacji",
+    "Auto Style" : "Styl automatyczny",
     "Help/Tutorial" : "Pomoc/Samouczek",
     "Public Page URL" : "Publiczny adres URL strony",
     "Close" : "Zamknij ",

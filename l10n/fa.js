@@ -21,6 +21,7 @@ OC.L10N.register(
     "Optional" : "اختیاری",
     "Add" : "افزودن",
     "OK" : "تایید",
+    "Advanced Settings" : "تنظمیات پیش‌رفته",
     "15 minutes" : "۱۵ دقیقه",
     "30 minutes" : "۳۰ دقیقه",
     "1 hour" : "۱ ساعت",
