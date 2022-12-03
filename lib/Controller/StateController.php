@@ -354,10 +354,10 @@ class StateController extends Controller
             }
         } else if ($action === "set_eml") {
             $value = $this->request->getParam("d");
-            if ($value !== null) {
+            if ($value !== null && !isset($value[1280])) {
                 if ($this->utils->setUserSettings(
                         BackendUtils::KEY_EML,
-                        $value, $this->utils->getDefaultForKey(BackendUtils::KEY_EML),
+                        preg_replace("/(\\\\n){2,}/", "\\\\n\\\\n", $value), $this->utils->getDefaultForKey(BackendUtils::KEY_EML),
                         $this->userId, $this->appName) === true
                 ) {
                     $r->setStatus(200);

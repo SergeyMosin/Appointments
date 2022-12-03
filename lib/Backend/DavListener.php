@@ -916,14 +916,13 @@ class DavListener implements IEventListener
             $oma = explode("\n", $om_info);
             // At least two parts (name and email, [phone optional])
             $omc = count($oma);
-            if ($omc > 1 && $omc < 9) {
+            if ($omc > 1 && $omc < 17) {
 
                 $evt_dt = $evt->DTSTART->getDateTime();
                 // Here we need organizer's timezone for getDateTimeString()
 //                $utz_info .= $utils->getUserTimezone($userId, $config)->getName();
                 $utz_info .= $utz->getName();
 
-//                $tmpl = $mailer->createEMailTemplate("ID_" . time());
                 $tmpl = $this->getEmailTemplate();
 
                 $tmpl->setSubject($om_prefix . ": " . $to_name . ", "
