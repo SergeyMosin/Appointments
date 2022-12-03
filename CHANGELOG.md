@@ -1,3 +1,8 @@
+## v1.14.4 - 2022-12-02
+### Changed
+- Log warnings instead of errors for missing timezones
+- Optimize "Auto Style" functionality
+
 ## v1.14.3 - 2022-11-15
 ### Fixed
 - NC25 Talk integration errors - #376
