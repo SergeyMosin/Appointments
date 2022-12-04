@@ -20,6 +20,11 @@
 
 		makeDpu(f.getAttribute("data-pps"))
 		document.getElementById("srgdev-ncfp_sel-dummy").addEventListener("click", selClick)
+		document.getElementById("srgdev-ncfp_sel-dummy").addEventListener("keyup", function (evt) {
+			if (isSpaceKey(evt)) {
+				selClick(evt)
+			}
+		})
 
 		setTimeout(function () {
 			let b = document.getElementById("srgdev-ncfp_fbtn")
@@ -157,22 +162,77 @@
 		this.appendChild(el)
 	}
 
+	function selClose(elm) {
+		document.body.removeEventListener("keyup", selEscCloseListener)
+		document.getElementById("srgdev-ncfp_frm").removeEventListener("focusin", focusTrapListener)
+		if (elm === null) {
+			elm = document.getElementById("srgdev-dpu_main-cont")
+		}
+		elm.removeAttribute("data-open")
+	}
+
+	function selEscCloseListener(evt) {
+		if (evt.key === "Escape" || evt.key === "Esc" || evt.keyCode === 27) {
+			selClose(null)
+			e.preventDefault()
+		}
+	}
+
+	function focusTrapListener(evt) {
+		if (evt.target
+			&& (evt.target.nodeName.toUpperCase() !== "DIV"
+				&& evt.target.nodeName.toUpperCase() !== "SPAN")) {
+			// (Re)set focus to first available
+			document.getElementById("srgdev-dpu_main-date").firstAvailble.focus()
+		}
+	}
+
+
 	function selClick(e) {
 		let elm = document.getElementById("srgdev-dpu_main-cont")
 		if (elm.getAttribute("data-open") === null) {
 			elm.setAttribute("data-open", '')
+			document.body.addEventListener("keyup", selEscCloseListener)
+			const curActive = document.getElementById("srgdev-dpu_main-date").curActive
+			if (curActive && curActive.indexOf('e') === -1) {
+				document.getElementById("srgdev-dpu_dc" + curActive).focus()
+			}
+
+			// trap focus inside popup
+			document.getElementById("srgdev-ncfp_frm").addEventListener("focusin", focusTrapListener)
+
 		} else {
-			elm.removeAttribute("data-open")
+			selClose(elm)
 		}
 		e.preventDefault()
 		return false
 	}
 
-	function dateClick(e) {
+	function dateKeyboard(evt) {
+		if (isSpaceKey(evt) || isSpaceKey(evt)) {
+			// select first available time
+			const timeCont = document.getElementById('srgdev-dpu_tc' + this.parentElement.curActive)
+			if (timeCont && timeCont.hasAttribute('data-active')) {
+				timeCont.lastChild.firstChild.focus()
+			}
+		}
+	}
+
+	function dateClickOrFocus(e) {
 
 		let n = this.id.slice(13)
 		let c = this.parentElement.curActive
 		if (c === n) return
+
+		const nbr = +(('' + n).replace("e", ''))
+		// scroll dateCont into view when using keyboard
+		const bfCont = document.getElementById("srgdev-dpu_bf-cont")
+		const wantedDP = Math.floor(nbr / 5)
+		if (wantedDP !== bfCont.curDP) {
+			bfCont.curDP = wantedDP
+			prevNextDPU(bfCont)
+		}
+
 		document.getElementById('srgdev-dpu_dc' + c)
 			.removeAttribute('data-active');
 		document.getElementById('srgdev-dpu_dc' + n).setAttribute('data-active', '')
@@ -183,6 +243,8 @@
 		document.getElementById('srgdev-dpu_tc' + c)
 			.removeAttribute('data-active');
 		document.getElementById('srgdev-dpu_tc' + n).setAttribute('data-active', '')
+
+		this.parentElement.parentElement.scrollLeft = 0
 
 		e.stopPropagation()
 	}
@@ -242,7 +304,7 @@
 			}
 			elm.lastElementChild.value = 0
 
-			document.getElementById("srgdev-dpu_main-cont").removeAttribute("data-open")
+			selClose(null)
 		}
 	}
 
@@ -279,6 +341,8 @@
 		// TODO: find first not empty and select it ?
 
 		document.getElementById("srgdev-dpu_main-date").style.left = "-" + (p.curDP * 5 * 4.6) + "em"
+
+		document.getElementById("srgdev-dpu_main-cont").scrollLeft = 0
 	}
 
 	function addSwipe(cont, bfc) {
@@ -519,17 +583,10 @@
 		let lcd = document.createElement('div')
 		lcd.id = "srgdev-dpu_main-header"
 		lcd.appendChild(document.createTextNode(dpuTrHdr))
-		let lcdBF = document.createElement('div')
-		lcdBF.id = "srgdev-dpu_main-hdr-icon"
-		lcdBF.className = "icon-close"
-		lcdBF.addEventListener('click', function () {
-			document.getElementById("srgdev-dpu_main-cont").removeAttribute("data-open")
-		})
-		lcd.appendChild(lcdBF)
 		cont.appendChild(lcd)
 
 
-		lcdBF = document.createElement('div')
+		let lcdBF = document.createElement('div')
 		lcdBF.maxDP = 0
 		lcdBF.curDP = 0
 		lcdBF.id = "srgdev-dpu_bf-cont"
@@ -585,7 +642,13 @@
 			e2.className = 'srgdev-dpu-date-md'
 			e2.appendChild(document.createTextNode(df(d)))
 			e1.appendChild(e2)
-			e1.addEventListener('click', dateClick)
+
+			e1.addEventListener('click', dateClickOrFocus)
+			if (!is_empty) {
+				e1.setAttribute("tabindex", "0")
+				e1.addEventListener('focus', dateClickOrFocus)
+				e1.addEventListener('keyup', dateKeyboard)
+			}
 
 			if (lcc === rccN) {
 				rccN += 5
@@ -703,6 +766,7 @@
 				if (an === -1) {
 					an = lcc - 1
 					te.setAttribute('data-active', '')
+					lcd.firstAvailble = te
 				}
 				lcd.appendChild(te)
 
@@ -744,6 +808,7 @@
 				tl.appendChild(document.createTextNode(dto.t))
 				te.appendChild(tl)
 			}
+			te.setAttribute("tabindex", "0")
 			pe.appendChild(te)
 		}
 
@@ -752,32 +817,6 @@
 		d.setMinutes(0)
 		d.setHours(1)
 		d.setTime(d.getTime() + 86400000)
-
-		// lcc%=5
-		// if (lcc % 5 > 0) {
-		//     for (let ti, l = 5 - (lcc % 5), i = 0; i < l; i++) {
-		//
-		//         ti = d.getDay()
-		//
-		//         // Deal with weekends
-		//         if (pso[PPS_WEEKEND] === 0) {
-		//             // only show weekdays
-		//             ti = d.getDay()
-		//         } else {
-		//             // show all days
-		//             ti = 1
-		//         }
-		//
-		//         if (ti !== 0 && ti !== 6) {
-		//             lcd.appendChild(makeDateCont(d, true))
-		//         } else {
-		//             //skipping weekend
-		//             i--
-		//         }
-		//         d.setTime(d.getTime() + 86400000)
-		//     }
-		// }
-
 
 		// Make empty time cont
 		let te = document.createElement('div')
@@ -790,6 +829,11 @@
 		lcd.curActive = an.toString()
 
 		cont.addEventListener("click", timeClick)
+		cont.addEventListener('keyup', function (evt) {
+			if (isSpaceKey(evt) || isEnterKey(evt)) {
+				timeClick(evt)
+			}
+		})
 		document.getElementById('srgdev-ncfp_sel_cont').appendChild(cont)
 
 		// let's make sure the correct date square is shown...
@@ -799,6 +843,38 @@
 			lcdBF.curDP = ti
 			prevNextDPU(lcdBF)
 		}
+
+		// close button is added last because we want it last for keyboard focus
+		lcdBF = document.createElement('div')
+		lcdBF.id = "srgdev-dpu_main-hdr-icon"
+		lcdBF.className = "icon-close"
+		lcdBF.addEventListener('click', function () {
+			selClose(null)
+		})
+		lcdBF.role = "button"
+		lcdBF.addEventListener('keyup', function (evt) {
+			if (isSpaceKey(evt) || isEnterKey(evt)) {
+				selClose(null)
+			}
+		})
+		lcdBF.setAttribute("tabindex", "0")
+		cont.appendChild(lcdBF)
+	}
+
+	/**
+	 * @param {KeyboardEvent} evt
+	 * @return {boolean}
+	 */
+	function isSpaceKey(evt) {
+		return evt.key === " " || evt.code === "Space" || evt.keyCode === 32
+	}
+
+	/**
+	 * @param {KeyboardEvent} evt
+	 * @return {boolean}
+	 */
+	function isEnterKey(evt) {
+		return evt.key === "Enter" || evt.code === "Enter" || evt.keyCode === 13
 	}
 
 })()

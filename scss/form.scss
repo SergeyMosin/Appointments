@@ -11,7 +11,7 @@ body {
   background-image: var(--image-main-background);
 }
 
-#body-public.layout-base #content{
+#body-public.layout-base #content {
   min-height: 100%;
   padding-top: 50px;
   margin-top: 0;
@@ -302,15 +302,16 @@ input.srgdev-ncfp-form-input:invalid,
   display: block;
   position: absolute;
   right: .5em;
-  top: 50%;
+  top: .6em;
   width: 1.6em;
   height: 1.6em;
-  margin-top: -.8em;
+  margin-top: 0;
   border-radius: .8em;
   cursor: pointer;
 }
 
-#srgdev-dpu_main-hdr-icon:hover {
+#srgdev-dpu_main-hdr-icon:hover,
+#srgdev-dpu_main-hdr-icon:focus-visible {
   background-color: $color-primary;
   background-color: var(--color-primary);
   background-image: var(--icon-close-white, var(--icon-close-fff));
@@ -568,7 +569,10 @@ input.srgdev-ncfp-form-input:invalid,
 
 .srgdev-dpu-time-unit:hover,
 .srgdev-dpu-time-unit2:hover,
-.srgdev-dpu-time-unit_tn:hover {
+.srgdev-dpu-time-unit_tn:hover,
+.srgdev-dpu-time-unit:focus-visible,
+.srgdev-dpu-time-unit2:focus-visible,
+.srgdev-dpu-time-unit_tn:focus-visible{
   color: $color-primary;
   color: var(--color-primary);
   border-color: $color-border-dark;
