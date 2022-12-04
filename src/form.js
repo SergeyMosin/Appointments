@@ -209,7 +209,7 @@
 	}
 
 	function dateKeyboard(evt) {
-		if (isSpaceKey(evt) || isSpaceKey(evt)) {
+		if (isSpaceKey(evt) || isEnterKey(evt)) {
 			// select first available time
 			const timeCont = document.getElementById('srgdev-dpu_tc' + this.parentElement.curActive)
 			if (timeCont && timeCont.hasAttribute('data-active')) {

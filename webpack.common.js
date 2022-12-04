@@ -81,7 +81,10 @@ module.exports = {
 		alias: {
 			Components: path.resolve(__dirname, 'src/components/'),
 		},
-		extensions: ['*', '.js', '.vue', '.json']
+		extensions: ['*', '.js', '.vue', '.json'],
+		fallback: {
+			"buffer": require.resolve("buffer/")
+		}
 	}
 }
 

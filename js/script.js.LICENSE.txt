@@ -6,6 +6,13 @@
  */
 
 /*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+/*!
  * Vue.js v2.7.14
  * (c) 2014-2022 Evan You
  * Released under the MIT License.
@@ -20,7 +27,7 @@
  */
 
 /*!
-* focus-trap 7.0.0
+* focus-trap 7.2.0
 * @license MIT, https://github.com/focus-trap/focus-trap/blob/master/LICENSE
 */
 
@@ -48,6 +55,8 @@
  *
  * Copyright (c) 2016 Jorik Tangelder;
  * Licensed under the MIT license */
+
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 
 /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
 
