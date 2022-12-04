@@ -1,3 +1,12 @@
+## v1.14.6 - 2022-12-04
+### Added
+- Accessibility: add keyboard navigation to booking form - #214
+- Multiple "extra" fields. Thanks @LadySolveig - #223
+### Changed
+- Updated build dependencies
+### Closed pull requests
+-  Feature: Support for multiple custom fields - #259 ([LadySolveig](https://github.com/LadySolveig))
+
 ## v1.14.5 - 2022-12-03
 ### Added
 - Appointment title templating - #382
