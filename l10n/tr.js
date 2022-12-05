@@ -140,6 +140,8 @@ OC.L10N.register(
     "Mark the appointment as canceled" : "Randevu iptal edilmiş olarak işaretlensin",
     "Reset (make the timeslot available)" : "Sıfırlansın (zaman aralığı boşaltılsın)",
     "Include all day events in conflict check" : "Çakışma denetimine tüm gün etkinlikler de katılsın",
+    "Title Template" : "Kalıbı adlandır",
+    "%N" : "%N",
     "Weekly Template Settings" : "Haftalık kalıp ayarları",
     "Subscriptions Sync Interval" : "Abonelik eşitleme sıklığı",
     "Nextcloud Only Sync" : "Yalnızca Nextcloud eşitlemesi",

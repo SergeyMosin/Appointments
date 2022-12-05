@@ -140,6 +140,8 @@ OC.L10N.register(
     "Mark the appointment as canceled" : "將預約標記為已取消",
     "Reset (make the timeslot available)" : "重設（使時段可用）",
     "Include all day events in conflict check" : "在衝突檢查中包含全日事件",
+    "Title Template" : "標題範本",
+    "%N" : "%N",
     "Weekly Template Settings" : "每週範本設定",
     "Subscriptions Sync Interval" : "訂閱同步間隔",
     "Nextcloud Only Sync" : "僅 Nextcloud 同步",
