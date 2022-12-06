@@ -138,6 +138,8 @@
     "Mark the appointment as canceled" : "Marquer le rendez-vous comme annulé",
     "Reset (make the timeslot available)" : "Réinitialiser (rendre la plage horaire disponible)",
     "Include all day events in conflict check" : "Inclure tous les rendez-vous du jour pour la vérification des conflits",
+    "Title Template" : "Modèle de titre",
+    "%N" : "%N",
     "Weekly Template Settings" : "Paramètres de modèle hebdomadaire",
     "Subscriptions Sync Interval" : "Intervalle de synchronisation des abonnements",
     "Nextcloud Only Sync" : "Synchroniser uniquement avec Nextcloud",
