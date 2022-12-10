@@ -140,6 +140,8 @@ OC.L10N.register(
     "Mark the appointment as canceled" : "Marcar reunión como cancelada",
     "Reset (make the timeslot available)" : "Resetear (hacer disponible el hueco)",
     "Include all day events in conflict check" : "Incluir los eventos de todo el día la comprobación de conflictos",
+    "Title Template" : "Plantilla de Título",
+    "%N" : "%N",
     "Weekly Template Settings" : "Opciones de plantilla semanal",
     "Subscriptions Sync Interval" : "Intervalo de sincronización de suscripciones",
     "Nextcloud Only Sync" : "Only Sync de Nextcloud",
