@@ -1309,8 +1309,6 @@ class PageController extends Controller
         }
         $tr->setFooterVisible(false);
 
-//        $tr->setHeaderActions([new SimpleMenuAction('download', 'Label', '', 'link-url', 0)]);
-
         if ($pps[BackendUtils::PSN_META_NO_INDEX] === true) {
             // https://support.google.com/webmasters/answer/93710?hl=en
             Util::addHeader("meta", ['name' => 'robots', 'content' => 'noindex']);
@@ -1328,11 +1326,13 @@ class PageController extends Controller
 
         if ($pps[BackendUtils::PSN_USE_NC_THEME]
             && $this->c->getAppValue('theming', 'disable-user-theming', 'no') !== 'yes') { // NC25+ ...
-            // we need to explicitly set "--image-background" for public pages
-            $imageBackground = "";
-            if (trait_exists(\OCA\Theming\Themes\CommonThemeTrait::class)
-                && class_exists(\OCA\Theming\ThemingDefaults::class)
-            ) {
+
+            // start with NC default background
+            $urlGenerator = \OC::$server->get(IURLGenerator::class);
+            $appointmentsBackgroundImage = "url('" . $urlGenerator->imagePath('core', 'app-background.jpg') . "')";
+            $appointmentsBackgroundColor = "transparent";
+
+            if (class_exists(\OCA\Theming\Service\BackgroundService::class)) {
                 try {
                     /** @var IAppManager $appManager */
                     $appManager = \OC::$server->get(IAppManager::class);
@@ -1340,25 +1340,14 @@ class PageController extends Controller
 
                         $themingBackground = $this->c->getUserValue($userId, 'theming', 'background', 'default');
 
-                        /** @var IURLGenerator $urlGenerator */
-                        $urlGenerator = \OC::$server->get(IURLGenerator::class);
+                        $this->logger->error("themingBackground: " . $themingBackground);
 
-                        if ($themingBackground === 'default') {
-                            $imageBackground = "--image-background:url('" . $urlGenerator->imagePath('core', 'app-background.jpg') . "');";
-                        }
-
-                        // The user uploaded a custom background
-                        if ($themingBackground === 'custom') {
-
-                            $currentVersion = (int)$this->c->getUserValue($userId, 'theming', 'userCacheBuster', '0');
-
-                            $cacheBuster = substr(sha1($userId . '_' . $currentVersion), 0, 8);
-                            $imageBackground = "--image-background:url('" . $urlGenerator->linkToRouteAbsolute('theming.userTheme.getBackground') . "?v=$cacheBuster');";
-                        }
-
-                        // The user picked a shipped background
                         if (isset(\OCA\Theming\Service\BackgroundService::SHIPPED_BACKGROUNDS[$themingBackground])) {
-                            $imageBackground = "--image-background:url('" . $urlGenerator->linkTo('theming', "/img/background/$themingBackground") . "');";
+                            // The user picked a shipped background
+                            $appointmentsBackgroundImage = "url('" . $urlGenerator->linkTo('theming', "/img/background/$themingBackground") . "');";
+                        } elseif ($themingBackground[0] === "#" || substr($themingBackground, 0, 3) === "rgb") {
+                            $appointmentsBackgroundImage = "none";
+                            $appointmentsBackgroundColor = $themingBackground;
                         }
                     }
                 } catch (\Throwable $e) {
@@ -1367,41 +1356,9 @@ class PageController extends Controller
             }
 
             /** @noinspection CssUnresolvedCustomProperty */
-            $autoStyle = '<style>body{' . $imageBackground . 'background-image:var(--image-background,var(--image-main-background))}#header{background:0 0}#srgdev-ncfp_frm,.srgdev-appt-info-cont{background-color:var(--color-main-background-blur);-webkit-backdrop-filter:var(--filter-background-blur);backdrop-filter:var(--filter-background-blur);border-radius:10px;padding:2em}#srgdev-dpu_main-cont{border-radius:8px}@media only screen and (max-width:390px){#srgdev-ncfp_frm{padding:1em;margin-left:0;margin-right:0}.srgdev-ncfp-wrap{font-size:105%}}</style>';
+            $autoStyle = '<style>body{--appointments-background-image:' . $appointmentsBackgroundImage . ';--appointments-background-color:' . $appointmentsBackgroundColor . ';background-image:var(--appointments-background-image);background-color:var(--appointments-background-color)}#header{background:none}#srgdev-ncfp_frm,.srgdev-appt-info-cont{background-color:var(--color-main-background-blur);-webkit-backdrop-filter:var(--filter-background-blur);backdrop-filter:var(--filter-background-blur);border-radius:10px;padding:2em}#srgdev-dpu_main-cont{border-radius:8px}@media only screen and (max-width:390px){#srgdev-ncfp_frm{padding:1em;margin-left:0;margin-right:0}.srgdev-ncfp-wrap{font-size:105%}}</style>';
         }
         return $autoStyle . $pps[BackendUtils::PSN_PAGE_STYLE];
-    }
-
-    # from apps/theming/lib/Themes/CommonThemeTrait.php
-    protected function generateUserBackgroundVariables(
-        string        $userId,
-        IAppManager   $appManager,
-        IURLGenerator $urlGenerator
-    ): string {
-        if ($this->c->getAppValue('theming', 'disable-user-theming', 'no') !== 'yes'
-            && $appManager->isEnabledForUser('theming', $userId)) {
-
-            $themingBackground = $this->c->getUserValue($userId, 'theming', 'background', 'default');
-
-            if ($themingBackground === 'default') {
-                return "url('" . $urlGenerator->imagePath('core', 'app-background.jpg') . "')";
-            }
-
-            // The user uploaded a custom background
-            if ($themingBackground === 'custom') {
-
-                $currentVersion = (int)$this->c->getUserValue($userId, 'theming', 'userCacheBuster', '0');
-
-                $cacheBuster = substr(sha1($userId . '_' . $currentVersion), 0, 8);
-                return "url('" . $urlGenerator->linkToRouteAbsolute('theming.userTheme.getBackground') . "?v=$cacheBuster')";
-            }
-
-            // The user picked a shipped background
-            if (isset(\OCA\Theming\Service\BackgroundService::SHIPPED_BACKGROUNDS[$themingBackground])) {
-                return "url('" . $urlGenerator->linkTo('theming', "/img/background/$themingBackground") . "')";
-            }
-        }
-        return "";
     }
 
     /**
