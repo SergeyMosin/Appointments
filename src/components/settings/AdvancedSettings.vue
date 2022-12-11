@@ -67,7 +67,7 @@
               v-model="calInfo.titleTemplate"
               id="appt_tsb-title-template"
               type="text"
-              :placeholder="t('appointments','%N')">
+              placeholder="%N">
         </div>
         <ApptIconLabel
             class="toggler" :class="{'toggler--closed':sections[0]===0}"
