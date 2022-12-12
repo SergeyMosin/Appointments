@@ -918,8 +918,6 @@ class PageController extends Controller
             $v = htmlspecialchars(strip_tags(preg_replace('/\s+/', ' ', trim(substr($n, 0, 512)))), ENT_NOQUOTES);
 
             if (isset($field['required']) && $field['required'] === true && $v === '') {
-                /*  $rr=new RedirectResponse($bad_input_url);
-                 $rr->setStatus(303);*/
                 return false;
             }
             $v = "\n" . rtrim($field['label'], ':') . ": " . $v;
@@ -1314,8 +1312,7 @@ class PageController extends Controller
             Util::addHeader("meta", ['name' => 'robots', 'content' => 'noindex']);
         }
 
-//        Util::addStyle($this->appName, "form-xl-screen");
-
+        $tr->addHeader('X-Appointments', 'yes');
 
         return $tr;
     }
@@ -1339,8 +1336,6 @@ class PageController extends Controller
                     if ($appManager->isEnabledForUser('theming', $userId)) {
 
                         $themingBackground = $this->c->getUserValue($userId, 'theming', 'background', 'default');
-
-                        $this->logger->error("themingBackground: " . $themingBackground);
 
                         if (isset(\OCA\Theming\Service\BackgroundService::SHIPPED_BACKGROUNDS[$themingBackground])) {
                             // The user picked a shipped background
