@@ -1,3 +1,13 @@
+## v1.14.7 - 2022-12-12
+### Added
+- 18 and 24 weeks book ahead durations - #385
+- 'Auto Style' support for custom colors  - #387
+### Changed
+- Removing unused NC js files to speedup form page
+### Fixed
+- Removed unnecessary translations - #388
+- Normalize 'Auto Style' fallbacks - #387
+
 ## v1.14.6 - 2022-12-04
 ### Added
 - Accessibility: add keyboard navigation to booking form - #214
