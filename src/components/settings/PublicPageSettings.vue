@@ -31,7 +31,12 @@
           <option value="4">{{ t('appointments', 'Four Weeks') }}</option>
           <option value="5">{{ t('appointments', 'Five Weeks') }}</option>
           <option value="8">{{ t('appointments', 'Eight Weeks') }}</option>
-          <option value="12">{{ t('appointments', 'Twelve Weeks') }}</option>
+          <option value="12">{{ t('appointments', 'Twelve Weeks')
+            }}</option>
+          <option value="18">{{ t('appointments', 'Eighteen Weeks')
+            }}</option>
+          <option value="24">{{ t('appointments', 'Twenty Four Weeks')
+            }}</option>
         </select>
         <div class="srgdev-appt-sb-chb-cont"><input
             v-model="ppsInfo.showEmpty"
