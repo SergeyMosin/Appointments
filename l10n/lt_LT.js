@@ -121,7 +121,6 @@ OC.L10N.register(
     "When Attendee Cancels" : "Kai kviestinis atsisako",
     "Mark the appointment as canceled" : "Žymėti susitikimą kaip atsisakytą",
     "Reset (make the timeslot available)" : "Atstatyti (paversti laiko tarpą prieinamu)",
-    "%N" : "%N",
     "1 Hour" : "1 valanda",
     "2 Hours" : "2 valandos",
     "4 Hours" : "4 valandos",

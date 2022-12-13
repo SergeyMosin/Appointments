@@ -137,6 +137,7 @@
     "Mark the appointment as canceled" : "Marcar o compromisso como cancelado",
     "Reset (make the timeslot available)" : "Redefinir (disponibilizar o horário)",
     "Include all day events in conflict check" : "Incluir eventos de dia inteiro na verificação de conflito",
+    "Title Template" : "Título do Modelo",
     "Weekly Template Settings" : "Configurações Semanais de Modelos",
     "Subscriptions Sync Interval" : "Intervalo de Sincronização de Assinaturas",
     "Nextcloud Only Sync" : "Nextcloud Somente Sincronizar",

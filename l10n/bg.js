@@ -141,7 +141,6 @@ OC.L10N.register(
     "Reset (make the timeslot available)" : "Нулиране (направете времевия интервал достъпен)",
     "Include all day events in conflict check" : "Включване на целодневни събития в проверката на конфликти",
     "Title Template" : "Шаблон за заглавие",
-    "%N" : "%N",
     "Weekly Template Settings" : "Седмични настройки на шаблона",
     "Subscriptions Sync Interval" : "Интервал за синхронизиране на абонаменти",
     "Nextcloud Only Sync" : "Синхронизиране само с Nextcloud",

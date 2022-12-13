@@ -141,7 +141,6 @@ OC.L10N.register(
     "Reset (make the timeslot available)" : "Zresetuj (udostępnij przedział czasowy)",
     "Include all day events in conflict check" : "Uwzględnij wydarzenia całodniowe w sprawdzaniu konfliktów",
     "Title Template" : "Tytuł szablonu",
-    "%N" : "%N",
     "Weekly Template Settings" : "Ustawienia szablonów tygodniowych",
     "Subscriptions Sync Interval" : "Interwał synchronizacji subskrypcji",
     "Nextcloud Only Sync" : "Tylko synchronizacja Nextcloud",

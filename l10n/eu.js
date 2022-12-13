@@ -141,7 +141,6 @@ OC.L10N.register(
     "Reset (make the timeslot available)" : "Berrezarri (jarri ordu-tartea erabilgarri)",
     "Include all day events in conflict check" : "Sartu eguneko gertaerak gatazka egiaztapenean",
     "Title Template" : "Izenburuaren txantiloia",
-    "%N" : "%N",
     "Weekly Template Settings" : "Asteko txantiloi ezarpenak",
     "Subscriptions Sync Interval" : "Harpidetzak sinkronizazio-bitartea",
     "Nextcloud Only Sync" : "Nextcloud sinkronizazioa soilik",

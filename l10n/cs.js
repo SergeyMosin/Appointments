@@ -141,7 +141,6 @@ OC.L10N.register(
     "Reset (make the timeslot available)" : "Resetovat (učinit časový slot volný)",
     "Include all day events in conflict check" : "Do kontroly konfliktů zahrnout celodenní události",
     "Title Template" : "Šablona nadpisu",
-    "%N" : "%N",
     "Weekly Template Settings" : "Nastavení šablony pro každý týden",
     "Subscriptions Sync Interval" : "Interval synchronizace pro přihlášení se k odebírání",
     "Nextcloud Only Sync" : "Synchronizace pouze s Nextcloud",
