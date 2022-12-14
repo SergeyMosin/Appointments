@@ -194,6 +194,8 @@ OC.L10N.register(
     "Five Weeks" : "Five Weeks",
     "Eight Weeks" : "Eight Weeks",
     "Twelve Weeks" : "Twelve Weeks",
+    "Eighteen Weeks" : "Eighteen Weeks",
+    "Twenty Four Weeks" : "Twenty Four Weeks",
     "Show Empty Days" : "Show Empty Days",
     "Start on current day instead of Monday" : "Start on current day instead of Monday",
     "Show Empty Weekends" : "Show Empty Weekends",

@@ -200,6 +200,7 @@ OC.L10N.register(
     "6 days" : "6 ημέρες",
     "7 days" : "7 ημέρες",
     "Additional reminder email text:" : "Πρόσθετο κείμενο υπενθύμισης email:",
+    "Default Cron/Email Language: {langCode}" : "Προεπιλεγμένη γλώσσα Cron/Email: {langCode}",
     "Additional Settings" : "Επιπρόσθετες ρυθμίσεις",
     "Customize and configure the app" : "Προσαρμογή και ρύθμιση εφαρμογής",
     "Customize Public Page" : "Προσαρμογή Δημόσιας Σελίδας",

@@ -194,6 +194,8 @@ OC.L10N.register(
     "Five Weeks" : "5 週",
     "Eight Weeks" : "8 週",
     "Twelve Weeks" : "12 週",
+    "Eighteen Weeks" : "十八週",
+    "Twenty Four Weeks" : "二十四週",
     "Show Empty Days" : "顯示空閒的日子",
     "Start on current day instead of Monday" : "一個星期從目前日期開始而非星期一",
     "Show Empty Weekends" : "顯示空閒的週末",
