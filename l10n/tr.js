@@ -194,6 +194,8 @@ OC.L10N.register(
     "Five Weeks" : "Beş hafta",
     "Eight Weeks" : "Sekiz hafta",
     "Twelve Weeks" : "12 hafta",
+    "Eighteen Weeks" : "18 hafta",
+    "Twenty Four Weeks" : "24 hafta",
     "Show Empty Days" : "Boş günler görüntülensin",
     "Start on current day instead of Monday" : "Pazartesi yerine geçerli günden başlansın",
     "Show Empty Weekends" : "Boş hafta sonları görüntülensin",
