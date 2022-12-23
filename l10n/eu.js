@@ -194,6 +194,8 @@ OC.L10N.register(
     "Five Weeks" : "Bost aste",
     "Eight Weeks" : "Zortzi aste",
     "Twelve Weeks" : "Hamabi aste",
+    "Eighteen Weeks" : "Hemezortzi aste",
+    "Twenty Four Weeks" : "Hogeita lau aste",
     "Show Empty Days" : "Erakutsi egun hutsak",
     "Start on current day instead of Monday" : "Hasi gaurko egunarekin, astelehenez beharrean",
     "Show Empty Weekends" : "Erakutsi aste hutsak",
