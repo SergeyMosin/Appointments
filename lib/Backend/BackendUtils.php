@@ -286,7 +286,23 @@ class BackendUtils
         }
         $evt->SUMMARY->setValue("⌛ " . $this->makeEvtTitle($userId, $info['name'], $info['_page_id'], $this->getAttendee($evt)->getValue()));
 
-        $dsr = $info['name'] . "\n" . (empty($info['phone']) ? "" : ($info['phone'] . "\n")) . $info['email'] . $info['_more_data'];
+        $dsr = $info['name'] . "\n" .
+                (empty($info['phone']) ? "" : ($info['phone'] . "\n")) .
+                $info['email'] . "\n" .
+                $info['adress'] . "\n" .
+                $info['npa'] . " " . $info['town'] . "\n" .
+                date("d-m-Y", strtotime($info['birthday'])) .
+                $info['_more_data'];
+
+        // POST customer info to nodered to create everything needed
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,"http://nodered.laudhair.ch:1890/newcustomer");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, 
+                    http_build_query($info));        
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);        
+        curl_exec($ch);        
+        curl_close($ch);
 
         if (isset($info["_more_ics_text"])) {
             // custom ICS text from per settings
