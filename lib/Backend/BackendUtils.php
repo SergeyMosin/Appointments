@@ -286,7 +286,13 @@ class BackendUtils
         }
         $evt->SUMMARY->setValue("⌛ " . $this->makeEvtTitle($userId, $info['name'], $info['_page_id'], $this->getAttendee($evt)->getValue()));
 
-        $dsr = $info['name'] . "\n" . (empty($info['phone']) ? "" : ($info['phone'] . "\n")) . $info['email'] . $info['_more_data'];
+        $dsr = $info['name'] . "\n" .
+                (empty($info['phone']) ? "" : ($info['phone'] . "\n")) .
+                $info['email'] . "\n" .
+                $info['adress'] . "\n" .
+                $info['npa'] . " " . $info['town'] . "\n" .
+                $info['birthday'] .
+                $info['_more_data'];
 
         if (isset($info["_more_ics_text"])) {
             // custom ICS text from per settings
