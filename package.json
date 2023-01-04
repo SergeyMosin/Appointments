@@ -19,7 +19,7 @@
     "@nextcloud/router": "^2.0.0",
     "@nextcloud/vue": "^7.1.0",
     "vue": "^2.7.14",
-    "vue-slider-component": "3.2.23",
+    "vue-slider-component": "3.2.24",
     "vue2-datepicker": "^3.11.1"
   },
   "engines": {
