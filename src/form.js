@@ -274,13 +274,13 @@
 				if (hours > 0) {
 					hrMinStr += hours + hrStr + " "
 				}
-				return hrMinStr + (v - hours * 60) + mnStr
+				const minutes = (v - hours * 60)
+				return hrMinStr + (minutes > 0 ? (minutes + mnStr) : '')
 			}
 			if (dur === null || dur.length === 1) {
 				elm.style.display = 'none'
 			} else {
 				const opts = elm.lastElementChild.children
-				const tr = window.t('appointments', 'Minutes')
 				opts[0].textContent = makeHrMin(dur[0])
 				for (let o, i = 1, hours = 0, minutes = 0, l = Math.max(opts.length, dur.length); i < l; i++) {
 					if (i >= opts.length) {
