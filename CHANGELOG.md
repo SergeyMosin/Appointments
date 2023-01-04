@@ -1,3 +1,8 @@
+## v1.14.8 - 2023-01-04
+### Fixed
+- Time not selectable when appointment has multiple durations - #391
+- Add duration is not working unless slider is moved firsts
+
 ## v1.14.7 - 2022-12-12
 ### Added
 - 18 and 24 weeks book ahead durations - #385
