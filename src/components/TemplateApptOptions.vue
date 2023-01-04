@@ -90,7 +90,6 @@ export default {
           const SH = 8
           const d = new Date()
           d.setDate(d.getDate() - d.getDay() + 1 + this.elm.cID)
-          console.log(this.elm, this.elm.uTop)
 
           const minTotal = SH * 60 + this.elm.uTop * 5
           const hours = (minTotal / 60) | 0
@@ -105,7 +104,7 @@ export default {
   data: function () {
     return {
       // first one is needed for a work-around
-      durations: [10, 30],
+      durations: [],
       title: ""
     }
   },
@@ -113,6 +112,8 @@ export default {
     if (this.elm !== null) {
       this.durations = [10, ...this.elm.dur]
       this.title = this.elm.title
+    } else {
+      this.durations = [10, 30]
     }
   },
   methods: {
