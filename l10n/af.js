@@ -33,12 +33,10 @@ OC.L10N.register(
     "Simple" : "Eenvoudig",
     "Start" : "Start",
     "Location:" : "Ligging:",
-    "Minutes" : "Minute",
     "Back" : "Terug",
     "Next" : "Volgende",
     "min" : "min",
     "Duration" : "Duur",
-    "Name" : "Naam",
     "Email" : "E-pos",
     "Phone" : "Foon",
     "An error has occurred" : "’n Fout het voorgekom"

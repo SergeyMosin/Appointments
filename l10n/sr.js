@@ -47,12 +47,11 @@ OC.L10N.register(
     "Start" : "Почетак",
     "Name:" : "Име:",
     "Location:" : "Локација:",
-    "Minutes" : "Минути",
     "Back" : "Назад",
     "Next" : "Следећа",
     "min" : "min",
     "Duration" : "Трајање",
-    "Name" : "Име",
+    "Full Name" : "Пуно име",
     "Email" : "Е-пошта",
     "Phone" : "Телефон",
     "An error has occurred" : "Дошло је до грешке"

@@ -42,11 +42,10 @@ OC.L10N.register(
     "Warning" : "Advertencia",
     "Start" : "Inicio",
     "Location:" : "Ubicación:",
-    "Minutes" : "Minutos",
     "Back" : "Atrás",
     "Next" : "Siguiente",
     "min" : "min",
-    "Name" : "Nombre",
+    "Full Name" : "Nombre completo",
     "Email" : "Correo electrónico",
     "Phone" : "Teléfono fijo",
     "An error has occurred" : "Se ha presentado un error"

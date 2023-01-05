@@ -62,13 +62,11 @@ OC.L10N.register(
     "Simple" : "Simpla",
     "Time zone:" : "Zòna orària :",
     "Location:" : "Localizacion :",
-    "Minutes" : "Minutas",
     "Back" : "Retorn",
     "Next" : "Seguent",
     "hr" : "hr",
     "min" : "min",
     "Duration" : "Durada",
-    "Name" : "Nom",
     "Email" : "Corrièl",
     "Phone" : "Telefòn"
 },

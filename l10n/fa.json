@@ -43,12 +43,11 @@
     "Simple" : "ساده",
     "Start" : "شروع کنید",
     "Location:" : "مکان:",
-    "Minutes" : "دقایق",
     "Back" : "بازگشت",
     "Next" : "بعدی",
     "min" : "دقیقه",
     "Duration" : "مدت زمان",
-    "Name" : "نام",
+    "Full Name" : "نام کامل",
     "Email" : "رایانامه",
     "Phone" : "شماره تلفن"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"

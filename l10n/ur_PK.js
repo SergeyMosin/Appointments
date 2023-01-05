@@ -18,7 +18,6 @@ OC.L10N.register(
     "Deleted" : "حذف شدہ ",
     "Warning" : "انتباہ",
     "Next" : "اگلا",
-    "Name" : "اسم",
     "Email" : "email"
 },
 "nplurals=2; plural=(n != 1);");

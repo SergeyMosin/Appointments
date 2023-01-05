@@ -40,11 +40,9 @@ OC.L10N.register(
     "Simple" : "მარტივი",
     "Start" : "დაწყება",
     "Location:" : "ადგილმდებარეობა:",
-    "Minutes" : "წუთი",
     "Back" : "უკან",
     "Next" : "შემდეგი",
     "min" : "წთ",
-    "Name" : "სახელი",
     "Email" : "ელ-ფოსტა",
     "Phone" : "ტელეფონი",
     "An error has occurred" : "წარმოიშვა შეცდომა"

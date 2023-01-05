@@ -54,12 +54,11 @@
     "Email:" : "Е-пошта:",
     "Location:" : "Локација:",
     "Name is required." : "Потребно е име.",
-    "Minutes" : "Минути",
     "Back" : "Назад",
     "Next" : "Следно",
     "min" : "мин",
     "Duration" : "Времетраење",
-    "Name" : "Име",
+    "Full Name" : "Цело име",
     "Email" : "Е-пошта",
     "Phone" : "Телефон"
 },"pluralForm" :"nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;"

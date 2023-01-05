@@ -22,10 +22,8 @@ OC.L10N.register(
     "Deleted" : "মুছে ফেলা",
     "Warning" : "সতর্কবাণী",
     "Location:" : "অবস্থান:",
-    "Minutes" : "মিনিট",
     "Back" : "পেছনে যাও",
     "Next" : "পরবর্তী",
-    "Name" : "নাম",
     "Email" : "ইমেইল",
     "Phone" : "ফোন"
 },

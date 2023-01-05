@@ -22,7 +22,6 @@ OC.L10N.register(
     "Location:" : "ទីតាំងៈ",
     "Back" : "ត្រឡប់ក្រោយ",
     "Next" : "បន្ទាប់",
-    "Name" : "ឈ្មោះ",
     "Email" : "អ៊ីមែល"
 },
 "nplurals=1; plural=0;");

@@ -28,7 +28,6 @@ OC.L10N.register(
     "Location:" : "Plassering:",
     "Back" : "Tilbake",
     "Next" : "Neste",
-    "Name" : "Namn",
     "Email" : "Epost",
     "Phone" : "Telefonnummer",
     "An error has occurred" : "Ein feil har oppstått"

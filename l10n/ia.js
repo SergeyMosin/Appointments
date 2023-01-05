@@ -26,11 +26,9 @@ OC.L10N.register(
     "Reminders" : "Memento",
     "Warning" : "Aviso",
     "Start" : "Initio",
-    "Minutes" : "Minutas",
     "Back" : "Retro",
     "Next" : "Sequente",
     "min" : "minutas",
-    "Name" : "Nomine",
     "Email" : "E-posta",
     "Phone" : "Phono"
 },

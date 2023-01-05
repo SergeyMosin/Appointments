@@ -24,11 +24,9 @@
     "Reminders" : "Memento",
     "Warning" : "Aviso",
     "Start" : "Initio",
-    "Minutes" : "Minutas",
     "Back" : "Retro",
     "Next" : "Sequente",
     "min" : "minutas",
-    "Name" : "Nomine",
     "Email" : "E-posta",
     "Phone" : "Phono"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

@@ -22,9 +22,7 @@ OC.L10N.register(
     "Deleted" : "Silinib",
     "Warning" : "Xəbərdarlıq",
     "Location:" : "Ərazi:",
-    "Minutes" : "Dəqiqələr",
     "Next" : "Növbəti",
-    "Name" : "Ad",
     "Email" : "Email"
 },
 "nplurals=2; plural=(n != 1);");

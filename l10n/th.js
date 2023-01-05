@@ -36,11 +36,10 @@ OC.L10N.register(
     "Simple" : "ปกติ",
     "Start" : "เริ่ม",
     "Location:" : "สถานที่ตั้ง:",
-    "Minutes" : "นาที",
     "Back" : "ย้อนกลับ",
     "Next" : "ถัดไป",
     "min" : "นาที",
-    "Name" : "ชื่อ",
+    "Full Name" : "ชื่อเต็ม",
     "Email" : "อีเมล",
     "Phone" : "โทรศัพท์"
 },

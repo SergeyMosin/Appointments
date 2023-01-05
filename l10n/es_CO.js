@@ -41,11 +41,9 @@ OC.L10N.register(
     "Simple" : "Simple",
     "Start" : "Iniciar",
     "Location:" : "Ubicación:",
-    "Minutes" : "Minutos",
     "Back" : "Atrás",
     "Next" : "Siguiente",
     "min" : "min",
-    "Name" : "Nombre",
     "Email" : "Correo electrónico",
     "Phone" : "Teléfono fijo",
     "An error has occurred" : "Se presentó un error"
