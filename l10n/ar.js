@@ -264,6 +264,7 @@ OC.L10N.register(
     "Select Date and Time" : "اختر التاريخ والوقت",
     "min" : "دقيقة",
     "Duration" : "المدة الزمنية",
+    "Full Name" : "اسمك الكامل",
     "Email" : "البريد الإلكتروني",
     "Enter email" : "ادخل البريد",
     "Phone" : "الهاتف",

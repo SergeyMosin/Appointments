@@ -317,6 +317,7 @@ OC.L10N.register(
     "min" : "min",
     "Duration" : "Duration",
     "Full Name" : "Full Name",
+    "Enter full name" : "Enter full name",
     "Email" : "Email",
     "Enter email" : "Enter email",
     "Phone" : "Phone",

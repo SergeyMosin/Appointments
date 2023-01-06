@@ -41,6 +41,7 @@ OC.L10N.register(
     "Back" : "Atrás",
     "Next" : "Siguiente",
     "min" : "mín.",
+    "Full Name" : "Nome completu",
     "Email" : "email",
     "Phone" : "Teléfonu",
     "An error has occurred" : "Asocedió un fallu"

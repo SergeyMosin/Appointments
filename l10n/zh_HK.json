@@ -314,6 +314,8 @@
     "hr" : "小時",
     "min" : "分鐘",
     "Duration" : "歷時",
+    "Full Name" : "全名",
+    "Enter full name" : "輸入全名",
     "Email" : "電郵地址",
     "Enter email" : "輸入電郵地址",
     "Phone" : "電話號碼",

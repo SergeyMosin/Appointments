@@ -316,6 +316,7 @@ OC.L10N.register(
     "hr" : "ч",
     "min" : "мин",
     "Duration" : "Продължителност",
+    "Full Name" : "Пълно Име",
     "Email" : "Имейл",
     "Enter email" : "Въвеждане на имейл",
     "Phone" : "Телефон",

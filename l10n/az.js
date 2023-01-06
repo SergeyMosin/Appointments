@@ -23,6 +23,7 @@ OC.L10N.register(
     "Warning" : "Xəbərdarlıq",
     "Location:" : "Ərazi:",
     "Next" : "Növbəti",
+    "Full Name" : "Tam ad",
     "Email" : "Email"
 },
 "nplurals=2; plural=(n != 1);");
