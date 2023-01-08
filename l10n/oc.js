@@ -59,6 +59,7 @@ OC.L10N.register(
     "Reminders" : "Rapèls",
     "Enable lobby" : "Activar la sala d’espèra",
     "Warning" : "Atencion",
+    "Main calendar" : "Calendièr principal",
     "Simple" : "Simpla",
     "Time zone:" : "Zòna orària :",
     "Location:" : "Localizacion :",

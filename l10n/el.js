@@ -288,6 +288,7 @@ OC.L10N.register(
     "min" : "λεπτ",
     "Duration" : "Διάρκεια",
     "Full Name" : "Πλήρες όνομα",
+    "Enter full name" : "Εισάγετε το πλήρες όνομα",
     "Email" : "Ηλεκτρονική αλληλογγραφία",
     "Enter email" : "Εισαγωγή email",
     "Phone" : "Τηλέφωνο",
