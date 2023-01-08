@@ -44,7 +44,6 @@ OC.L10N.register(
     "Back" : "буцах",
     "Next" : "дараагийх",
     "min" : "мин",
-    "Name" : "Нэр",
     "Email" : "Цахим шуудан",
     "Phone" : "Утас",
     "An error has occurred" : "Алдаа гарлаа"

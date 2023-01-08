@@ -32,7 +32,6 @@ OC.L10N.register(
     "Next" : "Nesaf",
     "min" : "mun",
     "Duration" : "Hyd",
-    "Name" : "Enw",
     "Email" : "E-bost",
     "Phone" : "Ffôn"
 },

@@ -35,11 +35,10 @@ OC.L10N.register(
     "Warning" : "Averto",
     "Start" : "Komenco",
     "Location:" : "Loko:",
-    "Minutes" : "Minutoj",
     "Back" : "Antaŭen",
     "Next" : "Sekva",
     "min" : "min",
-    "Name" : "Nomo",
+    "Full Name" : "Plena nomo",
     "Email" : "Retpoŝtadreso",
     "Phone" : "Telefono"
 },

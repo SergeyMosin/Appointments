@@ -142,12 +142,11 @@ OC.L10N.register(
     "Email:" : "E-post:",
     "Location:" : "Sted:",
     "Name is required." : "Navn er påkrevd",
-    "Minutes" : "Minutter",
     "Back" : "Tilbake",
     "Next" : "Neste",
     "min" : "min",
     "Duration" : "Varighet",
-    "Name" : "Navn",
+    "Full Name" : "Fullt navn",
     "Email" : "E-post",
     "Phone" : "Telefon",
     "An error has occurred" : "En feil oppstod"

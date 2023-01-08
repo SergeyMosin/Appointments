@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2023-01-04 05:40+0000\n"
+"POT-Creation-Date: 2023-01-08 03:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -684,7 +684,7 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#. TRANSLATORS onents/TemplateApptOptions.vue:147
+#. TRANSLATORS onents/TemplateApptOptions.vue:148
 #: /app/specialVueFakeDummyForL10nScript.js:122
 msgid "More than two duration choices"
 msgstr ""
@@ -1653,10 +1653,6 @@ msgstr ""
 msgid "Email is required."
 msgstr ""
 
-#: /app/src/form.js:283
-msgid "Minutes"
-msgstr ""
-
 #: /app/src/utils.js:37
 msgid "Using fallback time zone: {timeZoneName}"
 msgstr ""
@@ -1702,11 +1698,11 @@ msgid "Duration"
 msgstr ""
 
 #: /app/templates/public/form.php:52
-msgid "Name"
+msgid "Full Name"
 msgstr ""
 
 #: /app/templates/public/form.php:53
-msgid "Enter name"
+msgid "Enter full name"
 msgstr ""
 
 #: /app/templates/public/form.php:54

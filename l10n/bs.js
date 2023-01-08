@@ -16,9 +16,7 @@ OC.L10N.register(
     "URL" : "Url",
     "Error" : "Greška",
     "Warning" : "Upozorenje",
-    "Minutes" : "Minute",
     "Next" : "Sljedeće",
-    "Name" : "Ime",
     "Email" : "E-pošta",
     "Phone" : "Telefon"
 },

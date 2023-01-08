@@ -28,7 +28,6 @@ OC.L10N.register(
     "Back" : "ຫຼັງ",
     "Next" : "ທັດໄປ",
     "Duration" : "ໄລຍະ",
-    "Name" : "ຊື່",
     "Email" : "ອິເມວ"
 },
 "nplurals=1; plural=0;");

@@ -49,11 +49,10 @@ OC.L10N.register(
     "Simple" : "Sederhana",
     "Start" : "Mulai",
     "Location:" : "Lokasi:",
-    "Minutes" : "Menit",
     "Back" : "Kembali",
     "Next" : "Berikutnya",
     "min" : "min",
-    "Name" : "Nama",
+    "Full Name" : "Nama Lengkap",
     "Email" : "Surel",
     "Phone" : "Telpon",
     "An error has occurred" : "Sebuah kesalahan yang terjadi"

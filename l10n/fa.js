@@ -45,12 +45,11 @@ OC.L10N.register(
     "Simple" : "ساده",
     "Start" : "شروع کنید",
     "Location:" : "مکان:",
-    "Minutes" : "دقایق",
     "Back" : "بازگشت",
     "Next" : "بعدی",
     "min" : "دقیقه",
     "Duration" : "مدت زمان",
-    "Name" : "نام",
+    "Full Name" : "نام کامل",
     "Email" : "رایانامه",
     "Phone" : "شماره تلفن"
 },

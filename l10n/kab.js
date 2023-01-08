@@ -20,7 +20,6 @@ OC.L10N.register(
     "Deleted" : "Yettwakkes",
     "Location:" : "Adig:",
     "Back" : "Retour",
-    "Name" : "Nom",
     "Email" : "Imayl"
 },
 "nplurals=2; plural=(n != 1);");

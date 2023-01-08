@@ -39,11 +39,10 @@ OC.L10N.register(
     "Warning" : "Brīdinājums",
     "Start" : "Sākt",
     "Location:" : "Vieta:",
-    "Minutes" : "Minūtes",
     "Back" : "Atpakaļ",
     "Next" : "Nākamā",
     "min" : "min",
-    "Name" : "Vārds",
+    "Full Name" : "Pilns vārds",
     "Email" : "E-pasts",
     "Phone" : "Tālrunis",
     "An error has occurred" : "Radusies kļūda"

@@ -17,7 +17,6 @@ OC.L10N.register(
     "Error" : "ýalňyşlyk",
     "Deleted" : "Öçürildi",
     "Location:" : "Locationerleşýän ýeri:",
-    "Back" : "Yzyna",
-    "Name" : "Ady"
+    "Back" : "Yzyna"
 },
 "nplurals=2; plural=(n != 1);");

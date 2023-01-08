@@ -23,11 +23,9 @@ OC.L10N.register(
     "Reminders" : "Erennërungen",
     "Warning" : "Warnung",
     "Location:" : "Uert:",
-    "Minutes" : "Minutten",
     "Back" : "Zeréck",
     "Next" : "Weider",
     "min" : "Minutt",
-    "Name" : "Numm",
     "Email" : "Email",
     "Phone" : "Telefon"
 },

@@ -38,11 +38,10 @@ OC.L10N.register(
     "Simple" : "Simple",
     "Start" : "Aniciu",
     "Location:" : "Llocalización:",
-    "Minutes" : "Minutos",
     "Back" : "Atrás",
     "Next" : "Siguiente",
     "min" : "mín.",
-    "Name" : "Nome",
+    "Full Name" : "Nome completu",
     "Email" : "email",
     "Phone" : "Teléfonu",
     "An error has occurred" : "Asocedió un fallu"

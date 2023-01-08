@@ -31,11 +31,10 @@ OC.L10N.register(
     "Warning" : "Hoiatus",
     "Start" : "Algus",
     "Location:" : "Asukoht:",
-    "Minutes" : "Minutid",
     "Back" : "Tagasi",
     "Next" : "Järgmine",
     "min" : "min",
-    "Name" : "Nimi",
+    "Full Name" : "Täispikk nimi",
     "Email" : "Epost",
     "Phone" : "Telefon",
     "An error has occurred" : "Tekkis tõrge"

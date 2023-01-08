@@ -56,12 +56,11 @@ OC.L10N.register(
     "Email:" : "Е-пошта:",
     "Location:" : "Локација:",
     "Name is required." : "Потребно е име.",
-    "Minutes" : "Минути",
     "Back" : "Назад",
     "Next" : "Следно",
     "min" : "мин",
     "Duration" : "Времетраење",
-    "Name" : "Име",
+    "Full Name" : "Цело име",
     "Email" : "Е-пошта",
     "Phone" : "Телефон"
 },

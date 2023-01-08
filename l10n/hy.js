@@ -19,10 +19,8 @@ OC.L10N.register(
     "Confirmed" : "Հաստատված",
     "Reminders" : "Հիշեցումներ",
     "Warning" : "Զգուշացում",
-    "Minutes" : "Րոպե",
     "Next" : "Հաջորդ",
     "min" : "րոպե",
-    "Name" : "Անուն",
     "Email" : "Էլ․փոստ"
 },
 "nplurals=2; plural=(n != 1);");

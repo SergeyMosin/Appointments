@@ -38,7 +38,6 @@ OC.L10N.register(
     "Back" : "ආපසු",
     "Next" : "ඊළඟ",
     "Duration" : "කාල සීමාව",
-    "Name" : "නම",
     "Email" : "විද්‍යුත් තැපෑල",
     "Phone" : "දුරකථනය"
 },

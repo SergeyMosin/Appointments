@@ -17,8 +17,6 @@ OC.L10N.register(
     "4 hours" : "4 hours",
     "12 hours" : "12 hours",
     "Loading…" : "Loading…",
-    "Error" : "Error",
-    "Minutes" : "Minutes",
-    "Name" : "Name"
+    "Error" : "Error"
 },
 "nplurals=1; plural=0;");

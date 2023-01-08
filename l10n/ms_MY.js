@@ -20,7 +20,6 @@ OC.L10N.register(
     "Warning" : "Amaran",
     "Back" : "Kembali",
     "Next" : "Seterus",
-    "Name" : "Nama",
     "Email" : "Email",
     "Phone" : "Telefon"
 },
