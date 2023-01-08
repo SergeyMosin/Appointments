@@ -317,7 +317,7 @@ OC.L10N.register(
     "min" : "min",
     "Duration" : "Durée",
     "Full Name" : "Nom complet",
-    "Enter full name" : "Saisissez le nom complet",
+    "Enter full name" : "Harry Cover",
     "Email" : "E-mail",
     "Enter email" : "harry@cover.ch",
     "Phone" : "Téléphone",
