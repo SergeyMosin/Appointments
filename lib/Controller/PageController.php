@@ -1052,7 +1052,8 @@ class PageController extends Controller
             'appt_inline_style' => $this->getInlineStyle($uid, $pps),
             'appt_hide_phone' => $pps[BackendUtils::PSN_HIDE_TEL],
             'more_html' => '',
-            'application' => $this->l->t('Appointments')
+            'application' => $this->l->t('Appointments'),
+            'translations' => ''
         ];
 
         // google recaptcha
@@ -1158,6 +1159,14 @@ class PageController extends Controller
         if (isset($moreHTML[0]) && isset($moreHTML[0][8])) {
             $params['more_html'] = $moreHTML[0];
         }
+
+        // translations (because we do not have window.t without vue in form.js)
+        $params['translations'] =
+            "name_required:" . $this->l->t('Name is required.') . "," .
+            "email_required:" . $this->l->t('Email is required.') . "," .
+            "phone_required:" . $this->l->t('Phone number is required.') . "," .
+            "required:" . $this->l->t('Required.') . "," .
+            "number_required:" . $this->l->t('Number required.');
 
         $tr->setParams($params);
 
