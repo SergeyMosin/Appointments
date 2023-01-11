@@ -17,6 +17,7 @@ OC.L10N.register(
     "Error" : "Greška",
     "Warning" : "Upozorenje",
     "Next" : "Sljedeće",
+    "Full Name" : "Puno ime",
     "Email" : "E-pošta",
     "Phone" : "Telefon"
 },
