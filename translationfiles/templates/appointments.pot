@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2023-01-08 03:26+0000\n"
+"POT-Creation-Date: 2023-01-11 03:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -349,15 +349,35 @@ msgstr ""
 msgid "Book Your Appointment"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1213
+#: /app/lib/Controller/PageController.php:1165
+msgid "Name is required."
+msgstr ""
+
+#: /app/lib/Controller/PageController.php:1166
+msgid "Email is required."
+msgstr ""
+
+#: /app/lib/Controller/PageController.php:1167
+msgid "Phone number is required."
+msgstr ""
+
+#: /app/lib/Controller/PageController.php:1168
+msgid "Required."
+msgstr ""
+
+#: /app/lib/Controller/PageController.php:1169
+msgid "Number required."
+msgstr ""
+
+#: /app/lib/Controller/PageController.php:1222
 msgid "Please add time slots first."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1216
+#: /app/lib/Controller/PageController.php:1225
 msgid "Please select a calendar first"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1219
+#: /app/lib/Controller/PageController.php:1228
 msgid "Selected calendar not found"
 msgstr ""
 
@@ -1643,14 +1663,6 @@ msgstr ""
 #. TRANSLATORS onents/settings/UserContactSettings.vue:114
 #: /app/specialVueFakeDummyForL10nScript.js:580
 msgid "Include Form Data"
-msgstr ""
-
-#: /app/src/form.js:105
-msgid "Name is required."
-msgstr ""
-
-#: /app/src/form.js:111
-msgid "Email is required."
 msgstr ""
 
 #: /app/src/utils.js:37

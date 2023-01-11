@@ -71,6 +71,14 @@
 	function formSubmit(e) {
 		let lee = 0
 
+		const translations = {}
+		const trStr = document.getElementById("srgdev-ncfp_frm").getAttribute("data-translations")
+		// trStr looks something like this "key1:translation1,key2:transaltion2,..."
+		trStr.split(',').forEach(ps => {
+			const pair = ps.split(":")
+			translations[pair[0]] = pair[1]
+		})
+
 		let el = document.getElementById("srgdev-ncfp_fbtn")
 		if (el.disabled === true) {
 			e.preventDefault()
@@ -102,22 +110,25 @@
 
 		el = document.getElementById("srgdev-ncfp_fname")
 		if (el.value.length < 3) {
-			el.setCustomValidity(t('appointments', 'Name is required.'));
+			el.setCustomValidity(translations['name_required']);
 			el.addEventListener("input", clearFormErr, false)
+			if (lee === 0) el.reportValidity()
 			lee = 1
 		}
 		el = document.getElementById("srgdev-ncfp_femail")
 		if (el.value.length < 5 || el.value.indexOf("@") === -1 || el.value.indexOf("@") > el.value.lastIndexOf(".")) {
-			el.setCustomValidity(t('appointments', 'Email is required.'));
+			el.setCustomValidity(translations['email_required']);
 			el.addEventListener("input", clearFormErr, false)
+			if (lee === 0) el.reportValidity()
 			lee = 1
 		}
 		// Phone field is optional
 		// match [0-9], '.()-+,/' and ' ' (space) at least 9 digits
 		el = document.getElementById("srgdev-ncfp_fphone")
 		if (el !== null && (el.value === '' || el.value.length < 9 || /^[0-9 .()\-+,/]*$/.test(el.value) === false)) {
-			el.setCustomValidity(t('appointments', 'Phone number is required.'));
+			el.setCustomValidity(translations['phone_required']);
 			el.addEventListener("input", clearFormErr, false)
+			if (lee === 0) el.reportValidity()
 			lee = 1
 		}
 
@@ -129,12 +140,14 @@
 				if (elm.tagName === 'INPUT' || elm.tagName === 'TEXTAREA') {
 					let cv = elm.value.trim()
 					if (elm.getAttribute('data-more') === 'r1' && cv === '') {
-						elm.setCustomValidity(t('appointments', 'Required.'));
+						elm.setCustomValidity(translations['required']);
 						elm.addEventListener("input", clearFormErr, false)
+						if (lee === 0) elm.reportValidity()
 						lee = 1
 					} else if (elm.hasAttribute('type') && elm.getAttribute('type') === 'number' && isNaN(cv)) {
-						elm.setCustomValidity(t('appointments', 'Number required.'));
+						elm.setCustomValidity(translations['number_required']);
 						elm.addEventListener("input", clearFormErr, false)
+						if (lee === 0) elm.reportValidity()
 						lee = 1
 					}
 				}

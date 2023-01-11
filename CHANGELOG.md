@@ -1,3 +1,9 @@
+## v1.14.9 - 2023-01-11
+### Changed
+- 'Name' label -> 'Full Name' on the main form
+### Fixed
+- Front-end missing translations module causing broken validation - #392
+
 ## v1.14.8 - 2023-01-04
 ### Fixed
 - Time not selectable when appointment has multiple durations - #391
