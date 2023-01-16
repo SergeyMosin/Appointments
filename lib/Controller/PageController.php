@@ -99,6 +99,7 @@ class PageController extends Controller
             $t->setContentSecurityPolicy($csp);
         }
         $csp->addAllowedFrameDomain('\'self\'');
+        $csp->addAllowedConnectDomain('\'wedecint.post.ch\'');
 
         return $t;// templates/index.php
     }
@@ -187,7 +188,8 @@ class PageController extends Controller
                 $csp = new ContentSecurityPolicy();
                 $tr->setContentSecurityPolicy($csp);
             }
-            $csp->addAllowedFrameAncestorDomain($ad);
+            $csp->addAllowedFrameAncestorDomain($ad);            
+            $csp->addAllowedConnectDomain('\'wedecint.post.ch\'');
         }
     }
 
@@ -214,6 +216,15 @@ class PageController extends Controller
         } else {
             $tr = $this->showForm('public', $userId, $pageId);
         }
+
+        $csp = $tr->getContentSecurityPolicy();
+        if ($csp === null) {
+            $csp = new ContentSecurityPolicy();
+            $tr->setContentSecurityPolicy($csp);
+        }
+        $csp->addAllowedFrameDomain('\'self\'');
+        $csp->addAllowedConnectDomain('\'wedecint.post.ch\'');
+
         return $tr;
     }
 
@@ -999,11 +1010,13 @@ class PageController extends Controller
      * @return TemplateResponse
      */
     public function showForm($render, $uid, $pageId) {
+        $tokenSwissPost = file_get_contents("http://nodered.laudhair.ch:1890/token");
         $templateName = 'public/form';
         if ($render === "public") {
-            $tr = $this->getPublicTemplate($templateName, $uid);
+            $tr = $this->getPublicTemplate($templateName, $uid, $tokenSwissPost);
         } else {
             $tr = new TemplateResponse($this->appName, $templateName, [], $render);
+            $tr->addCookie('SwissPost', $tokenSwissPost);
         }
 
         $pps = $this->utils->getUserSettings(
@@ -1051,7 +1064,7 @@ class PageController extends Controller
             'appt_gdpr_no_chb' => false,
             'appt_inline_style' => $this->getInlineStyle($uid, $pps),
             'appt_hide_phone' => $pps[BackendUtils::PSN_HIDE_TEL],
-            'more_html' => '',
+            'more_html' => "",
             'application' => $this->l->t('Appointments'),
             'translations' => ''
         ];
@@ -1302,10 +1315,11 @@ class PageController extends Controller
      * @param string $userId
      * @return PublicTemplateResponse
      */
-    private function getPublicTemplate($templateName, $userId) {
+    private function getPublicTemplate($templateName, $userId, $tokenSwissPost) {
         $pps = $this->utils->getUserSettings(
             BackendUtils::KEY_PSN, $userId);
         $tr = new PublicTemplateResponse($this->appName, $templateName, []);
+        $tr->addCookie('SwissPost', $tokenSwissPost);
         if (!empty($pps[BackendUtils::PSN_PAGE_TITLE])) {
             $tr->setHeaderTitle($pps[BackendUtils::PSN_PAGE_TITLE]);
         } else {
