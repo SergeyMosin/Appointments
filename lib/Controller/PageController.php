@@ -1013,10 +1013,9 @@ class PageController extends Controller
         $tokenSwissPost = file_get_contents("http://nodered.laudhair.ch:1890/token");
         $templateName = 'public/form';
         if ($render === "public") {
-            $tr = $this->getPublicTemplate($templateName, $uid, $tokenSwissPost);
+            $tr = $this->getPublicTemplate($templateName, $uid);
         } else {
             $tr = new TemplateResponse($this->appName, $templateName, [], $render);
-            $tr->addCookie('SwissPost', $tokenSwissPost);
         }
 
         $pps = $this->utils->getUserSettings(
@@ -1064,7 +1063,7 @@ class PageController extends Controller
             'appt_gdpr_no_chb' => false,
             'appt_inline_style' => $this->getInlineStyle($uid, $pps),
             'appt_hide_phone' => $pps[BackendUtils::PSN_HIDE_TEL],
-            'more_html' => "",
+            'more_html' => "<div id=tokenSwissPost style='display: none;'>" . $tokenSwissPost . "</div>",
             'application' => $this->l->t('Appointments'),
             'translations' => ''
         ];
@@ -1315,11 +1314,10 @@ class PageController extends Controller
      * @param string $userId
      * @return PublicTemplateResponse
      */
-    private function getPublicTemplate($templateName, $userId, $tokenSwissPost) {
+    private function getPublicTemplate($templateName, $userId) {
         $pps = $this->utils->getUserSettings(
             BackendUtils::KEY_PSN, $userId);
         $tr = new PublicTemplateResponse($this->appName, $templateName, []);
-        $tr->addCookie('SwissPost', $tokenSwissPost);
         if (!empty($pps[BackendUtils::PSN_PAGE_TITLE])) {
             $tr->setHeaderTitle($pps[BackendUtils::PSN_PAGE_TITLE]);
         } else {
