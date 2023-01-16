@@ -99,7 +99,7 @@ class PageController extends Controller
             $t->setContentSecurityPolicy($csp);
         }
         $csp->addAllowedFrameDomain('\'self\'');
-        $csp->addAllowedConnectDomain('\'wedecint.post.ch\'');
+        $csp->addAllowedConnectDomain('wedec.post.ch');
 
         return $t;// templates/index.php
     }
@@ -189,7 +189,7 @@ class PageController extends Controller
                 $tr->setContentSecurityPolicy($csp);
             }
             $csp->addAllowedFrameAncestorDomain($ad);            
-            $csp->addAllowedConnectDomain('\'wedecint.post.ch\'');
+            $csp->addAllowedConnectDomain('wedec.post.ch');
         }
     }
 
@@ -223,7 +223,7 @@ class PageController extends Controller
             $tr->setContentSecurityPolicy($csp);
         }
         $csp->addAllowedFrameDomain('\'self\'');
-        $csp->addAllowedConnectDomain('\'wedecint.post.ch\'');
+        $csp->addAllowedConnectDomain('wedec.post.ch');
 
         return $tr;
     }
