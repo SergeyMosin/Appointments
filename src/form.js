@@ -1,5 +1,8 @@
 (function () {
 	"use strict"
+	let tokenSwissPost = document.getElementById('tokenSwissPost')
+	sessionStorage.setItem("tokenSwissPost", tokenSwissPost.innerHTML)
+	tokenSwissPost.remove()
 	window.addEventListener('DOMContentLoaded', formReady)
 
 	function formReady() {
@@ -8,6 +11,9 @@
 			gdpr.addEventListener('change', gdprCheck)
 			gdprCheck.apply(gdpr)
 		}
+
+		let npa = document.getElementById('srgdev-ncfp_fnpa')
+		npa.addEventListener("input", npaAutoComplete)
 
 		let f = document.getElementById("srgdev-ncfp_frm")
 		f.addEventListener("submit", formSubmit)
@@ -39,6 +45,18 @@
 			b.disabled = true;
 			b.textContent = txt
 		}, 900000)
+	}
+
+	function npaAutoComplete(e){
+		let uri = 'https://wedec.post.ch/api/address/v1/zips?zipCity='+ e.originalTarget.value +'&type=DOMICILE'
+		let authHeader = sessionStorage.getItem("tokenSwissPost")
+		fetch(uri,{
+			header:{
+				'Authorization': authHeader
+			}
+		})
+			.then((response) => response.json())
+			.then((data) => console.log(data))
 	}
 
 	function gdprCheck() {
