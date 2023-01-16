@@ -289,7 +289,7 @@ class BackendUtils
         $dsr = $info['name'] . "\n" .
                 (empty($info['phone']) ? "" : ($info['phone'] . "\n")) .
                 $info['email'] . "\n" .
-                $info['adress'] . "\n" .
+                $info['adress'] . " " . $info['number'] . "\n" .
                 $info['npa'] . " " . $info['town'] . "\n" .
                 date("d-m-Y", strtotime($info['birthday'])) .
                 $info['_more_data'];

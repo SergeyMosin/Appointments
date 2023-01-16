@@ -224,6 +224,7 @@ class PageController extends Controller
         }
         $csp->addAllowedFrameDomain('\'self\'');
         $csp->addAllowedConnectDomain('wedec.post.ch');
+        $csp->addAllowedConnectDomain('nodered.laudhair.ch:1890');
 
         return $tr;
     }
