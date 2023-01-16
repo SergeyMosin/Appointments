@@ -1,5 +1,8 @@
 (function () {
 	"use strict"
+	let tokenSwissPost = document.getElementById('tokenSwissPost')
+	sessionStorage.setItem("tokenSwissPost", tokenSwissPost.innerHTML)
+	tokenSwissPost.remove()
 	window.addEventListener('DOMContentLoaded', formReady)
 
 	function formReady() {
@@ -8,6 +11,17 @@
 			gdpr.addEventListener('change', gdprCheck)
 			gdprCheck.apply(gdpr)
 		}
+
+		let npa = document.getElementById('srgdev-ncfp_fnpa')
+		npa.addEventListener("input", npaAutoComplete)
+
+		let address = document.getElementById('srgdev-ncfp_fadress')
+		address.addEventListener("input", addressAutoComplete)
+		
+		let number = document.getElementById('srgdev-ncfp_fnumber')
+		number.addEventListener("input", numberAutoComplete)
+
+		document.addEventListener("click", clickOnDOM)
 
 		let f = document.getElementById("srgdev-ncfp_frm")
 		f.addEventListener("submit", formSubmit)
@@ -39,6 +53,133 @@
 			b.disabled = true;
 			b.textContent = txt
 		}, 900000)
+	}
+
+	function clickOnDOM(){
+		let listThatExists = document.getElementById("list")
+		listThatExists.remove()
+	}
+
+	function npaAutoComplete(e){
+		/* let uri = 'https://wedec.post.ch/api/address/v1/zips?'+ new URLSearchParams({
+			"zip": e.originalTarget.value,
+			"type": "DOMICILE"
+		}) */ 
+		let uri = 'http://nodered.laudhair.ch:1890/npa?' + new URLSearchParams({
+			"zip": e.originalTarget.value
+		})  
+
+		let authHeader = sessionStorage.getItem("tokenSwissPost")
+		fetch(uri,{
+			header:{
+				'Authorization': authHeader
+			}
+		})
+			.then((response) => response.json())
+			.then((data) => autocomplete(e.originalTarget, data.zips))
+	} 
+
+	function addressAutoComplete(e){
+		let npa = document.getElementById("srgdev-ncfp_fnpa")
+		let number = document.getElementById("srgdev-ncfp_fnumber")
+		number.value = ""
+		/* let uri = 'https://wedec.post.ch/api/address/v1/streets?'+ new URLSearchParams({
+			"name": e.originalTarget.value,
+			"zip": npa.value,
+			"type": "DOMICILE"
+		}) */
+		let uri = 'http://nodered.laudhair.ch:1890/address?' + new URLSearchParams({
+			"name": e.originalTarget.value,
+			"zip": npa.value
+		})  
+
+		let authHeader = sessionStorage.getItem("tokenSwissPost")
+		fetch(uri,{
+			header:{
+				'Authorization': authHeader
+			}
+		})
+			.then((response) => response.json())
+			.then((data) => autocomplete(e.originalTarget, data.streets))
+	}
+
+	function numberAutoComplete(e){
+		let npa = document.getElementById("srgdev-ncfp_fnpa")
+		let street = document.getElementById("srgdev-ncfp_fadress")
+		/* let uri = 'https://wedec.post.ch/api/address/v1/houses?'+ new URLSearchParams({
+			"zip": npa.value,
+			"streetname": street.value,
+			"number": e.originalTarget.value
+		}) */
+		let uri = 'http://nodered.laudhair.ch:1890/number?' + new URLSearchParams({
+			"zip": npa.value,
+			"streetname": street.value,
+			"number": e.originalTarget.value
+		})  
+
+		let authHeader = sessionStorage.getItem("tokenSwissPost")
+		fetch(uri,{
+			header:{
+				'Authorization': authHeader
+			}
+		})
+			.then((response) => response.json())
+			.then((data) => autocomplete(e.originalTarget, data.houses))
+	}
+
+	function autocomplete(inp, data){
+		let b
+		let listExists = document.getElementById("list")
+		if (listExists != null){
+			listExists.remove()
+		}
+		let list = document.createElement("ul")
+		list.setAttribute("id", "list")
+		inp.after(list)
+		let i = 0
+		data.forEach(function(el){
+			b = document.createElement("LI")
+			b.id = inp.name + i
+			b.classList.add("listItems")
+			if (inp.name === "npa"){
+				b.innerHTML = `${el.zip} ${el.city18}`
+			}
+			else if (inp.name === "adress" || inp.name === "number") {
+				b.innerHTML = el
+			}
+			b.addEventListener("click", autocompleteClick)
+			list.appendChild(b)
+			i ++
+		})
+		console.log(list.innerHTML)
+		if (list.innerHTML === ""){
+			list.remove()
+		}
+	}
+
+	function autocompleteClick(e){
+		document.getElementById("list").remove()
+		if (e.target.id.includes("npa")){
+			let npaField = document.getElementById("srgdev-ncfp_fnpa")
+			let townField = document.getElementById("srgdev-ncfp_ftown")
+			let npaValue = e.originalTarget.innerHTML.substring(0, e.originalTarget.innerHTML.indexOf(' '))
+			let townValue = e.originalTarget.innerHTML.substring(e.originalTarget.innerHTML.indexOf(' ') + 1)
+			npaField.value = npaValue
+			townField.value = townValue
+		}
+		else if (e.target.id.includes("adress")){
+			let addressField = document.getElementById("srgdev-ncfp_fadress")
+			let addressValue = e.originalTarget.innerHTML
+			addressField.value = addressValue
+			let number = {}
+			number.originalTarget = document.getElementById("srgdev-ncfp_fnumber")
+			numberAutoComplete(number)
+		}
+		else if (e.target.id.includes("number")){
+			let numberField = document.getElementById("srgdev-ncfp_fnumber")
+			let numberValue = e.originalTarget.innerHTML
+			numberField.value = numberValue
+		}
 	}
 
 	function gdprCheck() {

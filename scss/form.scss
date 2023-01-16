@@ -24,6 +24,54 @@ body {
   width: 100%;
 }
 
+#wrapperNpaTown{  
+  display:flex;
+  justify-content:space-between;
+  position: relative;
+}
+
+#wrapperAdressNumber{  
+  display:flex;
+  justify-content:space-between;
+}
+
+#npa{
+  width: 20%;
+}
+
+#town{
+  width: 75%
+}
+
+#adress{
+  width: 80%;
+  position: relative;
+}
+
+#number{
+  width: 15%;
+  position: relative;
+}
+
+#list{
+  border: solid #003 1px;
+  z-index: 1000;
+  border-radius: 5px;
+  position: absolute;
+  width: 100%;
+  background-color: white;
+}
+
+.listItems{
+  padding: 5px;
+  color: #003;
+}
+
+.listItems:hover {
+  background-color: #070366;
+  color: #fceac6;
+}
+
 .srgdev-ncfp-wrap {
   text-align: center;
   width: 100%;

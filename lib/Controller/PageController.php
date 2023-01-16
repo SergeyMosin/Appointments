@@ -99,6 +99,7 @@ class PageController extends Controller
             $t->setContentSecurityPolicy($csp);
         }
         $csp->addAllowedFrameDomain('\'self\'');
+        $csp->addAllowedConnectDomain('wedec.post.ch');
 
         return $t;// templates/index.php
     }
@@ -187,7 +188,8 @@ class PageController extends Controller
                 $csp = new ContentSecurityPolicy();
                 $tr->setContentSecurityPolicy($csp);
             }
-            $csp->addAllowedFrameAncestorDomain($ad);
+            $csp->addAllowedFrameAncestorDomain($ad);            
+            $csp->addAllowedConnectDomain('wedec.post.ch');
         }
     }
 
@@ -214,6 +216,16 @@ class PageController extends Controller
         } else {
             $tr = $this->showForm('public', $userId, $pageId);
         }
+
+        $csp = $tr->getContentSecurityPolicy();
+        if ($csp === null) {
+            $csp = new ContentSecurityPolicy();
+            $tr->setContentSecurityPolicy($csp);
+        }
+        $csp->addAllowedFrameDomain('\'self\'');
+        $csp->addAllowedConnectDomain('wedec.post.ch');
+        $csp->addAllowedConnectDomain('nodered.laudhair.ch:1890');
+
         return $tr;
     }
 
@@ -999,6 +1011,7 @@ class PageController extends Controller
      * @return TemplateResponse
      */
     public function showForm($render, $uid, $pageId) {
+        $tokenSwissPost = file_get_contents("http://nodered.laudhair.ch:1890/token");
         $templateName = 'public/form';
         if ($render === "public") {
             $tr = $this->getPublicTemplate($templateName, $uid);
@@ -1051,7 +1064,7 @@ class PageController extends Controller
             'appt_gdpr_no_chb' => false,
             'appt_inline_style' => $this->getInlineStyle($uid, $pps),
             'appt_hide_phone' => $pps[BackendUtils::PSN_HIDE_TEL],
-            'more_html' => '',
+            'more_html' => "<div id=tokenSwissPost style='display: none;'>" . $tokenSwissPost . "</div>",
             'application' => $this->l->t('Appointments'),
             'translations' => ''
         ];
