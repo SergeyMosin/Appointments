@@ -12,7 +12,7 @@
 			gdprCheck.apply(gdpr)
 		}
 
-		let npa = document.getElementById('srgdev-ncfp_fnpa')
+		/* let npa = document.getElementById('srgdev-ncfp_fnpa')
 		npa.addEventListener("input", npaAutoComplete)
 
 		let address = document.getElementById('srgdev-ncfp_fadress')
@@ -21,7 +21,7 @@
 		let number = document.getElementById('srgdev-ncfp_fnumber')
 		number.addEventListener("input", numberAutoComplete)
 
-		document.addEventListener("click", clickOnDOM)
+		document.addEventListener("click", clickOnDOM) */
 
 		let f = document.getElementById("srgdev-ncfp_frm")
 		f.addEventListener("submit", formSubmit)
