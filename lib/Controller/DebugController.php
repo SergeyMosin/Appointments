@@ -91,6 +91,16 @@ class DebugController extends Controller
 
                 $calData = var_export($calInfo, true) . '<br>';
 
+                $userCals = $this->bc->getCalendarsForUser($this->userId);
+                $userCalsLen = count($userCals);
+                for ($i = 0; $i < $userCalsLen; $i++) {
+                    $userCal = $userCals[$i];
+                    if ($userCal['id'] === $calInfo['id']) {
+                        $calData .= var_export($userCal, true) . "<br>";
+                        break;
+                    }
+                }
+
                 $d = $this->bc->getRawCalData($calInfo, $this->userId);
 
                 $data = $calData . '<br>' . var_export($d, true);
