@@ -319,7 +319,7 @@ OC.L10N.register(
     "hr" : "h",
     "min" : "min",
     "Duration" : "Durée",
-    "Full Name" : "Nom complet",
+    "Full Name" : "Prénom(s) et nom(s)",
     "Enter full name" : "Harry Cover",
     "Email" : "E-mail",
     "Enter email" : "harry@cover.ch",
