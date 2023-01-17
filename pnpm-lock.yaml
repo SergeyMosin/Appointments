@@ -14,7 +14,7 @@ specifiers:
   '@nextcloud/l10n': ^1.6.0
   '@nextcloud/logger': ^2.4.0
   '@nextcloud/router': ^2.0.0
-  '@nextcloud/vue': ^7.1.0
+  '@nextcloud/vue': ~7.3.0
   '@vue/compiler-sfc': ^3.2.31
   '@vue/test-utils': ^1.2.0
   babel-core: ^6.26.3
@@ -50,7 +50,7 @@ dependencies:
   '@nextcloud/l10n': 1.6.0
   '@nextcloud/logger': 2.4.0
   '@nextcloud/router': 2.0.0
-  '@nextcloud/vue': 7.1.0_ggbrecejzkwxz3fwo7fw5ib37m
+  '@nextcloud/vue': 7.3.0_ggbrecejzkwxz3fwo7fw5ib37m
   vue: 2.7.14
   vue-slider-component: 3.2.24_vue@2.7.14
   vue2-datepicker: 3.11.1_vue@2.7.14
@@ -1449,8 +1449,8 @@ packages:
     engines: {node: ^16.0.0, npm: ^7.0.0 || ^8.0.0}
     dev: true
 
-  /@nextcloud/calendar-js/3.1.0_ical.js@1.5.0+uuid@8.3.2:
-    resolution: {integrity: sha512-tGjKfUKigyTFg3AUhW57MCMwP26rWv2EwU8QUYCJntHs8a1qzltgSJ5t3+zMsp2oDct3tHz04Q6vPR+O4T1n+Q==}
+  /@nextcloud/calendar-js/3.2.0_ical.js@1.5.0+uuid@8.3.2:
+    resolution: {integrity: sha512-20EeeUFbHJZ+IKY42Un6UmfpzaHRl4lJWmZXaHg0EGF1825BXn41CcRwS793qwDDkKTeuL3i4AzGpl+o9AOvEA==}
     engines: {node: '>=14.0.0', npm: '>=7.0.0'}
     peerDependencies:
       ical.js: ^1.5.0
@@ -1522,14 +1522,14 @@ packages:
       '@types/jquery': 2.0.60
     dev: false
 
-  /@nextcloud/vue/7.1.0_ggbrecejzkwxz3fwo7fw5ib37m:
-    resolution: {integrity: sha512-vr+IpdjnYt0Uk2JK4IRIe8V5SXcJFZZuyjw++2KVlCecgwAm5uUx79egTPx5xOhANbOiM2ncCpLeHisHL9ci9w==}
+  /@nextcloud/vue/7.3.0_ggbrecejzkwxz3fwo7fw5ib37m:
+    resolution: {integrity: sha512-f6ePwaUy/LA9B+XldNmDbMHuABhBnEzn96trOaraxP3i2SQOCY58yQBkQ0rkyUIao2N7PaQcHkcy/KTlE3sT5Q==}
     engines: {node: ^16.0.0, npm: ^7.0.0 || ^8.0.0}
     dependencies:
       '@nextcloud/auth': 2.0.0
       '@nextcloud/axios': 2.1.0
       '@nextcloud/browser-storage': 0.2.0
-      '@nextcloud/calendar-js': 3.1.0_ical.js@1.5.0+uuid@8.3.2
+      '@nextcloud/calendar-js': 3.2.0_ical.js@1.5.0+uuid@8.3.2
       '@nextcloud/capabilities': 1.0.4
       '@nextcloud/dialogs': 3.2.0
       '@nextcloud/event-bus': 3.0.2
@@ -1555,7 +1555,7 @@ packages:
       vue-color: 2.8.1
       vue-material-design-icons: 5.1.2
       vue-multiselect: 2.1.6
-      vue-select: 3.20.0_vue@2.7.14
+      vue-select: 3.20.2_vue@2.7.14
       vue2-datepicker: 3.11.1_vue@2.7.14
     transitivePeerDependencies:
       - debug
@@ -6176,8 +6176,8 @@ packages:
       vue: 2.7.14
     dev: false
 
-  /vue-select/3.20.0_vue@2.7.14:
-    resolution: {integrity: sha512-Qau4BzpgAC+/9jM5oTlOrfA81ONdtTFH6PqeSDKvIB56f1F6EbIR8qAotpUxrIiNVppyPFjvVDkyriMfHjWBQA==}
+  /vue-select/3.20.2_vue@2.7.14:
+    resolution: {integrity: sha512-ZSzIDzyYsWZULGUxVp1h6u3yi9IZQBWX8r6kSudUI/I5J1HQKpBjRntvkrg6pr87xmm16kdChvHCDN+W84vTKw==}
     peerDependencies:
       vue: 2.x
     dependencies:
