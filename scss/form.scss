@@ -24,6 +24,20 @@ body {
   width: 100%;
 }
 
+#wrapperNameFamily{  
+  display:flex;
+  justify-content:space-between;
+  position: relative;
+}
+
+#name{
+  width: 47.5%;
+}
+
+#family{
+  width: 47.5%
+}
+
 #wrapperNpaTown{  
   display:flex;
   justify-content:space-between;

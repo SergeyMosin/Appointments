@@ -274,7 +274,7 @@ class BackendUtils
             $a['SCHEDULE-AGENT'] = "CLIENT";
         }
 
-        $a['CN'] = $info['name'];
+        $a['CN'] = $info['name'] . " " . $info['family'];
         $a['PARTSTAT'] = "NEEDS-ACTION";
 
         $title = "";
@@ -284,9 +284,9 @@ class BackendUtils
             $t = $evt->SUMMARY->getValue();
             if ($t[0] === "_") $title = $t;
         }
-        $evt->SUMMARY->setValue("⌛ " . $this->makeEvtTitle($userId, $info['name'], $info['_page_id'], $this->getAttendee($evt)->getValue()));
+        $evt->SUMMARY->setValue("⌛ " . $this->makeEvtTitle($userId, $info['name'] . " " . $info['family'], $info['_page_id'], $this->getAttendee($evt)->getValue()));
 
-        $dsr = $info['name'] . "\n" .
+        $dsr = $info['name'] . " " . $info['family'] ."\n" .
                 (empty($info['phone']) ? "" : ($info['phone'] . "\n")) .
                 $info['email'] . "\n" .
                 $info['adress'] . " " . $info['number'] . "\n" .
