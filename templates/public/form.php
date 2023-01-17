@@ -49,16 +49,8 @@ style('appointments', 'form');
             </select>
         </div>
         <?php if (isset($_['appt_tlk_type']) && empty($disabled)) echo $_['appt_tlk_type']; ?>
-        <div id="wrapperSurnameLastname">
-        <div id="surname">        
-        <label for="srgdev-ncfp_fsurname" class="srgdev-ncfp-form-label"><?php p($l->t("Prénom")) ?></label>
-        <input name="surname" <?php echo $disabled ?>placeholder="<?php p($l->t("Harry")); ?>" id="srgdev-ncfp_fsurname" class="srgdev-ncfp-form-input" type="text">
-        </div>
-        <div id="lastname">        
-        <label for="srgdev-ncfp_flastname" class="srgdev-ncfp-form-label"><?php p($l->t("Nom")) ?></label>
-        <input name="lastname" <?php echo $disabled ?>placeholder="<?php p($l->t("Cover")); ?>" id="srgdev-ncfp_flastname" class="srgdev-ncfp-form-input" type="text">
-        </div>
-        </div>
+        <label for="srgdev-ncfp_fname" class="srgdev-ncfp-form-label"><?php p($l->t("Full Name")) ?></label>
+        <input name="name" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter full name")); ?>" id="srgdev-ncfp_fname" class="srgdev-ncfp-form-input" type="text">
         <label for="srgdev-ncfp_femail" class="srgdev-ncfp-form-label"><?php p($l->t("Email")); ?></label>
         <input name="email" <?php echo $disabled ?>placeholder="<?php p($l->t("Enter email")); ?>" id="srgdev-ncfp_femail" class="srgdev-ncfp-form-input" type="email">
         <?php
