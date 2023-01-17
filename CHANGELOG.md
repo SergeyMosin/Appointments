@@ -1,3 +1,9 @@
+## v1.14.10 - 2023-01-16
+### Added
+- More debug info is returned from getRawCalendarData() - #394
+### Changed
+- Lock "@nextcloud/vue" at "~7.3.0" for now - #395
+
 ## v1.14.9 - 2023-01-11
 ### Changed
 - 'Name' label -> 'Full Name' on the main form
