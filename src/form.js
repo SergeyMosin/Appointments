@@ -12,7 +12,7 @@
 			gdprCheck.apply(gdpr)
 		}
 
-		/* let npa = document.getElementById('srgdev-ncfp_fnpa')
+		let npa = document.getElementById('srgdev-ncfp_fnpa')
 		npa.addEventListener("input", npaAutoComplete)
 
 		let address = document.getElementById('srgdev-ncfp_fadress')
@@ -21,7 +21,7 @@
 		let number = document.getElementById('srgdev-ncfp_fnumber')
 		number.addEventListener("input", numberAutoComplete)
 
-		document.addEventListener("click", clickOnDOM) */
+		document.addEventListener("click", clickOnDOM)
 
 		let f = document.getElementById("srgdev-ncfp_frm")
 		f.addEventListener("submit", formSubmit)
@@ -57,74 +57,77 @@
 
 	function clickOnDOM(){
 		let listThatExists = document.getElementById("list")
-		listThatExists.remove()
+		if (listThatExists != null){
+			listThatExists.remove()
+		}
 	}
 
-	function npaAutoComplete(e){
-		/* let uri = 'https://wedec.post.ch/api/address/v1/zips?'+ new URLSearchParams({
-			"zip": e.originalTarget.value,
-			"type": "DOMICILE"
-		}) */ 
-		let uri = 'http://nodered.laudhair.ch:1890/npa?' + new URLSearchParams({
-			"zip": e.originalTarget.value
-		})  
+	function npaAutoComplete(e){	
+		if (e.originalTarget.value != ""){			
+			let uri = 'https://wedec.post.ch/api/address/v1/zips?'+ new URLSearchParams({
+				"zipCity": e.originalTarget.value,
+				"type": "DOMICILE"
+			})
 
-		let authHeader = sessionStorage.getItem("tokenSwissPost")
-		fetch(uri,{
-			header:{
-				'Authorization': authHeader
-			}
-		})
-			.then((response) => response.json())
-			.then((data) => autocomplete(e.originalTarget, data.zips))
+			let authHeader = sessionStorage.getItem("tokenSwissPost")
+			fetch(uri,{
+				headers:{
+					"Authorization": authHeader
+				}
+			})
+				.then((response) => response.json())
+				.then((data) => autocomplete(e.originalTarget, data.zips))
+		}
+		else {
+			autocomplete(e.originalTarget, [])
+		}
 	} 
 
 	function addressAutoComplete(e){
-		let npa = document.getElementById("srgdev-ncfp_fnpa")
-		let number = document.getElementById("srgdev-ncfp_fnumber")
-		number.value = ""
-		/* let uri = 'https://wedec.post.ch/api/address/v1/streets?'+ new URLSearchParams({
-			"name": e.originalTarget.value,
-			"zip": npa.value,
-			"type": "DOMICILE"
-		}) */
-		let uri = 'http://nodered.laudhair.ch:1890/address?' + new URLSearchParams({
-			"name": e.originalTarget.value,
-			"zip": npa.value
-		})  
-
-		let authHeader = sessionStorage.getItem("tokenSwissPost")
-		fetch(uri,{
-			header:{
-				'Authorization': authHeader
-			}
-		})
-			.then((response) => response.json())
-			.then((data) => autocomplete(e.originalTarget, data.streets))
+		if (e.originalTarget.value != ""){
+			let npa = document.getElementById("srgdev-ncfp_fnpa")
+			let uri = 'https://wedec.post.ch/api/address/v1/streets?'+ new URLSearchParams({
+				"name": e.originalTarget.value,
+				"zip": npa.value,
+				"type": "DOMICILE"
+			})
+	
+			let authHeader = sessionStorage.getItem("tokenSwissPost")
+			fetch(uri,{
+				headers:{
+					'Authorization': authHeader
+				}
+			})
+				.then((response) => response.json())
+				.then((data) => autocomplete(e.originalTarget, data.streets))
+		}
+		else{
+			autocomplete(e.originalTarget, [])
+		}
 	}
 
 	function numberAutoComplete(e){
-		let npa = document.getElementById("srgdev-ncfp_fnpa")
-		let street = document.getElementById("srgdev-ncfp_fadress")
-		/* let uri = 'https://wedec.post.ch/api/address/v1/houses?'+ new URLSearchParams({
-			"zip": npa.value,
-			"streetname": street.value,
-			"number": e.originalTarget.value
-		}) */
-		let uri = 'http://nodered.laudhair.ch:1890/number?' + new URLSearchParams({
-			"zip": npa.value,
-			"streetname": street.value,
-			"number": e.originalTarget.value
-		})  
-
-		let authHeader = sessionStorage.getItem("tokenSwissPost")
-		fetch(uri,{
-			header:{
-				'Authorization': authHeader
-			}
-		})
-			.then((response) => response.json())
-			.then((data) => autocomplete(e.originalTarget, data.houses))
+		if (e.originalTarget.value != ""){			
+			let npa = document.getElementById("srgdev-ncfp_fnpa")
+			let street = document.getElementById("srgdev-ncfp_fadress")
+			let uri = 'https://wedec.post.ch/api/address/v1/houses?'+ new URLSearchParams({
+				"zip": npa.value,
+				"streetname": street.value,
+				"number": e.originalTarget.value
+			})
+	
+			let authHeader = sessionStorage.getItem("tokenSwissPost")
+			fetch(uri,{
+				headers:{
+					'Authorization': authHeader
+				}
+			})
+				.then((response) => response.json())
+				.then((data) => autocomplete(e.originalTarget, data.houses))
+		}
+		else {
+			autocomplete(e.originalTarget, {})
+		}
 	}
 
 	function autocomplete(inp, data){
@@ -151,7 +154,6 @@
 			list.appendChild(b)
 			i ++
 		})
-		console.log(list.innerHTML)
 		if (list.innerHTML === ""){
 			list.remove()
 		}

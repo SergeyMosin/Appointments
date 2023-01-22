@@ -67,19 +67,19 @@ style('appointments', 'form');
         }
         echo '<div id="wrapperNpaTown">';
         echo '<div id="npa">';
-        echo '<label for="srgdev-ncfp_fnpa" class="srgdev-ncfp-form-label">' . htmlspecialchars($l->t("NPA"), ENT_QUOTES, 'UTF-8') . '</label><input name="npa" ' . $disabled . ' placeholder="' . htmlspecialchars($l->t("1234"), ENT_QUOTES, 'UTF-8') . '" id="srgdev-ncfp_fnpa" class="srgdev-ncfp-form-input" type="number">';     
+        echo '<label for="srgdev-ncfp_fnpa" class="srgdev-ncfp-form-label">' . htmlspecialchars($l->t("NPA"), ENT_QUOTES, 'UTF-8') . '</label><input autocomplete="off" name="npa" ' . $disabled . ' placeholder="' . htmlspecialchars($l->t("1234"), ENT_QUOTES, 'UTF-8') . '" id="srgdev-ncfp_fnpa" class="srgdev-ncfp-form-input" type="number">';     
         echo '</div>';
         echo '<div id="town">';       
-        echo '<label for="srgdev-ncfp_ftown" class="srgdev-ncfp-form-label">' . htmlspecialchars($l->t("Localité"), ENT_QUOTES, 'UTF-8') . '</label><input name="town" ' . $disabled . ' placeholder="' . htmlspecialchars($l->t("Exemple"), ENT_QUOTES, 'UTF-8') . '" id="srgdev-ncfp_ftown" class="srgdev-ncfp-form-input" type="text">';     
+        echo '<label for="srgdev-ncfp_ftown" class="srgdev-ncfp-form-label">' . htmlspecialchars($l->t("Localité"), ENT_QUOTES, 'UTF-8') . '</label><input autocomplete="off" name="town" ' . $disabled . ' placeholder="' . htmlspecialchars($l->t("Exemple"), ENT_QUOTES, 'UTF-8') . '" id="srgdev-ncfp_ftown" class="srgdev-ncfp-form-input" type="text">';     
         echo '</div>';
         echo '</div>';
 
         echo '<div id="wrapperAdressNumber">';
         echo '<div id="adress">';
-        echo '<label for="srgdev-ncfp_fadress" class="srgdev-ncfp-form-label">' . htmlspecialchars($l->t("Adresse"), ENT_QUOTES, 'UTF-8') . '</label><input name="adress" ' . $disabled . ' placeholder="' . htmlspecialchars($l->t("Chemin de l'Exemple"), ENT_QUOTES, 'UTF-8') . '" id="srgdev-ncfp_fadress" class="srgdev-ncfp-form-input" type="text">';
+        echo '<label for="srgdev-ncfp_fadress" class="srgdev-ncfp-form-label">' . htmlspecialchars($l->t("Adresse"), ENT_QUOTES, 'UTF-8') . '</label><input autocomplete="off" name="adress" ' . $disabled . ' placeholder="' . htmlspecialchars($l->t("Chemin de l'Exemple"), ENT_QUOTES, 'UTF-8') . '" id="srgdev-ncfp_fadress" class="srgdev-ncfp-form-input" type="text">';
         echo '</div>';
         echo '<div id="number">';
-        echo '<label for="srgdev-ncfp_fnumber" class="srgdev-ncfp-form-label">' . htmlspecialchars($l->t("No"), ENT_QUOTES, 'UTF-8') . '</label><input name="number" ' . $disabled . ' placeholder="' . htmlspecialchars($l->t("12"), ENT_QUOTES, 'UTF-8') . '" id="srgdev-ncfp_fnumber" class="srgdev-ncfp-form-input" type="text">';
+        echo '<label for="srgdev-ncfp_fnumber" class="srgdev-ncfp-form-label">' . htmlspecialchars($l->t("No"), ENT_QUOTES, 'UTF-8') . '</label><input autocomplete="off" name="number" ' . $disabled . ' placeholder="' . htmlspecialchars($l->t("12"), ENT_QUOTES, 'UTF-8') . '" id="srgdev-ncfp_fnumber" class="srgdev-ncfp-form-input" type="text">';
         echo '</div>';
         echo '</div>';
         echo '<label for="srgdev-ncfp_fbirthday" class="srgdev-ncfp-form-label">' . htmlspecialchars($l->t("Date de naissance"), ENT_QUOTES, 'UTF-8') . '</label><input name="birthday" ' . $disabled .' placeholder="' . htmlspecialchars($l->t("01.01.1970"), ENT_QUOTES, 'UTF-8') . '" id="srgdev-ncfp_fbirthday" class="srgdev-ncfp-form-input" type="date">';     
