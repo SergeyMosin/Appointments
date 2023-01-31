@@ -9,6 +9,7 @@ namespace OCA\Appointments\Controller;
 use OC\AppFramework\Middleware\Security\Exceptions\NotLoggedInException;
 use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
+use OCA\Appointments\Backend\HintVar;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\NotFoundResponse;
@@ -358,10 +359,7 @@ class PageController extends Controller
 
                 if ($take_action) {
                     // Emails are handled by the DavListener... set the Hint
-                    $ses = \OC::$server->getSession();
-                    $ses->set(
-                        BackendUtils::APPT_SES_KEY_HINT,
-                        BackendUtils::APPT_SES_CONFIRM);
+                    HintVar::setHint(HintVar::APPT_CONFIRM);
 
                     list($sts, $date_time, $attendeeName) = $this->bc->confirmAttendee($userId, $cal_id, $uri);
 
@@ -462,10 +460,7 @@ class PageController extends Controller
 
             if ($take_action) {
                 // Emails are handled by the DavListener... set the Hint
-                $ses = \OC::$server->getSession();
-                $ses->set(
-                    BackendUtils::APPT_SES_KEY_HINT,
-                    BackendUtils::APPT_SES_CANCEL);
+                HintVar::setHint(HintVar::APPT_CANCEL);
 
                 $cls = $this->utils->getUserSettings(
                     BackendUtils::KEY_CLS, $userId);
@@ -518,10 +513,7 @@ class PageController extends Controller
             // Appointment type change (Talk integration)
 
             // Set hint for dav listener
-            $ses = \OC::$server->getSession();
-            $ses->set(
-                BackendUtils::APPT_SES_KEY_HINT,
-                BackendUtils::APPT_SES_TYPE_CHANGE);
+            HintVar::setHint(HintVar::APPT_TYPE_CHANGE);
 
             $cId = $cal_id;
             $data = $this->bc->getObjectData($cal_id, $uri);
@@ -885,10 +877,7 @@ class PageController extends Controller
 
         // Emails are handled by the DavListener...
         // ... set the Hint and Confirm/Cancel buttons info
-        $ses = \OC::$server->getSession();
-        $ses->set(
-            BackendUtils::APPT_SES_KEY_HINT,
-            ($skip_evs ? BackendUtils::APPT_SES_SKIP : BackendUtils::APPT_SES_BOOK));
+        HintVar::setHint($skip_evs ? HintVar::APPT_SKIP : HintVar::APPT_BOOK);
 
         $post['_page_id'] = $pageId;
         $post['_embed'] = $embed === true ? "1" : "0";

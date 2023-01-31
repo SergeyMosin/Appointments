@@ -35,14 +35,6 @@ class BackendUtils
 
     const FLOAT_TIME_FORMAT = "Ymd.His";
 
-    public const APPT_SES_KEY_HINT = "appointment_hint";
-
-    public const APPT_SES_BOOK = "0";
-    public const APPT_SES_CONFIRM = "1";
-    public const APPT_SES_CANCEL = "2";
-    public const APPT_SES_SKIP = "3";
-    public const APPT_SES_TYPE_CHANGE = "4";
-
     public const KEY_USE_DEF_EMAIL = 'useDefaultEmail';
     public const KEY_LIMIT_TO_GROUPS = 'limitToGroups';
     public const KEY_EMAIL_FIX = 'emailFixOpt';

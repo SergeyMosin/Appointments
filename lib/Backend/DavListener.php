@@ -360,10 +360,9 @@ class DavListener implements IEventListener
 
 //        \OC::$server->getLogger()->error('DL Debug: M1');
 
-        $ses = \OC::$server->getSession();
-        $hint = $ses->get(BackendUtils::APPT_SES_KEY_HINT);
-        if ($hint === BackendUtils::APPT_SES_SKIP
-            || ($isDelete && $hint === BackendUtils::APPT_SES_CONFIRM) // <-- booking in to a different calendar NOT deleting
+        $hint = HintVar::getHint();
+        if ($hint === HintVar::APPT_SKIP
+            || ($isDelete && $hint === HintVar::APPT_CONFIRM) // <-- booking in to a different calendar NOT deleting
         ) {
             // no need for email
             return;
@@ -474,7 +473,7 @@ class DavListener implements IEventListener
 
         $att = $utils->getAttendee($evt);
         if ($att === null
-            || ($hint === null
+            || ($hint === HintVar::APPT_NONE
                 && ($att->parameters['PARTSTAT']->getValue() === 'DECLINED'
                     || ($hash_ch === null && !$isDelete)
                     || $utils->isApptCancelled($hash, $evt) === true
@@ -536,7 +535,7 @@ class DavListener implements IEventListener
 
         $ext_event_type = -1;
 
-        if ($hint === BackendUtils::APPT_SES_BOOK) {
+        if ($hint === HintVar::APPT_BOOK) {
             // Just booked, send email to the attendee requesting confirmation...
 
             // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment (action needed)
@@ -567,7 +566,7 @@ class DavListener implements IEventListener
                 $om_prefix = $this->l10N->t("Appointment pending");
             }
 
-        } elseif ($hint === BackendUtils::APPT_SES_CONFIRM) {
+        } elseif ($hint === HintVar::APPT_CONFIRM) {
             // Confirm link in the email is clicked ...
             // ... or the email validation step is skipped
 
@@ -617,10 +616,10 @@ class DavListener implements IEventListener
 
             $ext_event_type = 0;
 
-        } elseif ($hint === BackendUtils::APPT_SES_CANCEL || $isDelete) {
+        } elseif ($hint === HintVar::APPT_CANCEL || $isDelete) {
             // Canceled or deleted
 
-            if ($hint !== null) {
+            if ($hint !== HintVar::APPT_NONE) {
                 // Cancelled by the attendee (via the email link)
 
                 // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Canceled
@@ -637,7 +636,7 @@ class DavListener implements IEventListener
             $tmpl->addBodyText($this->l10N->t('Your %1$s appointment scheduled for %2$s is now canceled.', [$org_name, $date_time]));
             $is_cancelled = true;
 
-            if ($eml_settings[BackendUtils::EML_MCNCL] && $hint !== null) {
+            if ($eml_settings[BackendUtils::EML_MCNCL] && $hint !== HintVar::APPT_NONE) {
                 $om_prefix = $this->l10N->t("Appointment canceled");
             }
 
@@ -651,7 +650,7 @@ class DavListener implements IEventListener
 
             $ext_event_type = 1;
 
-        } elseif ($hint === BackendUtils::APPT_SES_TYPE_CHANGE) {
+        } elseif ($hint === HintVar::APPT_TYPE_CHANGE) {
 
             $tmpl->setSubject($this->l10N->t("%s Appointment update", [$org_name]));
             // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
@@ -689,7 +688,7 @@ class DavListener implements IEventListener
 
             $ext_event_type = 3;
 
-        } elseif ($hint === null) {
+        } elseif ($hint === HintVar::APPT_NONE) {
             // Organizer or External Action (something changed...)
 
             // TRANSLATORS Subject for email, Ex: {{Organization Name}} appointment status update
@@ -815,7 +814,7 @@ class DavListener implements IEventListener
         $utz_info = $evt->{BackendUtils::TZI_PROP}->getValue()[0];
 
         // .ics attachment
-        if ($hint !== BackendUtils::APPT_SES_BOOK
+        if ($hint !== HintVar::APPT_BOOK
             && $eml_settings[BackendUtils::EML_ICS] === true
             && $no_ics === false) {
 
@@ -845,7 +844,7 @@ class DavListener implements IEventListener
                 $method = 'CANCEL';
                 if ($isDelete) {
                     // Set proper info, otherwise the .ics file is bad
-                    if ($hint === null) {
+                    if ($hint === HintVar::APPT_NONE) {
                         // Organizer deleted the appointment
                         $evt->STATUS->setValue('CANCELLED');
                     } else {
