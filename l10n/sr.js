@@ -25,6 +25,7 @@ OC.L10N.register(
     "15 minutes" : "15 минута",
     "30 minutes" : "30 минута",
     "1 hour" : "1 сат",
+    "2 hours" : "2 сата",
     "12 hours" : "12 сати",
     "1 Hour" : "1 сат",
     "2 Hours" : "2 сата",
