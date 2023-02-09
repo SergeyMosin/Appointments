@@ -116,6 +116,7 @@ OC.L10N.register(
     "12 Hours" : "12 годин",
     "Debugging" : "Налагодження ",
     "Loading…" : "Завантаження…",
+    "Sync Remote Calendar Now" : "Синхронізувати віддалений календар",
     "Edit" : "Редагувати",
     "Title" : "Назва",
     "Subtitle" : "Субтитри ",
