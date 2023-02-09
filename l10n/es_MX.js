@@ -121,6 +121,7 @@ OC.L10N.register(
     "Next" : "Siguiente",
     "Select Date and Time" : "Seleccione Fecha y Hora",
     "min" : "min",
+    "Duration" : "Duración",
     "Full Name" : "Nombre completo",
     "Email" : "Correo electrónico",
     "Phone" : "Teléfono fijo",
