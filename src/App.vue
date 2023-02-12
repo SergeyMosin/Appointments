@@ -137,7 +137,7 @@
         class="srgdev-app-content"
         :aria-expanded="navOpen">
       <div v-show="visibleSection===2" class="srgdev-appt-cal-view-cont">
-        <ModalExt
+        <Modal
             v-if="generalModal!==0"
             class="srgdev-appt-modal-container"
             :canClose="false">
@@ -238,7 +238,7 @@
               </button>
             </div>
           </div>
-        </ModalExt>
+        </Modal>
       </div>
       <div v-show="visibleSection===1" class="srgdev-appt-cal-view-cont">
         <div class="srgdev-appt-grid-flex">
@@ -299,7 +299,7 @@
             <div @gridContext="editSingleAppt" ref="grid_cont" class="srgdev-appt-grid-cont"></div>
           </div>
         </div>
-        <ModalExt v-if="evtGridModal!==0" class="srgdev-appt-modal-container" :canClose="false">
+        <Modal v-if="evtGridModal!==0" class="srgdev-appt-modal-container" :canClose="false">
           <div :class="evtGridModal===5?'srgdev-appt-modal_content_tmpl':'srgdev-appt-modal_content'">
             <div v-if="evtGridModal===1" class="srgdev-appt-modal-lbl">
               {{
@@ -337,7 +337,7 @@
               {{ t('appointments', 'Close') }}
             </button>
           </div>
-        </ModalExt>
+        </Modal>
       </div>
       <div v-show="visibleSection===0" class="srgdev-appt-main-sec">
         <div class="srgdev-appt-main-info">
@@ -450,9 +450,7 @@ import Actions from '@nextcloud/vue/dist/Components/NcActions.js'
 
 import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 
-// import Modal from '@nextcloud/vue/dist/Components/NcModal.js'
-
-import ModalExt from "./components/ModalExt"
+import Modal from '@nextcloud/vue/dist/Components/NcModal.js'
 
 import {showError, showSuccess} from "@nextcloud/dialogs"
 import SettingsSlideBar from "./components/settings/SettingsSlideBar";
@@ -490,7 +488,7 @@ export default {
     AppNavigationItem,
     AppSettingsDialog,
     ActionButton,
-    ModalExt,
+    Modal,
     NcCheckboxRadioSwitch,
     ReminderSettings,
     TemplateApptOptions,
