@@ -4,6 +4,7 @@ function _apptGridMaker() {
     const MPH = 3600000
     const MP5 = 300000
     // Start at 6AM
+    // !! CHANGE 'const SH' in components/TemplateApptOptions.vue too !!!
     const SH = 6 // if this is lest than 4 there might be a problem on daylight savings day.
     // 17 hours
     const DH = 17

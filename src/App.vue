@@ -329,6 +329,7 @@
                 :elm="evtGridElm"
                 :cid="gridCID"
                 :has-key="hasKey"
+                :grid-shift="gridShift"
                 @showCModal="showCModal"
                 @tmplUpdateAppt="gridApptUpdate($event)"
                 @tmplAddAppts="gridApptsAddTemplate($event)"
@@ -982,8 +983,8 @@ export default {
       let nbr = parseInt(hd.n)
       if (isNaN(nbr) || nbr < 1) return
 
-      if (isNaN(this.gridApptLen) || this.gridApptLen < 10) {
-        this.gridApptLen = 10
+      if (isNaN(this.gridApptLen) || this.gridApptLen < 5) {
+        this.gridApptLen = 5
       }
 
       gridMaker.addAppt(0, this.gridApptLen, nbr, cID, this.calInfo.curCal_color)

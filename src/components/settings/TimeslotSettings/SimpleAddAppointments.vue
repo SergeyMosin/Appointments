@@ -26,7 +26,7 @@
           </div>
           <label for="appt_dur-select" class="select-label">{{ t('appointments', 'Appointment Duration:') }}</label>
           <vue-slider
-              :min="10"
+              :min="5"
               :max="120"
               :interval="5"
               tooltip="always"
