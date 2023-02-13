@@ -1,3 +1,13 @@
+## v1.14.11 - 2023-02-13
+### Changed
+- change minimum, appointment length from 10 -> 5 min - #384
+- removed NcModel FocusTrap workaround
+- re-lint some php files
+### Fixed
+- @nextcloud/vue v7.4.0 compatibility - #395
+- overlap of slots from same day in different month - #401
+- use static var instead of session - #399
+
 ## v1.14.10 - 2023-01-16
 ### Added
 - More debug info is returned from getRawCalendarData() - #394
