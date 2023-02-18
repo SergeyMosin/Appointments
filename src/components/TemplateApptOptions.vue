@@ -7,7 +7,7 @@
       <span @click="removeDuration" class="pml-m">−</span>
     </div>
     <vue-slider
-        :min="10"
+        :min="5"
         :max="durMax"
         :order="false"
         :interval="5"
@@ -62,6 +62,10 @@ export default {
     hasKey: {
       type: Boolean,
       default: false,
+    },
+    gridShift: {
+      type: Number,
+      default: 0
     }
   },
   created() {
@@ -79,17 +83,17 @@ export default {
           // adding
           if (this.cid > -1) {
             const d = new Date()
-            d.setDate(d.getDate() - d.getDay() + 1 + this.cid)
+            d.setDate(d.getDate() - d.getDay() + 1 - this.gridShift + this.cid)
             str = new Intl.DateTimeFormat(lang,
                 {weekday: "long"}).format(d)
           }
         } else if (this.elm.uTop !== undefined && this.elm.cID !== undefined) {
           // single appt. edit
 
-          // Start at 8AM same as grid.js
-          const SH = 8
+          // Start at 6AM same as grid.js
+          const SH = 6
           const d = new Date()
-          d.setDate(d.getDate() - d.getDay() + 1 + this.elm.cID)
+          d.setDate(d.getDate() - d.getDay() + 1 - this.gridShift + this.elm.cID)
 
           const minTotal = SH * 60 + this.elm.uTop * 5
           const hours = (minTotal / 60) | 0
@@ -110,10 +114,10 @@ export default {
   },
   mounted() {
     if (this.elm !== null) {
-      this.durations = [10, ...this.elm.dur]
+      this.durations = [5, ...this.elm.dur]
       this.title = this.elm.title
     } else {
-      this.durations = [10, 30]
+      this.durations = [5, 30]
     }
   },
   methods: {

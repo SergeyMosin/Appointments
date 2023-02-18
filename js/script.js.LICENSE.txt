@@ -8,6 +8,13 @@
 /*!
  * The buffer module from node.js, for the browser.
  *
+ * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @license  MIT
+ */
+
+/*!
+ * The buffer module from node.js, for the browser.
+ *
  * @author   Feross Aboukhadijeh <https://feross.org>
  * @license  MIT
  */
@@ -50,6 +57,10 @@
 
 /*! For license information please see NcCheckboxRadioSwitch.js.LICENSE.txt */
 
+/*! For license information please see NcContent.js.LICENSE.txt */
+
+/*! For license information please see NcModal.js.LICENSE.txt */
+
 /*! Hammer.JS - v2.0.7 - 2016-04-22
  * http://hammerjs.github.io/
  *
@@ -73,7 +84,7 @@
  *
  * @author Richard Steinmetz <richard@steinmetz.cloud>
  *
- * @license GNU AGPL version 3 or any later version
+ * @license AGPL-3.0-or-later
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -95,7 +106,7 @@
  *
  * @author Georg Ehrke <georg-nextcloud@ehrke.email>
  *
- * @license GNU AGPL version 3 or any later version
+ * @license AGPL-3.0-or-later
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -117,7 +128,7 @@
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  *
- * @license GNU AGPL version 3 or any later version
+ * @license AGPL-3.0-or-later
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as

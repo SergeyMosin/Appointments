@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
+<?php
+/** @noinspection PhpMultipleClassDeclarationsInspection */
+
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 /** @noinspection PhpComposerExtensionStubsInspection */
 
@@ -7,6 +9,7 @@ namespace OCA\Appointments\Controller;
 use OC\AppFramework\Middleware\Security\Exceptions\NotLoggedInException;
 use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
+use OCA\Appointments\Backend\HintVar;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\NotFoundResponse;
@@ -71,7 +74,8 @@ class PageController extends Controller
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function index() {
+    public function index()
+    {
         $t = new TemplateResponse($this->appName, 'index');
 
         $allowedGroups = $this->c->getAppValue($this->appName,
@@ -114,7 +118,8 @@ class PageController extends Controller
      * @throws \ErrorException
      * @throws NotLoggedInException
      */
-    public function formEmb() {
+    public function formEmb()
+    {
         list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"), $this->c);
         if ($userId === null) {
             $tr = new TemplateResponse($this->appName, "public/r404", [], "base");
@@ -143,7 +148,8 @@ class PageController extends Controller
      * @throws NotLoggedInException
      * @noinspection PhpUnused
      */
-    public function formPostEmb() {
+    public function formPostEmb()
+    {
         list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"), $this->c);
         if ($userId === null) {
             $tr = new TemplateResponse($this->appName, "public/r404", [], "base");
@@ -166,7 +172,8 @@ class PageController extends Controller
      * @throws NotLoggedInException
      * @noinspection PhpUnused
      */
-    public function cncfEmb() {
+    public function cncfEmb()
+    {
         list($userId) = $this->utils->verifyToken($this->request->getParam("token"), $this->c);
         if ($userId === null) {
             $tr = new TemplateResponse($this->appName, "public/r404", [], "base");
@@ -177,7 +184,8 @@ class PageController extends Controller
         return $tr;
     }
 
-    function setEmbCsp($tr, $userId) {
+    function setEmbCsp($tr, $userId)
+    {
 
         $ad = $this->c->getAppValue(
             $this->appName,
@@ -203,7 +211,8 @@ class PageController extends Controller
      * @throws \ErrorException
      * @throws NotLoggedInException
      */
-    public function form() {
+    public function form()
+    {
         list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"), $this->c);
         if ($userId === null) {
             return new NotFoundResponse();
@@ -237,7 +246,8 @@ class PageController extends Controller
      * @throws NotLoggedInException
      * @noinspection PhpUnused
      */
-    public function formPost() {
+    public function formPost()
+    {
         list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"), $this->c);
         if ($userId === null) {
             return new NotFoundResponse();
@@ -248,7 +258,8 @@ class PageController extends Controller
         return $this->showFormPost($userId, $pageId);
     }
 
-    private function getPageText($date_time, $state) {
+    private function getPageText($date_time, $state)
+    {
         if ($state === BackendUtils::PREF_STATUS_CONFIRMED) {
             // TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is confirmed.
             return $this->l->t("Your appointment scheduled for %s is confirmed.", [$date_time]);
@@ -272,7 +283,8 @@ class PageController extends Controller
      * @throws \ErrorException
      * @throws NotLoggedInException
      */
-    public function cncf($embed = false) {
+    public function cncf($embed = false)
+    {
         list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"), $this->c);
         $pd = $this->request->getParam("d");
         if ($userId === null || $pd === null || strlen($pd) > 512
@@ -359,10 +371,7 @@ class PageController extends Controller
 
                 if ($take_action) {
                     // Emails are handled by the DavListener... set the Hint
-                    $ses = \OC::$server->getSession();
-                    $ses->set(
-                        BackendUtils::APPT_SES_KEY_HINT,
-                        BackendUtils::APPT_SES_CONFIRM);
+                    HintVar::setHint(HintVar::APPT_CONFIRM);
 
                     list($sts, $date_time, $attendeeName) = $this->bc->confirmAttendee($userId, $cal_id, $uri);
 
@@ -463,10 +472,7 @@ class PageController extends Controller
 
             if ($take_action) {
                 // Emails are handled by the DavListener... set the Hint
-                $ses = \OC::$server->getSession();
-                $ses->set(
-                    BackendUtils::APPT_SES_KEY_HINT,
-                    BackendUtils::APPT_SES_CANCEL);
+                HintVar::setHint(HintVar::APPT_CANCEL);
 
                 $cls = $this->utils->getUserSettings(
                     BackendUtils::KEY_CLS, $userId);
@@ -515,14 +521,11 @@ class PageController extends Controller
                     $tr_params['appt_action_url'] = $appt_action_url;
                 }
             }
-        } else if ($a === '3') {
+        } elseif ($a === '3') {
             // Appointment type change (Talk integration)
 
             // Set hint for dav listener
-            $ses = \OC::$server->getSession();
-            $ses->set(
-                BackendUtils::APPT_SES_KEY_HINT,
-                BackendUtils::APPT_SES_TYPE_CHANGE);
+            HintVar::setHint(HintVar::APPT_TYPE_CHANGE);
 
             $cId = $cal_id;
             $data = $this->bc->getObjectData($cal_id, $uri);
@@ -634,7 +637,8 @@ class PageController extends Controller
         return $tr;
     }
 
-    private function pubErrResponse($userId, $embed) {
+    private function pubErrResponse($userId, $embed)
+    {
         $tn = 'public/formerr';
         if ($embed) {
             $tr = new TemplateResponse($this->appName, $tn, [], 'base');
@@ -658,9 +662,12 @@ class PageController extends Controller
      * @NoCSRFRequired
      * @noinspection PhpUnused
      */
-    public function formBase() {
+    public function formBase()
+    {
         $pageId = $this->request->getParam("p", "p0");
-        if (empty($pageId)) $pageId = 'p0';
+        if (empty($pageId)) {
+            $pageId = 'p0';
+        }
         if (!isset($this->utils->getUserSettings(
                 BackendUtils::KEY_PAGES,
                 $this->userId)[$pageId])) {
@@ -682,9 +689,12 @@ class PageController extends Controller
      * @throws \ErrorException
      * @noinspection PhpUnused
      */
-    public function formBasePost() {
+    public function formBasePost()
+    {
         $pageId = $this->request->getParam("p", "p0");
-        if (empty($pageId)) $pageId = 'p0';
+        if (empty($pageId)) {
+            $pageId = 'p0';
+        }
         if (!isset($this->utils->getUserSettings(
                 BackendUtils::KEY_PAGES,
                 $this->userId)[$pageId])) {
@@ -701,7 +711,8 @@ class PageController extends Controller
      * @return RedirectResponse
      * @throws \ErrorException
      */
-    public function showFormPost($userId, $pageId, $embed = false): RedirectResponse {
+    public function showFormPost($userId, $pageId, $embed = false): RedirectResponse
+    {
 
         // sts: 0=OK, 1=bad input, 2=server error
         $ok_uri = "form?sts=0";
@@ -722,7 +733,9 @@ class PageController extends Controller
         $post = $this->request->getParams();
 
         // this will pass validation
-        if ($hide_phone) $post['phone'] = "1234567890";
+        if ($hide_phone) {
+            $post['phone'] = "1234567890";
+        }
 
         if (!isset($post['adatetime']) || strlen($post['adatetime']) > 127
             || preg_match('/[^a-zA-Z0-9+\/=]/', $post['adatetime'])
@@ -749,7 +762,9 @@ class PageController extends Controller
             $rr->setStatus(303);
             return $rr;
         }
-        if ($hide_phone) $post['phone'] = "";
+        if ($hide_phone) {
+            $post['phone'] = "";
+        }
         $post['name'] = htmlspecialchars(strip_tags($post['name']), ENT_NOQUOTES);
 
         // Talk integration override...
@@ -826,8 +841,7 @@ class PageController extends Controller
                 substr($o, 19, 5) . "-ASM" .
                 substr($o, 24) . ".ics";
 
-
-        } else if ($dcs === "_1") {
+        } elseif ($dcs === "_1") {
             // external mode
             // $dc='_'ts_mode(1byte)ses_time(4bytes)dates(8bytes)uri(no extension)
 
@@ -875,10 +889,7 @@ class PageController extends Controller
 
         // Emails are handled by the DavListener...
         // ... set the Hint and Confirm/Cancel buttons info
-        $ses = \OC::$server->getSession();
-        $ses->set(
-            BackendUtils::APPT_SES_KEY_HINT,
-            ($skip_evs ? BackendUtils::APPT_SES_SKIP : BackendUtils::APPT_SES_BOOK));
+        HintVar::setHint($skip_evs ? HintVar::APPT_SKIP : HintVar::APPT_BOOK);
 
         $post['_page_id'] = $pageId;
         $post['_embed'] = $embed === true ? "1" : "0";
@@ -921,7 +932,8 @@ class PageController extends Controller
      * @param int $index
      * @return string|bool
      */
-    private function showFormCustomField($field, $post, $index = 0) {
+    private function showFormCustomField($field, $post, $index = 0)
+    {
 
         $v = '';
         if (!empty($field) && isset($post[$field['name']])) {
@@ -943,7 +955,8 @@ class PageController extends Controller
      * @param string $uid
      * @return TemplateResponse
      */
-    public function showFinish($render, $uid) {
+    public function showFinish($render, $uid)
+    {
         // Redirect to finalize page...
         // sts: 0=OK, 1=bad input, 2=server error
         // sts=2&r=1: race condition while booking
@@ -1192,7 +1205,8 @@ class PageController extends Controller
      * @NoCSRFRequired
      * @throws \Exception
      */
-    public function help() {
+    public function help()
+    {
         return new TemplateResponse($this->appName, 'help', [], "base");
     }
 
@@ -1200,7 +1214,8 @@ class PageController extends Controller
      * @NoAdminRequired
      * @noinspection PhpUnused
      */
-    public function caladd() {
+    public function caladd()
+    {
         $pageId = $this->request->getParam("p", "p0");
         // pageId is required for this
         if (empty($pageId) || !isset($this->utils->getUserSettings(
@@ -1227,18 +1242,27 @@ class PageController extends Controller
      * @param string $title title is used when the appointment is being reset
      * @return string
      */
-    private function addAppointments($userId, $pageId, $ds, $tz_data_str, $title = "") {
+    private function addAppointments($userId, $pageId, $ds, $tz_data_str, $title = "")
+    {
 
-        if (empty($ds)) return '1:No Data';
+        if (empty($ds)) {
+            return '1:No Data';
+        }
         $data = explode(',', $ds);
         $c = count($data);
-        if ($c < 3) return '1:' . $this->l->t("Please add time slots first.") . " [DL = " . $c . "]";
+        if ($c < 3) {
+            return '1:' . $this->l->t("Please add time slots first.") . " [DL = " . $c . "]";
+        }
 
         $cal_id = $this->utils->getMainCalId($userId, $pageId, $this->bc);
-        if ($cal_id === "-1") return '1:' . $this->l->t("Please select a calendar first");
+        if ($cal_id === "-1") {
+            return '1:' . $this->l->t("Please select a calendar first");
+        }
 
         $cal = $this->bc->getCalendarById($cal_id, $userId);
-        if ($cal === null) return '1:' . $this->l->t("Selected calendar not found");
+        if ($cal === null) {
+            return '1:' . $this->l->t("Selected calendar not found");
+        }
 
         $evt_parts = $this->utils->makeAppointmentParts(
             $userId, $pageId, $this->appName, $tz_data_str, $data[0], $title);
@@ -1315,7 +1339,8 @@ class PageController extends Controller
      * @param string $userId
      * @return PublicTemplateResponse
      */
-    private function getPublicTemplate($templateName, $userId) {
+    private function getPublicTemplate($templateName, $userId)
+    {
         $pps = $this->utils->getUserSettings(
             BackendUtils::KEY_PSN, $userId);
         $tr = new PublicTemplateResponse($this->appName, $templateName, []);
@@ -1339,7 +1364,8 @@ class PageController extends Controller
         return $tr;
     }
 
-    private function getInlineStyle(string $userId, array $pps): string {
+    private function getInlineStyle(string $userId, array $pps): string
+    {
 
         $autoStyle = "";
 
@@ -1381,7 +1407,8 @@ class PageController extends Controller
     /**
      * @throws NotLoggedInException
      */
-    private function throwIfPrivateModeNotLoggedIn(string $pageId, string $userId) {
+    private function throwIfPrivateModeNotLoggedIn(string $pageId, string $userId)
+    {
         if ($pageId === 'p0') {
             $key = BackendUtils::KEY_CLS;
         } else {

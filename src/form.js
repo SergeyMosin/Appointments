@@ -876,7 +876,7 @@
 			if (ts === 0) break
 			d.setTime(ts)
 
-			let ud = d.getDate()
+			let ud = ((d.getMonth() + 1) * 100) + d.getDate()
 
 			if (lastUD !== ud) {
 

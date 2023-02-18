@@ -1,4 +1,5 @@
-<?php /** @noinspection PhpFullyQualifiedNameUsageInspection */
+<?php
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 
 
 namespace OCA\Appointments\Backend;
@@ -39,7 +40,8 @@ class DavListener implements IEventListener
 
     public function __construct(\OCP\IL10N      $l10N,
                                 LoggerInterface $logger,
-                                BackendUtils    $utils) {
+                                BackendUtils    $utils)
+    {
         $this->appName = Application::APP_ID;
         $this->l10N = $l10N;
         $this->logger = $logger;
@@ -49,7 +51,8 @@ class DavListener implements IEventListener
         $this->config = \OC::$server->get(IConfig::class);
     }
 
-    function handle(Event $event): void {
+    function handle(Event $event): void
+    {
         if ($event instanceof CalendarObjectUpdatedEvent) {
             $this->handler($event->getObjectData(), $event->getCalendarData(), false);
         } elseif ($event instanceof CalendarObjectMovedToTrashEvent) {
@@ -60,14 +63,16 @@ class DavListener implements IEventListener
         }
     }
 
-    public function handleOld(\Symfony\Component\EventDispatcher\GenericEvent $event, string $eventName): void {
+    public function handleOld(\Symfony\Component\EventDispatcher\GenericEvent $event, string $eventName): void
+    {
         $this->handler($event['objectData'], $event['calendarData'], $eventName === '\OCA\DAV\CalDAV\CalDavBackend::deleteCalendarObject');
     }
 
     /**
      * @param int $lastStart timestamp set by IJonList->setLastRun() producto of time() func
      */
-    public function handleReminders(int $lastStart, IDBConnection $db, IBackendConnector $bc): void {
+    public function handleReminders(int $lastStart, IDBConnection $db, IBackendConnector $bc): void
+    {
 
         // we need to pull all pending appointments between now + 42 min( 1 hour [min delta] - 18 min [time between jobs]) and now + 7 days(max delta)
         $now = time();
@@ -289,7 +294,9 @@ class DavListener implements IEventListener
 
                         $utz = $this->utils->getCalendarTimezone($userId, $config, $bc->getCalendarById($calId, $userId));
 
-                        if (!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
+                        if (!isset($evt->DESCRIPTION)) {
+                            $evt->add('DESCRIPTION');
+                        }
                         $description = $evt->DESCRIPTION->getValue();
                         // TRANSLATORS Ex: Reminder sent on {{Date and Time}},
                         $description .= "\n" . $this->l10N->t("Reminder sent on %s", [$utils->getDateTimeString(
@@ -330,7 +337,8 @@ class DavListener implements IEventListener
         $result->closeCursor();
     }
 
-    private function handler(array $objectData, array $calendarData, bool $isDelete): void {
+    private function handler(array $objectData, array $calendarData, bool $isDelete): void
+    {
 
 //        \OC::$server->getLogger()->error('DL Debug: M0');
 
@@ -352,10 +360,9 @@ class DavListener implements IEventListener
 
 //        \OC::$server->getLogger()->error('DL Debug: M1');
 
-        $ses = \OC::$server->getSession();
-        $hint = $ses->get(BackendUtils::APPT_SES_KEY_HINT);
-        if ($hint === BackendUtils::APPT_SES_SKIP
-            || ($isDelete && $hint === BackendUtils::APPT_SES_CONFIRM) // <-- booking in to a different calendar NOT deleting
+        $hint = HintVar::getHint();
+        if ($hint === HintVar::APPT_SKIP
+            || ($isDelete && $hint === HintVar::APPT_CONFIRM) // <-- booking in to a different calendar NOT deleting
         ) {
             // no need for email
             return;
@@ -466,7 +473,7 @@ class DavListener implements IEventListener
 
         $att = $utils->getAttendee($evt);
         if ($att === null
-            || ($hint === null
+            || ($hint === HintVar::APPT_NONE
                 && ($att->parameters['PARTSTAT']->getValue() === 'DECLINED'
                     || ($hash_ch === null && !$isDelete)
                     || $utils->isApptCancelled($hash, $evt) === true
@@ -528,7 +535,7 @@ class DavListener implements IEventListener
 
         $ext_event_type = -1;
 
-        if ($hint === BackendUtils::APPT_SES_BOOK) {
+        if ($hint === HintVar::APPT_BOOK) {
             // Just booked, send email to the attendee requesting confirmation...
 
             // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment (action needed)
@@ -559,7 +566,7 @@ class DavListener implements IEventListener
                 $om_prefix = $this->l10N->t("Appointment pending");
             }
 
-        } elseif ($hint === BackendUtils::APPT_SES_CONFIRM) {
+        } elseif ($hint === HintVar::APPT_CONFIRM) {
             // Confirm link in the email is clicked ...
             // ... or the email validation step is skipped
 
@@ -609,10 +616,10 @@ class DavListener implements IEventListener
 
             $ext_event_type = 0;
 
-        } elseif ($hint === BackendUtils::APPT_SES_CANCEL || $isDelete) {
+        } elseif ($hint === HintVar::APPT_CANCEL || $isDelete) {
             // Canceled or deleted
 
-            if ($hint !== null) {
+            if ($hint !== HintVar::APPT_NONE) {
                 // Cancelled by the attendee (via the email link)
 
                 // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Canceled
@@ -629,7 +636,7 @@ class DavListener implements IEventListener
             $tmpl->addBodyText($this->l10N->t('Your %1$s appointment scheduled for %2$s is now canceled.', [$org_name, $date_time]));
             $is_cancelled = true;
 
-            if ($eml_settings[BackendUtils::EML_MCNCL] && $hint !== null) {
+            if ($eml_settings[BackendUtils::EML_MCNCL] && $hint !== HintVar::APPT_NONE) {
                 $om_prefix = $this->l10N->t("Appointment canceled");
             }
 
@@ -643,7 +650,7 @@ class DavListener implements IEventListener
 
             $ext_event_type = 1;
 
-        } elseif ($hint === BackendUtils::APPT_SES_TYPE_CHANGE) {
+        } elseif ($hint === HintVar::APPT_TYPE_CHANGE) {
 
             $tmpl->setSubject($this->l10N->t("%s Appointment update", [$org_name]));
             // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
@@ -681,7 +688,7 @@ class DavListener implements IEventListener
 
             $ext_event_type = 3;
 
-        } elseif ($hint === null) {
+        } elseif ($hint === HintVar::APPT_NONE) {
             // Organizer or External Action (something changed...)
 
             // TRANSLATORS Subject for email, Ex: {{Organization Name}} appointment status update
@@ -781,7 +788,9 @@ class DavListener implements IEventListener
                 return;
             }
 
-        } else return;
+        } else {
+            return;
+        }
 
         $this->finalizeEmailText($tmpl, $cnl_lnk_url);
 
@@ -805,7 +814,7 @@ class DavListener implements IEventListener
         $utz_info = $evt->{BackendUtils::TZI_PROP}->getValue()[0];
 
         // .ics attachment
-        if ($hint !== BackendUtils::APPT_SES_BOOK
+        if ($hint !== HintVar::APPT_BOOK
             && $eml_settings[BackendUtils::EML_ICS] === true
             && $no_ics === false) {
 
@@ -820,7 +829,9 @@ class DavListener implements IEventListener
                         $evt->remove($evt->DESCRIPTION);
                     }
                 } else {
-                    if (!isset($evt->DESCRIPTION)) $evt->add('DESCRIPTION');
+                    if (!isset($evt->DESCRIPTION)) {
+                        $evt->add('DESCRIPTION');
+                    }
 
                     $evt->DESCRIPTION->setValue(
                         $org_name . "\n"
@@ -833,7 +844,7 @@ class DavListener implements IEventListener
                 $method = 'CANCEL';
                 if ($isDelete) {
                     // Set proper info, otherwise the .ics file is bad
-                    if ($hint === null) {
+                    if ($hint === HintVar::APPT_NONE) {
                         // Organizer deleted the appointment
                         $evt->STATUS->setValue('CANCELLED');
                     } else {
@@ -877,10 +888,14 @@ class DavListener implements IEventListener
                 }
             }
 
-            if (!isset($vObject->METHOD)) $vObject->add('METHOD');
+            if (!isset($vObject->METHOD)) {
+                $vObject->add('METHOD');
+            }
             $vObject->METHOD->setValue($method);
 
-            if (!isset($evt->SUMMARY)) $evt->add('SUMMARY');
+            if (!isset($evt->SUMMARY)) {
+                $evt->add('SUMMARY');
+            }
             $evt->SUMMARY->setValue($this->l10N->t("%s Appointment", [$org_name]));
 
             if (isset($evt->{BackendUtils::TZI_PROP})) {
@@ -991,9 +1006,12 @@ class DavListener implements IEventListener
      * @return string[] - [btn_url,btn_tkn]
      * @noinspection PhpDocMissingThrowsInspection
      */
-    private function makeBtnInfo($userId, $pageId, $embed, $uri, $config) {
+    private function makeBtnInfo($userId, $pageId, $embed, $uri, $config)
+    {
         $key = hex2bin($config->getAppValue($this->appName, 'hk'));
-        if (empty($key)) return ["", ""];
+        if (empty($key)) {
+            return ["", ""];
+        }
 
         $utils = $this->utils;
 
@@ -1023,7 +1041,8 @@ class DavListener implements IEventListener
      * @param $c
      * @return string
      */
-    private function addTalkInfo($tmpl, $xad, $ti, $tlk, $c) {
+    private function addTalkInfo($tmpl, $xad, $ti, $tlk, $c)
+    {
         $url = $ti->getRoomURL($xad[4]);
         $url_html = '<a target="_blank" href="' . $url . '">' . $url . '</a>';
 
@@ -1069,7 +1088,8 @@ class DavListener implements IEventListener
      * @param $typeChangeLink
      * @param int $newType 0=virtual, 1=real
      */
-    private function addTypeChangeLink($tmpl, $tlk, $typeChangeLink, $newType) {
+    private function addTypeChangeLink($tmpl, $tlk, $typeChangeLink, $newType)
+    {
         $txt = strip_tags(trim($tlk[BackendUtils::TALK_FORM_TYPE_CHANGE_TXT]));
         if (!empty($txt)) {
 
@@ -1109,7 +1129,8 @@ class DavListener implements IEventListener
         }
     }
 
-    private function makeMeetingTypeInfo($tlk, $has_link) {
+    private function makeMeetingTypeInfo($tlk, $has_link)
+    {
         $info = !empty($tlk[BackendUtils::TALK_FORM_LABEL])
             ? $tlk[BackendUtils::TALK_FORM_LABEL]
             : $tlk[BackendUtils::TALK_FORM_DEF_LABEL];
@@ -1125,7 +1146,8 @@ class DavListener implements IEventListener
         return htmlspecialchars($info, ENT_NOQUOTES);
     }
 
-    private function getEmailTemplate() {
+    private function getEmailTemplate()
+    {
 
         $urlGenerator = \OC::$server->get(IURLGenerator::class);
 
@@ -1150,7 +1172,8 @@ class DavListener implements IEventListener
         );
     }
 
-    private function getOrgInfo($userId, $pageId) {
+    private function getOrgInfo($userId, $pageId)
+    {
         $org = $this->utils->getUserSettings(
             BackendUtils::KEY_ORG, $userId);
 
@@ -1173,7 +1196,8 @@ class DavListener implements IEventListener
     }
 
 
-    function finalizeEmailText(&$tmpl, $cnl_lnk_url) {
+    function finalizeEmailText(&$tmpl, $cnl_lnk_url)
+    {
 
         $tmpl->addBodyText($this->l10N->t("Thank you"));
 
@@ -1201,7 +1225,8 @@ class DavListener implements IEventListener
      * @param string $filePath
      * @return void
      */
-    private function extNotify(array $data, string $userId, string $filePath) {
+    private function extNotify(array $data, string $userId, string $filePath)
+    {
 
         if ($filePath !== "") {
 
@@ -1220,7 +1245,8 @@ class DavListener implements IEventListener
         }
     }
 
-    private function getPhoneFromDescription(string $description): string {
+    private function getPhoneFromDescription(string $description): string
+    {
         $ret = "";
         $da = explode("\n", $description);
         if (count($da) > 2 && preg_match('/[0-9 .()\-+,\/]/', $da[1])) {
@@ -1229,7 +1255,8 @@ class DavListener implements IEventListener
         return $ret;
     }
 
-    private function addMoreEmailText(IEMailTemplate $template, string $text) {
+    private function addMoreEmailText(IEMailTemplate $template, string $text)
+    {
         $text_striped = strip_tags($text);
         if ($text === $text_striped) {
             // non html

@@ -28,6 +28,7 @@ OC.L10N.register(
     "Add" : "Masukkan",
     "OK" : "OK",
     "Advanced Settings" : "Pengaturan Tambahan",
+    "30 minutes" : "30 Menit",
     "1 hour" : "1 jam",
     "4 hours" : "4 jam",
     "12 hours" : "12 jam",

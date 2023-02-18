@@ -81,10 +81,7 @@ class BCSabreImpl implements IBackendConnector
 
         if ($delete) {
             // let's make easier for the DavListener...
-            $ses = \OC::$server->getSession();
-            $ses->set(
-                BackendUtils::APPT_SES_KEY_HINT,
-                BackendUtils::APPT_SES_SKIP);
+            HintVar::setHint(HintVar::APPT_SKIP);
 
             // Cleanup hash table
             if ($only_empty === false) {
