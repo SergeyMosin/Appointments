@@ -151,6 +151,6 @@ OC.L10N.register(
     "Full Name" : "Fullt navn",
     "Email" : "E-post",
     "Phone" : "Telefon",
-    "An error has occurred" : "En feil oppstod"
+    "An error has occurred" : "En feil oppsto"
 },
 "nplurals=2; plural=(n != 1);");
