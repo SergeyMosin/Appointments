@@ -12,6 +12,7 @@ OC.L10N.register(
     "Settings" : "Поставке",
     "Close" : "Затвори",
     "Remove" : "Уклони",
+    "Discard" : "Одбаци",
     "Save" : "Сачувај",
     "Preview" : "Претпреглед",
     "Loading" : "Учитавам",
