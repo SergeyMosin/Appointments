@@ -47,6 +47,7 @@ OC.L10N.register(
     "Enable lobby" : "Омогући лоби",
     "Warning" : "Упозорење",
     "Simple" : "Просто",
+    "Time zone:" : "Временска зона:",
     "Start" : "Почетак",
     "Name:" : "Име:",
     "Location:" : "Локација:",
