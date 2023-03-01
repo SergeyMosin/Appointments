@@ -240,6 +240,7 @@ OC.L10N.register(
     "Source and Destination calendars must be different" : "Os calendarios de orixe e destino deben ser diferentes",
     "Select Dates:" : "Seleccione as datas:",
     "Select Dates" : "Seleccione as datas",
+    "Time zone:" : "Franxa horaria:",
     "Appointment Duration:" : "Duración da cita:",
     "Start" : "Iniciar",
     "Scheduled before" : "Programado antes",
