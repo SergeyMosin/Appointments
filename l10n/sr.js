@@ -7,6 +7,7 @@ OC.L10N.register(
     "Password" : "Лозинка",
     "Action needed" : "Потребна акција",
     "Info" : "Инфо",
+    "Appointments" : "Састанци",
     "Name is required." : "Потребно је име.",
     "This is an automatically sent email, please do not reply." : "Ово је аутоматски генерисана порука, не одговарајте на њу.",
     "Delete" : "Избриши",
