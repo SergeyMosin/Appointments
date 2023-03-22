@@ -27,7 +27,7 @@ OC.L10N.register(
     "%s appointment status changed" : "%s Terminsstatus geändert",
     "Your %1$s appointment scheduled for %2$s is now canceled." : "Dein für %1$s geplanter %2$s-Termin ist jetzt abgesagt.",
     "Appointment canceled" : "Termin abgesagt",
-    "%s Appointment update" : "%s Terminsaktualisierung",
+    "%s Appointment update" : "%s Terminaktualisierung",
     "Your appointment details have changed. Please review information below." : "Deine Termin-Einzelheiten haben sich geändert. Bitte die nachfolgenden Informationen überprüfen.",
     "Date/Time: %s" : "Datum / Zeit: %s",
     "Appointment updated" : "Termin aktualisiert",
