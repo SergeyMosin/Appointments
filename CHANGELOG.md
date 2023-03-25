@@ -1,3 +1,9 @@
+## v1.14.13 - 2023-03-25
+### Added
+- auto-style is applied to directory page now
+### Fixed
+- NC25 wrong auto-style background
+
 ## v1.14.12 - 2023-03-25
 ### Changed
 - optimized form page - time element are created on demand now
