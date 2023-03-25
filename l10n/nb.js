@@ -76,6 +76,7 @@ OC.L10N.register(
     "Add to Calendar" : "Legg til i Kalenderen",
     "Discard" : "Slett",
     "Save" : "Lagre",
+    "Time zone" : "Tidssone",
     "Remove All" : "Fjern Alle",
     "Copy to Next" : "Kopier til Neste",
     "All appointments have been added to {calendarName} calendar." : "Alle avtaler har blitt lagt til i kalender {calendarName}.",
@@ -137,6 +138,7 @@ OC.L10N.register(
     "External" : "Ekstern",
     "Select Dates:" : "Velg Datoer:",
     "Select Dates" : "Velg Datoer",
+    "Time zone:" : "Tidssone:",
     "Appointment Duration:" : "Avtalevarighet:",
     "Start" : "Start",
     "Name:" : "Navn:",
@@ -149,6 +151,6 @@ OC.L10N.register(
     "Full Name" : "Fullt navn",
     "Email" : "E-post",
     "Phone" : "Telefon",
-    "An error has occurred" : "En feil oppstod"
+    "An error has occurred" : "En feil oppsto"
 },
 "nplurals=2; plural=(n != 1);");

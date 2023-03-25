@@ -285,6 +285,8 @@ OC.L10N.register(
     "Email:" : "Elektronski naslov:",
     "Location:" : "Mesto:",
     "Phone:" : "Telefon:",
+    "Redirect Confirmed URL:" : "Preusmeri potrjen naslov URL:",
+    "Generate ID" : "Ustvari določilo ID",
     "Using fallback time zone: {timeZoneName}" : "Uporabljen je časovni pas: {timeZoneName}",
     "No Appointments Available" : "Ni dogovorjenih sestankov",
     "Date & Time" : "Datum in čas",
