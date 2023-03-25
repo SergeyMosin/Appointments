@@ -13,25 +13,25 @@ use OCP\IL10N;
 use OCP\IRequest;
 use OCP\Util;
 
-class DirController  extends Controller
+class DirController extends Controller
 {
     private $userId;
     private $config;
     private $utils;
     private $l;
 
-    public function __construct($AppName,
+    public function __construct($AppName, $UserId,
                                 IRequest $request,
-                                $UserId,
                                 IConfig $config,
                                 IL10N $l,
-                                BackendUtils $utils){
+                                BackendUtils $utils)
+    {
         parent::__construct($AppName, $request);
 
-        $this->userId=$UserId;
-        $this->config=$config;
-        $this->l=$l;
-        $this->utils=$utils;
+        $this->userId = $UserId;
+        $this->config = $config;
+        $this->l = $l;
+        $this->utils = $utils;
     }
 
     /**
@@ -40,13 +40,14 @@ class DirController  extends Controller
      * @NoCSRFRequired
      * @throws \ErrorException
      */
-    function index(){
-        list($userId)=$this->utils->verifyToken(
-            $this->request->getParam("token"),$this->config);
-        if($userId===null){
+    function index()
+    {
+        list($userId) = $this->utils->verifyToken(
+            $this->request->getParam("token"), $this->config);
+        if ($userId === null) {
             return new NotFoundResponse();
         }
-        return $this->showIndex($userId,true);
+        return $this->showIndex($userId, true);
     }
 
     /**
@@ -54,16 +55,19 @@ class DirController  extends Controller
      * @NoCSRFRequired
      * @throws \ErrorException
      */
-    function indexBase(){
-        return $this->showIndex($this->userId,false);
+    function indexBase()
+    {
+        return $this->showIndex($this->userId, false);
     }
 
-    function showIndex($userId,$isPublic){
-        if($isPublic) {
+    function showIndex($userId, $isPublic)
+    {
+        if ($isPublic) {
 //            Util::addStyle($this->appName, "form-xl-screen");
             $pps = $this->utils->getUserSettings(BackendUtils::KEY_PSN, $userId);
-            $s=$this->config->getUserValue($userId, $this->appName, "cn"."k");$f="hex"."dec";
-            $tr = new PublicTemplateResponse($this->appName, 'public/directory'.(($s===""||(($f(substr($s,0,0b100))>>0xf)&1)!==(($f(substr($s,0b100,4))>>  12) &1))?"_":""), []);
+            $s = $this->config->getUserValue($userId, $this->appName, "cn" . "k");
+            $f = "hex" . "dec";
+            $tr = new PublicTemplateResponse($this->appName, 'public/directory' . (($s === "" || (($f(substr($s, 0, 0b100)) >> 0xf) & 1) !== (($f(substr($s, 0b100, 4)) >> 12) & 1)) ? "_" : ""), []);
             if (!empty($pps[BackendUtils::PSN_PAGE_TITLE])) {
                 $tr->setHeaderTitle($pps[BackendUtils::PSN_PAGE_TITLE]);
             } else {
@@ -73,17 +77,18 @@ class DirController  extends Controller
                 $tr->setHeaderDetails($pps[BackendUtils::PSN_PAGE_SUB_TITLE]);
             }
             $tr->setFooterVisible(false);
-        }else{
-            $tr = new TemplateResponse($this->appName,'public/directory', [],'base');
+        } else {
+            $tr = new TemplateResponse($this->appName, 'public/directory', [], 'base');
         }
 
-        $pps=$this->utils->getUserSettings(
-            BackendUtils::KEY_PSN,$userId);
+        $pps = $this->utils->getUserSettings(
+            BackendUtils::KEY_PSN, $userId);
 
         $tr->setParams([
-            'links'=>$this->utils->getUserSettings(
-            BackendUtils::KEY_DIR, $userId),
-            'appt_inline_style'=>$pps[BackendUtils::PSN_PAGE_STYLE]
+            'links' => $this->utils->getUserSettings(
+                BackendUtils::KEY_DIR, $userId),
+            'application' => $this->l->t('Appointments'),
+            'appt_inline_style' => $this->utils->getInlineStyle($userId, $pps, $this->config)
         ]);
 
         return $tr;
