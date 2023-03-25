@@ -6,7 +6,6 @@ specifiers:
   '@babel/plugin-syntax-dynamic-import': ^7.8.3
   '@babel/plugin-transform-modules-commonjs': ^7.14.5
   '@babel/plugin-transform-shorthand-properties': ^7.14.5
-  '@babel/preset-env': ^7.16.11
   '@nextcloud/axios': ^2.1.0
   '@nextcloud/babel-config': ^1.0.0
   '@nextcloud/browserslist-config': ^2.3.0
@@ -29,6 +28,7 @@ specifiers:
   file-loader: ^6.2.0
   linkifyjs: ^4.0.2
   node-sass: ^7.0.1
+  process: ^0.11.10
   regenerator-runtime: ^0.13.9
   sass: ^1.55.0
   sass-loader: ^12.4.0
@@ -63,7 +63,6 @@ devDependencies:
   '@babel/plugin-syntax-dynamic-import': 7.8.3_@babel+core@7.20.2
   '@babel/plugin-transform-modules-commonjs': 7.19.6_@babel+core@7.20.2
   '@babel/plugin-transform-shorthand-properties': 7.18.6_@babel+core@7.20.2
-  '@babel/preset-env': 7.20.2_@babel+core@7.20.2
   '@nextcloud/babel-config': 1.0.0_ddtaaenk3kczykjejdbsw2l6r4
   '@nextcloud/browserslist-config': 2.3.0
   '@vue/compiler-sfc': 3.2.45
@@ -80,6 +79,7 @@ devDependencies:
   file-loader: 6.2.0_webpack@5.75.0
   linkifyjs: 4.0.2
   node-sass: 7.0.3
+  process: 0.11.10
   regenerator-runtime: 0.13.10
   sass: 1.56.1
   sass-loader: 12.6.0_bzf5qid6ktwm76po26pavubpta
@@ -5200,6 +5200,11 @@ packages:
 
   /process-nextick-args/2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
+    dev: true
+
+  /process/0.11.10:
+    resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
+    engines: {node: '>= 0.6.0'}
     dev: true
 
   /promise-inflight/1.0.1:

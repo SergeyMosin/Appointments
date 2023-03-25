@@ -76,10 +76,13 @@ module.exports = {
 		new webpack.DefinePlugin({
 			appVersion: JSON.stringify(require('./package.json').version)
 		}),
+		new webpack.ProvidePlugin({
+			process: 'process/browser',
+		}),
 	],
 	resolve: {
 		alias: {
-			Components: path.resolve(__dirname, 'src/components/'),
+			Components: path.resolve(__dirname, 'src/components/')
 		},
 		extensions: ['*', '.js', '.vue', '.json'],
 		fallback: {

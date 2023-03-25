@@ -1358,11 +1358,13 @@ class PageController extends Controller
         $autoStyle = "";
 
         if ($pps[BackendUtils::PSN_USE_NC_THEME]
-            && $this->c->getAppValue('theming', 'disable-user-theming', 'no') !== 'yes') { // NC25+ ...
+            && $this->c->getAppValue('theming', 'disable-user-theming', 'no') !== 'yes'
+            && class_exists("OCA\Theming\ThemingDefaults")) { // NC25+ ...
 
             // start with NC default background
-            $urlGenerator = \OC::$server->get(IURLGenerator::class);
-            $appointmentsBackgroundImage = "url('" . $urlGenerator->imagePath('core', 'app-background.jpg') . "')";
+            /** @var \OCA\Theming\ThemingDefaults $themingDefaults */
+            $themingDefaults = \OC::$server->get(\OCA\Theming\ThemingDefaults::class);
+            $appointmentsBackgroundImage = "url('" . $themingDefaults->getBackground() . "')";
             $appointmentsBackgroundColor = "transparent";
 
             if (class_exists(\OCA\Theming\Service\BackgroundService::class)) {
@@ -1372,13 +1374,24 @@ class PageController extends Controller
                     if ($appManager->isEnabledForUser('theming', $userId)) {
 
                         $themingBackground = $this->c->getUserValue($userId, 'theming', 'background', 'default');
-
+                        if($themingBackground==='default') {
+                            // nc26
+                            $themingBackground = $this->c->getUserValue($userId, 'theming', 'background_image', 'default');
+                        }
                         if (isset(\OCA\Theming\Service\BackgroundService::SHIPPED_BACKGROUNDS[$themingBackground])) {
+                            $urlGenerator = \OC::$server->get(IURLGenerator::class);
                             // The user picked a shipped background
                             $appointmentsBackgroundImage = "url('" . $urlGenerator->linkTo('theming', "/img/background/$themingBackground") . "');";
                         } elseif ($themingBackground[0] === "#" || substr($themingBackground, 0, 3) === "rgb") {
                             $appointmentsBackgroundImage = "none";
                             $appointmentsBackgroundColor = $themingBackground;
+                        }else{
+                            // nc26
+                            $themingBackground = $this->c->getUserValue($userId, 'theming', 'background_color');
+                            if(!empty($themingBackground)){
+                                $appointmentsBackgroundImage = "none";
+                                $appointmentsBackgroundColor = $themingBackground;
+                            }
                         }
                     }
                 } catch (\Throwable $e) {

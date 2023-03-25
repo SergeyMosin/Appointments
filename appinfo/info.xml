@@ -28,7 +28,7 @@
     <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/master/screenshots/screenshot2.jpg</screenshot>
     <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/master/screenshots/screenshot3.jpg</screenshot>
     <dependencies>
-        <nextcloud min-version="24" max-version="25"/>
+        <nextcloud min-version="24" max-version="26"/>
     </dependencies>
     <repair-steps>
         <post-migration>
