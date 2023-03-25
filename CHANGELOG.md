@@ -1,3 +1,10 @@
+## v1.14.12 - 2023-03-25
+### Changed
+- optimized form page - time element are created on demand now
+- nextcloud max version is 26 now
+### Fixed
+- blank page on NC26 (and possibly NC25.0.5) - #406
+
 ## v1.14.11 - 2023-02-13
 ### Changed
 - change minimum, appointment length from 10 -> 5 min - #384
