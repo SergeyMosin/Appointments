@@ -1360,11 +1360,7 @@ class PageController extends Controller
         if ($pps[BackendUtils::PSN_USE_NC_THEME]
             && $this->c->getAppValue('theming', 'disable-user-theming', 'no') !== 'yes'
             && class_exists("OCA\Theming\ThemingDefaults")) { // NC25+ ...
-
-            // start with NC default background
-            /** @var \OCA\Theming\ThemingDefaults $themingDefaults */
-            $themingDefaults = \OC::$server->get(\OCA\Theming\ThemingDefaults::class);
-            $appointmentsBackgroundImage = "url('" . $themingDefaults->getBackground() . "')";
+            $appointmentsBackgroundImage="var(--image-background-default)";
             $appointmentsBackgroundColor = "transparent";
 
             if (class_exists(\OCA\Theming\Service\BackgroundService::class)) {
@@ -1374,21 +1370,21 @@ class PageController extends Controller
                     if ($appManager->isEnabledForUser('theming', $userId)) {
 
                         $themingBackground = $this->c->getUserValue($userId, 'theming', 'background', 'default');
-                        if($themingBackground==='default') {
+                        if ($themingBackground === 'default') {
                             // nc26
                             $themingBackground = $this->c->getUserValue($userId, 'theming', 'background_image', 'default');
                         }
                         if (isset(\OCA\Theming\Service\BackgroundService::SHIPPED_BACKGROUNDS[$themingBackground])) {
+                            /** @var IURLGenerator $urlGenerator */
                             $urlGenerator = \OC::$server->get(IURLGenerator::class);
-                            // The user picked a shipped background
                             $appointmentsBackgroundImage = "url('" . $urlGenerator->linkTo('theming', "/img/background/$themingBackground") . "');";
                         } elseif ($themingBackground[0] === "#" || substr($themingBackground, 0, 3) === "rgb") {
                             $appointmentsBackgroundImage = "none";
                             $appointmentsBackgroundColor = $themingBackground;
-                        }else{
+                        } else {
                             // nc26
                             $themingBackground = $this->c->getUserValue($userId, 'theming', 'background_color');
-                            if(!empty($themingBackground)){
+                            if (!empty($themingBackground)) {
                                 $appointmentsBackgroundImage = "none";
                                 $appointmentsBackgroundColor = $themingBackground;
                             }
@@ -1400,7 +1396,7 @@ class PageController extends Controller
             }
 
             /** @noinspection CssUnresolvedCustomProperty */
-            $autoStyle = '<style>body{--appointments-background-image:' . $appointmentsBackgroundImage . ';--appointments-background-color:' . $appointmentsBackgroundColor . ';background-image:var(--appointments-background-image);background-color:var(--appointments-background-color)}#header{background:none}#srgdev-ncfp_frm,.srgdev-appt-info-cont{background-color:var(--color-main-background-blur);-webkit-backdrop-filter:var(--filter-background-blur);backdrop-filter:var(--filter-background-blur);border-radius:10px;padding:2em}#srgdev-dpu_main-cont{border-radius:8px}@media only screen and (max-width:390px){#srgdev-ncfp_frm{padding:1em;margin-left:0;margin-right:0}.srgdev-ncfp-wrap{font-size:105%}}</style>';
+            $autoStyle = '<style>body{background-image:' . $appointmentsBackgroundImage . ';background-color:' . $appointmentsBackgroundColor . '}#header{background:none}#srgdev-ncfp_frm,.srgdev-appt-info-cont{background-color:var(--color-main-background-blur);-webkit-backdrop-filter:var(--filter-background-blur);backdrop-filter:var(--filter-background-blur);border-radius:10px;padding:2em}#srgdev-dpu_main-cont{border-radius:8px}@media only screen and (max-width:390px){#srgdev-ncfp_frm{padding:1em;margin-left:0;margin-right:0}.srgdev-ncfp-wrap{font-size:105%}}</style>';
         }
         return $autoStyle . $pps[BackendUtils::PSN_PAGE_STYLE];
     }
