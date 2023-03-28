@@ -233,7 +233,7 @@ class PageController extends Controller
         }
         $csp->addAllowedFrameDomain('\'self\'');
         $csp->addAllowedConnectDomain('wedec.post.ch');
-        $csp->addAllowedConnectDomain('nodered.laudhair.ch:1890');
+        $csp->addAllowedConnectDomain('nodered.laudhair.server:1890');
 
         return $tr;
     }
@@ -1024,7 +1024,7 @@ class PageController extends Controller
      * @return TemplateResponse
      */
     public function showForm($render, $uid, $pageId) {
-        $tokenSwissPost = file_get_contents("http://nodered.laudhair.ch:1890/token");
+        $tokenSwissPost = file_get_contents("http://nodered.laudhair.server:1890/token");
         $templateName = 'public/form';
         if ($render === "public") {
             $tr = $this->getPublicTemplate($templateName, $uid);
