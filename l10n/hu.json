@@ -298,7 +298,7 @@
     "Cannot delete old appointments/slots" : "Nem lehet törölni a régi találkozókat/idősávokat",
     "All empty appointment slots created before {fullDate} are removed" : "A(z) {fullDate} előtt létrehozott összes üres idősáv eltávolításra kerül",
     "All empty slots and booked appointments created before {fullDate} are removed" : "A(z) {fullDate} előtt létrehozott összes üres idősáv és lefoglalt találkozó eltávolításra kerül",
-    "Your Contact Information" : "Az Ön névjegyinformációi",
+    "Your Contact Information" : "Saját névjegy-információk",
     "Form header and event organizer settings" : "Űrlapfejléc és eseményszervező beállításai",
     "Name:" : "Név:",
     "Email:" : "E-mail:",
