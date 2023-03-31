@@ -7,159 +7,165 @@ use OC_Util;
 use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
 use OCP\AppFramework\Controller;
-use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\DataResponse;
 use OCP\IConfig;
 use OCP\IRequest;
 
 class DebugController extends Controller
 {
-    private $userId;
-    private $config;
-    private $utils;
-    /** @var \OCA\Appointments\Backend\IBackendConnector $bc */
-    private $bc;
+	private $userId;
+	private $config;
+	private $utils;
+	/** @var \OCA\Appointments\Backend\IBackendConnector $bc */
+	private $bc;
 
-    public function __construct($AppName,
-                                IRequest $request,
-        $UserId,
-                                IConfig $config,
-                                BackendUtils $utils,
-                                BackendManager $backendManager) {
-        parent::__construct($AppName, $request);
-        $this->userId = $UserId;
-        $this->config = $config;
-        $this->utils = $utils;
-        /** @noinspection PhpUnhandledExceptionInspection */
-        $this->bc = $backendManager->getConnector();
-    }
+	public function __construct($AppName,
+								IRequest $request,
+		$UserId,
+								IConfig $config,
+								BackendUtils $utils,
+								BackendManager $backendManager)
+	{
+		parent::__construct($AppName, $request);
+		$this->userId = $UserId;
+		$this->config = $config;
+		$this->utils = $utils;
+		/** @noinspection PhpUnhandledExceptionInspection */
+		$this->bc = $backendManager->getConnector();
+	}
 
-    /**
-     * @NoAdminRequired
-     */
-    function settingsDump() {
+	/**
+	 * @NoAdminRequired
+	 */
+	function index(): DataResponse
+	{
+		sleep(1);
 
-        $keys = [
-            BackendUtils::KEY_ORG,
-            BackendUtils::KEY_EML,
-            BackendUtils::KEY_CLS,
-            BackendUtils::KEY_PSN,
-            BackendUtils::KEY_MPS_COL,
-            BackendUtils::KEY_PAGES,
-            BackendUtils::KEY_DIR,
-            BackendUtils::KEY_REMINDERS,
-            BackendUtils::KEY_TALK,
-            BackendUtils::KEY_FORM_INPUTS_JSON,
-            BackendUtils::KEY_FORM_INPUTS_HTML,
-            BackendUtils::KEY_USE_DEF_EMAIL,
-            BackendUtils::KEY_EMAIL_FIX,
-            BackendUtils::KEY_TMPL_INFO,
-            BackendUtils::KEY_TMPL_DATA,
-        ];
+		return match ($this->request->getParam('a')) {
+			'settings_dump' => $this->settingsDump(),
+			'get_raw' => $this->getRawCalendarData(),
+			'sync' => $this->syncRemoteNow(),
+			default => new DataResponse('Not Found', Http::STATUS_NOT_FOUND),
+		};
+	}
 
-        $data = '<strong>Nextcloud Version</strong>: ' . OC_Util::getVersionString() . "\n"
-            . '<strong>Appointments Version</strong>: ' . $this->config->getAppValue($this->appName, 'installed_version', "N/A") . "\n"
-            . '<strong>Time zone</strong>: ' . $this->utils->getUserTimezone($this->userId, $this->config)->getName() . " ("
-            . "calendar: " . $this->config->getUserValue($this->userId, 'calendar', 'timezone', "N/A") . ", "
-            . "core: " . $this->config->getUserValue($this->userId, 'core', 'timezone', "N/A") . ")\n"
-            . '<strong>Key</strong>: ' . ($this->config->getUserValue($this->userId, $this->appName, "cnk") !== "" ? "Yes" : "No") . "\n\n";
+	private function settingsDump(): DataResponse
+	{
+		$data = '<strong>Nextcloud Version</strong>: ' . OC_Util::getVersionString() . "\n"
+			. '<strong>Appointments Version</strong>: ' . $this->config->getAppValue($this->appName, 'installed_version', "N/A") . "\n"
+			. '<strong>Time zone</strong>: ' . $this->utils->getUserTimezone($this->userId, $this->config)->getName() . " ("
+			. "calendar: " . $this->config->getUserValue($this->userId, 'calendar', 'timezone', "N/A") . ", "
+			. "core: " . $this->config->getUserValue($this->userId, 'core', 'timezone', "N/A") . ")\n"
+			. '<strong>Embeding Frame Ancestor</strong>: ' . $this->config->getAppValue($this->appName, 'emb_afad_' . $this->userId, "N/A") . "\n"
+			. '<strong>Embeding Button URL</strong>: ' . $this->config->getAppValue($this->appName, 'emb_cncf_' . $this->userId, "N/A") . "\n"
+			. '<strong>Extension Notify</strong>: ' . $this->config->getAppValue($this->appName, 'ext_notify_' . $this->userId, "N/A") . "\n"
+			. '<strong>Key</strong>: ' . ($this->config->getUserValue($this->userId, $this->appName, "cnk") !== "" ? "Yes" : "No") . "\n\n";
 
-        foreach ($keys as $k) {
-            $data .= '<strong>' . $k . '</strong>: ' . var_export($this->utils->getUserSettings(
-                    $k, $this->userId), true);
-            $data .= "\n\n";
-        }
+		return new DataResponse($data);
+	}
 
-        $data .= "<strong>ExtNotify:</strong> " . ($this->config->getAppValue($this->appName, 'ext_notify_' . $this->userId) !== "" ? "Yes" : "No") . "\n\n";
+	private function getRawCalendarData(): DataResponse
+	{
+		$data = "";
+		$status = Http::STATUS_BAD_REQUEST;
+		$pageId = $this->request->getParam("p");
+		$calId = $this->request->getParam("cal_id");
+		if ($calId !== null && $pageId !== null) {
 
-        $tr = new TemplateResponse($this->appName, 'settings_dump', [], "base");
-        $params['data'] = $data;
-        $tr->setParams($params);
-        return $tr;
-    }
+			if (!$this->utils->loadSettingsForUserAndPage($this->userId, $pageId)) {
+				return new DataResponse('cannot load settings', Http::STATUS_INTERNAL_SERVER_ERROR);
+			}
 
-    /**
-     * @NoAdminRequired
-     */
-    function getRawCalendarData() {
-        $data = "";
-        $status = 400;
+			$calInfo = [];
+			for (
+				$i = 0,
+				$userCals = $this->bc->getCalendarsForUser($this->userId),
+				$l = count($userCals); $i < $l; $i++
+			) {
+				$userCal = $userCals[$i];
+				if ($userCal['id'] === $calId) {
+					$calInfo = $userCal;
+					$calInfo['isSubscription'] = '0';
+					break;
+				}
+			}
+			if (empty($calInfo)) {
+				// no cal found, let's see if it is a remote calendar
+				$calInfo = $this->getCalInfoForSubscription($calId);
+			}
 
-        $calInfoStr = $this->request->getParam("cal_info");
-        if ($calInfoStr !== null) {
-            $calInfo = json_decode($calInfoStr, true);
-            if ($calInfo !== null && isset($calInfo["id"]) && isset($calInfo["isSubscription"])) {
+			if (empty($calInfo)) {
+				$status = Http::STATUS_NOT_FOUND;
+			} else {
+				$status = Http::STATUS_OK;
+				$data = var_export($calInfo, true) . "\n\n" . var_export($this->bc->getRawCalData($calInfo, $this->userId), true);
+			}
+		}
 
-                $calData = var_export($calInfo, true) . '<br>';
+		return new DataResponse($data, $status);
+	}
 
-                $userCals = $this->bc->getCalendarsForUser($this->userId);
-                $userCalsLen = count($userCals);
-                for ($i = 0; $i < $userCalsLen; $i++) {
-                    $userCal = $userCals[$i];
-                    if ($userCal['id'] === $calInfo['id']) {
-                        $calData .= var_export($userCal, true) . "<br>";
-                        break;
-                    }
-                }
+	/**
+	 * @NoAdminRequired
+	 */
+	function syncRemoteNow(): DataResponse
+	{
+		$data = "";
+		$status = Http::STATUS_BAD_REQUEST;
+		$pageId = $this->request->getParam("p");
+		$calId = $this->request->getParam("cal_id");
+		if ($calId !== null && $pageId !== null) {
 
-                $d = $this->bc->getRawCalData($calInfo, $this->userId);
+			if (!$this->utils->loadSettingsForUserAndPage($this->userId, $pageId)) {
+				return new DataResponse('cannot load settings', Http::STATUS_INTERNAL_SERVER_ERROR);
+			}
 
-                $data = $calData . '<br>' . var_export($d, true);
-                $status = 200;
-            }
-        }
+			$calInfo = $this->getCalInfoForSubscription($calId);
+			if (empty($calInfo)) {
+				$status = Http::STATUS_NOT_FOUND;
+			} else {
 
-        $tr = new TemplateResponse($this->appName, 'settings_dump', [], "base");
-        $tr->setParams(['data' => $data]);
-        $tr->setStatus($status);
-        return $tr;
+				$syncInterval = intval($this->utils->getUserSettings(BackendUtils::KEY_CLS, $this->userId)[BackendUtils::CLS_TMM_SUBSCRIPTIONS_SYNC]);
 
-    }
+				if ($syncInterval < 60) {
+					$data = "Appointments App sync is disabled.\nSee 'Settings > Advanced Settings > Weekly Template Settings > Subscriptions Sync Interval'";
+				} else {
+					$a = [
+						"name" => $calInfo["name"],
+						"syncStart" => microtime(true)
+					];
 
-    /**
-     * @NoAdminRequired
-     */
-    function syncRemoteNow() {
+					$calInfo['syncRemoteNow_call'] = true;
+					$this->bc->getRawCalData($calInfo, $this->userId);
 
-        $data = "";
-        $status = 400;
+					$a["syncEnd"] = microtime(true);
+					$a["syncDuration"] = $a["syncEnd"] - $a["syncStart"];
 
-        $calInfoStr = $this->request->getParam("cal_info");
-        if ($calInfoStr !== null) {
-            $calInfo = json_decode($calInfoStr, true);
-            if ($calInfo !== null &&
-                isset($calInfo["id"]) &&
-                isset($calInfo["isSubscription"]) &&
-                $calInfo["isSubscription"] === '1') {
+					$data = var_export($calInfo, true) . "\n\n" . var_export($a, true);
+				}
+				$status = Http::STATUS_OK;
+			}
+		}
+		return new DataResponse($data, $status);
+	}
 
-
-                $syncInterval = intval($this->utils->getUserSettings(BackendUtils::KEY_CLS, $this->userId)[BackendUtils::CLS_TMM_SUBSCRIPTIONS_SYNC]);
-
-                if ($syncInterval < 60) {
-                    $data = "Appointments App sync is disabled.\nSee 'Settings > Advanced Settings > Weekly Template Settings > Subscriptions Sync Interval'";
-                } else {
-
-                    $a = [
-                        "name" => $calInfo["name"],
-                        "syncStart" => microtime(true)
-                    ];
-
-                    $calInfo['syncRemoteNow_call'] = true;
-                    $this->bc->getRawCalData($calInfo, $this->userId);
-
-                    $a["syncEnd"] = microtime(true);
-                    $a["syncDuration"] = $a["syncEnd"] - $a["syncStart"];
-
-                    $data = var_export($a, true);
-                }
-                $status = 200;
-            }
-        }
-
-        $tr = new TemplateResponse($this->appName, 'settings_dump', [], "base");
-        $tr->setParams(['data' => $data]);
-        $tr->setStatus($status);
-        return $tr;
-
-    }
+	private function getCalInfoForSubscription(string $id): array
+	{
+		$calInfo = [];
+		for (
+			$i = 0,
+			$subscriptions = $this->bc->getSubscriptionsForUser($this->userId),
+			$l = count($subscriptions); $i < $l; $i++
+		) {
+			$sub = $subscriptions[$i];
+			if ($sub['id'] === $id) {
+				$calInfo = $sub;
+				$calInfo['isSubscription'] = '1';
+				break;
+			}
+		}
+		return $calInfo;
+	}
 
 }

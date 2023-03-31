@@ -5,6 +5,7 @@
 namespace OCA\Appointments\Backend;
 
 
+use Icewind\SMB\BasicAuth;
 use OC\Mail\EMailTemplate;
 use OCA\Appointments\AppInfo\Application;
 use OCA\Appointments\Email\EMailTemplateNC20;
@@ -76,31 +77,97 @@ class DavListener implements IEventListener
     }
 
     /**
-     * @param int $lastStart timestamp set by IJonList->setLastRun() producto of time() func
+     * @param int $lastStart timestamp set by IJobList->setLastRun() product of time() func
      */
     public function handleReminders(int $lastStart, IDBConnection $db, IBackendConnector $bc): void
     {
-
         // we need to pull all pending appointments between now + 42 min( 1 hour [min delta] - 18 min [time between jobs]) and now + 7 days(max delta)
         $now = time();
         $qb = $db->getQueryBuilder();
         try {
-            $result = $qb->select('hash.*', 'pref.reminders')
+            $result = $qb->select('hash.*',
+                'pref.' . BackendUtils::KEY_REMINDERS)
                 ->from(BackendUtils::HASH_TABLE_NAME, 'hash')
-                ->leftJoin('hash', BackendUtils::PREF_TABLE_NAME, 'pref', $qb->expr()->eq('hash.user_id', 'pref.user_id'))
-                ->where($qb->expr()->isNotNull('pref.reminders'))
+                ->leftJoin('hash', BackendUtils::PREF_TABLE_V2_NAME, 'pref', $qb->expr()->andX(
+                    $qb->expr()->eq(
+                        'hash.' . BackendUtils::KEY_USER_ID,
+                        'pref.' . BackendUtils::KEY_USER_ID),
+                    $qb->expr()->eq(
+                        'hash.' . BackendUtils::KEY_PAGE_ID,
+                        'pref.' . BackendUtils::KEY_PAGE_ID)))
+                ->where($qb->expr()->isNotNull('pref.' . BackendUtils::KEY_REMINDERS))
                 ->andWhere($qb->expr()->eq('hash.status', $qb->createNamedParameter(BackendUtils::PREF_STATUS_CONFIRMED, IQueryBuilder::PARAM_INT)))
                 ->andWhere($qb->expr()->gte('hash.start', $qb->createNamedParameter($now + 2520, IQueryBuilder::PARAM_INT)))
                 ->andWhere($qb->expr()->lte('hash.start', $qb->createNamedParameter($now + 604800, IQueryBuilder::PARAM_INT)))
-                ->andWhere($qb->expr()->isNotNull('hash.user_id'))
-                ->andWhere($qb->expr()->isNotNull('hash.page_id'))
+                ->andWhere($qb->expr()->isNotNull('hash.' . BackendUtils::KEY_USER_ID))
+                ->andWhere($qb->expr()->isNotNull('hash.' . BackendUtils::KEY_PAGE_ID))
                 ->andWhere($qb->expr()->isNotNull('hash.uri'))
-                ->orderBy('hash.user_id')
+                ->orderBy('hash.' . BackendUtils::KEY_USER_ID)
                 ->execute();
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
             return;
         }
+
+        $userId = '';
+        $pageId = '';
+        $remDataArray = [];
+
+        // The first loop is to collect data from DB and close the connection,
+        // the second loop actually sends the emails
+        $remindersToSend = [];
+        while ($row = $result->fetch()) {
+
+            $this->logger->error('row id: ' . $row['id']);
+
+            $reuseSettings = true;
+            if ($userId !== $row[BackendUtils::KEY_USER_ID]
+                || $pageId !== $row[BackendUtils::KEY_PAGE_ID]) {
+
+                $userId = $row[BackendUtils::KEY_USER_ID];
+                $pageId = $row[BackendUtils::KEY_PAGE_ID];
+                $remObj = json_decode($row[BackendUtils::KEY_REMINDERS], true);
+                if ($remObj === null) {
+                    $this->logger->error("json_decode failed for, userId: " . $userId . ", pageId: " . $pageId);
+                    continue;
+                }
+                $reuseSettings = false;
+                $remDataArray = $remObj[BackendUtils::REMINDER_DATA];
+            }
+
+            foreach ($remDataArray as $remData) {
+                $remindAt = $row['start'] - $remData[BackendUtils::REMINDER_DATA_TIME];
+
+                $this->logger->error($remindAt . ', '
+                    . $row['start'] . ', '
+                    . $remData[BackendUtils::REMINDER_DATA_TIME]);
+
+                // $lastStart is set at the START of previous job
+                // for next job $lastStart is already set to basically $now
+                if ($remindAt >= $lastStart && $remindAt < $now) {
+                    $remindersToSend[] = [
+                        'userId' => $userId,
+                        'pageId' => $pageId,
+                        'actions' => $remData[BackendUtils::REMINDER_DATA_ACTIONS],
+                        'evtUri' => $row['uri'],
+                        'evtUid' => $row['uid'],
+                        'reuseSettings' => $reuseSettings
+                    ];
+                }
+            }
+
+        }
+        $result->closeCursor();
+
+        $this->logger->error('rts: ' . var_export($remindersToSend, true));
+
+        if (count($remindersToSend) === 0) {
+            // nothing to do
+            return;
+        }
+
+        // just in-case
+        $remindersToSend[0]['reuseSettings'] = false;
 
         $config = $this->config;
         $mailer = $this->mailer;
@@ -108,237 +175,237 @@ class DavListener implements IEventListener
         $utils = $this->utils;
         $utz = new \DateTimeZone('utc');
 
-        $userId = '';
+        $calId = '-1';
+        $otherCalId = '-1';
         $extNotifyFilePath = '';
-        while ($row = $result->fetch()) {
+        $settings = [];
 
-            $remObj = json_decode($row['reminders'], true);
-            if ($remObj === false) {
-                $this->logger->error("json_decode failed. string: " . $row['reminders']);
-                continue;
-            }
+        // This loop sends out emails (there is .5sec sleep between each send)
+        foreach ($remindersToSend as $remInfo) {
+            if ($remInfo['reuseSettings'] === false) {
+                $userId = $remInfo['userId'];
+                $pageId = $remInfo['pageId'];
 
-            if ($userId !== $row['user_id']) {
-                $userId = $row['user_id'];
-                $utils->clearSettingsCache();
+                if (!$utils->loadSettingsForUserAndPage($userId, $pageId)) {
+                    $this->logger->error("loadSettingsForUserAndPage failed, userId: " . $userId . ", pageId: " . $pageId);
+                    continue;
+                }
+
+                $settings = $utils->getUserSettings('', '');
+                if (!isset($settings[BackendUtils::KEY_REMINDERS])) {
+                    $this->logger->error(" missing settings reminder data, userId: " . $userId . ", pageId: " . $pageId);
+                    continue;
+                }
 
                 $extNotifyFilePath = $config->getAppValue($this->appName, 'ext_notify_' . $userId);
+
+                $otherCalId = '-1';
+                $calId = $utils->getMainCalId($userId, $pageId, null, $otherCalId);
+                if ($calId === '-1') {
+                    $this->logger->error("can not find main calendar, userId: " . $userId . ", pageId: " . $pageId);
+                    continue;
+                }
+                if ($otherCalId !== '-1'
+                    && $settings[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_SIMPLE) {
+                    // if we have a dst calendar in simple mode than it will hold confirmed appointments, so we should check it first and then check the src calendar just in-case settings have been changed after the appointment was booked
+                    $temp = $calId;
+                    $calId = $otherCalId;
+                    $otherCalId = $temp;
+                } else {
+                    // dst calendar is only valid in simple mode
+                    $otherCalId = '-1';
+                }
+
+                $utz = $this->utils->getCalendarTimezone($userId, $config, $bc->getCalendarById($calId, $userId));
             }
 
-            $pageId = $row['page_id'];
-            $otherCalId = '-1';
-            $calId = $utils->getMainCalId($userId, $pageId, null, $otherCalId);
-            if ($calId === '-1') {
-                $this->logger->error("can not find main calendar, userId: " . $userId . ", pageId: " . $pageId);
+            // settings are good at this point
+
+            $evtUri = $remInfo['evtUri'];
+            $data = $bc->getObjectData($calId, $evtUri);
+
+            if ($data === null && $otherCalId !== '-1') {
+                $data = $bc->getObjectData($otherCalId, $evtUri);
+            }
+
+            if ($data === null) {
+                $this->logger->error("can not get object data, uri: " . $evtUri . ", calId: " . $calId);
                 continue;
             }
-            if ($otherCalId !== '-1' && $utils->getUserSettings(
-                    $pageId === 'p0'
-                        ? BackendUtils::KEY_CLS
-                        : BackendUtils::KEY_MPS . $pageId,
-                    $userId)[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_SIMPLE) {
-                // if we have a dst calendar in simple mode than it will hold confirmed appointments, so we should check it first and then check the src calendar just in-case settings have been changed after the appointment was booked
-                $temp = $calId;
-                $calId = $otherCalId;
-                $otherCalId = $temp;
-            } else {
-                // dst calendar is only valid in simple mode
-                $otherCalId = '-1';
+
+            if (strpos($data, "\r\nATTENDEE;") === false
+                || strpos($data, "\r\n" . BackendUtils::TZI_PROP . ":") === false) {
+                $this->logger->error('bad event data, uid: ' . $remInfo['evtUid']);
+                continue;
             }
 
-            $remDataArray = $remObj[BackendUtils::REMINDER_DATA];
-            foreach ($remDataArray as $remData) {
-                $remindAt = $row['start'] - $remData[BackendUtils::REMINDER_DATA_TIME];
-                if ($remindAt >= $lastStart && $remindAt < $now) {
-                    // send reminder
+            $vObject = Reader::read($data);
+            if (!isset($vObject->VEVENT)) {
+                $this->logger->error("Reader::read failed, uid: " . $remInfo['evtUid']);
+                $vObject->destroy();
+                continue;
+            }
 
-                    $data = $bc->getObjectData($calId, $row['uri']);
+            /** @var \Sabre\VObject\Component\VEvent $evt */
+            $evt = $vObject->VEVENT;
+            if (!isset($evt->UID)
+                || !isset($evt->ATTENDEE)
+                || !isset($evt->STATUS)
+                || !isset($evt->DTEND)
+                || !isset($evt->ORGANIZER)
+                || $evt->STATUS->getValue() !== 'CONFIRMED'
+                || !isset($evt->{BackendUtils::XAD_PROP})
+            ) {
+                $this->logger->error('bad event object, uid: ' . $remInfo['evtUid']);
+                $vObject->destroy();
+                continue;
+            }
 
-                    if ($data === null && $otherCalId !== '-1') {
-                        $data = $bc->getObjectData($otherCalId, $row['uri']);
-                    }
+            $att = $utils->getAttendee($evt);
+            if ($att === null || $att->parameters['PARTSTAT']->getValue() === 'DECLINED') {
+                $this->logger->error('bad attendee data, uid: ' . $remInfo['evtUid']);
+                $vObject->destroy();
+                continue;
+            }
 
-                    if ($data === null) {
-                        $this->logger->error("can not get object data, uri: " . $row['uri'] . ", calId: " . $calId);
-                        break;
-                    }
+            $to_name = $att->parameters['CN']->getValue();
+            if (empty($to_name) || preg_match('/[^\PC ]/u', $to_name)) {
+                $this->logger->error('invalid attendee name, uid: ' . $remInfo['evtUid']);
+                $vObject->destroy();
+                continue;
+            }
+            $att_v = $att->getValue();
+            $to_email = substr($att_v, strpos($att_v, ":") + 1);
+            if ($mailer->validateMailAddress($to_email) === false) {
+                $this->logger->error('invalid attendee email, uid: ' . $remInfo['evtUid']);
+                $vObject->destroy();
+                continue;
+            }
 
-                    if (strpos($data, "\r\nATTENDEE;") === false
-                        || strpos($data, "\r\n" . BackendUtils::TZI_PROP . ":") === false) {
-                        $this->logger->error('bad event data');
-                        break;
-                    }
+            // event data looks ok...
 
-                    $vObject = Reader::read($data);
-                    if (!isset($vObject->VEVENT)) {
-                        $this->logger->error("not a event, uri: " . $row['uri'] . ", calId: " . $calId);
-                        break;
-                    }
+            $date_time = $utils->getDateTimeString(
+                $evt->DTSTART->getDateTime(),
+                $evt->{BackendUtils::TZI_PROP}->getValue()
+            );
 
-                    /** @var \Sabre\VObject\Component\VEvent $evt */
-                    $evt = $vObject->VEVENT;
-                    if (!isset($evt->UID)
-                        || !isset($evt->ATTENDEE)
-                        || !isset($evt->STATUS)
-                        || !isset($evt->DTEND)
-                        || !isset($evt->ORGANIZER)
-                        || $evt->STATUS->getValue() !== 'CONFIRMED'
-                        || !isset($evt->{BackendUtils::XAD_PROP})
-                    ) {
-                        $this->logger->error('bad event object');
-                        break;
-                    }
+            list($org_email, $org_name, $org_phone) = $this->getOrgInfo($userId, $pageId);
+            $tmpl = $this->getEmailTemplate();
 
-                    $att = $utils->getAttendee($evt);
-                    if ($att === null || $att->parameters['PARTSTAT']->getValue() === 'DECLINED') {
-                        $this->logger->error('bad attendee data');
-                        break;
-                    }
-                    $to_name = $att->parameters['CN']->getValue();
-                    if (empty($to_name) || preg_match('/[^\PC ]/u', $to_name)) {
-                        $this->logger->error("invalid attendee name");
-                        break;
-                    }
-                    $att_v = $att->getValue();
-                    $to_email = substr($att_v, strpos($att_v, ":") + 1);
-                    if ($mailer->validateMailAddress($to_email) === false) {
-                        $this->logger->error("invalid attendee email");
-                        break;
-                    }
+            // TRANSLATORS Subject for email, Ex: {{Organization Name}} appointment reminder
+            $tmpl->setSubject($this->l10N->t("%s appointment reminder", [$org_name]));
+            // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
+            $tmpl->addBodyText($this->l10N->t("Dear %s,", $to_name));
 
-                    // event data looks ok...
+            // TRANSLATORS Main part of email, Ex: This is a reminder from {{Organization Name}} about your upcoming appointment on {{Date And Time}}. If you need to reschedule, please call {{Organization Phone}}.
+            $tmpl->addBodyText($this->l10N->t('This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s.', [$org_name, $date_time, $org_phone]));
 
-                    $date_time = $utils->getDateTimeString(
-                        $evt->DTSTART->getDateTime(),
-                        $evt->{BackendUtils::TZI_PROP}->getValue()
-                    );
+            $cnl_lnk_url = '';
 
-                    list($org_email, $org_name, $org_phone) = $this->getOrgInfo($userId, $pageId);
-                    $tmpl = $this->getEmailTemplate();
+            // do we want links and buttons ?
+            if ($remInfo['actions']) {
 
+                // @see BackendUtils->dataSetAttendee for BackendUtils::XAD_PROP
+                $xad = explode(chr(31), $utils->decrypt(
+                    $evt->{BackendUtils::XAD_PROP}->getValue(),
+                    $evt->UID->getValue()));
+                if (count($xad) > 2) {
+                    $embed = $xad[3] === "1";
+                } else {
+                    $embed = false;
+                }
 
-                    // TRANSLATORS Subject for email, Ex: {{Organization Name}} appointment reminder
-                    $tmpl->setSubject($this->l10N->t("%s appointment reminder", [$org_name]));
-                    // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
-                    $tmpl->addBodyText($this->l10N->t("Dear %s,", $to_name));
+                // overwrite.cli.url must be set if $embed is not used
+                if ($embed || $config->getSystemValue('overwrite.cli.url') !== '') {
 
-                    // TRANSLATORS Main part of email, Ex: This is a reminder from {{Organization Name}} about your upcoming appointment on {{Date And Time}}. If you need to reschedule, please call {{Organization Phone}}.
-                    $tmpl->addBodyText($this->l10N->t('This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s.', [$org_name, $date_time, $org_phone]));
+                    list($btn_url, $btn_tkn) = $this->makeBtnInfo(
+                        $userId, $pageId, $embed,
+                        $evtUri, $config);
+                    $cnl_lnk_url = $btn_url . "0" . $btn_tkn;
 
-                    $cnl_lnk_url = '';
+                    if (count($xad) > 4) {
 
-                    // @see BackendUtils->dataSetAttendee for BackendUtils::XAD_PROP
-                    $xad = explode(chr(31), $utils->decrypt(
-                        $evt->{BackendUtils::XAD_PROP}->getValue(),
-                        $evt->UID->getValue()));
-                    if (count($xad) > 2) {
-                        $embed = $xad[3] === "1";
-                    } else {
-                        $embed = false;
-                    }
-
-                    // we want links and buttons
-                    if ($remData[BackendUtils::REMINDER_DATA_ACTIONS]) {
-
-                        // overwrite.cli.url must be set if $embed is not used
-                        if ($embed || $config->getSystemValue('overwrite.cli.url') !== '') {
-
-                            list($btn_url, $btn_tkn) = $this->makeBtnInfo(
-                                $userId, $pageId, $embed,
-                                $row['uri'],
-                                $config);
-                            $cnl_lnk_url = $btn_url . "0" . $btn_tkn;
-
-                            if (count($xad) > 4) {
-
-                                $has_link = strlen($xad[4]) > 1 ? 1 : 0;
-                                $tlk = $utils->getUserSettings(BackendUtils::KEY_TALK, $userId);
-                                if ($tlk[BackendUtils::TALK_ENABLED]) {
-                                    if ($tlk[BackendUtils::TALK_FORM_ENABLED] === true) {
-                                        if ($has_link === 1) {
-                                            $ti = new TalkIntegration($tlk, $utils);
-                                            // add talk link info
-                                            $this->addTalkInfo(
-                                                $tmpl, $xad, $ti, $tlk,
-                                                $config->getUserValue($userId, $this->appName, "c" . "nk"));
-                                        }
-                                        $this->addTypeChangeLink($tmpl, $tlk, $btn_url . "3" . $btn_tkn, $has_link);
-                                    }
+                        $has_link = strlen($xad[4]) > 1 ? 1 : 0;
+                        if ($settings[BackendUtils::TALK_ENABLED]) {
+                            if ($settings[BackendUtils::TALK_FORM_ENABLED] === true) {
+                                if ($has_link === 1) {
+                                    $ti = new TalkIntegration($settings, $utils);
+                                    // add talk link info
+                                    $this->addTalkInfo(
+                                        $tmpl, $xad, $ti, $settings,
+                                        $config->getUserValue($userId, $this->appName, "c" . "nk"));
                                 }
+                                $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
                             }
-                        } else {
-                            $this->logger->error('can not add actions to reminder, missing overwrite.cli.url');
                         }
                     }
-                    if (!empty($remObj[BackendUtils::REMINDER_MORE_TEXT])) {
-                        list($remHtml, $remPlainText) = $this->prepHtmlEmailText($remObj[BackendUtils::REMINDER_MORE_TEXT]);
-                        if ($remHtml === null) {
-                            $tmpl->addBodyText($remPlainText);
-                        } else {
-                            $tmpl->addBodyText($remHtml, $remPlainText);
-                        }
-                    }
-
-                    // everything is ready, send email...
-                    $this->finalizeEmailText($tmpl, $cnl_lnk_url);
-
-                    ///-------------------
-
-                    $msg = $mailer->createMessage();
-
-                    $this->setFromAddress($msg, $userId, $org_email, $org_name);
-
-                    $msg->setTo(array($to_email));
-                    $msg->useTemplate($tmpl);
-
-                    $description = '';
-
-                    try {
-                        $mailer->send($msg);
-
-                        $utz = $this->utils->getCalendarTimezone($userId, $config, $bc->getCalendarById($calId, $userId));
-
-                        if (!isset($evt->DESCRIPTION)) {
-                            $evt->add('DESCRIPTION');
-                        }
-                        $description = $evt->DESCRIPTION->getValue();
-                        // TRANSLATORS Ex: Reminder sent on {{Date and Time}},
-                        $description .= "\n" . $this->l10N->t("Reminder sent on %s", [$utils->getDateTimeString(
-                                new \DateTimeImmutable('now', $utz),
-                                "T" . $utz->getName()
-                                , 1
-                            )]);
-                        $evt->DESCRIPTION->setValue($description);
-                        if ($bc->updateObject($calId, $row['uri'], $vObject->serialize()) === false) {
-                            $this->logger->error("Can not update object uid: " . $row['uid']);
-                        }
-                    } catch (\Exception $e) {
-                        $this->logger->error("Can not send email to " . $to_email . ", event uid: " . $row['uid']);
-                        $this->logger->error($e->getMessage());
-                    }
-
-                    // advanced/extensions
-                    if ($extNotifyFilePath !== "") {
-                        $data = [
-                            'eventType' => 4,
-                            'dateTime' => $evt->DTSTART->getDateTime(),
-                            'attendeeName' => $to_name,
-                            'attendeeEmail' => $to_email,
-                            'attendeeTel' => $this->getPhoneFromDescription($description),
-                            'pageId' => $pageId
-                        ];
-                        $this->extNotify($data, $userId, $extNotifyFilePath);
-                    }
-
-                    // remove all circular references, so PHP can easily clean it up.
-                    $vObject->destroy();
-
-                    usleep(500000);
-                    break;
+                } else {
+                    $this->logger->error('can not add actions to reminder, missing overwrite.cli.url');
                 }
             }
+
+            $remObj = $settings[BackendUtils::KEY_REMINDERS];
+            if (!empty($remObj[BackendUtils::REMINDER_MORE_TEXT])) {
+                list($remHtml, $remPlainText) = $this->prepHtmlEmailText($remObj[BackendUtils::REMINDER_MORE_TEXT]);
+                if ($remHtml === null) {
+                    $tmpl->addBodyText($remPlainText);
+                } else {
+                    $tmpl->addBodyText($remHtml, $remPlainText);
+                }
+            }
+
+            // everything is ready, send email...
+            $this->finalizeEmailText($tmpl, $cnl_lnk_url);
+
+            $msg = $mailer->createMessage();
+
+            $this->setFromAddress($msg, $userId, $org_email, $org_name);
+
+            $msg->setTo(array($to_email));
+            $msg->useTemplate($tmpl);
+
+            $description = '';
+
+            try {
+                $mailer->send($msg);
+
+                if (!isset($evt->DESCRIPTION)) {
+                    $evt->add('DESCRIPTION');
+                }
+                $description = $evt->DESCRIPTION->getValue();
+                // TRANSLATORS Ex: Reminder sent on {{Date and Time}},
+                $description .= "\n" . $this->l10N->t("Reminder sent on %s", [$utils->getDateTimeString(
+                        new \DateTimeImmutable('now', $utz),
+                        "T" . $utz->getName()
+                        , 1
+                    )]);
+                $evt->DESCRIPTION->setValue($description);
+                if ($bc->updateObject($calId, $evtUri, $vObject->serialize()) === false) {
+                    $this->logger->error("Can not update object uid: " . $remInfo['evtUid']);
+                }
+            } catch (\Exception $e) {
+                $this->logger->error("Can not send email to " . $to_email . ", uid: " . $remInfo['evtUid']);
+                $this->logger->error($e->getMessage());
+            }
+
+            // advanced/extensions
+            if ($extNotifyFilePath !== "") {
+                $data = [
+                    'eventType' => 4,
+                    'dateTime' => $evt->DTSTART->getDateTime(),
+                    'attendeeName' => $to_name,
+                    'attendeeEmail' => $to_email,
+                    'attendeeTel' => $this->getPhoneFromDescription($description),
+                    'pageId' => $pageId
+                ];
+                $this->extNotify($data, $userId, $extNotifyFilePath);
+            }
+
+            // remove all circular references, so PHP can easily clean it up.
+            $vObject->destroy();
+
+            usleep(400000);
         }
-        $result->closeCursor();
     }
 
     private function handler(array $objectData, array $calendarData, bool $isDelete): void
@@ -410,6 +477,10 @@ class DavListener implements IEventListener
         }
 
 //        \OC::$server->getLogger()->error('DL Debug: M5');
+
+        if ($utils->loadSettingsForUserAndPage($userId, $pageId) === false) {
+            return;
+        }
 
         $other_cal = '-1';
         $cal_id = $utils->getMainCalId($userId, $pageId, null, $other_cal);
@@ -954,9 +1025,8 @@ class DavListener implements IEventListener
                 }
 
                 // Add page name
-                $pages = $utils->getUserSettings(BackendUtils::KEY_PAGES, $userId);
-                if (count($pages) > 1) {
-                    $tmpl->addBodyListItem($pages[$pageId]['label']);
+                if (count($utils->getUserPages($userId)) > 1) {
+                    $tmpl->addBodyListItem($utils->getUserSettings(BackendUtils::KEY_PAGES, $userId)[BackendUtils::PAGE_LABEL]);
                 }
 
                 $msg = $mailer->createMessage();
@@ -1171,6 +1241,9 @@ class DavListener implements IEventListener
 
     private function getOrgInfo($userId, $pageId)
     {
+
+        //TODO: optimize for v2
+
         $org = $this->utils->getUserSettings(
             BackendUtils::KEY_ORG, $userId);
 
@@ -1211,7 +1284,8 @@ class DavListener implements IEventListener
         }
 
         $theme = new \OCP\Defaults();
-        $tmpl->addFooter("Booked via " . $theme->getEntity() . " Appointments");
+        // TRANSLATORS %s is the server name. Example: Booked via Private Cloud Appointments
+        $tmpl->addFooter($this->l10N->t("Booked via %s Appointments",[$theme->getEntity()]));
     }
 
     /**

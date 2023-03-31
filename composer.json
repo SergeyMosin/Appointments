@@ -12,5 +12,10 @@
     "require-dev": {
         "phpunit/phpunit": "^8.5.21",
         "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Unit\\": "tests/Unit/"
+        }
     }
 }

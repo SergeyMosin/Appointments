@@ -7,6 +7,7 @@
 namespace OCA\Appointments\Controller;
 
 use OC\AppFramework\Middleware\Security\Exceptions\NotLoggedInException;
+use OCA\Appointments\AppInfo\Application;
 use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
 use OCA\Appointments\Backend\HintVar;
@@ -77,6 +78,7 @@ class PageController extends Controller
     {
         $t = new TemplateResponse($this->appName, 'index');
 
+        $disable = false;
         $allowedGroups = $this->c->getAppValue($this->appName,
             BackendUtils::KEY_LIMIT_TO_GROUPS);
         if ($allowedGroups !== '') {
@@ -90,10 +92,14 @@ class PageController extends Controller
                         break;
                     }
                 }
-                if ($disable) {
-                    $t->setParams(['disabled' => true]);
-                }
             }
+        }
+
+        if ($disable) {
+            $t->setParams(['disabled' => true]);
+        } else {
+            \OCP\Util::addScript(Application::APP_ID, 'script');
+            \OCP\Util::addStyle(Application::APP_ID, 'style');
         }
 
         $csp = $t->getContentSecurityPolicy();
@@ -182,7 +188,7 @@ class PageController extends Controller
         return $tr;
     }
 
-    function setEmbCsp($tr, $userId)
+    private function setEmbCsp($tr, $userId)
     {
 
         $ad = $this->c->getAppValue(
@@ -272,7 +278,8 @@ class PageController extends Controller
      */
     public function cncf($embed = false)
     {
-        list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"), $this->c);
+        list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"));
+
         $pd = $this->request->getParam("d");
         if ($userId === null || $pd === null || strlen($pd) > 512
             || (($a = substr($pd, 0, 1)) !== '0') && $a !== '1' && $a !== '2' && $a !== '3') {
@@ -655,12 +662,9 @@ class PageController extends Controller
         if (empty($pageId)) {
             $pageId = 'p0';
         }
-        if (!isset($this->utils->getUserSettings(
-                BackendUtils::KEY_PAGES,
-                $this->userId)[$pageId])) {
+        if (!$this->utils->loadSettingsForUserAndPage($this->userId, $pageId)) {
             return new NotFoundResponse();
         }
-
 
         if ($this->request->getParam("sts") !== null) {
             $tr = $this->showFinish('base', $this->userId);
@@ -682,29 +686,22 @@ class PageController extends Controller
         if (empty($pageId)) {
             $pageId = 'p0';
         }
-        if (!isset($this->utils->getUserSettings(
-                BackendUtils::KEY_PAGES,
-                $this->userId)[$pageId])) {
+        if (!$this->utils->loadSettingsForUserAndPage($this->userId, $pageId)) {
             return new NotFoundResponse();
         }
 
-        return $this->showFormPost($this->userId, $pageId);
+        return $this->showFormPost($this->userId, $pageId, false, true);
     }
 
-    /**
-     * @param string $userId
-     * @param string $pageId
-     * @param bool $embed
-     * @return RedirectResponse
-     * @throws \ErrorException
-     */
-    public function showFormPost($userId, $pageId, $embed = false): RedirectResponse
+    public function showFormPost(string $userId, string $pageId, bool $embed = false, bool $base = false): RedirectResponse
     {
 
+        $pageParam = $base ? ("&p=" . $pageId) : "";
+
         // sts: 0=OK, 1=bad input, 2=server error
-        $ok_uri = "form?sts=0";
-        $bad_input_url = "form?sts=1";
-        $server_err_url = "form?sts=2";
+        $ok_uri = "form?sts=0" . $pageParam;
+        $bad_input_url = "form?sts=1" . $pageParam;
+        $server_err_url = "form?sts=2" . $pageParam;
 
         $key = hex2bin($this->c->getAppValue($this->appName, 'hk'));
         if (empty($key)) {
@@ -766,7 +763,7 @@ class PageController extends Controller
         }
 
         $v = '';
-        $fij = $this->utils->getUserSettings(BackendUtils::KEY_FORM_INPUTS_JSON, $userId);
+        $fij = $this->utils->getUserSettings(BackendUtils::KEY_FORM_INPUTS_JSON, $userId)[BackendUtils::KEY_FORM_INPUTS_JSON];
 
         if (!empty($fij)) {
             $f0 = $fij[0];
@@ -942,7 +939,7 @@ class PageController extends Controller
      * @param string $uid
      * @return TemplateResponse
      */
-    public function showFinish($render, $uid)
+    private function showFinish($render, $uid)
     {
         // Redirect to finalize page...
         // sts: 0=OK, 1=bad input, 2=server error
@@ -1010,7 +1007,7 @@ class PageController extends Controller
      * @param string $pageId
      * @return TemplateResponse
      */
-    public function showForm($render, $uid, $pageId)
+    private function showForm($render, $uid, $pageId)
     {
         $templateName = 'public/form';
         if ($render === "public") {
@@ -1076,7 +1073,7 @@ class PageController extends Controller
         $pages = $this->utils->getUserSettings(
             BackendUtils::KEY_PAGES, $uid);
 
-        if ($pages[$pageId][BackendUtils::PAGES_ENABLED] === 0) {
+        if (!$pages[BackendUtils::PAGE_ENABLED]) {
             $params['appt_state'] = '4';
             $tr->setParams($params);
             return $tr;
@@ -1168,9 +1165,13 @@ class PageController extends Controller
 </select>';
             }
         }
-        $moreHTML = $this->utils->getUserSettings(BackendUtils::KEY_FORM_INPUTS_HTML, $uid);
-        if (isset($moreHTML[0]) && isset($moreHTML[0][8])) {
-            $params['more_html'] = $moreHTML[0];
+//        $moreHTML = $this->utils->getUserSettings(BackendUtils::KEY_FORM_INPUTS_HTML, $uid);
+//        if (isset($moreHTML[0]) && isset($moreHTML[0][8])) {
+//            $params['more_html'] = $moreHTML[0];
+//        }
+        $settings = $this->utils->getUserSettings('', '');
+        if (!empty($settings[BackendUtils::KEY_FORM_INPUTS_HTML])) {
+            $params['more_html'] = $settings[BackendUtils::KEY_FORM_INPUTS_HTML];
         }
 
         // translations (because we do not have window.t without vue in form.js)
@@ -1203,13 +1204,12 @@ class PageController extends Controller
      */
     public function caladd()
     {
-        $pageId = $this->request->getParam("p", "p0");
-        // pageId is required for this
-        if (empty($pageId) || !isset($this->utils->getUserSettings(
-                    BackendUtils::KEY_PAGES,
-                    $this->userId)[$pageId])) {
+        $pageId = $this->request->getParam("p");
+
+        if (empty($pageId) || !$this->utils->loadSettingsForUserAndPage($this->userId, $pageId)) {
             return new NotFoundResponse();
         }
+
         return $this->addAppointments(
             $this->userId,
             $pageId,

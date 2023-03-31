@@ -1,9 +1,10 @@
 <template>
   <div>
     <div
-        :class="[isOpen ? 'icon-triangle-s' : 'icon-triangle-e', 'appt-accordion-title']"
+        :class="[isOpen ? 'icon-triangle-s appt-accordion-bold-title' : 'icon-triangle-e', 'appt-accordion-title']"
         @click="toggle"><a v-if="help!==''"
-                           class="icon-info srgdev-appt-info-link" :style="helpStyle"
+                           class="icon-info srgdev-appt-info-link"
+                           :style="helpStyle"
                            @click="$root.$emit('helpWanted',help)"></a>
       {{ title }}
     </div>
@@ -56,13 +57,16 @@ export default {
   margin-bottom: .25em;
   cursor: pointer;
   background-position: left center;
-  padding-left: 1.75em;
-  background-size: 1.5em;
+  padding-left: 2.25em;
+  background-size: 2em;
   margin-left: -.5em;
   position: relative;
 }
+.appt-accordion-bold-title{
+  font-weight: bold;
+}
 
 .appt-accordion-content {
-  padding-left: 1.25em;
+  padding-left: 1.75em;
 }
 </style>

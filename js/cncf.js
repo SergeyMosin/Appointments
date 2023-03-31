@@ -1,1 +1,68 @@
-!function(){"use strict";window.addEventListener("DOMContentLoaded",(function(){const t=document.getElementById("srgdev-appt-cncf_action_btn");let e="";if(null!==t)t.addEventListener("click",(function(t){let e=t.currentTarget;const n="data-appt-action-url";if(null!==e&&e.hasAttribute(n)){const t=e.getAttribute(n);e.removeAttribute(n),document.getElementById("srgdev-ncfp_fbtn-spinner").style.display="inline-block",window.history&&window.history.replaceState?(window.history.replaceState({},"",t),window.history.go()):window.location=t}})),e="appt:action_needed";else{if("function"==typeof URL&&window.history&&window.history.replaceState){const t=new URL(window.location);null!==t.searchParams.get("h")&&(t.searchParams.delete("h"),window.history.replaceState({},"",t.toString()))}if("cncf"===window.location.pathname.slice(-4))e="appt:all_done";else{const t=window.location.search.substring(0,6);""!==t&&("?sts=0"===t?e="appt:almost_done":"?sts=1"!==t&&"?sts=2"!==t||(e="appt:error_page"))}}window.parent&&""!==e&&window.parent.postMessage(e,"*")}))}();
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!*********************!*\
+  !*** ./src/cncf.js ***!
+  \*********************/
+(function () {
+  "use strict";
+
+  window.addEventListener('DOMContentLoaded', function () {
+    const btn = document.getElementById('srgdev-appt-cncf_action_btn');
+    let msg = "";
+    if (btn !== null) {
+      btn.addEventListener("click", function (e) {
+        /** @type {HTMLElement} */
+        let t = e.currentTarget;
+        const attrName = 'data-appt-action-url';
+        if (t !== null && t.hasAttribute(attrName)) {
+          const uri = t.getAttribute(attrName);
+
+          //Avoid double clicks
+          t.removeAttribute(attrName);
+
+          // show spinner
+          document.getElementById("srgdev-ncfp_fbtn-spinner").style.display = "inline-block";
+          if (window.history && window.history.replaceState) {
+            window.history.replaceState({}, '', uri);
+            window.history.go();
+          } else {
+            window.location = uri;
+          }
+        }
+      });
+
+      // embedding stuff @see /test/embedding
+      msg = "appt:action_needed";
+    } else {
+      if (typeof URL === "function" && window.history && window.history.replaceState) {
+        const u = new URL(window.location);
+        if (u.searchParams.get("h") !== null) {
+          u.searchParams.delete("h");
+          window.history.replaceState({}, '', u.toString());
+        }
+      }
+
+      // embedding stuff @see /test/embedding
+      if (window.location.pathname.slice(-4) === "cncf") {
+        msg = "appt:all_done";
+      } else {
+        const q = window.location.search.substring(0, 6);
+        if (q !== "") {
+          if (q === "?sts=0") {
+            msg = "appt:almost_done";
+          } else if (q === "?sts=1" || q === "?sts=2") {
+            msg = "appt:error_page";
+          }
+        }
+      }
+    }
+
+    // embedding stuff @see /test/embedding
+    if (window.parent && msg !== "") {
+      window.parent.postMessage(msg, "*");
+    }
+  });
+})();
+/******/ })()
+;
+//# sourceMappingURL=cncf.js.map

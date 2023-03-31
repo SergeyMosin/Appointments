@@ -12,8 +12,10 @@ namespace OCA\Appointments\Backend;
 
 use OCA\Appointments\AppInfo\Application;
 use OCP\DB\Exception;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IConfig;
 use OCP\IDBConnection;
+use OCP\IL10N;
 use OCP\IURLGenerator;
 use Psr\Log\LoggerInterface;
 use Sabre\VObject\Reader;
@@ -27,10 +29,38 @@ class BackendUtils
     // original description
     const X_DSR = "X-APPT-DSR";
 
+    // #################################################################
+    //   WARNING: most of constants are used in V2 migration
+    //   ******** DO NOT CHANGE/DELETE (yet) ********
+    // #################################################################
     const CIPHER = "AES-128-CFB";
     const HASH_TABLE_NAME = "appointments_hash";
     const PREF_TABLE_NAME = "appointments_pref";
+    const PREF_TABLE_V2_NAME = "appointments_pref_v2";
     const SYNC_TABLE_NAME = "appointments_sync";
+
+    public const KEY_USE_DEF_EMAIL = 'useDefaultEmail';
+    public const KEY_LIMIT_TO_GROUPS = 'limitToGroups';
+    public const KEY_EMAIL_FIX = 'emailFixOpt';
+    public const KEY_ORG = 'org_info';
+    public const KEY_USER_ID = "user_id";
+    public const KEY_TOKEN = "token";
+    public const KEY_PAGE_ID = "page_id"; // this can be 'p0','p1',... or 'd0'(DIR_PAGE_ID) for directory page
+    public const KEY_DATA = "data";
+    public const KEY_EML = 'email_options';
+    public const KEY_CLS = 'calendar_settings';
+    public const KEY_TMPL_DATA = 'template_data';
+    public const KEY_TMPL_INFO = 'template_info';
+    public const KEY_PSN = "page_options";
+    public const KEY_MPS_COL = "more_pages";
+    public const KEY_MPS = "more_pages_";
+    public const KEY_PAGES = "pages";
+    public const KEY_DIR = "dir_info";
+    public const KEY_TALK = "appt_talk";
+    public const KEY_FORM_INPUTS_JSON = 'fi_json';
+    public const KEY_FORM_INPUTS_HTML = 'fi_html';
+    public const KEY_REMINDERS = "reminders";
+    public const KEY_DEBUGGING = "debugging";
 
     const PREF_STATUS_TENTATIVE = 0;
     const PREF_STATUS_CONFIRMED = 1;
@@ -38,11 +68,6 @@ class BackendUtils
 
     const FLOAT_TIME_FORMAT = "Ymd.His";
 
-    public const KEY_USE_DEF_EMAIL = 'useDefaultEmail';
-    public const KEY_LIMIT_TO_GROUPS = 'limitToGroups';
-    public const KEY_EMAIL_FIX = 'emailFixOpt';
-
-    public const KEY_ORG = 'org_info';
     public const ORG_NAME = 'organization';
     public const ORG_EMAIL = 'email';
     public const ORG_ADDR = 'address';
@@ -53,7 +78,6 @@ class BackendUtils
     public const ORG_CONFIRMED_RDR_DATA = 'confirmedRdrData';
 
     // Email Settings
-    public const KEY_EML = 'email_options';
     public const EML_ICS = 'icsFile';
     public const EML_SKIP_EVS = 'skipEVS';
     public const EML_AMOD = 'attMod';
@@ -66,7 +90,6 @@ class BackendUtils
     public const EML_ICS_TXT = 'icsNote';
 
     // Calendar Settings
-    public const KEY_CLS = 'calendar_settings';
     // simple mode
     public const CLS_MAIN_ID = 'mainCalId'; // this cal_id now
     public const CLS_DEST_ID = 'destCalId';
@@ -99,12 +122,9 @@ class BackendUtils
     public const CLS_TS_MODE_EXTERNAL = '1';
     public const CLS_TS_MODE_TEMPLATE = '2';
 
-    public const KEY_TMPL_DATA = 'template_data';
-    public const KEY_TMPL_INFO = 'template_info';
     public const TMPL_TZ_NAME = "tzName";
     public const TMPL_TZ_DATA = "tzData";
 
-    public const KEY_PSN = "page_options";
     public const PSN_PAGE_TITLE = "pageTitle";
     public const PSN_FNED = "startFNED";
     public const PSN_PAGE_STYLE = "pageStyle";
@@ -122,10 +142,6 @@ class BackendUtils
     public const PSN_SHOW_TZ = "showTZ";
     public const PSN_USE_NC_THEME = "useNcTheme";
 
-    public const KEY_MPS_COL = "more_pages";
-    public const KEY_MPS = "more_pages_";
-
-    public const KEY_PAGES = "pages";
     public const PAGES_ENABLED = "enabled";
     public const PAGES_LABEL = "label";
 
@@ -134,32 +150,23 @@ class BackendUtils
         self::PAGES_LABEL => ""
     );
 
-    public const KEY_DIR = "dir_info";
+    public const TALK_ENABLED = "talk_enabled";
+    public const TALK_DEL_ROOM = "talk_delete";
+    public const TALK_EMAIL_TXT = "talk_emailText";
+    public const TALK_LOBBY = "talk_lobby";
+    public const TALK_PASSWORD = "talk_password";
+    public const TALK_NAME_FORMAT = "talk_nameFormat";
+    public const TALK_FORM_ENABLED = "talk_formFieldEnable";
+    public const TALK_FORM_LABEL = "talk_formLabel";
+    public const TALK_FORM_PLACEHOLDER = "talk_formPlaceholder";
+    public const TALK_FORM_REAL_TXT = "talk_formTxtReal";
+    public const TALK_FORM_VIRTUAL_TXT = "talk_formTxtVirtual";
+    public const TALK_FORM_DEF_LABEL = "talk_formDefLabel";
+    public const TALK_FORM_DEF_PLACEHOLDER = "talk_formDefPlaceholder";
+    public const TALK_FORM_DEF_REAL = "talk_formDefReal";
+    public const TALK_FORM_DEF_VIRTUAL = "talk_formDefVirtual";
+    public const TALK_FORM_TYPE_CHANGE_TXT = "talk_formTxtTypeChange";
 
-    public const KEY_TALK = "appt_talk";
-    public const TALK_ENABLED = "enabled";
-    public const TALK_DEL_ROOM = "delete";
-    public const TALK_EMAIL_TXT = "emailText";
-    public const TALK_LOBBY = "lobby";
-    public const TALK_PASSWORD = "password";
-    public const TALK_NAME_FORMAT = "nameFormat";
-    public const TALK_FORM_ENABLED = "formFieldEnable";
-    public const TALK_FORM_LABEL = "formLabel";
-    public const TALK_FORM_PLACEHOLDER = "formPlaceholder";
-    public const TALK_FORM_REAL_TXT = "formTxtReal";
-    public const TALK_FORM_VIRTUAL_TXT = "formTxtVirtual";
-
-    public const TALK_FORM_DEF_LABEL = "formDefLabel";
-    public const TALK_FORM_DEF_PLACEHOLDER = "formDefPlaceholder";
-    public const TALK_FORM_DEF_REAL = "formDefReal";
-    public const TALK_FORM_DEF_VIRTUAL = "formDefVirtual";
-
-    public const TALK_FORM_TYPE_CHANGE_TXT = "formTxtTypeChange";
-
-    public const KEY_FORM_INPUTS_JSON = 'fi_json';
-    public const KEY_FORM_INPUTS_HTML = 'fi_html';
-
-    public const KEY_REMINDERS = "reminders";
     public const REMINDER_DATA = "data";
     public const REMINDER_DATA_TIME = "seconds";
     public const REMINDER_DATA_ACTIONS = "actions";
@@ -170,8 +177,12 @@ class BackendUtils
     public const REMINDER_CLI_URL = "cliUrl";
     public const REMINDER_LANG = "defaultLang";
 
-    public const KEY_DEBUGGING = "debugging";
     public const DEBUGGING_LOG_REM_BLOCKER = "log_rem_blocker";
+
+    public const DIR_ITEMS = "dirItems";
+
+    public const PAGE_ENABLED = "enabled";
+    public const PAGE_LABEL = "label";
 
     private $appName = Application::APP_ID;
     /** @var array */
@@ -184,13 +195,17 @@ class BackendUtils
 
     private $urlGenerator;
 
+    private $l10n;
+
     public function __construct(LoggerInterface $logger,
                                 IDBConnection   $db,
-                                IURLGenerator   $urlGenerator
+                                IURLGenerator   $urlGenerator,
+                                IL10N           $l10n
     ) {
         $this->logger = $logger;
         $this->db = $db;
         $this->urlGenerator = $urlGenerator;
+        $this->l10n = $l10n;
     }
 
     /**
@@ -1234,6 +1249,134 @@ class BackendUtils
         return $d;
     }
 
+    function getDefaultSettingsData(): array
+    {
+        return [
+            self::PAGE_ENABLED => false,
+            self::PAGE_LABEL => "",
+
+            self::ORG_NAME => "",
+            self::ORG_EMAIL => "",
+            self::ORG_ADDR => "",
+            self::ORG_PHONE => "",
+
+            self::ORG_CONFIRMED_RDR_URL => "",
+            self::ORG_CONFIRMED_RDR_ID => false,
+            self::ORG_CONFIRMED_RDR_DATA => false,
+
+            self::CLS_MAIN_ID => '-1',
+            self::CLS_DEST_ID => '-1',
+
+            self::CLS_XTM_SRC_ID => '-1',
+            self::CLS_XTM_DST_ID => '-1',
+            self::CLS_XTM_PUSH_REC => true,
+            self::CLS_XTM_REQ_CAT => false,
+            self::CLS_XTM_AUTO_FIX => false,
+
+            self::CLS_TMM_DST_ID => '-1',
+            self::CLS_TMM_MORE_CALS => [],
+            self::CLS_TMM_SUBSCRIPTIONS => [],
+            self::CLS_TMM_SUBSCRIPTIONS_SYNC => '0',
+
+            self::CLS_PREP_TIME => "0",
+            self::CLS_BUFFER_BEFORE => 0,
+            self::CLS_BUFFER_AFTER => 0,
+            self::CLS_ON_CANCEL => 'reset',
+            self::CLS_ALL_DAY_BLOCK => false,
+            self::CLS_TITLE_TEMPLATE => '',
+
+            self::CLS_PRIVATE_PAGE => false,
+            self::CLS_TS_MODE => self::CLS_TS_MODE_TEMPLATE,
+
+            self::EML_ICS => false,
+            self::EML_SKIP_EVS => false,
+            self::EML_AMOD => true,
+            self::EML_ADEL => true,
+            self::EML_MREQ => false,
+            self::EML_MCONF => true,
+            self::EML_MCNCL => false,
+            self::EML_VLD_TXT => "",
+            self::EML_CNF_TXT => "",
+            self::EML_ICS_TXT => "",
+
+            self::PSN_FORM_TITLE => "",
+            self::PSN_NWEEKS => "2",
+            self::PSN_EMPTY => true,
+            self::PSN_FNED => false, // start at first not empty day
+            self::PSN_WEEKEND => false,
+            self::PSN_TIME2 => false,
+            self::PSN_END_TIME => false,
+            self::PSN_HIDE_TEL => false,
+            self::PSN_SHOW_TZ => false,
+            self::PSN_GDPR => "",
+            self::PSN_GDPR_NO_CHB => false,
+            self::PSN_PAGE_TITLE => "",
+            self::PSN_PAGE_SUB_TITLE => "",
+            self::PSN_META_NO_INDEX => true,
+            self::PSN_PAGE_STYLE => "",
+            self::PSN_USE_NC_THEME => false,
+
+            self::KEY_TMPL_DATA => [[], [], [], [], [], [], []],
+            self::KEY_TMPL_INFO => [
+                self::TMPL_TZ_NAME => "",
+                self::TMPL_TZ_DATA => ""
+            ],
+
+            self::KEY_FORM_INPUTS_HTML => "",
+            self::KEY_FORM_INPUTS_JSON => [],
+
+            self::TALK_ENABLED => false,
+            self::TALK_DEL_ROOM => false,
+            self::TALK_EMAIL_TXT => "",
+            self::TALK_LOBBY => false,
+            self::TALK_PASSWORD => false,
+            // 0=Name+DT, 1=DT+Name, 2=Name Only
+            self::TALK_NAME_FORMAT => 0,
+            self::TALK_FORM_ENABLED => false,
+            self::TALK_FORM_LABEL => "",
+            self::TALK_FORM_PLACEHOLDER => "",
+            self::TALK_FORM_REAL_TXT => "",
+            self::TALK_FORM_VIRTUAL_TXT => "",
+            self::TALK_FORM_TYPE_CHANGE_TXT => "",
+            self::TALK_FORM_DEF_LABEL => 'Meeting Type',
+            self::TALK_FORM_DEF_PLACEHOLDER => 'Select meeting type',
+            self::TALK_FORM_DEF_REAL => 'In-person meeting',
+            self::TALK_FORM_DEF_VIRTUAL => 'Online (audio/video)',
+
+            self::KEY_REMINDERS => [
+                self::REMINDER_DATA => [
+                    [
+                        self::REMINDER_DATA_TIME => "0",
+                        self::REMINDER_DATA_ACTIONS => true
+                    ],
+                    [
+                        self::REMINDER_DATA_TIME => "0",
+                        self::REMINDER_DATA_ACTIONS => true
+                    ],
+                    [
+                        self::REMINDER_DATA_TIME => "0",
+                        self::REMINDER_DATA_ACTIONS => true
+                    ],
+                ],
+                self::REMINDER_SEND_ON_FRIDAY => false,
+                self::REMINDER_MORE_TEXT => ""
+            ],
+
+            self::DEBUGGING_LOG_REM_BLOCKER => false,
+        ];
+    }
+
+    function getDefaultSettingsDataForDirPage(): array
+    {
+        return [
+            self::DIR_ITEMS => [],
+            self::PSN_PAGE_TITLE => "",
+            self::PSN_PAGE_STYLE => "",
+            self::PSN_USE_NC_THEME => false,
+            self::CLS_PRIVATE_PAGE => false,
+        ];
+    }
+
 
     private function loadSettingsFromDB($userId)
     {
@@ -1252,9 +1395,143 @@ class BackendUtils
         }
     }
 
+    /**
+     * @throws Exception
+     */
+    function loadSettingsForUserAndPage(string $userId, string $pageId): bool
+    {
+        $qb = $this->db->getQueryBuilder();
+        $r = $qb->select(self::KEY_TOKEN, self::KEY_DATA, self::KEY_REMINDERS)
+            ->from(self::PREF_TABLE_V2_NAME)
+            ->where($qb->expr()->eq(self::KEY_USER_ID,
+                $qb->createNamedParameter($userId)))
+            ->andWhere($qb->expr()->eq(self::KEY_PAGE_ID,
+                $qb->createNamedParameter($pageId)))
+            ->executeQuery();
+        $row = $r->fetch();
+        $r->closeCursor();
+
+        $isDir = $this->isDir($pageId);
+
+        if ($row === false) {
+            if ($isDir) {
+                // Dir rows do not exist if there is no dirData,
+                // but we load required defaults
+                $this->settings = $this->getDefaultSettingsDataForDirPage();
+                $this->settings[self::KEY_TOKEN] = '';
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return $this->parseSettings($row, $isDir);
+    }
+
+    private function parseSettings(array $row, bool $isDir = false): bool
+    {
+        $userSettings = json_decode($row[self::KEY_DATA], true);
+        if ($userSettings === null) {
+            return false;
+        }
+
+        $this->settings = $isDir
+            ? $this->getDefaultSettingsDataForDirPage()
+            : $this->getDefaultSettingsData();
+        foreach ($userSettings as $k => $v) {
+            if (isset($this->settings[$k]) && $this->settings[$k] !== $v) {
+                $this->settings[$k] = $v;
+            }
+        }
+
+        if (isset($row[self::KEY_TOKEN])) {
+            $this->settings[self::KEY_TOKEN] = $row[self::KEY_TOKEN];
+        }
+
+        if (!$isDir) {
+
+            if ($this->settings[self::TALK_ENABLED]) {
+                $this->settings[self::TALK_FORM_DEF_LABEL] = $this->l10n->t('Meeting Type');
+                $this->settings[self::TALK_FORM_DEF_PLACEHOLDER] = $this->l10n->t('Select meeting type');
+                $this->settings[self::TALK_FORM_DEF_REAL] = $this->l10n->t('In-person meeting');
+                $this->settings[self::TALK_FORM_DEF_VIRTUAL] = $this->l10n->t('Online (audio/video)');
+            }
+
+            if (isset($row[self::KEY_REMINDERS])) {
+                $reminders = json_decode($row[self::KEY_REMINDERS], true);
+                if ($reminders !== null) {
+                    // replace default
+                    $this->settings[self::KEY_REMINDERS] = $reminders;
+                }
+            }
+        }
+
+        return true;
+    }
+
+
+    /**
+     * @throws Exception
+     */
+    function getUserPages($userId, $includeDirPages = false): array
+    {
+        $qb = $this->db->getQueryBuilder();
+        $r = $qb->select(self::KEY_PAGE_ID, self::KEY_DATA)
+            ->from(self::PREF_TABLE_V2_NAME)
+            ->where($qb->expr()->eq(self::KEY_USER_ID,
+                $qb->createNamedParameter($userId)))
+            ->executeQuery();
+        $pages = [];
+
+        while ($row = $r->fetch()) {
+            $pageId = $row[self::KEY_PAGE_ID];
+            if ($this->isDir($pageId) === false) {
+                $data = json_decode($row[self::KEY_DATA], true);
+                if ($data === null) {
+                    $this->logger->error($row[self::KEY_DATA]);
+                    $this->logger->warning("invalid data for pageId: " . $pageId);
+                    continue;
+                }
+
+                $isEnabled = ($data[self::PAGE_ENABLED] ?? false);
+                if ($isEnabled) {
+                    // a quick check if the page can actually be ebaled
+                    $orgEmail = ($data[self::ORG_EMAIL] ?? '');
+                    if (empty($orgEmail) || !filter_var($orgEmail, FILTER_VALIDATE_EMAIL)) {
+                        $this->settings = $data;
+                        $this->setUserSettingsV2($userId, $pageId, self::PAGE_ENABLED, false);
+                        $isEnabled = false;
+                    }
+                }
+
+                $pages[] = [
+                    'id' => $pageId,
+                    'type' => 'page',
+                    self::PAGE_ENABLED => $isEnabled,
+                    self::PAGES_LABEL => ($data[self::PAGE_LABEL] ?? '')
+                ];
+            } elseif ($includeDirPages) {
+                $pages[] = [
+                    'id' => $pageId,
+                    'type' => 'dir',
+                    'hasData' => strlen($row[self::KEY_DATA]) > 4,
+                ];
+            }
+        }
+        $r->closeCursor();
+        return $pages;
+    }
+
+    function isDir(string $pageId): bool
+    {
+        return $pageId[0] === 'd';
+    }
+
     function getTemplateData($pageId, $userId)
     {
-        return $this->getUserSettings(self::KEY_TMPL_DATA, $userId)[$pageId] ?? array([], [], [], [], [], [], []);
+        // TODO: inline/simplify
+        return $this->settings[self::KEY_TMPL_DATA];
+
+//        return $this->getUserSettings(self::KEY_TMPL_DATA, $userId)[$pageId] ?? array([], [], [], [], [], [], []);
     }
 
     function setTemplateData($pageId, $value, $userId)
@@ -1279,7 +1556,7 @@ class BackendUtils
      * @param string $userId
      * @return array
      */
-    function getUserSettings($key, $userId)
+    function getUserSettings_old($key, $userId)
     {
 
         if ($this->settings === null) {
@@ -1348,35 +1625,49 @@ class BackendUtils
         return $sa;
     }
 
+    function getUserSettings(string $key, string $userId): array
+    {
+
+        if ($this->settings === null) {
+            // this should never happen
+            throw new \Exception("internal error: settings not loaded");
+        }
+
+        return $this->settings;
+    }
+
     // This is a temp work-around for multiple "template mode" pages, use this instead getUserSettings(BackendUtils::KEY_TMPL_INFO, $userId) until data is normalized.
     function getTemplateInfo(string $userId, string $pageId): array
     {
+        // TODO: inline/simplify
 
-        $templateInfo = $this->getUserSettings(BackendUtils::KEY_TMPL_INFO, $userId);
+        return $this->settings[self::KEY_TMPL_INFO];
 
-        if (isset($templateInfo[self::TMPL_TZ_NAME]) || isset($templateInfo[self::TMPL_TZ_DATA])) {
-            // we have old ( single page data ), fix/normalize...
-            $newData = array(
-                'old_info' => $templateInfo
-            );
-            // This is not perfect but since we only have one data, we just duplicate it for other pages
-            $newData[$pageId] = $templateInfo;
-            $this->setTemplateInfo($userId, null, $newData);
-
-            return $newData[$pageId];
-
-        } else {
-            if (!isset($templateInfo[$pageId])) {
-                // This is not perfect, but we use 'old_info' and if that does not exist just use default
-                if (isset($templateInfo['old_info'])) {
-                    return $templateInfo['old_info'];
-                } else {
-                    // 'p0' has defaults
-                    return $this->getDefaultForKey(BackendUtils::KEY_TMPL_INFO)['p0'];
-                }
-            }
-        }
-        return $templateInfo[$pageId];
+//        $templateInfo = $this->getUserSettings(BackendUtils::KEY_TMPL_INFO, $userId);
+//
+//        if (isset($templateInfo[self::TMPL_TZ_NAME]) || isset($templateInfo[self::TMPL_TZ_DATA])) {
+//            // we have old ( single page data ), fix/normalize...
+//            $newData = array(
+//                'old_info' => $templateInfo
+//            );
+//            // This is not perfect but since we only have one data, we just duplicate it for other pages
+//            $newData[$pageId] = $templateInfo;
+//            $this->setTemplateInfo($userId, null, $newData);
+//
+//            return $newData[$pageId];
+//
+//        } else {
+//            if (!isset($templateInfo[$pageId])) {
+//                // This is not perfect, but we use 'old_info' and if that does not exist just use default
+//                if (isset($templateInfo['old_info'])) {
+//                    return $templateInfo['old_info'];
+//                } else {
+//                    // 'p0' has defaults
+//                    return $this->getDefaultForKey(BackendUtils::KEY_TMPL_INFO)['p0'];
+//                }
+//            }
+//        }
+//        return $templateInfo[$pageId];
     }
 
     /**
@@ -1440,6 +1731,109 @@ class BackendUtils
         }
     }
 
+    function dbUpsert2(string $userId, string $pageId, array $columns)
+    {
+        try {
+            $tableName = self::PREF_TABLE_V2_NAME;
+
+            $qb = $this->db->getQueryBuilder();
+            $qb->update($tableName)
+                ->where($qb->expr()->eq(
+                    self::KEY_USER_ID, $qb->createNamedParameter($userId)))
+                ->andWhere($qb->expr()->eq(
+                    self::KEY_PAGE_ID, $qb->createNamedParameter($pageId)));
+            // self::KEY_DATA, self::KEY_REMINDERS is set
+            $r = $this->setQbValues($qb, $columns, false)
+                ->executeStatement();
+            if ($r === 0) {
+                $qb = $this->db->getQueryBuilder();
+                $qb->insert($tableName)
+                    ->setValue(self::KEY_USER_ID, $qb->createNamedParameter($userId))
+                    ->setValue(self::KEY_PAGE_ID, $qb->createNamedParameter($pageId));
+                // self::KEY_TOKEN, self::KEY_DATA, self::KEY_REMINDERS
+                $this->setQbValues($qb, $columns, true)
+                    ->executeStatement();
+            }
+            return true;
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage(), [
+                'app' => Application::APP_ID,
+                'exception' => $e
+            ]);
+            return false;
+        }
+    }
+
+    private function setQbValues(IQueryBuilder $qb, array $values, bool $isInsert): IQueryBuilder
+    {
+        foreach ([self::KEY_TOKEN, self::KEY_DATA, self::KEY_REMINDERS] as $column) {
+            if (key_exists($column, $values)) {
+                if ($isInsert) {
+                    $qb->setValue($column, $qb->createNamedParameter($values[$column]));
+                } elseif ($column !== self::KEY_TOKEN) {
+                    $qb->set($column, $qb->createNamedParameter($values[$column]));
+                }
+            }
+        }
+        return $qb;
+    }
+
+
+    function deletePage(string $userId, string $pageId): int
+    {
+        $qb = $this->db->getQueryBuilder();
+        $count = 0;
+        try {
+            $count = $qb->delete(self::PREF_TABLE_V2_NAME)
+                ->where($qb->expr()->eq('user_id',
+                    $qb->createNamedParameter($userId)))
+                ->andWhere($qb->expr()->eq('page_id',
+                    $qb->createNamedParameter($pageId)))
+                ->execute();
+        } catch (Exception $e) {
+            $this->logger->error("deletePage error: " . $e->getMessage());
+        }
+        return $count;
+    }
+
+    function createPage($userId, $pageId, $data): int
+    {
+        // make sure the token is not used
+        do {
+            $token = $this->makePageToken();
+            $qb = $this->db->getQueryBuilder();
+            $r = $qb->select('id')
+                ->from(self::PREF_TABLE_V2_NAME)
+                ->where($qb->expr()->eq(self::KEY_TOKEN,
+                    $qb->createNamedParameter($token)))
+                ->executeQuery();
+
+            $id = $r->fetch();
+        } while ($id !== false);
+
+        $qb = $this->db->getQueryBuilder();
+        $count = $qb->insert(self::PREF_TABLE_V2_NAME)
+            ->setValue(self::KEY_TOKEN, $qb->createNamedParameter($token))
+            ->setValue(self::KEY_USER_ID, $qb->createNamedParameter($userId))
+            ->setValue(self::KEY_PAGE_ID, $qb->createNamedParameter($pageId))
+            ->setValue(self::KEY_DATA, $qb->createNamedParameter($data))
+            ->executeStatement();
+        // count should be 1, because we are inserting one row/page
+        return $count;
+    }
+
+    private function makePageToken(int $count = 16): string
+    {
+        $charPool = 'ABCDEGMNQYZabcrltvwqyz012345V789';
+        $out = '';
+        $max = strlen($charPool) - 1;
+        for ($i = 0; $i < $count; $i++) {
+            $out .= $charPool[random_int(0, $max)];
+        }
+        return $out;
+    }
+
+
     /**
      * @param string $userId
      * @param string $page
@@ -1456,6 +1850,83 @@ class BackendUtils
         }
         $this->setDBValue($userId, self::KEY_MPS_COL, $v);
         return true;
+    }
+
+    function setUserSettingsV2(string $userId, string $pageId, string $key, $value): array
+    {
+
+        if ($key === self::KEY_REMINDERS) {
+            return $this->setUserReminders($userId, $pageId, $value);
+        }
+
+        $settings = $this->settings;
+        $settings[$key] = $value;
+        $settingsStr = json_encode($this->filterDefaultSettings($settings));
+        if ($settingsStr === false) {
+            $this->logger->warning("setUserSettingsV2: json_encode failed");
+            return [500, ''];
+        }
+
+        $qb = $this->db->getQueryBuilder();
+        try {
+            $r = $qb->update(self::PREF_TABLE_V2_NAME)
+                ->set(self::KEY_DATA, $qb->createNamedParameter($settingsStr))
+                ->where($qb->expr()->eq(self::KEY_USER_ID,
+                    $qb->createNamedParameter($userId)))
+                ->andWhere($qb->expr()->eq(self::KEY_PAGE_ID,
+                    $qb->createNamedParameter($pageId)))
+                ->executeStatement();
+        } catch (\Throwable $e) {
+            $this->logger->error($e->getMessage(), ['app' => $this->appName, 'exception' => $e]);
+            return [500, ''];
+        }
+        if ($r !== 1) {
+            $this->logger->warning("setUserSettingsV2: wrong row count " . $r);
+            return [500, ''];
+        }
+
+        $this->settings = $settings;
+        return [200, ''];
+    }
+
+    private function setUserReminders(string $userId, string $pageId, array $value): array
+    {
+        // if all reminders are set to 0 we need to set DB value to null
+        $zeroCount = 0;
+        foreach ($value[self::REMINDER_DATA] as $rd) {
+            if ($rd[self::REMINDER_DATA_TIME] === "0") {
+                $zeroCount++;
+            }
+        }
+
+        $dbValue = $zeroCount === count($value[self::REMINDER_DATA]) ? null : json_encode($value);
+        if ($dbValue === false) {
+            $this->logger->error('json_encode failed in ' . __FUNCTION__);
+            return [500, ''];
+        }
+
+        if (true === $this->dbUpsert2($userId, $pageId, [self::KEY_REMINDERS => $dbValue])) {
+            return [200, ''];
+        } else {
+            return [500, ''];
+        }
+    }
+
+    function filterDefaultSettings(array $data, $defaults = null): array
+    {
+        if ($defaults === null) {
+            $defaults = $this->getDefaultSettingsData();
+            // we don't want 'reminders' here
+            unset($defaults[self::KEY_REMINDERS]);
+        }
+
+        $filteredData = [];
+        foreach ($data as $k => $v) {
+            if (isset($defaults[$k]) && $defaults[$k] !== $v) {
+                $filteredData[$k] = $v;
+            }
+        }
+        return $filteredData;
     }
 
 
@@ -1524,6 +1995,8 @@ class BackendUtils
      */
     function getMainCalId($userId, $pageId, $bc, &$otherCal = null)
     {
+
+        // TODO: optimize for settings v2...
 
         if ($pageId === 'p0') {
             // main calendar is provider
@@ -1599,6 +2072,7 @@ class BackendUtils
             $tz_Z = "Z";
         }
 
+        // TODO: simplify for settings v2 ...
         $org = $this->getUserSettings(self::KEY_ORG, $userId);
         if ($pageId === 'p0') {
             $org_name = $org[BackendUtils::ORG_NAME];
@@ -1628,12 +2102,13 @@ class BackendUtils
         if (empty($email)) {
             return ['err' => $l10n->t("Your email address is required for this operation.")];
         }
-        if (empty($addr)) {
-            return ['err' => $l10n->t("A location, address or URL is required for this operation. Check User/Organization settings.")];
-        }
+        if (!empty($addr)) {
+//			return ['err' => $l10n->t("A location, address or URL is required for this operation. Check User/Organization settings.")];
+
 //        ESCAPED-CHAR = ("\\" / "\;" / "\," / "\N" / "\n")
 //        \\ encodes \ \N or \n encodes newline \; encodes ; \, encodes ,
-        $addr = str_replace(array("\\", ";", ",", "\r\n", "\r", "\n"), array('\\\\', '\;', '\,', ' \n', ' \n', ' \n'), $addr);
+            $addr = str_replace(array("\\", ";", ",", "\r\n", "\r", "\n"), array('\\\\', '\;', '\,', ' \n', ' \n', ' \n'), $addr);
+        }
 
         if (empty($name)) {
             return ['err' => $l10n->t("Can't find your name. Check User/Organization settings.")];
@@ -1662,7 +2137,10 @@ class BackendUtils
                 "CREATED:" . $cr_date_rn . "UID:", // UID goes here
             '2_before_dts' => $rn . "DTSTART" . $tz_id . ":", // DTSTART goes here
             '3_before_dte' => $tz_Z . $rn . "DTEND" . $tz_id . ":", // DTEND goes here
-            '4_last' => $tz_Z . $rn . $this->chunk_split_unicode("ORGANIZER;CN=" . $name . ":mailto:" . $email, 75, "\r\n ") . $rn . $this->chunk_split_unicode("LOCATION:" . $addr, 75, "\r\n ") . $rn . "END:VEVENT\r\n" . $tz_data . "END:VCALENDAR\r\n"
+            '4_last' => $tz_Z . $rn
+                . $this->chunk_split_unicode("ORGANIZER;CN=" . $name . ":mailto:" . $email, 75, "\r\n ") . $rn
+                . (!empty($addr) ? ($this->chunk_split_unicode("LOCATION:" . $addr, 75, "\r\n ") . $rn) : '')
+                . "END:VEVENT\r\n" . $tz_data . "END:VCALENDAR\r\n"
         ];
     }
 
@@ -1723,7 +2201,7 @@ class BackendUtils
             }
         }
         if ($tz === null) {
-            $this->logger->warning("getCalendarTimezone fallback to getUserTimezone: " . $err);
+            $this->logger->notice("getCalendarTimezone fallback to getUserTimezone: " . $err);
             return $this->getUserTimezone($userId, $config);
         }
         return $tz;
@@ -1871,8 +2349,9 @@ class BackendUtils
 
     function getPublicWebBase()
     {
-//        return $this->urlGenerator->getBaseUrl() . '/index.php/apps/appointments';
-        return $this->urlGenerator->getAbsoluteURL('/index.php/apps/appointments');
+        // we need to detect if the server is configured to use '.../index.php/...'
+        $defaultUrl = $this->urlGenerator->linkToDefaultPageUrl();
+        return substr($defaultUrl, 0, strpos($defaultUrl, '/apps/') + 6) . Application::APP_ID;
     }
 
     /**
@@ -1881,7 +2360,7 @@ class BackendUtils
      * @return string[]|null[] [useId,pageId] on success, [null,null]=not verified
      * @throws \ErrorException
      */
-    function verifyToken($token, $config)
+    function verifyToken_old($token, $config)
     {
         if (empty($token) || strlen($token) > 256) {
             return [null, null];
@@ -1929,6 +2408,37 @@ class BackendUtils
         }
     }
 
+    function verifyToken(string $token): array
+    {
+        if (empty($token) || strlen($token) > 92) {
+            return [null, null];
+        }
+
+        $qb = $this->db->getQueryBuilder();
+        $r = $qb->select(self::KEY_TOKEN, self::KEY_USER_ID, self::KEY_PAGE_ID, self::KEY_DATA)
+            ->from(self::PREF_TABLE_V2_NAME)
+            ->where($qb->expr()->eq(self::KEY_TOKEN, $qb->createNamedParameter($token)))
+            ->executeQuery();
+        $row = $r->fetch();
+        $r->closeCursor();
+
+        if ($row === false) {
+            return [null, null];
+        }
+
+        $userId = $row[self::KEY_USER_ID];
+        $pageId = $row[self::KEY_PAGE_ID];
+        if (empty($userId) || empty($pageId)) {
+            return [null, null];
+        }
+
+        if ($this->parseSettings($row) === false) {
+            return [null, null];
+        }
+
+        return [$userId, $pageId];
+    }
+
 
     /**
      * @param string $userId
@@ -1936,45 +2446,27 @@ class BackendUtils
      * @return string
      * @throws \ErrorException
      */
-    function getToken($userId, $pageId = "p0")
+    function getToken($userId, $pageId = "p0"): string|null
     {
-        $config = \OC::$server->getConfig();
-        $key = hex2bin($config->getAppValue($this->appName, 'hk'));
-        $iv = hex2bin($config->getAppValue($this->appName, 'tiv'));
-        if (empty($key) || empty($iv)) {
-            throw new \ErrorException("Can't find key");
-        }
-        if ($pageId === "p0") {
-            $pfx = '';
-            $upi = $userId;
-        } else {
-            $pn = intval(substr($pageId, 1));
-            if ($pn < 1 || $pn > 14) {
-                throw new \ErrorException("Bad page number");
-            }
-            $pfx = ($iv[0] ^ $iv[15]) ^ $iv[$pn];
-
-            $iv = $pfx . substr($iv, 1);
-            $upi = $userId . chr($pn);
+        if (empty($userId)) {
+            return null;
         }
 
-        $tkn = $this->encrypt(
-            hash('adler32', $upi, true) . $upi, $key, $iv);
+        $qb = $this->db->getQueryBuilder();
+        $r = $qb->select(self::KEY_TOKEN)
+            ->from(self::PREF_TABLE_V2_NAME)
+            ->where($qb->expr()->eq(self::KEY_USER_ID, $qb->createNamedParameter($userId)))
+            ->andWhere($qb->expr()->eq(self::KEY_PAGE_ID, $qb->createNamedParameter($pageId)))
+            ->executeQuery();
+        $row = $r->fetch();
+        $r->closeCursor();
 
-
-        if ($pfx === '') {
-            $bd = base64_encode($tkn);
-        } else {
-            $v = base64_encode($tkn . $pfx);
-            $bd = trim($v, '=');
-            $ld = strlen($v) - strlen($bd);
-            if ($ld === 1) {
-                $bd .= "01";
-            } else {
-                $bd .= $ld;
-            }
+        if ($row === false || !isset($row[self::KEY_TOKEN])) {
+            return null;
         }
-        return urlencode(str_replace("/", "_", $bd));
+
+        return $row[self::KEY_TOKEN];
+
     }
 
     function transformCalInfo($c, $skipReadOnly = true)
@@ -2123,6 +2615,9 @@ class BackendUtils
 
             /** @noinspection CssUnresolvedCustomProperty */
             $autoStyle = '<style>body{background-image:' . $appointmentsBackgroundImage . ';background-color:' . $appointmentsBackgroundColor . '}#header{background:none}#srgdev-ncfp_frm,.srgdev-appt-info-cont,.appt-dir-lnk{background-color:var(--color-main-background-blur);-webkit-backdrop-filter:var(--filter-background-blur);backdrop-filter:var(--filter-background-blur);border-radius:10px;padding:2em}#srgdev-dpu_main-cont{border-radius:8px}@media only screen and (max-width:390px){#srgdev-ncfp_frm{padding:1em;margin-left:0;margin-right:0}.srgdev-ncfp-wrap{font-size:105%}}</style>';
+        }else{
+            /** @noinspection CssUnresolvedCustomProperty */
+            $autoStyle='<style>:root{--image-main-background:var(--image-background, var(--image-background-plain, var(--image-background-default)))}</style>';
         }
         return $autoStyle . $pps[BackendUtils::PSN_PAGE_STYLE];
     }

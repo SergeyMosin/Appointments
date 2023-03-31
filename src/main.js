@@ -1,5 +1,9 @@
 import Vue from 'vue'
-import App from './App.vue'
+import App from './App2.vue'
+import {createPinia, PiniaVuePlugin} from 'pinia'
+
+Vue.use(PiniaVuePlugin)
+const pinia = createPinia()
 
 // Vue.config.devtools = true;
 
@@ -21,6 +25,7 @@ Vue.prototype.OC = OC
 Vue.prototype.OCA = OCA
 
 export default new Vue({
-    el: '#content',
-    render: h => h(App),
+	el: '#content',
+	pinia,
+	render: h => h(App),
 })

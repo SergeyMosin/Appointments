@@ -1,1 +1,867 @@
-!function(){"use strict";function t(){let e=document.getElementById("srgdev-ncfp_fbtn");this.checked?e.hasAttribute("shade")&&e.removeAttribute("shade"):e.hasAttribute("shade")||e.setAttribute("shade","1"),this.hasAttribute("err")&&this.removeAttribute("err"),this.hasAttribute("required")&&this.removeAttribute("required")}function n(){this.setCustomValidity(""),this.getAttribute("err")?(this.removeAttribute("err"),this.removeEventListener("focus",n,!1)):this.removeEventListener("input",n,!1)}function d(e){let t=0;const d={};document.getElementById("srgdev-ncfp_frm").getAttribute("data-translations").split(",").forEach((e=>{const t=e.split(":");d[t[0]]=t[1]}));let i=document.getElementById("srgdev-ncfp_fbtn");if(!0===i.disabled)return e.preventDefault(),e.stopPropagation(),!1;i=document.getElementById("srgdev-ncfp_sel-hidden");let a,r=i.selectedIndex;-1===r||""===i.value?(i=document.getElementById("srgdev-ncfp_sel-dummy"),i.setAttribute("err","err"),i.addEventListener("focus",n,!1),t=1):a=i.dataRef[r].tzi,i=document.getElementById("srgdev-ncfp_talk_type"),null!==i&&(r=i.selectedIndex,1!==r&&2!==r&&(i.setAttribute("err","err"),i.addEventListener("focus",n,!1),t=1)),i=document.getElementById("srgdev-ncfp_fname"),i.value.length<2&&(i.setCustomValidity(d.name_required),i.addEventListener("input",n,!1),0===t&&i.reportValidity(),t=1),i=document.getElementById("srgdev-ncfp_femail"),(i.value.length<5||-1===i.value.indexOf("@")||i.value.indexOf("@")>i.value.lastIndexOf("."))&&(i.setCustomValidity(d.email_required),i.addEventListener("input",n,!1),0===t&&i.reportValidity(),t=1),i=document.getElementById("srgdev-ncfp_fphone"),null!==i&&(""===i.value||i.value.length<9||!1===/^[0-9 .()\-+,/]*$/.test(i.value))&&(i.setCustomValidity(d.phone_required),i.addEventListener("input",n,!1),0===t&&i.reportValidity(),t=1);let s=document.getElementById("srgdev-ncfp-main-inputs").children;for(let e,i=0,a=s.length;i<a;i++)if(e=s[i],e.hasAttribute("data-more")&&("INPUT"===e.tagName||"TEXTAREA"===e.tagName)){let i=e.value.trim();"r1"===e.getAttribute("data-more")&&""===i?(e.setCustomValidity(d.required),e.addEventListener("input",n,!1),0===t&&e.reportValidity(),t=1):e.hasAttribute("type")&&"number"===e.getAttribute("type")&&isNaN(i)&&(e.setCustomValidity(d.number_required),e.addEventListener("input",n,!1),0===t&&e.reportValidity(),t=1)}if(i=document.getElementById("appt_gdpr_id"),null!==i&&!1===i.checked&&(i.setAttribute("err","err"),i.setAttribute("required","1"),t=1),0!==t)return e.preventDefault(),e.stopPropagation(),!1;document.getElementById("srgdev-ncfp_fbtn-spinner").style.display="inline-block",i=document.createElement("input"),i.type="hidden",i.name="tzi",i.value=a,this.appendChild(i)}function i(e){document.body.removeEventListener("keyup",a),document.getElementById("srgdev-ncfp_frm").removeEventListener("focusin",r),null===e&&(e=document.getElementById("srgdev-dpu_main-cont")),e.removeAttribute("data-open")}function a(t){"Escape"!==t.key&&"Esc"!==t.key&&27!==t.keyCode||(i(null),e.preventDefault())}function r(e){e.target&&"DIV"!==e.target.nodeName.toUpperCase()&&"SPAN"!==e.target.nodeName.toUpperCase()&&document.getElementById("srgdev-dpu_main-date").firstAvailble.focus()}function s(e){let t=document.getElementById("srgdev-dpu_main-cont");if(null===t.getAttribute("data-open")){t.setAttribute("data-open",""),document.body.addEventListener("keyup",a);const e=document.getElementById("srgdev-dpu_main-date").curActive;e&&-1===e.indexOf("e")&&document.getElementById("srgdev-dpu_dc"+e).focus(),document.getElementById("srgdev-ncfp_frm").addEventListener("focusin",r)}else i(t);return e.preventDefault(),!1}function l(e){if(g(e)||f(e)){const e=document.getElementById("srgdev-dpu_tc_wrap");e&&e.firstChild.focus()}}function o(e){let t=this.id.slice(13),n=this.parentElement.curActive;if(n===t)return;n||(n=t);const d=+(""+t).replace("e",""),i=document.getElementById("srgdev-dpu_bf-cont"),a=Math.floor(d/5);a!==i.curDP&&(i.curDP=a,c(i)),document.getElementById("srgdev-dpu_dc"+n).removeAttribute("data-active"),document.getElementById("srgdev-dpu_dc"+t).setAttribute("data-active",""),this.parentElement.curActive=t,"e"===t.slice(-1)&&(t="e");const r=document.getElementById("srgdev-dpu_main-time");if(!r)throw new Error("srgdev-dpu_main-time missing");for(;r.firstChild;)r.removeChild(r.lastChild);if("e"!==t){const e=r.timePages[t];let n=document.createElement("div");if(n.className="srgdev-dpu-tc-full-date",n.appendChild(document.createTextNode(e.fullDate)),""!==e.tzn){const t=document.createElement("div");t.className="srgdev-dpu-tc-timezone",t.appendChild(document.createTextNode(e.tzn)),n.appendChild(t)}r.appendChild(n);const d=i.tuClass,a=document.createElement("div");a.className="srgdev-dpu-tc-tu-wrap",a.id="srgdev-dpu_tc_wrap",a.setAttribute("data-dm",e.dataDm),e.timeItems.forEach((e=>{const t=document.createElement("span");if(t.className=d,t.dpuClickID=e.dpuClickID,t.timeAt=e.timeAt,t.appendChild(document.createTextNode(e.time)),""!==e.title){const n=document.createElement("span");n.className="srgdev-dpu-appt-title",n.appendChild(document.createTextNode(e.title)),t.appendChild(n)}t.setAttribute("tabindex","0"),a.appendChild(t)})),r.appendChild(a)}else{const e=document.createElement("div");e.id="srgdev-dpu_tce",e.className="srgdev-dpu-time-cont",e.appendChild(document.createTextNode(document.getElementById("srgdev-ncfp_sel-hidden").getAttribute("data-tr-not-available"))),r.appendChild(e)}this.parentElement.parentElement.scrollLeft=0,e.stopPropagation()}function u(e){let t=e.target;if(void 0!==t.parentElement.dpuClickID&&(t=t.parentElement),void 0!==t.dpuClickID){document.getElementById("srgdev-ncfp_sel-dummy").value=t.parentElement.getAttribute("data-dm")+" - "+t.timeAt;let e=document.getElementById("srgdev-ncfp_sel-hidden");e.selectedIndex=t.dpuClickID,e.value=e.dataRef[t.dpuClickID].d;const n=e.dataRef[t.dpuClickID].dur;e=document.getElementById("srgdev-ncfp_dur-cont");const d=e.getAttribute("data-tr-hr"),a=e.getAttribute("data-tr-mn"),r=function(e){let t="";const n=e/60|0;n>0&&(t+=n+d+" ");const i=e-60*n;return t+(i>0?i+a:"")};if(null===n||1===n.length)e.style.display="none";else{const t=e.lastElementChild.children;t[0].textContent=r(n[0]);for(let d,i=1,a=Math.max(t.length,n.length);i<a;i++){if(i>=t.length)d=document.createElement("option"),d.className="srgdev-ncfp-form-option",d.appendChild(document.createTextNode("")),e.lastElementChild.appendChild(d);else if(d=t[i],i>=n.length){d.style.display="none";continue}d.style.display="block",d.value=i,d.textContent=r(n[i])}e.style.display="block"}e.lastElementChild.value=0,i(null)}}function c(e){let t;void 0!==e.target?(t=e.target.parentElement,"srgdev-dpu_bf-back"===e.target.id?t.curDP>0&&t.curDP--:(t.curDP<t.maxDP&&t.curDP++,t.curDP===t.maxDP?e.target.setAttribute("disabled",""):e.target.removeAttribute("disabled"))):t=e,0===t.curDP?t.firstElementChild.setAttribute("disabled",""):t.firstElementChild.removeAttribute("disabled"),t.curDP===t.maxDP?t.lastElementChild.setAttribute("disabled",""):t.lastElementChild.removeAttribute("disabled"),document.getElementById("srgdev-dpu_main-date").style.left="-"+5*t.curDP*4.6+"em",document.getElementById("srgdev-dpu_main-cont").scrollLeft=0}function m(e){if(void 0!==e.changedTouches&&e.changedTouches.length>0){const t=e.changedTouches[0],n=this.touchInfo;n.x=t.clientX,n.y=t.clientY,n.id=t.identifier}}function p(e){if(void 0!==e.changedTouches&&e.changedTouches.length>0){const t=e.changedTouches[0],n=this.touchInfo;if(t.identifier===n.id){const e=t.clientX-n.x|0,d=t.clientY-n.y|0;let i=e>>31,a=e+i^i;i=d>>31,a>(d+i^i)&&a>50&&(e<0?this.bfNav.lastElementChild.click():this.bfNav.firstElementChild.click())}n.id=-1}}function g(e){return" "===e.key||"Space"===e.code||32===e.keyCode}function f(e){return"Enter"===e.key||"Enter"===e.code||13===e.keyCode}window.addEventListener("DOMContentLoaded",(function(){let e=document.getElementById("appt_gdpr_id");null!==e&&(e.addEventListener("change",t),t.apply(e));let n=document.getElementById("srgdev-ncfp_frm");n.addEventListener("submit",d),setTimeout((function(){n.autocomplete="on"}),1e3),function(e){const t="nbrWeeks",n="showEmpty",d="startFNED",a="showWeekends",r="showTZ",s="time2Cols",v="endTime";let h={},E=e.split(".");for(let e,t=E.length,n=0;n<t;n++)e=E[n].split(":"),h[e[0]]=+e[1];let y=7*h[t],b=document.getElementById("srgdev-ncfp_sel-hidden");if("2"!==b.getAttribute("data-state"))return void console.log("data-state: ",b.getAttribute("data-state"));const C=b.getAttribute("data-hdr"),A=b.getAttribute("data-tr-back"),I=b.getAttribute("data-tr-next");let _,D;_=void 0!==window.monthNames?window.monthNames:["January","February","March","April","May","June","July","August","September","October","November","December"],D=void 0!==window.dayNames?window.dayNames:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];const T=window.Intl&&"object"==typeof window.Intl,k=document.documentElement.hasAttribute("data-locale")?[document.documentElement.getAttribute("data-locale").replaceAll("_","-"),document.documentElement.lang]:[document.documentElement.lang];let N;const x=new URLSearchParams(window.location.search);if(x){const e=x.get("tz");if(e)try{N=Intl.DateTimeFormat(k,{timeZone:e}).resolvedOptions().timeZone}catch(e){console.error("can not parse tz param:",e),N=void 0}}let w,B,L,P,S;if(w=T?new Intl.DateTimeFormat(k,{hour:"numeric",minute:"2-digit",timeZone:N}).format:function(e){return e.toLocaleTimeString()},T){let e=new Intl.DateTimeFormat(k,{month:"long",timeZone:N});B=e.format}else B=function(e){return _[e.getMonth()]};if(T){let e=new Intl.DateTimeFormat(k,{weekday:"short",timeZone:N});L=e.format}else L=function(e){return D[e.getDay()]};P=T?new Intl.DateTimeFormat(k,{weekday:"short",month:"long",day:"2-digit",timeZone:N}).format:function(e){return e.toDateString()},S=T?new Intl.DateTimeFormat(k,{weekday:"long",month:"long",day:"numeric",year:"numeric",timeZone:N}).format:function(e){return e.toLocaleDateString()};let M,Z=[];if(T){try{M=Intl.DateTimeFormat(k,{timeZone:N}).resolvedOptions().timeZone}catch(e){console.log("no Intl timeZone ",e)}"string"!=typeof M&&(M=void 0)}for(let e,t,n,d,i,a,r,s,l,o,u=new Date,c=h[v],m=b.getAttribute("data-info").split(","),p=m.length,g=0;g<p;g++){if(o=m[g],a=o.indexOf(":",8),u.setTime(1e3*+o.substr(1,a-1)),e=u.getTimezoneOffset(),n=o.charAt(0),d=i=w(u),l=u.getTime(),s=null,1!==c&&"T"!==n||(r=a+1,a=o.indexOf(":",r),"T"===n?(s=o.substr(r,a-r).split(";").map((e=>0|e)),1===c&&s.length<2&&(u.setTime(l+6e4*s[0]),d+=" - "+w(u))):(r=1e3*+o.substr(r,a-r),u.setTime(r),d+=" - "+w(u))),void 0!==M)t=n+M;else{let d=Math.abs(e),i=Math.floor(d/60),a=d-60*i;t=n+(e>0?"-":"+")+(i<10?"0"+i:i)+(a<10?"0"+a:a)}a++,r=o.indexOf(":",a),Z[g]={rts:l,d:o.substr(a,r-a),t:o.substr(r+2),dur:s,tzi:t,time:d,timeAt:i}}Z.sort(((e,t)=>e.rts>t.rts?1:-1)),Z.push({rts:0,d:"",t:"",tzi:"",time:""}),b.dataRef=Z;let O=Z.length,z=document.createElement("div");z.id="srgdev-dpu_main-cont",z.className="srgdev-dpu-bkr-cls";let V=document.createElement("div");V.id="srgdev-dpu_main-header",V.appendChild(document.createTextNode(C)),z.appendChild(V);let F=document.createElement("div");F.maxDP=0,F.curDP=0,F.tuClass="",F.id="srgdev-dpu_bf-cont",F.appendChild(document.createElement("span")),F.appendChild(document.createElement("span")),F.firstElementChild.id="srgdev-dpu_bf-back",F.firstElementChild.appendChild(document.createTextNode(A)),F.firstElementChild.addEventListener("click",c),F.firstElementChild.setAttribute("disabled",""),F.lastElementChild.id="srgdev-dpu_bf-next",F.lastElementChild.appendChild(document.createTextNode(I)),F.lastElementChild.addEventListener("click",c),z.appendChild(F),V=document.createElement("div"),V.id="srgdev-dpu_main-date",V.className="srgdev-dpu-bkr-cls",V.style.left="0em",function(e,t){e.touchInfo={x:0,y:0,id:-1},e.bfNav=t,e.addEventListener("touchstart",m),e.addEventListener("touchend",p)}(V,F),z.appendChild(V);let q=document.createElement("div");q.id="srgdev-dpu_main-time",z.appendChild(q);let R,H=0,U=5,J=new Date,W=-1,X=-1,Y=!1,$=function(e,t){let n=document.createElement("div");n.id="srgdev-dpu_dc"+H+(t?"e":""),n.className="srgdev-dpu-date-cont"+(t?" srgdev-dpu-dc-empty":"");let d=document.createElement("span");return d.className=0!==e.getDay()?"srgdev-dpu-date-wd":"srgdev-dpu-date-wd srgdev-dpu-date-wd-sunday",d.appendChild(document.createTextNode(L(e))),n.appendChild(d),d=document.createElement("span"),d.className="srgdev-dpu-date-dn",d.appendChild(document.createTextNode(e.getDate())),n.appendChild(d),d=document.createElement("span"),d.className="srgdev-dpu-date-md",d.appendChild(document.createTextNode(B(e))),n.appendChild(d),n.addEventListener("click",o),t||(n.setAttribute("tabindex","0"),n.addEventListener("focus",o),n.addEventListener("keyup",l)),H===U&&(U+=5,F.maxDP++,H>y&&(Y=!0)),++H,n},j=new Date;if(j.setSeconds(1),j.setMinutes(0),j.setHours(0),1===h[n]&&0===h[d]){let e=Z[0].rts;J.setTime(e),J.setSeconds(1),J.setMinutes(0),J.setHours(0);let t=J.getDay();t>0&&t<6&&j.setTime(J.getTime()-864e5*(t-1))}0===h[s]||1===h[v]?F.tuClass="srgdev-dpu-time-unit"+(1===h[v]?"_tn":""):F.tuClass="srgdev-dpu-time-unit2",R=1===h[r]&&T?function(e){const t=e.toLocaleDateString(k,{timeZone:N}),n=e.toLocaleDateString(k,{timeZone:N,timeZoneName:"long"}),d=n.indexOf(t);return d>=0?(n.substring(0,d)+n.substring(d+t.length)).replace(/^[\s,.\-:;]+|[\s,.\-:;]+$/g,""):n}:function(){return""};const G=[];for(let e,t,d,i,r,s,l,o=0;o<O&&(s=Z[o],e=s.rts,0!==e);o++){J.setTime(e);let u=100*(J.getMonth()+1)+J.getDate();if(W!==u){if(i=j.getTime(),j.setTime(J.getTime()),j.setSeconds(1),j.setMinutes(0),j.setHours(0),d=j.getTime(),1===h[n])for(;i<d&&(j.setTime(i),t=0===h[a]?j.getDay():1,0===t||6===t||(V.appendChild($(j,!0)),G.push({lccIdx:-1,dataDm:"",timeItems:[],fullDate:"",tzn:""}),!Y));)i+=864e5;if(Y){J=j;break}j.setTime(i+864e5),r=$(J,!1),-1===X&&(X=H-1,r.setAttribute("data-active",""),V.firstAvailble=r),V.appendChild(r),l={lccIdx:H-1,dataDm:P(J),timeItems:[],fullDate:S(J),tzn:R(J)},G.push(l),W=u}l.timeItems.push({dpuClickID:o,timeAt:s.timeAt,time:s.time,title:s.t})}J.setSeconds(0),J.setMinutes(0),J.setHours(1),J.setTime(J.getTime()+864e5),q.timePages=G,z.addEventListener("click",u),z.addEventListener("keyup",(function(e){(g(e)||f(e))&&u(e)})),document.getElementById("srgdev-ncfp_sel_cont").appendChild(z),V.firstAvailble.click(),V.curActive=X.toString();let K=Math.floor(X/5);K>0&&(F.curDP=K,c(F)),F=document.createElement("div"),F.id="srgdev-dpu_main-hdr-icon",F.className="icon-close",F.addEventListener("click",(function(){i(null)})),F.role="button",F.addEventListener("keyup",(function(e){(g(e)||f(e))&&i(null)})),F.setAttribute("tabindex","0"),z.appendChild(F)}(n.getAttribute("data-pps")),document.getElementById("srgdev-ncfp_sel-dummy").addEventListener("click",s),document.getElementById("srgdev-ncfp_sel-dummy").addEventListener("keyup",(function(e){g(e)&&s(e)})),setTimeout((function(){let e,t=document.getElementById("srgdev-ncfp_fbtn");e=t.hasAttribute("data-tr-ses-to")?t.getAttribute("data-tr-ses-to"):"Session Timeout. Reload.",t.disabled=!0,t.textContent=e}),9e5)}))}();
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!*********************!*\
+  !*** ./src/form.js ***!
+  \*********************/
+(function () {
+  "use strict";
+
+  window.addEventListener('DOMContentLoaded', formReady);
+  function formReady() {
+    let gdpr = document.getElementById('appt_gdpr_id');
+    if (gdpr !== null) {
+      gdpr.addEventListener('change', gdprCheck);
+      gdprCheck.apply(gdpr);
+    }
+    let f = document.getElementById("srgdev-ncfp_frm");
+    f.addEventListener("submit", formSubmit);
+
+    // chrome bfcache
+    setTimeout(function () {
+      f.autocomplete = "on";
+    }, 1000);
+    makeDpu(f.getAttribute("data-pps"));
+    document.getElementById("srgdev-ncfp_sel-dummy").addEventListener("click", selClick);
+    document.getElementById("srgdev-ncfp_sel-dummy").addEventListener("keyup", function (evt) {
+      if (isSpaceKey(evt)) {
+        selClick(evt);
+      }
+    });
+    setTimeout(function () {
+      let b = document.getElementById("srgdev-ncfp_fbtn");
+      let txt;
+      // translations are done on the backend (bug???)
+      if (b.hasAttribute("data-tr-ses-to")) {
+        txt = b.getAttribute('data-tr-ses-to');
+      } else {
+        // Back-up ????
+        txt = 'Session Timeout. Reload.';
+      }
+      b.disabled = true;
+      b.textContent = txt;
+    }, 900000);
+  }
+  function gdprCheck() {
+    let btn = document.getElementById("srgdev-ncfp_fbtn");
+    if (this.checked) {
+      if (btn.hasAttribute('shade')) btn.removeAttribute('shade');
+    } else {
+      if (!btn.hasAttribute('shade')) btn.setAttribute('shade', "1");
+    }
+    if (this.hasAttribute("err")) {
+      this.removeAttribute("err");
+    }
+    if (this.hasAttribute("required")) {
+      this.removeAttribute("required");
+    }
+  }
+  function clearFormErr() {
+    this.setCustomValidity('');
+    if (this.getAttribute('err')) {
+      this.removeAttribute('err');
+      this.removeEventListener("focus", clearFormErr, false);
+    } else {
+      this.removeEventListener("input", clearFormErr, false);
+    }
+  }
+  function formSubmit(e) {
+    let lee = 0;
+    const translations = {};
+    const trStr = document.getElementById("srgdev-ncfp_frm").getAttribute("data-translations");
+    // trStr looks something like this "key1:translation1,key2:transaltion2,..."
+    trStr.split(',').forEach(ps => {
+      const pair = ps.split(":");
+      translations[pair[0]] = pair[1];
+    });
+    let el = document.getElementById("srgdev-ncfp_fbtn");
+    if (el.disabled === true) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+    el = document.getElementById("srgdev-ncfp_sel-hidden");
+    let sdx = el.selectedIndex;
+    let tzi;
+    if (sdx === -1 || el.value === "") {
+      el = document.getElementById("srgdev-ncfp_sel-dummy");
+      el.setAttribute('err', 'err');
+      el.addEventListener("focus", clearFormErr, false);
+      lee = 1;
+    } else {
+      tzi = el.dataRef[sdx].tzi;
+    }
+    el = document.getElementById("srgdev-ncfp_talk_type");
+    if (el !== null) {
+      sdx = el.selectedIndex;
+      if (sdx !== 1 && sdx !== 2) {
+        el.setAttribute('err', 'err');
+        el.addEventListener("focus", clearFormErr, false);
+        lee = 1;
+      }
+    }
+    el = document.getElementById("srgdev-ncfp_fname");
+    if (el.value.length < 2) {
+      el.setCustomValidity(translations['name_required']);
+      el.addEventListener("input", clearFormErr, false);
+      if (lee === 0) el.reportValidity();
+      lee = 1;
+    }
+    el = document.getElementById("srgdev-ncfp_femail");
+    if (el.value.length < 5 || el.value.indexOf("@") === -1 || el.value.indexOf("@") > el.value.lastIndexOf(".")) {
+      el.setCustomValidity(translations['email_required']);
+      el.addEventListener("input", clearFormErr, false);
+      if (lee === 0) el.reportValidity();
+      lee = 1;
+    }
+    // Phone field is optional
+    // match [0-9], '.()-+,/' and ' ' (space) at least 9 digits
+    el = document.getElementById("srgdev-ncfp_fphone");
+    if (el !== null && (el.value === '' || el.value.length < 9 || /^[0-9 .()\-+,/]*$/.test(el.value) === false)) {
+      el.setCustomValidity(translations['phone_required']);
+      el.addEventListener("input", clearFormErr, false);
+      if (lee === 0) el.reportValidity();
+      lee = 1;
+    }
+
+    //Check for custom inputs
+    let elms = document.getElementById('srgdev-ncfp-main-inputs').children;
+    for (let i = 0, elm, l = elms.length; i < l; i++) {
+      elm = elms[i];
+      if (elm.hasAttribute('data-more')) {
+        if (elm.tagName === 'INPUT' || elm.tagName === 'TEXTAREA') {
+          let cv = elm.value.trim();
+          if (elm.getAttribute('data-more') === 'r1' && cv === '') {
+            elm.setCustomValidity(translations['required']);
+            elm.addEventListener("input", clearFormErr, false);
+            if (lee === 0) elm.reportValidity();
+            lee = 1;
+          } else if (elm.hasAttribute('type') && elm.getAttribute('type') === 'number' && isNaN(cv)) {
+            elm.setCustomValidity(translations['number_required']);
+            elm.addEventListener("input", clearFormErr, false);
+            if (lee === 0) elm.reportValidity();
+            lee = 1;
+          }
+        }
+      }
+    }
+    el = document.getElementById('appt_gdpr_id');
+    if (el !== null && el.checked === false) {
+      el.setAttribute("err", "err");
+      el.setAttribute("required", "1");
+      lee = 1;
+    }
+    if (lee !== 0) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+    document.getElementById("srgdev-ncfp_fbtn-spinner").style.display = "inline-block";
+    el = document.createElement("input");
+    el.type = "hidden";
+    el.name = "tzi";
+    el.value = tzi;
+    this.appendChild(el);
+  }
+  function selClose(elm) {
+    document.body.removeEventListener("keyup", selEscCloseListener);
+    document.getElementById("srgdev-ncfp_frm").removeEventListener("focusin", focusTrapListener);
+    if (elm === null) {
+      elm = document.getElementById("srgdev-dpu_main-cont");
+    }
+    elm.removeAttribute("data-open");
+  }
+  function selEscCloseListener(evt) {
+    if (evt.key === "Escape" || evt.key === "Esc" || evt.keyCode === 27) {
+      selClose(null);
+      e.preventDefault();
+    }
+  }
+  function focusTrapListener(evt) {
+    if (evt.target && evt.target.nodeName.toUpperCase() !== "DIV" && evt.target.nodeName.toUpperCase() !== "SPAN") {
+      // (Re)set focus to first available
+      document.getElementById("srgdev-dpu_main-date").firstAvailble.focus();
+    }
+  }
+  function selClick(e) {
+    let elm = document.getElementById("srgdev-dpu_main-cont");
+    if (elm.getAttribute("data-open") === null) {
+      elm.setAttribute("data-open", '');
+      document.body.addEventListener("keyup", selEscCloseListener);
+      const curActive = document.getElementById("srgdev-dpu_main-date").curActive;
+      if (curActive && curActive.indexOf('e') === -1) {
+        document.getElementById("srgdev-dpu_dc" + curActive).focus();
+      }
+
+      // trap focus inside popup
+      document.getElementById("srgdev-ncfp_frm").addEventListener("focusin", focusTrapListener);
+    } else {
+      selClose(elm);
+    }
+    e.preventDefault();
+    return false;
+  }
+  function dateKeyboard(evt) {
+    if (isSpaceKey(evt) || isEnterKey(evt)) {
+      // select first available time
+      const timeCont = document.getElementById('srgdev-dpu_tc_wrap');
+      if (timeCont) {
+        timeCont.firstChild.focus();
+      }
+    }
+  }
+  function dateClickOrFocus(e) {
+    let n = this.id.slice(13);
+    let c = this.parentElement.curActive;
+    if (c === n) return;
+
+    // special case: initial programmatic click event
+    if (!c) {
+      c = n;
+    }
+    const nbr = +('' + n).replace("e", '');
+    // scroll dateCont into view when using keyboard
+    const bfCont = document.getElementById("srgdev-dpu_bf-cont");
+    const wantedDP = Math.floor(nbr / 5);
+    if (wantedDP !== bfCont.curDP) {
+      bfCont.curDP = wantedDP;
+      prevNextDPU(bfCont);
+    }
+    document.getElementById('srgdev-dpu_dc' + c).removeAttribute('data-active');
+    document.getElementById('srgdev-dpu_dc' + n).setAttribute('data-active', '');
+    this.parentElement.curActive = n;
+    if (n.slice(-1) === 'e') n = 'e';
+    // if (c.slice(-1) === 'e') c = 'e'
+
+    const timeCont = document.getElementById("srgdev-dpu_main-time");
+    if (!timeCont) {
+      throw new Error("srgdev-dpu_main-time missing");
+    }
+    while (timeCont.firstChild) {
+      timeCont.removeChild(timeCont.lastChild);
+    }
+    if (n !== 'e') {
+      const timePage = timeCont.timePages[n];
+      let elm = document.createElement('div');
+      elm.className = "srgdev-dpu-tc-full-date";
+      elm.appendChild(document.createTextNode(timePage.fullDate));
+      // time zone
+      if (timePage.tzn !== '') {
+        const elm1 = document.createElement('div');
+        elm1.className = "srgdev-dpu-tc-timezone";
+        elm1.appendChild(document.createTextNode(timePage.tzn));
+        elm.appendChild(elm1);
+      }
+      timeCont.appendChild(elm);
+      const tuClass = bfCont.tuClass;
+      const itemsCont = document.createElement('div');
+      itemsCont.className = 'srgdev-dpu-tc-tu-wrap';
+      itemsCont.id = "srgdev-dpu_tc_wrap";
+      itemsCont.setAttribute('data-dm', timePage.dataDm);
+      timePage.timeItems.forEach(item => {
+        const elm = document.createElement("span");
+        elm.className = tuClass;
+        elm.dpuClickID = item.dpuClickID;
+        elm.timeAt = item.timeAt;
+        elm.appendChild(document.createTextNode(item.time));
+        if (item.title !== "") {
+          const elm1 = document.createElement("span");
+          elm1.className = "srgdev-dpu-appt-title";
+          elm1.appendChild(document.createTextNode(item.title));
+          elm.appendChild(elm1);
+        }
+        elm.setAttribute("tabindex", "0");
+        itemsCont.appendChild(elm);
+      });
+      timeCont.appendChild(itemsCont);
+    } else {
+      // empty time cont
+      const elm = document.createElement('div');
+      elm.id = "srgdev-dpu_tce";
+      elm.className = 'srgdev-dpu-time-cont';
+      elm.appendChild(document.createTextNode(document.getElementById('srgdev-ncfp_sel-hidden').getAttribute("data-tr-not-available")));
+      timeCont.appendChild(elm);
+    }
+    this.parentElement.parentElement.scrollLeft = 0;
+    e.stopPropagation();
+  }
+  function timeClick(e) {
+    let t = e.target;
+    if (t.parentElement.dpuClickID !== undefined) {
+      t = t.parentElement;
+    }
+    if (t.dpuClickID !== undefined) {
+      document.getElementById('srgdev-ncfp_sel-dummy').value = t.parentElement.getAttribute('data-dm') + ' - ' + t.timeAt;
+      let elm = document.getElementById('srgdev-ncfp_sel-hidden');
+      elm.selectedIndex = t.dpuClickID;
+      elm.value = elm.dataRef[t.dpuClickID].d;
+      const dur = elm.dataRef[t.dpuClickID].dur;
+      elm = document.getElementById('srgdev-ncfp_dur-cont');
+      const hrStr = elm.getAttribute("data-tr-hr");
+      const mnStr = elm.getAttribute("data-tr-mn");
+      const makeHrMin = function (v) {
+        let hrMinStr = "";
+        const hours = v / 60 | 0;
+        if (hours > 0) {
+          hrMinStr += hours + hrStr + " ";
+        }
+        const minutes = v - hours * 60;
+        return hrMinStr + (minutes > 0 ? minutes + mnStr : '');
+      };
+      if (dur === null || dur.length === 1) {
+        elm.style.display = 'none';
+      } else {
+        const opts = elm.lastElementChild.children;
+        opts[0].textContent = makeHrMin(dur[0]);
+        for (let o, i = 1, hours = 0, minutes = 0, l = Math.max(opts.length, dur.length); i < l; i++) {
+          if (i >= opts.length) {
+            // create
+            o = document.createElement('option');
+            o.className = 'srgdev-ncfp-form-option';
+            o.appendChild(document.createTextNode(''));
+            elm.lastElementChild.appendChild(o);
+          } else {
+            o = opts[i];
+            if (i >= dur.length) {
+              o.style.display = 'none';
+              continue;
+            }
+          }
+          o.style.display = 'block';
+          o.value = i;
+          o.textContent = makeHrMin(dur[i]);
+        }
+        elm.style.display = 'block';
+      }
+      elm.lastElementChild.value = 0;
+      selClose(null);
+    }
+  }
+  function prevNextDPU(e) {
+    let p;
+    // e.target===undefined when we do initial "scroll" @see makeDpu()
+    if (e.target !== undefined) {
+      p = e.target.parentElement;
+      if (e.target.id === "srgdev-dpu_bf-back") {
+        if (p.curDP > 0) p.curDP--;
+      } else {
+        if (p.curDP < p.maxDP) p.curDP++;
+        if (p.curDP === p.maxDP) {
+          e.target.setAttribute('disabled', '');
+        } else {
+          e.target.removeAttribute('disabled');
+        }
+      }
+    } else {
+      p = e;
+    }
+    if (p.curDP === 0) {
+      p.firstElementChild.setAttribute('disabled', '');
+    } else {
+      p.firstElementChild.removeAttribute('disabled');
+    }
+    if (p.curDP === p.maxDP) {
+      p.lastElementChild.setAttribute('disabled', '');
+    } else {
+      p.lastElementChild.removeAttribute('disabled');
+    }
+
+    // TODO: find first not empty and select it ?
+
+    document.getElementById("srgdev-dpu_main-date").style.left = "-" + p.curDP * 5 * 4.6 + "em";
+    document.getElementById("srgdev-dpu_main-cont").scrollLeft = 0;
+  }
+  function addSwipe(cont, bfc) {
+    cont.touchInfo = {
+      x: 0,
+      y: 0,
+      id: -1
+    };
+    cont.bfNav = bfc;
+    cont.addEventListener("touchstart", swipeStart);
+    cont.addEventListener("touchend", swipeEnd);
+  }
+
+  /** @param {TouchEvent} e */
+  function swipeStart(e) {
+    if (e.changedTouches !== undefined && e.changedTouches.length > 0) {
+      const cc = e.changedTouches[0];
+      const ti = this.touchInfo;
+      ti.x = cc.clientX;
+      ti.y = cc.clientY;
+      ti.id = cc.identifier;
+    }
+  }
+
+  /** @param {TouchEvent} e */
+  function swipeEnd(e) {
+    if (e.changedTouches !== undefined && e.changedTouches.length > 0) {
+      const cc = e.changedTouches[0];
+      const ti = this.touchInfo;
+      if (cc.identifier === ti.id) {
+        const dx = cc.clientX - ti.x | 0;
+        const dy = cc.clientY - ti.y | 0;
+        let t = dx >> 31;
+        let dx_abc = dx + t ^ t;
+        t = dy >> 31;
+        if (dx_abc > (dy + t ^ t) && dx_abc > 50) {
+          if (dx < 0) {
+            // swipe left - push next
+            this.bfNav.lastElementChild.click();
+          } else {
+            // swipe right - push prev
+            this.bfNav.firstElementChild.click();
+          }
+        }
+      }
+      ti.id = -1;
+    }
+  }
+  function makeDpu(pps) {
+    const PPS_NWEEKS = "nbrWeeks";
+    const PPS_EMPTY = "showEmpty";
+    const PPS_FNED = "startFNED";
+    const PPS_WEEKEND = "showWeekends";
+    const PPS_SHOWTZ = "showTZ";
+    const PPS_TIME2 = "time2Cols";
+    const PPS_END_TIME = "endTime";
+    let pso = {};
+    let ta = pps.split('.');
+    for (let a, l = ta.length, i = 0; i < l; i++) {
+      a = ta[i].split(':');
+      pso[a[0]] = +a[1];
+    }
+    let min_days = 7 * pso[PPS_NWEEKS];
+    let s = document.getElementById('srgdev-ncfp_sel-hidden');
+    if (s.getAttribute("data-state") !== '2') {
+      console.log("data-state: ", s.getAttribute("data-state"));
+      return;
+    }
+    // There is a problem with js translations without Vue, so just get it from PHP for now
+    const dpuTrHdr = s.getAttribute("data-hdr");
+    const dpuTrBack = s.getAttribute("data-tr-back");
+    const dpuTrNext = s.getAttribute("data-tr-next");
+    let mn;
+    let dn;
+    if (window.monthNames !== undefined) {
+      mn = window.monthNames;
+    } else {
+      mn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    }
+    if (window.dayNames !== undefined) {
+      dn = window.dayNames;
+    } else {
+      dn = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    }
+    const has_intl = window.Intl && typeof window.Intl === "object";
+    const lang = document.documentElement.hasAttribute('data-locale') ? [document.documentElement.getAttribute('data-locale').replaceAll('_', '-'), document.documentElement.lang] : [document.documentElement.lang];
+    let btz = undefined;
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams) {
+      const tzParam = urlParams.get('tz');
+      if (tzParam) {
+        try {
+          btz = Intl.DateTimeFormat(lang, {
+            timeZone: tzParam
+          }).resolvedOptions().timeZone;
+        } catch (e) {
+          console.error("can not parse tz param:", e);
+          btz = undefined;
+        }
+      }
+    }
+    let tf;
+    if (has_intl) {
+      let f = new Intl.DateTimeFormat(lang, {
+        hour: "numeric",
+        minute: "2-digit",
+        timeZone: btz
+      });
+      tf = f.format;
+    } else {
+      tf = function (d) {
+        return d.toLocaleTimeString();
+      };
+    }
+    let df;
+    if (has_intl) {
+      let f = new Intl.DateTimeFormat(lang, {
+        month: "long",
+        timeZone: btz
+      });
+      df = f.format;
+    } else {
+      df = function (d) {
+        return mn[d.getMonth()];
+      };
+    }
+    let wf;
+    if (has_intl) {
+      let f = new Intl.DateTimeFormat(lang, {
+        weekday: "short",
+        timeZone: btz
+      });
+      wf = f.format;
+    } else {
+      wf = function (d) {
+        return dn[d.getDay()];
+      };
+    }
+    let wft;
+    if (has_intl) {
+      let f = new Intl.DateTimeFormat(lang, {
+        weekday: "short",
+        month: "long",
+        day: "2-digit",
+        timeZone: btz
+      });
+      wft = f.format;
+    } else {
+      wft = function (d) {
+        return d.toDateString();
+      };
+    }
+    let wff;
+    if (has_intl) {
+      let f = new Intl.DateTimeFormat(lang, {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+        timeZone: btz
+      });
+      wff = f.format;
+    } else {
+      wff = function (d) {
+        return d.toLocaleDateString();
+      };
+    }
+    let dta = [];
+    let tzn = undefined;
+    if (has_intl) {
+      try {
+        tzn = Intl.DateTimeFormat(lang, {
+          timeZone: btz
+        }).resolvedOptions().timeZone;
+      } catch (e) {
+        console.log("no Intl timeZone ", e);
+      }
+      if (typeof tzn !== "string") tzn = undefined;
+    }
+    for (let md = new Date(), tzo, tzi, t, tStr, atStr, sp, sp2, dur, dur_idx, ts, endTime = pso[PPS_END_TIME], ia = s.getAttribute("data-info").split(','), l = ia.length, i = 0, ds; i < l; i++) {
+      //TODO: remove 'U' from ds ????
+      ds = ia[i];
+      sp = ds.indexOf(":", 8);
+      md.setTime(+ds.substr(1, sp - 1) * 1000);
+      tzo = md.getTimezoneOffset();
+
+      // t='U' in simple and external modes
+      // t='T' in template mode
+      t = ds.charAt(0);
+      tStr = atStr = tf(md);
+      ts = md.getTime();
+      dur = null;
+      if (endTime === 1 || t === 'T') {
+        sp2 = sp + 1;
+        // sp must be the pos of the last used ':'
+        sp = ds.indexOf(":", sp2);
+        if (t === "T") {
+          dur = ds.substr(sp2, sp - sp2).split(';').map(n => n | 0);
+          if (endTime === 1 && dur.length < 2) {
+            md.setTime(ts + dur[0] * 60000);
+            tStr += ' - ' + tf(md);
+          }
+        } else {
+          sp2 = +ds.substr(sp2, sp - sp2) * 1000;
+          md.setTime(sp2);
+          tStr += ' - ' + tf(md);
+        }
+      }
+      if (tzn !== undefined) {
+        tzi = t + tzn;
+      } else {
+        // fallback, needs to be done for every date because of daylight savings
+        let ao = Math.abs(tzo);
+        let h = Math.floor(ao / 60);
+        let m = ao - h * 60;
+        // offset sign is reversed https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
+        tzi = t + (tzo > 0 ? '-' : '+') + (h < 10 ? '0' + h : h) + (m < 10 ? '0' + m : m);
+      }
+      sp++;
+      sp2 = ds.indexOf(":", sp);
+      dta[i] = {
+        rts: ts,
+        d: ds.substr(sp, sp2 - sp),
+        t: ds.substr(sp2 + 2),
+        // +2 is for ":_"
+        dur: dur,
+        tzi: tzi,
+        time: tStr,
+        timeAt: atStr
+      };
+    }
+    dta.sort((a, b) => a.rts > b.rts ? 1 : -1);
+    dta.push({
+      rts: 0,
+      d: "",
+      t: "",
+      tzi: "",
+      time: ""
+    }); //last option to finalize the loop
+
+    // console.log(dta)
+    s.dataRef = dta;
+    let l = dta.length;
+    let cont = document.createElement('div');
+    cont.id = "srgdev-dpu_main-cont";
+    cont.className = "srgdev-dpu-bkr-cls";
+    let lcd = document.createElement('div');
+    lcd.id = "srgdev-dpu_main-header";
+    lcd.appendChild(document.createTextNode(dpuTrHdr));
+    cont.appendChild(lcd);
+    let lcdBF = document.createElement('div');
+    lcdBF.maxDP = 0;
+    lcdBF.curDP = 0;
+    lcdBF.tuClass = "";
+    lcdBF.id = "srgdev-dpu_bf-cont";
+    lcdBF.appendChild(document.createElement("span"));
+    lcdBF.appendChild(document.createElement("span"));
+    lcdBF.firstElementChild.id = "srgdev-dpu_bf-back";
+    lcdBF.firstElementChild.appendChild(document.createTextNode(dpuTrBack));
+    lcdBF.firstElementChild.addEventListener("click", prevNextDPU);
+    lcdBF.firstElementChild.setAttribute('disabled', '');
+    lcdBF.lastElementChild.id = "srgdev-dpu_bf-next";
+    lcdBF.lastElementChild.appendChild(document.createTextNode(dpuTrNext));
+    lcdBF.lastElementChild.addEventListener("click", prevNextDPU);
+    cont.appendChild(lcdBF);
+    lcd = document.createElement('div');
+    lcd.id = "srgdev-dpu_main-date";
+    lcd.className = "srgdev-dpu-bkr-cls";
+    lcd.style.left = "0em";
+    addSwipe(lcd, lcdBF);
+    cont.appendChild(lcd);
+    let lcTime = document.createElement('div');
+    lcTime.id = "srgdev-dpu_main-time";
+    cont.appendChild(lcTime);
+    let lcc = 0;
+    let rccN = 5;
+    let d = new Date();
+    let lastUD = -1;
+    let an = -1;
+    let do_break = false;
+    let makeDateCont = function (d, is_empty) {
+      let e1 = document.createElement("div");
+      e1.id = "srgdev-dpu_dc" + lcc + (is_empty ? "e" : "");
+      e1.className = 'srgdev-dpu-date-cont' + (is_empty ? " srgdev-dpu-dc-empty" : "");
+      let e2 = document.createElement('span');
+      e2.className = d.getDay() !== 0 ? 'srgdev-dpu-date-wd' : 'srgdev-dpu-date-wd srgdev-dpu-date-wd-sunday';
+      e2.appendChild(document.createTextNode(wf(d)));
+      e1.appendChild(e2);
+      e2 = document.createElement('span');
+      e2.className = 'srgdev-dpu-date-dn';
+      e2.appendChild(document.createTextNode(d.getDate()));
+      e1.appendChild(e2);
+      e2 = document.createElement('span');
+      e2.className = 'srgdev-dpu-date-md';
+      e2.appendChild(document.createTextNode(df(d)));
+      e1.appendChild(e2);
+      e1.addEventListener('click', dateClickOrFocus);
+      if (!is_empty) {
+        e1.setAttribute("tabindex", "0");
+        e1.addEventListener('focus', dateClickOrFocus);
+        e1.addEventListener('keyup', dateKeyboard);
+      }
+      if (lcc === rccN) {
+        rccN += 5;
+        lcdBF.maxDP++;
+        if (lcc > min_days) do_break = true;
+      }
+      ++lcc;
+      return e1;
+    };
+    let td = new Date();
+    td.setSeconds(1);
+    td.setMinutes(0);
+    td.setHours(0);
+    if (pso[PPS_EMPTY] === 1 && pso[PPS_FNED] === 0) {
+      // Need to prepend empty days so the week start on Monday
+      let ts = dta[0].rts;
+      d.setTime(ts);
+      d.setSeconds(1);
+      d.setMinutes(0);
+      d.setHours(0);
+      let fd = d.getDay();
+      if (fd > 0 && fd < 6) {
+        td.setTime(d.getTime() - 86400000 * (fd - 1));
+      }
+    }
+    let tu_class;
+    // Time columns
+    if (pso[PPS_TIME2] === 0 || pso[PPS_END_TIME] === 1) {
+      lcdBF.tuClass = 'srgdev-dpu-time-unit' + (pso[PPS_END_TIME] === 1 ? "_tn" : "");
+    } else {
+      lcdBF.tuClass = 'srgdev-dpu-time-unit2';
+    }
+    let getTzName;
+    if (pso[PPS_SHOWTZ] === 1 && has_intl) {
+      // getTzName=
+      getTzName = function (d) {
+        const short = d.toLocaleDateString(lang, {
+          timeZone: btz
+        });
+        const full = d.toLocaleDateString(lang, {
+          timeZone: btz,
+          timeZoneName: 'long'
+        });
+
+        // Trying to remove date from the string in a locale-agnostic way
+        const shortIndex = full.indexOf(short);
+        if (shortIndex >= 0) {
+          const trimmed = full.substring(0, shortIndex) + full.substring(shortIndex + short.length);
+
+          // by this time `trimmed` should be the timezone's name with some punctuation -
+          // trim it from both sides
+          return trimmed.replace(/^[\s,.\-:;]+|[\s,.\-:;]+$/g, '');
+        } else {
+          return full;
+        }
+      };
+    } else {
+      getTzName = function () {
+        return '';
+      };
+    }
+    const timePages = [];
+    for (let tl, ts, ti, ets, tts, te, pe, elt, dto, tzn, timePage, i = 0; i < l; i++) {
+      dto = dta[i];
+      ts = dto.rts;
+      if (ts === 0) break;
+      d.setTime(ts);
+      let ud = (d.getMonth() + 1) * 100 + d.getDate();
+      if (lastUD !== ud) {
+        // if(do_break) break
+
+        // Show "empty" days ...
+        tts = td.getTime();
+        td.setTime(d.getTime());
+        td.setSeconds(1);
+        td.setMinutes(0);
+        td.setHours(0);
+        ets = td.getTime();
+        if (pso[PPS_EMPTY] === 1) {
+          while (tts < ets) {
+            td.setTime(tts);
+
+            // Deal with weekends
+            if (pso[PPS_WEEKEND] === 0) {
+              // only show weekdays
+              ti = td.getDay();
+            } else {
+              // show all days
+              ti = 1;
+            }
+            if (ti !== 0 && ti !== 6) {
+              lcd.appendChild(makeDateCont(td, true));
+              timePages.push({
+                lccIdx: -1,
+                dataDm: '',
+                timeItems: [],
+                fullDate: '',
+                tzn: ''
+              });
+              if (do_break) break;
+            }
+            tts += 86400000;
+          }
+        }
+        if (do_break) {
+          d = td;
+          break;
+        }
+        td.setTime(tts + 86400000);
+        te = makeDateCont(d, false);
+        if (an === -1) {
+          an = lcc - 1;
+          te.setAttribute('data-active', '');
+          lcd.firstAvailble = te;
+        }
+        lcd.appendChild(te);
+
+        //
+        timePage = {
+          lccIdx: lcc - 1,
+          dataDm: wft(d),
+          timeItems: [],
+          fullDate: wff(d),
+          tzn: getTzName(d)
+        };
+        timePages.push(timePage);
+        lastUD = ud;
+      }
+      timePage.timeItems.push({
+        dpuClickID: i,
+        timeAt: dto.timeAt,
+        time: dto.time,
+        title: dto.t
+      });
+    }
+
+    // fill in empty space
+    d.setSeconds(0);
+    d.setMinutes(0);
+    d.setHours(1);
+    d.setTime(d.getTime() + 86400000);
+    lcTime.timePages = timePages;
+    cont.addEventListener("click", timeClick);
+    cont.addEventListener('keyup', function (evt) {
+      if (isSpaceKey(evt) || isEnterKey(evt)) {
+        timeClick(evt);
+      }
+    });
+    document.getElementById('srgdev-ncfp_sel_cont').appendChild(cont);
+    lcd.firstAvailble.click();
+    lcd.curActive = an.toString();
+
+    // let's make sure the correct date square is shown...
+    // ... 5 is the number of available slots per pagination page
+    let ti = Math.floor(an / 5);
+    if (ti > 0) {
+      lcdBF.curDP = ti;
+      prevNextDPU(lcdBF);
+    }
+
+    // close button is added last because we want it last for keyboard focus
+    lcdBF = document.createElement('div');
+    lcdBF.id = "srgdev-dpu_main-hdr-icon";
+    lcdBF.className = "icon-close";
+    lcdBF.addEventListener('click', function () {
+      selClose(null);
+    });
+    lcdBF.role = "button";
+    lcdBF.addEventListener('keyup', function (evt) {
+      if (isSpaceKey(evt) || isEnterKey(evt)) {
+        selClose(null);
+      }
+    });
+    lcdBF.setAttribute("tabindex", "0");
+    cont.appendChild(lcdBF);
+  }
+
+  /**
+   * @param {KeyboardEvent} evt
+   * @return {boolean}
+   */
+  function isSpaceKey(evt) {
+    return evt.key === " " || evt.code === "Space" || evt.keyCode === 32;
+  }
+
+  /**
+   * @param {KeyboardEvent} evt
+   * @return {boolean}
+   */
+  function isEnterKey(evt) {
+    return evt.key === "Enter" || evt.code === "Enter" || evt.keyCode === 13;
+  }
+})();
+/******/ })()
+;
+//# sourceMappingURL=form.js.map

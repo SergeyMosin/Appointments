@@ -2,7 +2,7 @@
 
 namespace OCA\Appointments\Migration;
 
-use OC\OCS\Exception;
+use OCA\Appointments\AppInfo\Application;
 use OCA\Appointments\Backend\BackendUtils;
 use OCP\IConfig;
 use OCP\Migration\IOutput;
@@ -11,47 +11,39 @@ use OCP\Migration\IRepairStep;
 class InstallHook implements IRepairStep
 {
 
-    private $config;
-    private $appName;
-    private $userId;
+    private IConfig $config;
 
-    /**
-     * @param $AppName
-     * @param $UserId
-     * @param IConfig $config
-     */
-    public function __construct($AppName,
-        $UserId,
-                                IConfig $config) {
+    public function __construct(IConfig $config)
+    {
         $this->config = $config;
-        $this->appName = $AppName;
-        $this->userId = $UserId;
     }
 
     /**
      * @inheritDoc
      */
-    public function getName() {
+    public function getName()
+    {
         return 'Install hook for Appointments app';
     }
 
     /**
      * @inheritDoc
      */
-    public function run(IOutput $output) {
+    public function run(IOutput $output)
+    {
         try {
-            if (empty($this->config->getAppValue($this->appName, 'hk'))) {
-                $this->config->setAppValue($this->appName, 'hk',
+            if (empty($this->config->getAppValue(Application::APP_ID, 'hk'))) {
+                $this->config->setAppValue(Application::APP_ID, 'hk',
                     bin2hex(openssl_random_pseudo_bytes(32, $is_good)));
             }
-            if (empty($this->config->getAppValue($this->appName, 'tiv'))) {
-                $this->config->setAppValue($this->appName, 'tiv',
+            if (empty($this->config->getAppValue(Application::APP_ID, 'tiv'))) {
+                $this->config->setAppValue(Application::APP_ID, 'tiv',
                     bin2hex(openssl_random_pseudo_bytes(
                         openssl_cipher_iv_length(BackendUtils::CIPHER),
                         $is_good)));
             }
-        } catch (Exception $e) {
-            \OC::$server->getLogger()->error("openssl_get_cipher_methods: " . var_export(openssl_get_cipher_methods(), true));
+        } catch (\Throwable $e) {
+            $output->warning("error: " . $e->getMessage());
             throw $e;
         }
         $output->info("appointments InstallHook finished");

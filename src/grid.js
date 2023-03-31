@@ -4,7 +4,7 @@ function _apptGridMaker() {
     const MPH = 3600000
     const MP5 = 300000
     // Start at 6AM
-    // !! CHANGE 'const SH' in components/TemplateApptOptions.vue too !!!
+    // !! CHANGE 'const SH' in components too !!!
     const SH = 0 // if this is lest than 4 there might be a problem on daylight savings day.
     // 17 hours
     const DH = 24
@@ -547,7 +547,7 @@ function _apptGridMaker() {
      */
     function makeColumns(n) {
         for (let al = mData.apptLayer, elm,
-                 w = Math.floor((100 - 1) / n) + "%", i = 0; i < n; i++) {
+                 w = getColumnWidth(n), i = 0; i < n; i++) {
             elm = document.createElement('div')
             elm.className = sP + "appt_columns"
             elm.style.width = w
@@ -555,6 +555,10 @@ function _apptGridMaker() {
             mData.mc_cols[i] = elm
             mData.mc_elm[i] = []
         }
+    }
+
+    function getColumnWidth(n){
+        return Math.floor((100 - 1) / n) + "%"
     }
 
     function makeHGrid() {
@@ -698,6 +702,39 @@ function _apptGridMaker() {
         return wa
     }
 
+	function makeHeader(startDate, n) {
+		const w = getColumnWidth(n)
+		let tff
+		if (window.Intl && typeof window.Intl === "object") {
+			const lang = document.documentElement.hasAttribute('data-locale')
+				? [document.documentElement.getAttribute('data-locale').replaceAll('_', '-'), document.documentElement.lang]
+				: [document.documentElement.lang]
+
+			tff = (mData.mode === MODE_SIMPLE
+				? new Intl.DateTimeFormat(lang, {weekday: "short", month: "2-digit", day: "2-digit"})
+				: new Intl.DateTimeFormat(lang, {weekday: "long"})).format
+		} else {
+			const _sl = mData.mode === MODE_SIMPLE ? 10 : 3
+			// noinspection JSUnusedLocalSymbols
+			tff = function (d) {
+				return d.toDateString().slice(0, _sl)
+			}
+		}
+
+		const header = []
+		for (let ts = startDate.getTime(), i = 0; i < n; i++) {
+			header[i] = {
+				ts: ts,
+				txt: tff(startDate),
+				w: w,
+				n: '8',// Initial value for "add" input must be string
+				hasAppts: false,
+			}
+			ts = startDate.setDate(startDate.getDate() + 1)
+		}
+		return header
+	}
+
     return {
         MODE_SIMPLE: MODE_SIMPLE,
         MODE_TEMPLATE: MODE_TEMPLATE,
@@ -712,6 +749,7 @@ function _apptGridMaker() {
         updateAppt: updateAppt,
         getTemplateData: getTemplateData,
         scrollGridToTopElm: scrollGridToTopElm,
+	      makeHeader:makeHeader
     }
 }
 

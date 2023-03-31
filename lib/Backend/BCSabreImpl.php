@@ -59,7 +59,7 @@ class BCSabreImpl implements IBackendConnector
     /**
      * @inheritDoc
      */
-    function queryRangePast($calIds, $end, $only_empty, $delete)
+    function queryRangePast($calIds, $end, $only_empty, $delete, $delete_test = false)
     {
 
         $cc = count($calIds);
@@ -84,11 +84,15 @@ class BCSabreImpl implements IBackendConnector
         $cnt = 0;
 
         if ($delete) {
-            // let's make easier for the DavListener...
-            HintVar::setHint(HintVar::APPT_SKIP);
 
+            if ($delete_test === false) {
+                // let's make easier for the DavListener...
+                HintVar::setHint(HintVar::APPT_SKIP);
+            } else {
+                HintVar::setHint(HintVar::APPT_CANCEL);
+            }
             // Cleanup hash table
-            if ($only_empty === false) {
+            if ($only_empty === false && $delete_test === false) {
                 $cutoff_str = $end->modify('-35 days')->format(BackendUtils::FLOAT_TIME_FORMAT);
                 $query = $this->db->getQueryBuilder();
 
@@ -437,7 +441,7 @@ class BCSabreImpl implements IBackendConnector
             try {
                 $start->setTimezone(new \DateTimeZone($ti[BackendUtils::TMPL_TZ_NAME]));
             } catch (\Exception $e) {
-                $this->logger->warning('Can not set timezone template');
+                $this->logger->warning('Can not set template timezone');
             }
         }
 

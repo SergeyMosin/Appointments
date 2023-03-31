@@ -42,12 +42,28 @@ class DirController extends Controller
      */
     function index()
     {
-        list($userId) = $this->utils->verifyToken(
+        list($userId, $pageId) = $this->utils->verifyToken(
             $this->request->getParam("token"), $this->config);
         if ($userId === null) {
             return new NotFoundResponse();
         }
-        return $this->showIndex($userId, true);
+        return $this->showIndex($userId, $pageId, true);
+    }
+
+    /**
+     * @NoAdminRequired
+     * @PublicPage
+     * @NoCSRFRequired
+     * @throws \ErrorException
+     */
+    function indexV1()
+    {
+        list($userId, $pageId) = $this->utils->verifyToken(
+            $this->request->getParam("token") . "dir", $this->config);
+        if ($userId === null) {
+            return new NotFoundResponse();
+        }
+        return $this->showIndex($userId, $pageId, true);
     }
 
     /**
@@ -57,38 +73,43 @@ class DirController extends Controller
      */
     function indexBase()
     {
-        return $this->showIndex($this->userId, false);
+        $pageId = $this->request->getParam("p", "d0");
+        if (empty($pageId)) {
+            $pageId = 'd0';
+        }
+        return $this->showIndex($this->userId, $pageId, false);
     }
 
-    function showIndex($userId, $isPublic)
+
+    private function showIndex(string $userId, string $pageId, bool $isPublic)
     {
+
+        if (!$this->utils->loadSettingsForUserAndPage($userId, $pageId)) {
+            return new NotFoundResponse();
+        }
+
+        $settings = $this->utils->getUserSettings('', '');
         if ($isPublic) {
 //            Util::addStyle($this->appName, "form-xl-screen");
-            $pps = $this->utils->getUserSettings(BackendUtils::KEY_PSN, $userId);
             $s = $this->config->getUserValue($userId, $this->appName, "cn" . "k");
             $f = "hex" . "dec";
             $tr = new PublicTemplateResponse($this->appName, 'public/directory' . (($s === "" || (($f(substr($s, 0, 0b100)) >> 0xf) & 1) !== (($f(substr($s, 0b100, 4)) >> 12) & 1)) ? "_" : ""), []);
-            if (!empty($pps[BackendUtils::PSN_PAGE_TITLE])) {
-                $tr->setHeaderTitle($pps[BackendUtils::PSN_PAGE_TITLE]);
+            if (!empty($settings[BackendUtils::PSN_PAGE_TITLE])) {
+                $tr->setHeaderTitle($settings[BackendUtils::PSN_PAGE_TITLE]);
             } else {
-                $tr->setHeaderTitle("Nextcloud | Appointments Directory");
-            }
-            if (!empty($pps[BackendUtils::PSN_PAGE_SUB_TITLE])) {
-                $tr->setHeaderDetails($pps[BackendUtils::PSN_PAGE_SUB_TITLE]);
+                $theme = new \OCP\Defaults();
+                // TRANSLATORS %s is the server name. Example: Private Cloud Appointments Directory
+                $tr->setHeaderTitle($this->l->t("%s Appointments Directory", [$theme->getEntity()]));
             }
             $tr->setFooterVisible(false);
         } else {
             $tr = new TemplateResponse($this->appName, 'public/directory', [], 'base');
         }
 
-        $pps = $this->utils->getUserSettings(
-            BackendUtils::KEY_PSN, $userId);
-
         $tr->setParams([
-            'links' => $this->utils->getUserSettings(
-                BackendUtils::KEY_DIR, $userId),
+            'links' => $settings[BackendUtils::DIR_ITEMS],
             'application' => $this->l->t('Appointments'),
-            'appt_inline_style' => $this->utils->getInlineStyle($userId, $pps, $this->config)
+            'appt_inline_style' => $this->utils->getInlineStyle($userId, $settings, $this->config)
         ]);
 
         return $tr;
