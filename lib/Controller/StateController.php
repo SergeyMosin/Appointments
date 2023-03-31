@@ -1,4 +1,5 @@
-<?php /** @noinspection PhpMissingParamTypeInspection */
+<?php
+/** @noinspection PhpMissingParamTypeInspection */
 
 /** @noinspection PhpComposerExtensionStubsInspection */
 
@@ -29,7 +30,8 @@ class StateController extends Controller
                                 IConfig $config,
                                 IL10N $l,
                                 BackendUtils $utils,
-                                BackendManager $backendManager) {
+                                BackendManager $backendManager)
+    {
         parent::__construct($AppName, $request);
 
         $this->userId = $UserId;
@@ -47,7 +49,8 @@ class StateController extends Controller
      * @throws \ErrorException
      * @noinspection PhpFullyQualifiedNameUsageInspection
      */
-    public function index() {
+    public function index()
+    {
         $action = $this->request->getParam("a");
         $r = new SendDataResponse();
         $r->setStatus(400);
@@ -142,7 +145,7 @@ class StateController extends Controller
                                 $vo_changed = true;
                             }
                         }
-                    } else if ($pageId === "new") {
+                    } elseif ($pageId === "new") {
                         // creating new
                         if (count($pgs) > 2) {
                             $d = $this->config->getUserValue($this->userId, $this->appName, "c" . "nk");
@@ -172,7 +175,7 @@ class StateController extends Controller
 //                                    BackendUtils::KEY_MPS . $pageId, "");
                             }
                         }
-                    } else if ($pageId === "delete" && $vo["page"] !== "p0") {
+                    } elseif ($pageId === "delete" && $vo["page"] !== "p0") {
                         $_pid = $vo["page"];
 
                         // check and delete directory page link if url for this page is used
@@ -242,7 +245,9 @@ class StateController extends Controller
             }
         } elseif ($action === 'get_puburi') {
             $pageId = $this->request->getParam("p", 'p0');
-            if (empty($pageId)) $pageId = 'p0';
+            if (empty($pageId)) {
+                $pageId = 'p0';
+            }
 
             $pgs = $this->utils->getUserSettings(
                 BackendUtils::KEY_PAGES, $this->userId);
@@ -260,7 +265,7 @@ class StateController extends Controller
             if (count($dir) === 0) {
                 $r->setData('{"info":"' . $this->l->t("Please setup the directory page first.") . '"}');
                 $r->setStatus(202);
-            } else if (empty($c) || (($go($gos($c, 0, 0b100)) >> 15) & 0b1) !== (($go($gos($c, 0b100, 4)) >> 0xC) & 0b1)) {
+            } elseif (empty($c) || (($go($gos($c, 0, 0b100)) >> 15) & 0b1) !== (($go($gos($c, 0b100, 4)) >> 0xC) & 0b1)) {
                 $r->setData('{"contrib":"' . $this->l->t("Directory page") . '"}');
                 $r->setStatus(200 + 2);
             } else {
@@ -293,12 +298,12 @@ class StateController extends Controller
             } else {
                 $r->setStatus(500);
             }
-        } else if ($action === "get_use_nc_theme") {
+        } elseif ($action === "get_use_nc_theme") {
             $a = $this->utils->getUserSettings(
                 BackendUtils::KEY_PSN, $this->userId);
             $r->setData($a[BackendUtils::PSN_USE_NC_THEME] === true ? "true" : "false");
             $r->setStatus(200);
-        } else if ($action === "set_use_nc_theme") {
+        } elseif ($action === "set_use_nc_theme") {
             $value = $this->request->getParam("d");
             if ($value !== null) {
 
@@ -319,7 +324,7 @@ class StateController extends Controller
                     $r->setStatus(500);
                 }
             }
-        } else if ($action === "get_uci") {
+        } elseif ($action === "get_uci") {
             $a = $this->utils->getUserSettings(
                 BackendUtils::KEY_ORG, $this->userId);
             $j = json_encode($a);
@@ -329,7 +334,7 @@ class StateController extends Controller
             } else {
                 $r->setStatus(500);
             }
-        } else if ($action === "set_uci") {
+        } elseif ($action === "set_uci") {
             $d = $this->request->getParam("d");
             if ($d !== null && strlen($d) < 512) {
                 if ($this->utils->setUserSettings(
@@ -342,7 +347,7 @@ class StateController extends Controller
                     $r->setStatus(500);
                 }
             }
-        } else if ($action === "get_eml") {
+        } elseif ($action === "get_eml") {
             $a = $this->utils->getUserSettings(
                 BackendUtils::KEY_EML, $this->userId);
             $j = json_encode($a);
@@ -352,7 +357,7 @@ class StateController extends Controller
             } else {
                 $r->setStatus(500);
             }
-        } else if ($action === "set_eml") {
+        } elseif ($action === "set_eml") {
             $value = $this->request->getParam("d");
             if ($value !== null && !isset($value[1280])) {
                 if ($this->utils->setUserSettings(
@@ -365,14 +370,14 @@ class StateController extends Controller
                     $r->setStatus(500);
                 }
             }
-        } else if ($action === "get_tz") {
+        } elseif ($action === "get_tz") {
 
             $calId = $this->request->getParam("p", "-1");
             $tz = $this->utils->getCalendarTimezone($this->userId, $this->config, $this->bc->getCalendarById($calId, $this->userId));
             $r->setData($tz->getName());
             $r->setStatus(200);
 
-        } else if ($action === "get_cls") {
+        } elseif ($action === "get_cls") {
             $a = $this->utils->getUserSettings(
                 BackendUtils::KEY_CLS, $this->userId);
 
@@ -388,7 +393,7 @@ class StateController extends Controller
             } else {
                 $r->setStatus(500);
             }
-        } else if ($action === "set_cls") {
+        } elseif ($action === "set_cls") {
             $value = $this->request->getParam("d");
             if ($value !== null) {
 
@@ -401,7 +406,7 @@ class StateController extends Controller
                     $r->setStatus(500);
                 }
             }
-        } else if ($action === "get_mps") {
+        } elseif ($action === "get_mps") {
             $pageId = $this->request->getParam("p");
             // must have a pageId for this action
             if (!empty($pageId) && $this->MPExists($pageId)) {
@@ -427,7 +432,7 @@ class StateController extends Controller
                 }
             }
 
-        } else if ($action === "set_mps") {
+        } elseif ($action === "set_mps") {
             $pageId = $this->request->getParam("p");
             $value = $this->request->getParam("d");
             // must have a pageId for this action
@@ -441,7 +446,7 @@ class StateController extends Controller
                     $r->setStatus(500);
                 }
             }
-        } else if ($action === "get_dir") {
+        } elseif ($action === "get_dir") {
             $a = $this->utils->getUserSettings(
                 BackendUtils::KEY_DIR, $this->userId);
             $j = json_encode($a);
@@ -452,7 +457,7 @@ class StateController extends Controller
                 $r->setStatus(500);
             }
 
-        } else if ($action === "set_dir") {
+        } elseif ($action === "set_dir") {
             $value = $this->request->getParam("d");
             if ($value !== null) {
 
@@ -464,7 +469,7 @@ class StateController extends Controller
             } else {
                 $r->setStatus(500);
             }
-        } else if ($action === "set_k") {
+        } elseif ($action === "set_k") {
             $value = $this->request->getParam("d");
             $sts = 500;
             if ($value !== null) {
@@ -479,10 +484,10 @@ class StateController extends Controller
                 }
             }
             $r->setStatus($sts);
-        } else if ($action === "get_k") {
+        } elseif ($action === "get_k") {
             $r->setData($this->config->getUserValue($this->userId, $this->appName, "cnk") !== "" ? "_" : "");
             $r->setStatus(200);
-        } else if ($action === "get_talk") {
+        } elseif ($action === "get_talk") {
             $a = $this->utils->getUserSettings(
                 BackendUtils::KEY_TALK, $this->userId);
             $j = json_encode($a);
@@ -492,7 +497,7 @@ class StateController extends Controller
             } else {
                 $r->setStatus(500);
             }
-        } else if ($action === "set_talk") {
+        } elseif ($action === "set_talk") {
             $value = $this->request->getParam("d");
             if ($value !== null) {
                 // check if canTalk
@@ -515,7 +520,7 @@ class StateController extends Controller
                     }
                 }
             }
-        } else if ($action === 'set_fi') {
+        } elseif ($action === 'set_fi') {
             $value = $this->request->getParam("d", '');
             if (empty($value) || $value === '[]') {
                 $v = "[]";
@@ -530,7 +535,9 @@ class StateController extends Controller
                 } else {
                     $h = $this->makeFormComponent($a[0], 0);
                     $v = json_encode($a);
-                    if ($v === false) $v = "[]";
+                    if ($v === false) {
+                        $v = "[]";
+                    }
                     $r->setStatus(200);
                 }
             }
@@ -540,12 +547,14 @@ class StateController extends Controller
 
             $r->setData($h);
 
-        } else if ($action === 'get_fi') {
+        } elseif ($action === 'get_fi') {
             $a = $this->utils->getUserSettings(
                 BackendUtils::KEY_FORM_INPUTS_JSON, $this->userId);
 
             // TODO: this needs to be done for all elements
-            if (isset($a[0]) && isset($a[0]['name'])) unset($a[0]['name']);
+            if (isset($a[0]) && isset($a[0]['name'])) {
+                unset($a[0]['name']);
+            }
 
             $j = json_encode($a);
             if ($j !== false) {
@@ -554,7 +563,7 @@ class StateController extends Controller
             } else {
                 $r->setStatus(500);
             }
-        } else if ($action === 'get_t_data') {
+        } elseif ($action === 'get_t_data') {
             $pageId = $this->request->getParam("p");
             if ($pageId !== null) {
                 $a = $this->utils->getTemplateData($pageId, $this->userId);
@@ -566,7 +575,7 @@ class StateController extends Controller
                     $r->setStatus(500);
                 }
             }
-        } else if ($action === 'set_t_data') {
+        } elseif ($action === 'set_t_data') {
             $pageId = $this->request->getParam("p");
             $value = $this->request->getParam("d");
             if ($pageId !== null && $this->utils->setTemplateData($pageId, $value, $this->userId) === true) {
@@ -574,7 +583,7 @@ class StateController extends Controller
             } else {
                 $r->setStatus(500);
             }
-        } else if ($action === 'get_t_tz') {
+        } elseif ($action === 'get_t_tz') {
             $pageId = $this->request->getParam("p");
             if (!empty($pageId)) {
 //                $a = $this->utils->getUserSettings(BackendUtils::KEY_TMPL_INFO, $this->userId);
@@ -589,7 +598,7 @@ class StateController extends Controller
             } else {
                 $r->setStatus(400);
             }
-        } else if ($action === 'get_reminder') {
+        } elseif ($action === 'get_reminder') {
             $a = $this->utils->getUserSettings(BackendUtils::KEY_REMINDERS, $this->userId);
             $a[BackendUtils::REMINDER_BJM] = $this->config->getAppValue("core", "backgroundjobs_mode");
             $cliUrl = $this->config->getSystemValue('overwrite.cli.url');
@@ -603,7 +612,7 @@ class StateController extends Controller
             } else {
                 $r->setStatus(500);
             }
-        } else if ($action === 'set_reminder') {
+        } elseif ($action === 'set_reminder') {
             $d = $this->request->getParam("d");
             if ($d !== null) {
                 $va = json_decode($d, true);
@@ -643,7 +652,9 @@ class StateController extends Controller
                                 break;
                             }
                             $seconds = $item[BackendUtils::REMINDER_DATA_TIME];
-                            if ($seconds === "0") continue;
+                            if ($seconds === "0") {
+                                continue;
+                            }
                             if (!in_array($seconds, $allowed_values)) {
                                 $err = true;
                                 break;
@@ -674,7 +685,7 @@ class StateController extends Controller
                     }
                 }
             }
-        } else if ($action === "get_dbg") {
+        } elseif ($action === "get_dbg") {
             $a = $this->utils->getUserSettings(
                 BackendUtils::KEY_DEBUGGING, $this->userId);
             $j = json_encode($a);
@@ -684,7 +695,7 @@ class StateController extends Controller
             } else {
                 $r->setStatus(500);
             }
-        } else if ($action === "set_dbg") {
+        } elseif ($action === "set_dbg") {
             $d = $this->request->getParam("d");
             if ($d !== null && strlen($d) < 256) {
                 if ($this->utils->setUserSettings(
@@ -701,7 +712,8 @@ class StateController extends Controller
         return $r;
     }
 
-    private function makeFormComponent(&$obj, $index = 0) {
+    private function makeFormComponent(&$obj, $index = 0)
+    {
         $r = '';
         $fields = [];
         if (is_array($obj) && array_key_exists(0, $obj) && is_array($obj[0])) {
@@ -720,9 +732,12 @@ class StateController extends Controller
         }
     }
 
-    private function makeFormField(&$obj, $index = 0) {
+    private function makeFormField(&$obj, $index = 0)
+    {
         $r = '';
-        if (!isset($obj['tag']) || !isset($obj['label'][2])) return $r;
+        if (!isset($obj['tag']) || !isset($obj['label'][2])) {
+            return $r;
+        }
         $obj['label'] = htmlspecialchars(trim($obj['label']), ENT_QUOTES, 'UTF-8');
         $tail = '';
         $ph = '';
@@ -730,11 +745,15 @@ class StateController extends Controller
         switch ($obj['tag']) {
             /** @noinspection PhpMissingBreakStatementInspection */
             case 'input':
-                if (!isset($obj['type'])) $obj['type'] = 'text';
+                if (!isset($obj['type'])) {
+                    $obj['type'] = 'text';
+                }
                 $tail = ' type="' . ($obj['type'] === 'number' ? 'number' : 'text') . '" maxlength="512"/>';
                 $class = 'srgdev-ncfp-form-input';
             case 'textarea':
-                if (!isset($obj['placeholder'])) return $r;
+                if (!isset($obj['placeholder'])) {
+                    return $r;
+                }
                 $ph = ' placeholder="' . htmlspecialchars($obj['placeholder'], ENT_QUOTES, 'UTF-8') . '"';
                 if (empty($tail)) {
                     $tail = ' maxlength="512"></textarea>';
@@ -744,7 +763,9 @@ class StateController extends Controller
             case 'select':
                 if (!isset($obj['options'])
                     || gettype($obj['options']) !== 'array'
-                    || count($obj['options']) === 0) return $r;
+                    || count($obj['options']) === 0) {
+                    return $r;
+                }
                 $tail = '>';
                 foreach ($obj['options'] as $option) {
                     if (isset($option[1])) {
@@ -752,7 +773,9 @@ class StateController extends Controller
                         $tail .= '<option class="srgdev-ncfp-form-option" value="' . $o . '">' . $o . '</option>';
                     }
                 }
-                if (!isset($tail[1])) return $r;
+                if (!isset($tail[1])) {
+                    return $r;
+                }
                 $tail .= '</select>';
                 $class = 'srgdev-ncfp-form-input srgdev-ncfp-form-select';
                 break;
@@ -779,7 +802,8 @@ class StateController extends Controller
      * @return bool
      * @noinspection PhpDocMissingThrowsInspection
      */
-    private function setClsMps($key, $def, $value, $pageId) {
+    private function setClsMps($key, $def, $value, $pageId)
+    {
 
         $o_cms = $this->utils->getUserSettings(
             $key, $this->userId);
@@ -911,7 +935,8 @@ class StateController extends Controller
      * @param array $a can be CLS or MPS
      * @return array
      */
-    private function getMoreProps($a) {
+    private function getMoreProps($a)
+    {
         if ($a[BackendUtils::CLS_TS_MODE] === "0"
             && $a[BackendUtils::CLS_MAIN_ID] !== "-1") {
 
@@ -925,19 +950,22 @@ class StateController extends Controller
         return $a;
     }
 
-    private function getPubURI($pageId) {
+    private function getPubURI($pageId)
+    {
         $pb = $this->utils->getPublicWebBase();
         $tkn = $this->utils->getToken($this->userId, $pageId);
         return $pb . '/' . $this->utils->pubPrx($tkn, false) . 'form' . chr(31)
             . $pb . '/' . $this->utils->pubPrx($tkn, true) . 'form';
     }
 
-    private function MPExists($p) {
+    private function MPExists($p)
+    {
         $mps = $this->utils->getUserSettings(BackendUtils::KEY_MPS_COL, $this->userId);
         return $mps !== null && array_key_exists($p, $mps);
     }
 
-    private function purgeStaleConflictCalsAndSubs(&$cls) {
+    private function purgeStaleConflictCalsAndSubs(&$cls)
+    {
         $currentCalIds = $cls[BackendUtils::CLS_TMM_MORE_CALS];
         if (count($currentCalIds) > 0) {
             // we have calendars to check/filter
