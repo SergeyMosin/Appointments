@@ -187,8 +187,7 @@ body .icon-appt-private-mode-page.icon-white {
   --icon-appt-private-mode-page-white: var(--original-icon-appt-private-mode-page-white);
 }
 
-[data-themes*=dark],
-.theme--dark{
+[data-themes*=dark] {
   --icon-appt-public-page-white: var(--original-icon-appt-public-page-dark);
   --icon-appt-public-page-dark: var(--original-icon-appt-public-page-white);
   --icon-appt-public-pages-white: var(--original-icon-appt-public-pages-dark);
