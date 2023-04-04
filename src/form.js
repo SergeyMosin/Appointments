@@ -367,9 +367,9 @@
 	function dateKeyboard(evt) {
 		if (isSpaceKey(evt) || isEnterKey(evt)) {
 			// select first available time
-			const timeCont = document.getElementById('srgdev-dpu_tc' + this.parentElement.curActive)
-			if (timeCont && timeCont.hasAttribute('data-active')) {
-				timeCont.lastChild.firstChild.focus()
+			const timeCont = document.getElementById('srgdev-dpu_tc_wrap')
+			if (timeCont) {
+				timeCont.firstChild.focus()
 			}
 		}
 	}
@@ -379,6 +379,11 @@
 		let n = this.id.slice(13)
 		let c = this.parentElement.curActive
 		if (c === n) return
+
+		// special case: initial programmatic click event
+		if (!c) {
+			c = n
+		}
 
 		const nbr = +(('' + n).replace("e", ''))
 		// scroll dateCont into view when using keyboard
@@ -393,12 +398,66 @@
 			.removeAttribute('data-active');
 		document.getElementById('srgdev-dpu_dc' + n).setAttribute('data-active', '')
 		this.parentElement.curActive = n
-		if (n.slice(-1) === 'e') n = 'e'
-		if (c.slice(-1) === 'e') c = 'e'
 
-		document.getElementById('srgdev-dpu_tc' + c)
-			.removeAttribute('data-active');
-		document.getElementById('srgdev-dpu_tc' + n).setAttribute('data-active', '')
+		if (n.slice(-1) === 'e') n = 'e'
+		// if (c.slice(-1) === 'e') c = 'e'
+
+		const timeCont = document.getElementById("srgdev-dpu_main-time")
+		if (!timeCont) {
+			throw new Error("srgdev-dpu_main-time missing")
+		}
+		while (timeCont.firstChild) {
+			timeCont.removeChild(timeCont.lastChild);
+		}
+		if (n !== 'e') {
+
+			const timePage = timeCont.timePages[n]
+
+			let elm = document.createElement('div')
+			elm.className = "srgdev-dpu-tc-full-date"
+			elm.appendChild(document.createTextNode(timePage.fullDate))
+			// time zone
+			if (timePage.tzn !== '') {
+				const elm1 = document.createElement('div')
+				elm1.className = "srgdev-dpu-tc-timezone"
+				elm1.appendChild(document.createTextNode(timePage.tzn))
+				elm.appendChild(elm1)
+			}
+			timeCont.appendChild(elm)
+
+			const tuClass = bfCont.tuClass
+
+			const itemsCont = document.createElement('div')
+			itemsCont.className = 'srgdev-dpu-tc-tu-wrap'
+			itemsCont.id = "srgdev-dpu_tc_wrap"
+			itemsCont.setAttribute('data-dm', timePage.dataDm)
+
+			timePage.timeItems.forEach(item => {
+
+				const elm = document.createElement("span")
+				elm.className = tuClass
+				elm.dpuClickID = item.dpuClickID
+				elm.timeAt = item.timeAt
+				elm.appendChild(document.createTextNode(item.time))
+				if (item.title !== "") {
+					const elm1 = document.createElement("span")
+					elm1.className = "srgdev-dpu-appt-title"
+					elm1.appendChild(document.createTextNode(item.title))
+					elm.appendChild(elm1)
+				}
+				elm.setAttribute("tabindex", "0")
+				itemsCont.appendChild(elm)
+			})
+
+			timeCont.appendChild(itemsCont)
+		} else {
+			// empty time cont
+			const elm = document.createElement('div')
+			elm.id = "srgdev-dpu_tce"
+			elm.className = 'srgdev-dpu-time-cont'
+			elm.appendChild(document.createTextNode(document.getElementById('srgdev-ncfp_sel-hidden').getAttribute("data-tr-not-available")))
+			timeCont.appendChild(elm)
+		}
 
 		this.parentElement.parentElement.scrollLeft = 0
 
@@ -574,7 +633,6 @@
 		const dpuTrHdr = s.getAttribute("data-hdr")
 		const dpuTrBack = s.getAttribute("data-tr-back")
 		const dpuTrNext = s.getAttribute("data-tr-next")
-		const dpuTrNA = s.getAttribute("data-tr-not-available")
 
 		let mn
 		let dn
@@ -745,6 +803,7 @@
 		let lcdBF = document.createElement('div')
 		lcdBF.maxDP = 0
 		lcdBF.curDP = 0
+		lcdBF.tuClass = ""
 		lcdBF.id = "srgdev-dpu_bf-cont"
 		lcdBF.appendChild(document.createElement("span"))
 		lcdBF.appendChild(document.createElement("span"))
@@ -836,10 +895,10 @@
 		let tu_class
 		// Time columns
 		if (pso[PPS_TIME2] === 0 || pso[PPS_END_TIME] === 1) {
-			tu_class = 'srgdev-dpu-time-unit' +
+			lcdBF.tuClass = 'srgdev-dpu-time-unit' +
 				(pso[PPS_END_TIME] === 1 ? "_tn" : "")
 		} else {
-			tu_class = 'srgdev-dpu-time-unit2'
+			lcdBF.tuClass = 'srgdev-dpu-time-unit2'
 		}
 
 		let getTzName
@@ -869,8 +928,9 @@
 			}
 		}
 
+		const timePages = []
 
-		for (let tl, ts, ti, ets, tts, te, pe, elt, dto, tzn, i = 0; i < l; i++) {
+		for (let tl, ts, ti, ets, tts, te, pe, elt, dto, tzn, timePage, i = 0; i < l; i++) {
 			dto = dta[i]
 			ts = dto.rts
 			if (ts === 0) break
@@ -905,6 +965,15 @@
 
 						if (ti !== 0 && ti !== 6) {
 							lcd.appendChild(makeDateCont(td, true))
+
+							timePages.push({
+								lccIdx: -1,
+								dataDm: '',
+								timeItems: [],
+								fullDate: '',
+								tzn: ''
+							})
+
 							if (do_break) break
 						}
 						tts += 86400000;
@@ -926,46 +995,25 @@
 				}
 				lcd.appendChild(te)
 
-				te = document.createElement('div')
-				te.id = "srgdev-dpu_tc" + (lcc - 1)
-				te.className = 'srgdev-dpu-time-cont'
-
-				pe = document.createElement('div')
-				pe.className = "srgdev-dpu-tc-full-date"
-				pe.appendChild(document.createTextNode(wff(d)))
-				// time zone
-				tzn = getTzName(d)
-				if (tzn !== '') {
-					elt = document.createElement('div')
-					elt.className = "srgdev-dpu-tc-timezone"
-					elt.appendChild(document.createTextNode(tzn))
-					pe.appendChild(elt)
+				//
+				timePage = {
+					lccIdx: lcc - 1,
+					dataDm: wft(d),
+					timeItems: [],
+					fullDate: wff(d),
+					tzn: getTzName(d)
 				}
-				te.appendChild(pe)
-
-				pe = document.createElement('div')
-				pe.setAttribute('data-dm', wft(d))
-				pe.className = "srgdev-dpu-tc-tu-wrap"
-				te.appendChild(pe)
-
-				lcTime.appendChild(te)
+				timePages.push(timePage)
 
 				lastUD = ud
 			}
-			te = document.createElement("span")
-			te.className = tu_class
-			te.dpuClickID = i
-			te.timeAt = dto.timeAt
-			// te.appendChild(document.createTextNode(tf(d)))
-			te.appendChild(document.createTextNode(dto.time))
-			if (dto.t !== "") {
-				tl = document.createElement("span")
-				tl.className = "srgdev-dpu-appt-title"
-				tl.appendChild(document.createTextNode(dto.t))
-				te.appendChild(tl)
-			}
-			te.setAttribute("tabindex", "0")
-			pe.appendChild(te)
+
+			timePage.timeItems.push({
+				dpuClickID: i,
+				timeAt: dto.timeAt,
+				time: dto.time,
+				title: dto.t
+			})
 		}
 
 		// fill in empty space
@@ -974,15 +1022,7 @@
 		d.setHours(1)
 		d.setTime(d.getTime() + 86400000)
 
-		// Make empty time cont
-		let te = document.createElement('div')
-		te.id = "srgdev-dpu_tce"
-		te.className = 'srgdev-dpu-time-cont'
-		te.appendChild(document.createTextNode(dpuTrNA))
-		lcTime.appendChild(te)
-
-		lcTime.firstElementChild.setAttribute('data-active', '')
-		lcd.curActive = an.toString()
+		lcTime.timePages = timePages
 
 		cont.addEventListener("click", timeClick)
 		cont.addEventListener('keyup', function (evt) {
@@ -991,6 +1031,9 @@
 			}
 		})
 		document.getElementById('srgdev-ncfp_sel_cont').appendChild(cont)
+
+		lcd.firstAvailble.click()
+		lcd.curActive = an.toString()
 
 		// let's make sure the correct date square is shown...
 		// ... 5 is the number of available slots per pagination page

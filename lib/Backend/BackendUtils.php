@@ -10,6 +10,7 @@ namespace OCA\Appointments\Backend;
 
 use OCA\Appointments\AppInfo\Application;
 use OCP\DB\Exception;
+use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IURLGenerator;
 use Psr\Log\LoggerInterface;
@@ -1968,6 +1969,55 @@ class BackendUtils
         } else {
             return $attendeeName;
         }
+    }
+
+    public function getInlineStyle(string $userId, array $pps, IConfig $config): string
+    {
+
+        $autoStyle = "";
+
+        if ($pps[BackendUtils::PSN_USE_NC_THEME]
+            && $config->getAppValue('theming', 'disable-user-theming', 'no') !== 'yes'
+            && class_exists("OCA\Theming\ThemingDefaults")) { // NC25+ ...
+            $appointmentsBackgroundImage="var(--image-background-default)";
+            $appointmentsBackgroundColor = "transparent";
+
+            if (class_exists(\OCA\Theming\Service\BackgroundService::class)) {
+                try {
+                    /** @var \OCP\App\IAppManager $appManager */
+                    $appManager = \OC::$server->get(\OCP\App\IAppManager::class);
+                    if ($appManager->isEnabledForUser('theming', $userId)) {
+
+                        $themingBackground = $config->getUserValue($userId, 'theming', 'background', 'default');
+                        if ($themingBackground === 'default') {
+                            // nc26
+                            $themingBackground = $config->getUserValue($userId, 'theming', 'background_image', 'default');
+                        }
+                        if (isset(\OCA\Theming\Service\BackgroundService::SHIPPED_BACKGROUNDS[$themingBackground])) {
+                            /** @var IURLGenerator $urlGenerator */
+                            $urlGenerator = \OC::$server->get(IURLGenerator::class);
+                            $appointmentsBackgroundImage = "url('" . $urlGenerator->linkTo('theming', "/img/background/$themingBackground") . "');";
+                        } elseif ($themingBackground[0] === "#" || substr($themingBackground, 0, 3) === "rgb") {
+                            $appointmentsBackgroundImage = "none";
+                            $appointmentsBackgroundColor = $themingBackground;
+                        } else {
+                            // nc26
+                            $themingBackground = $config->getUserValue($userId, 'theming', 'background_color');
+                            if (!empty($themingBackground)) {
+                                $appointmentsBackgroundImage = "none";
+                                $appointmentsBackgroundColor = $themingBackground;
+                            }
+                        }
+                    }
+                } catch (\Throwable $e) {
+                    $this->logger->warning($e->getMessage());
+                }
+            }
+
+            /** @noinspection CssUnresolvedCustomProperty */
+            $autoStyle = '<style>body{background-image:' . $appointmentsBackgroundImage . ';background-color:' . $appointmentsBackgroundColor . '}#header{background:none}#srgdev-ncfp_frm,.srgdev-appt-info-cont,.appt-dir-lnk{background-color:var(--color-main-background-blur);-webkit-backdrop-filter:var(--filter-background-blur);backdrop-filter:var(--filter-background-blur);border-radius:10px;padding:2em}#srgdev-dpu_main-cont{border-radius:8px}@media only screen and (max-width:390px){#srgdev-ncfp_frm{padding:1em;margin-left:0;margin-right:0}.srgdev-ncfp-wrap{font-size:105%}}</style>';
+        }
+        return $autoStyle . $pps[BackendUtils::PSN_PAGE_STYLE];
     }
 
 }

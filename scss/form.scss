@@ -508,20 +508,11 @@ input.srgdev-ncfp-form-input:invalid,
 }
 
 #srgdev-dpu_main-time {
-  position: relative;
   border-top: 1px solid $color-border;
   border-top: 1px solid var(--color-border);
-}
-
-.srgdev-dpu-time-cont {
-  //display: none;
-  //position: absolute;
-  display: none;
-  width: 100%;
-  overflow: hidden;
-  background-color: $color-main-background;
-  background-color: var(--color-main-background);
-  //transition: transform .5s;
+  height: 21em;
+  display: flex;
+  flex-direction: column;
 }
 
 // empty time cont
@@ -536,20 +527,15 @@ input.srgdev-ncfp-form-input:invalid,
   color: var(--color-text-lighter);
 }
 
-.srgdev-dpu-time-cont[data-active] {
-  //transform: translateX(100%);
-  z-index: 510;
-  display: block;
-  //height: 100%;
-}
-
 .srgdev-dpu-tc-full-date {
   text-align: center;
-  margin: .75em;
+  padding: .75em;
+  box-sizing: border-box;
   font-size: 120%;
   font-weight: bold;
   color: $color-main-text;
   color: var(--color-main-text);
+  flex: 0;
 }
 
 .srgdev-dpu-tc-timezone {
@@ -562,8 +548,9 @@ input.srgdev-ncfp-form-input:invalid,
 .srgdev-dpu-tc-tu-wrap {
   overflow-y: scroll;
   width: 100%;
-  height: 14.5em;
+  //height: 14.5em;
   text-align: center;
+  flex: 1;
 }
 
 .srgdev-dpu-time-unit_tn,
