@@ -5,7 +5,7 @@
     <name>Appointments</name>
     <summary>Book appointments into your calendar via secure online form.</summary>
     <description><![CDATA[Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link.]]></description>
-    <version>1.14.13</version>
+    <version>1.14.14</version>
     <licence>agpl</licence>
     <author mail="sergey@srgdev.com" homepage="https://www.srgdev.com">Sergey Mosin</author>
     <namespace>Appointments</namespace>

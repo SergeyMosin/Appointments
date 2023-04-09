@@ -1,3 +1,7 @@
+## v1.14.14 - 2023-04-09
+### Changed
+- Buffers are applied to ALL events now (instead of just "Appointments") - #328
+
 ## v1.14.13 - 2023-03-25
 ### Added
 - auto-style is applied to directory page now
