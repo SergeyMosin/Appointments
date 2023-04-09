@@ -14,6 +14,7 @@ OC.L10N.register(
     "Loading" : "ການໂຫຼດ",
     "Add" : "ເພີ່ມ",
     "OK" : "ຕົກລົງ",
+    "Advanced Settings" : "ຕັ້ງ​ຄ່າ​ຂັ້ນ​ສູງ",
     "30 minutes" : "30 ນາທີ",
     "1 hour" : "1 ຊົ່ວໂມງ",
     "4 hours" : "4 ຊົ່ວໂມງ",
