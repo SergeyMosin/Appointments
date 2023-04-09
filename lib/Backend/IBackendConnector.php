@@ -20,9 +20,10 @@ interface IBackendConnector
      * @param \DateTime $start should have user's timezone
      * @param \DateTime $end should have user's timezone
      * @param string $mode 1char(mode)+userId or 'no_url'
+     * @param string|null $pageId
      * @return string|null
      */
-    function queryRange($calId, $start, $end, $mode);
+    function queryRange($calId, $start, $end, $mode, $pageId);
 
     /**
      * @param array $cms
