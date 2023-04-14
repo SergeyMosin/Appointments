@@ -1,6 +1,7 @@
 OC.L10N.register(
     "appointments",
     {
+    "Meeting Type" : "Math o Gyfarfod",
     "Available" : "Ar gael?",
     "Confirm" : "Cadarnhau",
     "Cancel" : "Diddymu",
