@@ -1,7 +1,6 @@
 <template>
   <Content app-name="appointments" :class="{'srgdev-slider-open':sbShow!==0}">
-    <AppNavigation
-        :style="[vLessThan25?{'border-right': '1px solid var(--color-border-dark)'}:{}]">
+    <AppNavigation>
       <template #list :class="{'sb_disable':stateInProgress || visibleSection===1}">
         <AppNavigationItem
             :class="{'sb_disable_nav-item':sbShow!==0}"
@@ -119,7 +118,6 @@
         <li style="margin-left: 12px">
           <NcCheckboxRadioSwitch
               :checked="useNcTheme"
-              v-if="vLessThan25===false"
               :loading="stateInProgress"
               @update:checked="toggleUseNcTheme">
             &nbsp;{{ t('appointments', 'Auto Style') }}
@@ -515,7 +513,6 @@ export default {
     return {
 
       useNcTheme: false,
-      vLessThan25: false,
 
       pubPage: '',
 
@@ -640,19 +637,6 @@ export default {
   },
 
   beforeMount() {
-
-    const ncVersion = OC?.config?.version
-    if (ncVersion && ncVersion.indexOf("24.") === 0) {
-      // NC24: we need to add some CSS vars for compatibility with "@nextcloud/vue": "^7.0.1"
-      const root = document.documentElement
-      root.style.setProperty('--default-grid-baseline', '4px')
-      root.style.setProperty('--default-clickable-area', '44px')
-      root.style.setProperty('--body-container-margin', '1px')
-      // root.style.setProperty('--body-container-radius', 'calc(var(--default-clickable-area) / 2 + var(--default-grid-baseline) * 2 - 2px)')
-      root.style.setProperty('--body-height', 'calc(100% - env(safe-area-inset-bottom) - 50px - var(--body-container-margin))')
-      this.vLessThan25 = true
-    }
-
     this.resetCalInfo()
   },
 

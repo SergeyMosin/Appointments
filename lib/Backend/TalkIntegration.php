@@ -1,7 +1,9 @@
-<?php /** @noinspection PhpFullyQualifiedNameUsageInspection */
+<?php
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 
 
 namespace OCA\Appointments\Backend;
+
 /**
  * TODO: Interface...
  *
@@ -35,7 +37,8 @@ class TalkIntegration
      * @param array $tlk
      * @param BackendUtils $utils
      */
-    public function __construct($tlk, $utils) {
+    public function __construct($tlk, $utils)
+    {
         $this->utils = $utils;
         $this->tlk = $tlk;
         $this->config = \OC::$server->get(\OCP\IConfig::class);
@@ -43,7 +46,8 @@ class TalkIntegration
 
 
     /** @return \OCA\Talk\Manager|null */
-    private function getTalkManager() {
+    private function getTalkManager()
+    {
         try {
             /** @type \OCA\Talk\Manager $tm */
             $tm = \OC::$server->get(\OCA\Talk\Manager::class);
@@ -61,7 +65,8 @@ class TalkIntegration
      * @param string $userId
      * @return string room token[chr(31)password], "" = error, "-" = error (should inform user via description)
      */
-    function createRoomForEvent(string $attendeeName, $dateTime, string $userId): string {
+    function createRoomForEvent(string $attendeeName, $dateTime, string $userId): string
+    {
         if ($dateTime->isFloating() === true) {
             $this->logError("Talk room error: TalkIntegration - floating timezones are not supported");
             return "-";
@@ -70,34 +75,19 @@ class TalkIntegration
         $roomName = $this->formatRoomName($attendeeName, $dateTime, $userId);
         $room = null;
 
-        # TODO: refactor after NC24 eol
-        $nc25roomService = null;
 
+        $rs = \OC::$server->get(\OCA\Talk\Service\RoomService::class);
         try {
-            /** @type \OCA\Talk\Service\RoomService $rs */
-            $rs = \OC::$server->get(\OCA\Talk\Service\RoomService::class);
-            if (method_exists($rs, 'setLobby') && method_exists($rs, 'setPassword')) {
-                // we are in NC25+
-                $nc25roomService = $rs;
+            /**
+             * @type IUserManager $um
+             */
+            $um = \OC::$server->get(IUserManager::class);
+            $user = $um->get($userId);
+            if ($user !== null) {
+                $room = $rs->createConversation(Room::TYPE_PUBLIC, $roomName, $user);
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logError($e);
-            $rs = null;
-        }
-
-        if ($rs !== null) {
-            try {
-                /**
-                 * @type IUserManager $um
-                 */
-                $um = \OC::$server->get(IUserManager::class);
-                $user = $um->get($userId);
-                if ($user !== null) {
-                    $room = $rs->createConversation(Room::TYPE_PUBLIC, $roomName, $user);
-                }
-            } catch (\Throwable $e) {
-                $this->logError($e);
-            }
         }
 
         if ($room === null) {
@@ -113,15 +103,17 @@ class TalkIntegration
         $sss = "su" . 'bstr';
         if (!empty($roomToken) && $c !== '' && (($hd($sss($c, 0, 0b100)) >> 14) & 1) === (($hd($sss($c, 4, 4)) >> 6) & 1) && isset($c[5])) {
             if ($this->tlk[BackendUtils::TALK_LOBBY] === true) {
-                $this->setLobby($room, $nc25roomService, null);
-            } else if ($this->tlk[BackendUtils::TALK_PASSWORD] === true) {
-                $p = $this->setPassword($room, $nc25roomService);
-                if ($p === '-') {
-                    // error
-                    $roomToken = "-";
-                } else {
-                    // ok
-                    $roomToken .= chr(31) . $p;
+                $this->setLobby($room, $rs, null);
+            } else {
+                if ($this->tlk[BackendUtils::TALK_PASSWORD] === true) {
+                    $p = $this->setPassword($room, $rs);
+                    if ($p === '-') {
+                        // error
+                        $roomToken = "-";
+                    } else {
+                        // ok
+                        $roomToken .= chr(31) . $p;
+                    }
                 }
             }
         }
@@ -130,52 +122,35 @@ class TalkIntegration
     }
 
     /**
-     *  NC24 wants room
-     *  NC25 wants both room and roomService
-     *
      * @param Room $room
-     * @param RoomService|null $roomService - non null for NC25+
+     * @param RoomService $roomService
      * @param \DateTime|null $dateTime
      */
-    private function setLobby(Room $room, ?RoomService $roomService, ?\DateTime $dateTime) {
+    private function setLobby(Room $room, RoomService $roomService, ?\DateTime $dateTime)
+    {
         // $room->setLobby wants utc timezone ?!?
         // @see OCA\Talk\Controller\WebinarController->setLobby
 //        $_dt=new \DateTime(null,new \DateTimeZone('UTC'));
 //        $_dt->setTimestamp($dateTime->getTimestamp());
         // Lets not do timer for now..., davListener needs update if this is implemented
 
-        if ($roomService !== null) {
-            // NC25+
-            $roomService->setLobby($room, Webinary::LOBBY_NON_MODERATORS, null);
-        } else {
-            //NC24
-            $room->setLobby(Webinary::LOBBY_NON_MODERATORS, null);
-        }
+        $roomService->setLobby($room, Webinary::LOBBY_NON_MODERATORS, null);
     }
 
     /**
-     * NC24 just wants room
-     * NC25 wants both room and roomService
-     *
-     *
      * @param Room $room
-     * @param RoomService|null $roomService - non null for NC25+
+     * @param RoomService $roomService
      * @return string
      */
-    private function setPassword(Room $room, ?RoomService $roomService): string {
+    private function setPassword(Room $room, RoomService $roomService): string
+    {
         $p = substr(str_replace(['+', '/', '='], '', base64_encode(md5(rand(), true))), 0, 11);
 
         $status = false;
-        if ($roomService !== null) {
-            // NC25+
-            try {
-                $status = $roomService->setPassword($room, $p);
-            } catch (HintException $e) {
-                $this->logError("error: roomService->setPassword failed: ".$e->getMessage());
-            }
-        } else {
-            // NC24
-            $status = $room->setPassword($p);
+        try {
+            $status = $roomService->setPassword($room, $p);
+        } catch (HintException $e) {
+            $this->logError("error: roomService->setPassword failed: " . $e->getMessage());
         }
 
         if ($status === true) {
@@ -195,11 +170,14 @@ class TalkIntegration
      * @param string $pref optional prefix
      * @return bool
      */
-    function renameRoom(string $token, string $guestName, $dateTime, string $userId, string $pref = ""): bool {
+    function renameRoom(string $token, string $guestName, $dateTime, string $userId, string $pref = ""): bool
+    {
         $tm = $this->getTalkManager();
         $r = false;
         if ($tm !== null) {
-            if (!empty($pref)) $pref = trim($pref) . ' ';
+            if (!empty($pref)) {
+                $pref = trim($pref) . ' ';
+            }
             try {
                 $room = $tm->getRoomByToken($token);
                 $r = $room->setName($pref .
@@ -219,9 +197,12 @@ class TalkIntegration
      * @param string $userId
      * @return string
      */
-    private function formatRoomName(string $guestName, \Sabre\VObject\Property\ICalendar\DateTime $dateTime, string $userId): string {
+    private function formatRoomName(string $guestName, \Sabre\VObject\Property\ICalendar\DateTime $dateTime, string $userId): string
+    {
         $f = $this->tlk[BackendUtils::TALK_NAME_FORMAT];
-        if ($this->config->getUserValue($userId, $this->appName, 'cnk') === '') $f = 0;
+        if ($this->config->getUserValue($userId, $this->appName, 'cnk') === '') {
+            $f = 0;
+        }
         if ($f < 2) {
             $dt = $this->formatDateTime($dateTime, $userId);
             if ($f === 0) {
@@ -239,7 +220,8 @@ class TalkIntegration
      * @param string $roomToken
      * @return string
      */
-    function getRoomURL(string $roomToken): string {
+    function getRoomURL(string $roomToken): string
+    {
         /** @type IURLGenerator $ug */
         $ug = \OC::$server->get(IURLGenerator::class);
         return $ug->getAbsoluteURL("index.php/call/" . $roomToken);
@@ -251,7 +233,8 @@ class TalkIntegration
      * @return string
      * @noinspection PhpDocMissingThrowsInspection
      */
-    private function formatDateTime(\Sabre\VObject\Property\ICalendar\DateTime $dateTime, string $userId): string {
+    private function formatDateTime(\Sabre\VObject\Property\ICalendar\DateTime $dateTime, string $userId): string
+    {
         if ($dateTime->isFloating()) {
             $this->logError("Talk room error: TalkIntegration - floating timezones are not supported");
             return "";
@@ -273,7 +256,8 @@ class TalkIntegration
     /**
      * @param string $token
      */
-    function deleteRoom(string $token) {
+    function deleteRoom(string $token)
+    {
         $tm = $this->getTalkManager();
         if ($tm !== null) {
             try {
@@ -288,7 +272,8 @@ class TalkIntegration
         }
     }
 
-    static public function canTalk(): bool {
+    static public function canTalk(): bool
+    {
         try {
             /** @type \OCA\Talk\Manager $tm */
             $tm = \OC::$server->get(\OCA\Talk\Manager::class);
@@ -302,7 +287,8 @@ class TalkIntegration
         }
     }
 
-    private function logError(string $msg) {
+    private function logError(string $msg)
+    {
         /** @var \Psr\Log\LoggerInterface $logger */
         $logger = \OC::$server->get(\Psr\Log\LoggerInterface::class);
         $logger->error($msg);
