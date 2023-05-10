@@ -2084,6 +2084,13 @@ class BackendUtils
             $appointmentsBackgroundImage = "var(--image-background-default)";
             $appointmentsBackgroundColor = "transparent";
 
+            // use system-wide default background color if provided
+            $backgroundMime = $config->getAppValue('theming', 'backgroundMime');
+            if ($backgroundMime === 'backgroundColor') {
+                $appointmentsBackgroundImage = "none";
+                $appointmentsBackgroundColor = $config->getAppValue('theming', 'color');
+            }
+
             try {
                 /** @var \OCP\App\IAppManager $appManager */
                 $appManager = \OC::$server->get(\OCP\App\IAppManager::class);
