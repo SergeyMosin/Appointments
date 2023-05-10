@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2023-05-09 04:07+0000\n"
+"POT-Creation-Date: 2023-05-10 04:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,45 +17,45 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: /app/lib/Backend/BackendUtils.php:547
+#: /app/lib/Backend/BackendUtils.php:577
 msgid "Guest password:"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:563
+#: /app/lib/Backend/BackendUtils.php:593
 msgid "Talk integration error: check logs"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1235
+#: /app/lib/Backend/BackendUtils.php:1304
 msgid "Meeting Type"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1236
+#: /app/lib/Backend/BackendUtils.php:1305
 msgid "Select meeting type"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1237
+#: /app/lib/Backend/BackendUtils.php:1306
 msgid "In-person meeting"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1238
+#: /app/lib/Backend/BackendUtils.php:1307
 msgid "Online (audio/video)"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1537
+#: /app/lib/Backend/BackendUtils.php:1629
 msgid "Your email address is required for this operation."
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1540
+#: /app/lib/Backend/BackendUtils.php:1632
 msgid ""
 "A location, address or URL is required for this operation. Check User/"
 "Organization settings."
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1547
+#: /app/lib/Backend/BackendUtils.php:1639
 msgid "Can't find your name. Check User/Organization settings."
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:1551
+#: /app/lib/Backend/BackendUtils.php:1643
 msgid "Available"
 msgstr ""
 
@@ -104,7 +104,7 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#. TRANSLATORS vue:205
+#. TRANSLATORS vue:203
 #. TRANSLATORS onents/TemplateApptOptions.vue:37
 #. TRANSLATORS onents/settings/DirectoryPageSettings.vue:77
 #: /app/lib/Backend/DavListener.php:557 /app/lib/Backend/DavListener.php:752
@@ -247,6 +247,7 @@ msgstr ""
 #: /app/lib/Controller/PageController.php:640
 #: /app/lib/Controller/PageController.php:956
 #: /app/lib/Controller/PageController.php:1068
+#: /app/lib/Controller/PageController.php:1338
 #: /app/specialAppInfoFakeDummyForL10nScript.php:2
 msgid "Appointments"
 msgstr ""
@@ -382,27 +383,27 @@ msgstr ""
 msgid "Selected calendar not found"
 msgstr ""
 
-#: /app/lib/Controller/StateController.php:139
+#: /app/lib/Controller/StateController.php:142
 msgid "Action failed. Select calendar(s) first."
 msgstr ""
 
-#: /app/lib/Controller/StateController.php:150
+#: /app/lib/Controller/StateController.php:153
 msgid "More than 2 additional pages (10 maximum)"
 msgstr ""
 
-#: /app/lib/Controller/StateController.php:166
+#: /app/lib/Controller/StateController.php:169
 msgid "Page not added: 10 pages maximum"
 msgstr ""
 
-#: /app/lib/Controller/StateController.php:261
+#: /app/lib/Controller/StateController.php:266
 msgid "Please setup the directory page first."
 msgstr ""
 
-#: /app/lib/Controller/StateController.php:264
+#: /app/lib/Controller/StateController.php:269
 msgid "Directory page"
 msgstr ""
 
-#: /app/lib/Controller/StateController.php:503
+#: /app/lib/Controller/StateController.php:508
 msgid "Can't find Talk app. Is it installed and enabled ?"
 msgstr ""
 
@@ -421,51 +422,51 @@ msgid ""
 "confirm or cancel their appointments via an email link."
 msgstr ""
 
-#. TRANSLATORS vue:13
+#. TRANSLATORS vue:12
 #: /app/specialVueFakeDummyForL10nScript.js:2
 #: /app/specialVueFakeDummyForL10nScript.js:14
 msgid "[Online]"
 msgstr ""
 
-#. TRANSLATORS vue:14
+#. TRANSLATORS vue:13
 #: /app/specialVueFakeDummyForL10nScript.js:4
 #: /app/specialVueFakeDummyForL10nScript.js:16
 msgid "[Disabled]"
 msgstr ""
 
-#. TRANSLATORS vue:27
+#. TRANSLATORS vue:26
 #: /app/specialVueFakeDummyForL10nScript.js:6
 #: /app/specialVueFakeDummyForL10nScript.js:18
 msgid "Share Online"
 msgstr ""
 
-#. TRANSLATORS vue:34
+#. TRANSLATORS vue:33
 #: /app/specialVueFakeDummyForL10nScript.js:8
 #: /app/specialVueFakeDummyForL10nScript.js:20
 msgid "Stop Sharing"
 msgstr ""
 
-#. TRANSLATORS vue:37
+#. TRANSLATORS vue:36
 #: /app/specialVueFakeDummyForL10nScript.js:10
 #: /app/specialVueFakeDummyForL10nScript.js:22
 #: /app/specialVueFakeDummyForL10nScript.js:30
 msgid "Show URL/link"
 msgstr ""
 
-#. TRANSLATORS vue:46
+#. TRANSLATORS vue:45
 #: /app/specialVueFakeDummyForL10nScript.js:12
 msgid "Add New Page"
 msgstr ""
 
-#. TRANSLATORS vue:85
+#. TRANSLATORS vue:84
 #. TRANSLATORS onents/settings/DirectoryPageSettings.vue:27
 #: /app/specialVueFakeDummyForL10nScript.js:24
 #: /app/specialVueFakeDummyForL10nScript.js:214
 msgid "Delete"
 msgstr ""
 
-#. TRANSLATORS vue:94
-#. TRANSLATORS vue:1279
+#. TRANSLATORS vue:93
+#. TRANSLATORS vue:1263
 #. TRANSLATORS onents/settings/SettingsSlideBar.vue:18
 #: /app/specialVueFakeDummyForL10nScript.js:26
 #: /app/specialVueFakeDummyForL10nScript.js:94
@@ -473,39 +474,39 @@ msgstr ""
 msgid "Directory Page"
 msgstr ""
 
-#. TRANSLATORS vue:98
-#. TRANSLATORS vue:116
+#. TRANSLATORS vue:97
+#. TRANSLATORS vue:115
 #: /app/specialVueFakeDummyForL10nScript.js:28
 #: /app/specialVueFakeDummyForL10nScript.js:36
 msgid "Settings"
 msgstr ""
 
-#. TRANSLATORS vue:108
+#. TRANSLATORS vue:107
 #: /app/specialVueFakeDummyForL10nScript.js:32
 msgid "Manage Appointment Slots"
 msgstr ""
 
-#. TRANSLATORS vue:112
+#. TRANSLATORS vue:111
 #: /app/specialVueFakeDummyForL10nScript.js:34
 msgid "User/Organization Info"
 msgstr ""
 
-#. TRANSLATORS vue:125
+#. TRANSLATORS vue:123
 #: /app/specialVueFakeDummyForL10nScript.js:38
 msgid "Auto Style"
 msgstr ""
 
-#. TRANSLATORS vue:131
+#. TRANSLATORS vue:129
 #: /app/specialVueFakeDummyForL10nScript.js:40
 msgid "Help/Tutorial"
 msgstr ""
 
-#. TRANSLATORS vue:151
+#. TRANSLATORS vue:149
 #: /app/specialVueFakeDummyForL10nScript.js:42
 msgid "Public Page URL"
 msgstr ""
 
-#. TRANSLATORS vue:178
+#. TRANSLATORS vue:176
 #: /app/specialVueFakeDummyForL10nScript.js:44
 #: /app/specialVueFakeDummyForL10nScript.js:52
 #: /app/specialVueFakeDummyForL10nScript.js:54
@@ -513,7 +514,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#. TRANSLATORS vue:191
+#. TRANSLATORS vue:189
 #. TRANSLATORS onents/settings/TimeslotSettings/CalendarAndMode.vue:23
 #. TRANSLATORS onents/settings/TimeslotSettings/SimpleDelAppointments.vue:2
 #: /app/specialVueFakeDummyForL10nScript.js:46
@@ -522,94 +523,94 @@ msgstr ""
 msgid "Remove Old Appointments"
 msgstr ""
 
-#. TRANSLATORS vue:200
+#. TRANSLATORS vue:198
 #: /app/specialVueFakeDummyForL10nScript.js:48
 msgid "Remove"
 msgstr ""
 
-#. TRANSLATORS vue:247
+#. TRANSLATORS vue:245
 #: /app/specialVueFakeDummyForL10nScript.js:56
 msgid "Add to Calendar"
 msgstr ""
 
-#. TRANSLATORS vue:250
+#. TRANSLATORS vue:248
 #: /app/specialVueFakeDummyForL10nScript.js:58
 msgid "Discard"
 msgstr ""
 
-#. TRANSLATORS vue:255
+#. TRANSLATORS vue:253
 #. TRANSLATORS onents/settings/DirectoryPageSettings.vue:76
 #: /app/specialVueFakeDummyForL10nScript.js:60
 #: /app/specialVueFakeDummyForL10nScript.js:224
 msgid "Save"
 msgstr ""
 
-#. TRANSLATORS vue:262
+#. TRANSLATORS vue:260
 #: /app/specialVueFakeDummyForL10nScript.js:64
 msgid "Hint: right-click on appointment to edit."
 msgstr ""
 
-#. TRANSLATORS vue:263
+#. TRANSLATORS vue:261
 #: /app/specialVueFakeDummyForL10nScript.js:66
 msgid "Time zone"
 msgstr ""
 
-#. TRANSLATORS vue:287
+#. TRANSLATORS vue:285
 #: /app/specialVueFakeDummyForL10nScript.js:68
 msgid "Remove All"
 msgstr ""
 
-#. TRANSLATORS vue:294
+#. TRANSLATORS vue:292
 #: /app/specialVueFakeDummyForL10nScript.js:70
 msgid "Copy to Next"
 msgstr ""
 
-#. TRANSLATORS vue:306
+#. TRANSLATORS vue:304
 #: /app/specialVueFakeDummyForL10nScript.js:72
 msgid "Adding appointment to {calendarName} calendar …"
 msgstr ""
 
-#. TRANSLATORS vue:311
+#. TRANSLATORS vue:309
 #: /app/specialVueFakeDummyForL10nScript.js:74
 msgid "All appointments have been added to {calendarName} calendar."
 msgstr ""
 
-#. TRANSLATORS vue:316
+#. TRANSLATORS vue:314
 #: /app/specialVueFakeDummyForL10nScript.js:76
 msgid "Error occurred. Check console …"
 msgstr ""
 
-#. TRANSLATORS vue:345
+#. TRANSLATORS vue:343
 #: /app/specialVueFakeDummyForL10nScript.js:80
 msgid "Preview"
 msgstr ""
 
-#. TRANSLATORS vue:1060
+#. TRANSLATORS vue:1044
 #: /app/specialVueFakeDummyForL10nScript.js:82
 msgid "New Settings Applied."
 msgstr ""
 
-#. TRANSLATORS vue:1179
+#. TRANSLATORS vue:1163
 #: /app/specialVueFakeDummyForL10nScript.js:84
 msgid "Fetching URL from the server …"
 msgstr ""
 
-#. TRANSLATORS vue:1208
+#. TRANSLATORS vue:1192
 #: /app/specialVueFakeDummyForL10nScript.js:86
 msgid "Cannot get public URL from server"
 msgstr ""
 
-#. TRANSLATORS vue:1215
+#. TRANSLATORS vue:1199
 #: /app/specialVueFakeDummyForL10nScript.js:88
 msgid "Public link copied to clipboard"
 msgstr ""
 
-#. TRANSLATORS vue:1216
+#. TRANSLATORS vue:1200
 #: /app/specialVueFakeDummyForL10nScript.js:90
 msgid "Copy Error"
 msgstr ""
 
-#. TRANSLATORS vue:1267
+#. TRANSLATORS vue:1251
 #. TRANSLATORS onents/PagePickerSlideBar.vue:12
 #: /app/specialVueFakeDummyForL10nScript.js:92
 #: /app/specialVueFakeDummyForL10nScript.js:104
