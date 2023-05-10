@@ -1,3 +1,10 @@
+## v1.15.0 - 2023-05-09
+### Changed
+- Nextcloud min version is 25 now
+- Default to getProductName in 'HeaderTitle' (instead of Nextcloud)
+### Fixed
+- Auto-style: use system-wide default background color if provided
+
 ## v1.14.14 - 2023-04-09
 ### Changed
 - Buffers are applied to ALL events now (instead of just "Appointments") - #328
