@@ -1,3 +1,7 @@
+## v1.15.1 - 2023-05-09
+### Fixed
+- TalkIntegration: fix delete room error on NC26 - #418
+
 ## v1.15.0 - 2023-05-09
 ### Changed
 - Nextcloud min version is 25 now
