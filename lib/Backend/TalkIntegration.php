@@ -52,7 +52,7 @@ class TalkIntegration
             /** @type \OCA\Talk\Manager $tm */
             $tm = \OC::$server->get(\OCA\Talk\Manager::class);
             return $tm;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logError("Talk Manager not found");
             $this->logError($e);
             return null;
@@ -168,27 +168,24 @@ class TalkIntegration
      * @param \Sabre\VObject\Property\ICalendar\DateTime | \Sabre\VObject\Property $dateTime
      * @param string $userId
      * @param string $pref optional prefix
-     * @return bool
      */
-    function renameRoom(string $token, string $guestName, $dateTime, string $userId, string $pref = ""): bool
+    function renameRoom(string $token, string $guestName, $dateTime, string $userId, string $pref = "")
     {
         $tm = $this->getTalkManager();
-        $r = false;
         if ($tm !== null) {
             if (!empty($pref)) {
                 $pref = trim($pref) . ' ';
             }
             try {
                 $room = $tm->getRoomByToken($token);
-                $r = $room->setName($pref .
+                $room->setName($pref .
                     $this->formatRoomName($guestName, $dateTime, $userId)
                 );
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $this->logError("Room not found, token: " . $token);
                 $this->logError($e);
             }
         }
-        return $r;
     }
 
     /**
@@ -262,8 +259,15 @@ class TalkIntegration
         if ($tm !== null) {
             try {
                 $room = $tm->getRoomByToken($token);
-                $room->deleteRoom();
-            } catch (\Exception $e) {
+                if (method_exists($room, 'deleteRoom')) {
+                    // NC25
+                    $room->deleteRoom();
+                }else{
+                    // NC26
+                    $rs = \OC::$server->get(\OCA\Talk\Service\RoomService::class);
+                    $rs->deleteRoom($room);
+                }
+            } catch (\Throwable $e) {
                 $this->logError("deleteRoom: Room not found, token: " . $token);
                 if (get_class($e) !== \OCA\Talk\Exceptions\RoomNotFoundException::class) {
                     $this->logError($e);
@@ -282,7 +286,7 @@ class TalkIntegration
                 $r = false;
             }
             return $r;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return false;
         }
     }
