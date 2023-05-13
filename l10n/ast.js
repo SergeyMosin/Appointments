@@ -1,0 +1,28 @@
+OC.L10N.register(
+    "appointments",
+    {
+    "Password" : "Contraseña",
+    "Settings" : "Configuración",
+    "Main page" : "Páxina principal",
+    "15 minutes" : "15 minutos",
+    "30 minutes" : "30 minutos",
+    "1 hour" : "1 hora",
+    "2 hours" : "2 hores",
+    "4 hours" : "4 hores",
+    "12 hours" : "12 hores",
+    "1 Hour" : "1 hora",
+    "2 Hours" : "2 hores",
+    "Loading…" : "Cargando…",
+    "URL" : "URL",
+    "Error" : "Error",
+    "One Week" : "Una selmana",
+    "Two Weeks" : "Dos selmanes",
+    "Three Weeks" : "Trés selmanes",
+    "Eight Weeks" : "Ocho selmanes",
+    "Twelve Weeks" : "Dolce selmanes",
+    "24 hours" : "24 hores",
+    "Additional Settings" : "Configuración adicional",
+    "Thank You" : "Gracies",
+    "An error has occurred" : "Prodúxose un error"
+},
+"nplurals=2; plural=(n != 1);");
