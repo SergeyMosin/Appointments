@@ -9,7 +9,9 @@ OC.L10N.register(
     "1 hour" : "1 hora",
     "2 hours" : "2 hores",
     "4 hours" : "4 hores",
+    "8 hours" : "8 hores",
     "12 hours" : "12 hores",
+    "1 day" : "1 día",
     "1 Hour" : "1 hora",
     "2 Hours" : "2 hores",
     "Loading…" : "Cargando…",
@@ -23,6 +25,8 @@ OC.L10N.register(
     "24 hours" : "24 hores",
     "Additional Settings" : "Configuración adicional",
     "Thank You" : "Gracies",
+    "Time zone:" : "Fusu horariu:",
+    "Location:" : "Llugar:",
     "An error has occurred" : "Prodúxose un error"
 },
 "nplurals=2; plural=(n != 1);");
