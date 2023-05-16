@@ -2,6 +2,7 @@ OC.L10N.register(
     "appointments",
     {
     "Password" : "Contraseña",
+    "Delete" : "Desaniciar",
     "Settings" : "Configuración",
     "Main page" : "Páxina principal",
     "15 minutes" : "15 minutos",
