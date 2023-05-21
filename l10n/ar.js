@@ -134,7 +134,7 @@ OC.L10N.register(
     "12 Hours" : "12 ساعة",
     "External Mode Settings" : "اعداد نمط خارجي",
     "Optimize recurrence" : "تحسين تكرار",
-    "Require \"Appointment\" category" : "فئة \"الموعد\" مطلوب",
+    "Require \"Appointment\" category" : "التصنيف \"الموعد\" مطلوب",
     "Auto-fix \"Source\" timeslots" : "إصلاح تلقائي \"مصدر\" الاوقات المتاحة",
     "Loading…" : "جاري التحميل…",
     "Calendar Required" : "التقويم مطلوب",
