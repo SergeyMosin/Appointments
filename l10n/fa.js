@@ -13,6 +13,7 @@ OC.L10N.register(
     "Settings" : "تنظیمات",
     "Close" : "بستن",
     "Remove" : "حذف",
+    "Discard" : "لغو تغییرات",
     "Save" : "ذخیره",
     "Preview" : "پیش‌نمایش",
     "Loading" : "در حال بار گزاری",
