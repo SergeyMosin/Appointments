@@ -167,7 +167,7 @@ OC.L10N.register(
     "5 days" : "5 днів",
     "6 days" : "6 днів",
     "7 days" : "7 днів",
-    "Additional Settings" : "Додаткові",
+    "Additional Settings" : "Додатково",
     "Customize Public Page" : "Налаштувати вигляд публічної сторінки",
     "Email Settings" : "Налаштування пошти",
     "Reminders" : "Нагадування",
