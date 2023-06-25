@@ -53,6 +53,7 @@
     "We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request" : "%s에 이메일을 보냈으니. 열어보시고 확인 링크를 클릭하여 일정 요청을 마무리 하십시오.",
     "Organization Name" : "조직",
     "Book Your Appointment" : "일정을 예약하십시오.",
+    "Name is required." : "이름이 필요합니다.",
     "Please add time slots first." : "타임 슬롯을 먼저 추가해주십시오.",
     "Please select a calendar first" : "달력을 먼저 추가해주십시오.",
     "Selected calendar not found" : "달력이 없습니다.",
