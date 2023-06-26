@@ -21,6 +21,8 @@ OC.L10N.register(
     "Error" : "Səhv",
     "Deleted" : "Silinib",
     "Warning" : "Xəbərdarlıq",
+    "Name:" : "Ad:",
+    "Email:" : "Email:",
     "Location:" : "Ərazi:",
     "Next" : "Növbəti",
     "Full Name" : "Tam ad",

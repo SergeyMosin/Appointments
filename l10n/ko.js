@@ -2,7 +2,7 @@ OC.L10N.register(
     "appointments",
     {
     "Guest password:" : "손님 암호 :",
-    "Talk integration error: check logs" : "토크 통합 오류 : 로그 확인",
+    "Talk integration error: check logs" : "토크 통합 오류: 로그 확인",
     "Meeting Type" : "회의 유형",
     "Select meeting type" : "회의 유형 선택",
     "In-person meeting" : "대면 회의",

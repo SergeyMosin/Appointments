@@ -61,7 +61,7 @@ OC.L10N.register(
     "Email is required." : "É obrigatorio o correo-e",
     "Phone number is required." : "Requírese un número de teléfono.",
     "Please add time slots first." : "Engada franxas horarias primeiro.",
-    "Please select a calendar first" : "Selecciona primeiro un calendario",
+    "Please select a calendar first" : "Seleccione primeiro un calendario",
     "Selected calendar not found" : "Non se atopou o calendario seleccionado",
     "Action failed. Select calendar(s) first." : "Produciuse un fallo na acción. Seleccione primeiro o(s) calendario(s).",
     "More than 2 additional pages (10 maximum)" : "Máis de 2 páxinas adicionais (10 como máximo)",
