@@ -6,7 +6,7 @@ OC.L10N.register(
     "Meeting Type" : "회의 유형",
     "Select meeting type" : "회의 유형 선택",
     "In-person meeting" : "대면 회의",
-    "Online (audio/video)" : "온라인 (오디오 / 비디오)",
+    "Online (audio/video)" : "온라인 (소리/영상)",
     "Your email address is required for this operation." : "이 동작을 실행하려면 사용자의 이메일 주소가 필요합니다.",
     "A location, address or URL is required for this operation. Check User/Organization settings." : "이 작업에는 위치, 주소 또는 URL이 필요합니다. 사용자 / 조직 설정을 확인하십시오.",
     "Can't find your name. Check User/Organization settings." : "이름을 찾을 수 없습니다. User/Organization 환경설정을 확인해주십시오.",
@@ -39,8 +39,8 @@ OC.L10N.register(
     "Password" : "암호",
     "Chat/Call link: %s" : "채팅 / 통화 링크 : %s",
     "Thank you" : "감사합니다.",
-    "To cancel your appointment please click: %1$s Cancel Appointment %2$s" : "약속을 취소하려면 다음을 클릭하십시오 : %1$s 약속 취소 %2$s",
-    "To cancel your appointment please visit: %s" : "예약을 취소하려면 방문하십시오 : %s",
+    "To cancel your appointment please click: %1$s Cancel Appointment %2$s" : "약속을 취소하려면 다음을 클릭하세요: %1$s약속 취소%2$s",
+    "To cancel your appointment please visit: %s" : "예약을 취소하려면 방문하세요: %s",
     "Appointments" : "일정들",
     "Your appointment scheduled for %s is confirmed." : "예정된 %s 일정이 확인됐습니다.",
     "Your appointment scheduled for %s is canceled." : "예정된 %s일정이 취소됐습니다.",
@@ -180,7 +180,7 @@ OC.L10N.register(
     "Full Name" : "전체 이름",
     "Email" : "이메일",
     "Phone" : "전화 번호",
-    "An error has occurred" : "오류가 발생했습니다",
+    "An error has occurred" : "오류가 발생했습니다.",
     "Please try again later" : "다음에 다시 시도해주십시오."
 },
 "nplurals=1; plural=0;");
