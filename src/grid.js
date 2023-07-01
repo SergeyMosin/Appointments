@@ -5,12 +5,11 @@ function _apptGridMaker() {
     const MP5 = 300000
     // Start at 6AM
     // !! CHANGE 'const SH' in components/TemplateApptOptions.vue too !!!
-    const SH = 6 // if this is lest than 4 there might be a problem on daylight savings day.
+    const SH = 0 // if this is lest than 4 there might be a problem on daylight savings day.
     // 17 hours
-    const DH = 17
-
-    // SH + 2 = 8AM, The grid will be scrolled to here and newly added slots will start at this time
-    const SH_OFFSET = 2
+    const DH = 24
+    // SH + 8 = 8AM, The grid will be scrolled to here and newly added slots will start at this time
+    const SH_OFFSET = 8
 
     const MODE_SIMPLE = 0
     const MODE_TEMPLATE = 1
