@@ -1,3 +1,14 @@
+## v1.15.2 - 2023-07-01
+### Added
+- Links ( and email address ) in outgoing emails are now "linkyfied" automatically and can be clicked 
+### Changed
+- Updated JS dependencies
+- Bump NC max-version to v27 - #428
+- Template grid starts at 00:00 (not 6:00)
+- 'From' email addresses have the 'Display Name' part now - #414
+### Fixed
+- Broken NC25 related styles
+
 ## v1.15.1 - 2023-05-09
 ### Fixed
 - TalkIntegration: fix delete room error on NC26 - #418
