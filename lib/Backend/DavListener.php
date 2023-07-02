@@ -8,6 +8,7 @@ namespace OCA\Appointments\Backend;
 use OC\Mail\EMailTemplate;
 use OCA\Appointments\AppInfo\Application;
 use OCA\Appointments\Email\EMailTemplateNC20;
+use OCA\Appointments\Linkify;
 use OCA\DAV\Events\CalendarObjectMovedToTrashEvent;
 use OCA\DAV\Events\CalendarObjectUpdatedEvent;
 use OCA\DAV\Events\SubscriptionDeletedEvent;
@@ -38,6 +39,8 @@ class DavListener implements IEventListener
     /** @type IConfig */
     private $config;
 
+    private $linkify;
+
     public function __construct(\OCP\IL10N      $l10N,
                                 LoggerInterface $logger,
                                 BackendUtils    $utils)
@@ -49,6 +52,8 @@ class DavListener implements IEventListener
 
         $this->mailer = \OC::$server->get(IMailer::class);
         $this->config = \OC::$server->get(IConfig::class);
+
+        $this->linkify = new Linkify();
     }
 
     function handle(Event $event): void
@@ -264,7 +269,12 @@ class DavListener implements IEventListener
                         }
                     }
                     if (!empty($remObj[BackendUtils::REMINDER_MORE_TEXT])) {
-                        $tmpl->addBodyText($remObj[BackendUtils::REMINDER_MORE_TEXT]);
+                        list($remHtml, $remPlainText) = $this->prepHtmlEmailText($remObj[BackendUtils::REMINDER_MORE_TEXT]);
+                        if ($remHtml === null) {
+                            $tmpl->addBodyText($remPlainText);
+                        } else {
+                            $tmpl->addBodyText($remHtml, $remPlainText);
+                        }
                     }
 
                     // everything is ready, send email...
@@ -1257,12 +1267,36 @@ class DavListener implements IEventListener
 
     private function addMoreEmailText(IEMailTemplate $template, string $text)
     {
-        $text_striped = strip_tags($text);
-        if ($text === $text_striped) {
-            // non html
-            $template->addBodyText($text);
+        list($html, $plainText) = $this->prepHtmlEmailText($text);
+        if ($html === null) {
+            $template->addBodyText($plainText);
         } else {
-            $template->addBodyText($text, $text);
+            $template->addBodyText($html, $plainText);
         }
     }
+
+    /**
+     * @param string $text html|text
+     * @return array [ html|null, plainText ]
+     */
+    private function prepHtmlEmailText($text)
+    {
+        $plainText = strip_tags($text);
+        if ($text === $plainText) {
+            // plain text
+            $linkified = $this->linkify->process($plainText);
+            if ($linkified === $plainText) {
+                // no links aor emails just plain text
+                return [null, $plainText];
+            } else {
+                // links were found and turned into html
+                return [$linkified, $plainText];
+            }
+        } else {
+            // html
+            return [str_replace('<?', '&lt;?', $text), $plainText];
+        }
+
+    }
+
 }
