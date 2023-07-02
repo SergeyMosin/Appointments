@@ -19,9 +19,11 @@ use OCP\EventDispatcher\IEventListener;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IURLGenerator;
+use OCP\IUserManager;
 use OCP\L10N\IFactory;
 use OCP\Mail\IEMailTemplate;
 use OCP\Mail\IMailer;
+use OCP\Mail\IMessage;
 use Psr\Log\LoggerInterface;
 use Sabre\VObject\Reader;
 
@@ -282,18 +284,10 @@ class DavListener implements IEventListener
 
                     ///-------------------
 
-                    $def_email = \OCP\Util::getDefaultEmailAddress('appointments-noreply');
-
                     $msg = $mailer->createMessage();
 
-                    if ($config->getAppValue($this->appName,
-                            BackendUtils::KEY_USE_DEF_EMAIL,
-                            'yes') === 'no') {
-                        $msg->setFrom(array($org_email));
-                    } else {
-                        $msg->setFrom(array($def_email));
-                        $msg->setReplyTo(array($org_email));
-                    }
+                    $this->setFromAddress($msg, $userId, $org_email, $org_name);
+
                     $msg->setTo(array($to_email));
                     $msg->useTemplate($tmpl);
 
@@ -806,18 +800,11 @@ class DavListener implements IEventListener
 
         ///-------------------
 
-        $def_email = \OCP\Util::getDefaultEmailAddress('appointments-noreply');
 
         $msg = $mailer->createMessage();
 
-        if ($config->getAppValue($this->appName,
-                BackendUtils::KEY_USE_DEF_EMAIL,
-                'yes') === 'no') {
-            $msg->setFrom(array($org_email));
-        } else {
-            $msg->setFrom(array($def_email));
-            $msg->setReplyTo(array($org_email));
-        }
+        $this->setFromAddress($msg, $userId, $org_email, $org_name);
+
         $msg->setTo(array($to_email));
         $msg->useTemplate($tmpl);
 
@@ -973,7 +960,7 @@ class DavListener implements IEventListener
                 }
 
                 $msg = $mailer->createMessage();
-                $msg->setFrom(array($def_email));
+                $msg->setFrom(array(\OCP\Util::getDefaultEmailAddress('appointments-noreply')));
                 $msg->setTo(array($org_email));
                 $msg->useTemplate($tmpl);
 
@@ -1297,6 +1284,45 @@ class DavListener implements IEventListener
             return [str_replace('<?', '&lt;?', $text), $plainText];
         }
 
+    }
+
+    /**
+     * @param IMessage $msg
+     * @param string $userId
+     * @param string $org_email
+     * @param string $org_name
+     * @return void
+     */
+    private function setFromAddress($msg, $userId, $org_email, $org_name)
+    {
+        if ($this->config->getAppValue($this->appName,
+                BackendUtils::KEY_USE_DEF_EMAIL,
+                'yes') === 'no') {
+            $email = $org_email;
+        } else {
+            $email = \OCP\Util::getDefaultEmailAddress('appointments-noreply');
+            $msg->setReplyTo(array($org_email));
+        }
+
+        $name = trim($org_name);
+        if (empty($name)) {
+            try {
+                /** @var IUserManager $userManager */
+                $userManager = \OC::$server->get(IUserManager::class);
+                $name = trim($userManager->getDisplayName($userId));
+            } catch (\Throwable $e) {
+                $this->logger->error("cannot determine user display name", [
+                    'app' => Application::APP_ID,
+                    'exception' => $e,
+                ]);
+                $name = "";
+            }
+        }
+        if (!empty($name)) {
+            $msg->setFrom([$email => $name]);
+        } else {
+            $msg->setFrom([$email]);
+        }
     }
 
 }
