@@ -945,7 +945,7 @@ class DavListener implements IEventListener
                 $ic = 0;
                 foreach ($oma as $info) {
                     if (strlen($info) > 2) {
-                        $tmpl->addBodyListItem($info);
+                        $tmpl->addBodyListItem($this->linkify->process($info), '', '', strip_tags($info));
                         $ic++;
                         if ($ic > 16) {
                             break;
