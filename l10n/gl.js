@@ -109,7 +109,7 @@ OC.L10N.register(
     "Error occurred. Check console …" : "Produciuse un erro. Verifique a consola…",
     "Preview" : "Vista previa",
     "New Settings Applied." : "Aplicáronse os novos axustes.",
-    "Fetching URL from the server …" : "Obtendo o URL do servidor…",
+    "Fetching URL from the server …" : "Recuperando o URL do servidor…",
     "Cannot get public URL from server" : "Non foi posíbel obter o URL do servidor",
     "Public link copied to clipboard" : "Ligazón pública copiada ao portapapeis",
     "Copy Error" : "Erro de copia",
