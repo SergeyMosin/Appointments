@@ -27,6 +27,7 @@ OC.L10N.register(
     "15 minutes" : "۱۵ دقیقه",
     "30 minutes" : "۳۰ دقیقه",
     "1 hour" : "۱ ساعت",
+    "2 hours" : "2 ساعت",
     "4 hours" : "۴ ساعت",
     "12 hours" : "۱۲ساعت",
     "1 Hour" : "۱ ساعت",
