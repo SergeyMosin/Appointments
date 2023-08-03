@@ -160,7 +160,7 @@ OC.L10N.register(
     "Auto-fix \"Source\" timeslots" : "Fixar automaticamente a franxa de tempo «Orixe»",
     "Debugging" : "Depuración",
     "Loading…" : "Cargando…",
-    "Get raw calendar data" : "Obter os datos en bruto do calendario",
+    "Get raw calendar data" : "Obter os datos sen procesar do calendario",
     "Calendar Required" : "Precisase o calendario",
     "Sync Remote Calendar Now" : "Sincronizar agora o calendario remoto",
     "Log remote blockers" : "Rexistrar os bloqueadores remotos",
