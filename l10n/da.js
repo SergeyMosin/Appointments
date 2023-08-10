@@ -241,6 +241,7 @@ OC.L10N.register(
     "Source and Destination calendars must be different" : "Kilde- og destinationskalendere skal være forskellige",
     "Select Dates:" : "Vælg datoer:",
     "Select Dates" : "Vælg Datoer",
+    "Time zone:" : "Tidszone:",
     "Appointment Duration:" : "Aftalevarighed:",
     "Start" : "Start",
     "Scheduled before" : "Planlagt før",
