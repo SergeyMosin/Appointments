@@ -1129,7 +1129,7 @@ class BackendUtils
             case self::KEY_PSN:
                 $d = array(
                     self::PSN_FORM_TITLE => "",
-                    self::PSN_NWEEKS => "1",
+                    self::PSN_NWEEKS => "2",
                     self::PSN_EMPTY => true,
                     self::PSN_FNED => false, // start at first not empty day
                     self::PSN_WEEKEND => false,
