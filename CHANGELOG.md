@@ -1,3 +1,12 @@
+## v1.15.3 - 2023-08-21
+### Added
+- `disable_talk_integration` option can be set to `yes` via `occ config:app:set` to hide the "Talk Integration" settings option
+- 32, 40 and 48 weeks options are now available in the 'Show appointments for next...' dropdown - #440
+### Changed
+- 2 weeks is the default option for 'Show appointments for next...'
+### Fixed
+- Names with two letters are not accepted - #437
+
 ## v1.15.2 - 2023-07-01
 ### Added
 - Links ( and email address ) in outgoing emails are now "linkyfied" automatically and can be clicked 
