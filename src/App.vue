@@ -383,6 +383,7 @@
           @close="toggleSlideBar(0)"/>
       <SettingsSlideBar
           v-if="sbShow===9"
+					:talk-enabled="talkEnabled"
           :show-dir-page="morePages.length>0"
           @gotoPPS="toggleSlideBar(2,'p0');sbGotoBack=9"
           @gotoEML="toggleSlideBar(4);sbGotoBack=9"
@@ -513,6 +514,7 @@ export default {
     return {
 
       useNcTheme: false,
+			talkEnabled: true,
 
       pubPage: '',
 
@@ -643,8 +645,9 @@ export default {
   mounted() {
     this.getPages(1, 'p0')
 
-    this.getState("get_use_nc_theme").then(data => {
-      this.useNcTheme = data
+    this.getState("get_initial_config").then(data => {
+			this.useNcTheme = data['useNcTheme']
+			this.talkEnabled = data['talkEnabled']
     })
 
     this.$root.$on('helpWanted', this.helpWantedHandler)

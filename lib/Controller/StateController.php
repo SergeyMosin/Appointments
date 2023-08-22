@@ -5,6 +5,7 @@
 
 namespace OCA\Appointments\Controller;
 
+use OCA\Appointments\AppInfo\Application;
 use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
 use OCA\Appointments\Backend\ExternalModeSabrePlugin;
@@ -298,11 +299,22 @@ class StateController extends Controller
             } else {
                 $r->setStatus(500);
             }
-        } elseif ($action === "get_use_nc_theme") {
-            $a = $this->utils->getUserSettings(
+        } elseif ($action === "get_initial_config") {
+
+			$a = $this->utils->getUserSettings(
                 BackendUtils::KEY_PSN, $this->userId);
-            $r->setData($a[BackendUtils::PSN_USE_NC_THEME] === true ? "true" : "false");
-            $r->setStatus(200);
+
+			$j = json_encode([
+				'useNcTheme'=>$a[BackendUtils::PSN_USE_NC_THEME],
+				'talkEnabled'=>$this->config->getAppValue(Application::APP_ID,'disable_talk_integration','no')!=='yes'
+			]);
+			if ($j !== false) {
+				$r->setData($j);
+				$r->setStatus(200);
+			} else {
+				$r->setStatus(500);
+			}
+
         } elseif ($action === "set_use_nc_theme") {
             $value = $this->request->getParam("d");
             if ($value !== null) {

@@ -10,6 +10,7 @@
           @click="$emit('gotoEML')"
           icon="icon-mail"/>
       <NcAppNavigationItem
+					v-if="talkEnabled"
           :title="t('appointments','Talk Integration')"
           @click="$emit('gotoTALK')"
           icon="icon-talk"/>
@@ -63,6 +64,7 @@ export default {
     title:'',
     subtitle:'',
     showDirPage:false,
+		talkEnabled: true,
   },
   inject: ['getState','setState'],
   mounted: function () {
