@@ -14,6 +14,7 @@ OC.L10N.register(
     "Advanced Settings" : "Iɣewwaren leqqayen",
     "30 minutes" : "30 n tesdatin",
     "1 hour" : "1 n usrag",
+    "4 hours" : "Ukkuẓ yisragen",
     "1 day" : "1 n wass",
     "Loading…" : "Asali...",
     "Edit" : "Ẓreg",

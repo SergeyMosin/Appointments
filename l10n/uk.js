@@ -157,7 +157,7 @@ OC.L10N.register(
     "See Tutorial …" : "Див. посібник ... ",
     "Hide phone number field" : "Сховати поле номеру телефону",
     "Show timezone" : "Показати часовий пояс ",
-    "Add {taginfo} tag" : "Додати {taginfo} позначку",
+    "Add {taginfo} tag" : "Додати мітку {taginfo}",
     "Page Header Title:" : "Заголовок сторінки:",
     "Page Header Subtitle:" : "Підзаголовок сторінки:",
     "Style Override:" : "Стиль відхилення:",
