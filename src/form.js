@@ -109,7 +109,7 @@
 		}
 
 		el = document.getElementById("srgdev-ncfp_fname")
-		if (el.value.length < 3) {
+		if (el.value.length < 2) {
 			el.setCustomValidity(translations['name_required']);
 			el.addEventListener("input", clearFormErr, false)
 			if (lee === 0) el.reportValidity()

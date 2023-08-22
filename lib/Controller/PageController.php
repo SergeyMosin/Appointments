@@ -731,7 +731,7 @@ class PageController extends Controller
             || preg_match('/[^0-7]/u', $post['appt_dur'])
 
             || !isset($post['name']) || strlen($post['name']) > 64
-            || strlen($post['name']) < 3
+            || strlen($post['name']) < 2
             || preg_match('/[^\PC ]/u', $post['name'])
 
             || !isset($post['phone']) || strlen($post['phone']) > 32
