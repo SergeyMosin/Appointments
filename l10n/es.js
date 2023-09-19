@@ -217,7 +217,7 @@ OC.L10N.register(
     "Add {taginfo} tag" : "Añadir etiqueta {taginfo}",
     "Page Header Title:" : "Título del encabezado de la página:",
     "Page Header Subtitle:" : "Subtítulo del encabezado de la página:",
-    "Style Override:" : "No seguir estilo:",
+    "Style Override:" : "Anulación de estilo:",
     "Appointment Reminders" : "Recordatorios de citas",
     "Send appointment reminders to attendees" : "Mandar recordatorios de la cita a los asistentes",
     "Time before appointment" : "Tiempo antes de la cita",
