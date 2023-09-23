@@ -320,7 +320,7 @@ OC.L10N.register(
     "Next" : "Следећа",
     "Select Date and Time" : "Изаберите датум и време",
     "hr" : "ч",
-    "min" : "min",
+    "min" : "мин",
     "Duration" : "Трајање",
     "Full Name" : "Пуно име",
     "Enter full name" : "Унесите пуно име",
