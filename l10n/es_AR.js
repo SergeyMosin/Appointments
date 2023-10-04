@@ -21,6 +21,7 @@ OC.L10N.register(
     "Optional" : "Opcional",
     "Add" : "Añadir",
     "OK" : "OK",
+    "Advanced Settings" : "Configuración avanzada",
     "15 minutes" : "15 minutos",
     "30 minutes" : "30 minutos",
     "1 hour" : "1 hora",
