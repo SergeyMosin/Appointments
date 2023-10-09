@@ -69,7 +69,7 @@ OC.L10N.register(
     "Please select a calendar first" : "Najskôr vyberte kalendár",
     "Selected calendar not found" : "Vybratý kalendár nebol nájdený",
     "Action failed. Select calendar(s) first." : "Akcia zlyhala. Najprv vyberte kalendár(e).",
-    "More than 2 additional pages (10 maximum)" : "Viac ako 2 ďaľšie stránky (maximum 10)",
+    "More than 2 additional pages (10 maximum)" : "Viac ako 2 ďašie stránky (maximum 10)",
     "Page not added: 10 pages maximum" : "Stránka nebola pridaná: maximum 10 stránok",
     "Please setup the directory page first." : "Prosím, najskôr nastavte stránku s adresárom.",
     "Directory page" : "Nastavenia adresára",
