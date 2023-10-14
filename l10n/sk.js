@@ -250,7 +250,7 @@ OC.L10N.register(
     "See documentation …" : "Pozrite dokumentáciu ...",
     "\"Meeting type\" form field." : "Pole formulára „Typ stretnutia“.",
     "Warning" : "Varovanie",
-    "Guest will be placed in the lobby until you allow access to the Room manually via Talk app side menu." : "Návštevník bude čakať v lobby pokiaľ mu neumožníte prístup k Miestnosti manuálne cez bočné menu aplikácie Talk.",
+    "Guest will be placed in the lobby until you allow access to the Room manually via Talk app side menu." : "Návštevník bude čakať v čakárni pokiaľ mu neumožníte prístup k Miestnosti manuálne cez bočné menu aplikácie Talk.",
     "Calendars and Schedule" : "Kalendáre a plánovanie",
     "Manage appointments and calendar settings" : "Spravovať nastavenia schôdzok a kalendára",
     "Add Appointment Slots" : "Pridať možné stretnutia",
