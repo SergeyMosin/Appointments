@@ -510,10 +510,24 @@
 			? [document.documentElement.getAttribute('data-locale').replaceAll('_', '-'), document.documentElement.lang]
 			: [document.documentElement.lang]
 
+		let btz = undefined
+		const urlParams = new URLSearchParams(window.location.search);
+		if (urlParams) {
+			const tzParam = urlParams.get('tz');
+			if (tzParam) {
+				try {
+					btz = Intl.DateTimeFormat(lang, {timeZone: tzParam}).resolvedOptions().timeZone
+				} catch (e) {
+					console.error("can not parse tz param:", e)
+					btz = undefined
+				}
+			}
+		}
+
 		let tf
 		if (has_intl) {
 			let f = new Intl.DateTimeFormat(lang,
-				{hour: "numeric", minute: "2-digit"})
+				{hour: "numeric", minute: "2-digit", timeZone: btz})
 			tf = f.format
 		} else {
 			tf = function (d) {
@@ -524,7 +538,7 @@
 		let df
 		if (has_intl) {
 			let f = new Intl.DateTimeFormat(lang,
-				{month: "long"})
+				{month: "long", timeZone: btz})
 			df = f.format
 		} else {
 			df = function (d) {
@@ -535,7 +549,7 @@
 		let wf
 		if (has_intl) {
 			let f = new Intl.DateTimeFormat(lang,
-				{weekday: "short"})
+				{weekday: "short", timeZone: btz})
 			wf = f.format
 		} else {
 			wf = function (d) {
@@ -546,7 +560,7 @@
 		let wft
 		if (has_intl) {
 			let f = new Intl.DateTimeFormat(lang,
-				{weekday: "short", month: "long", day: "2-digit"})
+				{weekday: "short", month: "long", day: "2-digit", timeZone: btz})
 			wft = f.format
 		} else {
 			wft = function (d) {
@@ -557,7 +571,7 @@
 		let wff
 		if (has_intl) {
 			let f = new Intl.DateTimeFormat(lang,
-				{weekday: "long", month: "long", day: "numeric", year: "numeric"})
+				{weekday: "long", month: "long", day: "numeric", year: "numeric", timeZone: btz})
 			wff = f.format
 		} else {
 			wff = function (d) {
@@ -569,7 +583,7 @@
 		let tzn = undefined
 		if (has_intl) {
 			try {
-				tzn = Intl.DateTimeFormat().resolvedOptions().timeZone
+				tzn = Intl.DateTimeFormat(lang, {timeZone: btz}).resolvedOptions().timeZone
 			} catch (e) {
 				console.log("no Intl timeZone ", e)
 			}
@@ -762,8 +776,8 @@
 		if (pso[PPS_SHOWTZ] === 1 && has_intl) {
 			// getTzName=
 			getTzName = function (d) {
-				const short = d.toLocaleDateString(lang);
-				const full = d.toLocaleDateString(lang, {timeZoneName: 'long'});
+				const short = d.toLocaleDateString(lang, {timeZone: btz});
+				const full = d.toLocaleDateString(lang, {timeZone: btz, timeZoneName: 'long'});
 
 				// Trying to remove date from the string in a locale-agnostic way
 				const shortIndex = full.indexOf(short);
