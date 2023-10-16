@@ -926,7 +926,7 @@ class PageController extends Controller
         if (!empty($field) && isset($post[$field['name']])) {
             $n = $post[$field['name']];
             // TODO: check "number" type
-            $v = htmlspecialchars(strip_tags(preg_replace('/\s+/', ' ', trim(substr($n, 0, 512)))), ENT_NOQUOTES);
+            $v = strip_tags(htmlspecialchars(preg_replace('/\s+/', ' ', trim(substr($n, 0, 512))), ENT_NOQUOTES));
 
             if (isset($field['required']) && $field['required'] === true && $v === '') {
                 return false;
