@@ -1,3 +1,9 @@
+## v1.15.4 - 2023-10-16
+### Added
+- Add "preset timezone" workaround via 'tz' query param - #451
+### Changed
+- Always display "three dots" indicator in the side menu
+
 ## v1.15.3 - 2023-08-21
 ### Added
 - `disable_talk_integration` option can be set to `yes` via `occ config:app:set` to hide the "Talk Integration" settings option
