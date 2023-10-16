@@ -1021,3 +1021,7 @@ textarea.appt-stn-txt-ta {
 .toggler--closed:hover > .aib_icon_wrap {
   transform: scale(1.1);
 }
+
+.app-navigation-entry__utils .action-item.app-navigation-entry__actions {
+  display: inline-block !important;
+}
