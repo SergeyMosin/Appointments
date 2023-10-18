@@ -16,6 +16,7 @@ OC.L10N.register(
     "Settings" : "Configuración",
     "Error occurred. Check console …" : "Prodúxose un error. Revisa la consola…",
     "Main page" : "Páxina principal",
+    "Add" : "Amestar",
     "Advanced Settings" : "Configuración avanzada",
     "These settings affect ALL pages" : "Esta opción afeuta a TOLES páxines",
     "15 minutes" : "15 minutos",
