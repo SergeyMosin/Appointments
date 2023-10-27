@@ -57,6 +57,7 @@ OC.L10N.register(
     "2 hours" : "2 tiếng",
     "4 hours" : "4 tiếng",
     "12 hours" : "12 tiếng",
+    "1 day" : "1 ngày",
     "1 Hour" : "1 Hour",
     "2 Hours" : "2 Hours",
     "12 Hours" : "12 tiếng",
