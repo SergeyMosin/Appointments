@@ -38,6 +38,7 @@ OC.L10N.register(
     "Back" : "Tagasi",
     "Next" : "Järgmine",
     "min" : "min",
+    "Duration" : "Kestus",
     "Full Name" : "Täispikk nimi",
     "Email" : "Epost",
     "Phone" : "Telefon",
