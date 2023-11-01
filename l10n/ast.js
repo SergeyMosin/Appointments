@@ -1,6 +1,7 @@
 OC.L10N.register(
     "appointments",
     {
+    "Cancel" : "Encaboxar",
     "Date/Time: %s" : "Data/HoraTime: %s",
     "Location: %s" : "Llugar: %s",
     "If you have any questions please write to %s" : "Si tienes dalguna entruga, escribi a «%s»",
@@ -14,6 +15,7 @@ OC.L10N.register(
     "Selected calendar not found" : "Nun s'atopó'l calendariu seleicionáu",
     "Delete" : "Desaniciar",
     "Settings" : "Configuración",
+    "Save" : "Guardar",
     "Error occurred. Check console …" : "Prodúxose un error. Revisa la consola…",
     "Main page" : "Páxina principal",
     "Add" : "Amestar",
@@ -35,6 +37,7 @@ OC.L10N.register(
     "8 Hours" : "8 hores",
     "12 Hours" : "12 hores",
     "Loading…" : "Cargando…",
+    "Edit" : "Editar",
     "URL" : "URL",
     "Error" : "Error",
     "One Week" : "Una selmana",
@@ -59,6 +62,7 @@ OC.L10N.register(
     "Name:" : "Nome:",
     "Location:" : "Llugar:",
     "Date & Time" : "Data ya hora",
+    "Back" : "Atrás",
     "Duration" : "Duración",
     "An error has occurred" : "Prodúxose un error",
     "Please try again later" : "Volvi tentalo dempués"
