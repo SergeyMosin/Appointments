@@ -13,6 +13,7 @@ OC.L10N.register(
     "Thank you" : "Mulțumesc",
     "Appointments" : "Întâlniri",
     "All done." : "Finalizat",
+    "Action needed" : "Acțiune necesară",
     "Info" : "Info",
     "We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request" : "Am trimis un email la %s, vă rog sa îl deschideți și să apăsați pe link-ul de confirmare pentru a finaliza cererea de întâlnire",
     "Organization Name" : "Numele Organizației",
