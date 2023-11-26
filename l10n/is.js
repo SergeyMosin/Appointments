@@ -84,6 +84,7 @@ OC.L10N.register(
     "2 hours" : "2 klukkustundir",
     "4 hours" : "4 klukkustundir",
     "12 hours" : "12 klukkustundir",
+    "1 day" : "1 dagur",
     "When Attendee Cancels" : "Þegar þáttakandi aflýsir",
     "Mark the appointment as canceled" : "Merkja stefnumót sem aflýstu",
     "1 Hour" : "1 klukkustund",
