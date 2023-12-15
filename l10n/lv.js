@@ -5,6 +5,7 @@ OC.L10N.register(
     "Confirm" : "Apstiprināt",
     "Cancel" : "Atcelt",
     "Password" : "Parole",
+    "Appointments" : "Plānotās tikšanās",
     "Info" : "Info",
     "Delete" : "Dzēst",
     "Settings" : "Iestatījumi",
