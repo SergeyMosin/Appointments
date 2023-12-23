@@ -1,6 +1,7 @@
 OC.L10N.register(
     "appointments",
     {
+    "Confirm" : "Confirmar",
     "Cancel" : "Encaboxar",
     "Date/Time: %s" : "Data/HoraTime: %s",
     "Location: %s" : "Llugar: %s",

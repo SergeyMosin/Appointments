@@ -1,6 +1,7 @@
 OC.L10N.register(
     "appointments",
     {
+    "Confirm" : "Təsdiq edin",
     "Cancel" : "Dayandır",
     "Password" : "Şifrə",
     "Info" : "Info",
@@ -24,6 +25,7 @@ OC.L10N.register(
     "Name:" : "Ad:",
     "Email:" : "Email:",
     "Location:" : "Ərazi:",
+    "Back" : "Geri",
     "Next" : "Növbəti",
     "Full Name" : "Tam ad",
     "Email" : "Email"

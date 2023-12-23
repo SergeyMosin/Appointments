@@ -1,4 +1,5 @@
 { "translations": {
+    "Confirm" : "Təsdiq edin",
     "Cancel" : "Dayandır",
     "Password" : "Şifrə",
     "Info" : "Info",
@@ -22,6 +23,7 @@
     "Name:" : "Ad:",
     "Email:" : "Email:",
     "Location:" : "Ərazi:",
+    "Back" : "Geri",
     "Next" : "Növbəti",
     "Full Name" : "Tam ad",
     "Email" : "Email"
