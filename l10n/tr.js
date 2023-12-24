@@ -310,7 +310,7 @@ OC.L10N.register(
     "Location:" : "Konum:",
     "Phone:" : "Telefon:",
     "Redirect Confirmed URL:" : "Onay yönlendirme adresi:",
-    "Generate ID" : "Kimlik üret",
+    "Generate ID" : "Kimlik oluştur",
     "Include Form Data" : "Form verileri eklensin",
     "Using fallback time zone: {timeZoneName}" : "Varsayılan saat dilimi kullanılarak: {timeZoneName}",
     "No Appointments Available" : "Herhangi bir randevu yok",
