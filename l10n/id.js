@@ -32,6 +32,7 @@ OC.L10N.register(
     "15 minutes" : "15 menit",
     "30 minutes" : "30 Menit",
     "1 hour" : "1 jam",
+    "2 hours" : "2 jam",
     "4 hours" : "4 jam",
     "12 hours" : "12 jam",
     "1 day" : "1 hari",
