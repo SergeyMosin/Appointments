@@ -39,6 +39,7 @@ OC.L10N.register(
     "12 Hours" : "12 hores",
     "Loading…" : "Cargando…",
     "Edit" : "Editar",
+    "Text" : "Testu",
     "URL" : "URL",
     "Error" : "Error",
     "One Week" : "Una selmana",
