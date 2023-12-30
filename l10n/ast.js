@@ -20,6 +20,7 @@ OC.L10N.register(
     "Error occurred. Check console …" : "Prodúxose un error. Revisa la consola…",
     "Main page" : "Páxina principal",
     "Add" : "Amestar",
+    "OK" : "Normal",
     "Advanced Settings" : "Configuración avanzada",
     "These settings affect ALL pages" : "Esta opción afeuta a TOLES páxines",
     "15 minutes" : "15 minutos",
@@ -65,6 +66,7 @@ OC.L10N.register(
     "Location:" : "Llugar:",
     "Date & Time" : "Data ya hora",
     "Back" : "Atrás",
+    "Next" : "Siguiente",
     "Duration" : "Duración",
     "An error has occurred" : "Prodúxose un error",
     "Please try again later" : "Volvi tentalo dempués"
