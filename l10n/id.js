@@ -42,6 +42,7 @@ OC.L10N.register(
     "Loading…" : "Memuat…",
     "Edit" : "Sunting",
     "Title" : "Judul",
+    "Text" : "Teks",
     "URL" : "URL",
     "Error" : "Galat",
     "Deleted" : "Dihapus",
