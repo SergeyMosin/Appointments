@@ -1,3 +1,7 @@
+## v1.15.5 - 2024-01-01
+### Changed
+- Bump NC `min` version to 26 and `max` version to 28
+
 ## v1.15.4 - 2023-10-16
 ### Added
 - Add "preset timezone" workaround via 'tz' query param - #451

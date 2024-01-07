@@ -5,7 +5,7 @@
     <name>Appointments</name>
     <summary>Book appointments into your calendar via secure online form.</summary>
     <description><![CDATA[Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link.]]></description>
-    <version>1.15.4</version>
+    <version>1.15.5</version>
     <licence>agpl</licence>
     <author mail="sergey@srgdev.com" homepage="https://www.srgdev.com">Sergey Mosin</author>
     <namespace>Appointments</namespace>
@@ -28,7 +28,7 @@
     <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/master/screenshots/screenshot2.jpg</screenshot>
     <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/master/screenshots/screenshot3.jpg</screenshot>
     <dependencies>
-        <nextcloud min-version="25" max-version="27"/>
+        <nextcloud min-version="26" max-version="28"/>
     </dependencies>
     <repair-steps>
         <post-migration>
