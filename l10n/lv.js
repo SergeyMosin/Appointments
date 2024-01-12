@@ -32,6 +32,7 @@ OC.L10N.register(
     "Error" : "Kļūda",
     "Deleted" : "Dzēstie",
     "Confirmed" : "Apstiprināts",
+    "Canceled" : "Atcelts",
     "Hide phone number field" : "Slēpt tālruņa numura lauku",
     "24 hours" : "24 stundas",
     "Additional Settings" : "Papildu iestatījumi",
