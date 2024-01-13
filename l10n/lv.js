@@ -44,6 +44,7 @@ OC.L10N.register(
     "Back" : "Atpakaļ",
     "Next" : "Nākamā",
     "min" : "min",
+    "Duration" : "Ilgums",
     "Full Name" : "Pilns vārds",
     "Email" : "E-pasts",
     "Phone" : "Tālrunis",
