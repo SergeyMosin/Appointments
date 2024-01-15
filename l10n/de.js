@@ -256,7 +256,7 @@ OC.L10N.register(
     "Placeholder text:" : "Platzhaltertext:",
     "\"In-person\" option text:" : "Persönlicher Optionstext:",
     "\"Online\" option text:" : "\"Online\" Optionstext:",
-    "Type change email text:" : "Gebe den Text für die Änderungs-E-Mail ein:",
+    "Type change email text:" : "Gib den Text für die Änderungs-E-Mail ein:",
     "See documentation …" : "Schau in die Dokumentation …",
     "\"Meeting type\" form field." : "Formularfeld \"Besprechungstyp\"",
     "Warning" : "Warnung",
