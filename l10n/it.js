@@ -295,7 +295,7 @@ OC.L10N.register(
     "Location:" : "Posizione:",
     "Phone:" : "Telefono:",
     "Redirect Confirmed URL:" : "URL di reindirizzamento confermato:",
-    "Generate ID" : "ID Generato",
+    "Generate ID" : "ID generato",
     "Include Form Data" : "Includi dati modulo",
     "Using fallback time zone: {timeZoneName}" : "Utilizzo del fuso orario di riserva: {timeZoneName}",
     "No Appointments Available" : "Nessun appuntamento disponibile",
