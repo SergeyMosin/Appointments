@@ -219,6 +219,7 @@ class DavListener implements IEventListener
 
                     // TRANSLATORS Subject for email, Ex: {{Organization Name}} appointment reminder
                     $tmpl->setSubject($this->l10N->t("%s appointment reminder", [$org_name]));
+                    $tmpl->addHeader();
                     // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
                     $tmpl->addBodyText($this->l10N->t("Dear %s,", $to_name));
 
@@ -544,6 +545,7 @@ class DavListener implements IEventListener
 
             // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment (action needed)
             $tmpl->setSubject($this->l10N->t("%s appointment (action needed)", [$org_name]));
+            $tmpl->addHeader();
             // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
             $tmpl->addBodyText($this->l10N->t("Dear %s,", $to_name));
 
@@ -573,9 +575,9 @@ class DavListener implements IEventListener
         } elseif ($hint === HintVar::APPT_CONFIRM) {
             // Confirm link in the email is clicked ...
             // ... or the email validation step is skipped
-
             // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Confirmed
             $tmpl->setSubject($this->l10N->t("%s Appointment is confirmed", [$org_name]));
+            $tmpl->addHeader();
             $tmpl->addBodyText($to_name . ",");
             // TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now confirmed.
             $tmpl->addBodyText($this->l10N->t('Your %1$s appointment scheduled for %2$s is now confirmed.', [$org_name, $date_time]));
@@ -625,14 +627,14 @@ class DavListener implements IEventListener
 
             if ($hint !== HintVar::APPT_NONE) {
                 // Cancelled by the attendee (via the email link)
-
                 // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Canceled
                 $tmpl->setSubject($this->l10N->t("%s Appointment is canceled", [$org_name]));
+                $tmpl->addHeader();
             } else {
                 // Cancelled/deleted by the organizer
-
                 // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment Status Changed
                 $tmpl->setSubject($this->l10N->t("%s appointment status changed", [$org_name]));
+                $tmpl->addHeader();
             }
 
             // TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now canceled.
@@ -655,8 +657,8 @@ class DavListener implements IEventListener
             $ext_event_type = 1;
 
         } elseif ($hint === HintVar::APPT_TYPE_CHANGE) {
-
             $tmpl->setSubject($this->l10N->t("%s Appointment update", [$org_name]));
+            $tmpl->addHeader();
             // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
             $tmpl->addBodyText($this->l10N->t("Dear %s,", [$to_name]));
             // TRANSLATORS Main part of email
@@ -694,9 +696,9 @@ class DavListener implements IEventListener
 
         } elseif ($hint === HintVar::APPT_NONE) {
             // Organizer or External Action (something changed...)
-
             // TRANSLATORS Subject for email, Ex: {{Organization Name}} appointment status update
             $tmpl->setSubject($this->l10N->t("%s Appointment update", [$org_name]));
+            $tmpl->addHeader();
             // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
             $tmpl->addBodyText($this->l10N->t("Dear %s,", [$to_name]));
             // TRANSLATORS Main part of email
@@ -939,6 +941,7 @@ class DavListener implements IEventListener
 
                 $tmpl->setSubject($om_prefix . ": " . $to_name . ", "
                     . $utils->getDateTimeString($evt_dt, $utz_info, 1));
+                $tmpl->addHeader();
                 $tmpl->addHeading(" "); // spacer
                 $tmpl->addBodyText($om_prefix);
                 $tmpl->addBodyListItem($utils->getDateTimeString($evt_dt, $utz_info));
@@ -1195,7 +1198,6 @@ class DavListener implements IEventListener
 
     function finalizeEmailText(&$tmpl, $cnl_lnk_url)
     {
-
         $tmpl->addBodyText($this->l10N->t("Thank you"));
 
         // cancellation link for confirmation emails
@@ -1252,13 +1254,13 @@ class DavListener implements IEventListener
         return $ret;
     }
 
-    private function addMoreEmailText(IEMailTemplate $template, string $text)
+    private function addMoreEmailText(IEMailTemplate $tmplate, string $text)
     {
         list($html, $plainText) = $this->prepHtmlEmailText($text);
         if ($html === null) {
-            $template->addBodyText($plainText);
+            $tmplate->addBodyText($plainText);
         } else {
-            $template->addBodyText($html, $plainText);
+            $tmplate->addBodyText($html, $plainText);
         }
     }
 
