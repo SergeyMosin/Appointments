@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Guest password:" : "Лозинка за гостин:",
     "Available" : "Достапно",
+    "Reminder sent on %s" : "Потсетник е испратен на %s",
     "Confirm" : "Потврди",
     "Cancel" : "Откажи",
     "Password" : "Лозинка",
@@ -44,6 +45,7 @@ OC.L10N.register(
     "Confirmed" : "Потврдено",
     "Canceled" : "Откажано",
     "24 hours" : "24 часа",
+    "Additional reminder email text:" : "Дополнителен текст во потсетникот на е-пошта:",
     "Reminders" : "Потсетници",
     "Enable lobby" : "Овозможи лоби",
     "Guest password" : "Лозинка за гостин",
