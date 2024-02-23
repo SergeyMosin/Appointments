@@ -1,3 +1,10 @@
+## v2.0.0-rc.1 - 2024-02-23
+### Changed
+- Refactored database schema:
+  - New "Settings" table: oc_appointments_pref -> oc_appointments_pref_v2
+  - Each user page is now an independent entity (v1 had 1 main page + sub-pages)
+- Updated Settings UI (using `NcSettings` component now)
+
 ## v1.15.5 - 2024-01-01
 ### Changed
 - Bump NC `min` version to 26 and `max` version to 28

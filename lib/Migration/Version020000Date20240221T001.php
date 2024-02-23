@@ -64,15 +64,18 @@ class Version020000Date20240221T001 extends SimpleMigrationStep
                 'length' => 65535 // MySQL TEXT vs LONGTEXT
             ]);
 
-            $index_name = BackendUtils::PREF_TABLE_V2_NAME . '_' . BackendUtils::KEY_USER_ID . '_index';
+
+            $indexPrefix = "appt_";
+
+            $index_name = $indexPrefix . '_' . BackendUtils::KEY_USER_ID . '_index';
             if (!$table->hasIndex($index_name)) {
                 $table->addIndex([BackendUtils::KEY_USER_ID], $index_name);
             }
-            $index_name = BackendUtils::PREF_TABLE_V2_NAME . '_' . BackendUtils::KEY_TOKEN . '_index';
+            $index_name = $indexPrefix . '_' . BackendUtils::KEY_TOKEN . '_index';
             if (!$table->hasIndex($index_name)) {
                 $table->addUniqueIndex([BackendUtils::KEY_TOKEN], $index_name);
             }
-            $index_name = BackendUtils::PREF_TABLE_V2_NAME . '_user_page_constr';
+            $index_name = $indexPrefix . '_user_page_constr';
             if (!$table->hasIndex($index_name)) {
                 $table->addUniqueConstraint([BackendUtils::KEY_USER_ID, BackendUtils::KEY_PAGE_ID], $index_name);
             }
@@ -156,7 +159,7 @@ class Version020000Date20240221T001 extends SimpleMigrationStep
                         $data[BackendUtils::KEY_FORM_INPUTS_HTML] = $row[BackendUtils::KEY_FORM_INPUTS_HTML];
                     }
                     if (isset($row[BackendUtils::KEY_FORM_INPUTS_JSON])) {
-                        $data[BackendUtils::KEY_FORM_INPUTS_JSON] = json_decode($row[BackendUtils::KEY_FORM_INPUTS_JSON],true);
+                        $data[BackendUtils::KEY_FORM_INPUTS_JSON] = json_decode($row[BackendUtils::KEY_FORM_INPUTS_JSON], true);
                     }
 
                     $temp = $this->getArrayForKey($row, BackendUtils::KEY_TALK);
