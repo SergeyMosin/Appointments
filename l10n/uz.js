@@ -4,19 +4,15 @@ OC.L10N.register(
     "Confirm" : "Confirm",
     "Cancel" : "Cancel",
     "Password" : "Password",
-    "Delete" : "Delete",
     "Settings" : "Settings",
-    "Close" : "Close",
-    "Remove" : "Remove",
     "Save" : "Save",
-    "Loading" : "Loading",
+    "Remove" : "Remove",
     "Add" : "Add",
     "OK" : "OK",
+    "Delete" : "Delete",
     "30 minutes" : "30 minutes",
     "1 hour" : "1 hour",
     "4 hours" : "4 hours",
-    "12 hours" : "12 hours",
-    "Loading…" : "Loading…",
-    "Error" : "Error"
+    "12 hours" : "12 hours"
 },
 "nplurals=1; plural=0;");
