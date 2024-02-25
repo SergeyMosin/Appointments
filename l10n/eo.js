@@ -22,6 +22,7 @@ OC.L10N.register(
     "1 hour" : "1 horo",
     "4 hours" : "4 horoj",
     "Start" : "Komenco",
+    "Location" : "Loko",
     "Phone" : "Telefono",
     "Deleted" : "Forigita",
     "Confirmed" : "Konfirmita",

@@ -27,6 +27,7 @@ OC.L10N.register(
     "Confirmed" : "Bevestig",
     "Warning" : "Waarskuwing",
     "Reminders" : "Herinneringe",
+    "Advanced" : "Gevorderd",
     "Edit" : "Wysig",
     "Back" : "Terug",
     "Next" : "Volgende",
