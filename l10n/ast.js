@@ -18,6 +18,7 @@ OC.L10N.register(
     "Text" : "Testu",
     "URL" : "URL",
     "Save" : "Guardar",
+    "Copy" : "Copiar",
     "This action CANNOT be undone. Continue?" : "Esta aición NUN SE PUE desfacer. ¿Quies siguir?",
     "Add" : "Amestar",
     "OK" : "Normal",
