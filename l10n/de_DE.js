@@ -310,7 +310,7 @@ OC.L10N.register(
     "Advanced" : "Erweitert",
     "Advanced settings and configurations" : "Erweiterte Einstellungen und Konfigurationen",
     "Contributor Key" : "Schlüssel des Beitragenden",
-    "Verifying key" : "Verifizierung des Schlüssels",
+    "Verifying key" : "Schlüssel überprüfen",
     "Enter key" : "Schlüssel eingeben",
     "Items/Links" : "Elemente/Links",
     "no items found" : "keine Elemente gefunden",

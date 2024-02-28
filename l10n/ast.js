@@ -39,6 +39,7 @@ OC.L10N.register(
     "2 days" : "2 díes",
     "4 days" : "4 díes",
     "Time zone:" : "Fusu horariu:",
+    "Deleted" : "Desanicióse",
     "One Week" : "Una selmana",
     "Two Weeks" : "Dos selmanes",
     "Three Weeks" : "Trés selmanes",
