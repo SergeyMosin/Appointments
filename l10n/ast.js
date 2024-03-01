@@ -61,6 +61,7 @@ OC.L10N.register(
     "Back" : "Atrás",
     "Next" : "Siguiente",
     "Duration" : "Duración",
+    "Email" : "Corréu electrónicu",
     "An error has occurred" : "Prodúxose un error",
     "Please try again later" : "Volvi tentalo dempués"
 },
