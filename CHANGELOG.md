@@ -1,3 +1,7 @@
+## v2.0.0 - 2024-03-03
+### Added
+- Merged v2 translations
+
 ## v2.0.0-rc.1 - 2024-02-23
 ### Changed
 - Refactored database schema:
