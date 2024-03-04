@@ -14,6 +14,7 @@ OC.L10N.register(
     "Email is required." : "La direición de corréu electrónicu ye obligatoria.",
     "Phone number is required." : "El númberu de teléfonu ye obligatoriu.",
     "Selected calendar not found" : "Nun s'atopó'l calendariu seleicionáu",
+    "Preview" : "Previsualizar",
     "Settings" : "Configuración",
     "Title" : "Tñitulu",
     "Text" : "Testu",
