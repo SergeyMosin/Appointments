@@ -118,8 +118,6 @@ class DavListener implements IEventListener
         $remindersToSend = [];
         while ($row = $result->fetch()) {
 
-            $this->logger->error('row id: ' . $row['id']);
-
             $reuseSettings = true;
             if ($userId !== $row[BackendUtils::KEY_USER_ID]
                 || $pageId !== $row[BackendUtils::KEY_PAGE_ID]) {
@@ -138,9 +136,9 @@ class DavListener implements IEventListener
             foreach ($remDataArray as $remData) {
                 $remindAt = $row['start'] - $remData[BackendUtils::REMINDER_DATA_TIME];
 
-                $this->logger->error($remindAt . ', '
-                    . $row['start'] . ', '
-                    . $remData[BackendUtils::REMINDER_DATA_TIME]);
+//                $this->logger->error($remindAt . ', '
+//                    . $row['start'] . ', '
+//                    . $remData[BackendUtils::REMINDER_DATA_TIME]);
 
                 // $lastStart is set at the START of previous job
                 // for next job $lastStart is already set to basically $now
@@ -159,7 +157,7 @@ class DavListener implements IEventListener
         }
         $result->closeCursor();
 
-        $this->logger->error('rts: ' . var_export($remindersToSend, true));
+//        $this->logger->error('rts: ' . var_export($remindersToSend, true));
 
         if (count($remindersToSend) === 0) {
             // nothing to do
