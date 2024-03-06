@@ -1,3 +1,7 @@
+## v2.0.1 - 2024-03-06
+### Fixed
+- Removed leftover testing/debugging log statements from handleReminders function - #482
+
 ## v2.0.0 - 2024-03-03
 ### Added
 - Merged v2 translations
