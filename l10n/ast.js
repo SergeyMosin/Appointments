@@ -58,6 +58,7 @@ OC.L10N.register(
     "5 days" : "5 díes",
     "6 days" : "6 díes",
     "7 days" : "7 díes",
+    "Warning" : "Alvertencia",
     "Thank You" : "Gracies",
     "Reminders" : "Recordatorios",
     "Edit" : "Editar",

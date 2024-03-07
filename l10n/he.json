@@ -167,5 +167,5 @@
     "Please %1$stry again%2$s and select a different date." : "נא %1$sלנסות שוב%2$s ולבחור בתאריך אחר.",
     "Please contact us directly at" : "נא ליצור אתנו קשר ישירות בכתובת",
     "Please try again later" : "נא לנסות שוב מאוחר יותר"
-},"pluralForm" :"nplurals=3; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;"
+},"pluralForm" :"nplurals=3; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: 2;"
 }
