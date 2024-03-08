@@ -171,6 +171,7 @@
     "Remove empty and booked" : "Supprimer vides et confirmés",
     "Edit Template" : "Modifier le modèle",
     "Check for conflicts in…" : "Vérifiez s’il y a des conflits dans…",
+    "Name/Organization" : "Nom/Organisation",
     "Location" : "Emplacement",
     "Phone" : "Téléphone",
     "Attach .ics file to confirm/cancel emails" : "Joindre un fichier .ics pour confirmer/annuler les e-mails",
