@@ -1,3 +1,7 @@
+## v2.0.2 - 2024-03-09
+### Fixed
+- Removed 'request->getRequestUri()' from action_url param, possible solution for #485
+
 ## v2.0.1 - 2024-03-06
 ### Fixed
 - Removed leftover testing/debugging log statements from handleReminders function - #482
