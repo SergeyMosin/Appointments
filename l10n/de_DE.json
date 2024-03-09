@@ -287,7 +287,7 @@
     "Custom type change email text (optional)" : "Benutzerdefinierter E-Mail-Text zur Typänderung (optional)",
     "If this field is not empty and has two tokens {token1} (can contain any text) and {token2} (MUST be new_type), then this text will be attached to the email and attendees will be able to switch their meeting type simply by clicking the link {token}. Example:" : "Wenn dieses Feld nicht leer ist und zwei Tokens {token1} (kann beliebigen Text enthalten) und {token2} (MUSS new_type sein) enthält, wird dieser Text an die E-Mail angehängt und die Teilnehmer können ihren Meeting-Typ einfach durch Klicken auf den Link {token} ändern. Beispiel:",
     "Talk rooms will be created and deleted automatically when a meeting type changes." : "Gesprächsräume werden automatisch erstellt und gelöscht, wenn sich ein Besprechungstyp ändert.",
-    "Some Textarea" : "Ein  Textbereich",
+    "Some Textarea" : "Ein Textbereich",
     "Directory Page" : "Verzeichnisseite",
     "Thank You" : "Danke schön",
     "Key accepted. All contributor only features are unlocked." : "Schlüssel akzeptiert. Alle Funktionen nur für Beitragende sind freigeschaltet.",
