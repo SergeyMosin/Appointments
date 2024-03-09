@@ -7,9 +7,9 @@
             btn.addEventListener("click", function (e) {
                 /** @type {HTMLElement} */
                 let t = e.currentTarget
-                const attrName = 'data-appt-action-url'
+                const attrName = 'data-appt-action-url-hash'
                 if (t !== null && t.hasAttribute(attrName)) {
-                    const uri = t.getAttribute(attrName)
+                    const uri = window.location.pathname+window.location.search+'&h='+t.getAttribute(attrName)
 
                     //Avoid double clicks
                     t.removeAttribute(attrName)
