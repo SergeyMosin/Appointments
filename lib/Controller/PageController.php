@@ -766,7 +766,7 @@ class PageController extends Controller
         $fij = $this->utils->getUserSettings(BackendUtils::KEY_FORM_INPUTS_JSON, $userId)[BackendUtils::KEY_FORM_INPUTS_JSON];
 
         if (!empty($fij)) {
-            $f0 = $fij[0];
+            $f0 = $fij;
             if (is_array($f0) && array_key_exists(0, $f0) && is_array($f0[0])) {
                 foreach ($f0 as $index => $field) {
                     $fieldResult = $this->showFormCustomField($field, $post, $index);

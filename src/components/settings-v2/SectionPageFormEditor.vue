@@ -16,10 +16,16 @@ const model = ref('')
 const fiJsonToModel = () => {
 	try {
 		const data = props.store.settings[propName]
-		// name is internal
-		data.forEach(item => {
-			delete item.name
-		})
+		// "name" prop is internal
+		if (Array.isArray(data)) {
+			// multiple extra fields
+			data.forEach(item => {
+				delete item.name
+			})
+		} else {
+			// single field
+			delete data.name
+		}
 		model.value = JSON.stringify(data, null, 2) || ''
 	} catch (e) {
 		showWarning('warning: bad form JSON Object')
