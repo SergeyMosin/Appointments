@@ -1,3 +1,7 @@
+## v2.0.3 - 2024-03-13
+### Fixed
+- Only the first extra field info is added to calendar - #488
+
 ## v2.0.2 - 2024-03-09
 ### Fixed
 - Removed 'request->getRequestUri()' from action_url param, possible solution for #485
