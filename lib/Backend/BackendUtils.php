@@ -2535,20 +2535,14 @@ class BackendUtils
 
     private function makeEvtTitle(string $userId, string $attendeeName, string $pageId, string $av): string
     {
-        $cls = $this->getUserSettings(self::KEY_CLS, $userId);
-        if (isset($cls[self::CLS_TITLE_TEMPLATE]) && !empty($cls[self::CLS_TITLE_TEMPLATE])) {
+        $settings = $this->getUserSettings('', '');
+        if (isset($settings[self::CLS_TITLE_TEMPLATE]) && !empty($settings[self::CLS_TITLE_TEMPLATE])) {
 
-            $tmpl = $cls[self::CLS_TITLE_TEMPLATE];
+            $tmpl = $settings[self::CLS_TITLE_TEMPLATE];
 
-            $pgs = $this->getUserSettings(
-                BackendUtils::KEY_PAGES, $userId);
-
-            $org = $this->getUserSettings(
-                BackendUtils::KEY_ORG, $userId);
-
-            $pageTag = $pageId;
-            if (isset($pgs[$pageId])) {
-                $pageTag = $pgs[$pageId][self::PAGES_LABEL];
+            $pageTag = $this->l10n->t('Public Page') . ' ' . $pageId;
+            if (!empty($settings[self::PAGE_LABEL])) {
+                $pageTag = $settings[self::PAGE_LABEL];
             }
 
             $tkn = strtoupper(substr(str_replace(' ', '', $attendeeName), 0, 3)) .
@@ -2559,7 +2553,7 @@ class BackendUtils
             // %P = Page Tag
             // %T = Mask Token
             return str_replace(["%N", "%O", "%P", "%T"],
-                [$attendeeName, $org[self::ORG_NAME], $pageTag, $tkn], $tmpl);
+                [$attendeeName, $settings[self::ORG_NAME], $pageTag, $tkn], $tmpl);
         } else {
             return $attendeeName;
         }
@@ -2615,9 +2609,9 @@ class BackendUtils
 
             /** @noinspection CssUnresolvedCustomProperty */
             $autoStyle = '<style>body{background-image:' . $appointmentsBackgroundImage . ';background-color:' . $appointmentsBackgroundColor . '}#header{background:none}#srgdev-ncfp_frm,.srgdev-appt-info-cont,.appt-dir-lnk{background-color:var(--color-main-background-blur);-webkit-backdrop-filter:var(--filter-background-blur);backdrop-filter:var(--filter-background-blur);border-radius:10px;padding:2em}#srgdev-dpu_main-cont{border-radius:8px}@media only screen and (max-width:390px){#srgdev-ncfp_frm{padding:1em;margin-left:0;margin-right:0}.srgdev-ncfp-wrap{font-size:105%}}</style>';
-        }else{
+        } else {
             /** @noinspection CssUnresolvedCustomProperty */
-            $autoStyle='<style>:root{--image-main-background:var(--image-background, var(--image-background-plain, var(--image-background-default)))}</style>';
+            $autoStyle = '<style>:root{--image-main-background:var(--image-background, var(--image-background-plain, var(--image-background-default)))}</style>';
         }
         return $autoStyle . $pps[BackendUtils::PSN_PAGE_STYLE];
     }
