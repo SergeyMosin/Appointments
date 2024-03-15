@@ -1,3 +1,9 @@
+## v2.0.4 - 2024-03-15
+### Fixed
+- 'Page Tag' is not working in the 'Event Title Template' - #490
+### Added
+- Confirmation dialog on page delete
+
 ## v2.0.3 - 2024-03-13
 ### Fixed
 - Only the first extra field info is added to calendar - #488
