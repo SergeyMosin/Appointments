@@ -60,6 +60,9 @@ const handleShowPage = (pageId) => {
 }
 
 const handleDeletePage = (pageId) => {
+	if (!confirm(t('appointments', 'Delete action cannot be undone. Proceed?'))) {
+		return
+	}
 	pagesStore.deletePage(pageId, pageId).then(res => {
 		if (res !== null) {
 			emit('show-page', '-1')

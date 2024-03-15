@@ -223,7 +223,7 @@ const handleCKey = () => {
 </template>
 
 <style scoped>
-.preview-button {
+.dialog .preview-button {
 	position: absolute;
 	top: 3px;
 	left: 1em;
@@ -231,11 +231,11 @@ const handleCKey = () => {
 	opacity: .85;
 }
 
-.preview-button:hover {
+.dialog .preview-button:hover {
 	opacity: 1
 }
 
-.preview-button >>> .button-vue__text {
+.dialog .preview-button >>> .button-vue__text {
 	font-weight: normal;
 }
 
