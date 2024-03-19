@@ -87,6 +87,7 @@ OC.L10N.register(
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "透通過安全的線上表單將預約加到您的日曆中。與會者可以透過電子郵件連結確認或取消他們的預約。",
     "Please select or create a page" : "請選取或建立頁面",
     "Preview" : "預覽",
+    "Delete action cannot be undone. Proceed?" : "無法撤銷刪除動作。是否繼續？",
     "Stop sharing (disable)" : "停止分享（停用）",
     "Publish online (enable)" : "線上發佈（啟用）",
     "Show URL/link" : "顯示 網址/連結",
