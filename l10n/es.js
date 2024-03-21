@@ -87,6 +87,7 @@ OC.L10N.register(
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Reserva citas en tu calendairo a través de un formulario seguro online. Los asistentes pueden confirmar o cancelar sus citas a través de un enlace de correo.",
     "Please select or create a page" : "Por favor seleccione o cree una página",
     "Preview" : "Vista previa",
+    "Delete action cannot be undone. Proceed?" : "La acción de eliminación no se puede deshacer. ¿Proceder?",
     "Stop sharing (disable)" : "Dejar de compartir (deshabilitar)",
     "Publish online (enable)" : "Publicar en línea (habilitar)",
     "Show URL/link" : "Mostrar URL/enlace",
