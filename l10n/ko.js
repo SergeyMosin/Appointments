@@ -115,6 +115,7 @@ OC.L10N.register(
     "Start" : "시작",
     "Edit Template" : "템플릿 편집",
     "Check for conflicts in…" : "충돌 확인…",
+    "Location" : "위치",
     "Phone" : "전화 번호",
     "Deleted" : "삭제함",
     "Confirmed" : "확인됨",
