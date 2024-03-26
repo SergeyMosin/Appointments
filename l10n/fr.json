@@ -223,7 +223,7 @@
     "Warning" : "Attention",
     "Time before appointment" : "Temps restant avant le rendez-vous",
     "Add action links" : "Ajouter des liens d'action",
-    "Additional reminder email text" : "Texte additionnel de l'e-mail de rappel",
+    "Additional reminder email text" : "Texte additionnel du courriel de rappel",
     "Default Cron/Email Language: {langCode}" : "Langue par défaut des Cron/E-mail : {langCode}",
     "Guest name + Date/Time" : "Nom d’invité + date/horaire",
     "Date/Time + Guest name" : "Date/horaire + nom d’invité",
