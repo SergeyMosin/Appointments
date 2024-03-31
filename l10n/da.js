@@ -36,7 +36,7 @@ OC.L10N.register(
     "If you have any questions please feel free to call %1$s or write to %2$s" : "Hvis du har spørgsmål, er du velkommen til at ringe til %1$s eller skriv til %2$s",
     "Appointment is canceled" : "Aftale er annulleret",
     "%s Appointment" : "%s Aftale",
-    "Password" : "Adgangskode",
+    "Password" : "Password",
     "Chat/Call link: %s" : "Chat/Call link: %s",
     "Thank you" : "Tak skal du have",
     "To cancel your appointment please click: %1$s Cancel Appointment %2$s" : "For at aflyse din aftale, klik venligst på: %1$s Aflys aftale %2$s",
