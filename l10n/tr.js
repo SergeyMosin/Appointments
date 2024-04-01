@@ -7,7 +7,7 @@ OC.L10N.register(
     "Select meeting type" : "Toplantı türünü seçin",
     "In-person meeting" : "Birebir",
     "Online (audio/video)" : "Çevrim içi (ses/görüntü)",
-    "Your email address is required for this operation." : "Bu işlem için e-posta adresinizi vermelisiniz",
+    "Your email address is required for this operation." : "Bu işlem için e-posta adresiniz gereklidir.",
     "Can't find your name. Check User/Organization settings." : "Adınız bulunamadı. Kullanıcı/Kuruluş ayarları bölümüne bakın.",
     "Available" : "Uygun",
     "Public Page" : "Herkese açık sayfa",
