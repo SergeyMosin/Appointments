@@ -1,3 +1,11 @@
+## v2.0.5 - 2024-04-07
+### Fixed
+- Re-add 'talk_integration_disabled' (old: disable_talk_integration) appConfig setting
+### Changed
+- Dorm css: set max-width:24em in mobile mode in case of long addresses/names
+- URL handling in location field (when location is set to a valid URL)
+- Default to 'AutoStyle=true' for new pages
+
 ## v2.0.4 - 2024-03-15
 ### Fixed
 - 'Page Tag' is not working in the 'Event Title Template' - #490
