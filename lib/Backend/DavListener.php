@@ -681,6 +681,11 @@ class DavListener implements IEventListener
 
             if (!empty($eml_settings[BackendUtils::EML_CNF_TXT])) {
                 $this->addMoreEmailText($tmpl, $eml_settings[BackendUtils::EML_CNF_TXT]);
+            } elseif (filter_var($evt->LOCATION, FILTER_VALIDATE_URL) !== false) {
+                $tmpl->addBodyText(
+                    $this->l10N->t('Location: ') . '<a href="' . $evt->LOCATION . '">' . $evt->LOCATION . '</a>',
+                    $this->l10N->t('Location: ') . $evt->LOCATION
+                );
             }
 
             if ($eml_settings[BackendUtils::EML_MCONF]) {
@@ -1283,7 +1288,7 @@ class DavListener implements IEventListener
 
         $theme = new \OCP\Defaults();
         // TRANSLATORS %s is the server name. Example: Booked via Private Cloud Appointments
-        $tmpl->addFooter($this->l10N->t("Booked via %s Appointments",[$theme->getEntity()]));
+        $tmpl->addFooter($this->l10N->t("Booked via %s Appointments", [$theme->getEntity()]));
     }
 
     /**
