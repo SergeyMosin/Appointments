@@ -126,7 +126,8 @@ class StateController extends Controller
                 $newPageId = 'p' . $n;
                 $count = $this->utils->createPage($this->userId, $newPageId, json_encode([
                     "enabled" => false,
-                    "label" => $this->l->t("Public Page")
+                    "label" => $this->l->t("Public Page"),
+                    BackendUtils::PSN_USE_NC_THEME => true,
                 ]));
                 if ($count !== 1) {
                     $this->logger->warning('createPage returned ' . $count . ' , but expected 1');
