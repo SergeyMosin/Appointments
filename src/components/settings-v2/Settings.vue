@@ -21,7 +21,7 @@ import {onMounted, ref, provide, readonly, computed, watch} from "vue";
 import {parsePageUrls} from "../../use/utils";
 import {showError} from "@nextcloud/dialogs";
 import {usePagesStore} from "../../stores/pages";
-import {useSettingsStore, LOADING_ALL} from "../../stores/settings";
+import {useSettingsStore, LOADING_ALL, readOnlyProps} from "../../stores/settings";
 
 const settingsStore = useSettingsStore()
 
@@ -181,6 +181,7 @@ const handleCKey = () => {
 						</NcAppSettingsSection>
 
 						<NcAppSettingsSection
+								v-if="readOnlyProps['talk_integration_disabled']===false"
 								id="talk"
 								:name="t('appointments','Talk Integration')">
 							<h4 class="ps-section-subtitle">

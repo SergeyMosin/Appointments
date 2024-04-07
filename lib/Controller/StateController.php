@@ -5,6 +5,7 @@
 
 namespace OCA\Appointments\Controller;
 
+use OCA\Appointments\AppInfo\Application;
 use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
 use OCA\Appointments\Backend\IBackendConnector;
@@ -239,6 +240,9 @@ class StateController extends Controller
                         $settings[BackendUtils::REMINDER_BJM] = $this->config->getAppValue("core", "backgroundjobs_mode");
                         $settings[BackendUtils::REMINDER_CLI_URL] = $cliUrl === '' || $cliUrl === 'localhost' ? '' : '1';
                         $settings[BackendUtils::REMINDER_LANG] = $this->config->getSystemValue('default_language', 'en');
+
+                        // readonly Talk prop
+                        $settings[BackendUtils::TALK_INTEGRATION_DISABLED] = $this->config->getAppValue(Application::APP_ID, BackendUtils::TALK_INTEGRATION_DISABLED, 'no') === 'yes';
 
                         $r->setData(json_encode([
                             'settings' => $settings,
@@ -548,11 +552,6 @@ class StateController extends Controller
             BackendUtils::KEY_FORM_INPUTS_JSON => function (&$value, $pageId, $key): array {
                 $inputsHtml = $this->makeFormComponent($value);
                 return $this->utils->setUserSettingsV2($this->userId, $pageId, BackendUtils::KEY_FORM_INPUTS_HTML, $inputsHtml);
-            },
-
-            BackendUtils::DIR_ITEMS => function (&$value, $pageId, $key): array {
-
-                return [Http::STATUS_OK, ''];
             },
 
             default => null,

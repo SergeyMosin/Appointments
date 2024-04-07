@@ -17,6 +17,7 @@ export const readOnlyProps = {
 	talk_formDefPlaceholder: "",
 	talk_formDefReal: "",
 	talk_formDefVirtual: "",
+	talk_integration_disabled: false,
 	// reminder related props
 	bjm: '',
 	cliUrl: '',
@@ -172,7 +173,9 @@ export const useSettingsStore = defineStore('settings', {
 						this.settings['__ckey'] = ""
 
 						for (const prop in readOnlyProps) {
-							readOnlyProps[prop] = data.settings[prop]
+							if (data.settings[prop]) {
+								readOnlyProps[prop] = data.settings[prop]
+							}
 						}
 					}
 					currentPageId = pageId

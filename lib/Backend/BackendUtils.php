@@ -166,6 +166,8 @@ class BackendUtils
     public const TALK_FORM_DEF_REAL = "talk_formDefReal";
     public const TALK_FORM_DEF_VIRTUAL = "talk_formDefVirtual";
     public const TALK_FORM_TYPE_CHANGE_TXT = "talk_formTxtTypeChange";
+    // if true, Talk Setting are removed from the settings menu
+    public const TALK_INTEGRATION_DISABLED = "talk_integration_disabled";
 
     public const REMINDER_DATA = "data";
     public const REMINDER_DATA_TIME = "seconds";
@@ -1342,6 +1344,7 @@ class BackendUtils
             self::TALK_FORM_DEF_PLACEHOLDER => 'Select meeting type',
             self::TALK_FORM_DEF_REAL => 'In-person meeting',
             self::TALK_FORM_DEF_VIRTUAL => 'Online (audio/video)',
+            self::TALK_INTEGRATION_DISABLED => false,
 
             self::KEY_REMINDERS => [
                 self::REMINDER_DATA => [
