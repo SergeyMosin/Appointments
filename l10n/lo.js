@@ -1,6 +1,7 @@
 OC.L10N.register(
     "appointments",
     {
+    "Guest password:" : "ລະຫັດຜ່ານຂອງແຂກ:",
     "Available" : "ມີຢູ່",
     "Confirm" : "ຢືນຢັນ",
     "Cancel" : "ຍົກເລີກ",

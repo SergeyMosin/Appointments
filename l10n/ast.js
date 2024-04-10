@@ -1,9 +1,13 @@
 OC.L10N.register(
     "appointments",
     {
+    "Public Page" : "Páxina pública",
     "Confirm" : "Confirmar",
     "Cancel" : "Encaboxar",
     "Date/Time: %s" : "Data/HoraTime: %s",
+    "Status: Canceled" : "Estáu: anulóse",
+    "Status: Pending confirmation" : "Estáu: pendiente de confirmación",
+    "Status: Confirmed" : "Estáu: confirmóse",
     "Location: %s" : "Llugar: %s",
     "If you have any questions please write to %s" : "Si tienes dalguna entruga, escribi a «%s»",
     "If you have any questions please feel free to call %1$s or write to %2$s" : "Si tienes dalguna entruga, nun duldes en llamar a «%1$s» o escribir a «%2$s»",
