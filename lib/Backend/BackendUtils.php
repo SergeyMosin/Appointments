@@ -186,28 +186,25 @@ class BackendUtils
     public const PAGE_ENABLED = "enabled";
     public const PAGE_LABEL = "label";
 
-    private $appName = Application::APP_ID;
-    /** @var array */
-    private $settings = null;
+    private array|null $settings = null;
 
-    private $logger;
+    private IConfig $config;
+    private IDBConnection $db;
+    private IURLGenerator $urlGenerator;
+    private IL10N $l10n;
+    private LoggerInterface $logger;
 
-    /** @var IDBConnection */
-    private $db;
-
-    private $urlGenerator;
-
-    private $l10n;
-
-    public function __construct(LoggerInterface $logger,
+    public function __construct(IConfig         $config,
                                 IDBConnection   $db,
                                 IURLGenerator   $urlGenerator,
-                                IL10N           $l10n
+                                IL10N           $l10n,
+                                LoggerInterface $logger
     ) {
-        $this->logger = $logger;
+        $this->config = $config;
         $this->db = $db;
         $this->urlGenerator = $urlGenerator;
         $this->l10n = $l10n;
+        $this->logger = $logger;
     }
 
     /**
@@ -273,11 +270,10 @@ class BackendUtils
             return "2";
         }
 
-        $config = \OC::$server->getConfig();
         // @see issues #120 and #116
         // Should this be documented ???
         // TODO: this should be $config->getAppValue(...)
-        $e_fix = $config->getUserValue($userId, $this->appName, self::KEY_EMAIL_FIX);
+        $e_fix = $this->config->getUserValue($userId, Application::APP_ID, self::KEY_EMAIL_FIX);
 
         if ($e_fix === 'none') {
             $a = $evt->add('ATTENDEE', "mailto:" . $info['email']);
@@ -582,7 +578,7 @@ class BackendUtils
                         $userId);
                     if (!empty($token)) {
 
-                        $l10n = \OC::$server->getL10N($this->appName);
+                        $l10n = $this->l10n;
                         if ($token !== "-") {
                             $pi = '';
                             if (strpos($token, chr(31)) === false) {
@@ -1090,167 +1086,6 @@ class BackendUtils
         return $vo;
     }
 
-    function getDefaultForKey($key)
-    {
-        switch ($key) {
-            case self::KEY_ORG:
-                $d = array(
-                    self::ORG_NAME => "",
-                    self::ORG_EMAIL => "",
-                    self::ORG_ADDR => "",
-                    self::ORG_PHONE => "",
-                    self::ORG_CONFIRMED_RDR_URL => "",
-                    self::ORG_CONFIRMED_RDR_ID => false,
-                    self::ORG_CONFIRMED_RDR_DATA => false,
-                );
-                break;
-            case self::KEY_EML:
-                $d = array(
-                    self::EML_ICS => false,
-                    self::EML_SKIP_EVS => false,
-                    self::EML_AMOD => true,
-                    self::EML_ADEL => true,
-                    self::EML_MREQ => false,
-                    self::EML_MCONF => false,
-                    self::EML_MCNCL => false,
-                    self::EML_VLD_TXT => "",
-                    self::EML_CNF_TXT => "",
-                    self::EML_ICS_TXT => "");
-                break;
-            case self::KEY_CLS:
-                $d = array(
-                    self::CLS_MAIN_ID => '-1',
-                    self::CLS_DEST_ID => '-1',
-
-                    self::CLS_XTM_SRC_ID => '-1',
-                    self::CLS_XTM_DST_ID => '-1',
-                    self::CLS_XTM_PUSH_REC => true,
-                    self::CLS_XTM_REQ_CAT => false,
-                    self::CLS_XTM_AUTO_FIX => false,
-
-                    self::CLS_TMM_DST_ID => '-1',
-                    self::CLS_TMM_MORE_CALS => [],
-                    self::CLS_TMM_SUBSCRIPTIONS => [],
-                    self::CLS_TMM_SUBSCRIPTIONS_SYNC => '0',
-
-                    self::CLS_PREP_TIME => "0",
-                    self::CLS_BUFFER_BEFORE => 0,
-                    self::CLS_BUFFER_AFTER => 0,
-                    self::CLS_ON_CANCEL => 'mark',
-                    self::CLS_ALL_DAY_BLOCK => false,
-                    self::CLS_TITLE_TEMPLATE => "",
-
-                    self::CLS_PRIVATE_PAGE => false,
-                    self::CLS_TS_MODE => self::CLS_TS_MODE_TEMPLATE);
-                break;
-            case self::KEY_PSN:
-                $d = array(
-                    self::PSN_FORM_TITLE => "",
-                    self::PSN_NWEEKS => "2",
-                    self::PSN_EMPTY => true,
-                    self::PSN_FNED => false, // start at first not empty day
-                    self::PSN_WEEKEND => false,
-                    self::PSN_TIME2 => false,
-                    self::PSN_END_TIME => false,
-                    self::PSN_HIDE_TEL => false,
-                    self::PSN_SHOW_TZ => false,
-                    self::PSN_GDPR => "",
-                    self::PSN_GDPR_NO_CHB => false,
-                    self::PSN_PAGE_TITLE => "",
-                    self::PSN_PAGE_SUB_TITLE => "",
-                    self::PSN_META_NO_INDEX => false,
-                    self::PSN_PAGE_STYLE => "",
-                    self::PSN_USE_NC_THEME => false);
-                break;
-            case self::KEY_MPS_COL:
-                $d = null;
-                break;
-            case self::KEY_MPS:
-                $d = array(
-                    self::CLS_MAIN_ID => '-1',
-                    self::CLS_DEST_ID => '-1',
-                    self::CLS_XTM_SRC_ID => '-1',
-                    self::CLS_XTM_DST_ID => '-1',
-                    self::CLS_TMM_DST_ID => '-1',
-                    self::CLS_TMM_MORE_CALS => [],
-                    self::CLS_TMM_SUBSCRIPTIONS => [],
-
-                    self::CLS_BUFFER_BEFORE => 0,
-                    self::CLS_BUFFER_AFTER => 0,
-
-                    self::CLS_PRIVATE_PAGE => false,
-                    self::CLS_TS_MODE => self::CLS_TS_MODE_TEMPLATE,
-
-                    self::ORG_NAME => "",
-                    self::ORG_EMAIL => "",
-                    self::ORG_ADDR => "",
-                    self::ORG_PHONE => "",
-
-                    self::ORG_CONFIRMED_RDR_URL => "",
-                    self::ORG_CONFIRMED_RDR_ID => false,
-                    self::ORG_CONFIRMED_RDR_DATA => false,
-
-                    self::PSN_FORM_TITLE => "");
-                break;
-            case self::KEY_PAGES:
-                $d = array('p0' => self::PAGES_VAL_DEF);
-                break;
-            case self::KEY_TALK:
-                $d = array(
-                    self::TALK_ENABLED => false,
-                    self::TALK_DEL_ROOM => false,
-                    self::TALK_EMAIL_TXT => "",
-                    self::TALK_LOBBY => false,
-                    self::TALK_PASSWORD => false,
-                    // 0=Name+DT, 1=DT+Name, 2=Name Only
-                    self::TALK_NAME_FORMAT => 0,
-                    self::TALK_FORM_ENABLED => false,
-                    self::TALK_FORM_LABEL => "",
-                    self::TALK_FORM_PLACEHOLDER => "",
-                    self::TALK_FORM_REAL_TXT => "",
-                    self::TALK_FORM_VIRTUAL_TXT => "",
-                    self::TALK_FORM_TYPE_CHANGE_TXT => "");
-                break;
-            case self::KEY_DIR:
-            case self::KEY_TMPL_DATA:
-                $d = array();
-                break;
-            case self::KEY_TMPL_INFO:
-                $d = array('p0' => array(
-                    self::TMPL_TZ_NAME => "",
-                    self::TMPL_TZ_DATA => "")
-                );
-                break;
-            case self::KEY_REMINDERS:
-                $d = array(
-                    self::REMINDER_DATA => [
-                        [
-                            self::REMINDER_DATA_TIME => "0",
-                            self::REMINDER_DATA_ACTIONS => true
-                        ],
-                        [
-                            self::REMINDER_DATA_TIME => "0",
-                            self::REMINDER_DATA_ACTIONS => true
-                        ],
-                        [
-                            self::REMINDER_DATA_TIME => "0",
-                            self::REMINDER_DATA_ACTIONS => true
-                        ],
-                    ],
-                    self::REMINDER_SEND_ON_FRIDAY => false,
-                    self::REMINDER_MORE_TEXT => "");
-                break;
-            case self::KEY_DEBUGGING:
-                $d = array(
-                    self::DEBUGGING_LOG_REM_BLOCKER => false
-                );
-                break;
-            default:
-                $d = null;
-        }
-        return $d;
-    }
-
     function getDefaultSettingsData(): array
     {
         return [
@@ -1378,24 +1213,6 @@ class BackendUtils
             self::PSN_USE_NC_THEME => false,
             self::CLS_PRIVATE_PAGE => false,
         ];
-    }
-
-
-    private function loadSettingsFromDB($userId)
-    {
-        $qb = $this->db->getQueryBuilder();
-        $c = $qb->select('*')
-            ->from(self::PREF_TABLE_NAME)
-            ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)))
-            ->execute();
-        $t = $c->fetch();
-        $c->closeCursor();
-
-        if ($t === false) {
-            $this->settings = [];
-        } else {
-            $this->settings = $t;
-        }
     }
 
     /**
@@ -1537,95 +1354,10 @@ class BackendUtils
 //        return $this->getUserSettings(self::KEY_TMPL_DATA, $userId)[$pageId] ?? array([], [], [], [], [], [], []);
     }
 
-    function setTemplateData($pageId, $value, $userId)
-    {
-        $td = $this->getUserSettings(self::KEY_TMPL_DATA, $userId);
-        $td[$pageId] = json_decode($value, true) ?? array([], [], [], [], [], [], []);
-        $jv = json_encode($td);
-        if ($jv === false) {
-            return false;
-        } else {
-            return $this->setDBValue($userId, self::KEY_TMPL_DATA, $jv);
-        }
-    }
 
     function clearSettingsCache()
     {
         $this->settings = null;
-    }
-
-    /**
-     * @param string $key
-     * @param string $userId
-     * @return array
-     */
-    function getUserSettings_old($key, $userId)
-    {
-
-        if ($this->settings === null) {
-            $this->loadSettingsFromDB($userId);
-        }
-
-        $pn = "";
-
-        $default = $this->getDefaultForKey($key);
-
-        if ($key === self::KEY_TMPL_DATA) {
-            return json_decode($this->settings[self::KEY_TMPL_DATA] ?? null, true) ?? $default;
-        } else {
-            if (strpos($key, self::KEY_MPS) === 0) {
-                $pn = substr($key, strlen(self::KEY_MPS));
-                $key = self::KEY_MPS_COL;
-                $default = $this->getDefaultForKey(self::KEY_MPS);
-            } else {
-                if ($key === self::KEY_TALK) {
-                    // Translate defaults
-                    $l10n = \OC::$server->getL10N($this->appName);
-                    $default[self::TALK_FORM_DEF_LABEL] = $l10n->t('Meeting Type');
-                    $default[self::TALK_FORM_DEF_PLACEHOLDER] = $l10n->t('Select meeting type');
-                    $default[self::TALK_FORM_DEF_REAL] = $l10n->t('In-person meeting');
-                    $default[self::TALK_FORM_DEF_VIRTUAL] = $l10n->t('Online (audio/video)');
-                } else {
-                    if ($key === self::KEY_FORM_INPUTS_JSON) {
-                        // this is a special case
-                        $sa = json_decode(($this->settings[$key] ?? null), true);
-                        if ($sa !== null) {
-                            return $sa;
-                        } else {
-                            return [];
-                        }
-                    } else {
-                        if ($key === self::KEY_FORM_INPUTS_HTML) {
-                            // this is a special case
-                            return [$this->settings[$key] ?? ''];
-                        } else {
-                            if ($key === self::KEY_TMPL_INFO) {
-                                return json_decode($this->settings[self::KEY_TMPL_INFO] ?? null, true) ?? $default;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        $sa = json_decode(($this->settings[$key] ?? null), true);
-        if (!empty($pn)) {
-            $sa = $sa[$pn] ?? null;
-        } // <- mps
-
-        if ($sa === null) {
-            return $default;
-        }
-
-        if ($default !== null) {
-            foreach ($default as $k => $v) {
-                if (!isset($sa[$k])) {
-                    $sa[$k] = $v;
-                }
-            }
-        }
-
-        return $sa;
     }
 
     function getUserSettings(string $key, string $userId): array
@@ -1643,67 +1375,8 @@ class BackendUtils
     function getTemplateInfo(string $userId, string $pageId): array
     {
         // TODO: inline/simplify
-
         return $this->settings[self::KEY_TMPL_INFO];
-
-//        $templateInfo = $this->getUserSettings(BackendUtils::KEY_TMPL_INFO, $userId);
-//
-//        if (isset($templateInfo[self::TMPL_TZ_NAME]) || isset($templateInfo[self::TMPL_TZ_DATA])) {
-//            // we have old ( single page data ), fix/normalize...
-//            $newData = array(
-//                'old_info' => $templateInfo
-//            );
-//            // This is not perfect but since we only have one data, we just duplicate it for other pages
-//            $newData[$pageId] = $templateInfo;
-//            $this->setTemplateInfo($userId, null, $newData);
-//
-//            return $newData[$pageId];
-//
-//        } else {
-//            if (!isset($templateInfo[$pageId])) {
-//                // This is not perfect, but we use 'old_info' and if that does not exist just use default
-//                if (isset($templateInfo['old_info'])) {
-//                    return $templateInfo['old_info'];
-//                } else {
-//                    // 'p0' has defaults
-//                    return $this->getDefaultForKey(BackendUtils::KEY_TMPL_INFO)['p0'];
-//                }
-//            }
-//        }
-//        return $templateInfo[$pageId];
     }
-
-    /**
-     * @param string $userId
-     * @param string|null $pageId
-     * @param array $value
-     * @return bool
-     */
-    function setTemplateInfo($userId, $pageId, $value)
-    {
-
-        if ($pageId !== null) {
-            $td = $this->getUserSettings(self::KEY_TMPL_INFO, $userId);
-
-            if (isset($templateInfo[self::TMPL_TZ_NAME]) || isset($templateInfo[self::TMPL_TZ_DATA])) {
-                // we have old ( single page data ), fix/normalize...
-                $td = array(
-                    'old_info' => $td
-                );
-            }
-            $td[$pageId] = $value;
-        } else {
-            // $pageId can be null when the multipage fix is first applied and in that case value contains data with page Id(s)
-            $td = $value;
-        }
-        $jv = json_encode($td);
-        if ($jv === false) {
-            return false;
-        } else {
-            return $this->setDBValue($userId, self::KEY_TMPL_INFO, $jv);
-        }
-    }
-
 
     /**
      * @param string $userId
@@ -1880,7 +1553,10 @@ class BackendUtils
                     $qb->createNamedParameter($pageId)))
                 ->executeStatement();
         } catch (\Throwable $e) {
-            $this->logger->error($e->getMessage(), ['app' => $this->appName, 'exception' => $e]);
+            $this->logger->error($e->getMessage(), [
+                'app' => Application::APP_ID,
+                'exception' => $e
+            ]);
             return [500, ''];
         }
         if ($r !== 1) {
@@ -1932,54 +1608,6 @@ class BackendUtils
         return $filteredData;
     }
 
-
-    /**
-     * @param string $key
-     * @param string $value_str JSON String
-     * @param array $default_or_pgs this is value when $key===self::KEY_PAGES
-     * @param string $userId
-     * @param string $appName
-     * @return bool
-     */
-    function setUserSettings($key, $value_str, $default_or_pgs, $userId, $appName)
-    {
-        if ($key === self::KEY_PAGES) {
-            // already filtered array @see StateController:set_pages
-            $sa = $default_or_pgs;
-        } elseif ($key === self::KEY_REMINDERS) {
-            // already filtered or null
-            $this->setDBValue($userId, $key, $value_str);
-            return true;
-        } else {
-            $va = json_decode($value_str, true);
-            if ($va === null) {
-                return false;
-            }
-            $sa = [];
-            foreach ($default_or_pgs as $k => $v) {
-                if (isset($va[$k]) && gettype($va[$k]) === gettype($v)) {
-                    $sa[$k] = $va[$k];
-                } else {
-                    $sa[$k] = $v;
-                }
-            }
-        }
-
-        if (strpos($key, self::KEY_MPS) === 0) {
-            return $this->setDBMpsValue(
-                $userId, substr($key, strlen(self::KEY_MPS)), $sa);
-        }
-
-        $js = json_encode($sa);
-        if ($js === false) {
-            return false;
-        }
-
-
-        $this->setDBValue($userId, $key, $js);
-
-        return true;
-    }
 
     /**
      * For simple mode:
@@ -2054,7 +1682,7 @@ class BackendUtils
     function makeAppointmentParts($userId, $pageId, $appName, $tz_data_str, $cr_date, $title = "")
     {
 
-        $l10n = \OC::$server->getL10N($appName);
+        $l10n = $this->l10n;
         $iUser = \OC::$server->getUserManager()->get($userId);
         if ($iUser === null) {
             return ['err' => 'Bad user Id.'];
@@ -2106,8 +1734,6 @@ class BackendUtils
             return ['err' => $l10n->t("Your email address is required for this operation.")];
         }
         if (!empty($addr)) {
-//			return ['err' => $l10n->t("A location, address or URL is required for this operation. Check User/Organization settings.")];
-
 //        ESCAPED-CHAR = ("\\" / "\;" / "\," / "\N" / "\n")
 //        \\ encodes \ \N or \n encodes newline \; encodes ; \, encodes ,
             $addr = str_replace(array("\\", ";", ",", "\r\n", "\r", "\n"), array('\\\\', '\;', '\,', ' \n', ' \n', ' \n'), $addr);
@@ -2247,7 +1873,7 @@ class BackendUtils
     function getDateTimeString($date, $tzi, $short_dt = 0)
     {
 
-        $l10N = \OC::$server->getL10N($this->appName);
+        $l10N = $this->l10n;
         if ($tzi[0] === "F") {
             $d = $date->format('Ymd\THis');
             if ($short_dt === 0) {
@@ -2355,60 +1981,6 @@ class BackendUtils
         // we need to detect if the server is configured to use '.../index.php/...'
         $defaultUrl = $this->urlGenerator->linkToDefaultPageUrl();
         return substr($defaultUrl, 0, strpos($defaultUrl, '/apps/') + 6) . Application::APP_ID;
-    }
-
-    /**
-     * @param string $token
-     * @param \OCP\IConfig $config
-     * @return string[]|null[] [useId,pageId] on success, [null,null]=not verified
-     * @throws \ErrorException
-     */
-    function verifyToken_old($token, $config)
-    {
-        if (empty($token) || strlen($token) > 256) {
-            return [null, null];
-        }
-        $token = str_replace("_", "/", $token);
-        $key = hex2bin($config->getAppValue($this->appName, 'hk'));
-        $iv = hex2bin($config->getAppValue($this->appName, 'tiv'));
-        if (empty($key) || empty($iv)) {
-            throw new \ErrorException("Can't find key");
-        }
-
-        $l = strlen($token);
-        if (($l & 3) !== 0) {
-            // not divisible by 4
-            $m = intval($token[$l - 1]);
-            $token = substr($token, 0, -($m === 1 ? 2 : 1));
-            $token .= str_repeat('=', $m);
-
-            $rc = base64_decode($token);
-            if ($rc === false) {
-                return [null, null];
-            }
-
-            $iv[0] = substr($rc, -1);
-            $raw = substr($rc, 0, -1);
-            $pageId = '';
-        } else {
-            $raw = base64_decode($token);
-            if ($raw === false) {
-                return [null, null];
-            }
-            $pageId = "p0";
-        }
-
-        $td = $this->decrypt($raw, $key, $iv);
-        if (strlen($td) > 4 && substr($td, 0, 4) === hash('adler32', substr($td, 4), true)) {
-            $u = substr($td, 4);
-            if ($pageId === '') {
-                return [substr($u, 0, -1), 'p' . ord(substr($u, -1))];
-            } else {
-                return [$u, $pageId];
-            }
-        } else {
-            return [null, null];
-        }
     }
 
     function verifyToken(string $token): array
