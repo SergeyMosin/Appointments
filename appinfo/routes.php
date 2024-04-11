@@ -6,7 +6,6 @@ return [
 		['name' => 'page#caladd', 'url' => '/caladd', 'verb' => 'POST'],
 		['name' => 'page#formbase', 'url' => '/form', 'verb' => 'GET'],
 		['name' => 'page#formbasepost', 'url' => '/form', 'verb' => 'POST'],
-		['name' => 'page#help', 'url' => '/help', 'verb' => 'GET'],
 
 		['name' => 'page#form', 'url' => '/pub/{token}/form', 'verb' => 'GET'],
 		['name' => 'page#formpost', 'url' => '/pub/{token}/form', 'verb' => 'POST'],

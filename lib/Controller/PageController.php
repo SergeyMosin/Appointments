@@ -67,7 +67,7 @@ class PageController extends Controller
     /**
      * CAUTION: the @Stuff turns off security checks; for this page no admin is
      *          required and no CSRF check. If you don't know what CSRF is, read
-     *          it up in the docs or you might create a security hole. This is
+     *          it up in the docs, or you might create a security hole. This is
      *          basically the only required method to add this exemption, don't
      *          add it to any other method if you don't exactly know what it does
      *
@@ -98,8 +98,8 @@ class PageController extends Controller
         if ($disable) {
             $t->setParams(['disabled' => true]);
         } else {
-            \OCP\Util::addScript(Application::APP_ID, 'script');
-            \OCP\Util::addStyle(Application::APP_ID, 'style');
+            Util::addScript(Application::APP_ID, 'script');
+            Util::addStyle(Application::APP_ID, 'style');
         }
 
         $csp = $t->getContentSecurityPolicy();
@@ -119,10 +119,9 @@ class PageController extends Controller
      * @NoSameSiteCookieRequired
      * @PublicPage
      * @NoCSRFRequired
-     * @throws \ErrorException
      * @throws NotLoggedInException
      */
-    public function formEmb(): PublicTemplateResponse|TemplateResponse
+    public function formEmb(): Response
     {
         list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"));
         if ($userId === null) {
@@ -148,7 +147,6 @@ class PageController extends Controller
      * @NoSameSiteCookieRequired
      * @NoCSRFRequired
      * @NoAdminRequired
-     * @throws \ErrorException
      * @throws NotLoggedInException
      * @noinspection PhpUnused
      */
@@ -172,7 +170,6 @@ class PageController extends Controller
      * @NoSameSiteCookieRequired
      * @NoCSRFRequired
      * @NoAdminRequired
-     * @throws \ErrorException
      * @throws NotLoggedInException
      * @noinspection PhpUnused
      */
@@ -188,7 +185,7 @@ class PageController extends Controller
         return $tr;
     }
 
-    private function setEmbCsp($tr, $userId)
+    private function setEmbCsp(Response $tr, string $userId): void
     {
 
         $ad = $this->c->getAppValue(
@@ -211,10 +208,9 @@ class PageController extends Controller
      * @NoAdminRequired
      * @PublicPage
      * @NoCSRFRequired
-     * @throws \ErrorException
      * @throws NotLoggedInException
      */
-    public function form():Response
+    public function form(): Response
     {
         list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"));
         if ($userId === null) {
@@ -235,11 +231,10 @@ class PageController extends Controller
      * @PublicPage
      * @NoCSRFRequired
      * @NoAdminRequired
-     * @throws \ErrorException
      * @throws NotLoggedInException
      * @noinspection PhpUnused
      */
-    public function formPost()
+    public function formPost(): Response
     {
         list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"));
         if ($userId === null) {
@@ -251,7 +246,7 @@ class PageController extends Controller
         return $this->showFormPost($userId, $pageId);
     }
 
-    private function getPageText($date_time, $state)
+    private function getPageText(string $date_time, int $state): string
     {
         if ($state === BackendUtils::PREF_STATUS_CONFIRMED) {
             // TRANSLATORS Your appointment scheduled for {{Friday, April 24, 2020, 12:10PM EDT}} is confirmed.
@@ -271,12 +266,9 @@ class PageController extends Controller
      * @PublicPage
      * @NoCSRFRequired
      * @noinspection PhpUnused
-     * @param bool $embed
-     * @return NotFoundResponse|PublicTemplateResponse|TemplateResponse|RedirectResponse
-     * @throws \ErrorException
      * @throws NotLoggedInException
      */
-    public function cncf($embed = false)
+    public function cncf(bool $embed = false): Response
     {
         list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"));
 
@@ -369,7 +361,7 @@ class PageController extends Controller
                         // Appointment is confirmed successfully
                         $page_text = $this->getPageText($date_time, BackendUtils::PREF_STATUS_CONFIRMED) . " " . $skip_evs_text;
                     } elseif ($otherCalId !== '-1' && $settings[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_SIMPLE) {
-                        // edge case (simple mode): this could be a page reload and we need to check DEST calendar just in-case the appointment has been confirmed already
+                        // edge case (simple mode): this could be a page reload, and we need to check DEST calendar just in-case the appointment has been confirmed already
 
                         //TODO: better way todo this to keep the code DRY ???
                         if (($data = $this->bc->getObjectData($otherCalId, $uri)) !== null) {
@@ -434,7 +426,7 @@ class PageController extends Controller
                             $d["dateTimeString"] = $date_time;
                         }
 
-                        $r_url .= (strpos($r_url, "?") === false ? "?" : "&") . "d=" . base64_encode(json_encode($d));
+                        $r_url .= (!str_contains($r_url, "?") ? "?" : "&") . "d=" . base64_encode(json_encode($d));
 
                         // redirect
                         $rr = new RedirectResponse($r_url);
@@ -479,7 +471,7 @@ class PageController extends Controller
                             $this->logger->warning('can not re-create appointment, no dt_info or this is a repeated request');
                         } else {
                             // this is only needed in simple/manual mode
-                            $cr = $this->addAppointments($userId, $pageId, $dt_info, $tz_data, $title);
+                            $cr = $this->addAppointments($userId, $dt_info, $tz_data, $title);
                             if ($cr[0] !== '0') {
                                 $this->logger->error('addAppointments() failed ' . $cr);
                             }
@@ -606,7 +598,7 @@ class PageController extends Controller
             $tr = new TemplateResponse($this->appName, $tr_name, [], "base");
         } else {
             // renderAs=public
-            $tr = $this->getPublicTemplate($tr_name, $userId);
+            $tr = $this->getPublicTemplate($tr_name);
         }
 
         $tr_params['appt_inline_style'] = $this->utils->getInlineStyle($userId, $settings, $this->c);
@@ -618,13 +610,13 @@ class PageController extends Controller
         return $tr;
     }
 
-    private function pubErrResponse($userId, $embed)
+    private function pubErrResponse(string $userId, bool $embed): Response
     {
         $tn = 'public/formerr';
         if ($embed) {
             $tr = new TemplateResponse($this->appName, $tn, [], 'base');
         } else {
-            $tr = $this->getPublicTemplate($tn, $userId);
+            $tr = $this->getPublicTemplate($tn);
         }
 
         $tr->setParams([
@@ -641,7 +633,7 @@ class PageController extends Controller
      * @NoCSRFRequired
      * @noinspection PhpUnused
      */
-    public function formBase()
+    public function formBase(): Response
     {
         $pageId = $this->request->getParam("p", "p0");
         if (empty($pageId)) {
@@ -662,10 +654,9 @@ class PageController extends Controller
     /**
      * @NoAdminRequired
      * @NoCSRFRequired
-     * @throws \ErrorException
      * @noinspection PhpUnused
      */
-    public function formBasePost()
+    public function formBasePost(): Response
     {
         $pageId = $this->request->getParam("p", "p0");
         if (empty($pageId)) {
@@ -783,7 +774,7 @@ class PageController extends Controller
         // main cal_id is good...
 
         $dc = $this->utils->decrypt($post['adatetime'], $key);
-        if (empty($dc) || (strpos($dc, '|') === false && $dc[0] !== "_")) {
+        if (empty($dc) || (!str_contains($dc, '|') && $dc[0] !== "_")) {
             $rr = new RedirectResponse($bad_input_url);
             $rr->setStatus(303);
             return $rr;
@@ -891,13 +882,7 @@ class PageController extends Controller
         return $rr;
     }
 
-    /**
-     * @param array $field
-     * @param array $post
-     * @param int $index
-     * @return string|bool
-     */
-    private function showFormCustomField($field, $post, $index = 0)
+    private function showFormCustomField(array $field, array $post, int $index = 0): bool|string
     {
 
         $v = '';
@@ -915,12 +900,7 @@ class PageController extends Controller
         return $v;
     }
 
-    /**
-     * @param string $render
-     * @param string $uid
-     * @return TemplateResponse
-     */
-    private function showFinish($render, $uid)
+    private function showFinish(string $render, string $uid): Response
     {
         // Redirect to finalize page...
         // sts: 0=OK, 1=bad input, 2=server error
@@ -967,9 +947,8 @@ class PageController extends Controller
             }
         }
 
-//        $tr=new TemplateResponse($this->appName,$tmpl,$param,$render);
         if ($render === "public") {
-            $tr = $this->getPublicTemplate($tmpl, $uid);
+            $tr = $this->getPublicTemplate($tmpl);
         } else {
             $tr = new TemplateResponse($this->appName, $tmpl, [], $render);
         }
@@ -981,17 +960,11 @@ class PageController extends Controller
         return $tr;
     }
 
-    /**
-     * @param $render
-     * @param string $uid
-     * @param string $pageId
-     * @return TemplateResponse
-     */
-    private function showForm($render, $uid, $pageId)
+    private function showForm(string $render, string $uid, string $pageId): Response
     {
         $templateName = 'public/form';
         if ($render === "public") {
-            $tr = $this->getPublicTemplate($templateName, $uid);
+            $tr = $this->getPublicTemplate($templateName);
         } else {
             $tr = new TemplateResponse($this->appName, $templateName, [], $render);
         }
@@ -1140,19 +1113,9 @@ class PageController extends Controller
 
     /**
      * @NoAdminRequired
-     * @NoCSRFRequired
-     * @throws \Exception
-     */
-    public function help()
-    {
-        return new TemplateResponse($this->appName, 'help', [], "base");
-    }
-
-    /**
-     * @NoAdminRequired
      * @noinspection PhpUnused
      */
-    public function caladd()
+    public function caladd(): NotFoundResponse|string
     {
         $pageId = $this->request->getParam("p");
 
@@ -1162,24 +1125,20 @@ class PageController extends Controller
 
         return $this->addAppointments(
             $this->userId,
-            $pageId,
             $this->request->getParam("d"),
             $this->request->getParam("tz")
         );
     }
 
     /**
-     * @param string $userId
-     * @param string $pageId
      * @param string|null $ds
      *      dtstamp,dtstart,dtend [,dtstart,dtend,...] -
      *      dttsamp: 20200414T073008Z must be UTC (ends with Z),
      *      dtstart/dtend: 20200414T073008
      * @param string $tz_data_str Can be VTIMEZONE data or 'UTC'
      * @param string $title title is used when the appointment is being reset
-     * @return string
      */
-    private function addAppointments($userId, $pageId, $ds, $tz_data_str, $title = "")
+    private function addAppointments(string $userId, string|null $ds, string $tz_data_str, string $title = ""): string
     {
 
         if (empty($ds)) {
@@ -1271,12 +1230,7 @@ class PageController extends Controller
         return $rtn . '|' . $i . '|' . $c;
     }
 
-    /**
-     * @param string $templateName
-     * @param string $userId
-     * @return PublicTemplateResponse
-     */
-    private function getPublicTemplate($templateName, $userId)
+    private function getPublicTemplate(string $templateName): PublicTemplateResponse
     {
         $settings = $this->utils->getUserSettings();
         $tr = new PublicTemplateResponse($this->appName, $templateName, []);
