@@ -196,7 +196,7 @@ class DavListener implements IEventListener
                 $extNotifyFilePath = $config->getAppValue($this->appName, 'ext_notify_' . $userId);
 
                 $otherCalId = '-1';
-                $calId = $utils->getMainCalId($userId, $pageId, null, $otherCalId);
+                $calId = $utils->getMainCalId($userId, null, $otherCalId);
                 if ($calId === '-1') {
                     $this->logger->error("can not find main calendar, userId: " . $userId . ", pageId: " . $pageId);
                     continue;
@@ -480,7 +480,7 @@ class DavListener implements IEventListener
         }
 
         $other_cal = '-1';
-        $cal_id = $utils->getMainCalId($userId, $pageId, null, $other_cal);
+        $cal_id = $utils->getMainCalId($userId, null, $other_cal);
 
         $settings = $this->utils->getUserSettings();
 

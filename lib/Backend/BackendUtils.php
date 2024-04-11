@@ -1,4 +1,5 @@
-<?php /** @noinspection PhpUndefinedFieldInspection */
+<?php
+/** @noinspection PhpUndefinedFieldInspection */
 
 /** @noinspection PhpDocMissingThrowsInspection */
 
@@ -17,6 +18,7 @@ use OCP\IDateTimeZone;
 use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\IURLGenerator;
+use OCP\IUserManager;
 use Psr\Log\LoggerInterface;
 use Sabre\VObject\Reader;
 
@@ -500,7 +502,7 @@ class BackendUtils
      *                  state: one of self::PREF_STATUS_*
      *                  attendeeName: or empty if error
      */
-    function dataApptGetInfo(?string $data, ?string $userId): array
+    function dataApptGetInfo(?string $data): array
     {
         $ret = [null, self::PREF_STATUS_TENTATIVE, ""];
 
@@ -1296,13 +1298,6 @@ class BackendUtils
         return $pageId[0] === 'd';
     }
 
-    function getTemplateData($pageId, $userId)
-    {
-        // TODO: inline/simplify
-        return $this->settings[self::KEY_TMPL_DATA];
-    }
-
-
     function getUserSettings(): array
     {
 
@@ -1312,13 +1307,6 @@ class BackendUtils
         }
 
         return $this->settings;
-    }
-
-    // This is a temp work-around for multiple "template mode" pages, use this instead getUserSettings(BackendUtils::KEY_TMPL_INFO, $userId) until data is normalized.
-    function getTemplateInfo(string $userId, string $pageId): array
-    {
-        // TODO: inline/simplify
-        return $this->settings[self::KEY_TMPL_INFO];
     }
 
     function dbUpsert2(string $userId, string $pageId, array $columns): bool
@@ -1517,7 +1505,7 @@ class BackendUtils
      * @param string|null $otherCal get the ID of the other calendar "-1"=not found
      * @return string calendar Id or "-1" = no main cal
      */
-    function getMainCalId(string $userId, string $pageId, ?IBackendConnector $bc, string &$otherCal = null): string
+    function getMainCalId(string $userId, IBackendConnector|null $bc, string &$otherCal = null): string
     {
 
         $settings = $this->getUserSettings();
@@ -1561,11 +1549,11 @@ class BackendUtils
      * @param string $title title is used when the appointment is being reset
      * @return string[] ['1_before_uid'=>'string...','2_before_dts'=>'string...','3_before_dte'=>'string...','4_last'=>'string...'] or ['err'=>'Error text...']
      */
-    function makeAppointmentParts(string $userId, string $pageId, string $appName, string $tz_data_str, string $cr_date, string $title = ""): array
+    function makeAppointmentParts(string $userId, string $tz_data_str, string $cr_date, string $title = ""): array
     {
 
         $l10n = $this->l10n;
-        $iUser = \OC::$server->getUserManager()->get($userId);
+        $iUser = \OC::$server->get(IUserManager::class)->get($userId);
         if ($iUser === null) {
             return ['err' => 'Bad user Id.'];
         }

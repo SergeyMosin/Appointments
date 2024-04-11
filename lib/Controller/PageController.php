@@ -11,11 +11,14 @@ use OCA\Appointments\AppInfo\Application;
 use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
 use OCA\Appointments\Backend\HintVar;
+use OCA\Appointments\Backend\IBackendConnector;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\RedirectResponse;
+use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Http\Template\PublicTemplateResponse;
 use OCP\IConfig;
+use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\AppFramework\Http\TemplateResponse;
@@ -30,28 +33,26 @@ class PageController extends Controller
     const RND_SPS = 'abcdefghijklmnopqrstuvwxyz1234567890';
     const RND_SPU = '1234567890ABCDEF';
 
-    private $userId;
-    private $c;
-    private $mailer;
-    private $l;
-    /** @var \OCA\Appointments\Backend\IBackendConnector $bc */
-    private $bc;
-    private $utils;
-    private $logger;
-    private $userSession;
+    private string $userId;
+    private IConfig $c;
+    private IMailer $mailer;
+    private IL10N $l;
+    private IBackendConnector $bc;
+    private BackendUtils $utils;
+    private LoggerInterface $logger;
+    private IUserSession $userSession;
 
-    public function __construct($AppName,
-                                IRequest $request,
-        $UserId,
-                                IConfig $c,
-                                IMailer $mailer,
-                                IL10N $l,
-                                IUserSession $userSession,
-                                BackendManager $backendManager,
-                                BackendUtils $utils,
+    public function __construct(IRequest        $request,
+                                                $UserId,
+                                IConfig         $c,
+                                IMailer         $mailer,
+                                IL10N           $l,
+                                IUserSession    $userSession,
+                                BackendManager  $backendManager,
+                                BackendUtils    $utils,
                                 LoggerInterface $logger
     ) {
-        parent::__construct($AppName, $request);
+        parent::__construct(Application::APP_ID, $request);
         $this->userId = $UserId;
         $this->c = $c;
         $this->mailer = $mailer;
@@ -73,7 +74,7 @@ class PageController extends Controller
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function index()
+    public function index(): TemplateResponse
     {
         $t = new TemplateResponse($this->appName, 'index');
 
@@ -83,7 +84,7 @@ class PageController extends Controller
         if ($allowedGroups !== '') {
             $aga = json_decode($allowedGroups, true);
             if ($aga !== null) {
-                $userGroups = \OC::$server->getGroupManager()->getUserIdGroups($this->userId);
+                $userGroups = \OC::$server->get(IGroupManager::class)->getUserIdGroups($this->userId);
                 $disable = true;
                 foreach ($aga as $ag) {
                     if (array_key_exists($ag, $userGroups)) {
@@ -121,9 +122,9 @@ class PageController extends Controller
      * @throws \ErrorException
      * @throws NotLoggedInException
      */
-    public function formEmb()
+    public function formEmb(): PublicTemplateResponse|TemplateResponse
     {
-        list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"), $this->c);
+        list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"));
         if ($userId === null) {
             $tr = new TemplateResponse($this->appName, "public/r404", [], "base");
             $tr->setStatus(404);
@@ -151,9 +152,9 @@ class PageController extends Controller
      * @throws NotLoggedInException
      * @noinspection PhpUnused
      */
-    public function formPostEmb()
+    public function formPostEmb(): RedirectResponse
     {
-        list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"), $this->c);
+        list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"));
         if ($userId === null) {
             $tr = new TemplateResponse($this->appName, "public/r404", [], "base");
             $tr->setStatus(404);
@@ -175,9 +176,9 @@ class PageController extends Controller
      * @throws NotLoggedInException
      * @noinspection PhpUnused
      */
-    public function cncfEmb()
+    public function cncfEmb(): Response
     {
-        list($userId) = $this->utils->verifyToken($this->request->getParam("token"), $this->c);
+        list($userId) = $this->utils->verifyToken($this->request->getParam("token"));
         if ($userId === null) {
             $tr = new TemplateResponse($this->appName, "public/r404", [], "base");
             $tr->setStatus(404);
@@ -213,9 +214,9 @@ class PageController extends Controller
      * @throws \ErrorException
      * @throws NotLoggedInException
      */
-    public function form()
+    public function form():Response
     {
-        list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"), $this->c);
+        list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"));
         if ($userId === null) {
             return new NotFoundResponse();
         }
@@ -240,7 +241,7 @@ class PageController extends Controller
      */
     public function formPost()
     {
-        list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"), $this->c);
+        list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"));
         if ($userId === null) {
             return new NotFoundResponse();
         }
@@ -296,7 +297,7 @@ class PageController extends Controller
         $settings = $this->utils->getUserSettings();
 
         $otherCalId = "-1";
-        $cal_id = $this->utils->getMainCalId($userId, $pageId, $this->bc, $otherCalId);
+        $cal_id = $this->utils->getMainCalId($userId, $this->bc, $otherCalId);
         if ($cal_id === '-1') {
             return $this->pubErrResponse($userId, $embed);
         }
@@ -374,7 +375,7 @@ class PageController extends Controller
                         if (($data = $this->bc->getObjectData($otherCalId, $uri)) !== null) {
                             // this appointment is confirmed already
 
-                            list($date_time, $state, $attendeeName) = $this->utils->dataApptGetInfo($data, $userId);
+                            list($date_time, $state, $attendeeName) = $this->utils->dataApptGetInfo($data);
 
                             if ($date_time !== null && $state === BackendUtils::PREF_STATUS_CONFIRMED) {
                                 $sts = 0;
@@ -396,7 +397,7 @@ class PageController extends Controller
                         $data = $this->bc->getObjectData($otherCalId, $uri);
                     }
 
-                    list($date_time, $state, $attendeeName) = $this->utils->dataApptGetInfo($data, $userId);
+                    list($date_time, $state, $attendeeName) = $this->utils->dataApptGetInfo($data);
 
                     if ($date_time === null) {
                         // error
@@ -492,7 +493,7 @@ class PageController extends Controller
             } else {
                 // user needs to click the button to take_action if not canceled already
                 list($date_time, $state) = $this->utils->dataApptGetInfo(
-                    $this->bc->getObjectData($r_cal_id, $uri), $userId);
+                    $this->bc->getObjectData($r_cal_id, $uri));
                 $sts = 0;
                 if ($date_time === null || $state === BackendUtils::PREF_STATUS_CANCELLED) {
                     // already canceled
@@ -773,7 +774,7 @@ class PageController extends Controller
 
         // Input seems OK...
 
-        $cal_id = $this->utils->getMainCalId($userId, $pageId, $this->bc);
+        $cal_id = $this->utils->getMainCalId($userId, $this->bc);
         if ($cal_id === "-1") {
             $rr = new RedirectResponse($server_err_url);
             $rr->setStatus(303);
@@ -1046,7 +1047,7 @@ class PageController extends Controller
             return $tr;
         }
 
-        $calId = $this->utils->getMainCalId($uid, $pageId, $this->bc);
+        $calId = $this->utils->getMainCalId($uid, $this->bc);
         if ($calId === "-1") {
             $tr->setParams($params);
             return $tr;
@@ -1190,7 +1191,7 @@ class PageController extends Controller
             return '1:' . $this->l->t("Please add time slots first.") . " [DL = " . $c . "]";
         }
 
-        $cal_id = $this->utils->getMainCalId($userId, $pageId, $this->bc);
+        $cal_id = $this->utils->getMainCalId($userId, $this->bc);
         if ($cal_id === "-1") {
             return '1:' . $this->l->t("Please select a calendar first");
         }
@@ -1201,7 +1202,7 @@ class PageController extends Controller
         }
 
         $evt_parts = $this->utils->makeAppointmentParts(
-            $userId, $pageId, $this->appName, $tz_data_str, $data[0], $title);
+            $userId, $tz_data_str, $data[0], $title);
         if (isset($evt_parts['err'])) {
             return '1:' . $evt_parts['err'];
         }

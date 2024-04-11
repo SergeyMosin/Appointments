@@ -420,7 +420,7 @@ class StateController extends Controller
                 }
 
                 // check if we at least have the main calendar
-                if ($this->utils->getMainCalId($this->userId, $pageId, $this->bc) === '-1') {
+                if ($this->utils->getMainCalId($this->userId, $this->bc) === '-1') {
                     return [Http::STATUS_ACCEPTED, json_encode([
                         "type" => 3,
                         "message" => $this->l->t("Main calendar not found, check settings.")
@@ -771,7 +771,7 @@ class StateController extends Controller
         }
 
         $dcl_id = '-1';
-        $cal_id = $this->utils->getMainCalId($this->userId, $pageId, $this->bc, $dcl_id);
+        $cal_id = $this->utils->getMainCalId($this->userId, $this->bc, $dcl_id);
         if ($cal_id === "-1") {
             $r->setStatus(400);
             return $r;
@@ -854,7 +854,7 @@ class StateController extends Controller
         $cals = [];
 
         $dst_cal_id = "-1";
-        $main_cal_id = $this->utils->getMainCalId($this->userId, $pageId, $this->bc, $dst_cal_id);
+        $main_cal_id = $this->utils->getMainCalId($this->userId, $this->bc, $dst_cal_id);
 
         if ($main_cal_id !== "-1") {
             $cals[] = $main_cal_id;

@@ -432,7 +432,9 @@ class BCSabreImpl implements IBackendConnector
 
         $booked_tree = $this->buildBusyTree($userId, $cals, $result->filters, $start, $start_ts, $end_ts, false, $cms);
 
-        $ti = $this->utils->getTemplateInfo($userId, $pageId);
+        $settings = $this->utils->getUserSettings();
+
+        $ti = $settings[BackendUtils::KEY_TMPL_INFO];
 
         if ($start->getTimezone()->getName() !== $ti[BackendUtils::TMPL_TZ_NAME]) {
             try {
@@ -442,7 +444,7 @@ class BCSabreImpl implements IBackendConnector
             }
         }
 
-        $td = $this->utils->getTemplateData($pageId, $userId);
+        $td = $settings[BackendUtils::KEY_TMPL_DATA];
         if (count($td) !== 7) {
             $td[] = [];
         }
@@ -1006,7 +1008,7 @@ class BCSabreImpl implements IBackendConnector
 
         if ($ts_mode === BackendUtils::CLS_TS_MODE_TEMPLATE) {
             // weekly template
-            $td = $this->utils->getTemplateData($pageId, $userId);
+            $td = $settings[BackendUtils::KEY_TMPL_DATA];
             if (!isset($td[$info['tmpl_day']])
                 || !isset($td[$info['tmpl_day']][$info['tmpl_idx']])
                 || !isset($td[$info['tmpl_day']][$info['tmpl_idx']]['dur'])
@@ -1016,14 +1018,14 @@ class BCSabreImpl implements IBackendConnector
                 return 1;
             }
 
-            $tza = $this->utils->getTemplateInfo($userId, $pageId);
+            $tza = $settings[BackendUtils::KEY_TMPL_INFO];
             if (!isset($tza[BackendUtils::TMPL_TZ_DATA])) {
                 $this->logErr("Can't find timezone data, tza: " . var_export($tza, true));
                 return 2;
             }
 
             $parts = $this->utils->makeAppointmentParts(
-                $userId, $pageId, $this->appName, $tza[BackendUtils::TMPL_TZ_DATA],
+                $userId, $tza[BackendUtils::TMPL_TZ_DATA],
                 (new \DateTime('now', new \DateTimeZone('UTC')))->format(self::TIME_FORMAT));
             if (isset($parts['err'])) {
                 $this->logErr($parts['err'] . " - template mode");
@@ -1100,7 +1102,7 @@ class BCSabreImpl implements IBackendConnector
 
             /** @noinspection PhpUnhandledExceptionInspection */
             $parts = $this->utils->makeAppointmentParts(
-                $userId, $pageId, $this->appName, $tzi,
+                $userId, $tzi,
                 (new \DateTime('now', new \DateTimeZone('UTC')))->format(self::TIME_FORMAT));
             if (isset($parts['err'])) {
                 $this->logErr($parts['err'] . " - calId: " . $srcId . ", uri: " . $srcUri);

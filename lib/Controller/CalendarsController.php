@@ -75,7 +75,7 @@ class CalendarsController extends Controller
         $cals = [];
 
         $dst_cal_id = "-1";
-        $main_cal_id = $this->utils->getMainCalId($this->userId, $pageId, $this->bc, $dst_cal_id);
+        $main_cal_id = $this->utils->getMainCalId($this->userId, $this->bc, $dst_cal_id);
 
         if ($main_cal_id !== "-1") {
             $cals[] = $main_cal_id;
@@ -133,7 +133,7 @@ class CalendarsController extends Controller
         }
 
         $dcl_id = '-1';
-        $cal_id = $this->utils->getMainCalId($this->userId, $pageId, $this->bc, $dcl_id);
+        $cal_id = $this->utils->getMainCalId($this->userId, $this->bc, $dcl_id);
         if ($cal_id === "-1") {
             $r->setStatus(400);
             return $r;
