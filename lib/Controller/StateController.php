@@ -154,11 +154,11 @@ class StateController extends Controller
                     return $r;
                 }
 
-                $pageToken = '/' . $this->utils->getUserSettings('', '')[BackendUtils::KEY_TOKEN];
+                $pageToken = '/' . $this->utils->getUserSettings()[BackendUtils::KEY_TOKEN];
 
                 // check and delete directory page link if url for this page is used
                 if ($this->utils->loadSettingsForUserAndPage($this->userId, 'd0')) {
-                    $dirSettings = $this->utils->getUserSettings('', '');
+                    $dirSettings = $this->utils->getUserSettings();
                     if (!empty($dirSettings[BackendUtils::DIR_ITEMS])) {
                         $data = $dirSettings[BackendUtils::DIR_ITEMS];
                         $filteredData = array_filter($data, function ($item) use ($pageToken) {
@@ -231,7 +231,7 @@ class StateController extends Controller
                 case 'get_all':
                     if ($this->utils->isDir($pageId) === true) {
                         $r->setData(json_encode([
-                            'settings' => $this->utils->getUserSettings('', '')
+                            'settings' => $this->utils->getUserSettings()
                         ]));
                     } else {
                         $settings = $this->getSettingsAndCleanup($pageId);
@@ -289,7 +289,7 @@ class StateController extends Controller
             return $this->setUserKey($value);
         }
 
-        $settings = $this->utils->getUserSettings('', '');
+        $settings = $this->utils->getUserSettings();
 
         if (empty($key) || !isset($settings[$key])
             || gettype($settings[$key]) !== gettype($value)) {
@@ -320,7 +320,7 @@ class StateController extends Controller
     private function updateDirSettings(string $pageId, string $key, $value): array
     {
 
-        $dirSettings = $this->utils->getUserSettings('', '');
+        $dirSettings = $this->utils->getUserSettings();
         if ($key === BackendUtils::DIR_ITEMS) {
             if (!is_array($value) || empty($value)) {
                 // delete the dir page data
@@ -383,7 +383,7 @@ class StateController extends Controller
                 if ($value === false) {
                     return [Http::STATUS_OK, ''];
                 }
-                $settings = $this->utils->getUserSettings('', '');
+                $settings = $this->utils->getUserSettings();
                 // check BackendUtils::ORG_EMAIL
                 $orgEmail = $settings[BackendUtils::ORG_EMAIL];
                 if (empty($orgEmail) || !filter_var($orgEmail, FILTER_VALIDATE_EMAIL)) {
@@ -430,7 +430,7 @@ class StateController extends Controller
             },
 
             BackendUtils::CLS_TMM_DST_ID => function ($calId, $pageId, $key): array {
-                $settings = $this->utils->getUserSettings('', '');
+                $settings = $this->utils->getUserSettings();
                 if ($settings[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_TEMPLATE) {
                     // if CLS_TMM_DST_ID is in CLS_TMM_MORE_CALS we need to remove it
                     $conflictCalsIds = $settings[BackendUtils::CLS_TMM_MORE_CALS];
@@ -449,7 +449,7 @@ class StateController extends Controller
                 if ($d === "" || ((hexdec(substr($d, 0, 4)) >> 15) & 1) !== ((hexdec(substr($d, 4, 4)) >> 12) & 1)) {
 
                     $calCount = count($value);
-                    $settings = $this->utils->getUserSettings('', '');
+                    $settings = $this->utils->getUserSettings();
                     if ($key === BackendUtils::CLS_TMM_MORE_CALS) {
                         $calCount += count($settings[BackendUtils::CLS_TMM_SUBSCRIPTIONS]);
                     } else {
@@ -471,7 +471,7 @@ class StateController extends Controller
                 } else {
                     $buf2 = BackendUtils::CLS_BUFFER_BEFORE;
                 }
-                $settings = $this->utils->getUserSettings('', '');
+                $settings = $this->utils->getUserSettings();
                 if ($settings[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_SIMPLE && $value !== 0) {
                     return [Http::STATUS_BAD_REQUEST, $this->makeErrorJson('in simple mode buffers must be 0')];
                 }
@@ -483,7 +483,7 @@ class StateController extends Controller
             },
 
             BackendUtils::CLS_DEST_ID => function (&$value, $pageId, $key): array {
-                $settings = $this->utils->getUserSettings('', '');
+                $settings = $this->utils->getUserSettings();
                 if ($settings[BackendUtils::CLS_MAIN_ID] === $value) {
                     // '-1' = use mail calendar
                     $value = '-1';
@@ -575,7 +575,7 @@ class StateController extends Controller
     private function getSettingsAndCleanup(string $pageId): array
     {
 
-        $settings = $this->utils->getUserSettings('', '');
+        $settings = $this->utils->getUserSettings();
 
         $currentCalIds = $settings[BackendUtils::CLS_TMM_MORE_CALS];
         if (count($currentCalIds) > 0) {
@@ -605,7 +605,7 @@ class StateController extends Controller
                 }
             }
         }
-        return $this->utils->getUserSettings('', '');
+        return $this->utils->getUserSettings();
     }
 
     private function makeErrorJson(string $error): string
@@ -703,7 +703,7 @@ class StateController extends Controller
     private function getPubURI(string $pageId): string
     {
         $pb = $this->utils->getPublicWebBase();
-        $tkn = urlencode($this->utils->getUserSettings('', '')[BackendUtils::KEY_TOKEN]);
+        $tkn = urlencode($this->utils->getUserSettings()[BackendUtils::KEY_TOKEN]);
         if (empty($tkn)) {
             return 'INVALID_TOKEN';
         }
@@ -747,7 +747,7 @@ class StateController extends Controller
 
     private function calgetweek($pageId)
     {
-        $settings = $this->utils->getUserSettings('', '');
+        $settings = $this->utils->getUserSettings();
 
         if ($settings[BackendUtils::CLS_TS_MODE] !== BackendUtils::CLS_TS_MODE_SIMPLE) {
             $r = new SendDataResponse();

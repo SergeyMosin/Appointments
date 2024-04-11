@@ -396,11 +396,11 @@ class BackendUtils
                 if ($xad[4] === 'f') {
                     // the appointment was previously finalized as "in-person ..."
                     if ($noChanges) {
-                        $tlk = $this->getUserSettings(self::KEY_TALK, $userId);
+                        $settings = $this->getUserSettings();
                         // new_type = virtual
-                        $r[0] = (!empty($tlk[self::TALK_FORM_VIRTUAL_TXT])
-                            ? $tlk[self::TALK_FORM_VIRTUAL_TXT]
-                            : $tlk[self::TALK_FORM_DEF_VIRTUAL]);
+                        $r[0] = (!empty($settings[self::TALK_FORM_VIRTUAL_TXT])
+                            ? $settings[self::TALK_FORM_VIRTUAL_TXT]
+                            : $settings[self::TALK_FORM_DEF_VIRTUAL]);
                         return $r;
                     }
 
@@ -412,17 +412,17 @@ class BackendUtils
                     // this was a virtual appointment...
                     // ... $xad[4] is the room token.
 
-                    $tlk = $this->getUserSettings(self::KEY_TALK, $userId);
+                    $settings = $this->getUserSettings();
 
                     if ($noChanges) {
-                        $r[0] = (!empty($tlk[self::TALK_FORM_REAL_TXT])
-                            ? $tlk[self::TALK_FORM_REAL_TXT]
-                            : $tlk[self::TALK_FORM_DEF_REAL]);
+                        $r[0] = (!empty($settings[self::TALK_FORM_REAL_TXT])
+                            ? $settings[self::TALK_FORM_REAL_TXT]
+                            : $settings[self::TALK_FORM_DEF_REAL]);
                         return $r;
                     }
 
                     // delete the room first...
-                    $ti = new TalkIntegration($tlk, $this);
+                    $ti = new TalkIntegration($settings, $this);
                     $ti->deleteRoom($xad[4]);
 
                     // set $xad[4]='d' which will just and description @see BackendUtils->dataSetAttendee
@@ -566,12 +566,13 @@ class BackendUtils
     {
         $r = '';
 
+        $settings = $this->getUserSettings();
+
         if (count($xad) > 4) {
             if ($xad[4] === '_') {
-                $tlk = $this->getUserSettings(self::KEY_TALK, $userId);
                 // check if Talk link is needed
-                if ($tlk[self::TALK_ENABLED] === true) {
-                    $ti = new TalkIntegration($tlk, $this);
+                if ($settings[self::TALK_ENABLED] === true) {
+                    $ti = new TalkIntegration($settings, $this);
                     $token = $ti->createRoomForEvent(
                         $a->parameters['CN']->getValue(),
                         $evt->DTSTART,
@@ -596,9 +597,9 @@ class BackendUtils
                             $this->updateDescription($evt, "\n\n" .
                                 $ti->getRoomURL($token) . $pi);
 
-                            $r = (!empty($tlk[self::TALK_FORM_VIRTUAL_TXT])
-                                ? $tlk[self::TALK_FORM_VIRTUAL_TXT]
-                                : $tlk[self::TALK_FORM_DEF_VIRTUAL]);
+                            $r = (!empty($settings[self::TALK_FORM_VIRTUAL_TXT])
+                                ? $settings[self::TALK_FORM_VIRTUAL_TXT]
+                                : $settings[self::TALK_FORM_DEF_VIRTUAL]);
 
                         } else {
 
@@ -614,11 +615,9 @@ class BackendUtils
                 $evt->{self::XAD_PROP}->setValue($this->encrypt(
                     implode(chr(31), $xad), $evt->UID));
 
-                $tlk = $this->getUserSettings(self::KEY_TALK, $userId);
-
-                $r = (!empty($tlk[self::TALK_FORM_REAL_TXT])
-                    ? $tlk[self::TALK_FORM_REAL_TXT]
-                    : $tlk[self::TALK_FORM_DEF_REAL]);
+                $r = (!empty($settings[self::TALK_FORM_REAL_TXT])
+                    ? $settings[self::TALK_FORM_REAL_TXT]
+                    : $settings[self::TALK_FORM_DEF_REAL]);
 
                 $this->updateDescription($evt, "\n\n" . $r);
             }
@@ -1350,8 +1349,6 @@ class BackendUtils
     {
         // TODO: inline/simplify
         return $this->settings[self::KEY_TMPL_DATA];
-
-//        return $this->getUserSettings(self::KEY_TMPL_DATA, $userId)[$pageId] ?? array([], [], [], [], [], [], []);
     }
 
 
@@ -1360,7 +1357,7 @@ class BackendUtils
         $this->settings = null;
     }
 
-    function getUserSettings(string $key, string $userId): array
+    function getUserSettings(): array
     {
 
         if ($this->settings === null) {
@@ -1509,25 +1506,6 @@ class BackendUtils
         return $out;
     }
 
-
-    /**
-     * @param string $userId
-     * @param string $page
-     * @param array|null $value
-     * @return bool
-     */
-    function setDBMpsValue($userId, $page, $value)
-    {
-        $mps = $this->getUserSettings(self::KEY_MPS_COL, $userId) ?? [];
-        $mps[$page] = $value;
-        $v = json_encode($mps);
-        if ($v === false) {
-            return false;
-        }
-        $this->setDBValue($userId, self::KEY_MPS_COL, $v);
-        return true;
-    }
-
     function setUserSettingsV2(string $userId, string $pageId, string $key, $value): array
     {
 
@@ -1627,25 +1605,17 @@ class BackendUtils
     function getMainCalId($userId, $pageId, $bc, &$otherCal = null)
     {
 
-        // TODO: optimize for settings v2...
-
-        if ($pageId === 'p0') {
-            // main calendar is provider
-            $csProvider = $this->getUserSettings(self::KEY_CLS, $userId);
-        } else {
-            // more_pages_ holds $dst/$src cals
-            $csProvider = $this->getUserSettings(self::KEY_MPS . $pageId, $userId);
-        }
+        $settings = $this->getUserSettings();
 
         // What mode are we in ??
-        $ts_mode = $csProvider[self::CLS_TS_MODE];
+        $ts_mode = $settings[self::CLS_TS_MODE];
         if ($ts_mode === self::CLS_TS_MODE_TEMPLATE) {
-            $dst = $csProvider[self::CLS_TMM_DST_ID];
+            $dst = $settings[self::CLS_TMM_DST_ID];
             return ($bc !== null && $bc->getCalendarById($dst, $userId) === null) ? '-1' : $dst;
         } else {
             if ($ts_mode === self::CLS_TS_MODE_EXTERNAL) {
-                $dst = $csProvider[self::CLS_XTM_DST_ID];
-                $src = $csProvider[self::CLS_XTM_SRC_ID];
+                $dst = $settings[self::CLS_XTM_DST_ID];
+                $src = $settings[self::CLS_XTM_SRC_ID];
                 // External mode - main calendar is destination calendar
                 if ($src === "-1" || $dst === "-1" || $src === $dst) {
                     if (isset($otherCal)) {
@@ -1661,10 +1631,10 @@ class BackendUtils
             } else {
                 // Manual $ts_mode==="0"
                 if (isset($otherCal)) {
-                    $dst = $csProvider[self::CLS_DEST_ID];
+                    $dst = $settings[self::CLS_DEST_ID];
                     $otherCal = ($bc !== null && $bc->getCalendarById($dst, $userId) === null) ? '-1' : $dst;
                 }
-                $src = $csProvider[self::CLS_MAIN_ID];
+                $src = $settings[self::CLS_MAIN_ID];
                 return ($bc !== null && $bc->getCalendarById($src, $userId) === null) ? '-1' : $src;
             }
         }
@@ -1703,24 +1673,10 @@ class BackendUtils
             $tz_Z = "Z";
         }
 
-        // TODO: simplify for settings v2 ...
-        $org = $this->getUserSettings(self::KEY_ORG, $userId);
-        if ($pageId === 'p0') {
-            $org_name = $org[BackendUtils::ORG_NAME];
-            $addr = $org[BackendUtils::ORG_ADDR];
-        } else {
-            $mps = $this->getUserSettings(
-                BackendUtils::KEY_MPS . $pageId, $userId);
-            $org_name = !empty($mps[BackendUtils::ORG_NAME])
-                ? $mps[BackendUtils::ORG_NAME]
-                : $org[BackendUtils::ORG_NAME];
-            $addr = !empty($mps[BackendUtils::ORG_ADDR])
-                ? $mps[BackendUtils::ORG_ADDR]
-                : $org[BackendUtils::ORG_ADDR];
-        }
-
-        // email is not per page
-        $email = $org[self::ORG_EMAIL];
+        $settings = $this->getUserSettings();
+        $org_name = $settings[BackendUtils::ORG_NAME];
+        $addr = $settings[BackendUtils::ORG_ADDR];
+        $email = $settings[self::ORG_EMAIL];
 
         $name = trim($iUser->getDisplayName());
         if (empty($name)) {
@@ -1744,11 +1700,10 @@ class BackendUtils
         }
 
         if (empty($title)) {
-            $summary = \OC::$server->getL10N($appName)->t("Available");
+            $summary = $this->l10n->t("Available");
         } else {
             $summary = $title;
         }
-
 
         return [
             '1_before_uid' => "BEGIN:VCALENDAR\r\n" .
@@ -2110,7 +2065,7 @@ class BackendUtils
 
     private function makeEvtTitle(string $userId, string $attendeeName, string $pageId, string $av): string
     {
-        $settings = $this->getUserSettings('', '');
+        $settings = $this->getUserSettings();
         if (isset($settings[self::CLS_TITLE_TEMPLATE]) && !empty($settings[self::CLS_TITLE_TEMPLATE])) {
 
             $tmpl = $settings[self::CLS_TITLE_TEMPLATE];
@@ -2136,6 +2091,8 @@ class BackendUtils
 
     public function getInlineStyle(string $userId, array $pps, IConfig $config): string
     {
+
+        // TODO: rename pps to settings
 
         $autoStyle = "";
 

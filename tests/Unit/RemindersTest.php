@@ -255,7 +255,7 @@ class RemindersTest extends TestCase
 
         foreach ($pages as $pageId) {
             $this->assertNotEquals(false, self::$utils->loadSettingsForUserAndPage($userId, $pageId), 'could not load settings for page: ' . $pageId);
-            $settings = self::$utils->getUserSettings('', '');
+            $settings = self::$utils->getUserSettings();
             $calId = $settings[BackendUtils::CLS_TMM_DST_ID];
             $this->assertNotEquals('-1', $calId, 'no calendar for page ' . $pageId);
             $this->consoleLog("calId: " . $calId);
@@ -372,7 +372,7 @@ class RemindersTest extends TestCase
     {
         foreach ($pages as $pageId) {
             $this->assertNotEquals(false, self::$utils->loadSettingsForUserAndPage($userId, $pageId), 'could not load settings for page: ' . $pageId);
-            $settings = self::$utils->getUserSettings('', '');
+            $settings = self::$utils->getUserSettings();
             $calId = $settings[BackendUtils::CLS_TMM_DST_ID];
 
             $utz = self::$utils->getCalendarTimezone($userId, self::$config, self::$backendConnector->getCalendarById($calId, $userId));

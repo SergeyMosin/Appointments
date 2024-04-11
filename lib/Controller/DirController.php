@@ -88,7 +88,7 @@ class DirController extends Controller
             return new NotFoundResponse();
         }
 
-        $settings = $this->utils->getUserSettings('', '');
+        $settings = $this->utils->getUserSettings();
         if ($isPublic) {
 //            Util::addStyle($this->appName, "form-xl-screen");
             $s = $this->config->getUserValue($userId, $this->appName, "cn" . "k");

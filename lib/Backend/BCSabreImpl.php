@@ -134,8 +134,7 @@ class BCSabreImpl implements IBackendConnector
     private function checkRangeTR($start_ts, $end_ts, $calId, $utz, $userId, $cms)
     {
 
-        $cls = $this->utils->getUserSettings(
-            BackendUtils::KEY_CLS, $userId);
+        $settings = $this->utils->getUserSettings();
 
         $start = new \DateTime('@' . $start_ts, $utz);
 
@@ -150,7 +149,7 @@ class BCSabreImpl implements IBackendConnector
         $parser = new XmlService();
         $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
         try {
-            $result = $parser->parse($this::makeTrDavReport($r_start, $r_end, $cls[BackendUtils::CLS_XTM_REQ_CAT]));
+            $result = $parser->parse($this::makeTrDavReport($r_start, $r_end, $settings[BackendUtils::CLS_XTM_REQ_CAT]));
         } catch (ParseException $e) {
             $this->logger->error($e);
             return -1;
@@ -212,15 +211,13 @@ class BCSabreImpl implements IBackendConnector
         $srcId = substr($calIds, $sp + 1);
         $dstId = substr($calIds, 0, $sp);
 
-        // $cls is used for CLS_XTM_REQ_CAT CLS_XTM_PUSH_REC
-        $cls = $this->utils->getUserSettings(
-            BackendUtils::KEY_CLS, $userId);
+        $settings = $this->utils->getUserSettings();
 
         $parser = new XmlService();
         $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
 
         try {
-            $result = $parser->parse($this::makeTrDavReport($start_str, $end_str, $cls[BackendUtils::CLS_XTM_REQ_CAT]));
+            $result = $parser->parse($this::makeTrDavReport($start_str, $end_str, $settings[BackendUtils::CLS_XTM_REQ_CAT]));
         } catch (ParseException $e) {
             $this->logger->error($e);
             return null;
@@ -240,7 +237,7 @@ class BCSabreImpl implements IBackendConnector
         // '_'ts_mode(1byte)ses_time(4bytes)dates(8bytes)uri(no extension)
         $ses_info = '_1' . pack("L", time());
 
-        $showET = $this->utils->getUserSettings(BackendUtils::KEY_PSN, $userId)[BackendUtils::PSN_END_TIME];
+        $showET = $settings[BackendUtils::PSN_END_TIME];
         foreach ($objs as $obj) {
 
             $cd = $obj['calendardata'];
@@ -334,7 +331,7 @@ class BCSabreImpl implements IBackendConnector
                 $it->next();
             }
 
-            if ($skip_count > 14 && $cls[BackendUtils::CLS_XTM_PUSH_REC] === true) {
+            if ($skip_count > 14 && $settings[BackendUtils::CLS_XTM_PUSH_REC] === true) {
                 // Optimize recurrence
                 $it->rewind();
                 $skip_until = $skip_count - 7;
@@ -506,18 +503,13 @@ class BCSabreImpl implements IBackendConnector
         $busy_tree = null;
         $itc = new AVLIntervalTree();
 
-        $cls = $this->utils->getUserSettings(
-            BackendUtils::KEY_CLS, $userId);
-        $all_day_block = $cls[BackendUtils::CLS_ALL_DAY_BLOCK];
+        $settings = $this->utils->getUserSettings();
+        $all_day_block = $settings[BackendUtils::CLS_ALL_DAY_BLOCK];
+        $log_remote_blockers = $settings[BackendUtils::DEBUGGING_LOG_REM_BLOCKER];
 
-        $log_remote_blockers = $this->utils->getUserSettings(BackendUtils::KEY_DEBUGGING, $userId)[BackendUtils::DEBUGGING_LOG_REM_BLOCKER];
+        $beforeBufferSec = $settings[BackendUtils::CLS_BUFFER_BEFORE] * 60;
+        $afterBufferSec = $settings[BackendUtils::CLS_BUFFER_AFTER] * 60;
 
-        $baseBeforeBufferSec = 0;
-        $baseAfterBufferSec = 0;
-        if ($cms !== null) {
-            $baseBeforeBufferSec = $cms[BackendUtils::CLS_BUFFER_BEFORE] * 60;
-            $baseAfterBufferSec = $cms[BackendUtils::CLS_BUFFER_AFTER] * 60;
-        }
 
         // get booked & busy timeslots
         foreach ($cals as $cal) {
@@ -544,28 +536,6 @@ class BCSabreImpl implements IBackendConnector
                         (isset($evt->CLASS) && $evt->CLASS->getValue() === 'PRIVATE')) {
                         $vo->destroy();
                         continue;
-                    }
-
-                    // check if we have buffers
-                    $beforeBufferSec = $baseBeforeBufferSec;
-                    $afterBufferSec = $baseAfterBufferSec;
-                    // @see BackendUtils->dataSetAttendee for BackendUtils::XAD_PROP
-                    if (isset($evt->{BackendUtils::XAD_PROP})) {
-                        $xad = explode(chr(31), $this->utils->decrypt(
-                            $evt->{BackendUtils::XAD_PROP}->getValue(),
-                            $evt->UID->getValue()));
-                        if (count($xad) > 2 && $xad[0] === $userId) {
-                            $pageId = $xad[2];
-
-                            $cms = $this->utils->getUserSettings(
-                                $pageId === 'p0'
-                                    ? BackendUtils::KEY_CLS
-                                    : BackendUtils::KEY_MPS . $pageId,
-                                $userId);
-
-                            $beforeBufferSec = max($beforeBufferSec, $cms[BackendUtils::CLS_BUFFER_BEFORE] * 60);
-                            $afterBufferSec = max($afterBufferSec, $cms[BackendUtils::CLS_BUFFER_AFTER] * 60);
-                        }
                     }
 
                     if (isset($evt->RRULE)) {
@@ -661,7 +631,7 @@ class BCSabreImpl implements IBackendConnector
 
             $hadSync = false; // only one sync per-request
 
-            $syncInterval = intval($this->utils->getUserSettings(BackendUtils::KEY_CLS, $userId)[BackendUtils::CLS_TMM_SUBSCRIPTIONS_SYNC]);
+            $syncInterval = intval($this->utils->getUserSettings()[BackendUtils::CLS_TMM_SUBSCRIPTIONS_SYNC]);
 
             // we need to add real(not transformed) subscription objects here
             $allSubs = $this->backend->getSubscriptionsForUser(BackendManager::PRINCIPAL_PREFIX . $userId);
@@ -768,16 +738,13 @@ class BCSabreImpl implements IBackendConnector
             // external mode
             // $calId = dstCal(main)+chr(31)+srcCal(free spots) @see PageController->showForm()
 
+            // TODO: ????
             if ($pageId !== null) {
-                $cms = $this->utils->getUserSettings(
-                    $pageId === 'p0'
-                        ? BackendUtils::KEY_CLS
-                        : BackendUtils::KEY_MPS . $pageId,
-                    $userId);
+                $settings = $this->utils->getUserSettings();
             } else {
-                $cms = null;
+                $settings = null;
             }
-            return $this->queryRangeTR($calId, $start, $end, $key, $userId, $cms);
+            return $this->queryRangeTR($calId, $start, $end, $key, $userId, $settings);
         }
 
         // Simple Mode...
@@ -805,7 +772,7 @@ class BCSabreImpl implements IBackendConnector
         $ses_start = time() . '|';
         $ret = '';
 
-        $showET = $this->utils->getUserSettings(BackendUtils::KEY_PSN, $userId)[BackendUtils::PSN_END_TIME];
+        $showET = $this->utils->getUserSettings()[BackendUtils::PSN_END_TIME];
 
         $ts_pref = 'U';
         foreach ($objs as $obj) {
@@ -1033,13 +1000,9 @@ class BCSabreImpl implements IBackendConnector
 
         $pageId = $info['_page_id'];
 
-        $cms = $this->utils->getUserSettings(
-            $pageId === 'p0'
-                ? BackendUtils::KEY_CLS
-                : BackendUtils::KEY_MPS . $pageId,
-            $userId);
+        $settings = $this->utils->getUserSettings();
 
-        $ts_mode = $cms[BackendUtils::CLS_TS_MODE];
+        $ts_mode = $settings[BackendUtils::CLS_TS_MODE];
 
         if ($ts_mode === BackendUtils::CLS_TS_MODE_TEMPLATE) {
             // weekly template
@@ -1053,7 +1016,6 @@ class BCSabreImpl implements IBackendConnector
                 return 1;
             }
 
-//            $tza = $this->utils->getUserSettings(BackendUtils::KEY_TMPL_INFO, $userId);
             $tza = $this->utils->getTemplateInfo($userId, $pageId);
             if (!isset($tza[BackendUtils::TMPL_TZ_DATA])) {
                 $this->logErr("Can't find timezone data, tza: " . var_export($tza, true));
@@ -1094,14 +1056,14 @@ class BCSabreImpl implements IBackendConnector
                 $parts['4_last'];
 
             // Special "lock" uid
-            $lock_uid = "LOCK_" . hash("tiger128,4", $info['tmpl_start_ts'] . $pageId . $userId . $cms[BackendUtils::CLS_TMM_DST_ID]);
+            $lock_uid = "LOCK_" . hash("tiger128,4", $info['tmpl_start_ts'] . $pageId . $userId . $settings[BackendUtils::CLS_TMM_DST_ID]);
 
             $start_ts = $info['tmpl_start_ts'];
 
         } elseif ($ts_mode === BackendUtils::CLS_TS_MODE_EXTERNAL) {
             // external mode...
             // ... query source cal for source uri
-            $srcId = $cms[BackendUtils::CLS_XTM_SRC_ID];
+            $srcId = $settings[BackendUtils::CLS_XTM_SRC_ID];
             $srcUri = $info['ext_src_uri'];
             $src_data = $this->getObjectData($srcId, $srcUri);
             if ($src_data === null) {
@@ -1217,13 +1179,13 @@ class BCSabreImpl implements IBackendConnector
                 // for external and template modes we need to re-check the time range and update the lock_uid to "real" uid or delete the lock_uid if the time range is "taken"
 
                 if ($ts_mode === '1') {
-                    $trc = $this->checkRangeTR($info['ext_start'], $info['ext_end'], $calId, $utz, $userId, $cms);
+                    $trc = $this->checkRangeTR($info['ext_start'], $info['ext_end'], $calId, $utz, $userId, $settings);
                 } else {
                     // template mode
                     $dt->setTimestamp($info['tmpl_start_ts']);
                     $dt_end = clone($dt);
                     $dt_end->setTimestamp($end_ts);
-                    $trc = $this->checkRangeTemplate($cms, $dt, $dt_end, $userId);
+                    $trc = $this->checkRangeTemplate($settings, $dt, $dt_end, $userId);
                 }
                 if ($trc === 0) {
                     // the time range is good, create new object...
@@ -1254,9 +1216,7 @@ class BCSabreImpl implements IBackendConnector
 
             if ($ec === 0) {
 
-                $eml_settings = $this->utils->getUserSettings(
-                    BackendUtils::KEY_EML, $userId);
-                $info["_more_ics_text"] = $eml_settings[BackendUtils::EML_ICS_TXT];
+                $info["_more_ics_text"] = $settings[BackendUtils::EML_ICS_TXT];
 
                 $newData = $this->utils->dataSetAttendee($d, $info, $userId, $uri);
                 if ($newData === "1") {
@@ -1345,16 +1305,12 @@ class BCSabreImpl implements IBackendConnector
                 $ret = [0, $date, $attendeeName];
             } else {
 
-                $cms = $this->utils->getUserSettings(
-                    $pageId === 'p0'
-                        ? BackendUtils::KEY_CLS
-                        : BackendUtils::KEY_MPS . $pageId,
-                    $userId);
+                $settings = $this->utils->getUserSettings();
 
-                if ($do_confirm && $cms[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_SIMPLE
-                    && $cms[BackendUtils::CLS_DEST_ID] !== "-1") {
+                if ($do_confirm && $settings[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_SIMPLE
+                    && $settings[BackendUtils::CLS_DEST_ID] !== "-1") {
                     // confirming in regular mode into different calendar
-                    $dcl_id = $cms[BackendUtils::CLS_DEST_ID];
+                    $dcl_id = $settings[BackendUtils::CLS_DEST_ID];
 
                     // 1. delete from original calendar
                     $ra = $this->deleteCalendarObject($userId, $calId, $uri);

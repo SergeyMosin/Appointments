@@ -126,7 +126,7 @@ class DebugController extends Controller
 				$status = Http::STATUS_NOT_FOUND;
 			} else {
 
-				$syncInterval = intval($this->utils->getUserSettings(BackendUtils::KEY_CLS, $this->userId)[BackendUtils::CLS_TMM_SUBSCRIPTIONS_SYNC]);
+				$syncInterval = intval($this->utils->getUserSettings()[BackendUtils::CLS_TMM_SUBSCRIPTIONS_SYNC]);
 
 				if ($syncInterval < 60) {
 					$data = "Appointments App sync is disabled.\nSee 'Settings > Advanced Settings > Weekly Template Settings > Subscriptions Sync Interval'";
