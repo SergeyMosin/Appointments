@@ -11,9 +11,9 @@ const settingsStore = useSettingsStore()
 const settings = settingsStore.settings
 
 const roomNameOptions = [
-	{value: "0", label: t('appointments', 'Guest name + Date/Time')},
-	{value: "1", label: t('appointments', 'Date/Time + Guest name')},
-	{value: "2", label: t('appointments', 'Guest name only')},
+	{value: 0, label: t('appointments', 'Guest name + Date/Time')},
+	{value: 1, label: t('appointments', 'Date/Time + Guest name')},
+	{value: 2, label: t('appointments', 'Guest name only')},
 ]
 
 const handleInterceptor = (data) => {
@@ -89,7 +89,8 @@ const handleInterceptor = (data) => {
 			<ComboSelect
 					prop-name="talk_nameFormat"
 					:disabled="!settings.talk_enabled"
-					default-value="0"
+					:default-value="0"
+					:placeholder="t('appointments', 'One option required')"
 					:label="t('appointments', 'Talk room name')"
 					:click-interceptor="handleInterceptor"
 					:store="settingsStore"
