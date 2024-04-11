@@ -1,12 +1,11 @@
-<?php
-/** @noinspection PhpUndefinedFieldInspection */
+<?php /** @noinspection PhpUndefinedFieldInspection */
 
-/** @noinspection PhpMissingParamTypeInspection */
-/** @noinspection PhpMissingReturnTypeInspection */
+/** @noinspection PhpDocMissingThrowsInspection */
+
+/** @noinspection PhpUnhandledExceptionInspection */
 /** @noinspection PhpPossiblePolymorphicInvocationInspection */
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 /** @noinspection PhpComposerExtensionStubsInspection */
-
 
 namespace OCA\Appointments\Backend;
 
@@ -14,6 +13,7 @@ use OCA\Appointments\AppInfo\Application;
 use OCP\DB\Exception;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IConfig;
+use OCP\IDateTimeZone;
 use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\IURLGenerator;
@@ -208,12 +208,9 @@ class BackendUtils
     }
 
     /**
-     * @param \DateTimeImmutable $new_start
-     * @param \DateTimeImmutable $new_end
      * @param int $skipped number of skipped recurrences (to adjust the 'COUNT')
-     * @param \Sabre\VObject\Component\VCalendar $vo
      */
-    function optimizeRecurrence($new_start, $new_end, $skipped, $vo)
+    function optimizeRecurrence(\DateTimeImmutable $new_start, \DateTimeImmutable $new_end, int $skipped, \Sabre\VObject\Component\VCalendar $vo): void
     {
 
         /**  @var \Sabre\VObject\Component\VEvent $evt */
@@ -239,15 +236,11 @@ class BackendUtils
     }
 
     /**
-     * @param $data
-     * @param $info
-     * @param $userId
-     * @param $uri
      * @return string   Event Data |
      *                  "1"=Bad Status (Most likely booked while waiting),
      *                  "2"=Other Error
      */
-    function dataSetAttendee($data, $info, $userId, $uri)
+    function dataSetAttendee(string $data, array $info, string $userId, string $uri): string
     {
 
         $vo = Reader::read($data);
@@ -363,12 +356,10 @@ class BackendUtils
     }
 
     /**
-     * @param $uri
-     * @param $userId
      * @param $noChanges - if true, no changes will be made,  this will only return meeting type
      * @return string[] [new meeting type, '' === error, data]
      */
-    function dataChangeApptType($data, $userId, $noChanges = false)
+    function dataChangeApptType(string $data, string $userId, bool $noChanges = false): array
     {
         $r = ['', ''];
 
@@ -439,15 +430,13 @@ class BackendUtils
     }
 
     /**
-     * @param $data
-     * @param string $userId
      * @return array [string|null, string|null, string|null]
      *                  null=error|""=already confirmed,
      *                  Localized DateTime string
      *                  $pageId
      *                  $attendeeName
      */
-    function dataConfirmAttendee($data, $userId)
+    function dataConfirmAttendee(string $data, string $userId): array
     {
 
         $vo = $this->getAppointment($data, 'CONFIRMED');
@@ -506,14 +495,12 @@ class BackendUtils
     }
 
     /**
-     * @param $data
-     * @param string $userId
      * @return array [string|null, int, string]
      *                  date_time: Localized DateTime string or null on error
      *                  state: one of self::PREF_STATUS_*
      *                  attendeeName: or empty if error
      */
-    function dataApptGetInfo($data, $userId)
+    function dataApptGetInfo(?string $data, ?string $userId): array
     {
         $ret = [null, self::PREF_STATUS_TENTATIVE, ""];
 
@@ -556,13 +543,9 @@ class BackendUtils
     }
 
     /**
-     * @param $userId
-     * @param $xad
-     * @param $evt
-     * @param $a - attendee
      * @return string new appointment type virtual/in-person (from talk settings)
      */
-    private function addEvtTalkInfo($userId, $xad, $evt, $a)
+    private function addEvtTalkInfo(string $userId, array $xad, \Sabre\VObject\Component\VEvent $evt, \Sabre\VObject\Property|null $attendee): string
     {
         $r = '';
 
@@ -574,7 +557,7 @@ class BackendUtils
                 if ($settings[self::TALK_ENABLED] === true) {
                     $ti = new TalkIntegration($settings, $this);
                     $token = $ti->createRoomForEvent(
-                        $a->parameters['CN']->getValue(),
+                        $attendee->parameters['CN']->getValue(),
                         $evt->DTSTART,
                         $userId);
                     if (!empty($token)) {
@@ -582,7 +565,7 @@ class BackendUtils
                         $l10n = $this->l10n;
                         if ($token !== "-") {
                             $pi = '';
-                            if (strpos($token, chr(31)) === false) {
+                            if (!str_contains($token, chr(31))) {
                                 // just token
                                 $xad[4] = $token;
                             } else {
@@ -626,11 +609,7 @@ class BackendUtils
         return $r;
     }
 
-    /**
-     * @param \Sabre\VObject\Component\VEvent $evt
-     * @param $addString string text to be added to original description
-     */
-    private function updateDescription($evt, $addString)
+    private function updateDescription(\Sabre\VObject\Component\VEvent $evt, string $addString): void
     {
         // just in-case
         if (!isset($evt->DESCRIPTION)) {
@@ -648,12 +627,11 @@ class BackendUtils
     }
 
     /**
-     * @param $data
      * @return array [string|null, string|null, string|null]
      *                  null=error|""=already canceled
      *                  Localized DateTime string
      */
-    function dataCancelAttendee($data)
+    function dataCancelAttendee(string $data): array
     {
 
         $vo = $this->getAppointment($data, '*');
@@ -710,10 +688,9 @@ class BackendUtils
 
     /**
      * This is also called from DavListener
-     * @param \Sabre\VObject\Component\VEvent $evt
      * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection
      */
-    function evtCancelAttendee(&$evt)
+    function evtCancelAttendee(\Sabre\VObject\Component\VEvent &$evt): void
     {
 
         $a = $this->getAttendee($evt);
@@ -749,11 +726,10 @@ class BackendUtils
      *                  'UTC' for UTC/GMT
      *          $title the title might need to be reset to original when the appointment is canceled (can be empty)
      * ]
-     * @param string $data
      * @return string[]
      * @noinspection PhpDocMissingThrowsInspection
      */
-    function dataDeleteAppt($data)
+    function dataDeleteAppt(string $data): array
     {
         $f = "";
         $vo = $this->getAppointment($data, 'CONFIRMED');
@@ -800,11 +776,7 @@ class BackendUtils
         ), $dt, $f, $title];
     }
 
-    /**
-     * @param \Sabre\VObject\Component\VEvent $evt
-     * @return \Sabre\VObject\Property|null
-     */
-    function getAttendee($evt)
+    function getAttendee(\Sabre\VObject\Component\VEvent|\Sabre\VObject\Property|null $evt): \Sabre\VObject\Property|null
     {
         $r = null;
         $ao = null;
@@ -834,11 +806,7 @@ class BackendUtils
         return $r !== null ? $r : $ao;
     }
 
-    /**
-     * @param string $uid
-     * @return string|null
-     */
-    function getApptHash($uid)
+    function getApptHash(string $uid): string|null
     {
         $query = $this->db->getQueryBuilder();
         $query->select(['hash'])
@@ -855,7 +823,7 @@ class BackendUtils
         }
     }
 
-    function setApptHash(\Sabre\VObject\Component\VEvent $evt, string $userId, string $pageId, $uri = null)
+    function setApptHash(\Sabre\VObject\Component\VEvent $evt, string $userId, string $pageId, $uri = null): void
     {
         if (!isset($evt->UID)) {
             $this->logger->error("can't set appt_hash, no UID");
@@ -933,7 +901,7 @@ class BackendUtils
         }
     }
 
-    function deleteApptHash($evt)
+    function deleteApptHash(\Sabre\VObject\Component\VEvent $evt): void
     {
 
         if (!isset($evt->UID)) {
@@ -947,7 +915,7 @@ class BackendUtils
         );
     }
 
-    function deleteApptHashByUID(IDBConnection $db, string $uid)
+    function deleteApptHashByUID(IDBConnection $db, string $uid): void
     {
         $query = $db->getQueryBuilder();
         $query->delete(self::HASH_TABLE_NAME)
@@ -957,7 +925,7 @@ class BackendUtils
     }
 
 
-    function makeApptHash($evt)
+    function makeApptHash(\Sabre\VObject\Component\VEvent $evt): string
     {
         // !! ORDER IS IMPORTANT - DO NOT CHANGE !! //
         $hs = "";
@@ -979,22 +947,13 @@ class BackendUtils
         return $hs;
     }
 
-    /**
-     * @param string $hash
-     * @param \Sabre\VObject\Component\VEvent $evt
-     * @return bool
-     */
-    function isApptCancelled($hash, $evt)
+    function isApptCancelled(string $hash, \Sabre\VObject\Component\VEvent $evt): bool
     {
         // 1e5189eb = hash("crc32", "CANCELLED", false)
         return $evt->STATUS->getValue() === "CANCELLED" && substr($hash, 15, 8) === "1e5189eb";
     }
 
-    /**
-     * @param string $hash
-     * @return float
-     */
-    function getHashDTStart($hash)
+    function getHashDTStart(string $hash): float
     {
         // TODO: this really should be the DTEND
         return (float)substr($hash, 0, 15);
@@ -1005,12 +964,9 @@ class BackendUtils
      *  [index 0 - true if DTSTART changed,
      *   index 1 - true if STATUS changed,
      *   index 2 - true if LOCATION changed]
-     *
-     * @param string $hash
-     * @param \Sabre\VObject\Component\VEvent $evt
      * @return bool[]|null
      */
-    function getHashChanges($hash, $evt)
+    function getHashChanges(string $hash, \Sabre\VObject\Component\VEvent $evt): array|null
     {
         $evt_hash = $this->makeApptHash($evt);
         if ($hash === $evt_hash) {
@@ -1024,10 +980,7 @@ class BackendUtils
         ];
     }
 
-    /**
-     * @param \Sabre\VObject\Component\VEvent $evt
-     */
-    function setSEQ($evt)
+    function setSEQ(\Sabre\VObject\Component\VEvent $evt): void
     {
         if (!isset($evt->SEQUENCE)) {
             $evt->add('SEQUENCE', 1);
@@ -1042,11 +995,9 @@ class BackendUtils
     }
 
     /**
-     * @param string $data
      * @param string $status fail is STATUS does not match
-     * @return \Sabre\VObject\Document|null
      */
-    function getAppointment($data, $status)
+    function getAppointment(string $data, string $status): \Sabre\VObject\Document|null
     {
         $vo = Reader::read($data);
 
@@ -1352,11 +1303,6 @@ class BackendUtils
     }
 
 
-    function clearSettingsCache()
-    {
-        $this->settings = null;
-    }
-
     function getUserSettings(): array
     {
 
@@ -1375,36 +1321,7 @@ class BackendUtils
         return $this->settings[self::KEY_TMPL_INFO];
     }
 
-    /**
-     * @param string $userId
-     * @param string $key
-     * @param string|null $value
-     */
-    function setDBValue($userId, $key, $value)
-    {
-        try {
-            $qb = $this->db->getQueryBuilder();
-            $r = $qb->update(self::PREF_TABLE_NAME)
-                ->set($key, $qb->createNamedParameter($value))
-                ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)))
-                ->execute();
-            if ($r === 0) {
-                $qb = $this->db->getQueryBuilder();
-                $qb->insert(self::PREF_TABLE_NAME)
-                    ->setValue('user_id', $qb->createNamedParameter($userId))
-                    ->setValue($key, $qb->createNamedParameter($value))
-                    ->execute();
-            }
-            // set cached
-            $this->settings[$key] = $value;
-            return true;
-        } catch (\Exception $e) {
-            $this->logger->error($e);
-            return false;
-        }
-    }
-
-    function dbUpsert2(string $userId, string $pageId, array $columns)
+    function dbUpsert2(string $userId, string $pageId, array $columns): bool
     {
         try {
             $tableName = self::PREF_TABLE_V2_NAME;
@@ -1596,13 +1513,11 @@ class BackendUtils
      *  Main = XTM_DST_ID (destination calendar)
      *  Other = XTM_SRC_ID (source calendar)
      *
-     * @param string $userId
-     * @param string $pageId
      * @param IBackendConnector|null $bc checks backend if provided
      * @param string|null $otherCal get the ID of the other calendar "-1"=not found
      * @return string calendar Id or "-1" = no main cal
      */
-    function getMainCalId($userId, $pageId, $bc, &$otherCal = null)
+    function getMainCalId(string $userId, string $pageId, ?IBackendConnector $bc, string &$otherCal = null): string
     {
 
         $settings = $this->getUserSettings();
@@ -1641,15 +1556,12 @@ class BackendUtils
     }
 
     /**
-     * @param string $userId
-     * @param string $pageId
-     * @param string $appName
      * @param string $tz_data_str Can be VTIMEZONE data, 'UTC'
      * @param string $cr_date 20200414T073008Z must be UTC (ends with Z),
      * @param string $title title is used when the appointment is being reset
      * @return string[] ['1_before_uid'=>'string...','2_before_dts'=>'string...','3_before_dte'=>'string...','4_last'=>'string...'] or ['err'=>'Error text...']
      */
-    function makeAppointmentParts($userId, $pageId, $appName, $tz_data_str, $cr_date, $title = "")
+    function makeAppointmentParts(string $userId, string $pageId, string $appName, string $tz_data_str, string $cr_date, string $title = ""): array
     {
 
         $l10n = $this->l10n;
@@ -1728,7 +1640,7 @@ class BackendUtils
         ];
     }
 
-    private function chunk_split_unicode($str, $l = 76, $e = "\r\n")
+    private function chunk_split_unicode($str, $l = 76, $e = "\r\n"): string
     {
         $tmp = array_chunk(
             preg_split("//u", $str, -1, PREG_SPLIT_NO_EMPTY), $l);
@@ -1743,13 +1655,13 @@ class BackendUtils
      * Try to get calendar timezone if it is not available fall back to getUserTimezone
      *
      * @param string $userId
-     * @param \OCP\IConfig $config
+     * @param IConfig $config
      * @param array|null $cal
      * @return \DateTimeZone
      *
      * @see getUserTimezone
      */
-    function getCalendarTimezone(string $userId, \OCP\IConfig $config, array $cal = null): \DateTimeZone
+    function getCalendarTimezone(string $userId, IConfig $config, array $cal = null): \DateTimeZone
     {
 
         // TODO: Double check if the following is the Calendar App order (#1 and #2 might be reversed):
@@ -1791,19 +1703,14 @@ class BackendUtils
         return $tz;
     }
 
-    /**
-     * @param $userId
-     * @param \OCP\IConfig $config
-     * @return \DateTimeZone
-     */
-    function getUserTimezone($userId, $config)
+    function getUserTimezone(string $userId, IConfig $config): \DateTimeZone
     {
         $tz_name = $config->getUserValue($userId, 'calendar', 'timezone');
-        if (empty($tz_name) || strpos($tz_name, 'auto') !== false) {
+        if (empty($tz_name) || str_contains($tz_name, 'auto')) {
             // Try Nextcloud default timezone
             $tz_name = $config->getUserValue($userId, 'core', 'timezone');
-            if (empty($tz_name) || strpos($tz_name, 'auto') !== false) {
-                return \OC::$server->getDateTimeZone()->getTimeZone();
+            if (empty($tz_name) || str_contains($tz_name, 'auto')) {
+                return \OC::$server->get(IDateTimeZone::class);
             }
         }
         try {
@@ -1817,15 +1724,12 @@ class BackendUtils
     }
 
     /**
-     * @param \DateTimeImmutable $date
      * @param string $tzi Timezone info [UF][+-]\d{4} Ex: U+0300 @see dataSetAttendee() or [UF](valid timezone name) Ex: UAmerica/New_York
      * @param int $short_dt
      *      0 = long format
      *      1 = short format (for email subject)
-     * @return string
-     * @noinspection PhpDocMissingThrowsInspection
      */
-    function getDateTimeString($date, $tzi, $short_dt = 0)
+    function getDateTimeString(\DateTimeImmutable $date, string $tzi, int $short_dt = 0): string
     {
 
         $l10N = $this->l10n;
@@ -1868,13 +1772,7 @@ class BackendUtils
         return $date_time;
     }
 
-    /**
-     * @param string $data
-     * @param string $key
-     * @param string $iv special case
-     * @return string
-     */
-    function encrypt(string $data, string $key, $iv = ''): string
+    function encrypt(string $data, string $key, string $iv = ''): string
     {
         if ($iv === '') {
             $iv = $_iv = openssl_random_pseudo_bytes(
@@ -1894,13 +1792,7 @@ class BackendUtils
             : $_iv . $ciphertext_raw;
     }
 
-    /**
-     * @param string $data
-     * @param string $key
-     * @param string $iv
-     * @return string
-     */
-    function decrypt(string $data, string $key, $iv = ''): string
+    function decrypt(string $data, string $key, string $iv = ''): string
     {
         $s1 = $iv === '' ? base64_decode($data) : $data;
         if ($s1 === false || empty($key)) {
@@ -1920,18 +1812,13 @@ class BackendUtils
     }
 
 
-    /**
-     * @param string $token
-     * @param bool $embed
-     * @return string
-     */
-    function pubPrx($token, $embed)
+    function pubPrx(string $token, bool $embed): string
     {
         return $embed ? 'embed/' . $token . '/' : 'pub/' . $token . '/';
     }
 
 
-    function getPublicWebBase()
+    function getPublicWebBase(): string
     {
         // we need to detect if the server is configured to use '.../index.php/...'
         $defaultUrl = $this->urlGenerator->linkToDefaultPageUrl();
@@ -1970,13 +1857,7 @@ class BackendUtils
     }
 
 
-    /**
-     * @param string $userId
-     * @param string $pageId (optional)
-     * @return string
-     * @throws \ErrorException
-     */
-    function getToken($userId, $pageId = "p0"): string|null
+    function getToken(string $userId, string $pageId = "p0"): string|null
     {
         if (empty($userId)) {
             return null;
@@ -1999,7 +1880,7 @@ class BackendUtils
 
     }
 
-    function transformCalInfo($c, $skipReadOnly = true)
+    function transformCalInfo(array $c, bool $skipReadOnly = true): array|null
     {
 
         if (isset($c['{http://nextcloud.com/ns}deleted-at'])) {
@@ -2049,7 +1930,7 @@ class BackendUtils
         return $realIds;
     }
 
-    function removeSubscriptionSync($subscriptionId)
+    function removeSubscriptionSync(string $subscriptionId): void
     {
         $this->logger->info("removeSubscriptionSync, subscriptionId: " . $subscriptionId);
         $qb = $this->db->getQueryBuilder();
@@ -2123,7 +2004,7 @@ class BackendUtils
                         /** @var IURLGenerator $urlGenerator */
                         $urlGenerator = \OC::$server->get(IURLGenerator::class);
                         $appointmentsBackgroundImage = "url('" . $urlGenerator->linkTo('theming', "/img/background/$themingBackground") . "');";
-                    } elseif ($themingBackground[0] === "#" || substr($themingBackground, 0, 3) === "rgb") {
+                    } elseif ($themingBackground[0] === "#" || str_starts_with($themingBackground, "rgb")) {
                         $appointmentsBackgroundImage = "none";
                         $appointmentsBackgroundColor = $themingBackground;
                     } else {

@@ -180,7 +180,7 @@ class AVLIntervalTree{
     }
 
     /**
-     * @param AVLIntervalNode $tree
+     * @param AVLIntervalNode|null $tree
      * @param int $low
      * @param int $high
      * @return AVLIntervalNode|null null=no overlap
