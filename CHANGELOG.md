@@ -1,8 +1,19 @@
+## v2.0.6 - 2024-04-11
+### Fixed
+- Changing "Talk room name" does not work #496
+- Remove extra single quite in form.php - #494
+- Timezone info is lost when dealing with "floating" events in external mode - #478
+- Checkbox click propagation is not prevented
+### Changed
+- Use current email template (instead of NC20)
+- Simplify getUserSettings() calls
+- Add more type declarations in PageController.php and BCSabreImpl.php
+
 ## v2.0.5 - 2024-04-07
 ### Fixed
 - Re-add 'talk_integration_disabled' (old: disable_talk_integration) appConfig setting
 ### Changed
-- Dorm css: set max-width:24em in mobile mode in case of long addresses/names
+- Form css: set max-width:24em in mobile mode in case of long addresses/names
 - URL handling in location field (when location is set to a valid URL)
 - Default to 'AutoStyle=true' for new pages
 
