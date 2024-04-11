@@ -10,13 +10,13 @@ namespace OCA\Appointments\Backend;
 
 
 use OC\OCS\Exception;
+use OCA\Appointments\AppInfo\Application;
+use OCA\Appointments\IntervalTree\AVLIntervalNode;
 use OCA\Appointments\IntervalTree\AVLIntervalTree;
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\CalDAV\WebcalCaching\RefreshWebcalService;
 use OCP\IConfig;
 use OCP\IDBConnection;
-use Sabre\CalDAV\Backend\BackendInterface;
-use Sabre\CalDAV\Backend\SubscriptionSupport;
 use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Xml\Service as XmlService;
 use Sabre\VObject\Recur\EventIterator;
@@ -31,26 +31,20 @@ class BCSabreImpl implements IBackendConnector
     const TIME_FORMAT = "Ymd\THis\Z";
     const TIME_FORMAT_NO_Z = "Ymd\THis";
 
-    private $backend;
-    private $config;
-    private $appName;
-    private $utils;
-    /** @var LoggerInterface */
-    private $logger;
-    /** @var IDBConnection */
-    private $db;
+    private CalDavBackend $backend;
+    private IConfig $config;
+    private BackendUtils $utils;
+    private LoggerInterface $logger;
+    private IDBConnection $db;
 
-    public function __construct($AppName,
-                                CalDavBackend $backend,
-                                IConfig $config,
-                                BackendUtils $utils,
-                                IDBConnection $db,
+    public function __construct(CalDavBackend   $backend,
+                                IConfig         $config,
+                                BackendUtils    $utils,
+                                IDBConnection   $db,
                                 LoggerInterface $logger)
     {
-        /** @var SubscriptionSupport|BackendInterface $backend */
         $this->backend = $backend;
         $this->config = $config;
-        $this->appName = $AppName;
         $this->utils = $utils;
         $this->db = $db;
         $this->logger = $logger;
@@ -125,16 +119,12 @@ class BCSabreImpl implements IBackendConnector
     /**
      * @param int $start_ts UTC
      * @param int $end_ts UTC
-     * @param string $calId
      * @param \DateTimeZone $utz user's timezone
-     * @param string $userId
      * @return int 0=no events, 1=at least 1
      * @noinspection PhpDocMissingThrowsInspection
      */
-    private function checkRangeTR($start_ts, $end_ts, $calId, $utz, $userId, $cms)
+    private function checkRangeTR(int $start_ts, int $end_ts, string $calId, \DateTimeZone $utz, array $settings): int
     {
-
-        $settings = $this->utils->getUserSettings();
 
         $start = new \DateTime('@' . $start_ts, $utz);
 
@@ -167,7 +157,7 @@ class BCSabreImpl implements IBackendConnector
 
         $end_ts--; // -1 second
 
-        $booked_tree = $this->buildBusyTree($userId, $cals, $result->filters, $start, $start_ts, $end_ts, true, $cms);
+        $booked_tree = $this->buildBusyTree($cals, $result->filters, $start, $start_ts, $end_ts, true);
 
         // if $booked_tree is NOT null then there was a match(intersection)
         return $booked_tree === null ? 0 : 1;
@@ -176,18 +166,9 @@ class BCSabreImpl implements IBackendConnector
 
     /**
      * @param string $calIds dstCal(main)+chr(31)+srcCal(free spots)
-     * @param \DateTime $start should have user's timezone
-     * @param \DateTime $end should have user's timezone
-     * @param $key
-     * @param $userId
-     * @param array|null $cms
-     * @return string|null
-     * @noinspection PhpDocMissingThrowsInspection
-     * @noinspection PhpPossiblePolymorphicInvocationInspection
      */
-    private function queryRangeTR($calIds, $start, $end, $key, $userId, $cms)
+    private function queryRangeTR(string $calIds, \DateTime $start, \DateTime $end, string $key): string|null
     {
-
         // user's timezone
         $utz = $start->getTimezone();
 
@@ -227,7 +208,7 @@ class BCSabreImpl implements IBackendConnector
             'id' => $dstId,
             'type' => CalDavBackend::CALENDAR_TYPE_CALENDAR
         ]];
-        $booked_tree = $this->buildBusyTree($userId, $cals, $result->filters, $start, $start_ts, $end_ts, false, $cms);
+        $booked_tree = $this->buildBusyTree($cals, $result->filters, $start, $start_ts, $end_ts, false);
 
         // Get free/available spots
         $urls = $this->backend->calendarQuery($srcId, $result->filters);
@@ -347,14 +328,9 @@ class BCSabreImpl implements IBackendConnector
     }
 
     /**
-     * @param $cms
-     * @param \DateTime $start
-     * @param \DateTime $end
-     * @param string $userId
      * @return int 0=ok, -1=error, 1=taken
-     * @throws \Sabre\VObject\Recur\MaxInstancesExceededException
      */
-    function checkRangeTemplate($cms, $start, $end, $userId): int
+    function checkRangeTemplate(array $settings, \DateTime $start, \DateTime $end, string $userId): int
     {
 
         // We need to adjust for UTC and filter
@@ -376,7 +352,7 @@ class BCSabreImpl implements IBackendConnector
             return -1;
         }
 
-        $cals = $this->getCalsForConflictCheck($cms, $userId);
+        $cals = $this->getCalsForConflictCheck($settings, $userId);
 
         // we need to adjust/modify $start and $end by 1 sec because of "<=" and ">=" comparisons(instead of just "<" and ">" ) in the buildBusyTree function
         $start->modify('+1 second');
@@ -385,7 +361,7 @@ class BCSabreImpl implements IBackendConnector
         $start_ts = $start->getTimestamp();
         $end_ts = $end->getTimestamp();
 
-        $booked_tree = $this->buildBusyTree($userId, $cals, $result->filters, $start, $start_ts, $end_ts, true, $cms);
+        $booked_tree = $this->buildBusyTree($cals, $result->filters, $start, $start_ts, $end_ts, true);
 
         // if $booked_tree is NOT null then there was a match(intersection)
         return $booked_tree === null ? 0 : 1;
@@ -395,10 +371,10 @@ class BCSabreImpl implements IBackendConnector
     /**
      * @inheritDoc
      */
-    function queryTemplate($cms, $start, $end, $userId, $pageId)
+    function queryTemplate($cms, $start, $end, $userId, $pageId): ?string
     {
 
-        $key = hex2bin($this->config->getAppValue($this->appName, 'hk'));
+        $key = hex2bin($this->config->getAppValue(Application::APP_ID, 'hk'));
         if (empty($key)) {
             $this->logger->error("Can't find hkey");
             return null;
@@ -428,11 +404,11 @@ class BCSabreImpl implements IBackendConnector
             return null;
         }
 
-        $cals = $this->getCalsForConflictCheck($cms, $userId);
-
-        $booked_tree = $this->buildBusyTree($userId, $cals, $result->filters, $start, $start_ts, $end_ts, false, $cms);
-
         $settings = $this->utils->getUserSettings();
+
+        $cals = $this->getCalsForConflictCheck($settings, $userId);
+
+        $booked_tree = $this->buildBusyTree($cals, $result->filters, $start, $start_ts, $end_ts, false);
 
         $ti = $settings[BackendUtils::KEY_TMPL_INFO];
 
@@ -497,7 +473,7 @@ class BCSabreImpl implements IBackendConnector
         return $out !== '' ? substr($out, 0, -1) : null;
     }
 
-    private function buildBusyTree($userId, $cals, $resultFilters, $start, $start_ts, $end_ts, $returnAfterFirstMatch = false, $cms = null)
+    private function buildBusyTree(array $cals, array $resultFilters, \DateTime $start, int $start_ts, int $end_ts, bool $returnAfterFirstMatch = false): AVLIntervalNode|null
     {
 
         $utz = $start->getTimezone();
@@ -596,21 +572,18 @@ class BCSabreImpl implements IBackendConnector
 
 
     /**
-     * @param array $cms
-     * @param string $userId
-     * @param bool $forceSync
      * @return array [['id'=>'x','type'=>CalDavBackend::CALENDAR_TYPE_x]]
      */
-    private function getCalsForConflictCheck(array $cms, string $userId, bool $forceSync = false): array
+    private function getCalsForConflictCheck(array $settings, string $userId, bool $forceSync = false): array
     {
 
         // stars with destination cal
         $ret = [[
-            'id' => $cms[BackendUtils::CLS_TMM_DST_ID],
+            'id' => $settings[BackendUtils::CLS_TMM_DST_ID],
             'type' => CalDavBackend::CALENDAR_TYPE_CALENDAR
         ]];
 
-        $currentCalIds = $cms[BackendUtils::CLS_TMM_MORE_CALS];
+        $currentCalIds = $settings[BackendUtils::CLS_TMM_MORE_CALS];
         if (count($currentCalIds) > 0) {
             $filteredIds = $this->utils->filterCalsAndSubs(
                 $currentCalIds,
@@ -623,7 +596,7 @@ class BCSabreImpl implements IBackendConnector
             }
         }
 
-        $currentSubIds = $cms[BackendUtils::CLS_TMM_SUBSCRIPTIONS];
+        $currentSubIds = $settings[BackendUtils::CLS_TMM_SUBSCRIPTIONS];
         if (count($currentSubIds) > 0) {
 
             $ids = []; // convert to array with ids as keys for fast look up
@@ -721,32 +694,24 @@ class BCSabreImpl implements IBackendConnector
     /**
      * @inheritDoc
      */
-    function queryRange($calId, $start, $end, $mode, $pageId = null)
+    function queryRange($calId, $start, $end, $mode, $pageId = null): ?string
     {
 
         $no_uri = ($mode === 'no_url');
         if ($no_uri) {
             $key = ''; // add end_time instead of uri
         } else {
-            $key = hex2bin($this->config->getAppValue($this->appName, 'hk'));
+            $key = hex2bin($this->config->getAppValue(Application::APP_ID, 'hk'));
             if (empty($key)) {
                 $this->logger->error("Can't find hkey");
                 return null;
             }
         }
 
-        $userId = substr($mode, 1);
         if ($mode[0] === "1") {
             // external mode
             // $calId = dstCal(main)+chr(31)+srcCal(free spots) @see PageController->showForm()
-
-            // TODO: ????
-            if ($pageId !== null) {
-                $settings = $this->utils->getUserSettings();
-            } else {
-                $settings = null;
-            }
-            return $this->queryRangeTR($calId, $start, $end, $key, $userId, $settings);
+            return $this->queryRangeTR($calId, $start, $end, $key);
         }
 
         // Simple Mode...
@@ -819,7 +784,7 @@ class BCSabreImpl implements IBackendConnector
     }
 
 
-    function getRawCalData($calInfo, $userId)
+    function getRawCalData(array $calInfo, string $userId)
     {
 
         $r = [];
@@ -895,7 +860,7 @@ class BCSabreImpl implements IBackendConnector
      * @inheritDoc
      * @noinspection PhpRedundantCatchClauseInspection
      */
-    function updateObject($calId, $uri, $data)
+    function updateObject($calId, $uri, $data): bool
     {
         try {
             $this->backend->updateCalendarObject($calId, $uri, $data);
@@ -910,7 +875,7 @@ class BCSabreImpl implements IBackendConnector
      * @inheritDoc
      * @noinspection PhpRedundantCatchClauseInspection
      */
-    function createObject($calId, $uri, $data)
+    function createObject($calId, $uri, $data): bool
     {
         try {
             $this->backend->createCalendarObject($calId, $uri, $data);
@@ -921,21 +886,10 @@ class BCSabreImpl implements IBackendConnector
         return true;
     }
 
-//    /**
-//     * @inheritDoc
-//     */
-//    function verifyCalId($calId, $userId){
-//        $ca=$this->backend->getCalendarsForUser(BackendManager::PRINCIPAL_PREFIX.$userId);
-//        foreach ($ca as $c){
-//            if($c["id"]==$calId) return true;
-//        }
-//        return false;
-//    }
-
     /**
      * @inheritDoc
      */
-    function getCalendarsForUser($userId, $skipReadOnly = true)
+    function getCalendarsForUser($userId, $skipReadOnly = true): array
     {
         $ca = $this->backend->getCalendarsForUser(BackendManager::PRINCIPAL_PREFIX . $userId);
         $ret = [];
@@ -969,7 +923,7 @@ class BCSabreImpl implements IBackendConnector
     /**
      * @inheritDoc
      */
-    function getCalendarById($calId, $userId)
+    function getCalendarById($calId, $userId): ?array
     {
         $ca = $this->backend->getCalendarsForUser(BackendManager::PRINCIPAL_PREFIX . $userId);
         foreach ($ca as $c) {
@@ -1089,7 +1043,7 @@ class BCSabreImpl implements IBackendConnector
 
             if (isset($dt_start->parameters['TZID']) && isset($vo->VTIMEZONE)) {
                 $tzi = $vo->VTIMEZONE->serialize();
-            } elseif (strpos($dt_start->getValue(), 'Z') !== false) {
+            } elseif (str_contains($dt_start->getValue(), 'Z')) {
                 $tzi = 'UTC';
             } else {
                 if ($dt_start->isFloating()) {
@@ -1181,7 +1135,7 @@ class BCSabreImpl implements IBackendConnector
                 // for external and template modes we need to re-check the time range and update the lock_uid to "real" uid or delete the lock_uid if the time range is "taken"
 
                 if ($ts_mode === '1') {
-                    $trc = $this->checkRangeTR($info['ext_start'], $info['ext_end'], $calId, $utz, $userId, $settings);
+                    $trc = $this->checkRangeTR($info['ext_start'], $info['ext_end'], $calId, $utz, $settings);
                 } else {
                     // template mode
                     $dt->setTimestamp($info['tmpl_start_ts']);
@@ -1254,7 +1208,7 @@ class BCSabreImpl implements IBackendConnector
         return $ec;
     }
 
-    private function logErr($err)
+    private function logErr(string $err): void
     {
         $this->logger->error($err);
     }
@@ -1262,7 +1216,7 @@ class BCSabreImpl implements IBackendConnector
     /**
      * @inheritDoc
      */
-    function confirmAttendee($userId, $calId, $uri)
+    function confirmAttendee($userId, $calId, $uri): array
     {
         return $this->confirmCancel($userId, $calId, $uri, true);
     }
@@ -1270,12 +1224,12 @@ class BCSabreImpl implements IBackendConnector
     /**
      * @inheritDoc
      */
-    function cancelAttendee($userId, $calId, $uri)
+    function cancelAttendee($userId, $calId, $uri): array
     {
         return $this->confirmCancel($userId, $calId, $uri, false);
     }
 
-    private function confirmCancel($userId, $calId, $uri, $do_confirm)
+    private function confirmCancel(string $userId, string $calId, string $uri, bool $do_confirm): array
     {
         $ret = [1, null, ""];
         $err = '';
@@ -1352,7 +1306,7 @@ class BCSabreImpl implements IBackendConnector
     /**
      * @inheritDoc
      */
-    function deleteCalendarObject($userId, $calId, $uri)
+    function deleteCalendarObject($userId, $calId, $uri): array
     {
         $ret = [0, '', '', 'UTC', ''];
         $d = $this->getObjectData($calId, $uri);
@@ -1369,9 +1323,8 @@ class BCSabreImpl implements IBackendConnector
 
     /**
      * @inheritDoc
-     * @return bool
      */
-    static function checkCompatibility()
+    static function checkCompatibility(): bool
     {
 
         $className = 'OCA\DAV\CalDAV\CalDavBackend';
@@ -1388,47 +1341,14 @@ class BCSabreImpl implements IBackendConnector
         return false;
     }
 
-    /**
-     * @param \DateTime|null $start
-     * @param \DateTime $end
-     * @param string|null $status
-     * @return string
-     */
-    public static function makeDavReport($start, $end, $status)
+    public static function makeDavReport(\DateTime|null $start, \DateTime $end, string|null $status): string
     {
         return '<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop xmlns:D="DAV:"><C:calendar-data/></D:prop><C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="CATEGORIES"><C:text-match>' . BackendUtils::APPT_CAT . '</C:text-match></C:prop-filter></C:comp-filter>' . ($status !== null ? '<C:comp-filter name="VEVENT"><C:prop-filter name="STATUS"><C:text-match>' . $status . '</C:text-match></C:prop-filter></C:comp-filter>' : '') . '<C:comp-filter name="VEVENT"><C:prop-filter name="RRULE"><C:is-not-defined/></C:prop-filter></C:comp-filter><C:comp-filter name="VEVENT"><C:time-range ' . ($start !== null ? ('start="' . $start->format(self::TIME_FORMAT) . '"') : '') . ' end="' . $end->format(self::TIME_FORMAT) . '"/></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
     }
 
-    /**
-     * @param string $start
-     * @param string $end
-     * @param bool $cat_required
-     * @return string
-     */
-    public static function makeTrDavReport($start, $end, $cat_required)
+    public static function makeTrDavReport(string $start, string $end, bool $cat_required): string
     {
         return '<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop xmlns:D="DAV:"><C:calendar-data/></D:prop><C:filter><C:comp-filter name="VCALENDAR">' . ($cat_required ? '<C:comp-filter name="VEVENT"><C:prop-filter name="CATEGORIES"><C:text-match>' . BackendUtils::APPT_CAT . '</C:text-match></C:prop-filter></C:comp-filter>' : '') . '<C:comp-filter name="VEVENT"><C:time-range start="' . $start . '" end="' . $end . '"/></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
     }
-
-
-//    /**
-//     * @param string $start
-//     * @param string $end
-//     * @return string
-//     */
-//    public static function makeTrBookedDavReport($start,$end){
-//        return '<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop xmlns:D="DAV:"><C:calendar-data/></D:prop><C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="CATEGORIES"><C:text-match>'.BackendUtils::APPT_CAT.'</C:text-match></C:prop-filter></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="RRULE"><C:is-not-defined/></C:prop-filter></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="ORGANIZER"/></C:comp-filter><C:comp-filter name="VEVENT"><C:prop-filter name="ATTENDEE"/></C:comp-filter><C:comp-filter name="VEVENT"><C:time-range start="'.$start.'" end="'.$end.'"/></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
-//    }
-
-//<C:comp-filter name="VEVENT">
-//<C:prop-filter name="STATUS">
-//<C:text-match>CONFIRMED</C:text-match>
-//</C:prop-filter>
-//</C:comp-filter>
-//<C:comp-filter name="VEVENT">
-//<C:prop-filter name="TRANSP">
-//<C:text-match>OPAQUE</C:text-match>
-//</C:prop-filter>
-//</C:comp-filter>
 
 }

@@ -91,7 +91,7 @@ interface IBackendConnector
      */
     function getCalendarById($calId, $userId);
 
-    function getRawCalData($calInfo, $userId);
+    function getRawCalData(array $calInfo, string $userId);
 
     /**
      * @param $calId
