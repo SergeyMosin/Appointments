@@ -72,7 +72,7 @@ style('appointments', 'form');
             echo '</div>';
         }
         ?>
-        <button id="srgdev-ncfp_fbtn" <?php echo $disabled ?>class="primary srgdev-ncfp-form-btn" data-tr-ses-to="<?php echo htmlspecialchars($l->t('Session Timeout. Reload.'), ENT_QUOTES, 'UTF-8'); ?>'"><span>
+        <button id="srgdev-ncfp_fbtn" <?php echo $disabled ?>class="primary srgdev-ncfp-form-btn" data-tr-ses-to="<?php echo htmlspecialchars($l->t('Session Timeout. Reload.'), ENT_QUOTES, 'UTF-8'); ?>"><span>
                 <?php
                 // TRANSLATORS This is the text for the "Book Now" button, on the appointment form.
                 echo htmlspecialchars($l->t("Book Now"), ENT_QUOTES, 'UTF-8'); ?></span><span id="srgdev-ncfp_fbtn-spinner"></span>
