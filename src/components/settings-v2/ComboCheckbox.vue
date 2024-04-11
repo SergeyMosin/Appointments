@@ -72,7 +72,7 @@ const handleClick = (evt) => {
 				:loading="isLoading"
 				:indeterminate="indeterminate"
 				class="ps-settings-checkbox"
-				@click.native="handleClick"
+				@click.native.capture="handleClick"
 				@update:checked="(value)=>{store.setOne(propName,value)}"/>
 		<div v-if="slots?.help" class="wrapper-checkbox-help">
 			<NcPopover>
