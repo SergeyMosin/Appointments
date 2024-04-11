@@ -125,13 +125,14 @@ class BCSabreImpl implements IBackendConnector
      */
     private function checkRangeTR(int $start_ts, int $end_ts, string $calId, \DateTimeZone $utz, array $settings): int
     {
-
-        $start = new \DateTime('@' . $start_ts, $utz);
+        $start = new \DateTime('@' . $start_ts);
+        $start->setTimezone($utz);
 
         // Because of floating timezones...
         // 50400 = 14 hours
         /** @noinspection PhpUnhandledExceptionInspection */
-        $dt = new \DateTime('@' . ($start_ts - 50400), $utz);
+        $dt = new \DateTime('@' . ($start_ts - 50400));
+        $dt->setTimezone($utz);
         $r_start = $dt->format(self::TIME_FORMAT);
         $dt->setTimestamp($end_ts + 50400);
         $r_end = $dt->format(self::TIME_FORMAT);
@@ -1131,10 +1132,10 @@ class BCSabreImpl implements IBackendConnector
         if ($ec === 0) {
             // It is SAFE (for manual made) to take this time slot
 
-            if ($ts_mode !== "0") {
+            if ($ts_mode !== BackendUtils::CLS_TS_MODE_SIMPLE) {
                 // for external and template modes we need to re-check the time range and update the lock_uid to "real" uid or delete the lock_uid if the time range is "taken"
 
-                if ($ts_mode === '1') {
+                if ($ts_mode === BackendUtils::CLS_TS_MODE_EXTERNAL) {
                     $trc = $this->checkRangeTR($info['ext_start'], $info['ext_end'], $calId, $utz, $settings);
                 } else {
                     // template mode
