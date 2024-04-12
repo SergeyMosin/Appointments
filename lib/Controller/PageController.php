@@ -33,7 +33,7 @@ class PageController extends Controller
     const RND_SPS = 'abcdefghijklmnopqrstuvwxyz1234567890';
     const RND_SPU = '1234567890ABCDEF';
 
-    private string $userId;
+    private string|null $userId;
     private IConfig $c;
     private IMailer $mailer;
     private IL10N $l;
@@ -79,17 +79,19 @@ class PageController extends Controller
         $t = new TemplateResponse($this->appName, 'index');
 
         $disable = false;
-        $allowedGroups = $this->c->getAppValue($this->appName,
-            BackendUtils::KEY_LIMIT_TO_GROUPS);
-        if ($allowedGroups !== '') {
-            $aga = json_decode($allowedGroups, true);
-            if ($aga !== null) {
-                $userGroups = \OC::$server->get(IGroupManager::class)->getUserIdGroups($this->userId);
-                $disable = true;
-                foreach ($aga as $ag) {
-                    if (array_key_exists($ag, $userGroups)) {
-                        $disable = false;
-                        break;
+        if (empty($this->userId)) {
+            $allowedGroups = $this->c->getAppValue($this->appName,
+                BackendUtils::KEY_LIMIT_TO_GROUPS);
+            if ($allowedGroups !== '') {
+                $aga = json_decode($allowedGroups, true);
+                if ($aga !== null) {
+                    $userGroups = \OC::$server->get(IGroupManager::class)->getUserIdGroups($this->userId);
+                    $disable = true;
+                    foreach ($aga as $ag) {
+                        if (array_key_exists($ag, $userGroups)) {
+                            $disable = false;
+                            break;
+                        }
                     }
                 }
             }
@@ -639,7 +641,7 @@ class PageController extends Controller
         if (empty($pageId)) {
             $pageId = 'p0';
         }
-        if (!$this->utils->loadSettingsForUserAndPage($this->userId, $pageId)) {
+        if (empty($this->userId) || !$this->utils->loadSettingsForUserAndPage($this->userId, $pageId)) {
             return new NotFoundResponse();
         }
 
@@ -662,7 +664,7 @@ class PageController extends Controller
         if (empty($pageId)) {
             $pageId = 'p0';
         }
-        if (!$this->utils->loadSettingsForUserAndPage($this->userId, $pageId)) {
+        if (empty($this->userId) || !$this->utils->loadSettingsForUserAndPage($this->userId, $pageId)) {
             return new NotFoundResponse();
         }
 
@@ -1119,7 +1121,7 @@ class PageController extends Controller
     {
         $pageId = $this->request->getParam("p");
 
-        if (empty($pageId) || !$this->utils->loadSettingsForUserAndPage($this->userId, $pageId)) {
+        if (empty($pageId) || empty($this->userId) || !$this->utils->loadSettingsForUserAndPage($this->userId, $pageId)) {
             return new NotFoundResponse();
         }
 
