@@ -1,6 +1,7 @@
 OC.L10N.register(
     "appointments",
     {
+    "Confirm" : "Konfirméieren",
     "Cancel" : "Ofbriechen",
     "Password" : "Passwuert",
     "Info" : "Info",
@@ -8,6 +9,7 @@ OC.L10N.register(
     "Title" : "Titel",
     "URL" : "URL",
     "Save" : "Späicheren",
+    "Copy" : "Kopie",
     "Remove" : "Läschen",
     "Add" : "Derbäimaachen",
     "OK" : "OK",
