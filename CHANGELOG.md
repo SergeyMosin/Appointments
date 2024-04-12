@@ -1,3 +1,7 @@
+## v2.0.7 - 2024-04-12
+### Fixed
+- Public pages not working
+
 ## v2.0.6 - 2024-04-11
 ### Fixed
 - Changing "Talk room name" does not work #496
