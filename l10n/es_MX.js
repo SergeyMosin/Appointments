@@ -57,6 +57,7 @@ OC.L10N.register(
     "Mark the appointment as canceled" : "Marcar la cita como cancelada",
     "Add Appointment Slots" : "Añadir espacio para citas",
     "Select Dates" : "Seleccionar Fechas",
+    "Time zone:" : "Zona horaria:",
     "Appointment Duration:" : "Duración de la Cita:",
     "Start" : "Iniciar",
     "Location" : "Ubicación",

@@ -279,6 +279,7 @@ OC.L10N.register(
     "Delete when appointments is removed" : "當預約被移除時刪除",
     "Enable lobby" : "啟用大廳",
     "Guest password" : "來賓密碼",
+    "One option required" : "需要一個選項",
     "Talk room name" : "Talk 聊天室名稱",
     "Chat/Call link:" : "聊天／通話連結：",
     "Custom email text (optional)" : "自訂電子郵件文字（選擇性）",
