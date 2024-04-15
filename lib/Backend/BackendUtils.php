@@ -265,19 +265,7 @@ class BackendUtils
             return "2";
         }
 
-        // @see issues #120 and #116
-        // Should this be documented ???
-        // TODO: this should be $config->getAppValue(...)
-        $e_fix = $this->config->getUserValue($userId, Application::APP_ID, self::KEY_EMAIL_FIX);
-
-        if ($e_fix === 'none') {
-            $a = $evt->add('ATTENDEE', "mailto:" . $info['email']);
-        } elseif ($e_fix === 'scheme') {
-            $a = $evt->add('ATTENDEE', "acct:" . $info['email']);
-        } else {
-            $a = $evt->add('ATTENDEE', "mailto:" . $info['email']);
-            $a['SCHEDULE-AGENT'] = "CLIENT";
-        }
+        $a = $evt->add('ATTENDEE', "mailto:" . $info['email']);
 
         $a['CN'] = $info['name'];
         $a['PARTSTAT'] = "NEEDS-ACTION";
