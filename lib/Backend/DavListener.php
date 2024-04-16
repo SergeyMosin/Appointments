@@ -949,6 +949,7 @@ class DavListener implements IEventListener
                         $av = 'mailto:' . substr($av, 5);
                     }
                     $evt->ATTENDEE[$k]->setValue($av);
+                    $evt->ATTENDEE->offsetSet('ROLE', 'REQ-PARTICIPANT');
                 }
             }
 
