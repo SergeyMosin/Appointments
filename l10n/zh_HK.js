@@ -6,7 +6,7 @@ OC.L10N.register(
     "Meeting Type" : "會議類型",
     "Select meeting type" : "選擇會議類型",
     "In-person meeting" : "面對面會議",
-    "Online (audio/video)" : "線上（語音﹨/視像）",
+    "Online (audio/video)" : "線上（音頻﹨/視像）",
     "Your email address is required for this operation." : "需要你的電郵地址才能執行此操作。",
     "Can't find your name. Check User/Organization settings." : "找不到您的名字，請確認用戶/組織設定。",
     "Available" : "可用",
