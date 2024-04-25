@@ -117,6 +117,7 @@ interface IBackendConnector
      * Returns array [int,string|null]
      *
      * @param $userId
+     * @param $pageId
      * @param $calId
      * @param $uri
      * @return array [int, string|null, string]
@@ -124,18 +125,19 @@ interface IBackendConnector
      *                  Localized DateTime string or null,
      *                  attendee name: string
      */
-    function confirmAttendee($userId, $calId, $uri);
+    function confirmAttendee($userId, $pageId, $calId, $uri);
 
     /**
      * Returns array [int,string|null]
      *      Status: 0=OK,1=Error, Localized DateTime string or null.
      *
      * @param $userId
+     * @param $pageId
      * @param $calId
      * @param $uri
      * @return array
      */
-    function cancelAttendee($userId, $calId, $uri);
+    function cancelAttendee($userId, $pageId, $calId, $uri);
 
     /**
      * Returns array [int, string, string|null, string, string]

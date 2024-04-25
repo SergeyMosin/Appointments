@@ -2,6 +2,7 @@
 
 namespace OCA\Appointments\CalDAV;
 
+use OCA\Appointments\Backend\ApptDocProp;
 use OCA\Appointments\Backend\BackendUtils;
 use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
@@ -32,10 +33,13 @@ class IMipPlugin extends ServerPlugin
         $evt = $iTipMessage->message->VEVENT;
 
         // we will handle emails for this event if:
-        //  1. BackendUtils::XAD_PROP
+        //  1. BackendUtils::XAD_PROP or ApptDocProp::PROP_NAME
         //  2. category is BackendUtils::APPT_CAT
-        return !(isset($evt->{BackendUtils::XAD_PROP})
+        return !(
+            (isset($evt->{BackendUtils::XAD_PROP})
+                || isset($evt->{ApptDocProp::PROP_NAME}))
             && isset($evt->CATEGORIES)
-            && $evt->CATEGORIES->getValue() === BackendUtils::APPT_CAT);
+            && $evt->CATEGORIES->getValue() === BackendUtils::APPT_CAT
+        );
     }
 }

@@ -4,7 +4,6 @@
 
 namespace OCA\Appointments\Backend;
 
-
 use OC\Mail\EMailTemplate;
 use OCA\Appointments\AppInfo\Application;
 use OCA\Appointments\Linkify;
@@ -147,6 +146,7 @@ class DavListener implements IEventListener
                         'actions' => $remData[BackendUtils::REMINDER_DATA_ACTIONS],
                         'evtUri' => $row['uri'],
                         'evtUid' => $row['uid'],
+                        'apptDoc' => $row['appt_doc'],
                         'reuseSettings' => $reuseSettings
                     ];
                 }
@@ -175,6 +175,8 @@ class DavListener implements IEventListener
         $otherCalId = '-1';
         $extNotifyFilePath = '';
         $settings = [];
+
+        $doc = new ApptDocProp();
 
         // This loop sends out emails (there is .5sec sleep between each send)
         foreach ($remindersToSend as $remInfo) {
@@ -229,8 +231,10 @@ class DavListener implements IEventListener
                 continue;
             }
 
-            if (strpos($data, "\r\nATTENDEE;") === false
-                || strpos($data, "\r\n" . BackendUtils::TZI_PROP . ":") === false) {
+            if (!str_contains($data, "\r\nATTENDEE;")
+                || (!str_contains($data, "\r\n" . BackendUtils::TZI_PROP . ":")
+                    && !str_contains($data, "\r\n" . ApptDocProp::PROP_NAME . ":"))
+            ) {
                 $this->logger->error('bad event data, uid: ' . $remInfo['evtUid']);
                 continue;
             }
@@ -250,7 +254,8 @@ class DavListener implements IEventListener
                 || !isset($evt->DTEND)
                 || !isset($evt->ORGANIZER)
                 || $evt->STATUS->getValue() !== 'CONFIRMED'
-                || !isset($evt->{BackendUtils::XAD_PROP})
+                || (!isset($evt->{BackendUtils::XAD_PROP})
+                    && !isset($evt->{ApptDocProp::PROP_NAME}))
             ) {
                 $this->logger->error('bad event object, uid: ' . $remInfo['evtUid']);
                 $vObject->destroy();
@@ -280,10 +285,22 @@ class DavListener implements IEventListener
 
             // event data looks ok...
 
-            $date_time = $utils->getDateTimeString(
-                $evt->DTSTART->getDateTime(),
-                $evt->{BackendUtils::TZI_PROP}->getValue()
-            );
+            if (isset($evt->{ApptDocProp::PROP_NAME})) {
+                if (!empty($remInfo['apptDoc']) && strlen($remInfo['apptDoc']) > 8) {
+                    $doc->setFromString(substr($remInfo['apptDoc'], 8), 'dummy_evt_uid');
+                } else {
+                    $doc->reset();
+                }
+                $date_time = $utils->getDateTimeString(
+                    $evt->DTSTART->getDateTime(),
+                    $doc->attendeeTimezone
+                );
+            } else {
+                $date_time = $utils->getDateTimeString(
+                    $evt->DTSTART->getDateTime(),
+                    $evt->{BackendUtils::TZI_PROP}->getValue()
+                );
+            }
 
             list($org_email, $org_name, $org_phone) = $this->getOrgInfo();
             $tmpl = $this->getEmailTemplate();
@@ -302,42 +319,72 @@ class DavListener implements IEventListener
             // do we want links and buttons ?
             if ($remInfo['actions']) {
 
-                // @see BackendUtils->dataSetAttendee for BackendUtils::XAD_PROP
-                $xad = explode(chr(31), $utils->decrypt(
-                    $evt->{BackendUtils::XAD_PROP}->getValue(),
-                    $evt->UID->getValue()));
-                if (count($xad) > 2) {
-                    $embed = $xad[3] === "1";
-                } else {
-                    $embed = false;
-                }
+                if (isset($evt->{ApptDocProp::PROP_NAME})) {
+                    $embed = $doc->embed;
 
-                // overwrite.cli.url must be set if $embed is not used
-                if ($embed || $config->getSystemValue('overwrite.cli.url') !== '') {
+                    // overwrite.cli.url must be set if $embed is not used
+                    if ($embed || $config->getSystemValue('overwrite.cli.url') !== '') {
 
-                    list($btn_url, $btn_tkn) = $this->makeBtnInfo(
-                        $userId, $pageId, $embed,
-                        $evtUri, $config);
-                    $cnl_lnk_url = $btn_url . "0" . $btn_tkn;
+                        list($btn_url, $btn_tkn) = $this->makeBtnInfo(
+                            $userId, $pageId, $embed,
+                            $evtUri, $config);
+                        $cnl_lnk_url = $btn_url . "0" . $btn_tkn;
 
-                    if (count($xad) > 4) {
-
-                        $has_link = strlen($xad[4]) > 1 ? 1 : 0;
+                        $has_link = strlen($doc->talkToken) > 1 ? 1 : 0;
                         if ($settings[BackendUtils::TALK_ENABLED]) {
                             if ($settings[BackendUtils::TALK_FORM_ENABLED] === true) {
                                 if ($has_link === 1) {
                                     $ti = new TalkIntegration($settings, $utils);
                                     // add talk link info
-                                    $this->addTalkInfo(
-                                        $tmpl, $xad, $ti, $settings,
-                                        $config->getUserValue($userId, $this->appName, "c" . "nk"));
+                                    $this->addTalkInfo2(
+                                        $tmpl, $doc, $ti, $settings,
+                                        $config->getUserValue($userId, Application::APP_ID, "c" . "nk"));
                                 }
                                 $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
                             }
                         }
+                    } else {
+                        $this->logger->error('can not add actions to reminder, missing overwrite.cli.url');
                     }
+
                 } else {
-                    $this->logger->error('can not add actions to reminder, missing overwrite.cli.url');
+                    // @see BackendUtils->dataSetAttendee for BackendUtils::XAD_PROP
+                    $xad = explode(chr(31), $utils->decrypt(
+                        $evt->{BackendUtils::XAD_PROP}->getValue(),
+                        $evt->UID->getValue()));
+                    if (count($xad) > 2) {
+                        $embed = $xad[3] === "1";
+                    } else {
+                        $embed = false;
+                    }
+
+                    // overwrite.cli.url must be set if $embed is not used
+                    if ($embed || $config->getSystemValue('overwrite.cli.url') !== '') {
+
+                        list($btn_url, $btn_tkn) = $this->makeBtnInfo(
+                            $userId, $pageId, $embed,
+                            $evtUri, $config);
+                        $cnl_lnk_url = $btn_url . "0" . $btn_tkn;
+
+                        if (!empty($xad) && count($xad) > 4) {
+
+                            $has_link = strlen($xad[4]) > 1 ? 1 : 0;
+                            if ($settings[BackendUtils::TALK_ENABLED]) {
+                                if ($settings[BackendUtils::TALK_FORM_ENABLED] === true) {
+                                    if ($has_link === 1) {
+                                        $ti = new TalkIntegration($settings, $utils);
+                                        // add talk link info
+                                        $this->addTalkInfo(
+                                            $tmpl, $xad, $ti, $settings,
+                                            $config->getUserValue($userId, $this->appName, "c" . "nk"));
+                                    }
+                                    $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
+                                }
+                            }
+                        }
+                    } else {
+                        $this->logger->error('can not add actions to reminder, missing overwrite.cli.url');
+                    }
                 }
             }
 
@@ -401,7 +448,7 @@ class DavListener implements IEventListener
             // remove all circular references, so PHP can easily clean it up.
             $vObject->destroy();
 
-            usleep(400000);
+            usleep(320000);
         }
     }
 
@@ -417,11 +464,12 @@ class DavListener implements IEventListener
         }
         $cd = $objectData['calendardata'];
 
-        if (strpos($cd, "\r\nATTENDEE;") === false
-            || strpos($cd, "\r\nCATEGORIES:" . BackendUtils::APPT_CAT . "\r\n") === false
-            || strpos($cd, "\r\n" . BackendUtils::TZI_PROP . ":") === false
-            || strpos($cd, "\r\nORGANIZER;") === false
-            || strpos($cd, "\r\nUID:") === false) {
+        if (!str_contains($cd, "\r\nATTENDEE;")
+            || !str_contains($cd, "\r\nCATEGORIES:" . BackendUtils::APPT_CAT . "\r\n")
+            || (!str_contains($cd, "\r\n" . BackendUtils::TZI_PROP . ":")
+                && !str_contains($cd, "\r\n" . ApptDocProp::PROP_NAME . ":"))
+            || !str_contains($cd, "\r\nORGANIZER;")
+            || !str_contains($cd, "\r\nUID:")) {
             // Not a good appointment, bail early...
             return;
         }
@@ -454,8 +502,18 @@ class DavListener implements IEventListener
 
         $utils = $this->utils;
         $config = $this->config;
-
-        if (isset($evt->{BackendUtils::XAD_PROP})) {
+        $doc = null;
+        if (isset($evt->{ApptDocProp::PROP_NAME})) {
+            $doc = $utils->getApptDoc($evt);
+            $embed = $doc->embed;
+            $hashRow = $this->utils->getApptHashRow($evt->UID->getValue());
+            if (!$hashRow) {
+                $this->logger->error("hashRow not found");
+                return;
+            }
+            $userId = $hashRow['user_id'];
+            $pageId = $hashRow['page_id'];
+        } elseif (isset($evt->{BackendUtils::XAD_PROP})) {
             // @see BackendUtils->dataSetAttendee for BackendUtils::XAD_PROP
             $xad = explode(chr(31), $utils->decrypt(
                 $evt->{BackendUtils::XAD_PROP}->getValue(),
@@ -571,10 +629,17 @@ class DavListener implements IEventListener
 
 //        \OC::$server->getLogger()->error('DL Debug: M11');
 
-        $date_time = $utils->getDateTimeString(
-            $evt->DTSTART->getDateTime(),
-            $evt->{BackendUtils::TZI_PROP}->getValue()
-        );
+        if ($doc) {
+            $date_time = $utils->getDateTimeString(
+                $evt->DTSTART->getDateTime(),
+                $doc->attendeeTimezone
+            );
+        } else {
+            $date_time = $utils->getDateTimeString(
+                $evt->DTSTART->getDateTime(),
+                $evt->{BackendUtils::TZI_PROP}->getValue()
+            );
+        }
 
         list($org_email, $org_name, $org_phone) = $this->getOrgInfo();
 
@@ -651,15 +716,14 @@ class DavListener implements IEventListener
                 $config);
             $cnl_lnk_url = $btn_url . "0" . $btn_tkn;
 
-            if (count($xad) > 4) {
-
-                $has_link = strlen($xad[4]) > 1 ? 1 : 0;
+            if ($doc) {
+                $has_link = strlen($doc->talkToken) > 1 ? 1 : 0;
                 if ($settings[BackendUtils::TALK_ENABLED]) {
                     if ($has_link === 1) {
                         $ti = new TalkIntegration($settings, $utils);
                         // add talk link info
-                        $talk_link_txt = $this->addTalkInfo(
-                            $tmpl, $xad, $ti, $settings,
+                        $talk_link_txt = $this->addTalkInfo2(
+                            $tmpl, $doc, $ti, $settings,
                             $config->getUserValue($userId, $this->appName, "c" . "nk"));
                     }
 
@@ -669,6 +733,28 @@ class DavListener implements IEventListener
                             $tmpl->addBodyText($this->makeMeetingTypeInfo($settings, $has_link));
                         }
                         $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
+                    }
+                }
+            } else {
+                if (!empty($xad) && count($xad) > 4) {
+
+                    $has_link = strlen($xad[4]) > 1 ? 1 : 0;
+                    if ($settings[BackendUtils::TALK_ENABLED]) {
+                        if ($has_link === 1) {
+                            $ti = new TalkIntegration($settings, $utils);
+                            // add talk link info
+                            $talk_link_txt = $this->addTalkInfo(
+                                $tmpl, $xad, $ti, $settings,
+                                $config->getUserValue($userId, $this->appName, "c" . "nk"));
+                        }
+
+                        if ($settings[BackendUtils::TALK_FORM_ENABLED] === true) {
+                            if ($has_link === 0) {
+                                // add in-person meeting type
+                                $tmpl->addBodyText($this->makeMeetingTypeInfo($settings, $has_link));
+                            }
+                            $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
+                        }
                     }
                 }
             }
@@ -713,10 +799,18 @@ class DavListener implements IEventListener
                 $om_prefix = $this->l10N->t("Appointment canceled");
             }
 
-            if ($isDelete && count($xad) > 4 && strlen($xad[4]) > 1) {
+            if ($isDelete) {
                 if ($settings[BackendUtils::TALK_DEL_ROOM] === true) {
-                    $ti = new TalkIntegration($settings, $utils);
-                    $ti->deleteRoom($xad[4]);
+                    $_token = '';
+                    if ($doc && strlen($doc->talkToken) > 1) {
+                        $_token = $doc->talkToken;
+                    } elseif (!empty($xad) && count($xad) > 4 && strlen($xad[4]) > 1) {
+                        $_token = $xad[4];
+                    }
+                    if (!empty($_token)) {
+                        $ti = new TalkIntegration($settings, $utils);
+                        $ti->deleteRoom($_token);
+                    }
                 }
             }
 
@@ -731,7 +825,8 @@ class DavListener implements IEventListener
             // TRANSLATORS Main part of email
             $tmpl->addBodyText($this->l10N->t("Your appointment details have changed. Please review information below."));
 
-            $has_link = strlen($xad[4]) > 1 ? 1 : 0;
+            $_talkToken = $doc ? $doc->talkToken : $xad[4];
+            $has_link = strlen($_talkToken) > 1 ? 1 : 0;
 
             $tmpl->addBodyListItem($this->makeMeetingTypeInfo($settings, $has_link));
             $tmpl->addBodyListItem($this->l10N->t("Date/Time: %s", [$date_time]));
@@ -739,9 +834,15 @@ class DavListener implements IEventListener
             if ($has_link === 1) {
                 // add talk link info
                 $ti = new TalkIntegration($settings, $utils);
-                $talk_link_txt = $this->addTalkInfo(
-                    $tmpl, $xad, $ti, $settings,
-                    $config->getUserValue($userId, $this->appName, "c" . "nk"));
+                if ($doc) {
+                    $talk_link_txt = $this->addTalkInfo2(
+                        $tmpl, $doc, $ti, $settings,
+                        $config->getUserValue($userId, $this->appName, "c" . "nk"));
+                } else {
+                    $talk_link_txt = $this->addTalkInfo(
+                        $tmpl, $xad, $ti, $settings,
+                        $config->getUserValue($userId, $this->appName, "c" . "nk"));
+                }
             }
 
             list($btn_url, $btn_tkn) = $this->makeBtnInfo(
@@ -779,9 +880,16 @@ class DavListener implements IEventListener
             if ($hash_ch[0] === true) { // DTSTART changed
                 $tmpl->addBodyListItem($this->l10N->t("Date/Time: %s", [$date_time]));
                 // if we have a Talk room we need to update the room's name (and lobby time if implemented)
-                if (count($xad) > 4 && strlen($xad[4]) > 1) {
+                $_talkToken = '';
+                if ($doc && strlen($doc->talkToken) > 1) {
+                    $_talkToken = $doc->talkToken;
+                } elseif (!empty($xad) && count($xad) > 4 && strlen($xad[4]) > 1) {
+                    $_talkToken = $xad[4];
+                }
+
+                if (!empty($_talkToken)) {
                     $ti->renameRoom(
-                        $xad[4], $to_name, $evt->DTSTART, $userId
+                        $_talkToken, $to_name, $evt->DTSTART, $userId
                     );
                 }
             }
@@ -825,18 +933,31 @@ class DavListener implements IEventListener
                 );
             }
 
-            // if there is a Talk room - add info...
-            if (count($xad) > 4 && $settings[BackendUtils::TALK_ENABLED]) {
-                $has_link = strlen($xad[4]) > 1 ? 1 : 0;
-                if ($has_link === 1) {
-                    // add talk link info
-                    $talk_link_txt = $this->addTalkInfo(
-                        $tmpl, $xad, $ti, $settings,
-                        $config->getUserValue($userId, $this->appName, "c" . "nk"));
+            if ($doc) {
+                // if there is a Talk room - add info...
+                if ($settings[BackendUtils::TALK_ENABLED]) {
+                    $has_link = strlen($doc->talkToken) > 1 ? 1 : 0;
+                    if ($has_link === 1) {
+                        // add talk link info
+                        $talk_link_txt = $this->addTalkInfo2(
+                            $tmpl, $doc, $ti, $settings,
+                            $config->getUserValue($userId, $this->appName, "c" . "nk"));
+                    }
+                    $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
                 }
-                $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
+            } else {
+                // if there is a Talk room - add info...
+                if (!empty($xad) && count($xad) > 4 && $settings[BackendUtils::TALK_ENABLED]) {
+                    $has_link = strlen($xad[4]) > 1 ? 1 : 0;
+                    if ($has_link === 1) {
+                        // add talk link info
+                        $talk_link_txt = $this->addTalkInfo(
+                            $tmpl, $xad, $ti, $settings,
+                            $config->getUserValue($userId, $this->appName, "c" . "nk"));
+                    }
+                    $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
+                }
             }
-
             if (empty($org_phone)) {
                 // TRANSLATORS Additional part of email - contact information WITHOUT phone number (only email). The last argument is email address.
                 $tmpl->addBodyText($this->l10N->t("If you have any questions please write to %s", [$org_email]));
@@ -875,8 +996,11 @@ class DavListener implements IEventListener
         $msg->setTo(array($to_email));
         $msg->useTemplate($tmpl);
 
-        $utz_info = $evt->{BackendUtils::TZI_PROP}->getValue()[0];
-
+        if ($doc) {
+            $utz_info = $doc->attendeeTimezone[0];
+        } else {
+            $utz_info = $evt->{BackendUtils::TZI_PROP}->getValue()[0];
+        }
         // .ics attachment
         if ($hint !== HintVar::APPT_BOOK
             && $settings[BackendUtils::EML_ICS] === true
@@ -971,6 +1095,9 @@ class DavListener implements IEventListener
             }
             if (isset($evt->{BackendUtils::X_DSR})) {
                 $evt->remove($evt->{BackendUtils::X_DSR});
+            }
+            if (isset($evt->{ApptDocProp::PROP_NAME})) {
+                $evt->remove($evt->{ApptDocProp::PROP_NAME});
             }
 
             $msg->attach(
@@ -1098,7 +1225,7 @@ class DavListener implements IEventListener
     }
 
     /**
-     * @param \OCP\Mail\IEMailTemplate $tmpl
+     * @param IEMailTemplate $tmpl
      * @param string[] $xad
      * @param TalkIntegration $ti
      * @param array $tlk
@@ -1139,6 +1266,47 @@ class DavListener implements IEventListener
             if ($xad[5] !== '_') {
                 // we have pass
                 $talk_link_html .= '<br>' . $this->l10N->t('Password') . ": " . $xad[5];
+            }
+        }
+        $talk_link_txt = strip_tags(str_replace("<br>", "\n", $talk_link_html));
+        $tmpl->addBodyText($talk_link_html, $talk_link_txt);
+        return trim($talk_link_txt);
+    }
+
+    private function addTalkInfo2(IEMailTemplate $tmpl, ApptDocProp $doc, TalkIntegration $ti, array $settings, string $c): string
+    {
+        $url = $ti->getRoomURL($doc->talkToken);
+        $url_html = '<a target="_blank" href="' . $url . '">' . $url . '</a>';
+
+        $eml_txt = $settings[BackendUtils::TALK_EMAIL_TXT];
+        $s = "subs" . 'tr';
+        if (!empty($eml_txt) && isset($c[3]) && ((hexdec($s($c, 0, 0b100)) >> 14) & 1) === ((hexdec($s($c, 4, 04)) >> 6) & 1)) {
+            $talk_link_html = str_replace("\n", "<br>", $eml_txt);
+            if (strpos($talk_link_html, "{{url}}") !== false) {
+                $talk_link_html = str_replace("{{url}}", $url_html, $talk_link_html);
+            } else {
+                $talk_link_html .= " " . $url_html;
+            }
+
+            if (!empty($doc->talkPass) && $doc->talkPass !== '_') {
+                // we have pass
+                if (strpos($talk_link_html, "{{pass}}") !== false) {
+                    $talk_link_html = str_replace("{{pass}}", $doc->talkPass, $talk_link_html);
+                } else {
+                    $talk_link_html .= " " . $this->l10N->t('Password') . ": " . $doc->talkPass;
+                }
+            } else {
+                // no pass, but {{pass}} token
+                if (strpos($talk_link_html, "{{pass}}") !== false) {
+                    $talk_link_html = str_replace("{{pass}}", '', $talk_link_html);
+                }
+            }
+        } else {
+            // TRANSLATORS This a link to chat/(video)call, Ex: Chat/Call link: https://my_domain.com/call/kzu6e4uv
+            $talk_link_html = $this->l10N->t("Chat/Call link: %s", [$url_html]);
+            if (!empty($doc->talkPass) && $doc->talkPass !== '_') {
+                // we have pass
+                $talk_link_html .= '<br>' . $this->l10N->t('Password') . ": " . $doc->talkPass;
             }
         }
         $talk_link_txt = strip_tags(str_replace("<br>", "\n", $talk_link_html));

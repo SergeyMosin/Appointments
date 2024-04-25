@@ -1217,20 +1217,20 @@ class BCSabreImpl implements IBackendConnector
     /**
      * @inheritDoc
      */
-    function confirmAttendee($userId, $calId, $uri): array
+    function confirmAttendee($userId, $pageId, $calId, $uri): array
     {
-        return $this->confirmCancel($userId, $calId, $uri, true);
+        return $this->confirmCancel($userId, $pageId, $calId, $uri, true);
     }
 
     /**
      * @inheritDoc
      */
-    function cancelAttendee($userId, $calId, $uri): array
+    function cancelAttendee($userId, $pageId, $calId, $uri): array
     {
-        return $this->confirmCancel($userId, $calId, $uri, false);
+        return $this->confirmCancel($userId, $pageId, $calId, $uri, false);
     }
 
-    private function confirmCancel(string $userId, string $calId, string $uri, bool $do_confirm): array
+    private function confirmCancel(string $userId, string $pageId, string $calId, string $uri, bool $do_confirm): array
     {
         $ret = [1, null, ""];
         $err = '';
@@ -1251,9 +1251,9 @@ class BCSabreImpl implements IBackendConnector
         } else {
             $attendeeName = "";
             if ($do_confirm) {
-                list($newData, $date, $pageId, $attendeeName) = $this->utils->dataConfirmAttendee($d, $userId);
+                list($newData, $date, $attendeeName) = $this->utils->dataConfirmAttendee($d, $userId, $pageId);
             } else {
-                list($newData, $date, $pageId) = $this->utils->dataCancelAttendee($d);
+                list($newData, $date) = $this->utils->dataCancelAttendee($d, $userId, $pageId);
             }
             if ($newData === null) {
                 $err = "Can not set attendee data";
