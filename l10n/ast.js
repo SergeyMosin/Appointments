@@ -150,6 +150,7 @@ OC.L10N.register(
     "Date & Time" : "Data ya hora",
     "Back" : "Atrás",
     "Next" : "Siguiente",
+    "min" : "min",
     "Duration" : "Duración",
     "Email" : "Corréu electrónicu",
     "An error has occurred" : "Prodúxose un error",
