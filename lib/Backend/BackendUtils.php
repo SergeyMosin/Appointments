@@ -1874,7 +1874,7 @@ class BackendUtils
             // Try Nextcloud default timezone
             $tz_name = $config->getUserValue($userId, 'core', 'timezone');
             if (empty($tz_name) || str_contains($tz_name, 'auto')) {
-                return \OC::$server->get(IDateTimeZone::class);
+                return \OC::$server->get(IDateTimeZone::class)->getTimeZone();
             }
         }
         try {
