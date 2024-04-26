@@ -67,7 +67,6 @@ class RemindersTest extends TestCase
 
         self::$db = self::$container->get(IDBConnection::class);
         self::$backendConnector = new BCSabreImpl(
-            Application::APP_ID,
             self::$davBE,
             self::$config,
             self::$utils,
@@ -475,7 +474,6 @@ class RemindersTest extends TestCase
         });
 
         return new PageController(
-            Application::APP_ID,
             $request,
             $userId,
             self::$config,
