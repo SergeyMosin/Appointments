@@ -260,7 +260,7 @@ class RemindersTest extends TestCase
             $this->consoleLog("calId: " . $calId);
 
             // prep template data
-            $tz = self::$utils->getCalendarTimezone($userId, self::$config, self::$backendConnector->getCalendarById($calId, $userId));
+            $tz = self::$utils->getCalendarTimezone($userId, self::$backendConnector->getCalendarById($calId, $userId));
 
             $tzName = $tz->getName();
             if (strtolower($tzName) === 'utc') {
@@ -374,7 +374,7 @@ class RemindersTest extends TestCase
             $settings = self::$utils->getUserSettings();
             $calId = $settings[BackendUtils::CLS_TMM_DST_ID];
 
-            $utz = self::$utils->getCalendarTimezone($userId, self::$config, self::$backendConnector->getCalendarById($calId, $userId));
+            $utz = self::$utils->getCalendarTimezone($userId, self::$backendConnector->getCalendarById($calId, $userId));
 
             $t_start = new \DateTime('now +' . $settings[BackendUtils::CLS_PREP_TIME] . "mins", $utz);
 

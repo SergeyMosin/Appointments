@@ -237,7 +237,7 @@ class TalkIntegration
             return "";
         } else {
             // convert from DateTimeImmutable + set user's timezone
-            $tz = $this->utils->getUserTimezone($userId, $this->config);
+            $tz = $this->utils->getUserTimezone($userId);
             /** @noinspection PhpUnhandledExceptionInspection */
             $_dt = new \DateTime('now', $tz);
             $tz_str = ' ' . $_dt->format('T');

@@ -109,7 +109,7 @@ class DirController extends Controller
         $tr->setParams([
             'links' => $settings[BackendUtils::DIR_ITEMS],
             'application' => $this->l->t('Appointments'),
-            'appt_inline_style' => $this->utils->getInlineStyle($userId, $settings, $this->config)
+            'appt_inline_style' => $this->utils->getInlineStyle($userId, $settings)
         ]);
 
         return $tr;

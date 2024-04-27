@@ -255,7 +255,7 @@ class StateController extends Controller
                     break;
                 case 'get_tz':
                     $calId = $this->request->getParam("calId", "-1");
-                    $tz = $this->utils->getCalendarTimezone($this->userId, $this->config, $this->bc->getCalendarById($calId, $this->userId));
+                    $tz = $this->utils->getCalendarTimezone($this->userId, $this->bc->getCalendarById($calId, $this->userId));
                     $r->setData($tz->getName());
                     $r->setStatus(200);
                     break;
@@ -777,7 +777,7 @@ class StateController extends Controller
             return $r;
         }
 
-        $utz = $this->utils->getCalendarTimezone($this->userId, $this->config, $this->bc->getCalendarById($cal_id, $this->userId));
+        $utz = $this->utils->getCalendarTimezone($this->userId, $this->bc->getCalendarById($cal_id, $this->userId));
         try {
             $t_start = \DateTime::createFromFormat(
                 'j-m-Y H:i:s', $t . ' 00:00:00', $utz);
@@ -836,7 +836,7 @@ class StateController extends Controller
         }
 
         // Because of floating timezones...
-        $utz = $this->utils->getUserTimezone($this->userId, $this->config);
+        $utz = $this->utils->getUserTimezone($this->userId);
         try {
             if ($jo->before === 1) {
                 $rs = 'yesterday';

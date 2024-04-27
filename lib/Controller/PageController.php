@@ -603,7 +603,7 @@ class PageController extends Controller
             $tr = $this->getPublicTemplate($tr_name);
         }
 
-        $tr_params['appt_inline_style'] = $this->utils->getInlineStyle($userId, $settings, $this->c);
+        $tr_params['appt_inline_style'] = $this->utils->getInlineStyle($userId, $settings);
         $tr_params['application'] = $this->l->t('Appointments');
 
         $tr->setParams($tr_params);
@@ -622,7 +622,7 @@ class PageController extends Controller
         }
 
         $tr->setParams([
-            'appt_inline_style' => $this->utils->getInlineStyle($userId, $this->utils->getUserSettings(), $this->c),
+            'appt_inline_style' => $this->utils->getInlineStyle($userId, $this->utils->getUserSettings()),
             'application' => $this->l->t('Appointments')
         ]);
 
@@ -955,7 +955,7 @@ class PageController extends Controller
             $tr = new TemplateResponse($this->appName, $tmpl, [], $render);
         }
 
-        $param['appt_inline_style'] = $this->utils->getInlineStyle($uid, $settings, $this->c);
+        $param['appt_inline_style'] = $this->utils->getInlineStyle($uid, $settings);
 
         $tr->setParams($param);
         $tr->setStatus($rs);
@@ -999,7 +999,7 @@ class PageController extends Controller
             'appt_pps' => '',
             'appt_gdpr' => '',
             'appt_gdpr_no_chb' => false,
-            'appt_inline_style' => $this->utils->getInlineStyle($uid, $settings, $this->c),
+            'appt_inline_style' => $this->utils->getInlineStyle($uid, $settings),
             'appt_hide_phone' => $settings[BackendUtils::PSN_HIDE_TEL],
             'more_html' => '',
             'application' => $this->l->t('Appointments'),
@@ -1039,7 +1039,7 @@ class PageController extends Controller
 
         $nw = intval($settings[BackendUtils::PSN_NWEEKS]);
 
-        $utz = $this->utils->getCalendarTimezone($uid, $this->c, $this->bc->getCalendarById($calId, $uid));
+        $utz = $this->utils->getCalendarTimezone($uid, $this->bc->getCalendarById($calId, $uid));
         try {
             $t_start = new \DateTime('now +' . $settings[BackendUtils::CLS_PREP_TIME] . "mins", $utz);
         } catch (\Exception $e) {

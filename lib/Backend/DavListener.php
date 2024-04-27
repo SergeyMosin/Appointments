@@ -214,7 +214,7 @@ class DavListener implements IEventListener
                     $otherCalId = '-1';
                 }
 
-                $utz = $this->utils->getCalendarTimezone($userId, $config, $bc->getCalendarById($calId, $userId));
+                $utz = $this->utils->getCalendarTimezone($userId, $bc->getCalendarById($calId, $userId));
             }
 
             // settings are good at this point
@@ -575,7 +575,7 @@ class DavListener implements IEventListener
 
 //        \OC::$server->getLogger()->error('DL Debug: M7');
 
-        $utz = $utils->getCalendarTimezone($userId, $config, $utils->transformCalInfo($calendarData));
+        $utz = $utils->getCalendarTimezone($userId, $utils->transformCalInfo($calendarData));
         try {
             $now = new \DateTime('now', $utz);
         } catch (\Exception $e) {

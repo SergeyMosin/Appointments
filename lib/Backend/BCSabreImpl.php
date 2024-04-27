@@ -1001,7 +1001,7 @@ class BCSabreImpl implements IBackendConnector
                 $ctz = new \DateTimeZone($tza[BackendUtils::TMPL_TZ_NAME]);
             } catch (\Exception $e) {
                 $this->logger->warning('Can not set timezone from template, using default...');
-                $ctz = $this->utils->getCalendarTimezone($userId, $this->config, $this->getCalendarById($calId, $userId));
+                $ctz = $this->utils->getCalendarTimezone($userId, $this->getCalendarById($calId, $userId));
             }
 
             $dt = new \DateTime('now', $ctz);
@@ -1072,7 +1072,7 @@ class BCSabreImpl implements IBackendConnector
                 substr($h, 19, 6) . "-aa" .
                 substr($h, 25);
 
-            $utz = $this->utils->getCalendarTimezone($userId, $this->config, $this->getCalendarById($calId, $userId));
+            $utz = $this->utils->getCalendarTimezone($userId, $this->getCalendarById($calId, $userId));
 
             $dt = $dt_start->getDateTime($utz);
             // Insert the UID, start and end

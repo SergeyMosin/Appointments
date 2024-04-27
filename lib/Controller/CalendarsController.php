@@ -57,7 +57,7 @@ class CalendarsController extends Controller
         }
 
         // Because of floating timezones...
-        $utz = $this->utils->getUserTimezone($this->userId, $this->config);
+        $utz = $this->utils->getUserTimezone($this->userId);
         try {
             if ($jo->before === 1) {
                 $rs = 'yesterday';
@@ -139,7 +139,7 @@ class CalendarsController extends Controller
             return $r;
         }
 
-        $utz = $this->utils->getCalendarTimezone($this->userId, $this->config, $this->bc->getCalendarById($cal_id, $this->userId));
+        $utz = $this->utils->getCalendarTimezone($this->userId, $this->bc->getCalendarById($cal_id, $this->userId));
         try {
             $t_start = \DateTime::createFromFormat(
                 'j-m-Y H:i:s', $t . ' 00:00:00', $utz);

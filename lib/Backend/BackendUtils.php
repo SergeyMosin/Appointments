@@ -1819,13 +1819,12 @@ class BackendUtils
      * Try to get calendar timezone if it is not available fall back to getUserTimezone
      *
      * @param string $userId
-     * @param IConfig $config
      * @param array|null $cal
      * @return \DateTimeZone
      *
      * @see getUserTimezone
      */
-    function getCalendarTimezone(string $userId, IConfig $config, array $cal = null): \DateTimeZone
+    function getCalendarTimezone(string $userId, array $cal = null): \DateTimeZone
     {
 
         // TODO: Double check if the following is the Calendar App order (#1 and #2 might be reversed):
@@ -1862,17 +1861,17 @@ class BackendUtils
         }
         if ($tz === null) {
             $this->logger->notice("getCalendarTimezone fallback to getUserTimezone: " . $err);
-            return $this->getUserTimezone($userId, $config);
+            return $this->getUserTimezone($userId);
         }
         return $tz;
     }
 
-    function getUserTimezone(string $userId, IConfig $config): \DateTimeZone
+    function getUserTimezone(string $userId): \DateTimeZone
     {
-        $tz_name = $config->getUserValue($userId, 'calendar', 'timezone');
+        $tz_name = $this->config->getUserValue($userId, 'calendar', 'timezone');
         if (empty($tz_name) || str_contains($tz_name, 'auto')) {
             // Try Nextcloud default timezone
-            $tz_name = $config->getUserValue($userId, 'core', 'timezone');
+            $tz_name = $this->config->getUserValue($userId, 'core', 'timezone');
             if (empty($tz_name) || str_contains($tz_name, 'auto')) {
                 return \OC::$server->get(IDateTimeZone::class)->getTimeZone();
             }
@@ -2133,7 +2132,7 @@ class BackendUtils
         }
     }
 
-    public function getInlineStyle(string $userId, array $pps, IConfig $config): string
+    public function getInlineStyle(string $userId, array $pps): string
     {
 
         // TODO: rename pps to settings
@@ -2141,16 +2140,16 @@ class BackendUtils
         $autoStyle = "";
 
         if ($pps[BackendUtils::PSN_USE_NC_THEME]
-            && $config->getAppValue('theming', 'disable-user-theming', 'no') !== 'yes') {
+            && $this->config->getAppValue('theming', 'disable-user-theming', 'no') !== 'yes') {
 
             $appointmentsBackgroundImage = "var(--image-background-default)";
             $appointmentsBackgroundColor = "transparent";
 
             // use system-wide default background color if provided
-            $backgroundMime = $config->getAppValue('theming', 'backgroundMime');
+            $backgroundMime = $this->config->getAppValue('theming', 'backgroundMime');
             if ($backgroundMime === 'backgroundColor') {
                 $appointmentsBackgroundImage = "none";
-                $appointmentsBackgroundColor = $config->getAppValue('theming', 'color');
+                $appointmentsBackgroundColor = $this->config->getAppValue('theming', 'color');
             }
 
             try {
@@ -2158,10 +2157,10 @@ class BackendUtils
                 $appManager = \OC::$server->get(\OCP\App\IAppManager::class);
                 if ($appManager->isEnabledForUser('theming', $userId)) {
 
-                    $themingBackground = $config->getUserValue($userId, 'theming', 'background', 'default');
+                    $themingBackground = $this->config->getUserValue($userId, 'theming', 'background', 'default');
                     if ($themingBackground === 'default') {
                         // nc26
-                        $themingBackground = $config->getUserValue($userId, 'theming', 'background_image', 'default');
+                        $themingBackground = $this->config->getUserValue($userId, 'theming', 'background_image', 'default');
                     }
                     if (isset(\OCA\Theming\Service\BackgroundService::SHIPPED_BACKGROUNDS[$themingBackground])) {
                         /** @var IURLGenerator $urlGenerator */
@@ -2172,7 +2171,7 @@ class BackendUtils
                         $appointmentsBackgroundColor = $themingBackground;
                     } else {
                         // nc26
-                        $themingBackground = $config->getUserValue($userId, 'theming', 'background_color');
+                        $themingBackground = $this->config->getUserValue($userId, 'theming', 'background_color');
                         if (!empty($themingBackground)) {
                             $appointmentsBackgroundImage = "none";
                             $appointmentsBackgroundColor = $themingBackground;
