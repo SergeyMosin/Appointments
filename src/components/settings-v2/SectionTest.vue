@@ -10,13 +10,13 @@ const settings = settingsStore.settings
 	<div class="ps-section-wrap">
 		<ComboInput
 				prop-name="formTitle"
-				:label="t('appointments', 'Form Title')"
+				:label="t('appointments', 'Form title')"
 				:store="settingsStore"/>
 
 		<ComboInput
 				type="textarea"
 				prop-name="cnfNote"
-				:label="t('appointments', 'Some Textarea')"
+				:label="t('appointments', 'Some text area')"
 				:store="settingsStore"/>
 
 		<ComboCheckbox
