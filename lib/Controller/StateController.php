@@ -135,7 +135,7 @@ class StateController extends Controller
                     $this->logger->warning('createPage returned ' . $count . ' , but expected 1');
                     $r->setStatus(Http::STATUS_ACCEPTED);
                     $r->setData(json_encode([
-                        "message" => $this->l->t("CreatePage warning. Check logs.")
+                        "message" => $this->l->t("Create Page warning. Check logs.")
                     ]));
                 } else {
                     $r->setStatus(Http::STATUS_OK);
@@ -177,7 +177,7 @@ class StateController extends Controller
                     $this->logger->warning('deletePage returned ' . $count . ' , but expected 1');
                     $r->setStatus(Http::STATUS_ACCEPTED);
                     $r->setData(json_encode([
-                        "message" => $this->l->t("DeletePage warning. Check logs.")
+                        "message" => $this->l->t("Delete Page warning. Check logs.")
                     ]));
                 } else {
                     $r->setStatus(Http::STATUS_OK);
@@ -333,7 +333,7 @@ class StateController extends Controller
                 if ($count !== 1) {
                     $this->logger->warning('deletePage returned ' . $count . ' , but expected 1');
                     return [Http::STATUS_ACCEPTED, json_encode([
-                        "message" => $this->l->t("DeletePage warning. Check logs.")
+                        "message" => $this->l->t("Delete Page warning. Check logs.")
                     ])];
                 } else {
                     return [Http::STATUS_OK, ''];

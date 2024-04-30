@@ -164,7 +164,7 @@ const handleActionsMenu = (pageId, evt) => {
 						<template #icon>
 							<IconDelete :size="20"/>
 						</template>
-						{{ t('appointments', 'DeletePage') }}
+						{{ t('appointments', 'Delete Page') }}
 					</NcActionButton>
 				</template>
 			</NcAppNavigationItem>
