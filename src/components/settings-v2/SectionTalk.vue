@@ -16,6 +16,12 @@ const roomNameOptions = [
 	{value: 2, label: t('appointments', 'Guest name only')},
 ]
 
+const checkBbbEnabled = (evt) => {
+	if (evt.propName === 'talk_enabled' && evt.value === true) {
+		settings.bbbEnabled = false;
+	}
+}
+
 const handleInterceptor = (data) => {
 
 	if (settingsStore.k === true) {
@@ -61,6 +67,7 @@ const handleInterceptor = (data) => {
 		<ComboCheckbox
 				prop-name="talk_enabled"
 				:label="t('appointments', 'Create rooms for confirmed appointments')"
+				@value-updated="checkBbbEnabled"
 				:store="settingsStore"/>
 
 		<div :class="{'sb_disable_nav-item':!settings.talk_enabled}">
@@ -171,7 +178,7 @@ const handleInterceptor = (data) => {
 						}}
 						<code v-pre class="srgdev-appt-hs-code">Click {{here}} to change your appointment type to {{new_type}}.
 						</code>
-						{{t('appointments', 'Talk rooms will be created and deleted automatically when a meeting type changes.')}}
+						{{ t('appointments', 'Talk rooms will be created and deleted automatically when a meeting type changes.') }}
 					</template>
 				</ComboInput>
 			</div>

@@ -193,6 +193,7 @@ class RemindersTest extends TestCase
         // create a page for each calendar
         $pages = [];
         $pn = 0;
+        $c = true;
         foreach ($cals as $cal) {
             $pageId = 'p' . $pn++;
             if (!self::$utils->loadSettingsForUserAndPage($userId, $pageId)) {
@@ -223,14 +224,36 @@ class RemindersTest extends TestCase
                 BackendUtils::EML_ICS => true,
                 BackendUtils::EML_CNF_TXT => "email <em>extra</em> text, userId: " . $userId . ", pageId: " . $pageId,
                 BackendUtils::EML_ICS_TXT => ".isc extra text, userId: " . $userId . ", pageId: " . $pageId,
-
-                // Talk Integration
-                BackendUtils::TALK_ENABLED => true,
-                BackendUtils::TALK_DEL_ROOM => true,
-                BackendUtils::TALK_FORM_ENABLED => true,
-                // this must be last
-                BackendUtils::PAGE_ENABLED => true,
             ];
+
+            $this->consoleLog('c: ' . var_export($c, true));
+            if ($c === true) {
+                $requiredSettings[BackendUtils::BBB_ENABLED] = false;
+                $requiredSettings[BackendUtils::BBB_PASSWORD] = false;
+                $requiredSettings[BackendUtils::BBB_DEL_ROOM] = false;
+                $requiredSettings[BackendUtils::BBB_FORM_ENABLED] = false;
+
+                $requiredSettings[BackendUtils::TALK_ENABLED] = true;
+                $requiredSettings[BackendUtils::TALK_PASSWORD] = true;
+                $requiredSettings[BackendUtils::TALK_DEL_ROOM] = true;
+                $requiredSettings[BackendUtils::TALK_FORM_ENABLED] = true;
+            } else {
+                $requiredSettings[BackendUtils::TALK_ENABLED] = false;
+                $requiredSettings[BackendUtils::TALK_PASSWORD] = false;
+                $requiredSettings[BackendUtils::TALK_DEL_ROOM] = false;
+                $requiredSettings[BackendUtils::TALK_FORM_ENABLED] = false;
+
+                $requiredSettings[BackendUtils::BBB_ENABLED] = true;
+                $requiredSettings[BackendUtils::BBB_PASSWORD] = true;
+                $requiredSettings[BackendUtils::BBB_DEL_ROOM] = true;
+                $requiredSettings[BackendUtils::BBB_FORM_ENABLED] = true;
+            }
+            $c = !$c;
+
+            // this must be last
+            $requiredSettings[BackendUtils::PAGE_ENABLED] = true;
+
+
             foreach ($requiredSettings as $key => $value) {
                 $this->assertEquals(200, self::$utils->setUserSettingsV2(
                     $userId, $pageId, $key, $value)[0],

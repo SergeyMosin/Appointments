@@ -24,7 +24,7 @@ const props = defineProps({
 		required: true
 	},
 	defaultValue: {
-		type: String,
+		type: String|Number,
 		required: false,
 		default: '-1'
 	},

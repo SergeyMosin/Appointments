@@ -732,10 +732,7 @@ class PageController extends Controller
         if (isset($post['talk_type']) && $post['talk_type'] === '0') {
             // possible request for 'In-person' meeting, instead of virtual,
             // a.k.a. - no need for Talk room
-            if ($settings[BackendUtils::TALK_ENABLED] && $settings[BackendUtils::TALK_FORM_ENABLED]) {
-                // This should be passed to BackendUtils->dataSetAttendee()
-                $post['talk_type_real'] = "1";
-            }
+            $post['type_override'] = '1';
         }
 
         $v = '';
@@ -1085,16 +1082,53 @@ class PageController extends Controller
         $params['appt_gdpr'] = $settings[BackendUtils::PSN_GDPR];
         $params['appt_gdpr_no_chb'] = $settings[BackendUtils::PSN_GDPR_NO_CHB];
 
-        if (!empty($this->c->getUserValue($uid, $this->appName, chr(99) . "n" . 'k'))) {
-            if ($settings[BackendUtils::TALK_ENABLED] === true && $settings[BackendUtils::TALK_FORM_ENABLED] === true) {
-                $params['appt_tlk_type'] = '<label for="srgdev-ncfp_talk_type" class="srgdev-ncfp-form-label">' . htmlspecialchars(strip_tags((!empty($settings[BackendUtils::TALK_FORM_LABEL]) ? $settings[BackendUtils::TALK_FORM_LABEL] : $settings[BackendUtils::TALK_FORM_DEF_LABEL])), ENT_NOQUOTES) . '</label>
-<select name="talk_type" required id="srgdev-ncfp_talk_type" class="srgdev-ncfp-form-input srgdev-ncfp-form-select">
-    <option value="" disabled selected hidden>' . htmlspecialchars(strip_tags((!empty($settings[BackendUtils::TALK_FORM_PLACEHOLDER]) ? $settings[BackendUtils::TALK_FORM_PLACEHOLDER] : $settings[BackendUtils::TALK_FORM_DEF_PLACEHOLDER])), ENT_NOQUOTES) . '</option>
-    <option class="srgdev-ncfp-form-option" id="srgdev-ncfp_talk_type_op1" style="font-size: medium" value="0">' . htmlspecialchars(strip_tags((!empty($settings[BackendUtils::TALK_FORM_REAL_TXT]) ? $settings[BackendUtils::TALK_FORM_REAL_TXT] : $settings[BackendUtils::TALK_FORM_DEF_REAL])), ENT_NOQUOTES) . '</option>
-    <option class="srgdev-ncfp-form-option" id="srgdev-ncfp_talk_type_op2" style="font-size: medium" value="1">' . htmlspecialchars(strip_tags((!empty($settings[BackendUtils::TALK_FORM_VIRTUAL_TXT]) ? $settings[BackendUtils::TALK_FORM_VIRTUAL_TXT] : $settings[BackendUtils::TALK_FORM_DEF_VIRTUAL])), ENT_NOQUOTES) . '</option>
-</select>';
+        $video_label = '';
+        $video_placeholder = '';
+        $video_no = '';
+        $video_yes = '';
+
+        if ($settings[BackendUtils::TALK_ENABLED] === true) {
+            if ($settings[BackendUtils::TALK_FORM_ENABLED] === true
+                && !empty($this->c->getUserValue($uid, $this->appName, chr(99) . "n" . 'k'))
+            ) {
+                $video_label = !empty($settings[BackendUtils::TALK_FORM_LABEL])
+                    ? $settings[BackendUtils::TALK_FORM_LABEL]
+                    : $settings[BackendUtils::TALK_FORM_DEF_LABEL];
+                $video_placeholder = !empty($settings[BackendUtils::TALK_FORM_PLACEHOLDER])
+                    ? $settings[BackendUtils::TALK_FORM_PLACEHOLDER]
+                    : $settings[BackendUtils::TALK_FORM_DEF_PLACEHOLDER];
+                $video_no = !empty($settings[BackendUtils::TALK_FORM_REAL_TXT])
+                    ? $settings[BackendUtils::TALK_FORM_REAL_TXT]
+                    : $settings[BackendUtils::TALK_FORM_DEF_REAL];
+                $video_yes = !empty($settings[BackendUtils::TALK_FORM_VIRTUAL_TXT]) ? $settings[BackendUtils::TALK_FORM_VIRTUAL_TXT] : $settings[BackendUtils::TALK_FORM_DEF_VIRTUAL];
             }
+        } elseif ($settings[BackendUtils::BBB_ENABLED] === true
+            && $settings[BackendUtils::BBB_FORM_ENABLED] === true
+        ) {
+            $video_label = $this->l->t('Meeting Type');
+            $video_placeholder = $this->l->t('Select meeting type');
+            $video_no = $this->l->t('In-person meeting');
+            $video_yes = $this->l->t('Online (audio/video)');
         }
+        if ($video_label !== '') {
+            // we have a meeting type <select>
+
+            $params['appt_tlk_type'] = '<label for="srgdev-ncfp_talk_type" class="srgdev-ncfp-form-label">'
+                . htmlspecialchars(strip_tags(($video_label)), ENT_NOQUOTES)
+                . '</label>
+<select name="talk_type" required id="srgdev-ncfp_talk_type" class="srgdev-ncfp-form-input srgdev-ncfp-form-select">
+    <option value="" disabled selected hidden>'
+                . htmlspecialchars(strip_tags(($video_placeholder)), ENT_NOQUOTES)
+                . '</option>
+    <option class="srgdev-ncfp-form-option" id="srgdev-ncfp_talk_type_op1" style="font-size: medium" value="0">'
+                . htmlspecialchars(strip_tags(($video_no)), ENT_NOQUOTES)
+                . '</option>
+    <option class="srgdev-ncfp-form-option" id="srgdev-ncfp_talk_type_op2" style="font-size: medium" value="1">'
+                . htmlspecialchars(strip_tags(($video_yes)), ENT_NOQUOTES)
+                . '</option>
+</select>';
+        }
+
         if (!empty($settings[BackendUtils::KEY_FORM_INPUTS_HTML])) {
             $params['more_html'] = $settings[BackendUtils::KEY_FORM_INPUTS_HTML];
         }

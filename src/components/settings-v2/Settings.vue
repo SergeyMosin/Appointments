@@ -7,6 +7,7 @@ import {
 } from "@nextcloud/vue"
 import IconPreview from "vue-material-design-icons/MonitorEye.vue";
 import SectionAdvanced from "./SectionAdvanced.vue";
+import SectionBbb from "./SectionBbb.vue";
 import SectionCalendars from "./SectionCalendars.vue";
 import SectionContact from "./SectionContact.vue";
 import SectionEmail from "./SectionEmail.vue";
@@ -188,6 +189,16 @@ const handleCKey = () => {
 								{{ t('appointments', 'Talk room settings for appointments') }}
 							</h4>
 							<SectionTalk @show-settings-modal="(data)=>{emit('show-settings-modal',data)}"/>
+						</NcAppSettingsSection>
+
+						<NcAppSettingsSection
+								v-if="readOnlyProps['bbb_integration_disabled']===false"
+								id="bbb"
+								:name="t('appointments','Video Integration')">
+							<h4 class="ps-section-subtitle">
+								{{ t('appointments', 'Video room settings for appointments') }}
+							</h4>
+							<SectionBbb/>
 						</NcAppSettingsSection>
 
 						<NcAppSettingsSection

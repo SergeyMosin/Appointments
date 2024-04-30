@@ -8,7 +8,9 @@ namespace OCA\Appointments\Controller;
 use OCA\Appointments\AppInfo\Application;
 use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
+use OCA\Appointments\Backend\BbbIntegration;
 use OCA\Appointments\Backend\IBackendConnector;
+use OCA\Appointments\Backend\TalkIntegration;
 use OCA\Appointments\SendDataResponse;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -243,7 +245,10 @@ class StateController extends Controller
                         $settings[BackendUtils::REMINDER_LANG] = $this->config->getSystemValue('default_language', 'en');
 
                         // readonly Talk prop
-                        $settings[BackendUtils::TALK_INTEGRATION_DISABLED] = $this->config->getAppValue(Application::APP_ID, BackendUtils::TALK_INTEGRATION_DISABLED, 'no') === 'yes';
+                        $settings[BackendUtils::TALK_INTEGRATION_DISABLED] = $this->config->getAppValue(Application::APP_ID, BackendUtils::TALK_INTEGRATION_DISABLED, 'no') === 'yes' || !TalkIntegration::canTalk();
+
+                        // readonly BBB prop
+                        $settings[BackendUtils::BBB_INTEGRATION_DISABLED] = $this->config->getAppValue(Application::APP_ID, BackendUtils::BBB_INTEGRATION_DISABLED, 'no') === 'yes' || !\OC::$server->get(BbbIntegration::class)->canBBB();
 
                         $r->setData(json_encode([
                             'settings' => $settings,
@@ -553,6 +558,32 @@ class StateController extends Controller
             BackendUtils::KEY_FORM_INPUTS_JSON => function (&$value, $pageId, $key): array {
                 $inputsHtml = $this->makeFormComponent($value);
                 return $this->utils->setUserSettingsV2($this->userId, $pageId, BackendUtils::KEY_FORM_INPUTS_HTML, $inputsHtml);
+            },
+
+            BackendUtils::TALK_ENABLED => function (&$value, $pageId, $key) {
+                if ($value === false) {
+                    // nothing to do
+                    return [Http::STATUS_OK, ''];
+                }
+                if (!TalkIntegration::canTalk()) {
+                    $value = false;
+                    return [Http::STATUS_OK, ''];
+                }
+                // ensure that BBB is unset
+                return $this->utils->setUserSettingsV2($this->userId, $pageId, BackendUtils::BBB_ENABLED, false);
+            },
+
+            BackendUtils::BBB_ENABLED => function (&$value, $pageId, $key) {
+                if ($value === false) {
+                    // nothing to do
+                    return [Http::STATUS_OK, ''];
+                }
+                if (!\OC::$server->get(BbbIntegration::class)->canBBB()) {
+                    $value = false;
+                    return [Http::STATUS_OK, ''];
+                }
+                // ensure that TALK is unset
+                return $this->utils->setUserSettingsV2($this->userId, $pageId, BackendUtils::TALK_ENABLED, false);
             },
 
             default => null,

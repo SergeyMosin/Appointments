@@ -28,6 +28,10 @@ use Sabre\VObject\Reader;
 class DavListener implements IEventListener
 {
 
+    private const VIDEO_NONE = 0;
+    private const VIDEO_TALK = 1;
+    private const VIDEO_BBB = 2;
+
     private $appName;
     private $l10N;
     private $logger;
@@ -309,7 +313,7 @@ class DavListener implements IEventListener
             $tmpl->setSubject($this->l10N->t("%s appointment reminder", [$org_name]));
             $tmpl->addHeading(" "); // spacer
             // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
-            $tmpl->addBodyText($this->l10N->t("Dear %s,", $to_name));
+            $tmpl->addBodyText($this->l10N->t("Dear %s,", [$to_name]));
 
             // TRANSLATORS Main part of email, Ex: This is a reminder from {{Organization Name}} about your upcoming appointment on {{Date And Time}}. If you need to reschedule, please call {{Organization Phone}}.
             $tmpl->addBodyText($this->l10N->t('This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s.', [$org_name, $date_time, $org_phone]));
@@ -330,15 +334,19 @@ class DavListener implements IEventListener
                             $evtUri, $config);
                         $cnl_lnk_url = $btn_url . "0" . $btn_tkn;
 
-                        $has_link = strlen($doc->talkToken) > 1 ? 1 : 0;
-                        if ($settings[BackendUtils::TALK_ENABLED]) {
-                            if ($settings[BackendUtils::TALK_FORM_ENABLED] === true) {
-                                if ($has_link === 1) {
-                                    $ti = new TalkIntegration($settings, $utils);
-                                    // add talk link info
-                                    $this->addTalkInfo2(
-                                        $tmpl, $doc, $ti, $settings,
-                                        $config->getUserValue($userId, Application::APP_ID, "c" . "nk"));
+                        $videoType = $this->getVideoType($settings);
+                        if ($videoType !== self::VIDEO_NONE) {
+                            if (($videoType === self::VIDEO_TALK
+                                    && $settings[BackendUtils::TALK_FORM_ENABLED])
+                                || ($videoType === self::VIDEO_BBB
+                                    && $settings[BackendUtils::BBB_FORM_ENABLED])
+                            ) {
+                                $has_link = !empty($doc->talkToken . $doc->bbbToken);
+                                if ($has_link) {
+                                    $this->addVideoLinkInfo(
+                                        $userId, $tmpl, $doc, $settings,
+                                        $config->getUserValue($userId, $this->appName, "c" . "nk")
+                                    );
                                 }
                                 $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
                             }
@@ -368,10 +376,10 @@ class DavListener implements IEventListener
 
                         if (!empty($xad) && count($xad) > 4) {
 
-                            $has_link = strlen($xad[4]) > 1 ? 1 : 0;
+                            $has_link = strlen($xad[4]) > 1;
                             if ($settings[BackendUtils::TALK_ENABLED]) {
                                 if ($settings[BackendUtils::TALK_FORM_ENABLED] === true) {
-                                    if ($has_link === 1) {
+                                    if ($has_link) {
                                         $ti = new TalkIntegration($settings, $utils);
                                         // add talk link info
                                         $this->addTalkInfo(
@@ -673,7 +681,7 @@ class DavListener implements IEventListener
             $tmpl->setSubject($this->l10N->t("%s appointment (action needed)", [$org_name]));
             $tmpl->addHeading(" "); // spacer
             // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
-            $tmpl->addBodyText($this->l10N->t("Dear %s,", $to_name));
+            $tmpl->addBodyText($this->l10N->t("Dear %s,", [$to_name]));
 
             // TRANSLATORS Main part of email, Ex: The {{Organization Name}} appointment scheduled for {{Date Time}} is awaiting your confirmation.
             $tmpl->addBodyText($this->l10N->t('The %1$s appointment scheduled for %2$s is awaiting your confirmation.', [$org_name, $date_time]));
@@ -717,30 +725,32 @@ class DavListener implements IEventListener
             $cnl_lnk_url = $btn_url . "0" . $btn_tkn;
 
             if ($doc) {
-                $has_link = strlen($doc->talkToken) > 1 ? 1 : 0;
-                if ($settings[BackendUtils::TALK_ENABLED]) {
-                    if ($has_link === 1) {
-                        $ti = new TalkIntegration($settings, $utils);
-                        // add talk link info
-                        $talk_link_txt = $this->addTalkInfo2(
-                            $tmpl, $doc, $ti, $settings,
-                            $config->getUserValue($userId, $this->appName, "c" . "nk"));
-                    }
+                $videoType = $this->getVideoType($settings);
+                if ($videoType !== self::VIDEO_NONE) {
 
-                    if ($settings[BackendUtils::TALK_FORM_ENABLED] === true) {
-                        if ($has_link === 0) {
-                            // add in-person meeting type
-                            $tmpl->addBodyText($this->makeMeetingTypeInfo($settings, $has_link));
-                        }
+                    $talk_link_txt = $this->addVideoLinkInfo(
+                        $userId, $tmpl, $doc, $settings,
+                        $config->getUserValue($userId, $this->appName, "c" . "nk")
+                    );
+
+                    if (($videoType === self::VIDEO_TALK
+                            && $settings[BackendUtils::TALK_FORM_ENABLED])
+                        || ($videoType === self::VIDEO_BBB
+                            && $settings[BackendUtils::BBB_FORM_ENABLED])
+                    ) {
+                        // we need 'Meeting Type' and `Type Change` info
+                        $has_link = !empty($talk_link_txt);
+
+                        $tmpl->addBodyText($this->makeMeetingTypeInfo($settings, $has_link));
                         $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
                     }
                 }
             } else {
                 if (!empty($xad) && count($xad) > 4) {
 
-                    $has_link = strlen($xad[4]) > 1 ? 1 : 0;
+                    $has_link = strlen($xad[4]) > 1;
                     if ($settings[BackendUtils::TALK_ENABLED]) {
-                        if ($has_link === 1) {
+                        if ($has_link) {
                             $ti = new TalkIntegration($settings, $utils);
                             // add talk link info
                             $talk_link_txt = $this->addTalkInfo(
@@ -749,7 +759,7 @@ class DavListener implements IEventListener
                         }
 
                         if ($settings[BackendUtils::TALK_FORM_ENABLED] === true) {
-                            if ($has_link === 0) {
+                            if (!$has_link) {
                                 // add in-person meeting type
                                 $tmpl->addBodyText($this->makeMeetingTypeInfo($settings, $has_link));
                             }
@@ -800,16 +810,25 @@ class DavListener implements IEventListener
             }
 
             if ($isDelete) {
-                if ($settings[BackendUtils::TALK_DEL_ROOM] === true) {
-                    $_token = '';
-                    if ($doc && strlen($doc->talkToken) > 1) {
-                        $_token = $doc->talkToken;
-                    } elseif (!empty($xad) && count($xad) > 4 && strlen($xad[4]) > 1) {
-                        $_token = $xad[4];
+                if ($doc) {
+                    if (!empty($doc->talkToken)) {
+                        if ($settings[BackendUtils::TALK_DEL_ROOM] === true) {
+                            $ti = new TalkIntegration($settings, $utils);
+                            $ti->deleteRoom($doc->talkToken);
+                        }
                     }
-                    if (!empty($_token)) {
-                        $ti = new TalkIntegration($settings, $utils);
-                        $ti->deleteRoom($_token);
+                    if (!empty($doc->bbbToken)) {
+                        if ($settings[BackendUtils::BBB_DEL_ROOM] === true) {
+                            $bi = \OC::$server->get(BbbIntegration::class);
+                            $bi->deleteRoom($doc->bbbToken, $userId);
+                        }
+                    }
+                } else {
+                    if ($settings[BackendUtils::TALK_DEL_ROOM] === true) {
+                        if (!empty($xad) && count($xad) > 4 && strlen($xad[4]) > 1) {
+                            $ti = new TalkIntegration($settings, $utils);
+                            $ti->deleteRoom($xad[4]);
+                        }
                     }
                 }
             }
@@ -825,30 +844,34 @@ class DavListener implements IEventListener
             // TRANSLATORS Main part of email
             $tmpl->addBodyText($this->l10N->t("Your appointment details have changed. Please review information below."));
 
-            $_talkToken = $doc ? $doc->talkToken : $xad[4];
-            $has_link = strlen($_talkToken) > 1 ? 1 : 0;
-
-            $tmpl->addBodyListItem($this->makeMeetingTypeInfo($settings, $has_link));
-            $tmpl->addBodyListItem($this->l10N->t("Date/Time: %s", [$date_time]));
-
-            if ($has_link === 1) {
-                // add talk link info
-                $ti = new TalkIntegration($settings, $utils);
-                if ($doc) {
-                    $talk_link_txt = $this->addTalkInfo2(
-                        $tmpl, $doc, $ti, $settings,
-                        $config->getUserValue($userId, $this->appName, "c" . "nk"));
-                } else {
-                    $talk_link_txt = $this->addTalkInfo(
-                        $tmpl, $xad, $ti, $settings,
-                        $config->getUserValue($userId, $this->appName, "c" . "nk"));
-                }
-            }
-
             list($btn_url, $btn_tkn) = $this->makeBtnInfo(
                 $userId, $pageId, $embed,
                 $objectData['uri'],
                 $config);
+
+            if ($doc) {
+
+                $has_link = !empty($doc->talkToken . $doc->bbbToken);
+                $tmpl->addBodyListItem($this->makeMeetingTypeInfo($settings, $has_link));
+                $tmpl->addBodyListItem($this->l10N->t("Date/Time: %s", [$date_time]));
+
+                $talk_link_txt = $this->addVideoLinkInfo(
+                    $userId, $tmpl, $doc, $settings,
+                    $config->getUserValue($userId, $this->appName, "c" . "nk")
+                );
+            } elseif (!empty($xad) && count($xad) > 4) {
+
+                $_talkToken = $xad[4];
+                $has_link = strlen($_talkToken) > 1;
+
+                $tmpl->addBodyListItem($this->makeMeetingTypeInfo($settings, $has_link));
+                $tmpl->addBodyListItem($this->l10N->t("Date/Time: %s", [$date_time]));
+
+                $ti = new TalkIntegration($settings, $utils);
+                $talk_link_txt = $this->addTalkInfo(
+                    $tmpl, $xad, $ti, $settings,
+                    $config->getUserValue($userId, $this->appName, "c" . "nk"));
+            }
 
             $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
 
@@ -880,18 +903,25 @@ class DavListener implements IEventListener
             if ($hash_ch[0] === true) { // DTSTART changed
                 $tmpl->addBodyListItem($this->l10N->t("Date/Time: %s", [$date_time]));
                 // if we have a Talk room we need to update the room's name (and lobby time if implemented)
-                $_talkToken = '';
-                if ($doc && strlen($doc->talkToken) > 1) {
-                    $_talkToken = $doc->talkToken;
+                if ($doc) {
+                    $videoType = $this->getVideoType($settings);
+                    if ($videoType !== self::VIDEO_NONE) {
+                        if ($videoType === self::VIDEO_TALK && !empty($doc->talkToken)) {
+                            $ti->renameRoom(
+                                $doc->talkToken, $to_name, $evt->DTSTART, $userId
+                            );
+                        } elseif ($videoType === self::VIDEO_BBB && !empty($doc->bbbToken)) {
+                            $bi = \OC::$server->get(BbbIntegration::class);
+                            $bi->renameRoom(
+                                $doc->bbbToken, $to_name, $evt->DTSTART, $userId);
+                        }
+                    }
                 } elseif (!empty($xad) && count($xad) > 4 && strlen($xad[4]) > 1) {
-                    $_talkToken = $xad[4];
-                }
-
-                if (!empty($_talkToken)) {
                     $ti->renameRoom(
-                        $_talkToken, $to_name, $evt->DTSTART, $userId
+                        $xad[4], $to_name, $evt->DTSTART, $userId
                     );
                 }
+
             }
 
             $ext_event_type = 2;
@@ -934,22 +964,22 @@ class DavListener implements IEventListener
             }
 
             if ($doc) {
-                // if there is a Talk room - add info...
-                if ($settings[BackendUtils::TALK_ENABLED]) {
-                    $has_link = strlen($doc->talkToken) > 1 ? 1 : 0;
-                    if ($has_link === 1) {
-                        // add talk link info
-                        $talk_link_txt = $this->addTalkInfo2(
-                            $tmpl, $doc, $ti, $settings,
-                            $config->getUserValue($userId, $this->appName, "c" . "nk"));
+                $videoType = $this->getVideoType($settings);
+                if ($videoType !== self::VIDEO_NONE) {
+                    $has_link = !empty($doc->talkToken . $doc->bbbToken);
+                    if ($has_link) {
+                        $talk_link_txt = $this->addVideoLinkInfo(
+                            $userId, $tmpl, $doc, $settings,
+                            $config->getUserValue($userId, $this->appName, "c" . "nk")
+                        );
                     }
                     $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
                 }
             } else {
                 // if there is a Talk room - add info...
                 if (!empty($xad) && count($xad) > 4 && $settings[BackendUtils::TALK_ENABLED]) {
-                    $has_link = strlen($xad[4]) > 1 ? 1 : 0;
-                    if ($has_link === 1) {
+                    $has_link = strlen($xad[4]) > 1;
+                    if ($has_link) {
                         // add talk link info
                         $talk_link_txt = $this->addTalkInfo(
                             $tmpl, $xad, $ti, $settings,
@@ -1273,107 +1303,141 @@ class DavListener implements IEventListener
         return trim($talk_link_txt);
     }
 
-    private function addTalkInfo2(IEMailTemplate $tmpl, ApptDocProp $doc, TalkIntegration $ti, array $settings, string $c): string
+    private function addVideoLinkInfo(string $userId, IEMailTemplate $tmpl, ApptDocProp $doc, array $settings, string $c): string
     {
-        $url = $ti->getRoomURL($doc->talkToken);
-        $url_html = '<a target="_blank" href="' . $url . '">' . $url . '</a>';
+        if ($doc->inPersonType === false) {
 
-        $eml_txt = $settings[BackendUtils::TALK_EMAIL_TXT];
-        $s = "subs" . 'tr';
-        if (!empty($eml_txt) && isset($c[3]) && ((hexdec($s($c, 0, 0b100)) >> 14) & 1) === ((hexdec($s($c, 4, 04)) >> 6) & 1)) {
-            $talk_link_html = str_replace("\n", "<br>", $eml_txt);
-            if (strpos($talk_link_html, "{{url}}") !== false) {
-                $talk_link_html = str_replace("{{url}}", $url_html, $talk_link_html);
+            if ($doc->talkToken !== '') {
+                // Talk
+                $ti = new TalkIntegration($settings, $this->utils);
+                $url = $ti->getRoomURL($doc->talkToken);
+                $pass = $doc->talkPass;
             } else {
-                $talk_link_html .= " " . $url_html;
+                // BBB
+                $bi = \OC::$server->get(BbbIntegration::class);
+                $url = $bi->getRoomUrl($doc->bbbToken, $userId);
+                $pass = $doc->bbbPass;
+            }
+            if (empty($url)) {
+                return '';
+            }
+            $url_html = '<a target="_blank" href="' . $url . '">' . $url . '</a>';
+
+            $video_link_html = '';
+            if ($doc->talkToken !== '') {
+                // special Talk config options
+                $eml_txt = $settings[BackendUtils::TALK_EMAIL_TXT];
+                $s = "subs" . 'tr';
+                if (!empty($eml_txt) && isset($c[3]) && ((hexdec($s($c, 0, 0b100)) >> 14) & 1) === ((hexdec($s($c, 4, 04)) >> 6) & 1)) {
+                    $video_link_html = str_replace("\n", "<br>", $eml_txt);
+                    if (strpos($video_link_html, "{{url}}") !== false) {
+                        $video_link_html = str_replace("{{url}}", $url_html, $video_link_html);
+                    } else {
+                        $video_link_html .= " " . $url_html;
+                    }
+                }
             }
 
-            if (!empty($doc->talkPass) && $doc->talkPass !== '_') {
-                // we have pass
-                if (strpos($talk_link_html, "{{pass}}") !== false) {
-                    $talk_link_html = str_replace("{{pass}}", $doc->talkPass, $talk_link_html);
+            if (empty($video_link_html)) {
+                $video_link_html = $this->l10N->t('Meeting link: %s', [$url_html]);
+            }
+            if (!empty($pass)) {
+                $video_link_html .= '<br>' . $this->l10N->t('Password: %s', [$pass]);
+            }
+
+            $video_link_txt = strip_tags(str_replace("<br>", "\n", $video_link_html));
+            $tmpl->addBodyText($video_link_html, $video_link_txt);
+            return trim($video_link_txt);
+        } else {
+            return '';
+        }
+    }
+
+    private function addTypeChangeLink(EMailTemplate $tmpl, array $settings, string $typeChangeLink, bool $has_link): void
+    {
+
+        if ($this->getVideoType($settings) === self::VIDEO_TALK) {
+
+            $txt = strip_tags(trim($settings[BackendUtils::TALK_FORM_TYPE_CHANGE_TXT]));
+            if (!empty($txt)) {
+
+                if (!$has_link) {
+                    // need virtual text
+                    $nt = htmlspecialchars((
+                    !empty($settings[BackendUtils::TALK_FORM_VIRTUAL_TXT])
+                        ? $settings[BackendUtils::TALK_FORM_VIRTUAL_TXT]
+                        : $settings[BackendUtils::TALK_FORM_DEF_VIRTUAL]),
+                        ENT_NOQUOTES);
                 } else {
-                    $talk_link_html .= " " . $this->l10N->t('Password') . ": " . $doc->talkPass;
+                    // real txt
+                    $nt = htmlspecialchars((
+                    !empty($settings[BackendUtils::TALK_FORM_REAL_TXT])
+                        ? $settings[BackendUtils::TALK_FORM_REAL_TXT]
+                        : $settings[BackendUtils::TALK_FORM_DEF_REAL]),
+                        ENT_NOQUOTES);
                 }
+
+                $txt = str_replace('{{new_type}}', $nt, $txt);
+
+                $s = strpos($txt, '{{');
+                if ($s !== false) {
+                    $e = strpos($txt, '}}', $s);
+                    if ($e !== false) {
+                        $ltx = substr($txt, $s + 2, $e - $s - 2);
+
+                        $p1 = substr($txt, 0, $s);
+                        $p2 = substr($txt, $e + 2);
+
+                        $h = $p1 . '<a href="' . $typeChangeLink . '">' . $ltx . '<a>' . $p2;
+                        $t = $p1 . $ltx . ': ' . $typeChangeLink . ' ' . $p2;
+
+                        $tmpl->addBodyText($h, $t);
+                    }
+                }
+            }
+        } else { // self::VIDEO_BBB
+
+            if (!$has_link) {
+                // need virtual
+                $nt = $this->l10N->t('Online (audio/video)');
             } else {
-                // no pass, but {{pass}} token
-                if (strpos($talk_link_html, "{{pass}}") !== false) {
-                    $talk_link_html = str_replace("{{pass}}", '', $talk_link_html);
-                }
-            }
-        } else {
-            // TRANSLATORS This a link to chat/(video)call, Ex: Chat/Call link: https://my_domain.com/call/kzu6e4uv
-            $talk_link_html = $this->l10N->t("Chat/Call link: %s", [$url_html]);
-            if (!empty($doc->talkPass) && $doc->talkPass !== '_') {
-                // we have pass
-                $talk_link_html .= '<br>' . $this->l10N->t('Password') . ": " . $doc->talkPass;
-            }
-        }
-        $talk_link_txt = strip_tags(str_replace("<br>", "\n", $talk_link_html));
-        $tmpl->addBodyText($talk_link_html, $talk_link_txt);
-        return trim($talk_link_txt);
-    }
-
-    /**
-     * @param $tmpl
-     * @param $tlk
-     * @param $typeChangeLink
-     * @param int $newType 0=virtual, 1=real
-     */
-    private function addTypeChangeLink($tmpl, $tlk, $typeChangeLink, $newType)
-    {
-        $txt = strip_tags(trim($tlk[BackendUtils::TALK_FORM_TYPE_CHANGE_TXT]));
-        if (!empty($txt)) {
-
-            if ($newType === 0) {
-                // need virtual text
-                $nt = htmlspecialchars((
-                !empty($tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT])
-                    ? $tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT]
-                    : $tlk[BackendUtils::TALK_FORM_DEF_VIRTUAL]),
-                    ENT_NOQUOTES);
-            } else {
-                // real txt
-                $nt = htmlspecialchars((
-                !empty($tlk[BackendUtils::TALK_FORM_REAL_TXT])
-                    ? $tlk[BackendUtils::TALK_FORM_REAL_TXT]
-                    : $tlk[BackendUtils::TALK_FORM_DEF_REAL]),
-                    ENT_NOQUOTES);
+                // need real
+                $nt = $this->l10N->t('In-person meeting');
             }
 
-            $txt = str_replace('{{new_type}}', $nt, $txt);
+            // TRANSLATORS Example: Click <a href="https://example.com">here</a> to change your appointment type to In-person meeting.
+            $h = $this->l10N->t('Click %1$shere%2$s to change your appointment type to %3$s.',
+                ['<a href="' . $typeChangeLink . '">', '</a>', $nt]);
 
-            $s = strpos($txt, '{{');
-            if ($s !== false) {
-                $e = strpos($txt, '}}', $s);
-                if ($e !== false) {
-                    $ltx = substr($txt, $s + 2, $e - $s - 2);
+            // TRANSLATORS Example: Click here: https://example.com to change your appointment type to Online (audio/video).
+            $t = $this->l10N->t('Click here: %1$s to change your appointment type to %2$s.',
+                [$typeChangeLink, $nt]);
 
-                    $p1 = substr($txt, 0, $s);
-                    $p2 = substr($txt, $e + 2);
-
-                    $h = $p1 . '<a href="' . $typeChangeLink . '">' . $ltx . '<a>' . $p2;
-                    $t = $p1 . $ltx . ': ' . $typeChangeLink . ' ' . $p2;
-
-                    $tmpl->addBodyText($h, $t);
-                }
-            }
+            $tmpl->addBodyText($h, $t);
         }
     }
 
-    private function makeMeetingTypeInfo($tlk, $has_link)
+    private function makeMeetingTypeInfo(array $settings, bool $has_link): string
     {
-        $info = !empty($tlk[BackendUtils::TALK_FORM_LABEL])
-            ? $tlk[BackendUtils::TALK_FORM_LABEL]
-            : $tlk[BackendUtils::TALK_FORM_DEF_LABEL];
-        if ($has_link) {
-            $info .= ': ' . (!empty($tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT])
-                    ? $tlk[BackendUtils::TALK_FORM_VIRTUAL_TXT]
-                    : $tlk[BackendUtils::TALK_FORM_DEF_VIRTUAL]);
-        } else {
-            $info .= ': ' . (!empty($tlk[BackendUtils::TALK_FORM_REAL_TXT])
-                    ? $tlk[BackendUtils::TALK_FORM_REAL_TXT]
-                    : $tlk[BackendUtils::TALK_FORM_DEF_REAL]);
+        if ($settings[BackendUtils::TALK_ENABLED]) { // Talk
+            $info = !empty($settings[BackendUtils::TALK_FORM_LABEL])
+                ? $settings[BackendUtils::TALK_FORM_LABEL]
+                : $settings[BackendUtils::TALK_FORM_DEF_LABEL];
+            if ($has_link) {
+                $info .= ': ' . (!empty($settings[BackendUtils::TALK_FORM_VIRTUAL_TXT])
+                        ? $settings[BackendUtils::TALK_FORM_VIRTUAL_TXT]
+                        : $settings[BackendUtils::TALK_FORM_DEF_VIRTUAL]);
+            } else {
+                $info .= ': ' . (!empty($settings[BackendUtils::TALK_FORM_REAL_TXT])
+                        ? $settings[BackendUtils::TALK_FORM_REAL_TXT]
+                        : $settings[BackendUtils::TALK_FORM_DEF_REAL]);
+            }
+        } else { //BBB
+            if ($has_link) {
+                $info = $this->l10N->t('Meeting type: Online (audio/video)');
+            } else {
+                $info = $this->l10N->t('Meeting type: In-person');
+            }
         }
         return htmlspecialchars($info, ENT_NOQUOTES);
     }
@@ -1430,7 +1494,7 @@ class DavListener implements IEventListener
                 $this->l10N->t('To cancel your appointment please click: %1$s Cancel Appointment %2$s', ['<a style="color: #989898" href="' . $cnl_lnk_url . '">', '</a>'])
                 . "</div>",
                 // TRANSLATORS This is a part of an email message. %s is a URL of the cancellation page (PLAIN TEXT format).
-                $this->l10N->t('To cancel your appointment please visit: %s', $cnl_lnk_url)
+                $this->l10N->t('To cancel your appointment please visit: %s', [$cnl_lnk_url])
             );
         }
 
@@ -1548,6 +1612,16 @@ class DavListener implements IEventListener
         } else {
             $msg->setFrom([$email]);
         }
+    }
+
+    private function getVideoType(array $settings): int
+    {
+        return $settings[BackendUtils::TALK_ENABLED] === true
+            ? self::VIDEO_TALK
+            : ($settings[BackendUtils::BBB_ENABLED] === true
+                ? self::VIDEO_BBB
+                : self::VIDEO_NONE
+            );
     }
 
 }

@@ -171,6 +171,14 @@ class BackendUtils
     // if true, Talk Setting are removed from the settings menu
     public const TALK_INTEGRATION_DISABLED = "talk_integration_disabled";
 
+    public const BBB_ENABLED = "bbbEnabled";
+    public const BBB_DEL_ROOM = "bbbDelete";
+    public const BBB_AUTO_DEL = "bbbAutoDelete";
+    public const BBB_PASSWORD = "bbbPassword";
+    public const BBB_FORM_ENABLED = "bbbFormEnabled";
+    // if true, BBB Setting are removed from the settings menu
+    public const BBB_INTEGRATION_DISABLED = "bbb_integration_disabled";
+
     public const REMINDER_DATA = "data";
     public const REMINDER_DATA_TIME = "seconds";
     public const REMINDER_DATA_ACTIONS = "actions";
@@ -268,6 +276,7 @@ class BackendUtils
 
         $a = $evt->add('ATTENDEE', "mailto:" . $info['email']);
 
+        $a['SCHEDULE-AGENT'] = "CLIENT";
         $a['CN'] = $info['name'];
         $a['PARTSTAT'] = "NEEDS-ACTION";
 
@@ -303,7 +312,6 @@ class BackendUtils
         }
         $evt->TRANSP->setValue("OPAQUE");
 
-        $doc = null;
         if (!isset($evt->{self::XAD_PROP})) {
 
             // -----
@@ -311,16 +319,9 @@ class BackendUtils
             $doc->attendeeTimezone = $info['tzi'] ?? 'UTC';
             $doc->title = $title;
             $doc->embed = $info['_embed'];
-            // Talk link/token @see $this->dataConfirmAttendee()
-            //  'd' === add self::TALK_FORM_REAL_TXT to description - no need for Talk room
-            //  '_' === check if Talk room is needed
-            //  'f' === finished
-            // if isset($info['talk_type_real']) means no need for talk room, @see PageController->showFormPost()
-            $doc->talkToken = (isset($info['talk_type_real']) ? 'd' : '_');
-            $doc->talkPass = '_';
+            $doc->inPersonType = isset($info['type_override']);
             // original description
             $doc->description = $dsr;
-
             // -----
 
         } else { // TODO: remove soon
@@ -398,39 +399,28 @@ class BackendUtils
                 return $r;
             }
 
-            if ($apptDoc->talkToken === 'f') {
-                // the appointment was previously finalized as "in-person ..."
-                if ($noChanges) {
-                    $settings = $this->getUserSettings();
-                    // new_type = virtual
-                    $r[0] = (!empty($settings[self::TALK_FORM_VIRTUAL_TXT])
-                        ? $settings[self::TALK_FORM_VIRTUAL_TXT]
-                        : $settings[self::TALK_FORM_DEF_VIRTUAL]);
-                    return $r;
+            $settings = $this->getUserSettings();
+            if ($noChanges) {
+                $r[0] = $this->getNameForType(!$apptDoc->inPersonType, $settings);
+                return $r;
+            }
+
+            if ($apptDoc->inPersonType) {
+                // switching from inPerson -> Virtual
+                $apptDoc->inPersonType = false;
+            } else {
+                // switching from Virtual -> inPerson
+
+                // checking both TALK and BBB just in-case
+                if ($apptDoc->talkToken !== '') {
+                    $ti = new TalkIntegration($settings, $this);
+                    $ti->deleteRoom($apptDoc->talkToken);
                 }
-                // ... so, set $apptDoc->talkToken='_' @see BackendUtils->dataSetAttendee
-                // this will add a talk room and description when addTalkInfo is called
-                $apptDoc->talkToken = '_';
-
-            } elseif (strlen($apptDoc->talkToken) > 1) {
-                // this was a virtual appointment...
-                // ... $apptDoc->talkToken is the room token.
-
-                $settings = $this->getUserSettings();
-
-                if ($noChanges) {
-                    $r[0] = (!empty($settings[self::TALK_FORM_REAL_TXT])
-                        ? $settings[self::TALK_FORM_REAL_TXT]
-                        : $settings[self::TALK_FORM_DEF_REAL]);
-                    return $r;
+                if ($apptDoc->bbbToken !== '') {
+                    $di = \OC::$server->get(BbbIntegration::class);
+                    $di->deleteRoom($apptDoc->bbbToken, $userId);
                 }
-
-                // delete the room first...
-                $ti = new TalkIntegration($settings, $this);
-                $ti->deleteRoom($apptDoc->talkToken);
-
-                // set $apptDoc->talkToken='d' which will just and description @see BackendUtils->dataSetAttendee
-                $apptDoc->talkToken = 'd';
+                $apptDoc->inPersonType = true;
             }
 
             $new_type = $this->addEvtTalkInfo2($userId, $evt, $a);
@@ -521,7 +511,6 @@ class BackendUtils
             return [null, null, ""];
         }
 
-        $apptDoc = null;
         if (isset($evt->{ApptDocProp::PROP_NAME})) {
             $apptDoc = $this->getApptDoc($evt);
 
@@ -697,22 +686,60 @@ class BackendUtils
         return $r;
     }
 
+    private function getNameForType(bool $isInPersonType, array $settings): string
+    {
+        if ($isInPersonType) {
+            if ($settings[self::TALK_ENABLED] === true) {
+                // Talk
+                $name = (!empty($settings[self::TALK_FORM_REAL_TXT])
+                    ? $settings[self::TALK_FORM_REAL_TXT]
+                    : $settings[self::TALK_FORM_DEF_REAL]);
+            } else {
+                // BBB
+                $name = $this->l10n->t('In-person meeting');
+            }
+        } else {
+            if ($settings[self::TALK_ENABLED] === true) {
+                // Talk
+                $name = (!empty($settings[self::TALK_FORM_VIRTUAL_TXT])
+                    ? $settings[self::TALK_FORM_VIRTUAL_TXT]
+                    : $settings[self::TALK_FORM_DEF_VIRTUAL]);
+            } else {
+                $name = $this->l10n->t('Online (audio/video)');
+            }
+        }
+        return htmlspecialchars($name, ENT_NOQUOTES);
+    }
+
     /**
      * @return string new appointment type virtual/in-person (from talk settings)
      */
     private function addEvtTalkInfo2(string $userId, \Sabre\VObject\Component\VEvent $evt, \Sabre\VObject\Property|null $attendee): string
     {
-        $r = '';
-
         $settings = $this->getUserSettings();
         $doc = $this->getApptDoc($evt);
 
-        if ($doc->talkToken === '_') {
-            // check if Talk link is needed
+        $r = $this->getNameForType($doc->inPersonType, $settings);;
+
+        // reset tokens and passes
+        $doc->talkToken = '';
+        $doc->talkPass = '';
+        $doc->bbbToken = '';
+        $doc->bbbPass = '';
+
+        if (!$attendee) {
+            return $r;
+        }
+
+        if ($doc->inPersonType === false) {
+
+            $attendeeName = $attendee->parameters['CN']->getValue();
+
             if ($settings[self::TALK_ENABLED] === true) {
+
                 $ti = new TalkIntegration($settings, $this);
                 $token = $ti->createRoomForEvent(
-                    $attendee->parameters['CN']->getValue(),
+                    $attendeeName,
                     $evt->DTSTART,
                     $userId);
                 if (!empty($token)) {
@@ -733,28 +760,43 @@ class BackendUtils
                         $this->updateDescription($evt, "\n\n" .
                             $ti->getRoomURL($token) . $pi);
 
-                        $r = (!empty($settings[self::TALK_FORM_VIRTUAL_TXT])
-                            ? $settings[self::TALK_FORM_VIRTUAL_TXT]
-                            : $settings[self::TALK_FORM_DEF_VIRTUAL]);
-
                     } else {
-
                         $this->updateDescription($evt, "\n\n" .
                             $l10n->t("Talk integration error: check logs"));
                     }
                 }
+            } elseif ($settings[self::BBB_ENABLED] === true) {
+
+                $bi = \OC::$server->get(BbbIntegration::class);
+                $roomData = $bi->createRoomForEvent($attendeeName,
+                    $evt->DTSTART,
+                    $userId,
+                    $settings[self::BBB_PASSWORD] === true
+                );
+                if ($roomData['error'] === 0) {
+                    $doc->bbbToken = $roomData['token'];
+                    $doc->bbbPass = $roomData['password'];
+
+                    $roomUrl = $bi->getRoomUrl($doc->bbbToken, $userId);
+                    $description = $this->l10n->t('Meeting link: %s', [$roomUrl]);
+                    if (!empty($doc->bbbPass)) {
+                        $description .= "\n" . $this->l10n->t('Guest Password: %s', [$doc->bbbPass]);
+                    }
+                    $this->updateDescription($evt, "\n\n" . $description);
+
+                } else {
+                    $this->updateDescription($evt, "\n\n" .
+                        $this->l10n->t("Video/audio integration error: check logs"));
+                }
             }
-        } elseif ($doc->talkToken === 'd') {
-            // meeting type is overridden by client to real,
-            // set $doc->talkToken to 'f' and add self::TALK_FORM_REAL_TXT to description
-            $doc->talkToken = 'f';
 
-            $r = (!empty($settings[self::TALK_FORM_REAL_TXT])
-                ? $settings[self::TALK_FORM_REAL_TXT]
-                : $settings[self::TALK_FORM_DEF_REAL]);
-
+        } else {
             $this->updateDescription($evt, "\n\n" . $r);
         }
+        if (!isset($evt->LOCATION)) {
+            $evt->add('LOCATION');
+        }
+        $evt->LOCATION->setValue($r);
         return $r;
     }
 
@@ -975,7 +1017,10 @@ class BackendUtils
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
         $stmt->closeCursor();
 
-        return $row ?? null;
+        if (!$row) {
+            return null;
+        }
+        return $row;
     }
 
     function getApptHash(string $uid): string|null
@@ -1309,6 +1354,13 @@ class BackendUtils
             self::TALK_FORM_DEF_VIRTUAL => 'Online (audio/video)',
             self::TALK_INTEGRATION_DISABLED => false,
 
+            self::BBB_ENABLED => false,
+            self::BBB_DEL_ROOM => true,
+            self::BBB_AUTO_DEL => true,
+            self::BBB_PASSWORD => false,
+            self::BBB_FORM_ENABLED => false,
+            self::BBB_INTEGRATION_DISABLED => false,
+
             self::KEY_REMINDERS => [
                 self::REMINDER_DATA => [
                     [
@@ -1410,6 +1462,10 @@ class BackendUtils
                     // replace default
                     $this->settings[self::KEY_REMINDERS] = $reminders;
                 }
+            }
+
+            if ($this->settings[self::BBB_ENABLED] === true) {
+                $this->settings[self::BBB_ENABLED] = BbbIntegration::hasBBB();
             }
         }
 
@@ -1828,9 +1884,9 @@ class BackendUtils
     {
 
         // TODO: Double check if the following is the Calendar App order (#1 and #2 might be reversed):
-        // 1. $config->getUserValue($userId, 'calendar', 'timezone');
+        // 1. $this->config->getUserValue($userId, 'calendar', 'timezone');
         // 2. $cal['timezone']
-        // 3. $config->getUserValue($userId, 'core', 'timezone')
+        // 3. $this->config->getUserValue($userId, 'core', 'timezone')
         // 4. \OC::$server->getDateTimeZone()->getTimeZone();
 
         $err = "";

@@ -15,6 +15,9 @@ class ApptDocProp extends PropEncoderBase
     public bool $embed = false;
     public string $talkToken = '';
     public string $talkPass = '';
+    public string $bbbToken = '';
+    public string $bbbPass = '';
+    public bool $inPersonType = false;
     public string $attendeeTimezone = 'UTC';
     public string $description = '';
 

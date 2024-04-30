@@ -1,10 +1,11 @@
 <script setup>
 import PsCheckbox from "../PsCheckbox.vue";
-import {computed, useSlots} from "vue";
+import {computed, useSlots, defineEmits} from "vue";
 import {NcPopover} from "@nextcloud/vue";
 import IconInfo from "vue-material-design-icons/InformationOutline.vue";
 
 const slots = useSlots()
+const emit = defineEmits(['value-updated'])
 
 const props = defineProps({
 	propName: {
@@ -73,7 +74,7 @@ const handleClick = (evt) => {
 				:indeterminate="indeterminate"
 				class="ps-settings-checkbox"
 				@click.native.capture="handleClick"
-				@update:checked="(value)=>{store.setOne(propName,value)}"/>
+				@update:checked="(value)=>{store.setOne(propName,value);emit('value-updated',{propName: propName, value: value})}"/>
 		<div v-if="slots?.help" class="wrapper-checkbox-help">
 			<NcPopover>
 				<template #trigger>

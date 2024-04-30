@@ -18,6 +18,7 @@ export const readOnlyProps = {
 	talk_formDefReal: "",
 	talk_formDefVirtual: "",
 	talk_integration_disabled: false,
+	bbb_integration_disabled: false,
 	// reminder related props
 	bjm: '',
 	cliUrl: '',
@@ -114,6 +115,12 @@ export const useSettingsStore = defineStore('settings', {
 			talk_formTxtReal: '',
 			talk_formTxtVirtual: '',
 			talk_formTxtTypeChange: '',
+
+			bbbEnabled: false,
+			bbbDelete: true,
+			bbbAutoDelete: true,
+			bbbPassword: false,
+			bbbFormEnabled: false,
 
 			log_rem_blocker: false,
 		},
