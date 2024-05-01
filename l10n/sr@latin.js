@@ -20,6 +20,7 @@ OC.L10N.register(
     "15 minutes" : "15 minuta",
     "30 minutes" : "30 minuta",
     "1 hour" : "1 sat",
+    "4 hours" : "4 sata",
     "12 hours" : "12 sati",
     "Deleted" : "Obrisano",
     "Not set" : "Nije postavljeno",

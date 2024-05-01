@@ -279,6 +279,7 @@ OC.L10N.register(
     "Delete when appointments is removed" : "Löschen, wenn Termine entfernt wurden",
     "Enable lobby" : "Lobby aktivieren",
     "Guest password" : "Gast-Passwort:",
+    "One option required" : "Eine Option ist erforderlich",
     "Talk room name" : "Name des Besprechungsraums",
     "Chat/Call link:" : "Link zu Chat/Anruf: ",
     "Custom email text (optional)" : "Benutzerdefinierter E-Mail-Text (optional)",
