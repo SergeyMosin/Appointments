@@ -312,11 +312,16 @@ class DavListener implements IEventListener
             // TRANSLATORS Subject for email, Ex: {{Organization Name}} appointment reminder
             $tmpl->setSubject($this->l10N->t("%s appointment reminder", [$org_name]));
             $tmpl->addHeading(" "); // spacer
-            // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
-            $tmpl->addBodyText($this->l10N->t("Dear %s,", [$to_name]));
+            $tmpl->addBodyText(...$this->formatEmailBodyHtml([
+                // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
+                $this->l10N->t("Dear %s,", [$to_name])
+            ]));
 
-            // TRANSLATORS Main part of email, Ex: This is a reminder from {{Organization Name}} about your upcoming appointment on {{Date And Time}}. If you need to reschedule, please call {{Organization Phone}}.
-            $tmpl->addBodyText($this->l10N->t('This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s.', [$org_name, $date_time, $org_phone]));
+
+            $tmpl->addBodyText(...$this->formatEmailBodyHtml([
+                // TRANSLATORS Main part of email, Ex: This is a reminder from {{Organization Name}} about your upcoming appointment on {{Date And Time}}. If you need to reschedule, please call {{Organization Phone}}.
+                $this->l10N->t('This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s.', [$org_name, $date_time, $org_phone])
+            ]));
 
             $cnl_lnk_url = '';
 
@@ -400,9 +405,9 @@ class DavListener implements IEventListener
             if (!empty($remObj[BackendUtils::REMINDER_MORE_TEXT])) {
                 list($remHtml, $remPlainText) = $this->prepHtmlEmailText($remObj[BackendUtils::REMINDER_MORE_TEXT]);
                 if ($remHtml === null) {
-                    $tmpl->addBodyText($remPlainText);
+                    $tmpl->addBodyText(...$this->formatEmailBodyHtml([$remPlainText]));
                 } else {
-                    $tmpl->addBodyText($remHtml, $remPlainText);
+                    $tmpl->addBodyText(...$this->formatEmailBodyHtml([$remHtml, $remPlainText]));
                 }
             }
 
@@ -680,11 +685,14 @@ class DavListener implements IEventListener
             // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment (action needed)
             $tmpl->setSubject($this->l10N->t("%s appointment (action needed)", [$org_name]));
             $tmpl->addHeading(" "); // spacer
-            // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
-            $tmpl->addBodyText($this->l10N->t("Dear %s,", [$to_name]));
-
-            // TRANSLATORS Main part of email, Ex: The {{Organization Name}} appointment scheduled for {{Date Time}} is awaiting your confirmation.
-            $tmpl->addBodyText($this->l10N->t('The %1$s appointment scheduled for %2$s is awaiting your confirmation.', [$org_name, $date_time]));
+            $tmpl->addBodyText(...$this->formatEmailBodyHtml([
+                // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
+                $this->l10N->t("Dear %s,", [$to_name])
+            ]));
+            $tmpl->addBodyText(...$this->formatEmailBodyHtml([
+                // TRANSLATORS Main part of email, Ex: The {{Organization Name}} appointment scheduled for {{Date Time}} is awaiting your confirmation.
+                $this->l10N->t('The %1$s appointment scheduled for %2$s is awaiting your confirmation.', [$org_name, $date_time])
+            ]));
 
             list($btn_url, $btn_tkn) = $this->makeBtnInfo(
                 $userId, $pageId, $embed,
@@ -713,9 +721,11 @@ class DavListener implements IEventListener
             // TRANSLATORS Subject for email, Ex: {{Organization Name}} Appointment is Confirmed
             $tmpl->setSubject($this->l10N->t("%s Appointment is confirmed", [$org_name]));
             $tmpl->addHeading(" "); // spacer
-            $tmpl->addBodyText($to_name . ",");
-            // TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now confirmed.
-            $tmpl->addBodyText($this->l10N->t('Your %1$s appointment scheduled for %2$s is now confirmed.', [$org_name, $date_time]));
+            $tmpl->addBodyText(...$this->formatEmailBodyHtml([$to_name . ","]));
+            $tmpl->addBodyText(...$this->formatEmailBodyHtml([
+                // TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now confirmed.
+                $this->l10N->t('Your %1$s appointment scheduled for %2$s is now confirmed.', [$org_name, $date_time])
+            ]));
 
             // add cancellation link
             list($btn_url, $btn_tkn) = $this->makeBtnInfo(
@@ -741,7 +751,8 @@ class DavListener implements IEventListener
                         // we need 'Meeting Type' and `Type Change` info
                         $has_link = !empty($talk_link_txt);
 
-                        $tmpl->addBodyText($this->makeMeetingTypeInfo($settings, $has_link));
+                        $tmpl->addBodyText(...$this->formatEmailBodyHtml([$this->makeMeetingTypeInfo($settings, $has_link)]));
+
                         $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
                     }
                 }
@@ -761,7 +772,7 @@ class DavListener implements IEventListener
                         if ($settings[BackendUtils::TALK_FORM_ENABLED] === true) {
                             if (!$has_link) {
                                 // add in-person meeting type
-                                $tmpl->addBodyText($this->makeMeetingTypeInfo($settings, $has_link));
+                                $tmpl->addBodyText(...$this->formatEmailBodyHtml([$this->makeMeetingTypeInfo($settings, $has_link)]));
                             }
                             $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
                         }
@@ -772,10 +783,10 @@ class DavListener implements IEventListener
             if (!empty($settings[BackendUtils::EML_CNF_TXT])) {
                 $this->addMoreEmailText($tmpl, $settings[BackendUtils::EML_CNF_TXT]);
             } elseif (filter_var($evt->LOCATION, FILTER_VALIDATE_URL) !== false) {
-                $tmpl->addBodyText(
+                $tmpl->addBodyText(...$this->formatEmailBodyHtml([
                     $this->l10N->t('Location: ') . '<a href="' . $evt->LOCATION . '">' . $evt->LOCATION . '</a>',
                     $this->l10N->t('Location: ') . $evt->LOCATION
-                );
+                ]));
             }
 
             if ($settings[BackendUtils::EML_MCONF]) {
@@ -800,9 +811,11 @@ class DavListener implements IEventListener
             }
             $tmpl->addHeading(" "); // spacer
 
-            // TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now canceled.
-            $tmpl->addBodyText($to_name . ",");
-            $tmpl->addBodyText($this->l10N->t('Your %1$s appointment scheduled for %2$s is now canceled.', [$org_name, $date_time]));
+            $tmpl->addBodyText(...$this->formatEmailBodyHtml([$to_name . ","]));
+            $tmpl->addBodyText(...$this->formatEmailBodyHtml([
+                // TRANSLATORS Main body of email,Ex: Your {{Organization Name}} appointment scheduled for {{Date Time}} is now canceled.
+                $this->l10N->t('Your %1$s appointment scheduled for %2$s is now canceled.', [$org_name, $date_time])
+            ]));
             $is_cancelled = true;
 
             if ($settings[BackendUtils::EML_MCNCL] && $hint !== HintVar::APPT_NONE) {
@@ -839,10 +852,14 @@ class DavListener implements IEventListener
 
             $tmpl->setSubject($this->l10N->t("%s Appointment update", [$org_name]));
             $tmpl->addHeading(" "); // spacer
-            // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
-            $tmpl->addBodyText($this->l10N->t("Dear %s,", [$to_name]));
-            // TRANSLATORS Main part of email
-            $tmpl->addBodyText($this->l10N->t("Your appointment details have changed. Please review information below."));
+            $tmpl->addBodyText(...$this->formatEmailBodyHtml([
+                // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
+                $this->l10N->t("Dear %s,", [$to_name])
+            ]));
+            $tmpl->addBodyText(...$this->formatEmailBodyHtml([
+                // TRANSLATORS Main part of email
+                $this->l10N->t("Your appointment details have changed. Please review information below.")
+            ]));
 
             list($btn_url, $btn_tkn) = $this->makeBtnInfo(
                 $userId, $pageId, $embed,
@@ -852,8 +869,10 @@ class DavListener implements IEventListener
             if ($doc) {
 
                 $has_link = !empty($doc->talkToken . $doc->bbbToken);
-                $tmpl->addBodyListItem($this->makeMeetingTypeInfo($settings, $has_link));
-                $tmpl->addBodyListItem($this->l10N->t("Date/Time: %s", [$date_time]));
+                $tmpl->addBodyListItem(...$this->formatEmailListItem(
+                    $this->makeMeetingTypeInfo($settings, $has_link)));
+                $tmpl->addBodyListItem(...$this->formatEmailListItem(
+                    $this->l10N->t("Date/Time: %s", [$date_time])));
 
                 $talk_link_txt = $this->addVideoLinkInfo(
                     $userId, $tmpl, $doc, $settings,
@@ -864,8 +883,10 @@ class DavListener implements IEventListener
                 $_talkToken = $xad[4];
                 $has_link = strlen($_talkToken) > 1;
 
-                $tmpl->addBodyListItem($this->makeMeetingTypeInfo($settings, $has_link));
-                $tmpl->addBodyListItem($this->l10N->t("Date/Time: %s", [$date_time]));
+                $tmpl->addBodyListItem(...$this->formatEmailListItem(
+                    $this->makeMeetingTypeInfo($settings, $has_link)));
+                $tmpl->addBodyListItem(...$this->formatEmailListItem(
+                    $this->l10N->t("Date/Time: %s", [$date_time])));
 
                 $ti = new TalkIntegration($settings, $utils);
                 $talk_link_txt = $this->addTalkInfo(
@@ -889,11 +910,14 @@ class DavListener implements IEventListener
             // TRANSLATORS Subject for email, Ex: {{Organization Name}} appointment status update
             $tmpl->setSubject($this->l10N->t("%s Appointment update", [$org_name]));
             $tmpl->addHeading(" "); // spacer
-            // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
-            $tmpl->addBodyText($this->l10N->t("Dear %s,", [$to_name]));
-            // TRANSLATORS Main part of email
-            $tmpl->addBodyText($this->l10N->t("Your appointment details have changed. Please review information below."));
-
+            $tmpl->addBodyText(...$this->formatEmailBodyHtml([
+                // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
+                $this->l10N->t("Dear %s,", [$to_name])
+            ]));
+            $tmpl->addBodyText(...$this->formatEmailBodyHtml([
+                // TRANSLATORS Main part of email
+                $this->l10N->t("Your appointment details have changed. Please review information below.")
+            ]));
 
             $pst = $att->parameters['PARTSTAT']->getValue();
 
@@ -901,7 +925,8 @@ class DavListener implements IEventListener
 
             // Add changes details...
             if ($hash_ch[0] === true) { // DTSTART changed
-                $tmpl->addBodyListItem($this->l10N->t("Date/Time: %s", [$date_time]));
+                $tmpl->addBodyListItem(...$this->formatEmailListItem(
+                    $this->l10N->t("Date/Time: %s", [$date_time])));
                 // if we have a Talk room we need to update the room's name (and lobby time if implemented)
                 if ($doc) {
                     $videoType = $this->getVideoType($settings);
@@ -928,23 +953,27 @@ class DavListener implements IEventListener
 
             if ($hash_ch[1] === true) { //STATUS changed
                 if ($evt->STATUS->getValue() === 'CANCELLED') {
-                    $tmpl->addBodyListItem($this->l10N->t('Status: Canceled'));
+                    $tmpl->addBodyListItem(...$this->formatEmailListItem(
+                        $this->l10N->t('Status: Canceled')));
                     $is_cancelled = true;
                     $ext_event_type = 1;
                 } else {
                     // Non cancelled status is determined by the attendee's PARTSTAT
                     if ($pst === 'NEEDS-ACTION') {
-                        $tmpl->addBodyListItem($this->l10N->t('Status: Pending confirmation'));
+                        $tmpl->addBodyListItem(...$this->formatEmailListItem(
+                            $this->l10N->t('Status: Pending confirmation')));
                         $ext_event_type = -1; // no extNotify when pending
                     } elseif ($pst === 'ACCEPTED') {
-                        $tmpl->addBodyListItem($this->l10N->t('Status: Confirmed'));
+                        $tmpl->addBodyListItem(...$this->formatEmailListItem(
+                            $this->l10N->t('Status: Confirmed')));
                         $ext_event_type = 0;
                     }
                 }
             }
 
             if ($hash_ch[2] === true && isset($evt->LOCATION)) { // LOCATION changed
-                $tmpl->addBodyListItem($this->l10N->t("Location: %s", [$evt->LOCATION->getValue()]));
+                $tmpl->addBodyListItem(...$this->formatEmailListItem(
+                    $this->l10N->t("Location: %s", [$evt->LOCATION->getValue()])));
             }
 
             list($btn_url, $btn_tkn) = $this->makeBtnInfo(
@@ -989,11 +1018,15 @@ class DavListener implements IEventListener
                 }
             }
             if (empty($org_phone)) {
-                // TRANSLATORS Additional part of email - contact information WITHOUT phone number (only email). The last argument is email address.
-                $tmpl->addBodyText($this->l10N->t("If you have any questions please write to %s", [$org_email]));
+                $tmpl->addBodyText(...$this->formatEmailBodyHtml([
+                    // TRANSLATORS Additional part of email - contact information WITHOUT phone number (only email). The last argument is email address.
+                    $this->l10N->t("If you have any questions please write to %s", [$org_email])
+                ]));
             } else {
-                // TRANSLATORS Additional part of email - contact information WITH email AND phone number: If you have any questions please feel free to call {123-456-7890} or write to {email@example.com}
-                $tmpl->addBodyText($this->l10N->t('If you have any questions please feel free to call %1$s or write to %2$s', [$org_phone, $org_email]));
+                $tmpl->addBodyText(...$this->formatEmailBodyHtml([
+                    // TRANSLATORS Additional part of email - contact information WITH email AND phone number: If you have any questions please feel free to call {123-456-7890} or write to {email@example.com}
+                    $this->l10N->t('If you have any questions please feel free to call %1$s or write to %2$s', [$org_phone, $org_email])
+                ]));
             }
 
             // if NOT cancelled and PARTSTAT:ACCEPTED we ADD the cancellation at the END
@@ -1165,12 +1198,14 @@ class DavListener implements IEventListener
                 $tmpl->setSubject($om_prefix . ": " . $to_name . ", "
                     . $utils->getDateTimeString($evt_dt, $utz_info, 1));
                 $tmpl->addHeading(" "); // spacer
-                $tmpl->addBodyText($om_prefix);
-                $tmpl->addBodyListItem($utils->getDateTimeString($evt_dt, $utz_info));
+                $tmpl->addBodyText(...$this->formatEmailBodyHtml([$om_prefix]));
+                $tmpl->addBodyListItem(...$this->formatEmailListItem(
+                    $utils->getDateTimeString($evt_dt, $utz_info)));
                 $ic = 0;
                 foreach ($oma as $info) {
                     if (strlen($info) > 2) {
-                        $tmpl->addBodyListItem($this->linkify->process($info), '', '', strip_tags($info));
+                        $tmpl->addBodyListItem(...$this->formatEmailListItem(
+                            $this->linkify->process($info)));
                         $ic++;
                         if ($ic > 16) {
                             break;
@@ -1179,8 +1214,11 @@ class DavListener implements IEventListener
                 }
 
                 // Add page name
-                if (count($utils->getUserPages($userId)) > 1) {
-                    $tmpl->addBodyListItem($settings[BackendUtils::PAGE_LABEL]);
+                if (count($utils->getUserPages($userId)) > 1
+                    && !empty($settings[BackendUtils::PAGE_LABEL])
+                ) {
+                    $tmpl->addBodyListItem(...$this->formatEmailListItem(
+                        $settings[BackendUtils::PAGE_LABEL]));
                 }
 
                 $msg = $mailer->createMessage();
@@ -1299,7 +1337,7 @@ class DavListener implements IEventListener
             }
         }
         $talk_link_txt = strip_tags(str_replace("<br>", "\n", $talk_link_html));
-        $tmpl->addBodyText($talk_link_html, $talk_link_txt);
+        $tmpl->addBodyText(...$this->formatEmailBodyHtml([$talk_link_html, $talk_link_txt]));
         return trim($talk_link_txt);
     }
 
@@ -1346,7 +1384,7 @@ class DavListener implements IEventListener
             }
 
             $video_link_txt = strip_tags(str_replace("<br>", "\n", $video_link_html));
-            $tmpl->addBodyText($video_link_html, $video_link_txt);
+            $tmpl->addBodyText(...$this->formatEmailBodyHtml([$video_link_html, $video_link_txt]));
             return trim($video_link_txt);
         } else {
             return '';
@@ -1391,7 +1429,7 @@ class DavListener implements IEventListener
                         $h = $p1 . '<a href="' . $typeChangeLink . '">' . $ltx . '<a>' . $p2;
                         $t = $p1 . $ltx . ': ' . $typeChangeLink . ' ' . $p2;
 
-                        $tmpl->addBodyText($h, $t);
+                        $tmpl->addBodyText(...$this->formatEmailBodyHtml([$h, $t]));
                     }
                 }
             }
@@ -1413,7 +1451,7 @@ class DavListener implements IEventListener
             $t = $this->l10N->t('Click here: %1$s to change your appointment type to %2$s.',
                 [$typeChangeLink, $nt]);
 
-            $tmpl->addBodyText($h, $t);
+            $tmpl->addBodyText(...$this->formatEmailBodyHtml([$h, $t]));
         }
     }
 
@@ -1481,27 +1519,47 @@ class DavListener implements IEventListener
     }
 
 
-    function finalizeEmailText(&$tmpl, $cnl_lnk_url)
+    function finalizeEmailText(EMailTemplate $tmpl, $cnl_lnk_url)
     {
 
-        $tmpl->addBodyText($this->l10N->t("Thank you"));
+        $tmpl->addBodyText(...$this->formatEmailBodyHtml([$this->l10N->t("Thank you")]));
 
         // cancellation link for confirmation emails
         if (!empty($cnl_lnk_url)) {
-            $tmpl->addBodyText(
-                '<div style="font-size: 80%;color: #989898;text-align: center">' .
+            $tmpl->addBodyText(...$this->formatEmailBodyHtml([
+                '<span style="font-size: 80%;color: #989898;">' .
                 // TRANSLATORS This is a part of an email message. %1$s Cancel Appointment %2$s is a link to the cancellation page (HTML format).
                 $this->l10N->t('To cancel your appointment please click: %1$s Cancel Appointment %2$s', ['<a style="color: #989898" href="' . $cnl_lnk_url . '">', '</a>'])
-                . "</div>",
+                . '</span>',
                 // TRANSLATORS This is a part of an email message. %s is a URL of the cancellation page (PLAIN TEXT format).
                 $this->l10N->t('To cancel your appointment please visit: %s', [$cnl_lnk_url])
-            );
+            ]));
         }
 
         $theme = new \OCP\Defaults();
         // TRANSLATORS %s is the server name. Example: Booked via Private Cloud Appointments
         $tmpl->addFooter($this->l10N->t("Booked via %s Appointments", [$theme->getEntity()]));
     }
+
+    private function formatEmailBodyHtml(array $data): array
+    {
+        $html = $data[0];
+        if (count($data) > 1) {
+            $text = $data[1];
+        } else {
+            $text = strip_tags($data[0]);
+        }
+        return [
+            '<p style="color: #222222; text-align: left; margin: 0; margin-top: -10px; padding: 0">' . $html . '</p><p style="margin: 0; padding: 0; height: 0; line-height: 0; display: block;">',
+            $text
+        ];
+    }
+
+    private function formatEmailListItem(string $str): array
+    {
+        return ['<span style="color: #222222">' . $str . '</span>', '', '', strip_tags($str)];
+    }
+
 
     /**
      * @see https://github.com/SergeyMosin/Appointments/issues/26 for more info
