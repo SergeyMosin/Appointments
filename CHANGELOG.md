@@ -1,3 +1,17 @@
+## v2.1.0 - 2024-04-30
+### Added
+- added 'ROLE' to ATTENDEE prop in .ics attachments
+- BigBlueButton integration is now available
+### Changed
+- use 'X-APPT-DOC' instead of 'X-APPT-DATA'
+- use $this->config instead of passing $config into functions
+- add and refactor tests
+- min-version is 27 now
+### Fixed
+- fix: type error in 'getUserTimezone()'
+- fix some translation strings and remove SectionTest.vue - #506
+- ensure darker email text color and left alignment - #503
+
 ## v2.0.7 - 2024-04-12
 ### Fixed
 - Public pages not working

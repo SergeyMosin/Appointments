@@ -1,6 +1,6 @@
 <script setup>
 import PsCheckbox from "../PsCheckbox.vue";
-import {computed, useSlots, defineEmits} from "vue";
+import {computed, useSlots} from "vue";
 import {NcPopover} from "@nextcloud/vue";
 import IconInfo from "vue-material-design-icons/InformationOutline.vue";
 
