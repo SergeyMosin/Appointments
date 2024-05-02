@@ -1,10 +1,10 @@
 { "translations": {
     "Guest password:" : "ססמת אורחים:",
     "Talk integration error: check logs" : "שגיאה בחיבור שיחה, בדוק ביומנים",
-    "Meeting Type" : "סוג פגישה",
-    "Select meeting type" : "נא לבחור סוג פגישה",
     "In-person meeting" : "פגישה פנים אל פנים",
     "Online (audio/video)" : "מקוונת (שמע/וידאו)",
+    "Meeting Type" : "סוג פגישה",
+    "Select meeting type" : "נא לבחור סוג פגישה",
     "Your email address is required for this operation." : "כתובת הדוא״ל שלך נחוצה לפעולה הזאת.",
     "Can't find your name. Check User/Organization settings." : "לא ניתן למצוא את השם שלך. נא לבדוק את הגדרות המשתמש/ארגון.",
     "Available" : "זמינות",

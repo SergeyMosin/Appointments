@@ -1,9 +1,9 @@
 { "translations": {
     "Guest password:" : "Зочны нууц үг",
-    "Meeting Type" : "Уулзалтын төрөл",
-    "Select meeting type" : "Уулзалтын төрөл сонгох",
     "In-person meeting" : "Биечлэн уулзах",
     "Online (audio/video)" : "Онлайн (дуут/видео)",
+    "Meeting Type" : "Уулзалтын төрөл",
+    "Select meeting type" : "Уулзалтын төрөл сонгох",
     "Your email address is required for this operation." : "Энэ үйлдлийг хийхэд таны эмэйл хаяг хэрэгтэй.",
     "Available" : "Боломжтой",
     "Confirm" : "Батлах",

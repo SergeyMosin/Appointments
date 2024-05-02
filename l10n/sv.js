@@ -3,10 +3,10 @@ OC.L10N.register(
     {
     "Guest password:" : "Gästlösenord:",
     "Talk integration error: check logs" : "Talk-integration-felmeddelande: kontrollera loggarna",
-    "Meeting Type" : "Mötestyp",
-    "Select meeting type" : "Välj mötestyp",
     "In-person meeting" : "Fysiskt möte",
     "Online (audio/video)" : "Online (ljud/bild)",
+    "Meeting Type" : "Mötestyp",
+    "Select meeting type" : "Välj mötestyp",
     "Your email address is required for this operation." : "Din epostadress krävs för denna användning.",
     "Can't find your name. Check User/Organization settings." : "Kan inte hitta ditt namn. Kontrollera användar-/organisations-inställningarna",
     "Available" : "Tillgänglig",
