@@ -1,10 +1,10 @@
 { "translations": {
     "Guest password:" : "손님 암호 :",
     "Talk integration error: check logs" : "토크 통합 오류: 로그 확인",
-    "Meeting Type" : "회의 유형",
-    "Select meeting type" : "회의 유형 선택",
     "In-person meeting" : "대면 회의",
     "Online (audio/video)" : "온라인 (소리/영상)",
+    "Meeting Type" : "회의 유형",
+    "Select meeting type" : "회의 유형 선택",
     "Your email address is required for this operation." : "이 동작을 실행하려면 사용자의 이메일 주소가 필요합니다.",
     "Can't find your name. Check User/Organization settings." : "이름을 찾을 수 없습니다. User/Organization 환경설정을 확인해주십시오.",
     "Available" : "사용 가능",

@@ -3,10 +3,10 @@ OC.L10N.register(
     {
     "Guest password:" : "ゲストのパスワード:",
     "Talk integration error: check logs" : "Talk統合エラー: ログを確認してください",
-    "Meeting Type" : "ミーティングのタイプ",
-    "Select meeting type" : "ミーティングタイプを選択",
     "In-person meeting" : "個人ミーティング",
     "Online (audio/video)" : "オンライン（音声/映像）",
+    "Meeting Type" : "ミーティングのタイプ",
+    "Select meeting type" : "ミーティングタイプを選択",
     "Your email address is required for this operation." : "この操作にはメールアドレスが必要です。",
     "Can't find your name. Check User/Organization settings." : "名前が見つかりません。ユーザー/組織の設定を確認してください。",
     "Available" : "利用可能",

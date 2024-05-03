@@ -3,10 +3,10 @@ OC.L10N.register(
     {
     "Guest password:" : "Svečio slaptažodis:",
     "Talk integration error: check logs" : "Integracijos su pokalbiais klaida: tikrinkite žurnalus",
-    "Meeting Type" : "Susitikimo tipas",
-    "Select meeting type" : "Pasirinkite susitikimo tipą",
     "In-person meeting" : "Susitikimas gyvai",
     "Online (audio/video)" : "Susitikimas internetu (garso/vaizdo)",
+    "Meeting Type" : "Susitikimo tipas",
+    "Select meeting type" : "Pasirinkite susitikimo tipą",
     "Your email address is required for this operation." : "Šiai operacijai atlikti yra reikalingas jūsų el. pašto adresas.",
     "Available" : "Prieinamas",
     "Public Page" : "Viešasis puslapis",
