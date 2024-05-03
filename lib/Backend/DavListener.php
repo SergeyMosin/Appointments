@@ -150,7 +150,9 @@ class DavListener implements IEventListener
                         'actions' => $remData[BackendUtils::REMINDER_DATA_ACTIONS],
                         'evtUri' => $row['uri'],
                         'evtUid' => $row['uid'],
-                        'apptDoc' => $row['appt_doc'],
+                        'apptDoc' => is_resource($row['appt_doc'])
+                            ? stream_get_contents($row['appt_doc'])
+                            : $row['appt_doc'],
                         'reuseSettings' => $reuseSettings
                     ];
                 }
