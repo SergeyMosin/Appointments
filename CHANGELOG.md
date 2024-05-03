@@ -1,3 +1,7 @@
+## v2.1.1 - 2024-05-03
+### Fixed
+- PostgreSQL error: invalid byte sequence for encoding "UTF8" - #510
+
 ## v2.1.0 - 2024-04-30
 ### Added
 - added 'ROLE' to ATTENDEE prop in .ics attachments
