@@ -424,7 +424,7 @@ class BackendUtils
                 $apptDoc->inPersonType = true;
             }
 
-            $new_type = $this->addEvtTalkInfo2($userId, $evt, $a);
+            $new_type = $this->addEvtLocationOrVideoLink($userId, $evt, $a);
             $this->saveApptDoc($apptDoc, $evt);
             $r[0] = $new_type;
             $r[1] = $vo->serialize();
@@ -550,7 +550,7 @@ class BackendUtils
 
         //Talk link
         if (isset($evt->{ApptDocProp::PROP_NAME})) {
-            $this->addEvtTalkInfo2($userId, $evt, $a);
+            $this->addEvtLocationOrVideoLink($userId, $evt, $a);
         } else {
             // legacy: remove soon
             $this->addEvtTalkInfo($userId, $xad, $evt, $a);
@@ -715,7 +715,7 @@ class BackendUtils
     /**
      * @return string new appointment type virtual/in-person (from talk settings)
      */
-    private function addEvtTalkInfo2(string $userId, \Sabre\VObject\Component\VEvent $evt, \Sabre\VObject\Property|null $attendee): string
+    private function addEvtLocationOrVideoLink(string $userId, \Sabre\VObject\Component\VEvent $evt, \Sabre\VObject\Property|null $attendee): string
     {
         $settings = $this->getUserSettings();
         $doc = $this->getApptDoc($evt);
@@ -794,10 +794,24 @@ class BackendUtils
         } else {
             $this->updateDescription($evt, "\n\n" . $r);
         }
+
+        // location need to be properly set
+        if ($settings[self::BBB_ENABLED] === false
+            && $settings[self::TALK_ENABLED] === false) {
+            // real location (not an online)
+            $location = !empty($settings[self::ORG_ADDR])
+                ? $settings[self::ORG_ADDR]
+                : $this->getNameForType(true, $settings);
+        } else {
+            $location = $doc->inPersonType === true && !empty($settings[self::ORG_ADDR])
+                ? $settings[self::ORG_ADDR]
+                : $r;
+        }
+
         if (!isset($evt->LOCATION)) {
             $evt->add('LOCATION');
         }
-        $evt->LOCATION->setValue($r);
+        $evt->LOCATION->setValue($location);
         return $r;
     }
 

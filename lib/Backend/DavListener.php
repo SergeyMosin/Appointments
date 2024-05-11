@@ -784,10 +784,11 @@ class DavListener implements IEventListener
 
             if (!empty($settings[BackendUtils::EML_CNF_TXT])) {
                 $this->addMoreEmailText($tmpl, $settings[BackendUtils::EML_CNF_TXT]);
-            } elseif (filter_var($evt->LOCATION, FILTER_VALIDATE_URL) !== false) {
+            } elseif (isset($evt->LOCATION) && filter_var($evt->LOCATION->getValue(), FILTER_VALIDATE_URL) !== false) {
+                $locationUrl=$evt->LOCATION->getValue();
                 $tmpl->addBodyText(...$this->formatEmailBodyHtml([
-                    $this->l10N->t('Location: ') . '<a href="' . $evt->LOCATION . '">' . $evt->LOCATION . '</a>',
-                    $this->l10N->t('Location: ') . $evt->LOCATION
+                    $this->l10N->t('Location: ') . '<a href="' . $locationUrl . '">' . $locationUrl . '</a>',
+                    $this->l10N->t('Location: ') . $locationUrl
                 ]));
             }
 
