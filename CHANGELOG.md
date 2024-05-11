@@ -1,3 +1,7 @@
+## v2.1.2 - 2024-05-10
+### Fixed
+- Location is not applied - #512
+
 ## v2.1.1 - 2024-05-03
 ### Fixed
 - PostgreSQL error: invalid byte sequence for encoding "UTF8" - #510
