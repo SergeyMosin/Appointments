@@ -123,25 +123,27 @@ const handleUpdateShow = (evt) => {
 					</NcActionButton>
 				</NcActions>
 			</div>
-			<NcButton
-					:disabled="pagesStore.loading!=='' || settingsStore.loading['dirItems']===true"
-					class="dir-editor-btn"
-					type="primary"
-					@click="handelSaveItem">
-				<template #icon>
-					<NcLoadingIcon v-if="settingsStore.loading['dirItems']===true" :size="20"/>
-					<IconSave v-else :size="20"/>
-				</template>
-				{{ t('appointments', 'Save') }}
-			</NcButton>
-			<NcButton
-					class="dir-editor-btn"
-					@click="handleUpdateShow(false)">
-				<template #icon>
-					<IconCancel :size="20"/>
-				</template>
-				{{ t('appointments', 'Cancel') }}
-			</NcButton>
+			<div class="dir-editor-dual-flex">
+				<NcButton
+						:disabled="pagesStore.loading!=='' || settingsStore.loading['dirItems']===true"
+						class="dir-editor-btn"
+						type="primary"
+						@click="handelSaveItem">
+					<template #icon>
+						<NcLoadingIcon v-if="settingsStore.loading['dirItems']===true" :size="20"/>
+						<IconSave v-else :size="20"/>
+					</template>
+					{{ t('appointments', 'Save') }}
+				</NcButton>
+				<NcButton
+						class="dir-editor-btn"
+						@click="handleUpdateShow(false)">
+					<template #icon>
+						<IconCancel :size="20"/>
+					</template>
+					{{ t('appointments', 'Cancel') }}
+				</NcButton>
+			</div>
 		</div>
 	</NcModal>
 </template>

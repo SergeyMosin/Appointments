@@ -11,7 +11,7 @@ import IconPencil from "vue-material-design-icons/Pencil.vue";
 import IconPlus from "vue-material-design-icons/Plus.vue";
 import IconDelete from "vue-material-design-icons/Delete.vue";
 import DirItemEditorModal from "../modals/DirItemEditorModal.vue";
-import {reactive} from "vue";
+import {reactive, nextTick} from "vue";
 import {INDEX} from "../../use/constants";
 import ComboInput from "./ComboInput.vue";
 import ComboCheckbox from "./ComboCheckbox.vue";
@@ -28,7 +28,9 @@ const addDirItem = () => {
 }
 
 const editDirItem = (index) => {
-	state.editorIndex = index
+	nextTick(() => {
+		state.editorIndex = index
+	})
 }
 
 const deleteDirItem = (deleteIndex) => {
@@ -116,12 +118,12 @@ const deleteDirItem = (deleteIndex) => {
 						:label="t('appointments', 'Auto Style')"
 						settings-type="dirSettings"
 						:store="settingsStore"/>
-<!--				<ComboCheckbox-->
-<!--						class="ps-vert-spacing"-->
-<!--						prop-name="privatePage"-->
-<!--						:label="t('appointments', 'Private (visitors must be logged-in)')"-->
-<!--						settings-type="dirSettings"-->
-<!--						:store="settingsStore"/>-->
+				<!--				<ComboCheckbox-->
+				<!--						class="ps-vert-spacing"-->
+				<!--						prop-name="privatePage"-->
+				<!--						:label="t('appointments', 'Private (visitors must be logged-in)')"-->
+				<!--						settings-type="dirSettings"-->
+				<!--						:store="settingsStore"/>-->
 				<ComboInput
 						prop-name="pageStyle"
 						type="textarea"
