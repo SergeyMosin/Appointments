@@ -1,3 +1,9 @@
+## v2.1.3 - 2024-05-12
+### Fixed
+- fix: cannot change title, subtitle, and text in directory item editor - #509
+### Changed
+- Refactor prop encoder
+
 ## v2.1.2 - 2024-05-10
 ### Fixed
 - Location is not applied - #512
