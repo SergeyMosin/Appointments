@@ -3,6 +3,7 @@
 namespace OCA\Appointments\Backend;
 
 use OCA\Appointments\AppInfo\Application;
+use OCA\Appointments\Encoder\PropEncoderBase;
 use Psr\Log\LoggerInterface;
 
 class ApptDocProp extends PropEncoderBase

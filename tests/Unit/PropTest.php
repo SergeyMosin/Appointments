@@ -2,7 +2,7 @@
 
 namespace Unit;
 
-use OCA\Appointments\Backend\PropEncoderBase;
+use OCA\Appointments\Encoder\PropEncoderBase;
 use PHPUnit\Framework\TestCase;
 
 class Jdoc
@@ -122,7 +122,7 @@ class PropTest extends TestCase
             $num2[] = random_int(-15, 15);
             $num3[] = random_int(PHP_INT_MIN, PHP_INT_MAX);
             $str1[] = $this->generateRandomString(random_int(0, 15));
-            $str2[] = $this->generateRandomString(random_int(100, 600));
+            $str2[] = $this->generateRandomString(random_int(1000, 6000));
             $bool1[] = random_int(0, 1) > 0;
             $bool2[] = random_int(0, 1) > 0;
         }
