@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2024-05-12 02:21+0000\n"
+"POT-Creation-Date: 2024-05-13 02:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -124,7 +124,7 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#. TRANSLATORS onents/modals/DirItemEditorModal.vue:143
+#. TRANSLATORS onents/modals/DirItemEditorModal.vue:144
 #. TRANSLATORS onents/modals/RemoveSimpleApptsModal.vue:195
 #. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:219
 #. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:221
@@ -592,7 +592,7 @@ msgstr ""
 msgid "Select Page"
 msgstr ""
 
-#. TRANSLATORS onents/modals/DirItemEditorModal.vue:135
+#. TRANSLATORS onents/modals/DirItemEditorModal.vue:136
 #. TRANSLATORS onents/views/TimeSlotEditor.vue:240
 #: /app/specialVueFakeDummyForL10nScript.js:40
 #: /app/specialVueFakeDummyForL10nScript.js:570
@@ -715,7 +715,7 @@ msgstr ""
 
 #. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:213
 #. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:215
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:84
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:86
 #: /app/specialVueFakeDummyForL10nScript.js:94
 #: /app/specialVueFakeDummyForL10nScript.js:96
 #: /app/specialVueFakeDummyForL10nScript.js:546
@@ -1410,7 +1410,7 @@ msgid "Show appointments for next"
 msgstr ""
 
 #. TRANSLATORS onents/settings-v2/SectionPage.vue:46
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:116
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:118
 #: /app/specialVueFakeDummyForL10nScript.js:370
 #: /app/specialVueFakeDummyForL10nScript.js:556
 msgid "Auto Style"
@@ -1447,7 +1447,7 @@ msgid "Hide phone number field"
 msgstr ""
 
 #. TRANSLATORS onents/settings-v2/SectionPage.vue:82
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:122
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:124
 #: /app/specialVueFakeDummyForL10nScript.js:384
 #: /app/specialVueFakeDummyForL10nScript.js:558
 msgid "Private (visitors must be logged-in)"
@@ -1492,14 +1492,14 @@ msgid "GDPR text only (no checkbox)"
 msgstr ""
 
 #. TRANSLATORS onents/settings-v2/SectionPage.vue:121
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:110
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:112
 #: /app/specialVueFakeDummyForL10nScript.js:398
 #: /app/specialVueFakeDummyForL10nScript.js:554
 msgid "Page Header Title"
 msgstr ""
 
 #. TRANSLATORS onents/settings-v2/SectionPage.vue:127
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:128
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:130
 #: /app/specialVueFakeDummyForL10nScript.js:400
 #: /app/specialVueFakeDummyForL10nScript.js:560
 msgid "Style Override"
@@ -1805,29 +1805,29 @@ msgstr ""
 msgid "Enter key"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:56
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:58
 #: /app/specialVueFakeDummyForL10nScript.js:540
 msgid "Items/Links"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:59
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:61
 #: /app/specialVueFakeDummyForL10nScript.js:542
 msgid "no items found"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:76
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:78
 #: /app/specialVueFakeDummyForL10nScript.js:544
 msgid "Edit"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:93
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:100
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:95
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:102
 #: /app/specialVueFakeDummyForL10nScript.js:548
 #: /app/specialVueFakeDummyForL10nScript.js:550
 msgid "Add New Item"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:106
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:108
 #: /app/specialVueFakeDummyForL10nScript.js:552
 msgid "Page Settings"
 msgstr ""
