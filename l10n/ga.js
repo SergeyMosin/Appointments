@@ -7,8 +7,10 @@ OC.L10N.register(
     "Settings" : "Socruithe",
     "Title" : "Teideal",
     "Save" : "Sábháil",
+    "Copy" : "Cóipeáil",
     "Remove" : "Bain",
     "Add" : "Cuir",
+    "OK" : "Ceart go leor",
     "Delete" : "Scrios",
     "1 day" : "1 lá",
     "15 minutes" : "15 nóiméad",
@@ -19,6 +21,7 @@ OC.L10N.register(
     "12 hours" : "12 uair",
     "24 hours" : "24 uair ",
     "Warning" : "Rabhadh",
-    "Edit" : "Cuir in eagar"
+    "Edit" : "Cuir in eagar",
+    "Back" : "Ar ais"
 },
 "nplurals=5; plural=(n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4);");
