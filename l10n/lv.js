@@ -32,7 +32,7 @@ OC.L10N.register(
     "Warning" : "Brīdinājums",
     "Reminders" : "Atgādinājumi",
     "Advanced" : "Paplašināti",
-    "Edit" : "Rediģēt",
+    "Edit" : "Labot",
     "Back" : "Atpakaļ",
     "Next" : "Nākamā",
     "min" : "min",
