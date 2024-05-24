@@ -188,6 +188,7 @@ OC.L10N.register(
     "Directory Page" : "目录页",
     "Thank You" : "谢谢你",
     "Key accepted. All contributor only features are unlocked." : "已接受密钥。所有仅供贡献者使用的功能已解锁。",
+    "Loading Settings" : "加载设置",
     "Calendars and Schedule" : "日历和日程",
     "Manage appointments and calendar settings" : "管理预约和日历设置",
     "Form header and event organizer settings" : "表单头和事件管理器设置",

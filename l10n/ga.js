@@ -19,9 +19,11 @@ OC.L10N.register(
     "2 hours" : "2 uair an chloig",
     "4 hours" : "4 uair an chloig",
     "12 hours" : "12 uair",
+    "Location" : "Suíomh",
     "24 hours" : "24 uair ",
     "Warning" : "Rabhadh",
     "Edit" : "Cuir in eagar",
-    "Back" : "Ar ais"
+    "Back" : "Ar ais",
+    "Email" : "Ríomhphost"
 },
 "nplurals=5; plural=(n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4);");
