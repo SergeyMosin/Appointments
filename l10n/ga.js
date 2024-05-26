@@ -25,6 +25,7 @@ OC.L10N.register(
     "Location" : "Suíomh",
     "24 hours" : "24 uair ",
     "Warning" : "Rabhadh",
+    "Advanced" : "Casta",
     "Edit" : "Cuir in eagar",
     "Back" : "Ar ais",
     "Email" : "Ríomhphost"
