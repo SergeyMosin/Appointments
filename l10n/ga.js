@@ -5,6 +5,7 @@ OC.L10N.register(
     "Cancel" : "Cealaigh",
     "Password" : "Pasfhocal",
     "Info" : "Eolas",
+    "Name is required." : "Tá ainm ag teastáil.",
     "Settings" : "Socruithe",
     "Title" : "Teideal",
     "Text" : "Téacs",
@@ -27,6 +28,7 @@ OC.L10N.register(
     "Warning" : "Rabhadh",
     "Advanced" : "Casta",
     "Edit" : "Cuir in eagar",
+    "Discard" : "Caith amach",
     "Back" : "Ar ais",
     "Email" : "Ríomhphost"
 },
