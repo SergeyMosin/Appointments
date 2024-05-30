@@ -6,6 +6,7 @@ OC.L10N.register(
     "Password" : "Pasfhocal",
     "Info" : "Eolas",
     "Name is required." : "Tá ainm ag teastáil.",
+    "Preview" : "Réamhamharc",
     "Settings" : "Socruithe",
     "Title" : "Teideal",
     "Text" : "Téacs",
