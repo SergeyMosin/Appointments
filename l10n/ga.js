@@ -24,6 +24,7 @@ OC.L10N.register(
     "2 hours" : "2 uair an chloig",
     "4 hours" : "4 uair an chloig",
     "12 hours" : "12 uair",
+    "Time zone:" : "Crios ama:",
     "Location" : "Suíomh",
     "Deleted" : "Scriosta",
     "24 hours" : "24 uair ",
