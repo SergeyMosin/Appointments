@@ -1,9 +1,11 @@
 OC.L10N.register(
     "appointments",
     {
+    "Available" : "Ar fáil",
     "Confirm" : "Deimhnigh",
     "Cancel" : "Cealaigh",
     "Password" : "Pasfhocal",
+    "Appointments" : "Coinní",
     "Info" : "Eolas",
     "Name is required." : "Tá ainm ag teastáil.",
     "This is an automatically sent email, please do not reply." : "Seo ríomhphost a sheoltar go huathoibríoch, ná freagair le do thoil.",
@@ -29,6 +31,8 @@ OC.L10N.register(
     "Location" : "Suíomh",
     "Phone" : "Fón",
     "Deleted" : "Scriosta",
+    "Confirmed" : "Deimhnithe",
+    "Canceled" : "Ar ceal",
     "24 hours" : "24 uair ",
     "Warning" : "Rabhadh",
     "Advanced" : "Casta",
@@ -36,6 +40,7 @@ OC.L10N.register(
     "Discard" : "Caith amach",
     "Back" : "Ar ais",
     "Next" : "Ar aghaidh",
+    "Duration" : "Fad",
     "Email" : "Ríomhphost"
 },
 "nplurals=5; plural=(n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4);");
