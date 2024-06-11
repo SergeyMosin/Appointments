@@ -1,3 +1,9 @@
+## v2.1.4 - 2024-06-11
+### Fixed
+- LimitToGroups not working - #517
+### Changed
+- App toolbar icon is now hidden for excluded users
+
 ## v2.1.3 - 2024-05-12
 ### Fixed
 - fix: cannot change title, subtitle, and text in directory item editor - #509
