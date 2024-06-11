@@ -22,11 +22,13 @@ OC.L10N.register(
     "OK" : "Ceart go leor",
     "Delete" : "Scrios",
     "1 day" : "1 lá",
+    "External" : "Seachtrach",
     "15 minutes" : "15 nóiméad",
     "30 minutes" : "30 nóiméad",
     "1 hour" : "1 uair",
     "2 hours" : "2 uair an chloig",
     "4 hours" : "4 uair an chloig",
+    "8 hours" : "8 n-uaire",
     "12 hours" : "12 uair",
     "Time zone:" : "Crios ama:",
     "Location" : "Suíomh",
@@ -34,6 +36,7 @@ OC.L10N.register(
     "Deleted" : "Scriosta",
     "Confirmed" : "Deimhnithe",
     "Canceled" : "Ar ceal",
+    "Not set" : "Gan socraithe",
     "24 hours" : "24 uair ",
     "Warning" : "Rabhadh",
     "Reminders" : "Meabhrúcháin",
@@ -43,6 +46,7 @@ OC.L10N.register(
     "Back" : "Ar ais",
     "Next" : "Ar aghaidh",
     "Duration" : "Fad",
-    "Email" : "Ríomhphost"
+    "Email" : "Ríomhphost",
+    "Enter phone number" : "Cuir isteach uimhir theileafóin"
 },
 "nplurals=5; plural=(n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4);");
