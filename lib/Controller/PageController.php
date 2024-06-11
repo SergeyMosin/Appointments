@@ -43,7 +43,6 @@ class PageController extends Controller
     private IUserSession $userSession;
 
     public function __construct(IRequest        $request,
-                                                $UserId,
                                 IConfig         $c,
                                 IMailer         $mailer,
                                 IL10N           $l,
@@ -53,7 +52,6 @@ class PageController extends Controller
                                 LoggerInterface $logger
     ) {
         parent::__construct(Application::APP_ID, $request);
-        $this->userId = $UserId;
         $this->c = $c;
         $this->mailer = $mailer;
         $this->l = $l;
@@ -62,6 +60,7 @@ class PageController extends Controller
         $this->bc = $backendManager->getConnector();
         $this->utils = $utils;
         $this->logger = $logger;
+        $this->userId = $this->userSession->getUser()?->getUID();
     }
 
     /**
@@ -79,13 +78,14 @@ class PageController extends Controller
         $t = new TemplateResponse($this->appName, 'index');
 
         $disable = false;
-        if (empty($this->userId)) {
+        if (!empty($this->userId)) {
             $allowedGroups = $this->c->getAppValue($this->appName,
                 BackendUtils::KEY_LIMIT_TO_GROUPS);
             if ($allowedGroups !== '') {
                 $aga = json_decode($allowedGroups, true);
                 if ($aga !== null) {
-                    $userGroups = \OC::$server->get(IGroupManager::class)->getUserIdGroups($this->userId);
+                    $user = $this->userSession->getUser();
+                    $userGroups = \OC::$server->get(IGroupManager::class)->getUserGroups($user);
                     $disable = true;
                     foreach ($aga as $ag) {
                         if (array_key_exists($ag, $userGroups)) {

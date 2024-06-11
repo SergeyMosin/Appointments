@@ -1,0 +1,6 @@
+.app-menu-main .app-menu-entry[data-app-id="appointments"],
+.app-menu-main .app-menu-entry__active[data-app-id="appointments"],
+.action.app-menu-popover-entry .action-link[href="/index.php/apps/appointments/"],
+.action.app-menu-popover-entry .action-link[href="/apps/appointments/"] {
+  display: none !important;
+}

@@ -11,6 +11,7 @@ module.exports = {
 		cncf: path.join(__dirname, 'src', 'cncf.js'),
 		form_css: path.join(scssDir, 'form.scss'),
 		style_css: path.join(scssDir, 'style.scss'),
+		hide_app_css: path.join(scssDir, 'hide-app.scss'),
 	},
 	output: {
 		path: path.resolve(__dirname, './js'),
