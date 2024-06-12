@@ -13,6 +13,7 @@ OC.L10N.register(
     "Preview" : "Réamhamharc",
     "Settings" : "Socruithe",
     "Title" : "Teideal",
+    "Subtitle" : "Fotheideal",
     "Text" : "Téacs",
     "URL" : "URL",
     "Save" : "Sábháil",
