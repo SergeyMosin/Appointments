@@ -7,7 +7,7 @@ OC.L10N.register(
     "Online (audio/video)" : "Online (Audio/Video)",
     "Meeting link: %s" : "Besprechungslink: %s",
     "Guest Password: %s" : "Gast-Passwort: %s",
-    "Video/audio integration error: check logs" : "Fehler Video/Audiointegration: Protokolle prüfen",
+    "Video/audio integration error: check logs" : "Fehler bei der Video-/Audiointegration: Protokolle prüfen",
     "Meeting Type" : "Besprechungstyp",
     "Select meeting type" : "Besprechungstyp auswählen",
     "Your email address is required for this operation." : "Für diesen Vorgang wird Ihre E-Mail-Adresse benötigt.",
