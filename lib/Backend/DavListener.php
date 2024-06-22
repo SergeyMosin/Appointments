@@ -321,8 +321,11 @@ class DavListener implements IEventListener
 
 
             $tmpl->addBodyText(...$this->formatEmailBodyHtml([
-                // TRANSLATORS Main part of email, Ex: This is a reminder from {{Organization Name}} about your upcoming appointment on {{Date And Time}}. If you need to reschedule, please call {{Organization Phone}}.
-                $this->l10N->t('This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s.', [$org_name, $date_time, $org_phone])
+                !empty($org_phone)
+                    // TRANSLATORS Main part of email (if organization phone number is provided), Ex: This is a reminder from {{Organization Name}} about your upcoming appointment on {{Date And Time}}. If you need to reschedule, please call {{Organization Phone}}.
+                    ? $this->l10N->t('This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s.', [$org_name, $date_time, $org_phone])
+                    // TRANSLATORS Main part of email (if organization phone number is missing), Ex: This is a reminder from {{Organization Name}} about your upcoming appointment on {{Date And Time}}. If you need to reschedule, please write to {{Organization Email}}.
+                    : $this->l10N->t('This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please write to %3$s.', [$org_name, $date_time, $org_email])
             ]));
 
             $cnl_lnk_url = '';
@@ -785,7 +788,7 @@ class DavListener implements IEventListener
             if (!empty($settings[BackendUtils::EML_CNF_TXT])) {
                 $this->addMoreEmailText($tmpl, $settings[BackendUtils::EML_CNF_TXT]);
             } elseif (isset($evt->LOCATION) && filter_var($evt->LOCATION->getValue(), FILTER_VALIDATE_URL) !== false) {
-                $locationUrl=$evt->LOCATION->getValue();
+                $locationUrl = $evt->LOCATION->getValue();
                 $tmpl->addBodyText(...$this->formatEmailBodyHtml([
                     $this->l10N->t('Location: ') . '<a href="' . $locationUrl . '">' . $locationUrl . '</a>',
                     $this->l10N->t('Location: ') . $locationUrl
