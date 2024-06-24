@@ -17,6 +17,7 @@ OC.L10N.register(
     "%s appointment reminder" : "%s meabhrúchán coinne",
     "Dear %s," : "A chara %s,",
     "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s." : "Seo meabhrúchán ó %1$s faoi do choinne le teacht ar %2$s. Más gá duit a athsceidealú, cuir glaoch ar %3$s le do thoil.",
+    "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please write to %3$s." : "Seo meabhrúchán ó %1$s faoi do choinne le teacht ar %2$s. Más gá duit a athsceidealú, scríobh chuig %3$s le do thoil.",
     "Reminder sent on %s" : "Meabhrúchán seolta ar %s",
     "%s appointment (action needed)" : "coinne %s (gníomh ag teastáil)",
     "The %1$s appointment scheduled for %2$s is awaiting your confirmation." : "Tá coinne %1$s sceidealaithe le haghaidh %2$s ag fanacht le do dheimhniú.",
