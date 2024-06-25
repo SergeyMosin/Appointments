@@ -15,6 +15,7 @@
     "%s appointment reminder" : "%s تذكير بالمواعيد",
     "Dear %s," : "عزيزي %s،",
     "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s." : "هذا تذكير من %1$s بموعدك القادم في  %2$s. إذا كنت ترغب في إعادة جدولة الموعد، يُرجى التواصل مع  %3$s.",
+    "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please write to %3$s." : "هذا تذكير من %1$s بخصوص موعدك القادم في %2$s. إذا كنت ترغب في إعادة جدولة الموعد, يُرجى مراسلة %3$s.",
     "Reminder sent on %s" : "تمّ إرسال التذكير في %s",
     "%s appointment (action needed)" : "%s موعد (التأكيد مطلوب)",
     "The %1$s appointment scheduled for %2$s is awaiting your confirmation." : "الـ %1$s موعد مجدول على %2$s بإنتظار التأكيد.",

@@ -17,6 +17,7 @@ OC.L10N.register(
     "%s appointment reminder" : "%s Terminerinnerung",
     "Dear %s," : "Hallo %s,",
     "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s." : "Dies ist eine Erinnerung von %1$s an Ihren bevorstehenden Termin am %2$s. Wenn Sie den Termin verschieben müssen, rufen Sie bitte %3$s an.",
+    "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please write to %3$s." : "Dies ist eine Erinnerung von %1$s an Ihren bevorstehenden Termin am %2$s. Wenn Sie den Termin verschieben müssen, schreiben Sie bitte %3$s an.",
     "Reminder sent on %s" : "Erinnerung gesendet am %s",
     "%s appointment (action needed)" : "Termin mit %s: (Aktion erforderlich)",
     "The %1$s appointment scheduled for %2$s is awaiting your confirmation." : "Ihr Termin mit %1$s für den %2$s Uhr wartet auf Ihre Bestätigung.",
