@@ -15,6 +15,7 @@
     "%s appointment reminder" : "%s appointment reminder",
     "Dear %s," : "Dear %s,",
     "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s." : "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s.",
+    "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please write to %3$s." : "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please write to %3$s.",
     "Reminder sent on %s" : "Reminder sent on %s",
     "%s appointment (action needed)" : "%s appointment (action needed)",
     "The %1$s appointment scheduled for %2$s is awaiting your confirmation." : "The %1$s appointment scheduled for %2$s is awaiting your confirmation.",
