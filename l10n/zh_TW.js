@@ -17,6 +17,7 @@ OC.L10N.register(
     "%s appointment reminder" : "%s 預約提醒",
     "Dear %s," : "親愛的 %s,",
     "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s." : "這是來自 %1$s 關於您在即將到來的 %2$s 約定的提醒。若您需要重新安排時間，請致電 %3$s。",
+    "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please write to %3$s." : "這是來自 %1$s 關於您在即將到來的 %2$s 約定的提醒。若您需要重新安排時間，請寫信至 %3$s。",
     "Reminder sent on %s" : "已於 %s 傳送提醒",
     "%s appointment (action needed)" : "%s 預約 (需要操作)",
     "The %1$s appointment scheduled for %2$s is awaiting your confirmation." : "與  %1$s 的預約已安排到 %2$s ，等待您的確認。",
