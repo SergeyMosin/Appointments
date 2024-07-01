@@ -241,7 +241,10 @@ class StateController extends Controller
                         // add reminder related readonly props
                         $cliUrl = $this->config->getSystemValue('overwrite.cli.url');
                         $settings[BackendUtils::REMINDER_BJM] = $this->config->getAppValue("core", "backgroundjobs_mode");
-                        $settings[BackendUtils::REMINDER_CLI_URL] = $cliUrl === '' || $cliUrl === 'localhost' ? '' : '1';
+                        $settings[BackendUtils::REMINDER_CLI_URL] =
+                            filter_var($cliUrl, FILTER_VALIDATE_URL) === false
+                                ? ''
+                                : '1';
                         $settings[BackendUtils::REMINDER_LANG] = $this->config->getSystemValue('default_language', 'en');
 
                         // readonly Talk prop

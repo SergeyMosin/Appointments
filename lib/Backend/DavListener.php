@@ -337,7 +337,10 @@ class DavListener implements IEventListener
                     $embed = $doc->embed;
 
                     // overwrite.cli.url must be set if $embed is not used
-                    if ($embed || $config->getSystemValue('overwrite.cli.url') !== '') {
+                    if ($embed || filter_var(
+                            $config->getSystemValue('overwrite.cli.url'),
+                            FILTER_VALIDATE_URL) !== false
+                    ) {
 
                         list($btn_url, $btn_tkn) = $this->makeBtnInfo(
                             $userId, $pageId, $embed,

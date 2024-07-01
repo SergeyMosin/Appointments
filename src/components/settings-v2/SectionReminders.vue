@@ -60,7 +60,7 @@ const handleInterceptor = (data) => {
 				v-if="readOnlyProps.cliUrl===''"
 				:heading="t('appointments', 'Warning')"
 				type="warning">
-			The <strong>overwrite.cli.url</strong> parameter is not set,
+			The <strong>overwrite.cli.url</strong> parameter is set to an invalid URL,
 			<strong>action links</strong> will not be included in the reminder emails. More information is available in
 			<a style="text-decoration: underline" href="https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html#proxy-configurations"
 				 target="_blank">Admin Manual</a>.
