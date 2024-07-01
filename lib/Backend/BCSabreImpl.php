@@ -484,7 +484,7 @@ class BCSabreImpl implements IBackendConnector
 
         $settings = $this->utils->getUserSettings();
         $all_day_block = $settings[BackendUtils::CLS_ALL_DAY_BLOCK];
-        $log_remote_blockers = $settings[BackendUtils::DEBUGGING_LOG_REM_BLOCKER];
+        $log_remote_blockers = $settings[BackendUtils::DEBUGGING_MODE] === BackendUtils::DEBUGGING_LOG_REM_BLOCKER;
 
         $beforeBufferSec = $settings[BackendUtils::CLS_BUFFER_BEFORE] * 60;
         $afterBufferSec = $settings[BackendUtils::CLS_BUFFER_AFTER] * 60;
@@ -970,6 +970,12 @@ class BCSabreImpl implements IBackendConnector
                 || !isset($td[$info['tmpl_day']][$info['tmpl_idx']]['dur'][intval($info['appt_dur'])])) {
 
                 $this->logErr("Can't find template dur: " . $info['tmpl_day'] . ", " . $info['tmpl_idx']);
+
+                if ($settings[BackendUtils::DEBUGGING_MODE] === BackendUtils::DEBUGGING_LOG_TEMPLATE_DUR) {
+                    $this->logErr("template debug: template_data: " . var_export($td, true));
+                    $this->logErr("template debug: post_info: " . var_export($info, true));
+                }
+
                 return 1;
             }
 

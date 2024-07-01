@@ -118,11 +118,6 @@ const syncOptions = [
 				<IconDebug :size="24"/>
 			</template>
 			<SectionAdvancedDebugging/>
-			<ComboCheckbox
-					prop-name="log_rem_blocker"
-					:label="t('appointments', 'Log remote blockers')"
-					:store="settingsStore">
-			</ComboCheckbox>
 		</LabelAccordion>
 	</div>
 </template>

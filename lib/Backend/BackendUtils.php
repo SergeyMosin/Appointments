@@ -190,7 +190,10 @@ class BackendUtils
     public const REMINDER_CLI_URL = "cliUrl";
     public const REMINDER_LANG = "defaultLang";
 
-    public const DEBUGGING_LOG_REM_BLOCKER = "log_rem_blocker";
+    public const DEBUGGING_MODE = "debugging_mode";
+    public const DEBUGGING_NONE = 0;
+    public const DEBUGGING_LOG_REM_BLOCKER = 1;
+    public const DEBUGGING_LOG_TEMPLATE_DUR = 2;
 
     public const DIR_ITEMS = "dirItems";
 
@@ -1395,7 +1398,7 @@ class BackendUtils
                 self::REMINDER_MORE_TEXT => ""
             ],
 
-            self::DEBUGGING_LOG_REM_BLOCKER => false,
+            self::DEBUGGING_MODE => self::DEBUGGING_NONE,
         ];
     }
 
@@ -1513,7 +1516,7 @@ class BackendUtils
 
                 $isEnabled = ($data[self::PAGE_ENABLED] ?? false);
                 if ($isEnabled) {
-                    // a quick check if the page can actually be ebaled
+                    // a quick check if the page can actually be enabled
                     $orgEmail = ($data[self::ORG_EMAIL] ?? '');
                     if (empty($orgEmail) || !filter_var($orgEmail, FILTER_VALIDATE_EMAIL)) {
                         $this->settings = $data;

@@ -6,6 +6,7 @@ import {computed, ref, inject} from "vue";
 import {NcButton} from "@nextcloud/vue";
 import IconDownload from "vue-material-design-icons/Download.vue";
 import DebugDataModal from "../modals/DebugDataModal.vue";
+import ComboSelect from "./ComboSelect.vue";
 
 const settingsStore = useSettingsStore()
 
@@ -13,6 +14,12 @@ const debugRequest = ref({
 	action: '',
 	data: {}
 })
+
+const debugModeOptions = [
+	{value: 0, label: t('appointments', 'Debugging Off')},
+	{value: 1, label: t('appointments', 'Log remote blockers')},
+	{value: 2, label: t('appointments', 'Log template durations')},
+]
 
 const pageId = inject("pageId", '')
 
@@ -78,6 +85,14 @@ const remoteCalendarOptions = computed(() => {
 				:options="remoteCalendarOptions"
 				:noDrop="remoteCalendarOptions.length===0"
 				@input="(evt)=>{handleAction('sync',{p:pageId,cal_id:evt.value})}"/>
+		<ComboSelect
+				prop-name="debugging_mode"
+				class="ps-vert-spacing"
+				:label="t('appointments', 'Debugging Mode')"
+				:placeholder-label="t('appointments', 'Debugging Mode')"
+				:default-value=0
+				:options="debugModeOptions"
+				:store="settingsStore"/>
 		<DebugDataModal
 				v-if="debugRequest.action!==''"
 				size="large"

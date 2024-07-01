@@ -122,7 +122,7 @@ export const useSettingsStore = defineStore('settings', {
 			bbbPassword: false,
 			bbbFormEnabled: false,
 
-			log_rem_blocker: false,
+			debugging_mode: 0,
 		},
 		dirSettings: {
 			/** @type {[{title:string, subTitle:string, text:string, url:string}]} */
