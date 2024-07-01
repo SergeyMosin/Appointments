@@ -261,14 +261,8 @@ class TalkIntegration
         if ($tm !== null) {
             try {
                 $room = $tm->getRoomByToken($token);
-                if (method_exists($room, 'deleteRoom')) {
-                    // NC25
-                    $room->deleteRoom();
-                } else {
-                    // NC26
-                    $rs = \OC::$server->get(\OCA\Talk\Service\RoomService::class);
-                    $rs->deleteRoom($room);
-                }
+                $rs = \OC::$server->get(\OCA\Talk\Service\RoomService::class);
+                $rs->deleteRoom($room);
             } catch (\Throwable $e) {
                 $this->logError("deleteRoom: Room not found, token: " . $token);
                 if (get_class($e) !== \OCA\Talk\Exceptions\RoomNotFoundException::class) {
