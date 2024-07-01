@@ -18,6 +18,7 @@ namespace OCA\Appointments\Backend;
  */
 
 use OCA\Appointments\AppInfo\Application;
+use OCA\Password_Policy\Generator;
 use OCA\Talk\Service\RoomService;
 use OCA\Talk\Webinary;
 use OCA\Talk\Room;
@@ -144,7 +145,8 @@ class TalkIntegration
      */
     private function setPassword(Room $room, RoomService $roomService): string
     {
-        $p = substr(str_replace(['+', '/', '='], '', base64_encode(md5(rand(), true))), 0, 11);
+        $passwordGenerator = \OC::$server->get(Generator::class);
+        $p = $passwordGenerator->generate();
 
         $status = false;
         try {
@@ -262,7 +264,7 @@ class TalkIntegration
                 if (method_exists($room, 'deleteRoom')) {
                     // NC25
                     $room->deleteRoom();
-                }else{
+                } else {
                     // NC26
                     $rs = \OC::$server->get(\OCA\Talk\Service\RoomService::class);
                     $rs->deleteRoom($room);
