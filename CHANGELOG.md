@@ -1,3 +1,14 @@
+## v2.1.5 - 2024-07-01
+### Fixed
+- Ensure proper reminder email when organizer phone is not provided - #523
+- Use password policy compliant generator for Talk room passwords - #520
+- Fixed build dependencies
+### Changed
+- Cleanup TalkIntegration.php
+- Ensure overwrite.cli.url contains a "real" URL when adding links to reminders - #525
+### Added
+- Add template debugging option - #526
+
 ## v2.1.4 - 2024-06-11
 ### Fixed
 - LimitToGroups not working - #517
