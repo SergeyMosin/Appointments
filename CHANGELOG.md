@@ -1,3 +1,7 @@
+## v2.1.6 - 2024-07-03
+### Fixed
+- "Can't find template dur" error on pages with large IDs - #526
+
 ## v2.1.5 - 2024-07-01
 ### Fixed
 - Ensure proper reminder email when organizer phone is not provided - #523
