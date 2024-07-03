@@ -456,7 +456,7 @@ class BCSabreImpl implements IBackendConnector
                     ++$cc;
                 }
                 if ($cc !== 0) {
-                    $data = $ses_start . $pageId . $day . $tc . '_' . $sts;
+                    $data = $ses_start . $day . $tc . '_' . $sts;
                     $out .= 'T' . $sts . ":" . implode(';', array_slice($di['dur'], 0, $cc)) . ":" . $this->utils->encrypt($data, $key) . ":_" . $di['title'] . ',';
                 }
                 $tc++;

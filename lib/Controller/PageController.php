@@ -782,12 +782,14 @@ class PageController extends Controller
         $dcs = substr($dc, 0, 2);
         if ($dcs === "_2") {
             // template mode
-            // $dc = '_2'.ses_time.'_'pageId(2bytes).$day(1byte)$indexInDay'_'startTs
+            // $dc = '_2'.ses_time.'_'.$day(1byte)$indexInDay'_'startTs
             $pos = strpos($dc, '_', 2);
             $ti = intval(substr($dc, 2, $pos - 2));
-            $post['tmpl_day'] = intval(substr($dc, $pos + 3, 1));
-            $pos2 = strpos($dc, '_', $pos + 1);
-            $post['tmpl_idx'] = intval(substr($dc, $pos + 4, $pos2 - ($pos + 4)));
+            $pos++;
+            $post['tmpl_day'] = intval(substr($dc, $pos, 1));
+            $pos2 = strpos($dc, '_', $pos);
+            $pos++;
+            $post['tmpl_idx'] = intval(substr($dc, $pos, $pos2 - $pos));
             $post['tmpl_start_ts'] = intval(substr($dc, $pos2 + 1));
 
             // make new uri, it is needed for email, buttons, etc...
@@ -1052,7 +1054,7 @@ class PageController extends Controller
         $t_end->setTimestamp($t_start->getTimestamp() + (7 * $nw * 86400));
         $t_end->setTime(0, 0);
 
-        if ($ts_mode === "1") { // external mode
+        if ($ts_mode === BackendUtils::CLS_TS_MODE_EXTERNAL) {
             // @see BCSabreImpl->queryRange()
             $calId .= chr(31) . $settings[BackendUtils::CLS_XTM_SRC_ID];
         }
