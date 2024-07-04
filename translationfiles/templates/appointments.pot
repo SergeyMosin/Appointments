@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2024-07-03 02:26+0000\n"
+"POT-Creation-Date: 2024-07-04 02:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,13 +27,13 @@ msgstr ""
 
 #: /app/lib/Backend/BackendUtils.php:703 /app/lib/Backend/BackendUtils.php:1473
 #: /app/lib/Backend/DavListener.php:1452
-#: /app/lib/Controller/PageController.php:1110
+#: /app/lib/Controller/PageController.php:1112
 msgid "In-person meeting"
 msgstr ""
 
 #: /app/lib/Backend/BackendUtils.php:712 /app/lib/Backend/BackendUtils.php:1474
 #: /app/lib/Backend/DavListener.php:1449
-#: /app/lib/Controller/PageController.php:1111
+#: /app/lib/Controller/PageController.php:1113
 msgid "Online (audio/video)"
 msgstr ""
 
@@ -52,12 +52,12 @@ msgid "Video/audio integration error: check logs"
 msgstr ""
 
 #: /app/lib/Backend/BackendUtils.php:1471
-#: /app/lib/Controller/PageController.php:1108
+#: /app/lib/Controller/PageController.php:1110
 msgid "Meeting Type"
 msgstr ""
 
 #: /app/lib/Backend/BackendUtils.php:1472
-#: /app/lib/Controller/PageController.php:1109
+#: /app/lib/Controller/PageController.php:1111
 msgid "Select meeting type"
 msgstr ""
 
@@ -319,9 +319,9 @@ msgstr ""
 #: /app/lib/Controller/DirController.php:111
 #: /app/lib/Controller/PageController.php:607
 #: /app/lib/Controller/PageController.php:626
-#: /app/lib/Controller/PageController.php:913
-#: /app/lib/Controller/PageController.php:1002
-#: /app/lib/Controller/PageController.php:1277
+#: /app/lib/Controller/PageController.php:915
+#: /app/lib/Controller/PageController.php:1004
+#: /app/lib/Controller/PageController.php:1279
 #: /app/specialAppInfoFakeDummyForL10nScript.php:2
 msgid "Appointments"
 msgstr ""
@@ -393,20 +393,20 @@ msgid "Action needed"
 msgstr ""
 
 #: /app/lib/Controller/PageController.php:592
-#: /app/lib/Controller/PageController.php:942
+#: /app/lib/Controller/PageController.php:944
 msgid "Info"
 msgstr ""
 
 #: /app/lib/Controller/PageController.php:593
-#: /app/lib/Controller/PageController.php:943
+#: /app/lib/Controller/PageController.php:945
 msgid "Link Expired …"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:912
+#: /app/lib/Controller/PageController.php:914
 msgid "Almost done …"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:936
+#: /app/lib/Controller/PageController.php:938
 #, php-format
 msgid ""
 "We have sent an email to %s, please open it and click on the confirmation "
@@ -414,48 +414,48 @@ msgid ""
 msgstr ""
 
 #. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:39
-#: /app/lib/Controller/PageController.php:978
+#: /app/lib/Controller/PageController.php:980
 #: /app/specialVueFakeDummyForL10nScript.js:122
 msgid "Organization Name"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:984
+#: /app/lib/Controller/PageController.php:986
 msgid "Online Meeting"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:987
+#: /app/lib/Controller/PageController.php:989
 msgid "Book Your Appointment"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1138
+#: /app/lib/Controller/PageController.php:1140
 msgid "Name is required."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1139
+#: /app/lib/Controller/PageController.php:1141
 msgid "Email is required."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1140
+#: /app/lib/Controller/PageController.php:1142
 msgid "Phone number is required."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1141
+#: /app/lib/Controller/PageController.php:1143
 msgid "Required."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1142
+#: /app/lib/Controller/PageController.php:1144
 msgid "Number required."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1186
+#: /app/lib/Controller/PageController.php:1188
 msgid "Please add time slots first."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1191
+#: /app/lib/Controller/PageController.php:1193
 msgid "Please select a calendar first"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1196
+#: /app/lib/Controller/PageController.php:1198
 msgid "Selected calendar not found"
 msgstr ""
 
