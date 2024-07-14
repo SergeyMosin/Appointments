@@ -8,6 +8,7 @@ OC.L10N.register(
     "Preview" : "ตัวอย่าง",
     "Settings" : "การตั้งค่า",
     "Title" : "ชื่อเรื่อง",
+    "Subtitle" : "คำบรรยายภาพ",
     "Text" : "ข้อความ",
     "URL" : "URL",
     "Save" : "บันทึก",
