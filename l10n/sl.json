@@ -37,6 +37,7 @@
     "%s Appointment" : "Sestanek: %s",
     "Password" : "Geslo",
     "Chat/Call link: %s" : "Povezava klepeta/klica: %s",
+    "Password: %s" : "Geslo: %s",
     "Thank you" : "Hvala",
     "To cancel your appointment please click: %1$s Cancel Appointment %2$s" : "Za preklic sestanka kliknite na povezavo: %1$s Preklic sestanka %2$s",
     "To cancel your appointment please visit: %s" : "Za preklic sestanka sledite povezavi: %s",
