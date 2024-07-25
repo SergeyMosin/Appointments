@@ -40,7 +40,7 @@
         <div style="margin-left: 2em">
             <code>%N</code> - Attendee name<br>
             <code>%O</code> - Organization Name<br>
-            <code>%P</code> - Page Tag<br>
+            <code>%P</code> - Page Name (as shown/set in page list sidebar)<br>
             <code>%T</code> - Mask Token (first three letters of name + semi-random token)<br>
         </div>
         For example template like <code class="srgdev-appt-hs-code_short">%N (%O)</code> will set new appointments title to something like <code class="srgdev-appt-hs-code_short">John Smith (Good Org)</code>
