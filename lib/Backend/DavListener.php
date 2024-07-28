@@ -1559,7 +1559,7 @@ class DavListener implements IEventListener
             $text = strip_tags($data[0]);
         }
         return [
-            '<p style="color: #222222; text-align: left; margin: 0; margin-top: -10px; padding: 0">' . $html . '</p><p style="margin: 0; padding: 0; height: 0; line-height: 0; display: block;">',
+            '</p><div style="color: #222222; text-align: left; margin: 0; padding: 0">' . $html . '</div><p style="margin: 0; padding: 0; height: 0; line-height: 0; display: block;">',
             $text
         ];
     }
