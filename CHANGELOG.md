@@ -1,3 +1,8 @@
+## v2.1.7 - 2024-07-28
+### Fixed
+- email text cutoff on older email clients - #532
+- conflict check is not working for holidays calendar - #527 & #513
+
 ## v2.1.6 - 2024-07-03
 ### Fixed
 - "Can't find template dur" error on pages with large IDs - #526
