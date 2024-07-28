@@ -42,15 +42,5 @@ class Application extends App implements IBootstrap
     {
 //        $appContainer = $context->getAppContainer();
 //        $serverContainer = $context->getServerContainer();
-//
-//        /** @var IEventDispatcher $eventDispatcher */
-//        $eventDispatcher = $serverContainer->get(IEventDispatcher::class);
-//        // prevent default iMip plugin from sending emails for our appointments
-//        $eventDispatcher->addListener('OCA\DAV\Connector\Sabre::addPlugin', static function (SabrePluginEvent $event) use ($appContainer) {
-//            if ($event->getServer() === null) {
-//                return;
-//            }
-//            $event->getServer()->addPlugin($appContainer->get(IMipPlugin::class));
-//        });
     }
 }
