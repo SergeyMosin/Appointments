@@ -540,15 +540,26 @@ class BCSabreImpl implements IBackendConnector
                             continue;
                         }
 
+                        if ($_evt->DTSTART
+                            && !$_evt->DTSTART->hasTime()
+                            && !$_evt->DURATION
+                        ) {
+                            // an all-day event
+                            $s_ts = $it->getDtStart()->getTimestamp();
+                            $e_ts = $s_ts + 86400;
+                        } else {
+                            // an event with end-time or multi-day duration
+                            $s_ts = $it->getDtStart()->getTimestamp() - $beforeBufferSec;
+                            $e_ts = $it->getDtEnd()->getTimestamp() + $afterBufferSec;
+                        }
                         // start1 <= end2 && start2 <= end1
-                        $s_ts = $it->getDtStart()->getTimestamp() - $beforeBufferSec;
-                        $e_ts = $it->getDtEnd()->getTimestamp() + $afterBufferSec;
                         if ($start_ts <= $e_ts && $s_ts <= $end_ts) {
 
                             if ($log_remote_blockers && $cal['type'] === CalDavBackend::CALENDAR_TYPE_SUBSCRIPTION) {
                                 $this->logErr("debug: " . var_export([
                                         'blocker_uid' => $_evt->UID->getValue(),
                                         'start_timestamp' => $s_ts,
+                                        'end_timestamp' => $e_ts,
                                         'start_value' => $_evt->DTSTART->getValue(),
                                         'time_zone' => $it->getDtStart()->getTimezone()->getName(),
                                     ], true));
