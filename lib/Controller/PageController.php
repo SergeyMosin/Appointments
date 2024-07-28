@@ -1145,6 +1145,24 @@ class PageController extends Controller
 
         $tr->setParams($params);
 
+        if (($r_url = trim($settings[BackendUtils::ORG_CONFIRMED_RDR_URL])) !== "") {
+            // we need to adjust CSP if redirecting to a different domain
+            $parsedRdrUrl = parse_url($r_url);
+            if (is_array($parsedRdrUrl) && $parsedRdrUrl['host']) {
+
+                $urlGenerator = \OC::$server->get(\OCP\IURLGenerator::class);
+
+                $parsedSrvUrl = parse_url($urlGenerator->getAbsoluteURL('/'));
+                if (is_array($parsedSrvUrl) && $parsedSrvUrl['host']) {
+                    if ($parsedRdrUrl['host'] !== $parsedSrvUrl['host']) {
+                        $csp = $tr->getContentSecurityPolicy();
+                        $csp->addAllowedFormActionDomain($parsedRdrUrl['host']);
+                        $tr->setContentSecurityPolicy($csp);
+                    }
+                }
+            }
+        }
+
         //$tr->getContentSecurityPolicy()->addAllowedFrameAncestorDomain('\'self\'');
         return $tr;
     }
