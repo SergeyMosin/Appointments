@@ -1,3 +1,10 @@
+## v2.1.8 - 2024-07-29
+### Fixed
+- Chrome throws CSP exception when "Redirect Confirmed URL" is on a different domain - rel #465
+- Conflict check only considers first day for multi-day events - #535
+### Changed
+- Removed some unused files
+
 ## v2.1.7 - 2024-07-28
 ### Fixed
 - email text cutoff on older email clients - #532
