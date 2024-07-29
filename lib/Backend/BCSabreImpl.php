@@ -540,9 +540,10 @@ class BCSabreImpl implements IBackendConnector
                             continue;
                         }
 
-                        if ($_evt->DTSTART
-                            && !$_evt->DTSTART->hasTime()
-                            && !$_evt->DURATION
+                        if ($_evt->DTSTART && !$_evt->DTSTART->hasTime()
+                            && (!$_evt->DURATION &&
+                                // Specs prohibit time in DTEND when there is no time in DTSTART
+                                ($_evt->DTEND && $_evt->DTEND->hasTime()))
                         ) {
                             // an all-day event
                             $s_ts = $it->getDtStart()->getTimestamp();
