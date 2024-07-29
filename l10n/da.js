@@ -61,7 +61,6 @@ OC.L10N.register(
     "Please select a calendar first" : "Vælg venligst en kalender først",
     "Selected calendar not found" : "Den valgte kalender blev ikke fundet",
     "Directory page" : "Vejviser side",
-    "This is an automatically sent email, please do not reply." : "Dette er en automatisk sendt e-mail, svar venligst ikke.",
     "Book appointments into your calendar via secure online form." : "Book tider i din kalender via den sikre online formular.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Book tider i din kalender via den sikre online formular. Deltagere kan bekræfte eller annullere deres aftaler via et e-mail-link.",
     "Preview" : "Forhåndsvisning",

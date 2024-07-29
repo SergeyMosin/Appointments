@@ -64,7 +64,6 @@ OC.L10N.register(
     "Please add time slots first." : "נא להוסיף משבצות זמן תחילה.",
     "Please select a calendar first" : "נא לבחור לוח שנה קודם",
     "Selected calendar not found" : "לוח השנה שנבחר לא נמצא",
-    "This is an automatically sent email, please do not reply." : "זו הודעת דוא״ל שנשלחה אוטומטית, נא לא להגיב.",
     "Book appointments into your calendar via secure online form." : "הזמנת פגישות ללוח השנה שלך דרך טופס מקוון מאובטח.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "הזמנת פגישות ללוח השנה שלך דרך טופס מקוון מאובטח. המשתתפים יכולים לאשר או לבטל את הפגישות שלהן דרך הקישור שבהודעת הדוא״ל.",
     "Preview" : "תצוגה מקדימה",

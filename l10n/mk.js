@@ -11,7 +11,6 @@ OC.L10N.register(
     "Action needed" : "Потребна е акција",
     "Info" : "Info",
     "Name is required." : "Потребно е име.",
-    "This is an automatically sent email, please do not reply." : "Ова е автоматски испратена порака, не одговарајте на истата.",
     "Preview" : "Преглед",
     "Settings" : "Параметри",
     "Title" : "Наслов",

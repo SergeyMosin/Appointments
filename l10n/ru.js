@@ -72,7 +72,6 @@ OC.L10N.register(
     "Please select a calendar first" : "Необходимо сначала выбрать календарь.",
     "Selected calendar not found" : "Не удалось найти выбранный календарь.",
     "Directory page" : "Страница каталога",
-    "This is an automatically sent email, please do not reply." : "Это сообщение отправлено автоматически и не требует ответа.",
     "Book appointments into your calendar via secure online form." : "Внесение сведений о назначенных записях в календарь с использованием форм, доступных через интернет.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Внесение сведений о назначенных через интернет записях в календарь. Инициаторы записи могут подтверждать или отменять свою запись по ссылке в сообщении эл. почты.",
     "Preview" : "Предварительный просмотр",

@@ -29,7 +29,6 @@ OC.L10N.register(
     "Book Your Appointment" : "Registre su Cita",
     "Name is required." : "Nombre es requerido.",
     "Email is required." : "Correo es requerido.",
-    "This is an automatically sent email, please do not reply." : "Este es un correo enviado automáticamente, por favor no lo contestes. ",
     "Book appointments into your calendar via secure online form." : "Registrar citas en su calendario via forma segura en linea .",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Registrar citas en su calendario via forma segunta en linea. Los asistentes pueden confirmar o cancelar sus citas via enlace por correo.",
     "Preview" : "Previsualizar",

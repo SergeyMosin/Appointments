@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2024-07-28 02:46+0000\n"
+"POT-Creation-Date: 2024-07-29 02:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -321,7 +321,7 @@ msgstr ""
 #: /app/lib/Controller/PageController.php:626
 #: /app/lib/Controller/PageController.php:915
 #: /app/lib/Controller/PageController.php:1004
-#: /app/lib/Controller/PageController.php:1279
+#: /app/lib/Controller/PageController.php:1297
 #: /app/specialAppInfoFakeDummyForL10nScript.php:2
 msgid "Appointments"
 msgstr ""
@@ -447,15 +447,15 @@ msgstr ""
 msgid "Number required."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1188
+#: /app/lib/Controller/PageController.php:1206
 msgid "Please add time slots first."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1193
+#: /app/lib/Controller/PageController.php:1211
 msgid "Please select a calendar first"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1198
+#: /app/lib/Controller/PageController.php:1216
 msgid "Selected calendar not found"
 msgstr ""
 
@@ -494,11 +494,6 @@ msgstr ""
 
 #: /app/lib/Controller/StateController.php:469
 msgid "More than 2 additional calendars."
-msgstr ""
-
-#: /app/lib/Email/CustomEmailTemplate.php:639
-#: /app/lib/Email/EMailTemplateNC20.php:579
-msgid "This is an automatically sent email, please do not reply."
 msgstr ""
 
 #: /app/specialAppInfoFakeDummyForL10nScript.php:3

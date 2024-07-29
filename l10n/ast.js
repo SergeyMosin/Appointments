@@ -79,7 +79,6 @@ OC.L10N.register(
     "Can not determine or set organizer name" : "Nun se pue determinar nin afitar el nome del organizador",
     "Main calendar not found, check settings." : "Nun s'atopó'l calendariu principal. Comprueba la configuración.",
     "More than 2 additional calendars." : "Más de 2 calendarios adicionales.",
-    "This is an automatically sent email, please do not reply." : "Esti mensaxe unvióse automáticamente, nun respuendas.",
     "Book appointments into your calendar via secure online form." : "Acuta cites nel calendariu pel formulariu en llinia seguru.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Acuta cites nel calendariu pel formulariu en llinia seguru.. Los asistentes puen confirmar o anular les sos cites per un enllaz de corréu electrónicu.",
     "Please select or create a page" : "Seleiciona o crea una páxina",

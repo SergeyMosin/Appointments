@@ -72,7 +72,6 @@ OC.L10N.register(
     "Please select a calendar first" : "لطفاً ابتدا یک تقویم انتخاب کنید",
     "Selected calendar not found" : "تقویم انتخابی یافت نشد",
     "Directory page" : "صفحه دایرکتوری",
-    "This is an automatically sent email, please do not reply." : "این یک ایمیل بصورت خودکار ارسال شده است ، لطفاً پاسخ ندهید.",
     "Book appointments into your calendar via secure online form." : "از طریق فرم آنلاین امن، قرار ملاقات ها را در تقویم خود رزرو کنید.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "از طریق فرم آنلاین امن، قرار ملاقات ها را در تقویم خود رزرو کنید. شرکت کنندگان می توانند قرار ملاقات خود را از طریق لینک ایمیل تایید یا لغو کنند.",
     "Preview" : "پیش‌نمایش",

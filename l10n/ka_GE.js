@@ -6,7 +6,6 @@ OC.L10N.register(
     "Password" : "პაროლი",
     "Action needed" : "საჭიროა ქმედება",
     "Info" : "ინფორმაცია",
-    "This is an automatically sent email, please do not reply." : "ეს ელ-წერილი გამოგზავნილია ავტომატურად, გთხოვთ არ უპასუხოთ.",
     "Preview" : "წინასწარი ჩვენება",
     "Settings" : "პარამეტრები",
     "Title" : "სათაური",

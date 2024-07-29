@@ -68,7 +68,6 @@ OC.L10N.register(
     "Please select a calendar first" : "Najprej je treba izbrati koledar",
     "Selected calendar not found" : "Izbranega koledarja ni mogoče najti",
     "Directory page" : "Stran mape",
-    "This is an automatically sent email, please do not reply." : "To sporočilo je samodejno poslano, nanj se nima smisla odzvati.",
     "Book appointments into your calendar via secure online form." : "Zabeležite sestanke v koledar prek varnega spletnega obrazca.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Zabeležite sestanke v koledar prek varnega spletnega obrazca. Udeleženci lahko potrdijo, ali pa prekličejo sestanek prek povezave elektronske pošte.",
     "Preview" : "Predogled",

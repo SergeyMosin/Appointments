@@ -7,7 +7,6 @@ OC.L10N.register(
     "Password" : "Pasvorto",
     "Action needed" : "Ago bezonata",
     "Info" : "Info",
-    "This is an automatically sent email, please do not reply." : "Tio estas aŭtomate sendita retpoŝtmesaĝo; bv. ne respondi.",
     "Preview" : "Antaŭvidi",
     "Settings" : "Agordoj",
     "Title" : "Titolo",

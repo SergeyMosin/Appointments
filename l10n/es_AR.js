@@ -9,7 +9,6 @@ OC.L10N.register(
     "Password" : "Contraseña",
     "Action needed" : "Acción requerida",
     "Info" : "Info",
-    "This is an automatically sent email, please do not reply." : "Este es un correo enviado automáticamente, por favor no contestarlo. ",
     "Preview" : "Vista previa",
     "Settings" : "Ajustes",
     "Title" : "Título",

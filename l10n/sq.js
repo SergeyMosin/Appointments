@@ -67,7 +67,6 @@ OC.L10N.register(
     "Email is required." : "E-mail është i domosdoshëm",
     "Please select a calendar first" : "Ju lutemi të zgjidhni një kalendar fillimisht",
     "Selected calendar not found" : "Kalendari i përzgjedhur nuk gjendet",
-    "This is an automatically sent email, please do not reply." : "Ky është një email i dërguar automatikisht, ju lutem mos u përgjigjni.",
     "Book appointments into your calendar via secure online form." : "Rezervo takime në kalendarin tënd nëpërmjet formularit të sigurt online.",
     "Preview" : "Parapamje ",
     "Show URL/link" : "Shfaq URL/Lidhje",

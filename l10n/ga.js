@@ -93,7 +93,6 @@ OC.L10N.register(
     "Can not determine or set organizer name" : "Ní féidir ainm an eagraí a chinneadh nó a shocrú",
     "Main calendar not found, check settings." : "Príomhfhéilire gan aimsiú, seiceáil na socruithe.",
     "More than 2 additional calendars." : "Níos mó ná 2 fhéilire breise.",
-    "This is an automatically sent email, please do not reply." : "Seo ríomhphost a sheoltar go huathoibríoch, ná freagair le do thoil.",
     "Book appointments into your calendar via secure online form." : "Cuir coinní in áirithe i do fhéilire trí fhoirm shlán ar líne.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Cuir coinní in áirithe i do fhéilire trí fhoirm shlán ar líne. Is féidir le lucht freastail a gcoinní a dhearbhú nó a chealú trí nasc ríomhphoist.",
     "Please select or create a page" : "Roghnaigh nó cruthaigh leathanach le do thoil",

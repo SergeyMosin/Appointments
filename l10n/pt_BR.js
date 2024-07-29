@@ -93,7 +93,6 @@ OC.L10N.register(
     "Can not determine or set organizer name" : "Não é possível determinar ou definir o nome do organizador",
     "Main calendar not found, check settings." : "Calendário principal não encontrado, verifique as configurações.",
     "More than 2 additional calendars." : "Mais de 2 calendários adicionais.",
-    "This is an automatically sent email, please do not reply." : "Este e-mail é enviado automaticamente. Por favor, não responda.",
     "Book appointments into your calendar via secure online form." : "Marque compromissos no calendário via formulário online seguro.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Marque compromissos no calendário via formulário online seguro. Os participantes podem confirmar ou cancelar compromissos por um link de e-mail.",
     "Please select or create a page" : "Selecione ou crie uma página",

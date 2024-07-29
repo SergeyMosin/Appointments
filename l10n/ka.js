@@ -8,7 +8,6 @@ OC.L10N.register(
     "Appointments" : "Appointments",
     "Action needed" : "Action needed",
     "Info" : "Info",
-    "This is an automatically sent email, please do not reply." : "This is an automatically sent email, please do not reply.",
     "Preview" : "Preview",
     "Settings" : "Settings",
     "Text" : "Text",

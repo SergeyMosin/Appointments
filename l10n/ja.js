@@ -93,7 +93,6 @@ OC.L10N.register(
     "Can not determine or set organizer name" : "組織の名前を決定または設定することができません",
     "Main calendar not found, check settings." : "カレンダーが見つかりません、設定をチェックしてください",
     "More than 2 additional calendars." : "追加のカレンダーが 2 つ以上あります。",
-    "This is an automatically sent email, please do not reply." : "これは自動的に生成されたメールです。返信しないでください。",
     "Book appointments into your calendar via secure online form." : "セキュアなオンラインフォームでカレンダーに予約を登録しましょう。",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "セキュアなオンラインフォームでカレンダーに予約を登録しましょう。参加者はメールへのリンクで予約を承認もしくはキャンセルできます。",
     "Please select or create a page" : "ページを選択または作成してください。",

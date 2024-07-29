@@ -72,7 +72,6 @@ OC.L10N.register(
     "Please select a calendar first" : "Nejprve vyberte kalendář",
     "Selected calendar not found" : "Zvolený kalendář nenalezen",
     "Directory page" : "Stránka adresáře",
-    "This is an automatically sent email, please do not reply." : "Toto je automaticky odesílaný e-mail, neodpovídejte na něj.",
     "Book appointments into your calendar via secure online form." : "Zarezervujte si schůzky do svého kalendáře pomocí zabezpečeného online formuláře.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Zarezervujte si schůzky do svého kalendáře pomocí zabezpečeného online formuláře. Účastníci mohou potvrdit nebo zrušit své schůzky prostřednictvím e-mailového odkazu.",
     "Preview" : "Náhled",

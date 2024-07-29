@@ -21,7 +21,6 @@ OC.L10N.register(
     "Name is required." : "Numele este obligatoriu.",
     "Phone number is required." : "Numărul de telefon este obligatoriu.",
     "Required." : "Obligatoriu.",
-    "This is an automatically sent email, please do not reply." : "Acesta este un email automat, nu răspundeți.",
     "Preview" : "Previzualizare",
     "Settings" : "Setări",
     "Title" : "Titlu",

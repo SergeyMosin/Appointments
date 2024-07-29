@@ -92,7 +92,6 @@ OC.L10N.register(
     "Can not determine or set organizer name" : "Düzenleyen adı belirlenemedi ya da ayarlanamadı",
     "Main calendar not found, check settings." : "Ana takvim bulunamadı. Ayarları denetleyin.",
     "More than 2 additional calendars." : "2 ek takvimden fazla.",
-    "This is an automatically sent email, please do not reply." : "Bu ileti otomatik olarak gönderildiğinden lütfen yanıtlamayın.",
     "Book appointments into your calendar via secure online form." : "Güvenli çevrim içi form ile randevularınızı takviminize işleyin.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Güvenli çevrim içi form ile randevularınızı takviminize işleyin. Katılımcılar kendilerine gönderilen e-postadaki bağlantıyı kullanarak randevuyu kabul ya da red edebilir.",
     "Please select or create a page" : "Lütfen bir sayfa seçin ya da ekleyin",

@@ -61,7 +61,6 @@ OC.L10N.register(
     "Please select a calendar first" : "Sèbera unu calendàriu prima",
     "Selected calendar not found" : "Calendàriu seberadu no agatadu",
     "Directory page" : "Pagina de sa cartella",
-    "This is an automatically sent email, please do not reply." : "Custu est unu messàgiu de posta imbiadu in automàticu, non rispondas.",
     "Book appointments into your calendar via secure online form." : "Prenota apuntamentos in su calendàriu tuo tràmite unu mòdulu seguru in lìnia.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Prenota apuntamentos in su calendàriu tuo tràmite unu mòdulu seguru in lìnia. Is partetzipantes podent cunfirmare o cantzellare is apuntamentos issoro tràmite unu ligòngiu imbiadu tràmite posta.",
     "Preview" : "Anteprima",
