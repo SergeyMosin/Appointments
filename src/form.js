@@ -19,6 +19,7 @@
 
 
 		makeDpu(f.getAttribute("data-pps"))
+		prefillFields(document.getElementById('srgdev-ncfp-main-inputs').children)
 		document.getElementById("srgdev-ncfp_sel-dummy").addEventListener("click", selClick)
 		document.getElementById("srgdev-ncfp_sel-dummy").addEventListener("keyup", function (evt) {
 			if (isSpaceKey(evt)) {
@@ -39,6 +40,31 @@
 			b.disabled = true;
 			b.textContent = txt
 		}, 900000)
+	}
+
+	function prefillFields(formInputs) {
+		const urlParams = new URLSearchParams(window.location.search);
+		if (urlParams) {
+			const hidePrefilledInputs = urlParams.has('hidePrefilledInputs')
+
+			// iterate over every formInputs and check if there is a query parameter with the same name
+			for (let i = 0, elm, l = formInputs.length; i < l; i++) {
+				elm = formInputs[i]
+				if (urlParams.has(elm.name)) {
+					// set the input's value
+					elm.value = urlParams.get(elm.name)
+
+					// if hidePrefilledInputs == true, we want to hide that input component and any label for="inputID"
+					if (hidePrefilledInputs) {
+						elm.style.display = 'none'
+						const label = document.querySelector(`label[for="${elm.id}"]`)
+						if (label) {
+							label.style.display = 'none'
+						}
+					}
+				}
+			}
+		}
 	}
 
 	function gdprCheck() {
