@@ -218,6 +218,29 @@ form{
     </p>
     <br>
 
+    <h2 class="srgdev-appt-hs-h1">Pre-fill fields</h2>
+    <p class="srgdev-appt-hs-p">
+        <strong id="srgdev-sec_confirmedUrl">Redirect Confirmed URL</strong> - when this URL is specified visitors will be redirected there after they confirm their email address. A base64 encoded
+        <code class="srgdev-appt-hs-code_short">d=...</code> query parameter containing a JSON object will be added to the URL. Final URL for
+        <span style="font-style: italic; white-space: nowrap">https://your-cool-domain.com/finish.html</span> might look something like this:
+        <span style="font-style: italic; white-space: nowrap">https://your-cool-domain.com/finish.html?d=eyJpbml0aWFsQ29uZmlybSI6dHJ1ZSwiaWQiOiI4YjhkOD...</span>
+    </p>
+    <p class="srgdev-appt-hs-p">
+        You can pre-fill fields in the form by adding a URL query parameter with the form
+        <code class="srgdev-appt-hs-code_short">name=value</code>.
+    <pre><code class="srgdev-appt-hs-code">
+http(s)://your.domain.com/page_url?name=YourCustomerNameSurname&email=email@domain.com
+    </code></pre>
+    </p>
+    <p class="srgdev-appt-hs-p">
+        It is also possible to programatically set those fields and hide them, so they are submitted, by setting
+        <code class="srgdev-appt-hs-code_short">hidePrefilledInputs=true</code>.
+    <pre><code class="srgdev-appt-hs-code">
+http(s)://your.domain.com/page_url?name=YourCustomerNameSurname&email=email@domain.com&hidePrefilledInputs=true
+    </code></pre>
+    </p>
+    <br>
+
     <h2 class="srgdev-appt-hs-h1">iFrame/Embedding</h2>
     <div class="srgdev-appt-hs-p">
         1. If the iframe is under a different domain use <strong>occ</strong> to set allowed Frame Ancestor Domain:
