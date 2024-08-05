@@ -19,7 +19,7 @@
 
 
 		makeDpu(f.getAttribute("data-pps"))
-		prefillFields(document.getElementById('srgdev-ncfp-main-inputs').children)
+		prefillFields(document.getElementById('srgdev-ncfp-main-inputs'))
 		document.getElementById("srgdev-ncfp_sel-dummy").addEventListener("click", selClick)
 		document.getElementById("srgdev-ncfp_sel-dummy").addEventListener("keyup", function (evt) {
 			if (isSpaceKey(evt)) {
@@ -46,10 +46,10 @@
 		const urlParams = new URLSearchParams(window.location.search);
 		if (urlParams) {
 			const hidePrefilledInputs = urlParams.has('hidePrefilledInputs')
+			const disablePrefilledInputs = urlParams.has('disablePrefilledInputs')
 
 			// iterate over every formInputs and check if there is a query parameter with the same name
-			for (let i = 0, elm, l = formInputs.length; i < l; i++) {
-				elm = formInputs[i]
+			for (let elm of formInputs.children) {
 				if (urlParams.has(elm.name)) {
 					// set the input's value
 					elm.value = urlParams.get(elm.name)
@@ -61,6 +61,21 @@
 						if (label) {
 							label.style.display = 'none'
 						}
+					} else if (disablePrefilledInputs) {
+						// set field to disabled
+						elm.disabled = true
+
+						// create a label containing the input value
+						const valueLabel = document.createElement('label')
+						valueLabel.textContent = elm.value
+						valueLabel.style.display = 'block'
+						valueLabel.style.fontWeight = 'bold'
+
+						// append the label after the input
+						formInputs.insertBefore(valueLabel, elm.nextSibling)
+
+						// hide the field
+						elm.style.display = 'none'
 					}
 				}
 			}
