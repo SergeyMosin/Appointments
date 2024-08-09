@@ -119,6 +119,7 @@ OC.L10N.register(
     "Duration" : "Varaktighet",
     "Full Name" : "Namn",
     "Email" : "E-post",
+    "Enter phone number" : "Ange telefonnummer",
     "Book Now" : "Boka nu",
     "An error has occurred" : "Ett fel inträffade",
     "Please %1$stry again%2$s and select a different date." : "Var vänlig %1$sförsök igen%2$s med ett annat datum.",
