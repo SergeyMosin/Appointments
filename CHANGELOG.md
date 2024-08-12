@@ -1,3 +1,11 @@
+## v2.1.9 - 2024-08-11
+### Fixed
+- Background image stuck: remove legacy(pre NC v28) theming code
+### Added
+- Prefill input fields with url parameters - #145 (Thanks, [Gonzalo Ruiz](https://github.com/rgon))
+### Changed
+- Min Nextcloud version is 28 now
+
 ## v2.1.8 - 2024-07-29
 ### Fixed
 - Chrome throws CSP exception when "Redirect Confirmed URL" is on a different domain - rel #465
