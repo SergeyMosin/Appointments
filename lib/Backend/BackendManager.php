@@ -1,11 +1,7 @@
-<?php /** @noinspection PhpFullyQualifiedNameUsageInspection */
-
+<?php
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 
 namespace OCA\Appointments\Backend;
-
-
-use OCA\Appointments\AppInfo\Application;
-use OCP\AppFramework\QueryException;
 
 class BackendManager
 {
@@ -14,21 +10,16 @@ class BackendManager
     const BC_SABRE = "0";
     const BC_DB_DIRECT = "1";
 
-    private $appName;
-
-    /** @var IBackendConnector */
-    private $connector=null;
-
-    public function __construct(){
-        $this->appName=Application::APP_ID;
-    }
+    private IBackendConnector|null $connector = null;
 
     /**
-     * @return IBackendConnector
      * @throws \Exception
      */
-    function getConnector() {
-        if ($this->connector !== null) return $this->connector;
+    function getConnector(): IBackendConnector
+    {
+        if ($this->connector !== null) {
+            return $this->connector;
+        }
 
         $connectorId = $this->getConnectorId();
 
@@ -41,17 +32,19 @@ class BackendManager
         }
 
         try {
-            $c = \OC::$server->query($cname);
-        } catch (QueryException $e) {
-            \OC::$server->getLogger()->error($e);
-            throw new \Exception("Can't get Backend Connector");
+            $c = \OC::$server->get($cname);
+        } catch (\Throwable $e) {
+            $logger = \OC::$server->get(\Psr\Log\LoggerInterface::class);
+            $logger->error($e->getMessage());
+            throw new \Exception("Can not get Backend Connector");
         }
 
         $this->connector = $c;
         return $c;
     }
 
-    private function getConnectorId() {
+    private function getConnectorId(): string
+    {
         // TODO: get from user prefs
         return self::BC_SABRE;
     }
