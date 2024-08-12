@@ -144,6 +144,8 @@ class BackendUtils
     public const PSN_END_TIME = "endTime";
     public const PSN_SHOW_TZ = "showTZ";
     public const PSN_USE_NC_THEME = "useNcTheme";
+    public const PSN_PREFILL_INPUTS = "prefillInputs";
+    public const PSN_PREFILLED_TYPE = "prefilledType";
 
     public const PAGES_ENABLED = "enabled";
     public const PAGES_LABEL = "label";
@@ -1343,6 +1345,10 @@ class BackendUtils
             self::PSN_META_NO_INDEX => true,
             self::PSN_PAGE_STYLE => "",
             self::PSN_USE_NC_THEME => false,
+            // 0=disabled, 1=from query string, 2=from user pr0file, 3=both
+            self::PSN_PREFILL_INPUTS => 0,
+            // 0=show as regular inputs, 1=disable prefilled, 2=hide prefilled
+            self::PSN_PREFILLED_TYPE => 0,
 
             self::KEY_TMPL_DATA => [[], [], [], [], [], [], []],
             self::KEY_TMPL_INFO => [
@@ -2231,7 +2237,7 @@ class BackendUtils
                     if (isset(\OCA\Theming\Service\BackgroundService::SHIPPED_BACKGROUNDS[$backgroundImage])) {
                         /** @var IURLGenerator $urlGenerator */
                         $urlGenerator = \OC::$server->get(IURLGenerator::class);
-                        $appointmentsBackgroundImage = "url('" . $urlGenerator->linkTo('theming', "img/background/".$backgroundImage) . "');";
+                        $appointmentsBackgroundImage = "url('" . $urlGenerator->linkTo('theming', "img/background/" . $backgroundImage) . "');";
                     }
 
                     $appointmentsBackgroundColor = $this->config->getUserValue($userId, 'theming', 'background_color', $appointmentsBackgroundColor);

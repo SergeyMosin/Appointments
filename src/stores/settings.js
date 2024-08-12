@@ -83,6 +83,8 @@ export const useSettingsStore = defineStore('settings', {
 			gdpr: '',
 			gdprNoChb: false,
 			pageTitle: '',
+			prefillInputs: 0,
+			prefilledType: 0,
 			metaNoIndex: false,
 			pageStyle: '',
 			useNcTheme: false,

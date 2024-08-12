@@ -25,6 +25,19 @@ const availableWeeksOptions = [
 	{value: "48", label: t('appointments', 'Forty Eight Weeks')},
 ]
 
+const prefillInputsOptions = [
+	{value: 0, label: t('appointments', 'Disabled')},
+	{value: 1, label: t('appointments', 'From Query String')},
+	// TODO: user profile...
+	// {value: 2, label: t('appointments', 'From User Profile (if logged-in)')},
+	// {value: 3, label: t('appointments', 'Query String or User Profile')},
+]
+const prefilledTypeOptions = [
+	{value: 0, label: t('appointments', 'Regular Inputs (default)')},
+	{value: 1, label: t('appointments', 'Readonly / Plain Text')},
+	{value: 2, label: t('appointments', 'Hide Prefilled Inputs')},
+]
+
 </script>
 
 <template>
@@ -120,6 +133,26 @@ const availableWeeksOptions = [
 					prop-name="pageTitle"
 					:label="t('appointments', 'Page Header Title')"
 					:store="settingsStore"/>
+
+			<ComboSelect
+					class="ps-wide-select"
+					prop-name="prefillInputs"
+					:default-value=0
+					:label="t('appointments', 'Allow Prefilled Inputs')"
+					:store="settingsStore"
+					:options="prefillInputsOptions">
+				<template #help>
+					{{ t('appointments', 'You can pre-fill fields in the form by adding a URL query parameter, example:') }}
+					<pre style="tab-size: 2"><code class="srgdev-appt-hs-code" style="white-space: pre;font-size: 90%">https://your.domain.com/page_url<span style="font-weight: bold">?name=John Smith&email=atendee@email.com</span></code></pre>
+				</template></ComboSelect>
+
+			<ComboSelect
+					class="ps-wide-select"
+					prop-name="prefilledType"
+					:default-value=0
+					:label="t('appointments', 'Prefilled Inputs Appearance')"
+					:store="settingsStore"
+					:options="prefilledTypeOptions"/>
 
 			<ComboInput
 					type="textarea"

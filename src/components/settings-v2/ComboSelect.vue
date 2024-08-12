@@ -97,5 +97,7 @@ const handleClick = (evt) => {
 </template>
 
 <style scoped>
-
+.ps-wide-select .ps-vert-spacing{
+	width: 90%;
+}
 </style>

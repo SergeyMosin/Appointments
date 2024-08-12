@@ -1078,7 +1078,9 @@ class PageController extends Controller
             BackendUtils::PSN_WEEKEND . ":" . ($settings[BackendUtils::PSN_WEEKEND] ? "1" : "0") . '.' .
             BackendUtils::PSN_SHOW_TZ . ":" . ($settings[BackendUtils::PSN_SHOW_TZ] ? "1" : "0") . '.' .
             BackendUtils::PSN_TIME2 . ":" . ($settings[BackendUtils::PSN_TIME2] ? "1" : "0") . '.' .
-            BackendUtils::PSN_END_TIME . ":" . ($settings[BackendUtils::PSN_END_TIME] ? "1" : "0");
+            BackendUtils::PSN_END_TIME . ":" . ($settings[BackendUtils::PSN_END_TIME] ? "1" : "0") . '.' .
+            BackendUtils::PSN_PREFILL_INPUTS . ":" . $settings[BackendUtils::PSN_PREFILL_INPUTS] . '.' .
+            BackendUtils::PSN_PREFILLED_TYPE . ":" . $settings[BackendUtils::PSN_PREFILLED_TYPE];
 
         // GDPR
         $params['appt_gdpr'] = $settings[BackendUtils::PSN_GDPR];

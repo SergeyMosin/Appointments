@@ -17,9 +17,9 @@
 			f.autocomplete = "on"
 		}, 1000)
 
-
-		makeDpu(f.getAttribute("data-pps"))
-		prefillFields(document.getElementById('srgdev-ncfp-main-inputs'))
+		const pso = makePso(f.getAttribute("data-pps"))
+		prefillFields(pso)
+		makeDpu(pso)
 		document.getElementById("srgdev-ncfp_sel-dummy").addEventListener("click", selClick)
 		document.getElementById("srgdev-ncfp_sel-dummy").addEventListener("keyup", function (evt) {
 			if (isSpaceKey(evt)) {
@@ -42,27 +42,43 @@
 		}, 900000)
 	}
 
-	function prefillFields(formInputs) {
-		const urlParams = new URLSearchParams(window.location.search);
-		if (urlParams) {
-			const hidePrefilledInputs = urlParams.has('hidePrefilledInputs')
-			const disablePrefilledInputs = urlParams.has('disablePrefilledInputs')
+	function makePso(pps) {
+		let pso = {}
+		let ta = pps.split('.')
+		for (let a, l = ta.length, i = 0; i < l; i++) {
+			a = ta[i].split(':')
+			pso[a[0]] = +a[1]
+		}
+		return pso
+	}
 
+
+	function prefillFields(pso) {
+
+		const formInputs = document.getElementById('srgdev-ncfp-main-inputs')
+
+		const urlParams = new URLSearchParams(
+			(pso['prefillInputs'] & 1) > 0
+				? window.location.search : ''
+		);
+
+		if (urlParams) {
 			// iterate over every formInputs and check if there is a query parameter with the same name
+			const prefilledType = pso['prefilledType']
 			for (let elm of formInputs.children) {
 				if (urlParams.has(elm.name)) {
 					// set the input's value
 					elm.value = urlParams.get(elm.name)
 
-					// if hidePrefilledInputs == true, we want to hide that input component and any label for="inputID"
-					if (hidePrefilledInputs) {
+					if (prefilledType === 2) {
+						// hide inputs
 						elm.style.display = 'none'
 						const label = document.querySelector(`label[for="${elm.id}"]`)
 						if (label) {
 							label.style.display = 'none'
 						}
-					} else if (disablePrefilledInputs) {
-						// set field to disabled
+					} else if (prefilledType === 1) {
+						// readonly / plain text
 						elm.disabled = true
 
 						// create a label containing the input value
@@ -503,7 +519,7 @@
 	}
 
 
-	function makeDpu(pps) {
+	function makeDpu(pso) {
 
 		const PPS_NWEEKS = "nbrWeeks";
 		const PPS_EMPTY = "showEmpty";
@@ -512,13 +528,6 @@
 		const PPS_SHOWTZ = "showTZ";
 		const PPS_TIME2 = "time2Cols";
 		const PPS_END_TIME = "endTime";
-
-		let pso = {}
-		let ta = pps.split('.')
-		for (let a, l = ta.length, i = 0; i < l; i++) {
-			a = ta[i].split(':')
-			pso[a[0]] = +a[1]
-		}
 
 		let min_days = 7 * pso[PPS_NWEEKS]
 
