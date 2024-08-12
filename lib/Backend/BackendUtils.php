@@ -2206,14 +2206,10 @@ class BackendUtils
         }
     }
 
-    public function getInlineStyle(string $userId, array $pps): string
+    public function getInlineStyle(string $userId, array $settings): string
     {
 
-        // TODO: rename pps to settings
-
-        $autoStyle = "";
-
-        if ($pps[BackendUtils::PSN_USE_NC_THEME]
+        if ($settings[BackendUtils::PSN_USE_NC_THEME]
             && $this->config->getAppValue('theming', 'disable-user-theming', 'no') !== 'yes') {
 
             $appointmentsBackgroundImage = "var(--image-background-default)";
@@ -2231,26 +2227,14 @@ class BackendUtils
                 $appManager = \OC::$server->get(\OCP\App\IAppManager::class);
                 if ($appManager->isEnabledForUser('theming', $userId)) {
 
-                    $themingBackground = $this->config->getUserValue($userId, 'theming', 'background', 'default');
-                    if ($themingBackground === 'default') {
-                        // nc26
-                        $themingBackground = $this->config->getUserValue($userId, 'theming', 'background_image', 'default');
-                    }
-                    if (isset(\OCA\Theming\Service\BackgroundService::SHIPPED_BACKGROUNDS[$themingBackground])) {
+                    $backgroundImage = $this->config->getUserValue($userId, 'theming', 'background_image', '___');
+                    if (isset(\OCA\Theming\Service\BackgroundService::SHIPPED_BACKGROUNDS[$backgroundImage])) {
                         /** @var IURLGenerator $urlGenerator */
                         $urlGenerator = \OC::$server->get(IURLGenerator::class);
-                        $appointmentsBackgroundImage = "url('" . $urlGenerator->linkTo('theming', "/img/background/$themingBackground") . "');";
-                    } elseif ($themingBackground[0] === "#" || str_starts_with($themingBackground, "rgb")) {
-                        $appointmentsBackgroundImage = "none";
-                        $appointmentsBackgroundColor = $themingBackground;
-                    } else {
-                        // nc26
-                        $themingBackground = $this->config->getUserValue($userId, 'theming', 'background_color');
-                        if (!empty($themingBackground)) {
-                            $appointmentsBackgroundImage = "none";
-                            $appointmentsBackgroundColor = $themingBackground;
-                        }
+                        $appointmentsBackgroundImage = "url('" . $urlGenerator->linkTo('theming', "img/background/".$backgroundImage) . "');";
                     }
+
+                    $appointmentsBackgroundColor = $this->config->getUserValue($userId, 'theming', 'background_color', $appointmentsBackgroundColor);
                 }
             } catch (\Throwable $e) {
                 $this->logger->warning($e->getMessage());
@@ -2262,7 +2246,7 @@ class BackendUtils
             /** @noinspection CssUnresolvedCustomProperty */
             $autoStyle = '<style>:root{--image-main-background:var(--image-background, var(--image-background-plain, var(--image-background-default)))}</style>';
         }
-        return $autoStyle . $pps[BackendUtils::PSN_PAGE_STYLE];
+        return $autoStyle . $settings[BackendUtils::PSN_PAGE_STYLE];
     }
 
     public function getApptDoc(\Sabre\VObject\Component\VEvent $evt): ApptDocProp
