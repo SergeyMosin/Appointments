@@ -15,6 +15,7 @@ OC.L10N.register(
     "Text" : "Texto",
     "URL" : "URL",
     "Save" : "Guardar",
+    "Copy" : "Copiar",
     "Remove" : "Borrar",
     "Add" : "Añadir",
     "OK" : "OK",
