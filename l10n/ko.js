@@ -251,6 +251,7 @@ OC.L10N.register(
     "Thirty Two Weeks" : "32주",
     "Forty Weeks" : "40주",
     "Forty Eight Weeks" : "48주",
+    "Disabled" : "비활성화됨",
     "Form Title" : "형식 제목",
     "Show appointments for next" : "다음 일정 표시",
     "Auto Style" : "자동 스타일",

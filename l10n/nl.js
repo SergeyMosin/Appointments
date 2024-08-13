@@ -168,6 +168,7 @@ OC.L10N.register(
     "Five Weeks" : "Vijf weken",
     "Eight Weeks" : "Acht weken",
     "Twelve Weeks" : "Twaalf weken",
+    "Disabled" : "Uitgeschakeld",
     "Form Title" : "Formuliertitel",
     "Show appointments for next" : "Toon afspraken voor de komende",
     "Show Empty Days" : "Toon lege dagen",

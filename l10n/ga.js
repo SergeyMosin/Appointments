@@ -255,6 +255,7 @@ OC.L10N.register(
     "Thirty Two Weeks" : "Dhá Sheachtain is Tríocha",
     "Forty Weeks" : "Daichead Seachtain",
     "Forty Eight Weeks" : "Ocht Seachtain is Daichead",
+    "Disabled" : "Faoi mhíchumas",
     "Form Title" : "Teideal na Foirme",
     "Show appointments for next" : "Taispeáin coinní don chéad cheann eile",
     "Auto Style" : "Stíl Auto",

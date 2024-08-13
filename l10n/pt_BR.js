@@ -255,6 +255,7 @@ OC.L10N.register(
     "Thirty Two Weeks" : "Trinta e Duas Semanas",
     "Forty Weeks" : "Quarenta Semanas",
     "Forty Eight Weeks" : "Quarenta e Oito Semanas",
+    "Disabled" : "Desativado",
     "Form Title" : "Título do Formulário",
     "Show appointments for next" : "Mostrar os compromissos para o(a) próximo(a)",
     "Auto Style" : "Estilo Automático",

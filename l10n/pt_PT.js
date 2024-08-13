@@ -150,6 +150,7 @@ OC.L10N.register(
     "Five Weeks" : "Cinco Semanas",
     "Eight Weeks" : "Oito Semanas",
     "Twelve Weeks" : "Doze Semanas",
+    "Disabled" : "Desactivado",
     "Form Title" : "Título do formulário",
     "Show appointments for next" : "Mostrar reuniões para as próximas",
     "Show Empty Days" : "Mostrar Dias Vazios ",

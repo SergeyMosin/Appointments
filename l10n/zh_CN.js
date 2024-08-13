@@ -157,6 +157,7 @@ OC.L10N.register(
     "Five Weeks" : "五周",
     "Eight Weeks" : "八周",
     "Twelve Weeks" : "12 周",
+    "Disabled" : "已禁用",
     "Form Title" : "表单标题",
     "Show appointments for next" : "显示下一个预约",
     "Show Empty Days" : "显示空闲时间",

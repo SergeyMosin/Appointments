@@ -130,6 +130,7 @@ OC.L10N.register(
     "Five Weeks" : "Penkioms savaitėms",
     "Eight Weeks" : "Aštuonioms savaitėms",
     "Twelve Weeks" : "Dvylikai savaičių",
+    "Disabled" : "Išjungta",
     "Form Title" : "Formos antraštė",
     "Show appointments for next" : "Rodyti susitikimus sekančioms",
     "Show Empty Days" : "Rodyti tuščias dienas",

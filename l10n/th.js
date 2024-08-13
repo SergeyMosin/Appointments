@@ -29,6 +29,7 @@ OC.L10N.register(
     "Phone" : "โทรศัพท์",
     "Deleted" : "ลบแล้ว",
     "Confirmed" : "ยืนยันแล้ว",
+    "Disabled" : "ปิดใช้งาน",
     "Warning" : "คำเตือน",
     "Reminders" : "การแจ้งเตือน",
     "Advanced" : "ขั้นสูง",

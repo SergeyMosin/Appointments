@@ -146,6 +146,7 @@ OC.L10N.register(
     "Five Weeks" : "Pet tjedana",
     "Eight Weeks" : "Osam tjedana",
     "Twelve Weeks" : "Dvanaest tjedana",
+    "Disabled" : "Onemogućeno",
     "Form Title" : "Naslov obrasca",
     "Show appointments for next" : "Prikaži dogovore za sljedeće",
     "Show Empty Days" : "Prikaži prazne dane",

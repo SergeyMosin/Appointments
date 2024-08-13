@@ -33,6 +33,7 @@ OC.L10N.register(
     "Phone" : "Teléfono fijo",
     "Deleted" : "Borrado",
     "Confirmed" : "Confirmado",
+    "Disabled" : "Deshabilitado",
     "24 hours" : "24 horas",
     "Warning" : "Advertencia",
     "Reminders" : "Recordatorios",

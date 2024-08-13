@@ -44,6 +44,7 @@ OC.L10N.register(
     "Phone" : "Telpon",
     "Deleted" : "Dihapus",
     "Confirmed" : "Terkonfirmasi",
+    "Disabled" : "Dinonaktifkan",
     "Show end time" : "Tampilkan waktu berakhir",
     "Show timezone" : "Tampilkan zona waktu",
     "Warning" : "Peringatan",

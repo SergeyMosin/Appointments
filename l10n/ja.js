@@ -255,6 +255,7 @@ OC.L10N.register(
     "Thirty Two Weeks" : "32週",
     "Forty Weeks" : "40週",
     "Forty Eight Weeks" : "48週",
+    "Disabled" : "無効",
     "Form Title" : "フォームのタイトル",
     "Show appointments for next" : "次のアポイントメントを表示",
     "Auto Style" : "Autoスタイル",

@@ -125,6 +125,7 @@ OC.L10N.register(
     "Five Weeks" : "5 тижнів",
     "Eight Weeks" : "Вісім тижнів ",
     "Twelve Weeks" : "Дванадцять тижнів ",
+    "Disabled" : "Вимкнено",
     "Form Title" : "Заголовок форми",
     "Show appointments for next" : "Показувати зустрічі на наступний(і)",
     "Show Empty Days" : "Показувати вільні дні",

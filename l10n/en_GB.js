@@ -255,6 +255,7 @@ OC.L10N.register(
     "Thirty Two Weeks" : "Thirty Two Weeks",
     "Forty Weeks" : "Forty Weeks",
     "Forty Eight Weeks" : "Forty Eight Weeks",
+    "Disabled" : "Disabled",
     "Form Title" : "Form Title",
     "Show appointments for next" : "Show appointments for next",
     "Auto Style" : "Auto Style",

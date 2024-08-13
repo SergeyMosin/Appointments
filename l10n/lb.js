@@ -17,6 +17,7 @@ OC.L10N.register(
     "Location" : "Uert",
     "Phone" : "Telefon",
     "Deleted" : "Geläscht",
+    "Disabled" : "Deaktivéiert",
     "Warning" : "Warnung",
     "Reminders" : "Erennërungen",
     "Advanced" : "Erweidert",

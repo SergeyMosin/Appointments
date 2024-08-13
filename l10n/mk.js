@@ -37,6 +37,7 @@ OC.L10N.register(
     "Deleted" : "Избришана",
     "Confirmed" : "Потврдено",
     "Canceled" : "Откажано",
+    "Disabled" : "Оневозможено",
     "24 hours" : "24 часа",
     "Warning" : "Предупредување",
     "Guest name + Date/Time" : "Име на гостинот + Датим/Време",

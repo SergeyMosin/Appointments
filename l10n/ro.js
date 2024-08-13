@@ -56,6 +56,7 @@ OC.L10N.register(
     "Three Weeks" : "Trei săptămâni",
     "Four Weeks" : "Patru săptămâni",
     "Five Weeks" : "Cinci săptămâni",
+    "Disabled" : "Dezactivați",
     "Form Title" : "Din titlu",
     "Show appointments for next" : "Afișază întalnirile pentru următorul",
     "Show Empty Days" : "Afișază zilele goale",

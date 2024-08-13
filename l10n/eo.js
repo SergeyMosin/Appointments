@@ -26,6 +26,7 @@ OC.L10N.register(
     "Deleted" : "Forigita",
     "Confirmed" : "Konfirmita",
     "Canceled" : "Nuligita",
+    "Disabled" : "Malkapabligita",
     "24 hours" : "24 horoj",
     "Warning" : "Averto",
     "Reminders" : "Memorigoj",

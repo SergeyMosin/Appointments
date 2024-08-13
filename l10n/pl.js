@@ -181,6 +181,7 @@ OC.L10N.register(
     "Twelve Weeks" : "Dwanaście tygodni",
     "Eighteen Weeks" : "Osiemnaście tygodni",
     "Twenty Four Weeks" : "Dwadzieścia cztery tygodnie",
+    "Disabled" : "Wyłączone",
     "Form Title" : "Tytuł formularza",
     "Show appointments for next" : "Pokaż terminy na następne",
     "Auto Style" : "Styl automatyczny",

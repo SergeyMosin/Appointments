@@ -30,6 +30,7 @@ OC.L10N.register(
     "Phone" : "ტელეფონი",
     "Deleted" : "გაუქმდა",
     "Confirmed" : "დადასტურებლია",
+    "Disabled" : "არაა მოქმედი",
     "24 hours" : "24 საათი",
     "Warning" : "გაფრთხილება",
     "Reminders" : "შემახსენებლები",

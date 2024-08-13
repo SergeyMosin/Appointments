@@ -167,6 +167,7 @@ OC.L10N.register(
     "Twelve Weeks" : "Dvanajst tednov",
     "Eighteen Weeks" : "Osemnajst tednov",
     "Twenty Four Weeks" : "Štiriindvajset tednov",
+    "Disabled" : "Onemogočeno",
     "Form Title" : "Naslov obrazca",
     "Show appointments for next" : "Pokaži sestanke za",
     "Auto Style" : "Samodejni slog",

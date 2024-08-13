@@ -18,6 +18,7 @@ OC.L10N.register(
     "Phone" : "Telefonnummer",
     "Deleted" : "Sletta",
     "Confirmed" : "Stadfesta",
+    "Disabled" : "Deaktivert",
     "Not set" : "Ikkje satt",
     "Warning" : "Åtvaring",
     "Reminders" : "Påminningar",

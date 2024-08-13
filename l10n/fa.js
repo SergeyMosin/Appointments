@@ -172,6 +172,7 @@ OC.L10N.register(
     "Twelve Weeks" : "دوازده هفته",
     "Eighteen Weeks" : "هجده هفته",
     "Twenty Four Weeks" : "بیست و چهار هفته",
+    "Disabled" : "غیرفعال شده",
     "Form Title" : "عنوان فرم",
     "Show appointments for next" : "نمایش قرارهای بعدی",
     "Auto Style" : "سبک خودکار",

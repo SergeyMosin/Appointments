@@ -44,6 +44,7 @@ OC.L10N.register(
     "Deleted" : "Suprimit",
     "Confirmed" : "Confirmat",
     "Canceled" : "Anullat",
+    "Disabled" : "Desactivat",
     "Start on current day instead of Monday" : "Començar al jorn d’uèi a la plaça de diluns",
     "Not set" : "Pas definit",
     "24 hours" : "24 oras",

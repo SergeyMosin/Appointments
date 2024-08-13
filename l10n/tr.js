@@ -255,6 +255,7 @@ OC.L10N.register(
     "Thirty Two Weeks" : "32 hafta",
     "Forty Weeks" : "40 hafta",
     "Forty Eight Weeks" : "48 hafta",
+    "Disabled" : "Devre dışı",
     "Form Title" : "Form başlığı",
     "Show appointments for next" : "Şu dönemdeki randevular görüntülensin",
     "Auto Style" : "Otomatik biçem",

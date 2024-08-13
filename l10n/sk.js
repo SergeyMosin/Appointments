@@ -169,6 +169,7 @@ OC.L10N.register(
     "Five Weeks" : "Päť týždňov",
     "Eight Weeks" : "Osem Týždňov",
     "Twelve Weeks" : "Dvanásť Týždňov",
+    "Disabled" : "Vypnuté",
     "Form Title" : "Názov formulára",
     "Show appointments for next" : "Zobraziť nasledujúce stretnutia",
     "Show Empty Days" : "Zobraziť prázdne dni",

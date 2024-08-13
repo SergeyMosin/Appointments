@@ -89,6 +89,7 @@ OC.L10N.register(
     "Three Weeks" : "Tre veckor",
     "Four Weeks" : "Fyra veckor",
     "Five Weeks" : "Fem veckor",
+    "Disabled" : "Inaktiverad",
     "Form Title" : "Formulärtitel",
     "Show appointments for next" : "Visa möten för kommande",
     "Show Empty Days" : "Visa tomma dagar",

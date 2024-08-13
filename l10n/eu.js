@@ -179,6 +179,7 @@ OC.L10N.register(
     "Thirty Two Weeks" : "Hogeita hamabi aste",
     "Forty Weeks" : "Berrogei aste",
     "Forty Eight Weeks" : "Berrogeita zortzi aste",
+    "Disabled" : "Desgaituta",
     "Form Title" : "Inprimakiaren izenburua",
     "Show appointments for next" : "Erakutsi hurrengo hitzorduak",
     "Auto Style" : "Estilo automatikoa",

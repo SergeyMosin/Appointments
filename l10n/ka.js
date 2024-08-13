@@ -31,6 +31,7 @@ OC.L10N.register(
     "Deleted" : "Deleted",
     "Confirmed" : "Confirmed",
     "Canceled" : "Canceled",
+    "Disabled" : "Disabled",
     "24 hours" : "24 hours",
     "Warning" : "Warning",
     "Reminders" : "Reminders",

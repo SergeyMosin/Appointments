@@ -255,6 +255,7 @@ OC.L10N.register(
     "Thirty Two Weeks" : "三十二星期",
     "Forty Weeks" : "四十星期",
     "Forty Eight Weeks" : "四十八星期",
+    "Disabled" : "停用",
     "Form Title" : "表格標題",
     "Show appointments for next" : "顯示未來的約會：",
     "Auto Style" : "自動樣式",

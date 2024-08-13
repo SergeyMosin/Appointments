@@ -19,6 +19,7 @@ OC.L10N.register(
     "Location" : "Adig",
     "Phone" : "Tiliɣri",
     "Deleted" : "Yettwakkes",
+    "Disabled" : "Ittwarermed",
     "Not set" : "Ur yettusbadu ara",
     "Warning" : "Alɣu",
     "Advanced" : "Talqayt",

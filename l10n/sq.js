@@ -131,6 +131,7 @@ OC.L10N.register(
     "Five Weeks" : "Pesë Javë",
     "Eight Weeks" : "Tetë Javë",
     "Twelve Weeks" : "Dymbëdhjetë Javë",
+    "Disabled" : "I/E çaktivizuar",
     "Show Empty Days" : "Trego Ditët Bosh",
     "Start on current day instead of Monday" : "Fillo në ditën e sotme në vend të të Hënës",
     "Show Empty Weekends" : "Trego Fundjavat Bosh",

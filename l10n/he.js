@@ -128,6 +128,7 @@ OC.L10N.register(
     "Three Weeks" : "3 השבועות הקרובים",
     "Four Weeks" : "4 השבועות הקרובים",
     "Five Weeks" : "5 השבועות הקרובים",
+    "Disabled" : "מושבת",
     "Form Title" : "כותרת הטופס",
     "Show appointments for next" : "הצגת פגישות למשך",
     "Show Empty Days" : "הצגת ימים ריקים",

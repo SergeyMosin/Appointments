@@ -32,6 +32,7 @@ OC.L10N.register(
     "Phone" : "Утас",
     "Deleted" : "Устгагдсан",
     "Confirmed" : "Баталгаажсан",
+    "Disabled" : "идэвхигүй",
     "24 hours" : "24 цаг",
     "Warning" : "Warning",
     "Reminders" : "Сануулагууд",

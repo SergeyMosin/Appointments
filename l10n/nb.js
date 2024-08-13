@@ -255,6 +255,7 @@ OC.L10N.register(
     "Thirty Two Weeks" : "trettito uker",
     "Forty Weeks" : "førti uker",
     "Forty Eight Weeks" : "førtiåtte uker",
+    "Disabled" : "Deaktivert",
     "Form Title" : "Tittel på form",
     "Show appointments for next" : "Vis avtaler for neste",
     "Auto Style" : "Auto-stil",

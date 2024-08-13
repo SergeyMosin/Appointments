@@ -255,6 +255,7 @@ OC.L10N.register(
     "Thirty Two Weeks" : "Тридесет две недеље",
     "Forty Weeks" : "Четрдесет недеља",
     "Forty Eight Weeks" : "Четрдесет осам недеља",
+    "Disabled" : "Искључено",
     "Form Title" : "Наслов формулара",
     "Show appointments for next" : "Прикажи састанке у наредних",
     "Auto Style" : "Ауто стил",

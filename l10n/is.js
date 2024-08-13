@@ -173,6 +173,7 @@ OC.L10N.register(
     "Thirty Two Weeks" : "Þrjátíu og tvær vikur",
     "Forty Weeks" : "Fjörutíu vikur",
     "Forty Eight Weeks" : "Fjörtíu og átta vikur",
+    "Disabled" : "Óvirkt",
     "Form Title" : "Titill innfyllingarforms",
     "Show appointments for next" : "Birta stefnumót fyrir næstu",
     "Auto Style" : "Sjálfvirkur stíll",

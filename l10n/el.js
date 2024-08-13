@@ -155,6 +155,7 @@ OC.L10N.register(
     "Five Weeks" : "Πέντε Εβδομάδες",
     "Eight Weeks" : "Οχτώ εβδομάδες",
     "Twelve Weeks" : "Δώδεκα εβδομάδες",
+    "Disabled" : "Απενεργοποιημένο",
     "Form Title" : "Όνομα Φόρμας",
     "Show appointments for next" : "Εμφάνιση ραντεβού για επόμενη/ες",
     "Show Empty Days" : "Εμφάνιση Κενών Ημερών",

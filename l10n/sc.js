@@ -147,6 +147,7 @@ OC.L10N.register(
     "Five Weeks" : "Chimbe chidas",
     "Eight Weeks" : "Oto chidas",
     "Twelve Weeks" : "Binti chidas",
+    "Disabled" : "Disativadu",
     "Form Title" : "Mòdulu de su tìtulu",
     "Show appointments for next" : "Mustra apuntamentos pro s'imbeniente",
     "Show Empty Days" : "Mustra dies bòidas",

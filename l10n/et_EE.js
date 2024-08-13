@@ -25,6 +25,7 @@ OC.L10N.register(
     "Phone" : "Telefon",
     "Deleted" : "Kustutatud",
     "Confirmed" : "Kinnitatud",
+    "Disabled" : "Keelatud",
     "Warning" : "Hoiatus",
     "Reminders" : "Meelespead",
     "Advanced" : "Täpsem",

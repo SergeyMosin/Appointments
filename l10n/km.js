@@ -14,6 +14,7 @@ OC.L10N.register(
     "Delete" : "លុប",
     "Location" : "ទីតាំង",
     "Deleted" : "បាន​លុប",
+    "Disabled" : "បាន​បិទ",
     "Warning" : "បម្រាម",
     "Advanced" : "កម្រិត​ខ្ពស់",
     "Edit" : "កែប្រែ",

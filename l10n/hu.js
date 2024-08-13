@@ -178,6 +178,7 @@ OC.L10N.register(
     "Thirty Two Weeks" : "Harminckét hét",
     "Forty Weeks" : "Negyven hét",
     "Forty Eight Weeks" : "Negyvennyolc hét",
+    "Disabled" : "Letiltva",
     "Form Title" : "Űrlap címe",
     "Show appointments for next" : "Találkozók megjelenítése a következő",
     "Auto Style" : "Automatikus stílus",

@@ -131,6 +131,7 @@ OC.L10N.register(
     "Five Weeks" : "Seuraavan viiden viikon ajalle",
     "Eight Weeks" : "Kahdeksan viikkoa",
     "Twelve Weeks" : "Kaksitoista viikkoa",
+    "Disabled" : "Pois käytöstä",
     "Form Title" : "Lomakkeen otsikko",
     "Show appointments for next" : "Näytä tapaamiset",
     "Show Empty Days" : "Näytä tyhjät päivät",

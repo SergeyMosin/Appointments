@@ -76,6 +76,7 @@ OC.L10N.register(
     "Three Weeks" : "Tres Semanas",
     "Four Weeks" : "Cuatro Semanas",
     "Five Weeks" : "Cinco Semanas",
+    "Disabled" : "Deshabilitado",
     "Form Title" : "Título de la forma",
     "Show appointments for next" : "Mostrar citas para siguiente",
     "Show Empty Days" : "Mostrar Dias Vacios",
