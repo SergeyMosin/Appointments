@@ -19,6 +19,7 @@ OC.L10N.register(
     "12 Hours" : "12 Saat",
     "Location" : "Yerləşdiyiniz ünvan",
     "Deleted" : "Silinib",
+    "Disabled" : "Dayandırılıb",
     "Warning" : "Xəbərdarlıq",
     "Advanced" : "İrəliləmiş",
     "Edit" : "Dəyişiklik et",
