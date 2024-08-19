@@ -255,7 +255,7 @@ OC.L10N.register(
     "Thirty Two Weeks" : "Zweiunddreißig Wochen",
     "Forty Weeks" : "Vierzig Wochen",
     "Forty Eight Weeks" : "Achtundvierzig Wochen",
-    "Disabled" : "Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).",
+    "Disabled" : "Deaktiviert",
     "From Query String" : "Von Abfrage-String",
     "From User Profile (if logged-in)" : "Von Benutzerprofil (wenn angemeldet)",
     "Query String or User Profile" : "Abfrage-String oder Benutzerprofil",
