@@ -16,9 +16,7 @@ use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IConfig;
 use OCP\IDBConnection;
-use OCP\IURLGenerator;
 use OCP\IUserManager;
-use OCP\L10N\IFactory;
 use OCP\Mail\IEMailTemplate;
 use OCP\Mail\IMailer;
 use OCP\Mail\IMessage;
@@ -1491,28 +1489,8 @@ class DavListener implements IEventListener
 
     private function getEmailTemplate()
     {
-
-        $urlGenerator = \OC::$server->get(IURLGenerator::class);
-
-        // NC settings compliance
-        $class = $this->config->getSystemValue('mail_template_class', '');
-        if ($class !== '' && class_exists($class) && is_a($class, EMailTemplate::class, true)) {
-            return new $class(
-                new \OCP\Defaults(),
-                $urlGenerator,
-                \OC::$server->get(IFactory::class),
-                "ID_" . time(),
-                []
-            );
-        }
-
-        return new EMailTemplate(
-            new \OCP\Defaults(),
-            $urlGenerator,
-            \OC::$server->get(IFactory::class),
-            "ID_" . time(),
-            []
-        );
+        return $this->mailer->createEMailTemplate(
+            'ID_' . time() . rand(10000, 99999));
     }
 
     private function getOrgInfo()
