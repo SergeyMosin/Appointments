@@ -1,3 +1,7 @@
+## v2.1.10 - 2024-08-21
+### Fixed
+- Crash on NC v28.0.9 and v29.0.5, rel: EMailTemplate::__construct(): Argument #4 ($logoWidth) must be of type ?int - #538
+
 ## v2.1.9 - 2024-08-11
 ### Fixed
 - Background image stuck: remove legacy(pre NC v28) theming code
