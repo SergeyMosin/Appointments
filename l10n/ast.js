@@ -134,6 +134,7 @@ OC.L10N.register(
     "Twelve Weeks" : "Dolce selmanes",
     "Eighteen Weeks" : "Dieciocho selmanes",
     "Twenty Four Weeks" : "Venticuatro selmanes",
+    "Disabled" : "Desactivóse",
     "24 hours" : "24 hores",
     "3 days" : "3 díes",
     "5 days" : "5 díes",

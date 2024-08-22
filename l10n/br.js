@@ -21,6 +21,7 @@ OC.L10N.register(
     "Deleted" : "Lamet",
     "Confirmed" : "Kadarnaet",
     "Canceled" : "Nullet",
+    "Disabled" : "Disaotreañ",
     "Warning" : "Kemenadenn",
     "Enable lobby" : "Aotreañ ar sal gortoz",
     "Advanced" : "Araokadennet",

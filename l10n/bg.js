@@ -172,6 +172,7 @@ OC.L10N.register(
     "Twelve Weeks" : "Дванадесет седмици",
     "Eighteen Weeks" : "Осемнадесет седмици",
     "Twenty Four Weeks" : "Двадесет и четири седмици",
+    "Disabled" : "Изключено",
     "Form Title" : "Заглавие на формуляр",
     "Show appointments for next" : "Показване на срещи за следващ/а/и",
     "Auto Style" : "Автоматичен стил",
