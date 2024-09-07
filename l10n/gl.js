@@ -163,7 +163,7 @@ OC.L10N.register(
     "Debugging" : "Depuración",
     "Debugging Off" : "Depuración desactivada",
     "Log remote blockers" : "Rexistrar os bloqueadores remotos",
-    "Log template durations" : "Duración do modelo de rexistro",
+    "Log template durations" : "Duracións dos modelos de rexistro",
     "Settings Dump" : "Envorcado de axustes",
     "Get raw calendar data" : "Obter os datos sen procesar do calendario",
     "Sync remote calendar now" : "Sincronizar agora o calendario remoto",
