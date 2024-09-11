@@ -203,7 +203,6 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "カレンダーの場所（予約済み）",
     "Booked appointments will be placed here. In addition to booked appointments, any events in this calendar marked as \"Busy\" will prevent conflicting timeslots in the \"Source Calendar\" from appearing in the public form." : "予約された予定はここに置かれます。予約済みの予定に加えて、この予定表で\"予定あり\"とマークされているイベントは、\"ソースカレンダー\"で競合するタイムスロットが公開フォームに表示されないようにします。",
     "error: main calendar required" : "エラー:カレンダーが必要です",
-    "error: cannot find calendar with ID " : "エラー:IDを持っているカレンダーを見つけることができません",
     "Main calendar" : "メインカレンダー",
     "When you create new appointment slots they are placed here and are shown in your public page(s). It is recommended to use a dedicated calendar." : "新しい予定枠を作成すると、ここに配置され、パブリックページに表示されます。専用のカレンダーを使用することをおすすめします。",
     "Calendar for booked appointments" : "記帳済み予約のカレンダー",

@@ -203,7 +203,6 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "Hedef takvim (ayırtılmış)",
     "Booked appointments will be placed here. In addition to booked appointments, any events in this calendar marked as \"Busy\" will prevent conflicting timeslots in the \"Source Calendar\" from appearing in the public form." : "Ayırtılan randevular buraya eklenir. Ayırtılmış randevulara ek olarak, bu takvimde \"Meşgul\" olarak işaretlenmiş etkinlikler, \"Kaynak takvim\" üzerindeki çakışan zaman aralıklarının herkese açık formda görüntülenmesini önler.",
     "error: main calendar required" : "Hata: Ana takvim zorunludur",
-    "error: cannot find calendar with ID " : "Hata: Bu kimlikli takvim bulunamadı",
     "Main calendar" : "Ana takvim",
     "When you create new appointment slots they are placed here and are shown in your public page(s). It is recommended to use a dedicated calendar." : "Yeni randevu aralıkları oluşturduğunuzda, buraya yerleştirilirler ve herkese açık sayfalarınızda görüntülenirler. Özel ayrılmış bir takvim kullanılması önerilir.",
     "Calendar for booked appointments" : "Randevuların takvimi",

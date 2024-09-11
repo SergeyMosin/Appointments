@@ -201,7 +201,6 @@
     "Destination Calendar (Booked)" : "Målkalender (bestilt)",
     "Booked appointments will be placed here. In addition to booked appointments, any events in this calendar marked as \"Busy\" will prevent conflicting timeslots in the \"Source Calendar\" from appearing in the public form." : "Bestilte timer vil bli plassert her. I tillegg til bestilte avtaler, vil eventuelle hendelser i denne kalenderen merket som \"Opptatt\" forhindre at motstridende tidsluker i \"Kildekalenderen\" vises i det offentlige skjemaet.",
     "error: main calendar required" : "feil: hovedkalenderen kreves",
-    "error: cannot find calendar with ID " : "feil: kan ikke finne kalender med ID",
     "Main calendar" : "Hovedkalender",
     "When you create new appointment slots they are placed here and are shown in your public page(s). It is recommended to use a dedicated calendar." : "Når du oppretter nye avtaleplasser, plasseres de her og vises på din(e) offentlige side(r). Det anbefales å bruke en dedikert kalender.",
     "Calendar for booked appointments" : "Kalender for bestilte timer",

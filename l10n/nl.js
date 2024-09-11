@@ -195,7 +195,6 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "Bestemmingskalender (geboekt)",
     "Booked appointments will be placed here. In addition to booked appointments, any events in this calendar marked as \"Busy\" will prevent conflicting timeslots in the \"Source Calendar\" from appearing in the public form." : "Geboekte afspraken worden hier geplaatst. Alle gebeurtenissen in de agenda die de status \"Bezet\" hebben, voorkomen dat conflicterende tijdslots met de \"Brondagenda\" optreden in het openbare formulier.",
     "error: main calendar required" : "fout: hoofdagenda vereist",
-    "error: cannot find calendar with ID " : "fout: kan agenda met deze ID niet vinden",
     "Main calendar" : "Mijn kalender",
     "When you create new appointment slots they are placed here and are shown in your public page(s). It is recommended to use a dedicated calendar." : "Als je nieuwe afspraakslots maakt, worden deze hier geplaatst en getoond in de openbare pagina(s). Het advies is een specifieke agenda te gebruiken.",
     "Calendar for booked appointments" : "Agenda voor geboekte afspraken",

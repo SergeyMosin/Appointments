@@ -199,7 +199,6 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "목적지 캘린더 (예약 됨)",
     "Booked appointments will be placed here. In addition to booked appointments, any events in this calendar marked as \"Busy\" will prevent conflicting timeslots in the \"Source Calendar\" from appearing in the public form." : "예약된 일정은 이곳에서 진행됩니다. 예약된 일정 외에도 이 달력의 \"Busy\"으로 표시된 모든 이벤트는 \"원본 달력\"의 충돌하는 시간 슬롯이 공개 양식에 표시되는 것을 방지합니다.",
     "error: main calendar required" : "오류: 기본 캘린더가 필요함",
-    "error: cannot find calendar with ID " : "오류: ID가 포함된 캘린더를 찾을 수 없음",
     "Main calendar" : "메인 캘린더",
     "When you create new appointment slots they are placed here and are shown in your public page(s). It is recommended to use a dedicated calendar." : "새 일정 슬롯을 작성하면 해당 슬롯이 여기에 배치되고 공용 페이지(들)에 표시됩니다. 전용 캘린더를 사용하는 것이 좋습니다.",
     "Calendar for booked appointments" : "예약된 일정을 위한 캘린더",

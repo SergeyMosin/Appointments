@@ -201,7 +201,6 @@
     "Destination Calendar (Booked)" : "Calendario de destino (reservado)",
     "Booked appointments will be placed here. In addition to booked appointments, any events in this calendar marked as \"Busy\" will prevent conflicting timeslots in the \"Source Calendar\" from appearing in the public form." : "As citas reservadas colocaranse aquí. Ademais das citas reservadas, calquera evento deste calendario marcado como «Ocupado» evitará que aparezan no formulario público as franxas horarias conflitivas do «Calendario de orixe».",
     "error: main calendar required" : "erro: precísase do calendario principal",
-    "error: cannot find calendar with ID " : "erro: non é posíbel atopar o calendario co ID",
     "Main calendar" : "Calendario principal",
     "When you create new appointment slots they are placed here and are shown in your public page(s). It is recommended to use a dedicated calendar." : "Cando cree novas franxas horarias para citas, colócaranse aquí e amosaránse nas súas páxinas públicas. Recoméndase utilizar un calendario específico.",
     "Calendar for booked appointments" : "Calendario de citas reservadas",

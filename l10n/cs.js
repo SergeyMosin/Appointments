@@ -156,7 +156,6 @@ OC.L10N.register(
     "Source Calendar (Free Slots)" : "Zdrojový kalendář (volné sloty)",
     "Destination Calendar (Booked)" : "Cílový kalendář (zarezervováno)",
     "error: main calendar required" : "chyba: je vyžadován hlavní kalendář",
-    "error: cannot find calendar with ID " : "chyba: nepodařilo se najít kalendář s identifikátorem",
     "Main calendar" : "Hlavní kalendář",
     "Calendar for booked appointments" : "Kalendář pro zarezervované schůzky",
     "Use Main calendar" : "Použít hlavní kalendář",

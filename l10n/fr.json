@@ -177,7 +177,6 @@
     "Source Calendar (Free Slots)" : "Agenda source (Créneaux Horaires Libres)",
     "Destination Calendar (Booked)" : "Agenda de destination (Réservé)",
     "error: main calendar required" : "erreur : agenda principal requis",
-    "error: cannot find calendar with ID " : "erreur : impossible de trouver un agenda avec l'ID",
     "Main calendar" : "Agenda principal ",
     "Calendar for booked appointments" : "Agenda des rendez-vous confirmés ",
     "Use Main calendar" : "Utiliser agenda principal",
