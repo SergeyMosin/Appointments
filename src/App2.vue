@@ -104,6 +104,10 @@ const handleHideTimeslotEditor = () => {
 								class="page-loading-spinner"
 								:size="18"/>
 						<span>{{ state.contextData.label + ' ' + t('appointments', 'Preview') }}</span>
+						<div
+								class="page-disabled-preview-tag"
+								v-if="state.contextData.enabled === false"> {{ t('appointments', 'PAGE IS NOT ENABLED') }}
+						</div>
 					</div>
 					<div class="srgdev-appt-main-frame-cont">
 						<iframe
@@ -148,9 +152,13 @@ const handleHideTimeslotEditor = () => {
 }
 
 .page-loading-spinner {
-	display: inline-flex;
+	display: inline-flex !important;
 	vertical-align: middle;
 	margin-right: .25em;
 	margin-left: -0.75em;
+}
+.page-disabled-preview-tag{
+	color: darkred;
+	font-weight: bold;
 }
 </style>
