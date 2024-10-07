@@ -24,7 +24,7 @@ class Base
     {
         $n = 0;
         for ($i = 0; $i < 9; $i++) {
-            $bits = (ord($str[$i + $pos]) & 255);
+            $bits = (ord($str[$pos]) & 255);
             $n |= (($bits & 127) << (7 * $i));
             $i |= ($bits & 128);
             $pos++;
