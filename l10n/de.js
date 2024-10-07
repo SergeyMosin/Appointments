@@ -203,7 +203,6 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "Ziel-Kalender (gebucht)",
     "Booked appointments will be placed here. In addition to booked appointments, any events in this calendar marked as \"Busy\" will prevent conflicting timeslots in the \"Source Calendar\" from appearing in the public form." : "Gebuchte Termine werden hier angezeigt. Zusätzlich zu gebuchten Terminen verhindern Termine in diesem Kalender, die als \"Beschäftigt\" markiert sind, dass überschneidende Zeitfenster im \"Quellkalender\" im öffentlichen Formular angezeigt werden.",
     "error: main calendar required" : "Fehler: Hauptkalender erforderlich",
-    "error: cannot find calendar with ID " : "Fehler: Konnte keinen Kalender finden mit der ID ",
     "Main calendar" : "Hauptkalender",
     "When you create new appointment slots they are placed here and are shown in your public page(s). It is recommended to use a dedicated calendar." : "Wenn Sie neue Terminslots erstellen, werden diese hier platziert und in Ihren öffentlichen Seiten angezeigt. Es empfiehlt sich, hierzu einen dedizierten Kalender zu verwenden.",
     "Calendar for booked appointments" : "Kalender für gebuchte Termine",

@@ -201,7 +201,6 @@
     "Destination Calendar (Booked)" : "目標日曆（已預約）",
     "Booked appointments will be placed here. In addition to booked appointments, any events in this calendar marked as \"Busy\" will prevent conflicting timeslots in the \"Source Calendar\" from appearing in the public form." : "已預訂的預約將放置在此處。除了已預定的預約之外，此日曆中標記為「忙碌」的任何事件都會阻止「來源日曆」中的衝突時段出現在公開表單中。",
     "error: main calendar required" : "錯誤：需要主日曆",
-    "error: cannot find calendar with ID " : "錯誤：找不到該 ID 的日曆",
     "Main calendar" : "主日曆",
     "When you create new appointment slots they are placed here and are shown in your public page(s). It is recommended to use a dedicated calendar." : "當您建立新的預約空檔時，它們會置於此處並顯示在您的公開頁面中。建議使用專用日曆。",
     "Calendar for booked appointments" : "預約約會日曆",

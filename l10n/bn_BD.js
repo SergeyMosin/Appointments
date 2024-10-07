@@ -18,6 +18,7 @@ OC.L10N.register(
     "Location" : "অবস্থান",
     "Phone" : "ফোন",
     "Deleted" : "মুছে ফেলা",
+    "Disabled" : "অকার্যকর",
     "Warning" : "সতর্কবাণী",
     "Advanced" : "সুচারু",
     "Edit" : "সম্পাদনা",

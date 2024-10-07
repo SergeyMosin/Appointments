@@ -203,6 +203,7 @@ OC.L10N.register(
     "Thirty Two Weeks" : "Trenta Dos Setmanes",
     "Forty Weeks" : "Quaranta Setmanes",
     "Forty Eight Weeks" : "Quaranta Vuit Setmanes",
+    "Disabled" : "Inhabilitat",
     "Form Title" : "Títol del formulari",
     "Show appointments for next" : "Mostra les cites següents",
     "Auto Style" : "Estil automàtic",

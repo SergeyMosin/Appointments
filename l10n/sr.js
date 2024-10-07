@@ -203,7 +203,6 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "Одредишни календар (заказани)",
     "Booked appointments will be placed here. In addition to booked appointments, any events in this calendar marked as \"Busy\" will prevent conflicting timeslots in the \"Source Calendar\" from appearing in the public form." : "Овде ће се приказати резервисани састанци. Уз њих, сви догађаји који су означени као „Заузет” ће да спрече појављивање конфликтних термина из „Изворног календара” у јавном формулару.",
     "error: main calendar required" : "грешка: потребан је главни календар",
-    "error: cannot find calendar with ID " : "грешка: не може да се пронађе календар са ID ",
     "Main calendar" : "Главни календар",
     "When you create new appointment slots they are placed here and are shown in your public page(s). It is recommended to use a dedicated calendar." : "Када креирате нове термине за заказивање, они се постављају овде и приказују се на вашој јавној страници (или на више њих). Прерпоучује се да користите наменски календар.",
     "Calendar for booked appointments" : "Календар за заказане састанке",

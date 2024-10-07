@@ -201,7 +201,6 @@
     "Destination Calendar (Booked)" : "Féilire Ceann Scríbe (Cuireadh in áirithe)",
     "Booked appointments will be placed here. In addition to booked appointments, any events in this calendar marked as \"Busy\" will prevent conflicting timeslots in the \"Source Calendar\" from appearing in the public form." : "Cuirfear coinní áirithinte anseo. Chomh maith le coinní áirithinte, cuirfidh imeachtaí ar bith ar an bhféilire seo atá marcáilte mar \"Gnóthach\" cosc ​​ar na tréimhsí contrártha san \"Foinse Fhéilire\" ó bheith le feiceáil san fhoirm phoiblí.",
     "error: main calendar required" : "earráid: príomhfhéilire ag teastáil",
-    "error: cannot find calendar with ID " : "earráid: ní féidir féilire le haitheantas a aimsiú",
     "Main calendar" : "Príomhfhéilire",
     "When you create new appointment slots they are placed here and are shown in your public page(s). It is recommended to use a dedicated calendar." : "Nuair a chruthaíonn tú sliotáin nua do choinní cuirtear anseo iad agus taispeántar iad ar do leathanach(a) poiblí. Moltar féilire tiomnaithe a úsáid.",
     "Calendar for booked appointments" : "Féilire le haghaidh coinní áirithinte",
