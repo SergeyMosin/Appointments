@@ -22,7 +22,6 @@ use OCA\Password_Policy\Generator;
 use OCA\Talk\Service\RoomService;
 use OCA\Talk\Webinary;
 use OCA\Talk\Room;
-use OCP\HintException;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
 use OCP\L10N\IFactory;
@@ -146,13 +145,16 @@ class TalkIntegration
     private function setPassword(Room $room, RoomService $roomService): string
     {
         $passwordGenerator = \OC::$server->get(Generator::class);
-        $p = $passwordGenerator->generate();
 
-        $status = false;
+        $status = true;
         try {
-            $status = $roomService->setPassword($room, $p);
-        } catch (HintException $e) {
+            $p = $passwordGenerator->generate();
+            if ($roomService->setPassword($room, $p) === false) {
+                $status = false;
+            }
+        } catch (\Throwable $e) {
             $this->logError("error: roomService->setPassword failed: " . $e->getMessage());
+            $status = false;
         }
 
         if ($status === true) {
