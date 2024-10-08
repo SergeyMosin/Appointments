@@ -89,6 +89,7 @@ OC.L10N.register(
     "8 Hours" : "8 Orë",
     "12 Hours" : "12 Orë",
     "1 day" : "1 ditë ",
+    "Icon" : "Ikonë",
     "Generate ID" : "Gjenero ID",
     "Weekly Template" : "Modeli Javor",
     "Guest password" : "Fjalëkalimi i vizitorit",

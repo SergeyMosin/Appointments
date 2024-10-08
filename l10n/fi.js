@@ -91,6 +91,7 @@ OC.L10N.register(
     "8 Hours" : "8 tuntia",
     "12 Hours" : "12 tuntia",
     "1 day" : "1 päivä",
+    "Icon" : "Kuvake",
     "Weekly Template" : "Viikkopohja",
     "Debugging" : "Vianjäljitys",
     "Guest password" : "Vieraan salasana",

@@ -19,6 +19,7 @@ OC.L10N.register(
     "1 Hour" : "1 Hora",
     "2 Hours" : "2 Horas",
     "12 Hours" : "12 Horas",
+    "Icon" : "Ícono",
     "Simple" : "Simple",
     "15 minutes" : "15 minutos",
     "30 minutes" : "30 minutos",

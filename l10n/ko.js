@@ -143,6 +143,7 @@ OC.L10N.register(
     "12 Hours" : "12 시간",
     "1 day" : "1 일",
     "Event Title Template" : "이벤트 제목 템플릿",
+    "Icon" : "아이콘",
     "Attendee name" : "참석자 이름",
     "Page Tag" : "페이지 태그",
     "Mask Token (first three letters of name + semi-random token)" : "마스크 토큰(이름의 처음 세 글자 + 세미-임의 토큰)",

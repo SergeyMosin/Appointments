@@ -144,6 +144,7 @@ OC.L10N.register(
     "12 Hours" : "12 timer",
     "1 day" : "En dag",
     "Event Title Template" : "Mal for hendelsestittel",
+    "Icon" : "Ikon",
     "Attendee name" : "Deltakerens navn",
     "Page Tag" : "Sidemerke",
     "Mask Token (first three letters of name + semi-random token)" : "Masketoken (de tre første bokstavene i navnet + halvtilfeldige token)",

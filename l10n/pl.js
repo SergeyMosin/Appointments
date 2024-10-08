@@ -110,6 +110,7 @@ OC.L10N.register(
     "8 Hours" : "8 godzin",
     "12 Hours" : "12 godzin",
     "1 day" : "1 dzień",
+    "Icon" : "Ikona",
     "Generate ID" : "Wygeneruj ID",
     "Include Form Data" : "Dołącz dane formularza",
     "Weekly Template" : "Szablon tygodniowy",

@@ -17,6 +17,7 @@ OC.L10N.register(
     "Add" : "Aldoni",
     "OK" : "Bone",
     "Delete" : "Forigi",
+    "Icon" : "Piktogramo",
     "30 minutes" : "30 minutoj",
     "1 hour" : "1 horo",
     "4 hours" : "4 horoj",

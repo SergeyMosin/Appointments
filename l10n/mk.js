@@ -24,6 +24,7 @@ OC.L10N.register(
     "1 Hour" : "1 час",
     "2 Hours" : "2 часа",
     "1 day" : "1 ден",
+    "Icon" : "Икона",
     "Guest password" : "Лозинка за гостин",
     "15 minutes" : "15 минути",
     "30 minutes" : "30 минути",

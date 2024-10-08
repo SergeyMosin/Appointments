@@ -92,6 +92,7 @@ OC.L10N.register(
     "8 Hours" : "8 Oras",
     "12 Hours" : "12 Oras",
     "1 day" : "1 die",
+    "Icon" : "Icona",
     "Weekly Template" : "Modellu de sa chida",
     "Optimize recurrence" : "Règula sa recurrèntzia",
     "Debugging" : "Curretzione",

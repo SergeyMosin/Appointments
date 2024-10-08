@@ -109,6 +109,7 @@ OC.L10N.register(
     "8 Hours" : "8 Ordu",
     "12 Hours" : "12 ordu",
     "1 day" : "1 egun",
+    "Icon" : "Ikonoa",
     "Generate ID" : "Sortu IDa",
     "Include Form Data" : "Sartu formularioaren datuak",
     "Weekly Template" : "Asteko txantiloia",

@@ -102,6 +102,7 @@ OC.L10N.register(
     "8 Hours" : "8 Hodín",
     "12 Hours" : "12 Hodín",
     "1 day" : "1 deň",
+    "Icon" : "Ikona",
     "Generate ID" : "Vygenerovať ID",
     "Include Form Data" : "Obsahuje formulárové údaje",
     "Weekly Template" : "Týždenná šablóna",

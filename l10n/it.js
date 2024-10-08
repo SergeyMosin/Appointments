@@ -113,6 +113,7 @@ OC.L10N.register(
     "8 Hours" : "8 ore",
     "12 Hours" : "12 ore",
     "1 day" : "1 giorno",
+    "Icon" : "Icona",
     "Generate ID" : "ID generato",
     "Include Form Data" : "Includi dati modulo",
     "Weekly Template" : "Modello settimanale",

@@ -100,6 +100,7 @@ OC.L10N.register(
     "8 Hours" : "8 ur",
     "12 Hours" : "12 ur",
     "1 day" : "1 dan",
+    "Icon" : "Ikona",
     "Generate ID" : "Ustvari določilo ID",
     "Weekly Template" : "Tedenska predloga",
     "Subscriptions Sync Interval" : "Razmik usklajevanja naročnin",

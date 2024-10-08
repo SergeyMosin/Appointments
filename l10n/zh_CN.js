@@ -95,6 +95,7 @@ OC.L10N.register(
     "8 Hours" : "8小时",
     "12 Hours" : "12小时",
     "1 day" : "1 天",
+    "Icon" : "图标",
     "Weekly Template" : "周模板",
     "Subscriptions Sync Interval" : "订阅的同步间隔",
     "Optimize recurrence" : "优化循环",
