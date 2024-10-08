@@ -282,7 +282,7 @@ class BCSabreImpl implements IBackendConnector
             while ($it->valid()) {
 
                 $c++;
-                if ($c > 128) {
+                if ($c > 384) {
                     break;
                 }
 
