@@ -1,3 +1,13 @@
+## v2.1.11 - 2024-10-01
+### Added
+- Add 'PAGE IS NOT ENABLED' indicator
+- Add 'Icon' (%I) and 'Event Preset Title' (%E) options to 'Title Template' - #539 and #548
+### Changed
+- Update Nextcloud dependencies
+- Bump max version NC to 30 + fix NC 30 talk integration - #543
+### Fixed
+- Increase per request events limit in 'External Mode' - #472
+
 ## v2.1.10 - 2024-08-21
 ### Fixed
 - Crash on NC v28.0.9 and v29.0.5, rel: EMailTemplate::__construct(): Argument #4 ($logoWidth) must be of type ?int - #538
