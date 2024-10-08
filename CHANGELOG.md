@@ -1,4 +1,8 @@
-## v2.1.11 - 2024-10-01
+## v2.1.12 - 2024-10-07
+### Changed
+- Remove placeholder location when location is unset - #528
+
+## v2.1.11 - 2024-10-07
 ### Added
 - Add 'PAGE IS NOT ENABLED' indicator
 - Add 'Icon' (%I) and 'Event Preset Title' (%E) options to 'Title Template' - #539 and #548
