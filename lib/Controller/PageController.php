@@ -980,9 +980,7 @@ class PageController extends Controller
             $org_name = $this->l->t('Organization Name');
         }
         $addr = trim($addr);
-        if (empty($addr)) {
-            $addr = "123 Main Street\nNew York, NY 45678";
-        } elseif (filter_var($addr, FILTER_VALIDATE_URL) !== false) {
+        if (!empty($addr) and filter_var($addr, FILTER_VALIDATE_URL) !== false) {
             $addr = $this->l->t("Online Meeting");
         }
         if (empty($ft)) {
