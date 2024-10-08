@@ -19,6 +19,7 @@ OC.L10N.register(
     "OK" : "OK",
     "Delete" : "Delete",
     "1 day" : "1 day",
+    "Icon" : "Icon",
     "15 minutes" : "15 minutes",
     "30 minutes" : "30 minutes",
     "1 hour" : "1 hour",

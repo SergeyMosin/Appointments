@@ -142,6 +142,7 @@ OC.L10N.register(
     "12 Hours" : "12 uur",
     "1 day" : "1 dag",
     "Event Title Template" : "Sjabloon gebeurtenistitel",
+    "Icon" : "Pictogram",
     "Attendee name" : "Naam deelnemer",
     "Page Tag" : "Pagina tag",
     "Mask Token (first three letters of name + semi-random token)" : "Maskeer token (eerste drie letters van naam + semi-random token)",

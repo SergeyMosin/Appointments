@@ -143,6 +143,7 @@ OC.L10N.register(
     "12 Hours" : "12 Horas",
     "1 day" : "1 día",
     "Event Title Template" : "Plantilla de título de evento",
+    "Icon" : "Icono",
     "Attendee name" : "Nombre del asistente",
     "Page Tag" : "Etiqueta de Página",
     "Mask Token (first three letters of name + semi-random token)" : "Enmascarar Token (primeras tres letras del nombre + token semi-aleatorio)",

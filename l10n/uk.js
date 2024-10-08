@@ -81,6 +81,7 @@ OC.L10N.register(
     "8 Hours" : "8 годин",
     "12 Hours" : "12 годин",
     "1 day" : "1 день",
+    "Icon" : "Значок",
     "Debugging" : "Налагодження ",
     "Guest password" : "Гостьовий пароль",
     "No lead time" : "Без строків виконання",

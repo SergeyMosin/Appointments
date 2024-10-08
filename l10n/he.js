@@ -87,6 +87,7 @@ OC.L10N.register(
     "8 Hours" : "8 שעות",
     "12 Hours" : "12 שעות",
     "1 day" : "יום",
+    "Icon" : "סמל",
     "Weekly Template" : "תבנית שבועית",
     "Debugging" : "ניפוי שגיאות",
     "Simple" : "פשוט",

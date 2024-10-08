@@ -43,6 +43,7 @@ OC.L10N.register(
     "2 Hours" : "2 Hours",
     "12 Hours" : "12 tiếng",
     "1 day" : "1 ngày",
+    "Icon" : "Biểu tượng",
     "15 minutes" : "15 phút",
     "30 minutes" : "30 phút",
     "1 hour" : "1 tiếng",

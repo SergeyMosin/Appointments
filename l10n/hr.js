@@ -92,6 +92,7 @@ OC.L10N.register(
     "8 Hours" : "8 sati",
     "12 Hours" : "12 sati",
     "1 day" : "1 dan",
+    "Icon" : "Ikona",
     "Weekly Template" : "Tjedni predložak",
     "Optimize recurrence" : "Optimiziraj ponavljanje",
     "Debugging" : "Otklanjanje pogrešaka",

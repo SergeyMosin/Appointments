@@ -18,6 +18,7 @@ OC.L10N.register(
     "Add" : "Pievienot",
     "OK" : "Labi",
     "Delete" : "Dzēst",
+    "Icon" : "Ikona",
     "15 minutes" : "15 minūtes",
     "30 minutes" : "30 minūtes",
     "1 hour" : "1 stunda",

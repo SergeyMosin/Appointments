@@ -93,6 +93,7 @@ OC.L10N.register(
     "8 Hours" : "8 Timer",
     "12 Hours" : "12 Timer",
     "1 day" : "1 dag",
+    "Icon" : "Ikon",
     "Weekly Template" : "Ugentlig skabelon",
     "Optimize recurrence" : "Optimer gentagelse",
     "Debugging" : "Fejlretning",

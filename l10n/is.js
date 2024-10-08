@@ -105,6 +105,7 @@ OC.L10N.register(
     "8 Hours" : "8 klukkustundir",
     "12 Hours" : "12 klukkustundir",
     "1 day" : "1 dagur",
+    "Icon" : "Táknmynd",
     "Generate ID" : "Útbúa auðkenni",
     "Include Form Data" : "Taka með gögn innfyllingarforms",
     "Weekly Template" : "Vikusniðmát",

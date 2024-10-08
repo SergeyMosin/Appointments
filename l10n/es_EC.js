@@ -105,6 +105,7 @@ OC.L10N.register(
     "8 Hours" : "8 horas",
     "12 Hours" : "12 Horas",
     "1 day" : "1 día",
+    "Icon" : "Ícono",
     "Generate ID" : "Generar ID",
     "Include Form Data" : "Incluir datos del formulario",
     "Weekly Template" : "Plantilla semanal",

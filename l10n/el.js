@@ -96,6 +96,7 @@ OC.L10N.register(
     "8 Hours" : "8 ώρες",
     "12 Hours" : "12 ώρες",
     "1 day" : "1 ημέρα",
+    "Icon" : "Εικονίδιο",
     "Weekly Template" : "Εβδομαδιαίο πρότυπο",
     "Optimize recurrence" : "Βελτιστοποιήστε την επανάληψη",
     "Debugging" : "Αποσφαλμάτωση",

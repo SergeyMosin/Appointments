@@ -144,6 +144,7 @@ OC.L10N.register(
     "12 Hours" : "12 сати",
     "1 day" : "1 дан",
     "Event Title Template" : "Шаблон наслова догађаја",
+    "Icon" : "Икона",
     "Attendee name" : "Име учесника",
     "Page Tag" : "Ознака странице",
     "Mask Token (first three letters of name + semi-random token)" : "Маска жетон (прва три слова имена + полуслучајни жетон)",

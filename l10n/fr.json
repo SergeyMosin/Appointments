@@ -137,6 +137,7 @@
     "8 Hours" : "8 heures",
     "12 Hours" : "12 heures",
     "1 day" : "1 jour",
+    "Icon" : "Icône",
     "Attendee name" : "Nom du participant",
     "Mask Token (first three letters of name + semi-random token)" : "Jeton de masque (trois premières lettres du nom + un jeton semi-aléatoire)",
     "Generate ID" : "Générer l'identifiant",

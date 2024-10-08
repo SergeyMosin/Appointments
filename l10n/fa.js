@@ -105,6 +105,7 @@ OC.L10N.register(
     "8 Hours" : "8 ساعت",
     "12 Hours" : "۱۲ ساعت",
     "1 day" : "1 روز",
+    "Icon" : "Icon",
     "Generate ID" : "ایجاد شناسه",
     "Include Form Data" : "شامل داده های فرم",
     "Weekly Template" : "قالب هفتگی",
