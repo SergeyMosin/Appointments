@@ -106,7 +106,7 @@ const handleHideTimeslotEditor = () => {
 						<span>{{ state.contextData.label + ' ' + t('appointments', 'Preview') }}</span>
 						<div
 								class="page-disabled-preview-tag"
-								v-if="state.contextData.enabled === false"> {{ t('appointments', 'PAGE IS NOT ENABLED') }}
+								v-if="state.contextData.enabled === false"> {{ t('appointments', 'Page Is Not Enabled') }}
 						</div>
 					</div>
 					<div class="srgdev-appt-main-frame-cont">
