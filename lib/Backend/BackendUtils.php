@@ -202,6 +202,9 @@ class BackendUtils
     public const PAGE_ENABLED = "enabled";
     public const PAGE_LABEL = "label";
 
+    private const STATE_PENDING = 1;
+    private const STATE_CONFIRMED = 2;
+
     private array|null $settings = null;
     private ApptDocProp|null $apptDoc = null;
 
@@ -295,7 +298,15 @@ class BackendUtils
                 $title = $t;
             }
         }
-        $evt->SUMMARY->setValue("⌛ " . $this->makeEvtTitle($userId, $info['name'], $info['_page_id'], $this->getAttendee($evt)->getValue()));
+
+        $evt->SUMMARY->setValue($this->makeEvtTitle(
+            self::STATE_PENDING,
+            $userId,
+            $info['name'],
+            $info['_page_id'],
+            $this->getAttendee($evt)->getValue(),
+            $title
+        ));
 
         $dsr = $info['name'] . "\n" . (empty($info['phone']) ? "" : ($info['phone'] . "\n")) . $info['email'] . $info['_more_data'];
 
@@ -517,8 +528,10 @@ class BackendUtils
             return [null, null, ""];
         }
 
+        $presetTitle = "";
         if (isset($evt->{ApptDocProp::PROP_NAME})) {
             $apptDoc = $this->getApptDoc($evt);
+            $presetTitle = $apptDoc->title;
 
             $dts = $this->getDateTimeString(
                 $evt->DTSTART->getDateTime(),
@@ -551,7 +564,14 @@ class BackendUtils
         if (!isset($evt->SUMMARY)) {
             $evt->add('SUMMARY');
         } // ???
-        $evt->SUMMARY->setValue("✔️ " . $this->makeEvtTitle($userId, $attendeeName, $pageId, $this->getAttendee($evt)->getValue()));
+        $evt->SUMMARY->setValue($this->makeEvtTitle(
+            self::STATE_CONFIRMED,
+            $userId,
+            $attendeeName,
+            $pageId,
+            $this->getAttendee($evt)->getValue(),
+            $presetTitle
+        ));
 
         //Talk link
         if (isset($evt->{ApptDocProp::PROP_NAME})) {
@@ -2186,8 +2206,10 @@ class BackendUtils
         }
     }
 
-    private function makeEvtTitle(string $userId, string $attendeeName, string $pageId, string $av): string
+    private function makeEvtTitle(int $state, string $userId, string $attendeeName, string $pageId, string $av, string $presetTitle): string
     {
+        $icon = $state === self::STATE_PENDING ? "⌛" : "✔️";
+
         $settings = $this->getUserSettings();
         if (isset($settings[self::CLS_TITLE_TEMPLATE]) && !empty($settings[self::CLS_TITLE_TEMPLATE])) {
 
@@ -2201,14 +2223,20 @@ class BackendUtils
             $tkn = strtoupper(substr(str_replace(' ', '', $attendeeName), 0, 3)) .
                 strtoupper(substr(str_replace(['+', '/', '='], '', base64_encode(sha1($attendeeName . $av . $userId, true))), 0, 8));
 
+            // %I = Icon ("✔️")
             // %N = Attendee Name
             // %O = Organization Name
             // %P = Page Tag
             // %T = Mask Token
-            return str_replace(["%N", "%O", "%P", "%T"],
-                [$attendeeName, $settings[self::ORG_NAME], $pageTag, $tkn], $tmpl);
+            // %E = Event Preset Title
+            if ($state === self::STATE_PENDING && !str_contains($tmpl, "%I")) {
+                // for pending appointments we must have the "⌛" icon
+                $tmpl = "%I " . $tmpl;
+            }
+            return str_replace(["%I", "%N", "%O", "%P", "%T", "%E"],
+                [$icon, $attendeeName, $settings[self::ORG_NAME], $pageTag, $tkn, ltrim($presetTitle, '_')], $tmpl);
         } else {
-            return $attendeeName;
+            return $icon . ' ' . $attendeeName;
         }
     }
 

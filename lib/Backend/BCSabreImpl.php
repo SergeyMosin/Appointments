@@ -999,7 +999,11 @@ class BCSabreImpl implements IBackendConnector
 
             $parts = $this->utils->makeAppointmentParts(
                 $userId, $tza[BackendUtils::TMPL_TZ_DATA],
-                (new \DateTime('now', new \DateTimeZone('UTC')))->format(self::TIME_FORMAT));
+                (new \DateTime('now', new \DateTimeZone('UTC')))->format(self::TIME_FORMAT),
+                isset($td[$info['tmpl_day']][$info['tmpl_idx']]['title'])
+                    ? '_' . $td[$info['tmpl_day']][$info['tmpl_idx']]['title']
+                    : ''
+            );
             if (isset($parts['err'])) {
                 $this->logErr($parts['err'] . " - template mode");
                 return 3;
@@ -1076,7 +1080,9 @@ class BCSabreImpl implements IBackendConnector
             /** @noinspection PhpUnhandledExceptionInspection */
             $parts = $this->utils->makeAppointmentParts(
                 $userId, $tzi,
-                (new \DateTime('now', new \DateTimeZone('UTC')))->format(self::TIME_FORMAT));
+                (new \DateTime('now', new \DateTimeZone('UTC')))->format(self::TIME_FORMAT),
+                isset($evt->SUMMARY) ? '_' . $evt->SUMMARY->getValue() : ''
+            );
             if (isset($parts['err'])) {
                 $this->logErr($parts['err'] . " - calId: " . $srcId . ", uri: " . $srcUri);
                 return 4;

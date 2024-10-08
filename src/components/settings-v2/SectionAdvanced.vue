@@ -30,15 +30,17 @@ const syncOptions = [
 		<ComboInput
 				class="ps-vert-spacing"
 				prop-name="titleTemplate"
-				placeholder="%N"
+				placeholder="%I %N"
 				:label="t('appointments', 'Event Title Template')"
 				:store="settingsStore">
 			<template #help>
 				{{ t('appointments', "Following template tokens can be used to customize Appointment's Title:") }}<br>
+				<strong>%I</strong> - {{ t('appointments', 'Icon') }} (✔️)<br>
 				<strong>%N</strong> - {{ t('appointments', 'Attendee name') }}<br>
 				<strong>%O</strong> - {{ t('appointments', 'Organization Name') }}<br>
 				<strong>%P</strong> - {{ t('appointments', 'Page Tag') }}<br>
-				<strong>%T</strong> - {{ t('appointments', 'Mask Token (first three letters of name + semi-random token)') }}<br><br>
+				<strong>%T</strong> - {{ t('appointments', 'Mask Token (first three letters of name + semi-random token)') }}<br>
+				<strong>%E</strong> - {{ t('appointments', 'Event Preset Title') }}<br><br>
 				{{ t('appointments', 'For example template like {tokens} will set new appointments title to something like John Smith (Good Org)', {tokens: '%N (%O)'}) }}
 			</template>
 		</ComboInput>
