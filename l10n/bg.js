@@ -105,6 +105,7 @@ OC.L10N.register(
     "8 Hours" : "8 Часа",
     "12 Hours" : "12 Часа",
     "1 day" : "1 ден",
+    "Icon" : "Икона",
     "Generate ID" : "Генериране на ID /идентификатор/",
     "Include Form Data" : "Включване на данни от формуляр",
     "Weekly Template" : "Седмичен шаблон",

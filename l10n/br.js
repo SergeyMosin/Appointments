@@ -16,6 +16,7 @@ OC.L10N.register(
     "Add" : "Ouzhpennañ",
     "OK" : "OK",
     "Delete" : "Lemel",
+    "Icon" : "Skeudennig",
     "Start" : "Kregiñ",
     "Location" : "Lec'hiadur",
     "Deleted" : "Lamet",

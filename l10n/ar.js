@@ -144,6 +144,7 @@ OC.L10N.register(
     "12 Hours" : "12 ساعة/ ساعات",
     "1 day" : "1 يوم",
     "Event Title Template" : "قالب عنوان الحدث",
+    "Icon" : "الأيقونة",
     "Attendee name" : "اسم الحضور",
     "Page Tag" : "سِمَة الصفحة",
     "Mask Token (first three letters of name + semi-random token)" : "أَمَارَة القناع (أول ثلاث حروف من الاسم + أَمَارَة شبه عشوائية)",

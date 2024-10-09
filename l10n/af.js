@@ -17,6 +17,7 @@ OC.L10N.register(
     "OK" : "Goed",
     "Delete" : "Skrap",
     "1 day" : "1 dag",
+    "Icon" : "Ikoon",
     "Simple" : "Eenvoudig",
     "30 minutes" : "30 minute",
     "1 hour" : "1 uur",

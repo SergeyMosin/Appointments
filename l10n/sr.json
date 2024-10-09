@@ -146,6 +146,7 @@
     "Attendee name" : "Име учесника",
     "Page Tag" : "Ознака странице",
     "Mask Token (first three letters of name + semi-random token)" : "Маска жетон (прва три слова имена + полуслучајни жетон)",
+    "Event Preset Title" : "Наслов шаблона догађаја",
     "For example template like {tokens} will set new appointments title to something like John Smith (Good Org)" : "На пример, шаблон као {tokens} ће поставити наслов нових састанака на нешто као Марко Петровић (Good Org)",
     "Redirect Confirmed URL" : "URL преусмеравања након потврде",
     "When this URL is specified, visitors will be redirected there after confirming their email address. A base64-encoded query parameter, \"d=...\", containing a JSON object with relevant data, will be added to the URL." : "Када се наведе овај URL, посетиоци ће се тамо преусмеравати након потврђивања своје и-мејл адресе. На URL ће се додати base64-кодирани параметар упита, „d=...”, који садржи JSON објекат са одговарајућим подацима.",

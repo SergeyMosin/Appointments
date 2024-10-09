@@ -148,6 +148,7 @@ OC.L10N.register(
     "Attendee name" : "Teilnehmername",
     "Page Tag" : "Seitenschlagwort",
     "Mask Token (first three letters of name + semi-random token)" : "Token maskieren (die ersten drei Buchstaben des Namens + halbzufälliger Token)",
+    "Event Preset Title" : "Voreinstellung für Titel für Termin",
     "For example template like {tokens} will set new appointments title to something like John Smith (Good Org)" : "Z. B. wird eine Vorlage wie {tokens} den Titel neuer Termine auf etwas wie John Smith (Good Org) setzen",
     "Redirect Confirmed URL" : "Bestätigte URL umleiten",
     "When this URL is specified, visitors will be redirected there after confirming their email address. A base64-encoded query parameter, \"d=...\", containing a JSON object with relevant data, will be added to the URL." : "Wenn diese URL angegeben ist, werden Besucher nach Bestätigung ihrer E-Mail-Adresse dorthin umgeleitet. Ein base64-kodierter Abfrageparameter \"d=...\", der ein JSON-Objekt mit relevanten Daten enthält, wird zur URL hinzugefügt.",

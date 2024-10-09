@@ -137,6 +137,7 @@ OC.L10N.register(
     "8 Hours" : "8 hodin",
     "12 Hours" : "12 hodin",
     "1 day" : "1 den",
+    "Icon" : "Ikona",
     "Attendee name" : "Jméno účastníka",
     "Page Tag" : "Štítek stránky",
     "Generate ID" : "Vytvořit identif.",

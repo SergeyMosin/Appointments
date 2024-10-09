@@ -148,6 +148,7 @@ OC.L10N.register(
     "Attendee name" : "Nome do asistente",
     "Page Tag" : "Etiqueta da páxina",
     "Mask Token (first three letters of name + semi-random token)" : "Testemuño da máscara (tres primeiras letras do nome + testemuño semialeatorio)",
+    "Event Preset Title" : "Título predefinido do evento",
     "For example template like {tokens} will set new appointments title to something like John Smith (Good Org)" : "Por exemplo, un modelo como {tokens} definirá o título de novas citas en algo como Xoán Pousadoiro (Museo da Terra de Melide)",
     "Redirect Confirmed URL" : "URL confirmado de redirección",
     "When this URL is specified, visitors will be redirected there after confirming their email address. A base64-encoded query parameter, \"d=...\", containing a JSON object with relevant data, will be added to the URL." : "Cando se especifica este URL, os visitantes serán redirixidos alí após confirmar o seu enderezo de correo. Engadirase ao URL un parámetro de consulta codificado en base64, «d=...», que contén un obxecto JSON con datos relevantes.",
