@@ -97,6 +97,7 @@ OC.L10N.register(
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Buchen Sie Termine in Ihrem Kalender über ein sicheres Online-Formular. Teilnehmer können Ihre Termine über einen E-Mail-Link bestätigen oder absagen.",
     "Please select or create a page" : "Bitte wählen Sie eine Seite aus oder erstellen Sie eine Seite",
     "Preview" : "Vorschau",
+    "Page Is Not Enabled" : "Seite it nicht aktiviert",
     "Delete action cannot be undone. Proceed?" : "Der Löschvorgang kann nicht rückgängig gemacht werden. Fortfahren?",
     "Stop sharing (disable)" : "Freigabe stoppen (deaktivieren)",
     "Publish online (enable)" : "Online veröffentlichen (aktivieren)",
