@@ -280,7 +280,7 @@ OC.L10N.register(
     "Any text in the \"GDPR Compliance\" field will trigger the display of the \"GDPR\" checkbox. The checkbox can be hidden when the \"GDPR text only (no checkbox)\" option is selected. A checkbox with plain text (no HTML) or any HTML/links without a checkbox will work as is." : "أي نص في حقل \"الامتثال للقانون العام لحماية البيانات GDPR Compliance\" سيؤدي إلى ظهور مربع الاختيار \"القانون العام لحماية البيانات GDPR\". يُمكن إخفاء مربع الاختيار عند تحديد خيار \"نص اللائحة العامة لحماية البيانات فقط (بدون مربع اختيار) GDPR text only \". ستعمل خانة الاختيار التي تحتوي على نص عادي (بدون HTML) أو أي HTML/روابط بدون مربع اختيار كما هي.",
     "However, if you need to include both the checkbox and HTML or a link to your privacy policy you should separate it from the \"label\" element, and the \"for\" attribute of the \"label\" MUST be set to \"appt_gdpr_id.\" For example:" : "ومع ذلك، إذا كنت بحاجة إلى تضمين كل من مربع الاختيار و HTML أو رابط لسياسة الخصوصية الخاصة بك، فيجب عليك فصله عن عنصر \"اللُصاقة label\"، ويجب تعيين الخاصّيّة \"for\" الخاصة بـ\"اللُصاقة label\" إلى \"appt_gdpr_id.\" على سبيل المثال:",
     "GDPR text only (no checkbox)" : "نص  GDPR فقط (بدون صندوق التأشير)",
-    "Page Header Title" : "عنوان ترويسة الصفحة",
+    "Page Header Title" : "عنوان الصفحة",
     "Allow Prefilled Inputs" : "السماح بالخانات مسبقة الإدخال",
     "You can pre-fill fields in the form by adding a URL query parameter, example:" : "يمكنك ملء الحقول مسبقًا في النموذج عن طريق إضافة بارامتر استعلام URL. على سبيل المثال:",
     "Prefilled Inputs Appearance" : "ظهور الخانات مسبقة الإدخال",

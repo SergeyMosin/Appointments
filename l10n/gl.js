@@ -268,7 +268,7 @@ OC.L10N.register(
     "Show appointments for next" : "Amosa citas para a(s) próxima(s)",
     "Auto Style" : "Estilo automático",
     "Show Empty Days" : "Amosar días libres",
-    "Start on current day instead of Monday" : "Comeza o día actual no canto do luns",
+    "Start on current day instead of Monday" : "Comeza o día actual en troques do luns",
     "Show Empty Weekends" : "Amosar os fins de semana libres",
     "Show time in two columns" : "Amosar o momento en dúas columnas",
     "Show end time" : "Amosar a hora de remate",
