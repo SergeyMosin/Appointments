@@ -312,7 +312,7 @@ OC.L10N.register(
     "Custom email text (optional)" : "Texto personalizado de correo (opcional)",
     "You can override default email message. There are two tokens available, {token1} and if you use password protection {token2}, they will be replaced with the rooms URL and the password if used. Example:" : "Pode anular a mensaxe de correo predeterminada. Hai dous testemuños dispoñíbeis, {token1} e se utiliza a protección por contrasinal {token2}, substituiranse polo URL das salas e o contrasinal se se utiliza. Exemplo:",
     "Custom label text (optional)" : "Texto personalizado da etiqueta (opcional)",
-    "Custom placeholder text (optional)" : "Texto personalizado do marcador de posición (opcional)",
+    "Custom placeholder text (optional)" : "Texto personalizado do marcador de substitución (opcional)",
     "Custom 'In-person' option text (optional)" : "Texto personalizado da opción «Presencial» (opcional)",
     "Custom 'Online' option text (optional)" : "Texto personalizado da opción «En liña» (opcional)",
     "Custom type change email text (optional)" : "Texto personalizado do correo de cambio de tipo (opcional)",
