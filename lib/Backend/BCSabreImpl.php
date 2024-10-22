@@ -30,6 +30,8 @@ class BCSabreImpl implements IBackendConnector
 
     const TIME_FORMAT = "Ymd\THis\Z";
     const TIME_FORMAT_NO_Z = "Ymd\THis";
+    const SPLIT_TOKEN_REGEX = '/SPLIT:([0-9]+)/';
+    const SPLIT_LOGGING_INFO_VERBOSE = false;
 
     private CalDavBackend $backend;
     private IConfig $config;
@@ -220,17 +222,20 @@ class BCSabreImpl implements IBackendConnector
         $ses_info = '_1' . pack("L", time());
 
         $showET = $settings[BackendUtils::PSN_END_TIME];
+        $logStr = "";
         foreach ($objs as $obj) {
 
             $cd = $obj['calendardata'];
 
             if (strpos($cd, "\r\nTRANSP:TRANSPARENT\r\n", 22) === false) {
+                $logStr .= "----Discarding non-free entry id: " . $obj["id"] . "\r\n";
                 // must be "Free" aka TRANSPARENT
                 continue;
             }
 
             /** @var \Sabre\VObject\Component\VCalendar $vo */
             $vo = Reader::read($cd);
+            $logStr .= "----Checking cal entry: " . $vo->VEVENT->SUMMARY . "\r\n";
 
             /** @var \Sabre\VObject\Component\VEvent $evt */
             $evt = $vo->VEVENT;
@@ -238,12 +243,14 @@ class BCSabreImpl implements IBackendConnector
             if (!$evt->DTSTART->hasTime()
                 || (isset($evt->CLASS) && $evt->CLASS->getValue() !== 'PUBLIC')) {
                 $vo->destroy();
+                $logStr .= "rejected for !hasTime() or !PUBLIC\r\n";
                 continue;
             }
 
             $ts_pref = 'U';
             if ($evt->DTSTART->isFloating()) {
                 $vo->destroy();
+                $logStr .= "rejected for isFloating()";
                 continue;
             }
 
@@ -259,8 +266,10 @@ class BCSabreImpl implements IBackendConnector
 
                 try {
                     $it = new EventIterator($vo->getByUID($evt->UID->getValue()), null, $utz);
+                    $logStr .= "RECURING EVENT: created event iterator \$it for " . $s . "\r\n";
                 } catch (NoInstancesException $e) {
                     // This event is recurring, but it doesn't have a single instance. We are skipping this event from the output entirely.
+                    $logStr .= "RECURING EVENT: rejected because recurring event doesn't have a `single instance`\r\n";
                     continue;
                 }
 
@@ -270,6 +279,7 @@ class BCSabreImpl implements IBackendConnector
                 if (isset($evt->STATUS)
                     && $evt->STATUS->getValue() === 'CANCELLED') {
                     // check if CANCELLED early
+                    $logStr .= "rejected because event status is CANCELLED\r\n";
                     $vo->destroy();
                     continue;
                 }
@@ -280,7 +290,7 @@ class BCSabreImpl implements IBackendConnector
 
             $c = 0;
             while ($it->valid()) {
-
+                $logStr .= "c = " . $c . " - processing iterator index " . $it->key() . " for event " . $it->getEventObject()->SUMMARY . "\r\n";
                 $c++;
                 if ($c > 384) {
                     break;
@@ -290,25 +300,41 @@ class BCSabreImpl implements IBackendConnector
                 if (isset($_evt->STATUS)
                     && $_evt->STATUS->getValue() === 'CANCELLED') {
                     $it->next();
+                    $logStr .= "iterator value canceled\r\n";
                     continue;
                 }
 
                 $s_ts = $it->getDtStart()->getTimestamp();
 
                 if ($s_ts >= $end_ts) {
+                    $logStr .= "\$s_ts(" . $s_ts . ") >= \$end_ts(" . $end_ts .")\r\n";
                     $it->next();
                     break;
                 }
                 if ($s_ts > $start_ts) {
+                    $logStr .= "\$s_ts(" . $s_ts . ") > \$start_ts(" . $start_ts .")\r\n";
                     $e_ts = $it->getDtEnd()->getTimestamp();
-
-                    if (AVLIntervalTree::lookUp($booked_tree,
-                            $s_ts, $e_ts) === null) {
-
-                        $str_out .= $ts_pref . $s_ts
-                            . ($showET ? ":" . $e_ts : "")
-                            . ':' . $this->utils->encrypt($ses_info . pack("LL", $s_ts, $e_ts) . substr($obj['uri'], 0, -4), $key) . $atl . ',';
-                    }
+                    $logStr .= "REGEX MATCH EXECUTING...\r\n";
+                    $split_regex = preg_match(self::SPLIT_TOKEN_REGEX, $_evt->DESCRIPTION, $matches);
+                    $logStr .= "running regex match of " . self::SPLIT_TOKEN_REGEX . " resulted in: " . print_r($matches, true) . "\r\n";
+                    if ($split_regex && $matches && ($split_mins = (int)$matches[1]) > 0) {
+                        $logStr .= "found split info in " . $_evt->SUMMARY . " of length " . $split_mins . "\r\n";
+                    } else
+                        $split_mins = 0;
+                    $split_size = $split_mins * 60;
+                    $cs_ts = $s_ts;
+                    do {
+                        $ce_ts = (( ($s_ts + $split_size) < $e_ts ? $split_mins : 0) > 0 ? ($cs_ts + $split_size) : $e_ts);
+                        $logStr .= "\tTesting entry of " . $_evt->SUMMARY . ": " . $ses_info . " from " . $cs_ts . " to " . $ce_ts . "\r\n";
+                        if (AVLIntervalTree::lookUp($booked_tree, $cs_ts, $ce_ts) === null) {
+                            $str_out .= $ts_pref . $cs_ts
+                            . ($showET ? ":" . $ce_ts : "")
+                            . ':' . $this->utils->encrypt($ses_info . pack("LL", $cs_ts, $ce_ts) . substr($obj['uri'], 0, -4), $key) . $atl . ',';
+                            $logStr .= "\tadded entry " . $_evt->SUMMARY . " to str_out\r\n";
+                        } else
+                            $logStr .= "\tlookUp did not return null\r\n";
+                        $cs_ts += $split_size;
+                    } while ($ce_ts < $e_ts);
                 }
                 $it->next();
             }
@@ -325,6 +351,8 @@ class BCSabreImpl implements IBackendConnector
             }
             $vo->destroy();
         }
+        if (self::SPLIT_LOGGING_INFO_VERBOSE)
+            $this->logger->info($logStr);
         return $str_out !== '' ? substr($str_out, 0, -1) : null;
     }
 
