@@ -18,7 +18,7 @@
     "@nextcloud/logger": "^3.0.2",
     "@nextcloud/router": "^3.0.1",
     "@nextcloud/vue": "^8.19.0",
-    "vue": "^2.7.16",
+    "vue": "^3.0.0",
     "vue-material-design-icons": "^5.3.1",
     "vue-slider-component": "^3.2.24",
     "vue2-datepicker": "^3.11.1",
