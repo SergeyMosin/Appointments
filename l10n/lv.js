@@ -30,6 +30,7 @@ OC.L10N.register(
     "Deleted" : "Dzēstie",
     "Confirmed" : "Apstiprināts",
     "Canceled" : "Atcelts",
+    "Additional ICS file description:" : "ICS datnes papildu apraksts:",
     "Disabled" : "Atspējots",
     "Hide phone number field" : "Slēpt tālruņa numura lauku",
     "24 hours" : "24 stundas",
