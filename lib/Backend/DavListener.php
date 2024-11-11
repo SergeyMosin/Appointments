@@ -51,7 +51,6 @@ class DavListener implements IEventListener
                                 LoggerInterface $logger,
                                 BackendUtils    $utils)
     {
-        $this->appName = Application::APP_ID;
         $this->l10N = $l10N;
         $this->logger = $logger;
         $this->utils = $utils;
@@ -205,7 +204,7 @@ class DavListener implements IEventListener
                     continue;
                 }
 
-                $extNotifyFilePath = $config->getAppValue($this->appName, 'ext_notify_' . $userId);
+                $extNotifyFilePath = $config->getAppValue(Application::APP_ID, 'ext_notify_' . $userId);
 
                 $otherCalId = '-1';
                 $calId = $utils->getMainCalId($userId, null, $otherCalId);
@@ -362,7 +361,7 @@ class DavListener implements IEventListener
                                 if ($has_link) {
                                     $this->addVideoLinkInfo(
                                         $userId, $tmpl, $doc, $settings,
-                                        $config->getUserValue($userId, $this->appName, "c" . "nk")
+                                        $config->getUserValue($userId, Application::APP_ID, "c" . "nk")
                                     );
                                 }
                                 $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
@@ -401,7 +400,7 @@ class DavListener implements IEventListener
                                         // add talk link info
                                         $this->addTalkInfo(
                                             $tmpl, $xad, $ti, $settings,
-                                            $config->getUserValue($userId, $this->appName, "c" . "nk"));
+                                            $config->getUserValue($userId, Application::APP_ID, "c" . "nk"));
                                     }
                                     $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
                                 }
@@ -765,7 +764,7 @@ class DavListener implements IEventListener
 
                     $talk_link_txt = $this->addVideoLinkInfo(
                         $userId, $tmpl, $doc, $settings,
-                        $config->getUserValue($userId, $this->appName, "c" . "nk")
+                        $config->getUserValue($userId, Application::APP_ID, "c" . "nk")
                     );
 
                     if (($videoType === self::VIDEO_TALK
@@ -791,7 +790,7 @@ class DavListener implements IEventListener
                             // add talk link info
                             $talk_link_txt = $this->addTalkInfo(
                                 $tmpl, $xad, $ti, $settings,
-                                $config->getUserValue($userId, $this->appName, "c" . "nk"));
+                                $config->getUserValue($userId, Application::APP_ID, "c" . "nk"));
                         }
 
                         if ($settings[BackendUtils::TALK_FORM_ENABLED] === true) {
@@ -902,7 +901,7 @@ class DavListener implements IEventListener
 
                 $talk_link_txt = $this->addVideoLinkInfo(
                     $userId, $tmpl, $doc, $settings,
-                    $config->getUserValue($userId, $this->appName, "c" . "nk")
+                    $config->getUserValue($userId, Application::APP_ID, "c" . "nk")
                 );
             } elseif (!empty($xad) && count($xad) > 4) {
 
@@ -917,7 +916,7 @@ class DavListener implements IEventListener
                 $ti = new TalkIntegration($settings, $utils);
                 $talk_link_txt = $this->addTalkInfo(
                     $tmpl, $xad, $ti, $settings,
-                    $config->getUserValue($userId, $this->appName, "c" . "nk"));
+                    $config->getUserValue($userId, Application::APP_ID, "c" . "nk"));
             }
 
             $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
@@ -1025,7 +1024,7 @@ class DavListener implements IEventListener
                     if ($has_link) {
                         $talk_link_txt = $this->addVideoLinkInfo(
                             $userId, $tmpl, $doc, $settings,
-                            $config->getUserValue($userId, $this->appName, "c" . "nk")
+                            $config->getUserValue($userId, Application::APP_ID, "c" . "nk")
                         );
                     }
                     $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
@@ -1038,7 +1037,7 @@ class DavListener implements IEventListener
                         // add talk link info
                         $talk_link_txt = $this->addTalkInfo(
                             $tmpl, $xad, $ti, $settings,
-                            $config->getUserValue($userId, $this->appName, "c" . "nk"));
+                            $config->getUserValue($userId, Application::APP_ID, "c" . "nk"));
                     }
                     $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
                 }
@@ -1266,7 +1265,7 @@ class DavListener implements IEventListener
 
         // advanced/extensions
         if ($ext_event_type >= 0) {
-            $filePath = $config->getAppValue($this->appName, 'ext_notify_' . $userId);
+            $filePath = $config->getAppValue(Application::APP_ID, 'ext_notify_' . $userId);
             if ($filePath !== "") {
                 $data = [
                     'eventType' => $ext_event_type,
@@ -1293,7 +1292,7 @@ class DavListener implements IEventListener
      */
     private function makeBtnInfo($userId, $pageId, $embed, $uri, $config)
     {
-        $key = hex2bin($config->getAppValue($this->appName, 'hk'));
+        $key = hex2bin($config->getAppValue(Application::APP_ID, 'hk'));
         if (empty($key)) {
             return ["", ""];
         }
@@ -1308,7 +1307,7 @@ class DavListener implements IEventListener
             . 'cncf?d=';
         if ($embed) {
             $btn_url = $config->getAppValue(
-                $this->appName,
+                Application::APP_ID,
                 'emb_cncf_' . $userId, $btn_url);
             $pageIdParam = "&pageId=" . $pageId;
         }
@@ -1648,7 +1647,7 @@ class DavListener implements IEventListener
      */
     private function setFromAddress($msg, $userId, $org_email, $org_name)
     {
-        if ($this->config->getAppValue($this->appName,
+        if ($this->config->getAppValue(Application::APP_ID,
                 BackendUtils::KEY_USE_DEF_EMAIL,
                 'yes') === 'no') {
             $email = $org_email;
