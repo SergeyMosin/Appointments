@@ -51,6 +51,9 @@ const leadTimeOptions = [
 	{label: t('appointments', '1 day'), value: '1440'},
 	{label: t('appointments', '2 days'), value: '2880'},
 	{label: t('appointments', '4 days'), value: '5760'},
+	{label: t('appointments', '1 week'), value: '10080'},
+	{label: t('appointments', '2 weeks'), value: '20160'},
+	{label: t('appointments', '4 weeks'), value: '40320'},
 ]
 
 const cancelationOptions = [
