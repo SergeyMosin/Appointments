@@ -1992,9 +1992,11 @@ class BackendUtils
      *      0 = long format
      *      1 = short format (for email subject)
      */
-    function getDateTimeString(\DateTimeImmutable $date, string $tzi, int $short_dt = 0): string
+    function getDateTimeString(\DateTimeImmutable $date, string $tzi, int $short_dt = 0, $l10N = null): string
     {
-        $l10N = $this->l10n;
+        if ($l10N === null) {
+            $l10N = $this->l10n;
+        }
         if ($tzi[0] === "F") {
             $d = $date->format('Ymd\THis');
             if ($short_dt === 0) {

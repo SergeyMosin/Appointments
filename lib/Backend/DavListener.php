@@ -17,6 +17,7 @@ use OCP\EventDispatcher\IEventListener;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IUserManager;
+use OCP\L10N\IFactory;
 use OCP\Mail\IEMailTemplate;
 use OCP\Mail\IMailer;
 use OCP\Mail\IMessage;
@@ -43,7 +44,10 @@ class DavListener implements IEventListener
 
     private $linkify;
 
+    private $l10nFactory;
+
     public function __construct(\OCP\IL10N      $l10N,
+                                IFactory        $l10nFactory,
                                 LoggerInterface $logger,
                                 BackendUtils    $utils)
     {
@@ -56,6 +60,8 @@ class DavListener implements IEventListener
         $this->config = \OC::$server->get(IConfig::class);
 
         $this->linkify = new Linkify();
+
+        $this->l10nFactory = $l10nFactory;
     }
 
     function handle(Event $event): void
@@ -666,6 +672,19 @@ class DavListener implements IEventListener
 
         $tmpl = $this->getEmailTemplate();
 
+
+        if (!empty($userId) && empty($this->config->getSystemValue('force_language', false))) {
+            // https://github.com/SergeyMosin/Appointments/issues/158
+            // $this->l10N is initialized with attendee's lang/locale
+            // which might be different from organizer's
+            $userLang = $this->config->getUserValue($userId, 'core', 'lang', null);
+            $userLocale = $this->config->getUserValue($userId, 'core', 'locale', null);
+
+            $organizerL10n = $this->l10nFactory->get(Application::APP_ID, $userLang, $userLocale);
+        } else {
+            $organizerL10n = $this->l10N;
+        }
+
         // Message the organizer
         $om_prefix = "";
         // Description can get overwritten when the .ics attachment is constructed, so get it here
@@ -717,7 +736,7 @@ class DavListener implements IEventListener
             }
 
             if ($settings[BackendUtils::EML_MREQ]) {
-                $om_prefix = $this->l10N->t("Appointment pending");
+                $om_prefix = $organizerL10n->t("Appointment pending");
             }
 
         } elseif ($hint === HintVar::APPT_CONFIRM) {
@@ -797,7 +816,7 @@ class DavListener implements IEventListener
             }
 
             if ($settings[BackendUtils::EML_MCONF]) {
-                $om_prefix = $this->l10N->t("Appointment confirmed");
+                $om_prefix = $organizerL10n->t("Appointment confirmed");
             }
 
             $ext_event_type = 0;
@@ -826,7 +845,7 @@ class DavListener implements IEventListener
             $is_cancelled = true;
 
             if ($settings[BackendUtils::EML_MCNCL] && $hint !== HintVar::APPT_NONE) {
-                $om_prefix = $this->l10N->t("Appointment canceled");
+                $om_prefix = $organizerL10n->t("Appointment canceled");
             }
 
             if ($isDelete) {
@@ -906,7 +925,7 @@ class DavListener implements IEventListener
             $cnl_lnk_url = $btn_url . "0" . $btn_tkn;
 
             if ($settings[BackendUtils::EML_MCONF]) {
-                $om_prefix = $this->l10N->t("Appointment updated");
+                $om_prefix = $organizerL10n->t("Appointment updated");
             }
 
             $ext_event_type = 3;
@@ -1203,11 +1222,11 @@ class DavListener implements IEventListener
                 $tmpl = $this->getEmailTemplate();
 
                 $tmpl->setSubject($om_prefix . ": " . $to_name . ", "
-                    . $utils->getDateTimeString($evt_dt, $utz_info, 1));
+                    . $utils->getDateTimeString($evt_dt, $utz_info, 1, $organizerL10n));
                 $tmpl->addHeading(" "); // spacer
                 $tmpl->addBodyText(...$this->formatEmailBodyHtml([$om_prefix]));
                 $tmpl->addBodyListItem(...$this->formatEmailListItem(
-                    $utils->getDateTimeString($evt_dt, $utz_info)));
+                    $utils->getDateTimeString($evt_dt, $utz_info, 0, $organizerL10n)));
                 $ic = 0;
                 foreach ($oma as $info) {
                     if (strlen($info) > 2) {
