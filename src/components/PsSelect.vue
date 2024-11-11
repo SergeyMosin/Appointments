@@ -43,6 +43,11 @@ const selectedLabel = computed(() => {
 	padding-bottom: 0;
 }
 
+.ps-nc-select-internal.v-select >>> .vs__search {
+	height: 32px !important;
+	margin: 0;
+}
+
 .ps-nc-select-internal.v-select >>> .vs__selected {
 	margin-top: 0;
 }
