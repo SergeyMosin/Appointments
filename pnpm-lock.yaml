@@ -12,8 +12,8 @@ importers:
         specifier: ^2.5.1
         version: 2.5.1
       '@nextcloud/dialogs':
-        specifier: ^5.3.7
-        version: 5.3.7(@nextcloud/vue@8.19.0(@types/react@18.3.3)(linkifyjs@4.1.3))(typedoc@0.26.8(typescript@5.6.2))(vue@2.7.16)
+        specifier: ^5.3.8
+        version: 5.3.8(@nextcloud/vue@8.20.0(@types/react@18.3.3)(linkifyjs@4.1.3))(typedoc@0.26.8(typescript@5.6.2))(vue@2.7.16)
       '@nextcloud/l10n':
         specifier: ^3.1.0
         version: 3.1.0
@@ -24,14 +24,14 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1
       '@nextcloud/vue':
-        specifier: ^8.19.0
-        version: 8.19.0(@types/react@18.3.3)(linkifyjs@4.1.3)
+        specifier: ^8.20.0
+        version: 8.20.0(@types/react@18.3.3)(linkifyjs@4.1.3)
       linkifyjs:
         specifier: ^4.1.3
         version: 4.1.3
       pinia:
-        specifier: ^2.2.4
-        version: 2.2.4(typescript@5.6.2)(vue@2.7.16)
+        specifier: ^2.2.6
+        version: 2.2.6(typescript@5.6.2)(vue@2.7.16)
       vue:
         specifier: ^2.7.16
         version: 2.7.16
@@ -89,22 +89,22 @@ importers:
         version: 27.5.1(@babel/core@7.24.7)
       babel-loader:
         specifier: ^8.2.3
-        version: 8.3.0(@babel/core@7.24.7)(webpack@5.92.1(webpack-cli@5.1.4))
+        version: 8.3.0(@babel/core@7.24.7)(webpack@5.92.1)
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
       copy-webpack-plugin:
         specifier: ^11.0.0
-        version: 11.0.0(webpack@5.92.1(webpack-cli@5.1.4))
+        version: 11.0.0(webpack@5.92.1)
       css-loader:
         specifier: ^5.2.6
-        version: 5.2.7(webpack@5.92.1(webpack-cli@5.1.4))
+        version: 5.2.7(webpack@5.92.1)
       eslint:
         specifier: ^8.9.0
         version: 8.57.0
       file-loader:
         specifier: ^6.2.0
-        version: 6.2.0(webpack@5.92.1(webpack-cli@5.1.4))
+        version: 6.2.0(webpack@5.92.1)
       process:
         specifier: ^0.11.10
         version: 0.11.10
@@ -116,10 +116,10 @@ importers:
         version: 1.77.6
       sass-loader:
         specifier: ^13.3.2
-        version: 13.3.3(sass@1.77.6)(webpack@5.92.1(webpack-cli@5.1.4))
+        version: 13.3.3(sass@1.77.6)(webpack@5.92.1)
       terser-webpack-plugin:
         specifier: ^5.3.9
-        version: 5.3.10(webpack@5.92.1(webpack-cli@5.1.4))
+        version: 5.3.10(webpack@5.92.1)
       util:
         specifier: ^0.12.5
         version: 0.12.5
@@ -131,7 +131,7 @@ importers:
         version: 3.0.7(babel-core@6.26.3)(vue-template-compiler@2.7.16)(vue@2.7.16)
       vue-loader:
         specifier: ^15.10.0
-        version: 15.11.1(@vue/compiler-sfc@3.4.31)(babel-core@6.26.3)(css-loader@5.2.7(webpack@5.92.1(webpack-cli@5.1.4)))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@5.92.1(webpack-cli@5.1.4))
+        version: 15.11.1(@vue/compiler-sfc@3.4.31)(babel-core@6.26.3)(css-loader@5.2.7(webpack@5.92.1))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@5.92.1)
       vue-style-loader:
         specifier: ^4.1.3
         version: 4.1.3
@@ -894,8 +894,8 @@ packages:
     resolution: {integrity: sha512-L1NQtOfHWzkfj0Ple1MEJt6HmOHWAi3y4qs+OnwSWexqJT0DtXTVPyRxi7ADyITwRxS5H9R/HMl6USAj4Nr1nQ==}
     engines: {node: ^20.0.0, npm: ^10.0.0}
 
-  '@nextcloud/dialogs@5.3.7':
-    resolution: {integrity: sha512-//pRF2GJNhW3VbVzSoE97J+DR9nZ/+IkzOzgKKDdMr65JYYMAdOs9Iew4nMf+OruDgZanGyXrfubSMVNI+1svQ==}
+  '@nextcloud/dialogs@5.3.8':
+    resolution: {integrity: sha512-FtVwWXYLgTg9XKYNawYGi4Vt8T9QTuOi0qRgOzmnj8NK4CzRikIXbkXkqQKRkRn8LufLpW9c8aE6y5CtVljnZQ==}
     engines: {node: ^20.0.0, npm: ^10.0.0}
     peerDependencies:
       '@nextcloud/vue': ^8.9.1
@@ -951,8 +951,8 @@ packages:
     peerDependencies:
       vue: 2.x
 
-  '@nextcloud/vue@8.19.0':
-    resolution: {integrity: sha512-mEawbIueee5fSGZreJV+/8h80SRriRTuib1UO9UWWEgqWvZQp0i99xXnIQj+UMw9AugxznJWd5R0ZOmZkN7p5w==}
+  '@nextcloud/vue@8.20.0':
+    resolution: {integrity: sha512-X8hsZGsJ4hRmPhTOZmpzXbHcXp4txvebIlRRos+Gm+nOESKTAaOqtMARHAk1f/B+WMULNCipQoNc1ef8AFLGZA==}
     engines: {node: ^20.0.0, npm: ^10.0.0}
 
   '@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1':
@@ -1803,8 +1803,8 @@ packages:
     resolution: {integrity: sha512-OaAjvEQuQ9tJsKG4oHO9nV1UHTwb2Qc2+fadB0VeVtD0Z9wiG1XPGLJ4W3aLhAoQSYTaLROFRbd5X20Dkzf7MQ==}
     engines: {node: '>=0.11.0'}
 
-  debounce@2.1.1:
-    resolution: {integrity: sha512-+xRWxgel9LgTC4PwKlm7TJUK6B6qsEK77NaiNvXmeQ7Y3e6OVVsBC4a9BSptS/mAYceyAz37Oa8JTTuPRft7uQ==}
+  debounce@2.2.0:
+    resolution: {integrity: sha512-Xks6RUDLZFdz8LIdR6q0MTH44k7FikOmnh5xkSjMig6ch45afc8sjTjRQf3P6ax8dMgcQrYO/AR2RGWURrruqw==}
     engines: {node: '>=18'}
 
   debug@2.6.9:
@@ -1996,6 +1996,9 @@ packages:
   esutils@2.0.3:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
+
+  eventemitter3@5.0.1:
+    resolution: {integrity: sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==}
 
   events@3.3.0:
     resolution: {integrity: sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==}
@@ -2871,6 +2874,14 @@ packages:
     resolution: {integrity: sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==}
     engines: {node: '>=10'}
 
+  p-queue@8.0.1:
+    resolution: {integrity: sha512-NXzu9aQJTAzbBqOt2hwsR63ea7yvxJc0PwN/zobNAudYfb1B7R08SzB4TsLeSbUCuG467NhnoT0oO6w1qRO+BA==}
+    engines: {node: '>=18'}
+
+  p-timeout@6.1.3:
+    resolution: {integrity: sha512-UJUyfKbwvr/uZSV6btANfb+0t/mOhKV/KXcCUTp8FcQI+v/0d+wXqH4htrW0E4rR6WiEO/EPvUFiV9D5OI4vlw==}
+    engines: {node: '>=14.16'}
+
   p-try@2.2.0:
     resolution: {integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==}
     engines: {node: '>=6'}
@@ -2922,12 +2933,12 @@ packages:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
 
-  pinia@2.2.4:
-    resolution: {integrity: sha512-K7ZhpMY9iJ9ShTC0cR2+PnxdQRuwVIsXDO/WIEV/RnMC/vmSoKDTKW/exNQYPI+4ij10UjXqdNiEHwn47McANQ==}
+  pinia@2.2.6:
+    resolution: {integrity: sha512-vIsR8JkDN5Ga2vAxqOE2cJj4VtsHnzpR1Fz30kClxlh0yCHfec6uoMeM3e/ddqmwFUejK3NlrcQa/shnpyT4hA==}
     peerDependencies:
       '@vue/composition-api': ^1.4.0
       typescript: '>=4.4.4'
-      vue: ^2.6.14 || ^3.3.0
+      vue: ^2.6.14 || ^3.5.11
     peerDependenciesMeta:
       '@vue/composition-api':
         optional: true
@@ -3544,17 +3555,6 @@ packages:
 
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
-    engines: {node: '>=12'}
-    hasBin: true
-    peerDependencies:
-      '@vue/composition-api': ^1.0.0-rc.1
-      vue: ^3.0.0-0 || ^2.6.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
-
-  vue-demi@0.14.8:
-    resolution: {integrity: sha512-Uuqnk9YE9SsWeReYqK2alDI5YzciATE0r2SkA6iMAtuXvNTMNACJLJEXNXaEy94ECuBe4Sk6RzRU80kjdbIo1Q==}
     engines: {node: '>=12'}
     hasBin: true
     peerDependencies:
@@ -4714,10 +4714,10 @@ snapshots:
     dependencies:
       '@nextcloud/initial-state': 2.2.0
 
-  '@nextcloud/dialogs@5.3.7(@nextcloud/vue@8.19.0(@types/react@18.3.3)(linkifyjs@4.1.3))(typedoc@0.26.8(typescript@5.6.2))(vue@2.7.16)':
+  '@nextcloud/dialogs@5.3.8(@nextcloud/vue@8.20.0(@types/react@18.3.3)(linkifyjs@4.1.3))(typedoc@0.26.8(typescript@5.6.2))(vue@2.7.16)':
     dependencies:
       '@mdi/js': 7.4.47
-      '@nextcloud/auth': 2.3.0
+      '@nextcloud/auth': 2.4.0
       '@nextcloud/axios': 2.5.1
       '@nextcloud/event-bus': 3.3.1
       '@nextcloud/files': 3.9.0(typedoc@0.26.8(typescript@5.6.2))
@@ -4726,10 +4726,11 @@ snapshots:
       '@nextcloud/router': 3.0.1
       '@nextcloud/sharing': 0.2.3
       '@nextcloud/typings': 1.9.1
-      '@nextcloud/vue': 8.19.0(@types/react@18.3.3)(linkifyjs@4.1.3)
+      '@nextcloud/vue': 8.20.0(@types/react@18.3.3)(linkifyjs@4.1.3)
       '@types/toastify-js': 1.12.3
       '@vueuse/core': 10.11.1(vue@2.7.16)
       cancelable-promise: 4.3.1
+      p-queue: 8.0.1
       toastify-js: 1.12.0
       vue: 2.7.16
       vue-frag: 1.4.3(vue@2.7.16)
@@ -4803,7 +4804,7 @@ snapshots:
     dependencies:
       vue: 2.7.16
 
-  '@nextcloud/vue@8.19.0(@types/react@18.3.3)(linkifyjs@4.1.3)':
+  '@nextcloud/vue@8.20.0(@types/react@18.3.3)(linkifyjs@4.1.3)':
     dependencies:
       '@floating-ui/dom': 1.6.7
       '@linusborg/vue-simple-portal': 0.1.5(vue@2.7.16)
@@ -4822,7 +4823,7 @@ snapshots:
       '@vueuse/components': 11.1.0(vue@2.7.16)
       '@vueuse/core': 11.1.0(vue@2.7.16)
       clone: 2.1.2
-      debounce: 2.1.1
+      debounce: 2.2.0
       dompurify: 3.1.5
       emoji-mart-vue-fast: 15.0.2(vue@2.7.16)
       escape-html: 1.0.3
@@ -5146,7 +5147,7 @@ snapshots:
       '@types/web-bluetooth': 0.0.20
       '@vueuse/metadata': 10.11.1
       '@vueuse/shared': 10.11.1(vue@2.7.16)
-      vue-demi: 0.14.8(vue@2.7.16)
+      vue-demi: 0.14.10(vue@2.7.16)
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -5167,7 +5168,7 @@ snapshots:
 
   '@vueuse/shared@10.11.1(vue@2.7.16)':
     dependencies:
-      vue-demi: 0.14.8(vue@2.7.16)
+      vue-demi: 0.14.10(vue@2.7.16)
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -5255,17 +5256,17 @@ snapshots:
       '@webassemblyjs/ast': 1.12.1
       '@xtuc/long': 4.2.2
 
-  '@webpack-cli/configtest@2.1.1(webpack-cli@5.1.4(webpack@5.92.1))(webpack@5.92.1(webpack-cli@5.1.4))':
+  '@webpack-cli/configtest@2.1.1(webpack-cli@5.1.4)(webpack@5.92.1)':
     dependencies:
       webpack: 5.92.1(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.92.1)
 
-  '@webpack-cli/info@2.0.2(webpack-cli@5.1.4(webpack@5.92.1))(webpack@5.92.1(webpack-cli@5.1.4))':
+  '@webpack-cli/info@2.0.2(webpack-cli@5.1.4)(webpack@5.92.1)':
     dependencies:
       webpack: 5.92.1(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.92.1)
 
-  '@webpack-cli/serve@2.0.5(webpack-cli@5.1.4(webpack@5.92.1))(webpack@5.92.1(webpack-cli@5.1.4))':
+  '@webpack-cli/serve@2.0.5(webpack-cli@5.1.4)(webpack@5.92.1)':
     dependencies:
       webpack: 5.92.1(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.92.1)
@@ -5428,7 +5429,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  babel-loader@8.3.0(@babel/core@7.24.7)(webpack@5.92.1(webpack-cli@5.1.4)):
+  babel-loader@8.3.0(@babel/core@7.24.7)(webpack@5.92.1):
     dependencies:
       '@babel/core': 7.24.7
       find-cache-dir: 3.3.2
@@ -5742,7 +5743,7 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
-  copy-webpack-plugin@11.0.0(webpack@5.92.1(webpack-cli@5.1.4)):
+  copy-webpack-plugin@11.0.0(webpack@5.92.1):
     dependencies:
       fast-glob: 3.3.2
       glob-parent: 6.0.2
@@ -5770,7 +5771,7 @@ snapshots:
 
   crypt@0.0.2: {}
 
-  css-loader@5.2.7(webpack@5.92.1(webpack-cli@5.1.4)):
+  css-loader@5.2.7(webpack@5.92.1):
     dependencies:
       icss-utils: 5.1.0(postcss@8.4.39)
       loader-utils: 2.0.4
@@ -5806,7 +5807,7 @@ snapshots:
       bindings: 1.5.0
       node-addon-api: 1.7.2
 
-  debounce@2.1.1: {}
+  debounce@2.2.0: {}
 
   debug@2.6.9:
     dependencies:
@@ -5993,6 +5994,8 @@ snapshots:
 
   esutils@2.0.3: {}
 
+  eventemitter3@5.0.1: {}
+
   events@3.3.0: {}
 
   extend-shallow@2.0.1:
@@ -6042,7 +6045,7 @@ snapshots:
     dependencies:
       flat-cache: 3.2.0
 
-  file-loader@6.2.0(webpack@5.92.1(webpack-cli@5.1.4)):
+  file-loader@6.2.0(webpack@5.92.1):
     dependencies:
       loader-utils: 2.0.4
       schema-utils: 3.3.0
@@ -7023,6 +7026,13 @@ snapshots:
     dependencies:
       p-limit: 3.1.0
 
+  p-queue@8.0.1:
+    dependencies:
+      eventemitter3: 5.0.1
+      p-timeout: 6.1.3
+
+  p-timeout@6.1.3: {}
+
   p-try@2.2.0: {}
 
   package-json-from-dist@1.0.0: {}
@@ -7056,7 +7066,7 @@ snapshots:
 
   picomatch@2.3.1: {}
 
-  pinia@2.2.4(typescript@5.6.2)(vue@2.7.16):
+  pinia@2.2.6(typescript@5.6.2)(vue@2.7.16):
     dependencies:
       '@vue/devtools-api': 6.6.3
       vue: 2.7.16
@@ -7279,7 +7289,7 @@ snapshots:
 
   safe-buffer@5.2.1: {}
 
-  sass-loader@13.3.3(sass@1.77.6)(webpack@5.92.1(webpack-cli@5.1.4)):
+  sass-loader@13.3.3(sass@1.77.6)(webpack@5.92.1):
     dependencies:
       neo-async: 2.6.2
       webpack: 5.92.1(webpack-cli@5.1.4)
@@ -7456,7 +7466,7 @@ snapshots:
 
   tapable@2.2.1: {}
 
-  terser-webpack-plugin@5.3.10(webpack@5.92.1(webpack-cli@5.1.4)):
+  terser-webpack-plugin@5.3.10(webpack@5.92.1):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
@@ -7681,10 +7691,6 @@ snapshots:
     dependencies:
       vue: 2.7.16
 
-  vue-demi@0.14.8(vue@2.7.16):
-    dependencies:
-      vue: 2.7.16
-
   vue-frag@1.4.3(vue@2.7.16):
     dependencies:
       vue: 2.7.16
@@ -7710,10 +7716,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vue-loader@15.11.1(@vue/compiler-sfc@3.4.31)(babel-core@6.26.3)(css-loader@5.2.7(webpack@5.92.1(webpack-cli@5.1.4)))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@5.92.1(webpack-cli@5.1.4)):
+  vue-loader@15.11.1(@vue/compiler-sfc@3.4.31)(babel-core@6.26.3)(css-loader@5.2.7(webpack@5.92.1))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@5.92.1):
     dependencies:
       '@vue/component-compiler-utils': 3.3.0(babel-core@6.26.3)(lodash@4.17.21)
-      css-loader: 5.2.7(webpack@5.92.1(webpack-cli@5.1.4))
+      css-loader: 5.2.7(webpack@5.92.1)
       hash-sum: 1.0.2
       loader-utils: 1.4.2
       vue-hot-reload-api: 2.3.4
@@ -7855,9 +7861,9 @@ snapshots:
   webpack-cli@5.1.4(webpack@5.92.1):
     dependencies:
       '@discoveryjs/json-ext': 0.5.7
-      '@webpack-cli/configtest': 2.1.1(webpack-cli@5.1.4(webpack@5.92.1))(webpack@5.92.1(webpack-cli@5.1.4))
-      '@webpack-cli/info': 2.0.2(webpack-cli@5.1.4(webpack@5.92.1))(webpack@5.92.1(webpack-cli@5.1.4))
-      '@webpack-cli/serve': 2.0.5(webpack-cli@5.1.4(webpack@5.92.1))(webpack@5.92.1(webpack-cli@5.1.4))
+      '@webpack-cli/configtest': 2.1.1(webpack-cli@5.1.4)(webpack@5.92.1)
+      '@webpack-cli/info': 2.0.2(webpack-cli@5.1.4)(webpack@5.92.1)
+      '@webpack-cli/serve': 2.0.5(webpack-cli@5.1.4)(webpack@5.92.1)
       colorette: 2.0.20
       commander: 10.0.1
       cross-spawn: 7.0.3
@@ -7900,7 +7906,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(webpack@5.92.1(webpack-cli@5.1.4))
+      terser-webpack-plugin: 5.3.10(webpack@5.92.1)
       watchpack: 2.4.1
       webpack-sources: 3.2.3
     optionalDependencies:
