@@ -38,6 +38,7 @@ OC.L10N.register(
     "Reminders" : "Atgādinājumi",
     "Advanced" : "Paplašināti",
     "Edit" : "Labot",
+    "Discard" : "Atmest",
     "Back" : "Atpakaļ",
     "Next" : "Nākamā",
     "min" : "min",
