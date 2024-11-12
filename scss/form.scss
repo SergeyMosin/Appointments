@@ -64,8 +64,16 @@ body {
 }
 
 .srgdev-ncfp-form-main-cont {
-  width: 18em;
+  min-width: 18em;
+  max-width: 22em;
   margin: 0 auto;
+}
+
+.h-captcha {
+  min-width: 303px;
+  min-height: 78px;
+  margin-top: 1em;
+  margin-bottom: -.5em;
 }
 
 .srgdev-ncfp-chb-cont,

@@ -589,6 +589,29 @@ class StateController extends Controller
                 return $this->utils->setUserSettingsV2($this->userId, $pageId, BackendUtils::TALK_ENABLED, false);
             },
 
+            BackendUtils::SEC_EMAIL_BLACKLIST => function ($value, $pageId, $key) {
+                if (!is_array($value)) {
+                    return [Http::STATUS_BAD_REQUEST, ''];
+                }
+                foreach ($value as $item) {
+                    if (strlen($item) < 4) {
+                        return [Http::STATUS_BAD_REQUEST, ''];
+                    }
+                    if (str_starts_with($item, '*@')) {
+                        // should be a valid domain after the '*@'
+                        if (filter_var(substr($item, 2), FILTER_VALIDATE_DOMAIN,FILTER_FLAG_HOSTNAME) === false) {
+                            return [Http::STATUS_BAD_REQUEST, ''];
+                        }
+                    } else {
+                        // this should be a valid email
+                        if (filter_var($item, FILTER_VALIDATE_EMAIL) === false) {
+                            return [Http::STATUS_BAD_REQUEST, ''];
+                        }
+                    }
+                }
+                return [Http::STATUS_OK, ''];
+            },
+
             default => null,
         };
     }

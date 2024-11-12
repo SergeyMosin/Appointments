@@ -23,6 +23,7 @@ import {parsePageUrls} from "../../use/utils";
 import {showError} from "@nextcloud/dialogs";
 import {usePagesStore} from "../../stores/pages";
 import {useSettingsStore, LOADING_ALL, readOnlyProps} from "../../stores/settings";
+import SectionSecurity from "./SectionSecurity.vue";
 
 const settingsStore = useSettingsStore()
 
@@ -170,6 +171,15 @@ const handleCKey = () => {
 								{{ t('appointments', 'Control what your visitors see') }}
 							</h4>
 							<SectionPage/>
+						</NcAppSettingsSection>
+
+						<NcAppSettingsSection
+								id="security"
+								:name="t('appointments','Security')">
+							<h4 class="ps-section-subtitle">
+								{{ t('appointments', 'Security related settings') }}
+							</h4>
+							<SectionSecurity/>
 						</NcAppSettingsSection>
 
 						<NcAppSettingsSection

@@ -7,6 +7,7 @@
 namespace OCA\Appointments\Controller;
 
 use OC\AppFramework\Middleware\Security\Exceptions\NotLoggedInException;
+use OC\Security\CSP\ContentSecurityPolicyNonceManager;
 use OCA\Appointments\AppInfo\Application;
 use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
@@ -17,6 +18,7 @@ use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Http\Template\PublicTemplateResponse;
+use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IL10N;
@@ -680,6 +682,10 @@ class PageController extends Controller
         $ok_uri = "form?sts=0" . $pageParam;
         $bad_input_url = "form?sts=1" . $pageParam;
         $server_err_url = "form?sts=2" . $pageParam;
+        $captcha_failed_url = "form?sts=3" . $pageParam;
+        $captcha_server_error_url = "form?sts=4" . $pageParam;
+        $blocked_error_url = "form?sts=5" . $pageParam;
+
 
         $key = hex2bin($this->c->getAppValue($this->appName, 'hk'));
         if (empty($key)) {
@@ -723,6 +729,23 @@ class PageController extends Controller
             $rr->setStatus(303);
             return $rr;
         }
+
+        if (!empty($settings[BackendUtils::SEC_EMAIL_BLACKLIST]) && is_array($settings[BackendUtils::SEC_EMAIL_BLACKLIST])) {
+            $_email = $post['email'];
+            foreach ($settings[BackendUtils::SEC_EMAIL_BLACKLIST] as $blocked) {
+                if ($_email === $blocked ||
+                    // domain block
+                    (str_starts_with($blocked, '*@')
+                        && str_ends_with($_email, substr($blocked, 1)))
+                ) {
+                    $rr = new RedirectResponse($blocked_error_url);
+                    $rr->setStatus(303);
+                    return $rr;
+
+                }
+            }
+        }
+
         if ($hide_phone) {
             $post['phone'] = "";
         }
@@ -761,6 +784,21 @@ class PageController extends Controller
             }
         }
         $post['_more_data'] = $v;
+
+        if ($settings[BackendUtils::SEC_HCAP_ENABLED] === true
+            && !empty($settings[BackendUtils::SEC_HCAP_SECRET])
+            && !empty($settings[BackendUtils::SEC_HCAP_SITE_KEY])
+        ) {
+            if (($cErr = $this->validateHCaptcha($post, $settings)) !== 0) {
+                if ($cErr === 1) {
+                    $rr = new RedirectResponse($captcha_failed_url);
+                } else {
+                    $rr = new RedirectResponse($captcha_server_error_url);
+                }
+                $rr->setStatus(303);
+                return $rr;
+            }
+        }
 
         // Input seems OK...
 
@@ -904,7 +942,7 @@ class PageController extends Controller
     private function showFinish(string $render, string $uid): Response
     {
         // Redirect to finalize page...
-        // sts: 0=OK, 1=bad input, 2=server error
+        // sts: 0=OK, 1=bad input, 2=server error, 3=bad captcha, 4=captcha server error, 5=blocked
         // sts=2&r=1: race condition while booking
         // d=time and email
 
@@ -946,6 +984,12 @@ class PageController extends Controller
                     $rs = 409;
                 }
             }
+        } elseif ($sts === '3') {
+            $param['input_err'] = $this->l->t("Human verification failed");
+        } elseif ($sts === '4') {
+            $param['input_err'] = $this->l->t("Internal server error: validation request failed");
+        } elseif ($sts === '5') {
+            $param['input_err'] = $this->l->t('We regret to inform you that your email address has been blocked due to activity that violates our community guidelines.');
         }
 
         if ($render === "public") {
@@ -1000,8 +1044,31 @@ class PageController extends Controller
             'appt_hide_phone' => $settings[BackendUtils::PSN_HIDE_TEL],
             'more_html' => '',
             'application' => $this->l->t('Appointments'),
-            'translations' => ''
+            'translations' => '',
+            'hCapKey' => '',
         ];
+
+        if ($settings[BackendUtils::SEC_HCAP_ENABLED] === true
+            && !empty($settings[BackendUtils::SEC_HCAP_SECRET])
+            && !empty($settings[BackendUtils::SEC_HCAP_SITE_KEY])
+        ) {
+            Util::addHeader("script", [
+                'src' => 'https://www.hCaptcha.com/1/api.js',
+                'async' => '',
+                'nonce' => \OC::$server->get(ContentSecurityPolicyNonceManager::class)->getNonce()
+            ], '');
+            $csp = $tr->getContentSecurityPolicy();
+            $csp->addAllowedScriptDomain('https://hcaptcha.com/');
+            $csp->addAllowedScriptDomain('https://*.hcaptcha.com/');
+            $csp->addAllowedFrameDomain('https://hcaptcha.com/');
+            $csp->addAllowedFrameDomain('https://*.hcaptcha.com/');
+            $csp->addAllowedStyleDomain('https://hcaptcha.com/');
+            $csp->addAllowedStyleDomain('https://*.hcaptcha.com/');
+            $csp->addAllowedConnectDomain('https://hcaptcha.com/');
+            $csp->addAllowedConnectDomain('https://*.hcaptcha.com/');
+            $tr->setContentSecurityPolicy($csp);
+            $params['hCapKey'] = $settings[BackendUtils::SEC_HCAP_SITE_KEY];
+        }
 
         // google recaptcha
         // 'jsfiles'=>['https://www.google.com/recaptcha/api.js']
@@ -1320,5 +1387,60 @@ class PageController extends Controller
             && !$this->userSession->isLoggedIn()) {
             throw new NotLoggedInException();
         }
+    }
+
+    /**
+     * @param array $post
+     * @return int
+     *  0 = OK,
+     *  1 = captcha error,
+     *  2 = internal error
+     */
+    private function validateHCaptcha(array $post, array $settings): int
+    {
+        if (empty($post['h-captcha-response'])) {
+            return 1;
+        }
+
+        $clientService = \OC::$server->get(IClientService::class);
+        $client = $clientService->newClient();
+
+        try {
+            $res = $client->post('https://api.hcaptcha.com/siteverify', [
+                    'form_params' => [
+                        'response' => $post['h-captcha-response'],
+                        'secret' => $this->utils->decrypt(substr($settings[BackendUtils::SEC_HCAP_SECRET], 8), $this->utils->getLocalHash()),
+                        'sitekey' => $settings[BackendUtils::SEC_HCAP_SITE_KEY]
+                    ]]
+            );
+
+            $body = json_decode($res->getBody(), true);
+            if ($body === null) {
+                throw new \Exception("cannot parse response");
+            }
+        } catch (\Throwable $e) {
+            $this->logger->error("hCaptcha post error: ", [
+                'app' => Application::APP_ID,
+                'exception' => $e
+            ]);
+            return 2;
+        }
+
+        if ($body['success'] === true) {
+            return 0;
+        }
+
+        if (isset($body['error-codes']) && count(array_intersect([
+                'missing-input-secret',
+                'invalid-input-secret',
+                'sitekey-secret-mismatch'
+            ], $body['error-codes'])) !== 0) {
+
+            $this->logger->error("hCaptcha internal error: " . var_export($body['error-codes'], true), [
+                'app' => Application::APP_ID
+            ]);
+            return 2;
+        }
+        return 1;
     }
 }

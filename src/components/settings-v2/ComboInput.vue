@@ -1,7 +1,7 @@
 <script setup>
 import {computed, useSlots} from "vue";
 import LabelAccordion from "../LabelAccordion.vue";
-import {NcTextField} from "@nextcloud/vue";
+import {NcTextField, NcPasswordField} from "@nextcloud/vue";
 
 const slots = useSlots()
 const props = defineProps({
@@ -76,6 +76,17 @@ const handleFocus = (evt) => {
 				v-model="settings[propName]"
 				@focus="handleFocus"
 				@blur="store.setOne(propName,settings[propName])"/>
+		<NcPasswordField
+				v-else-if="type==='password'"
+				:label-outside="true"
+				:placeholder="placeholder"
+				class="ps-text-field  ps-vert-spacing"
+				:type="type"
+				:disabled="disabled || isLoading"
+				:value.sync="settings[propName]"
+				@focus="handleFocus"
+				@keyup.enter="store.setOne(propName, settings[propName])"
+				@blur="store.setOne(propName, settings[propName])"/>
 		<NcTextField
 				v-else
 				:label-outside="true"

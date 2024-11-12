@@ -192,6 +192,11 @@ class BackendUtils
     public const REMINDER_CLI_URL = "cliUrl";
     public const REMINDER_LANG = "defaultLang";
 
+    public const SEC_HCAP_SITE_KEY = "secHcapSiteKey";
+    public const SEC_HCAP_SECRET = "secHcapSecret";
+    public const SEC_HCAP_ENABLED = "secHcapEnabled";
+    public const SEC_EMAIL_BLACKLIST = "secEmailBlacklist";
+
     public const DEBUGGING_MODE = "debugging_mode";
     public const DEBUGGING_NONE = 0;
     public const DEBUGGING_LOG_REM_BLOCKER = 1;
@@ -1405,6 +1410,11 @@ class BackendUtils
             self::BBB_FORM_ENABLED => false,
             self::BBB_INTEGRATION_DISABLED => false,
 
+            self::SEC_HCAP_SITE_KEY => '',
+            self::SEC_HCAP_SECRET => '',
+            self::SEC_HCAP_ENABLED => false,
+            self::SEC_EMAIL_BLACKLIST => [],
+
             self::KEY_REMINDERS => [
                 self::REMINDER_DATA => [
                     [
@@ -1692,6 +1702,12 @@ class BackendUtils
 
         if ($key === self::KEY_REMINDERS) {
             return $this->setUserReminders($userId, $pageId, $value);
+        } elseif ($key === self::SEC_HCAP_SECRET && !empty($value)) {
+            if(str_starts_with($value, '::hash::')){
+                // already hashed
+                return [200, ''];
+            }
+            $value = '::hash::' . $this->encrypt($value, $this->getLocalHash());
         }
 
         $settings = $this->settings;
@@ -2073,6 +2089,11 @@ class BackendUtils
             OPENSSL_RAW_DATA,
             substr($s1, 0, $ivlen));
         return $t === false ? '' : $t;
+    }
+
+    public function getLocalHash(): string
+    {
+        return hash('md5', \OC_Util::getInstanceId() . $this->config->getAppValue(Application::APP_ID, 'hk', Application::APP_ID), true);
     }
 
 

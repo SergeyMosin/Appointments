@@ -96,6 +96,11 @@ export const useSettingsStore = defineStore('settings', {
 			fi_html: '',
 			fi_json: [],
 
+			secHcapSiteKey: '',
+			secHcapSecret: '',
+			secHcapEnabled: false,
+			secEmailBlacklist: [],
+
 			reminders_data_0_seconds: '0',
 			reminders_data_0_actions: false,
 			reminders_data_1_seconds: '0',
