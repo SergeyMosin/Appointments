@@ -1,11 +1,17 @@
 <script setup>
-import {useSettingsStore} from "../../stores/settings";
+import {useSettingsStore, readOnlyProps} from "../../stores/settings";
 import ComboInput from "./ComboInput.vue";
 import ComboCheckbox from "./ComboCheckbox.vue";
 import ComboSelect from "./ComboSelect.vue";
 import IconAdvanced from "vue-material-design-icons/TuneVerticalVariant.vue"
+import IconOpen from "vue-material-design-icons/OpenInNew.vue"
 import LabelAccordion from "../LabelAccordion.vue";
 import SectionPageFormEditor from "./SectionPageFormEditor.vue";
+import {
+	NcActions,
+	NcActionLink
+} from "@nextcloud/vue"
+import {ref} from "vue"
 
 const settingsStore = useSettingsStore()
 const settings = settingsStore.settings
@@ -37,6 +43,18 @@ const prefilledTypeOptions = [
 	{value: 1, label: t('appointments', 'Readonly / Plain Text')},
 	{value: 2, label: t('appointments', 'Hide Prefilled Inputs')},
 ]
+
+// this is a hacky way of doing this
+// TODO: switch to getPageUrl
+const previewLink = ref('#')
+const handlePreviewClick = () => {
+	const testToken = '3b719b44-8ec9-41e9-b161-00fb1515b1ed'
+	previewLink.value = window.location.origin
+			+ window.location.pathname.replace(/\/*$/, '') + '/pub/' + readOnlyProps.token + '/'
+			+ (settings.skipEVS
+					? 'cncf?d=2' + testToken
+					: 'form?sts=0&d=' + testToken);
+}
 
 </script>
 
@@ -134,6 +152,29 @@ const prefilledTypeOptions = [
 					:label="t('appointments', 'Page Header Title')"
 					:store="settingsStore"/>
 
+			<ComboInput
+					type="textarea"
+					prop-name="formFinishText"
+					:label="t('appointments', 'Additional Form Submitted Page Text')"
+					:store="settingsStore">
+				<template #help>
+					{{ t('appointments', 'Allowed HTML tags: {tags}', {tags: "div, p, span, br"}) }}
+				</template>
+			</ComboInput>
+			<NcActions type="tertiary"
+								 :forceName="true"
+								 style="margin-top: -1em; margin-bottom: 1em">
+				<NcActionLink
+						target="_blank"
+						@click="handlePreviewClick"
+						:href="previewLink">
+					<template #icon>
+						<IconOpen :size="20"/>
+					</template>
+					Preview Form Submitted Page
+				</NcActionLink>
+			</NcActions>
+
 			<ComboSelect
 					class="ps-wide-select"
 					prop-name="prefillInputs"
@@ -144,7 +185,8 @@ const prefilledTypeOptions = [
 				<template #help>
 					{{ t('appointments', 'You can pre-fill fields in the form by adding a URL query parameter, example:') }}
 					<pre style="tab-size: 2"><code class="srgdev-appt-hs-code" style="white-space: pre;font-size: 90%">https://your.domain.com/page_url<span style="font-weight: bold">?name=John Smith&email=atendee@email.com</span></code></pre>
-				</template></ComboSelect>
+				</template>
+			</ComboSelect>
 
 			<ComboSelect
 					class="ps-wide-select"

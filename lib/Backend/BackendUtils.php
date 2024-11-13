@@ -111,7 +111,7 @@ class BackendUtils
     // this is global prep time (Minimum lead time)
     public const CLS_PREP_TIME = 'prepTime';
 
-    // per-appointment block times for pending or booked appointmets
+    // per-appointment block times for pending or booked appointments
     public const CLS_BUFFER_BEFORE = 'bufferBefore';
     public const CLS_BUFFER_AFTER = 'bufferAfter';
 
@@ -146,6 +146,7 @@ class BackendUtils
     public const PSN_USE_NC_THEME = "useNcTheme";
     public const PSN_PREFILL_INPUTS = "prefillInputs";
     public const PSN_PREFILLED_TYPE = "prefilledType";
+    public const PSN_FORM_FINISH_TEXT = "formFinishText";
 
     public const PAGES_ENABLED = "enabled";
     public const PAGES_LABEL = "label";
@@ -1374,6 +1375,7 @@ class BackendUtils
             self::PSN_PREFILL_INPUTS => 0,
             // 0=show as regular inputs, 1=disable prefilled, 2=hide prefilled
             self::PSN_PREFILLED_TYPE => 0,
+            self::PSN_FORM_FINISH_TEXT=>'',
 
             self::KEY_TMPL_DATA => [[], [], [], [], [], [], []],
             self::KEY_TMPL_INFO => [

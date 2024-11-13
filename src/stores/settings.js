@@ -22,7 +22,8 @@ export const readOnlyProps = {
 	// reminder related props
 	bjm: '',
 	cliUrl: '',
-	defaultLang: ''
+	defaultLang: '',
+	token: ''
 }
 export const useSettingsStore = defineStore('settings', {
 	state: () => ({
@@ -85,6 +86,7 @@ export const useSettingsStore = defineStore('settings', {
 			pageTitle: '',
 			prefillInputs: 0,
 			prefilledType: 0,
+			formFinishText: '',
 			metaNoIndex: false,
 			pageStyle: '',
 			useNcTheme: false,

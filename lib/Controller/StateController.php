@@ -599,7 +599,7 @@ class StateController extends Controller
                     }
                     if (str_starts_with($item, '*@')) {
                         // should be a valid domain after the '*@'
-                        if (filter_var(substr($item, 2), FILTER_VALIDATE_DOMAIN,FILTER_FLAG_HOSTNAME) === false) {
+                        if (filter_var(substr($item, 2), FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) === false) {
                             return [Http::STATUS_BAD_REQUEST, ''];
                         }
                     } else {
@@ -608,6 +608,13 @@ class StateController extends Controller
                             return [Http::STATUS_BAD_REQUEST, ''];
                         }
                     }
+                }
+                return [Http::STATUS_OK, ''];
+            },
+
+            BackendUtils::PSN_FORM_FINISH_TEXT => function (&$value, $pageId, $key) {
+                if (!empty($value)) {
+                    $value = strip_tags($value, '<div><p><span><br>');
                 }
                 return [Http::STATUS_OK, ''];
             },

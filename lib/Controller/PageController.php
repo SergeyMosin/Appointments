@@ -35,6 +35,8 @@ class PageController extends Controller
     const RND_SPS = 'abcdefghijklmnopqrstuvwxyz1234567890';
     const RND_SPU = '1234567890ABCDEF';
 
+    const TEST_TOKEN_CNF = '3b719b44-8ec9-41e9-b161-00fb1515b1ed';
+
     private string|null $userId;
     private IConfig $c;
     private IMailer $mailer;
@@ -284,10 +286,16 @@ class PageController extends Controller
 
         $this->throwIfPrivateModeNotLoggedIn();
 
-        $key = hex2bin($this->c->getAppValue($this->appName, 'hk'));
-        $uri = $this->utils->decrypt(substr($pd, 1), $key) . ".ics";
-        if (empty($uri)) {
-            return $this->pubErrResponse($userId, $embed);
+        $dParam = substr($pd, 1);
+        if ($dParam === self::TEST_TOKEN_CNF) {
+            // shortcircut to testing
+            $a = '-' . $a;
+        } else {
+            $key = hex2bin($this->c->getAppValue($this->appName, 'hk'));
+            $uri = $this->utils->decrypt($dParam, $key) . ".ics";
+            if (empty($uri)) {
+                return $this->pubErrResponse($userId, $embed);
+            }
         }
 
         $settings = $this->utils->getUserSettings();
@@ -298,7 +306,7 @@ class PageController extends Controller
             return $this->pubErrResponse($userId, $embed);
         }
 
-        $tr_params = [];
+        $tr_params = ['appt_c_more' => ''];
 
         // take action automatically if "Skip email verification step" is set
         $take_action = $a === '2';
@@ -328,7 +336,7 @@ class PageController extends Controller
             // Confirm or Skip email verification step ($a==='2')
 
             $a_ok = true;
-            $skip_evs_text = '';
+            $skip_evs_email = '';
 
             if ($a === '2') {
                 $a_ok = false;
@@ -338,11 +346,12 @@ class PageController extends Controller
                     if ($ts + 8 >= time()) {
                         $em = substr($uri, 4, $sp);
                         if ($this->mailer->validateMailAddress($em)) {
+                            // form is ok and skip evs is active
                             $uri = substr($uri, $sp + 1 + 4);
-                            // TRANSLATORS the '%s' is an email address
-                            $skip_evs_text = $this->l->t("An email with additional details is on its way to you at %s", [$em]);
+                            $skip_evs_email = $em;
                             $a_ok = true; // :)
                             $a_base = true;
+                            $tr_params['appt_c_more'] = $settings[BackendUtils::PSN_FORM_FINISH_TEXT];
                         }
                     } else {
                         // link expired
@@ -363,7 +372,7 @@ class PageController extends Controller
 
                     if ($sts === 0) {
                         // Appointment is confirmed successfully
-                        $page_text = $this->getPageText($date_time, BackendUtils::PREF_STATUS_CONFIRMED) . " " . $skip_evs_text;
+                        $page_text = $this->makeConfirmedPageText($date_time, $skip_evs_email);
                     } elseif ($otherCalId !== '-1' && $settings[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_SIMPLE) {
                         // edge case (simple mode): this could be a page reload, and we need to check DEST calendar just in-case the appointment has been confirmed already
 
@@ -563,6 +572,17 @@ class PageController extends Controller
                     }
                 }
             }
+        } elseif ($a[0] === '-') {
+            // testing
+            $sts = 0;
+            // -2
+            $take_action = true;
+            $date_time = $this->utils->getDateTimeString(
+                new \DateTimeImmutable('now'),
+                '_UTC'
+            );
+            $page_text = $this->makeConfirmedPageText($date_time, 'test.email@domain.com');
+            $tr_params['appt_c_more'] = $settings[BackendUtils::PSN_FORM_FINISH_TEXT];
         }
 
         if ($sts === 0) {
@@ -613,6 +633,16 @@ class PageController extends Controller
 
         return $tr;
     }
+
+    private function makeConfirmedPageText(string $date_time, string $skip_evs_email): string
+    {
+        return $this->getPageText($date_time, BackendUtils::PREF_STATUS_CONFIRMED) .
+            (!empty($skip_evs_email)
+                // TRANSLATORS the '%s' is an email address
+                ? (" " . $this->l->t("An email with additional details is on its way to you at %s", [$skip_evs_email]))
+                : '');
+    }
+
 
     private function pubErrResponse(string $userId, bool $embed): Response
     {
@@ -685,7 +715,6 @@ class PageController extends Controller
         $captcha_failed_url = "form?sts=3" . $pageParam;
         $captcha_server_error_url = "form?sts=4" . $pageParam;
         $blocked_error_url = "form?sts=5" . $pageParam;
-
 
         $key = hex2bin($this->c->getAppValue($this->appName, 'hk'));
         if (empty($key)) {
@@ -965,8 +994,13 @@ class PageController extends Controller
                 $param['appt_e_ne'] = $settings[BackendUtils::ORG_EMAIL];
             }
         } elseif ($sts === '0') {
-            $key = hex2bin($this->c->getAppValue($this->appName, 'hk'));
-            $dd = $this->utils->decrypt($this->request->getParam('d', ''), $key);
+            $dParam = $this->request->getParam('d', '');
+            if ($dParam === self::TEST_TOKEN_CNF) {
+                $dd = pack('L', time()) . 'test.email@domain.com';
+            } else {
+                $key = hex2bin($this->c->getAppValue($this->appName, 'hk'));
+                $dd = $this->utils->decrypt($dParam, $key);
+            }
             if (strlen($dd) > 7) {
                 $ts = unpack('Lint', substr($dd, 0, 4))['int'];
                 $em = substr($dd, 4);
@@ -974,6 +1008,7 @@ class PageController extends Controller
                     if ($this->mailer->validateMailAddress($em)) {
                         $tmpl = 'public/thanks';
                         $param['appt_c_msg'] = $this->l->t("We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request", [$em]);
+                        $param['appt_c_more'] = $settings[BackendUtils::PSN_FORM_FINISH_TEXT];
                         $rs = 200;
                     }
                 } else {
