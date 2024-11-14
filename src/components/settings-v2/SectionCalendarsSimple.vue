@@ -109,7 +109,7 @@ const compNotBefore = (d) => {
 
 const datePickerPopupStyle = {
 	top: "75%",
-	left: "50%",
+	left: "50% !important",
 	transform: "translate(-50%,0)"
 }
 
@@ -139,7 +139,7 @@ const addAccordionOpen = () => {
 	state.tzLoading = true
 	state.tzName = 'UTC'
 	state.tzData = 'UTC'
-	getTimezone().then(d => {
+	getTimezone(pageId, settings.mainCalId).then(d => {
 		if (d === null) {
 			state.error = true
 		} else {
