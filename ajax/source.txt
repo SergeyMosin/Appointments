@@ -1,1 +1,1 @@
-https://raw.githubusercontent.com/nextcloud/calendar-js/main/resources/timezones/zones.json
+https://raw.githubusercontent.com/nextcloud-libraries/timezones/refs/heads/main/resources/timezones/zones.json
