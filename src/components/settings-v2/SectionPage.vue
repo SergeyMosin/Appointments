@@ -108,11 +108,6 @@ const handlePreviewClick = () => {
 				:label="t('appointments', 'Hide phone number field')"
 				:store="settingsStore"/>
 
-		<ComboCheckbox
-				prop-name="privatePage"
-				:label="t('appointments', 'Private (visitors must be logged-in)')"
-				:store="settingsStore"/>
-
 		<LabelAccordion
 				:label="t('appointments', 'Advanced Form Settings')"
 				:accordion="true">

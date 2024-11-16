@@ -46,6 +46,11 @@ const handleDeleteBadEmail = (email) => {
 <template>
 	<div class="ps-section-wrap">
 		<ComboCheckbox
+				prop-name="privatePage"
+				:label="t('appointments', 'Private Page (visitors must be logged-in)')"
+				:store="settingsStore"/>
+
+		<ComboCheckbox
 				class="ps-vert-spacing"
 				prop-name="secHcapEnabled"
 				:label="t('appointments', 'Enable hCaptacha')"
@@ -74,6 +79,7 @@ const handleDeleteBadEmail = (email) => {
 				</NcNoteCard>
 			</div>
 		</div>
+
 		<LabelAccordion
 				class="ps-vert-spacing"
 				:label="t('appointments','Blocked email addresses:')">
