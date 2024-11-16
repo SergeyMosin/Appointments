@@ -251,7 +251,9 @@
 	function focusTrapListener(evt) {
 		if (evt.target
 			&& (evt.target.nodeName.toUpperCase() !== "DIV"
-				&& evt.target.nodeName.toUpperCase() !== "SPAN")) {
+				&& evt.target.nodeName.toUpperCase() !== "SPAN"
+				&& evt.target.id !== 'srgdev-dpu_tz-picker'
+			)) {
 			// (Re)set focus to first available
 			document.getElementById("srgdev-dpu_main-date").firstAvailble.focus()
 		}
@@ -293,7 +295,6 @@
 		let n = this.id.slice(13)
 		let c = this.parentElement.curActive
 		if (c === n) return
-
 		// special case: initial programmatic click event
 		if (!c) {
 			c = n
@@ -330,13 +331,7 @@
 			let elm = document.createElement('div')
 			elm.className = "srgdev-dpu-tc-full-date"
 			elm.appendChild(document.createTextNode(timePage.fullDate))
-			// time zone
-			if (timePage.tzn !== '') {
-				const elm1 = document.createElement('div')
-				elm1.className = "srgdev-dpu-tc-timezone"
-				elm1.appendChild(document.createTextNode(timePage.tzn))
-				elm.appendChild(elm1)
-			}
+
 			timeCont.appendChild(elm)
 
 			const tuClass = bfCont.tuClass
@@ -518,18 +513,328 @@
 		}
 	}
 
+	/**
+	 * @return {Promise<string[]>}
+	 */
+	async function getIanaTimeZones() {
 
-	function makeDpu(pso) {
+		try {
+			const zones = Intl.supportedValuesOf('timeZone').filter(zone => zone.indexOf('/') !== -1 && !zone.startsWith('Etc'));
+			return Promise.resolve(zones)
+		} catch (e) {
+			console.error('Intl.supportedValuesOf failed/not available', e)
+		}
 
-		const PPS_NWEEKS = "nbrWeeks";
-		const PPS_EMPTY = "showEmpty";
-		const PPS_FNED = "startFNED";
-		const PPS_WEEKEND = "showWeekends";
-		const PPS_SHOWTZ = "showTZ";
-		const PPS_TIME2 = "time2Cols";
-		const PPS_END_TIME = "endTime";
+		// support for Intl.supportedValuesOf is not so good I guess
+		let zonesFile = document.getElementById('srgdev-ncfp_frm').getAttribute('data-zones')
+		if (zonesFile) {
+			return fetch(zonesFile)
+				.then(res => {
+					return res.json()
+				})
+				.then(json => {
 
-		let min_days = 7 * pso[PPS_NWEEKS]
+					if (!json.zones || !(typeof json.zones === 'object' && !Array.isArray(json.zones))
+					) {
+						throw new Error("invalid zones data")
+					}
+					const zones = Object.keys(json.zones)
+					if (zones.length === 0) {
+						throw new Error("empty zones data")
+					}
+					return zones;
+				})
+				.catch(e => {
+					console.error('fetch(zonesFile) failed:', e)
+					return ['error: no_timezones_info']
+				})
+		}
+	}
+
+	function getTzName(lang, iana) {
+		const d = new Date()
+		const short = d.toLocaleDateString(lang, {timeZone: iana});
+		const full = d.toLocaleDateString(lang, {timeZone: iana, timeZoneName: 'long'});
+
+		// Trying to remove date from the string in a locale-agnostic way
+		const shortIndex = full.indexOf(short);
+		if (shortIndex >= 0) {
+			const trimmed = full.substring(0, shortIndex) + full.substring(shortIndex + short.length);
+
+			// by this time `trimmed` should be the timezone's name with some punctuation -
+			// trim it from both sides
+			return trimmed.replace(/^[\s,.\-:;]+|[\s,.\-:;]+$/g, '');
+
+		} else {
+			return iana;
+		}
+	}
+
+	function makeTzPicker(pso, lang, currentTz) {
+
+		const sel = document.createElement('select')
+		sel.id = 'srgdev-dpu_tz-picker'
+
+		sel.addEventListener('change', () => {
+
+			if (sel.value === sel.currentTz) {
+				return;
+			}
+			sel.currentTz = sel.value
+			let selectedTz = undefined
+			try {
+				selectedTz = Intl.DateTimeFormat(lang, {timeZone: sel.value}).resolvedOptions().timeZone
+			} catch (e) {
+				console.error("tz selector: can not parse", sel.value, e)
+				return
+			}
+
+			sel.nextSibling.textContent = getTzName(lang, selectedTz)
+			makeDpu(pso, selectedTz)
+		})
+
+		if (!currentTz) {
+			currentTz = Intl.DateTimeFormat(lang).resolvedOptions().timeZone
+		}
+		// stops un-needed reloads
+		sel.currentTz = currentTz
+
+		const focusListener = async () => {
+			const ianaTzList = await getIanaTimeZones()
+			ianaTzList.forEach(tz => {
+				const opt = document.createElement('option')
+				opt.textContent = tz
+				sel.appendChild(opt)
+			})
+			sel.value = currentTz
+			sel.removeEventListener('focus', focusListener)
+		}
+		sel.addEventListener('focus', focusListener)
+
+		const title = document.createElement('div')
+		title.className = 'srgdev-dpu-tz-name'
+		title.innerText = getTzName(lang, currentTz)
+
+		const label = document.createElement('label')
+		label.className = 'srgdev-dpu-tz-picker-wrapper'
+		label.appendChild(sel)
+		label.appendChild(title)
+
+		return label
+	}
+
+	const PPS_NWEEKS = "nbrWeeks";
+	const PPS_EMPTY = "showEmpty";
+	const PPS_FNED = "startFNED";
+	const PPS_WEEKEND = "showWeekends";
+	const PPS_TIME2 = "time2Cols";
+	const PPS_END_TIME = "endTime";
+
+	const getFormatters = function (lang, btz, hasIntl) {
+
+		const mn = window.monthNames !== undefined
+			? window.monthNames
+			: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+		const dn = window.dayNames !== undefined
+			? window.dayNames
+			: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
+		return {
+			df: hasIntl
+				? (new Intl.DateTimeFormat(lang,
+					{month: "long", timeZone: btz})).format
+				: function (d) {
+					return mn[d.getMonth()]
+				},
+			wf: hasIntl
+				? (new Intl.DateTimeFormat(lang,
+					{weekday: "short", timeZone: btz})).format
+				: function (d) {
+					return dn[d.getDay()]
+				},
+
+			wft: hasIntl
+				? new Intl.DateTimeFormat(lang,
+					{weekday: "short", month: "long", day: "2-digit", timeZone: btz}).format
+				: function (d) {
+					return d.toDateString()
+				},
+			wff: hasIntl
+				? new Intl.DateTimeFormat(lang,
+					{weekday: "long", month: "long", day: "numeric", year: "numeric", timeZone: btz}).format
+				: function (d) {
+					return d.toLocaleDateString()
+				}
+		}
+	}
+
+	const makeDateCont = function (d, is_empty, min_days, ref, formatters) {
+		let e1 = document.createElement("div")
+		e1.id = "srgdev-dpu_dc" + ref.lcc + (is_empty ? "e" : "")
+		e1.className = 'srgdev-dpu-date-cont' + (is_empty ? " srgdev-dpu-dc-empty" : "")
+
+		let e2 = document.createElement('span')
+		e2.className = d.getDay() !== 0 ? 'srgdev-dpu-date-wd' : 'srgdev-dpu-date-wd srgdev-dpu-date-wd-sunday';
+		e2.appendChild(document.createTextNode(formatters.wf(d)))
+		e1.appendChild(e2)
+
+		e2 = document.createElement('span')
+		e2.className = 'srgdev-dpu-date-dn'
+		e2.appendChild(document.createTextNode(d.getDate()))
+		e1.appendChild(e2)
+
+		e2 = document.createElement('span')
+		e2.className = 'srgdev-dpu-date-md'
+		e2.appendChild(document.createTextNode(formatters.df(d)))
+		e1.appendChild(e2)
+
+		e1.addEventListener('click', dateClickOrFocus)
+		if (!is_empty) {
+			e1.setAttribute("tabindex", "0")
+			e1.addEventListener('focus', dateClickOrFocus)
+			e1.addEventListener('keyup', dateKeyboard)
+		}
+
+		if (ref.lcc === ref.rccN) {
+			ref.rccN += 5
+			ref.bfMaxDP++
+			if (ref.lcc > min_days) ref.do_break = true
+		}
+		++ref.lcc
+		return e1
+	}
+
+
+	function makeTimePages(lcTime, lcdBF, lcd, dta, pso, formatters) {
+
+		const min_days = 7 * pso[PPS_NWEEKS]
+
+		const ref = {
+			lcc: 0,
+			rccN: 5,
+			do_break: false,
+			bfMaxDP: 0
+		}
+
+		let d = new Date()
+		let td = new Date()
+		td.setSeconds(1)
+		td.setMinutes(0)
+		td.setHours(0)
+
+		if (pso[PPS_EMPTY] === 1 && pso[PPS_FNED] === 0) {
+			// Need to prepend empty days so the week start on Monday
+			let ts = dta[0].rts
+			d.setTime(ts)
+			d.setSeconds(1)
+			d.setMinutes(0)
+			d.setHours(0)
+			let fd = d.getDay()
+			if (fd > 0 && fd < 6) {
+				td.setTime(d.getTime() - 86400000 * (fd - 1))
+			}
+		}
+
+		let an = -1
+		let lastUD = -1
+
+		const timePages = []
+		const l = dta.length
+		for (let ts, ti, ets, tts, te, dto, timePage, i = 0; i < l; i++) {
+			dto = dta[i]
+			ts = dto.rts
+			if (ts === 0) break
+			d.setTime(ts)
+
+			let ud = ((d.getMonth() + 1) * 100) + d.getDate()
+
+			if (lastUD !== ud) {
+
+				// Show "empty" days ...
+				tts = td.getTime()
+				td.setTime(d.getTime())
+				td.setSeconds(1)
+				td.setMinutes(0)
+				td.setHours(0)
+				ets = td.getTime()
+
+				if (pso[PPS_EMPTY] === 1) {
+					while (tts < ets) {
+						td.setTime(tts)
+
+						// Deal with weekends
+						if (pso[PPS_WEEKEND] === 0) {
+							// only show weekdays
+							ti = td.getDay()
+						} else {
+							// show all days
+							ti = 1
+						}
+
+						if (ti !== 0 && ti !== 6) {
+							lcd.appendChild(makeDateCont(td, true, min_days, ref, formatters))
+
+							timePages.push({
+								lccIdx: -1,
+								dataDm: '',
+								timeItems: [],
+								fullDate: '',
+							})
+
+							if (ref.do_break) break
+						}
+						tts += 86400000;
+					}
+				}
+
+				if (ref.do_break) {
+					d = td
+					break
+				}
+
+				td.setTime(tts + 86400000)
+
+				te = makeDateCont(d, false, min_days, ref, formatters)
+				if (an === -1) {
+					an = ref.lcc - 1
+					te.setAttribute('data-active', '')
+					lcd.firstAvailble = te
+				}
+				lcd.appendChild(te)
+
+				//
+				timePage = {
+					lccIdx: ref.lcc - 1,
+					dataDm: formatters.wft(d),
+					timeItems: [],
+					fullDate: formatters.wff(d),
+				}
+				timePages.push(timePage)
+
+				lastUD = ud
+			}
+
+			timePage.timeItems.push({
+				dpuClickID: i,
+				timeAt: dto.timeAt,
+				time: dto.time,
+				title: dto.t
+			})
+		}
+
+		// fill in empty space ?????
+		// d.setSeconds(0)
+		// d.setMinutes(0)
+		// d.setHours(1)
+		// d.setTime(d.getTime() + 86400000)
+
+		lcTime.timePages = timePages
+		lcdBF.maxDP = ref.bfMaxDP
+
+		return an
+	}
+
+	function makeDpu(pso, selectedTz = undefined) {
 
 		let s = document.getElementById('srgdev-ncfp_sel-hidden')
 		if (s.getAttribute("data-state") !== '2') {
@@ -541,20 +846,6 @@
 		const dpuTrBack = s.getAttribute("data-tr-back")
 		const dpuTrNext = s.getAttribute("data-tr-next")
 
-		let mn
-		let dn
-
-		if (window.monthNames !== undefined) {
-			mn = window.monthNames
-		} else {
-			mn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-		}
-		if (window.dayNames !== undefined) {
-			dn = window.dayNames
-		} else {
-			dn = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-		}
-
 		const has_intl = window.Intl && typeof window.Intl === "object"
 		const lang = document.documentElement.hasAttribute('data-locale')
 			? [document.documentElement.getAttribute('data-locale').replaceAll('_', '-'), document.documentElement.lang]
@@ -562,7 +853,10 @@
 
 		let btz = undefined
 		const urlParams = new URLSearchParams(window.location.search);
-		if (urlParams) {
+
+		if (selectedTz !== undefined) {
+			btz = selectedTz
+		} else if (urlParams) {
 			const tzParam = urlParams.get('tz');
 			if (tzParam) {
 				try {
@@ -571,61 +865,6 @@
 					console.error("can not parse tz param:", e)
 					btz = undefined
 				}
-			}
-		}
-
-		let tf
-		if (has_intl) {
-			let f = new Intl.DateTimeFormat(lang,
-				{hour: "numeric", minute: "2-digit", timeZone: btz})
-			tf = f.format
-		} else {
-			tf = function (d) {
-				return d.toLocaleTimeString()
-			}
-		}
-
-		let df
-		if (has_intl) {
-			let f = new Intl.DateTimeFormat(lang,
-				{month: "long", timeZone: btz})
-			df = f.format
-		} else {
-			df = function (d) {
-				return mn[d.getMonth()]
-			}
-		}
-
-		let wf
-		if (has_intl) {
-			let f = new Intl.DateTimeFormat(lang,
-				{weekday: "short", timeZone: btz})
-			wf = f.format
-		} else {
-			wf = function (d) {
-				return dn[d.getDay()]
-			}
-		}
-
-		let wft
-		if (has_intl) {
-			let f = new Intl.DateTimeFormat(lang,
-				{weekday: "short", month: "long", day: "2-digit", timeZone: btz})
-			wft = f.format
-		} else {
-			wft = function (d) {
-				return d.toDateString()
-			}
-		}
-
-		let wff
-		if (has_intl) {
-			let f = new Intl.DateTimeFormat(lang,
-				{weekday: "long", month: "long", day: "numeric", year: "numeric", timeZone: btz})
-			wff = f.format
-		} else {
-			wff = function (d) {
-				return d.toLocaleDateString()
 			}
 		}
 
@@ -639,6 +878,13 @@
 			}
 			if (typeof tzn !== "string") tzn = undefined
 		}
+
+		const tf = has_intl
+			? (new Intl.DateTimeFormat(lang,
+				{hour: "numeric", minute: "2-digit", timeZone: btz})).format
+			: function (d) {
+				return d.toLocaleTimeString()
+			}
 
 		for (let md = new Date(), tzo, tzi, t, tStr, atStr, sp, sp2, dur, dur_idx,
 			     ts, endTime = pso[PPS_END_TIME],
@@ -706,252 +952,101 @@
 		dta.sort((a, b) => (a.rts > b.rts) ? 1 : -1)
 		dta.push({rts: 0, d: "", t: "", tzi: "", time: ""}) //last option to finalize the loop
 
-		// console.log(dta)
+		// console.log('makeDpu, dta:', dta)
 		s.dataRef = dta
 
-		let l = dta.length
+		const bfElmId = 'srgdev-dpu_bf-cont'
+		const mainDateElmId = 'srgdev-dpu_main-date'
+		const mainTimeElmId = 'srgdev-dpu_main-time'
 
-		let cont = document.createElement('div')
-		cont.id = "srgdev-dpu_main-cont"
-		cont.className = "srgdev-dpu-bkr-cls"
-
-		let lcd = document.createElement('div')
-		lcd.id = "srgdev-dpu_main-header"
-		lcd.appendChild(document.createTextNode(dpuTrHdr))
-		cont.appendChild(lcd)
-
-
-		let lcdBF = document.createElement('div')
-		lcdBF.maxDP = 0
-		lcdBF.curDP = 0
-		lcdBF.tuClass = ""
-		lcdBF.id = "srgdev-dpu_bf-cont"
-		lcdBF.appendChild(document.createElement("span"))
-		lcdBF.appendChild(document.createElement("span"))
-		lcdBF.firstElementChild.id = "srgdev-dpu_bf-back"
-		lcdBF.firstElementChild.appendChild(document.createTextNode(dpuTrBack))
-		lcdBF.firstElementChild.addEventListener("click", prevNextDPU)
-		lcdBF.firstElementChild.setAttribute('disabled', '')
-		lcdBF.lastElementChild.id = "srgdev-dpu_bf-next"
-		lcdBF.lastElementChild.appendChild(document.createTextNode(dpuTrNext))
-		lcdBF.lastElementChild.addEventListener("click", prevNextDPU)
-
-		cont.appendChild(lcdBF)
-
-		lcd = document.createElement('div')
-		lcd.id = "srgdev-dpu_main-date"
-		lcd.className = "srgdev-dpu-bkr-cls"
-		lcd.style.left = "0em"
-		addSwipe(lcd, lcdBF)
-		cont.appendChild(lcd)
-
-		let lcTime = document.createElement('div')
-		lcTime.id = "srgdev-dpu_main-time"
-		cont.appendChild(lcTime)
-
-		let lcc = 0
-		let rccN = 5
-
-		let d = new Date()
-
-		let lastUD = -1
-
-		let an = -1
-		let do_break = false
-
-		let makeDateCont = function (d, is_empty) {
-			let e1 = document.createElement("div")
-			e1.id = "srgdev-dpu_dc" + lcc + (is_empty ? "e" : "")
-			e1.className = 'srgdev-dpu-date-cont' + (is_empty ? " srgdev-dpu-dc-empty" : "")
-
-			let e2 = document.createElement('span')
-			e2.className = d.getDay() !== 0 ? 'srgdev-dpu-date-wd' : 'srgdev-dpu-date-wd srgdev-dpu-date-wd-sunday';
-			e2.appendChild(document.createTextNode(wf(d)))
-			e1.appendChild(e2)
-
-			e2 = document.createElement('span')
-			e2.className = 'srgdev-dpu-date-dn'
-			e2.appendChild(document.createTextNode(d.getDate()))
-			e1.appendChild(e2)
-
-			e2 = document.createElement('span')
-			e2.className = 'srgdev-dpu-date-md'
-			e2.appendChild(document.createTextNode(df(d)))
-			e1.appendChild(e2)
-
-			e1.addEventListener('click', dateClickOrFocus)
-			if (!is_empty) {
-				e1.setAttribute("tabindex", "0")
-				e1.addEventListener('focus', dateClickOrFocus)
-				e1.addEventListener('keyup', dateKeyboard)
+		let lcdBF, lcTime
+		let lcd = document.getElementById(mainDateElmId)
+		if (lcd !== null) {
+			// time zone changed
+			while (lcd.firstChild) {
+				lcd.removeChild(lcd.lastChild)
 			}
-
-			if (lcc === rccN) {
-				rccN += 5
-				lcdBF.maxDP++
-				if (lcc > min_days) do_break = true
-			}
-			++lcc
-			return e1
-		}
-
-		let td = new Date()
-		td.setSeconds(1)
-		td.setMinutes(0)
-		td.setHours(0)
-
-		if (pso[PPS_EMPTY] === 1 && pso[PPS_FNED] === 0) {
-			// Need to prepend empty days so the week start on Monday
-			let ts = dta[0].rts
-			d.setTime(ts)
-			d.setSeconds(1)
-			d.setMinutes(0)
-			d.setHours(0)
-			let fd = d.getDay()
-			if (fd > 0 && fd < 6) {
-				td.setTime(d.getTime() - 86400000 * (fd - 1))
-			}
-		}
-
-		let tu_class
-		// Time columns
-		if (pso[PPS_TIME2] === 0 || pso[PPS_END_TIME] === 1) {
-			lcdBF.tuClass = 'srgdev-dpu-time-unit' +
-				(pso[PPS_END_TIME] === 1 ? "_tn" : "")
+			lcd.curActive = undefined
+			lcTime = document.getElementById(mainTimeElmId)
+			lcdBF = document.getElementById(bfElmId)
 		} else {
-			lcdBF.tuClass = 'srgdev-dpu-time-unit2'
-		}
+			// first render
+			const cont = document.createElement('div')
+			cont.id = "srgdev-dpu_main-cont"
+			cont.className = "srgdev-dpu-bkr-cls"
 
-		let getTzName
-		if (pso[PPS_SHOWTZ] === 1 && has_intl) {
-			// getTzName=
-			getTzName = function (d) {
-				const short = d.toLocaleDateString(lang, {timeZone: btz});
-				const full = d.toLocaleDateString(lang, {timeZone: btz, timeZoneName: 'long'});
+			lcd = document.createElement('div')
+			lcd.id = "srgdev-dpu_main-header"
+			lcd.appendChild(document.createTextNode(dpuTrHdr))
+			cont.appendChild(lcd)
 
-				// Trying to remove date from the string in a locale-agnostic way
-				const shortIndex = full.indexOf(short);
-				if (shortIndex >= 0) {
-					const trimmed = full.substring(0, shortIndex) + full.substring(shortIndex + short.length);
-
-					// by this time `trimmed` should be the timezone's name with some punctuation -
-					// trim it from both sides
-					return trimmed.replace(/^[\s,.\-:;]+|[\s,.\-:;]+$/g, '');
-
-				} else {
-					return full;
-				}
-
+			lcdBF = document.createElement('div')
+			lcdBF.maxDP = 0
+			lcdBF.curDP = 0
+			lcdBF.tuClass = ""
+			lcdBF.id = bfElmId
+			lcdBF.appendChild(document.createElement("span"))
+			lcdBF.appendChild(document.createElement("span"))
+			lcdBF.firstElementChild.id = "srgdev-dpu_bf-back"
+			lcdBF.firstElementChild.appendChild(document.createTextNode(dpuTrBack))
+			lcdBF.firstElementChild.addEventListener("click", prevNextDPU)
+			lcdBF.firstElementChild.setAttribute('disabled', '')
+			lcdBF.lastElementChild.id = "srgdev-dpu_bf-next"
+			lcdBF.lastElementChild.appendChild(document.createTextNode(dpuTrNext))
+			lcdBF.lastElementChild.addEventListener("click", prevNextDPU)
+			// Time columns
+			if (pso[PPS_TIME2] === 0 || pso[PPS_END_TIME] === 1) {
+				lcdBF.tuClass = 'srgdev-dpu-time-unit' +
+					(pso[PPS_END_TIME] === 1 ? "_tn" : "")
+			} else {
+				lcdBF.tuClass = 'srgdev-dpu-time-unit2'
 			}
-		} else {
-			getTzName = function () {
-				return ''
-			}
-		}
+			cont.appendChild(lcdBF)
 
-		const timePages = []
+			lcd = document.createElement('div')
+			lcd.id = mainDateElmId
+			lcd.className = "srgdev-dpu-bkr-cls"
+			lcd.style.left = "0em"
+			addSwipe(lcd, lcdBF)
+			cont.appendChild(lcd)
 
-		for (let tl, ts, ti, ets, tts, te, pe, elt, dto, tzn, timePage, i = 0; i < l; i++) {
-			dto = dta[i]
-			ts = dto.rts
-			if (ts === 0) break
-			d.setTime(ts)
+			lcTime = document.createElement('div')
+			lcTime.id = mainTimeElmId
+			cont.appendChild(lcTime)
 
-			let ud = ((d.getMonth() + 1) * 100) + d.getDate()
-
-			if (lastUD !== ud) {
-
-				// if(do_break) break
-
-				// Show "empty" days ...
-				tts = td.getTime()
-				td.setTime(d.getTime())
-				td.setSeconds(1)
-				td.setMinutes(0)
-				td.setHours(0)
-				ets = td.getTime()
-
-				if (pso[PPS_EMPTY] === 1) {
-					while (tts < ets) {
-						td.setTime(tts)
-
-						// Deal with weekends
-						if (pso[PPS_WEEKEND] === 0) {
-							// only show weekdays
-							ti = td.getDay()
-						} else {
-							// show all days
-							ti = 1
-						}
-
-						if (ti !== 0 && ti !== 6) {
-							lcd.appendChild(makeDateCont(td, true))
-
-							timePages.push({
-								lccIdx: -1,
-								dataDm: '',
-								timeItems: [],
-								fullDate: '',
-								tzn: ''
-							})
-
-							if (do_break) break
-						}
-						tts += 86400000;
-					}
-				}
-
-				if (do_break) {
-					d = td
-					break
-				}
-
-				td.setTime(tts + 86400000)
-
-				te = makeDateCont(d, false)
-				if (an === -1) {
-					an = lcc - 1
-					te.setAttribute('data-active', '')
-					lcd.firstAvailble = te
-				}
-				lcd.appendChild(te)
-
-				//
-				timePage = {
-					lccIdx: lcc - 1,
-					dataDm: wft(d),
-					timeItems: [],
-					fullDate: wff(d),
-					tzn: getTzName(d)
-				}
-				timePages.push(timePage)
-
-				lastUD = ud
+			if (has_intl) {
+				cont.appendChild(makeTzPicker(pso, lang, btz))
 			}
 
-			timePage.timeItems.push({
-				dpuClickID: i,
-				timeAt: dto.timeAt,
-				time: dto.time,
-				title: dto.t
+			// close button is added last because we want it last for keyboard focus
+			const btn = document.createElement('div')
+			btn.id = "srgdev-dpu_main-hdr-icon"
+			btn.className = "icon-close"
+			btn.addEventListener('click', function () {
+				selClose(null)
 			})
+			btn.role = "button"
+			btn.addEventListener('keyup', function (evt) {
+				if (isSpaceKey(evt) || isEnterKey(evt)) {
+					selClose(null)
+				}
+			})
+			btn.setAttribute("tabindex", "0")
+			cont.appendChild(btn)
+
+			cont.addEventListener("click", timeClick)
+			cont.addEventListener('keyup', function (evt) {
+				if (isSpaceKey(evt) || isEnterKey(evt)) {
+					timeClick(evt)
+				}
+			})
+			document.getElementById('srgdev-ncfp_sel_cont').appendChild(cont)
 		}
 
-		// fill in empty space
-		d.setSeconds(0)
-		d.setMinutes(0)
-		d.setHours(1)
-		d.setTime(d.getTime() + 86400000)
-
-		lcTime.timePages = timePages
-
-		cont.addEventListener("click", timeClick)
-		cont.addEventListener('keyup', function (evt) {
-			if (isSpaceKey(evt) || isEnterKey(evt)) {
-				timeClick(evt)
-			}
-		})
-		document.getElementById('srgdev-ncfp_sel_cont').appendChild(cont)
+		const an = makeTimePages(
+			lcTime, lcdBF, lcd,
+			dta, pso, getFormatters(lang, btz, has_intl)
+		)
 
 		lcd.firstAvailble.click()
 		lcd.curActive = an.toString()
@@ -963,22 +1058,6 @@
 			lcdBF.curDP = ti
 			prevNextDPU(lcdBF)
 		}
-
-		// close button is added last because we want it last for keyboard focus
-		lcdBF = document.createElement('div')
-		lcdBF.id = "srgdev-dpu_main-hdr-icon"
-		lcdBF.className = "icon-close"
-		lcdBF.addEventListener('click', function () {
-			selClose(null)
-		})
-		lcdBF.role = "button"
-		lcdBF.addEventListener('keyup', function (evt) {
-			if (isSpaceKey(evt) || isEnterKey(evt)) {
-				selClose(null)
-			}
-		})
-		lcdBF.setAttribute("tabindex", "0")
-		cont.appendChild(lcdBF)
 	}
 
 	/**

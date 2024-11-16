@@ -25,6 +25,7 @@ use OCP\IL10N;
 use OCP\IRequest;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Controller;
+use OCP\IURLGenerator;
 use OCP\IUserSession;
 use OCP\Mail\IMailer;
 use OCP\Util;
@@ -45,6 +46,7 @@ class PageController extends Controller
     private BackendUtils $utils;
     private LoggerInterface $logger;
     private IUserSession $userSession;
+    private IURLGenerator $urlGenerator;
 
     public function __construct(IRequest        $request,
                                 IConfig         $c,
@@ -53,6 +55,7 @@ class PageController extends Controller
                                 IUserSession    $userSession,
                                 BackendManager  $backendManager,
                                 BackendUtils    $utils,
+                                IURLGenerator   $urlGenerator,
                                 LoggerInterface $logger
     ) {
         parent::__construct(Application::APP_ID, $request);
@@ -63,6 +66,7 @@ class PageController extends Controller
         /** @noinspection PhpUnhandledExceptionInspection */
         $this->bc = $backendManager->getConnector();
         $this->utils = $utils;
+        $this->urlGenerator = $urlGenerator;
         $this->logger = $logger;
         $this->userId = $this->userSession->getUser()?->getUID();
     }
@@ -1244,6 +1248,8 @@ class PageController extends Controller
             "phone_required:" . $this->l->t('Phone number is required.') . "," .
             "required:" . $this->l->t('Required.') . "," .
             "number_required:" . $this->l->t('Number required.');
+
+        $params['zones_file'] = $this->urlGenerator->linkTo(Application::APP_ID, 'ajax/zones.js');
 
         $tr->setParams($params);
 

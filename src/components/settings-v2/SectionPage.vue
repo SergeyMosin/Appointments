@@ -113,12 +113,6 @@ const handlePreviewClick = () => {
 				:label="t('appointments', 'Private (visitors must be logged-in)')"
 				:store="settingsStore"/>
 
-		<ComboCheckbox
-				prop-name="showTZ"
-				:label="t('appointments', 'Show timezone')"
-				class="ps-vert-spacing"
-				:store="settingsStore"/>
-
 		<LabelAccordion
 				:label="t('appointments', 'Advanced Form Settings')"
 				:accordion="true">

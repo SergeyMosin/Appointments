@@ -456,7 +456,7 @@ input.srgdev-ncfp-form-input:invalid,
 #srgdev-dpu_main-time {
   border-top: 1px solid $color-border;
   border-top: 1px solid var(--color-border);
-  height: 21em;
+  height: 20em;
   display: flex;
   flex-direction: column;
 }
@@ -484,13 +484,6 @@ input.srgdev-ncfp-form-input:invalid,
   flex: 0;
 }
 
-.srgdev-dpu-tc-timezone {
-  font-weight: normal;
-  font-size: 75%;
-  color: ($color-text-lighter);
-  color: var(--color-text-lighter);
-}
-
 .srgdev-dpu-tc-tu-wrap {
   overflow-y: scroll;
   width: 100%;
@@ -507,6 +500,81 @@ input.srgdev-ncfp-form-input:invalid,
   border: 1px solid $color-border;
   border: 1px solid var(--color-border);
   padding: .2em 0;
+}
+
+$tz-cont-height: 2.5em;
+.srgdev-dpu-tz-picker-wrapper {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-top: 1px solid $color-border;
+  border-top: 1px solid var(--color-border);
+  margin-top: .25em;
+  cursor: pointer;
+  text-align: center;
+}
+
+#srgdev-dpu_tz-picker {
+  position: absolute;
+  width: 100%;
+  height: $tz-cont-height;
+  border: none;
+  padding: 0;
+  outline: none;
+  display: block;
+  margin: 0;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+#srgdev-dpu_tz-picker option {
+  opacity: 1;
+}
+
+.srgdev-dpu-tz-name {
+  pointer-events: none;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  margin: 0;
+  height: $tz-cont-height;
+  line-height: $tz-cont-height;
+  min-height: $tz-cont-height;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0 2em 0 .375em;
+  position: relative;
+  color: ($color-text-lighter);
+  color: var(--color-text-lighter);
+  vertical-align: middle;
+}
+
+.srgdev-dpu-tz-picker-wrapper:hover .srgdev-dpu-tz-name {
+  color: ($color-main-text);
+  color: var(--color-main-text);
+}
+
+.srgdev-dpu-tz-name:after {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 0;
+  right: 0;
+  top: 50%;
+  margin-top: -.125em;
+  border-left: .375em solid transparent;
+  border-right: .375em solid transparent;
+  border-top: .375em solid var(--color-text-lighter);
+}
+
+#srgdev-dpu_tz-picker:focus-visible + .srgdev-dpu-tz-name {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--color-primary);
+  color: $color-main-text;
+  color: var(--color-main-text);
 }
 
 .srgdev-dpu-appt-title {
