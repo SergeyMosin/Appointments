@@ -1,3 +1,22 @@
+## v2.2.0 - 2024-11-16
+### Added
+- More 'lead time' options - #557
+- New security options: email block list and hCaptcha - #558 and #261
+- New option for adding text to the 'Form Submitted Page'
+- New Timezone picker(select dropdown) on the form - #370, #460, #511
+### Changed
+- Removed legacy v1 pref DB table
+- Updated NC vue dependencies
+- Updated zones.js file
+- Removed "Show Timezone" option because Timezone Picker is always shown now
+- Moved 'Private Page' setting into Security section
+### Fixed
+- Do not use screaming message - #552
+- Send confirmation email in user locale - #158
+- Fixed 'select' component styles
+- Simple mode: date/time picker style
+- Simple mode: getTimezone request
+
 ## v2.1.12 - 2024-10-07
 ### Changed
 - Remove placeholder location when location is unset - #528
