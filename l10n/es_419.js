@@ -32,6 +32,7 @@ OC.L10N.register(
     "Confirmed" : "Confirmado",
     "24 hours" : "24 horas",
     "Warning" : "Advertencia",
+    "Important" : "Importante",
     "Reminders" : "Recordatorios",
     "Edit" : "Editar",
     "Back" : "Atrás",

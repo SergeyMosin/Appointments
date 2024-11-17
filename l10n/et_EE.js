@@ -28,6 +28,8 @@ OC.L10N.register(
     "Confirmed" : "Kinnitatud",
     "Disabled" : "Keelatud",
     "Warning" : "Hoiatus",
+    "Important" : "Tähtis",
+    "Security" : "Turvalisus",
     "Reminders" : "Meelespead",
     "Advanced" : "Täpsem",
     "Edit" : "Redigeeri",

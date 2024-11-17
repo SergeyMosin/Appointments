@@ -30,6 +30,7 @@ OC.L10N.register(
     "Disabled" : "Malkapabligita",
     "24 hours" : "24 horoj",
     "Warning" : "Averto",
+    "Important" : "Grava",
     "Reminders" : "Memorigoj",
     "Advanced" : "Progresinta",
     "Edit" : "Modifi",

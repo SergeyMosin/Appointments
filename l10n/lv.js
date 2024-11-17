@@ -35,6 +35,8 @@ OC.L10N.register(
     "Hide phone number field" : "Slēpt tālruņa numura lauku",
     "24 hours" : "24 stundas",
     "Warning" : "Brīdinājums",
+    "Important" : "Svarīgi",
+    "Security" : "Drošība",
     "Reminders" : "Atgādinājumi",
     "Advanced" : "Paplašināti",
     "Edit" : "Labot",

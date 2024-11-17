@@ -34,6 +34,8 @@ OC.L10N.register(
     "Disabled" : "არაა მოქმედი",
     "24 hours" : "24 საათი",
     "Warning" : "გაფრთხილება",
+    "Important" : "აუცილებელი",
+    "Security" : "უსაფრთხოება",
     "Reminders" : "შემახსენებლები",
     "Advanced" : "მოწინავე",
     "Edit" : "ცვლილება",
