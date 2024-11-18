@@ -184,6 +184,7 @@ OC.L10N.register(
     "Form header and event organizer settings" : "Indstillinger for formularhoved og begivenhedsarrangør",
     "Control when emails and notifications are sent" : "Styr, hvornår e-mails og meddelelser sendes",
     "Control what your visitors see" : "Styr, hvad dine besøgende ser",
+    "Security" : "Sikkerhed",
     "Reminders" : "Påmindelser",
     "Talk Integration" : "Talk Integration",
     "Talk room settings for appointments" : "Indstillinger for talerum til aftaler",

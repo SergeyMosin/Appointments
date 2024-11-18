@@ -261,7 +261,7 @@ OC.L10N.register(
     "Forty Eight Weeks" : "Corenta e oito semanas",
     "Disabled" : "Desactivado",
     "From Query String" : "De de a cadea de consulta",
-    "From User Profile (if logged-in)" : "Dende o perfil de usuario (se accedeu)",
+    "From User Profile (if logged-in)" : "Desde o perfil de usuario (se accedeu)",
     "Query String or User Profile" : "Cadea de consulta ou perfil de usuario",
     "Regular Inputs (default)" : "Entradas regulares (predeterminado)",
     "Readonly / Plain Text" : "Só lectura/Texto simple",

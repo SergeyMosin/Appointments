@@ -25,6 +25,7 @@ OC.L10N.register(
     "Disabled" : "Disaotreañ",
     "Warning" : "Kemenadenn",
     "Enable lobby" : "Aotreañ ar sal gortoz",
+    "Security" : "Surentez",
     "Advanced" : "Araokadennet",
     "Edit" : "Cheñch",
     "Back" : "Distro",

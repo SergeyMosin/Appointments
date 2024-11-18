@@ -27,6 +27,8 @@ OC.L10N.register(
     "Deleted" : "Geskrap",
     "Confirmed" : "Bevestig",
     "Warning" : "Waarskuwing",
+    "Important" : "Belangrik",
+    "Security" : "Sekuriteit",
     "Reminders" : "Herinneringe",
     "Advanced" : "Gevorderd",
     "Edit" : "Wysig",

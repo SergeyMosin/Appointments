@@ -21,6 +21,7 @@ OC.L10N.register(
     "Deleted" : "Silinib",
     "Disabled" : "Dayandırılıb",
     "Warning" : "Xəbərdarlıq",
+    "Important" : "Vacib",
     "Advanced" : "İrəliləmiş",
     "Edit" : "Dəyişiklik et",
     "Back" : "Geri",
