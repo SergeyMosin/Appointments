@@ -100,8 +100,8 @@ class BCSabreImpl implements IBackendConnector
         for ($i = 0; $i < $cc; $i++) {
             $calId = $calIds[$i];
             $urls = $this->backend->calendarQuery($calId, $result->filters);
-            $objs = $this->backend->getMultipleCalendarObjects($calId, $urls);
-            foreach ($objs as $obj) {
+            foreach ($urls as $url) {
+                $obj = $this->backend->getCalendarObject($calId, $url);
                 $vo = Reader::read($obj['calendardata']);
                 $ts = $vo->VEVENT->DTEND->getDateTime($utz)->getTimestamp();
                 if ($ts <= $ots) {
@@ -213,14 +213,15 @@ class BCSabreImpl implements IBackendConnector
 
         // Get free/available spots
         $urls = $this->backend->calendarQuery($srcId, $result->filters);
-        $objs = $this->backend->getMultipleCalendarObjects($srcId, $urls);
 
         $str_out = '';
         // '_'ts_mode(1byte)ses_time(4bytes)dates(8bytes)uri(no extension)
         $ses_info = '_1' . pack("L", time());
 
         $showET = $settings[BackendUtils::PSN_END_TIME];
-        foreach ($objs as $obj) {
+        foreach ($urls as $url) {
+
+            $obj = $this->backend->getCalendarObject($srcId, $url);
 
             $cd = $obj['calendardata'];
 
@@ -492,91 +493,91 @@ class BCSabreImpl implements IBackendConnector
 
         // get booked & busy timeslots
         foreach ($cals as $cal) {
+            $calId = $cal['id'];
+            $calType = $cal['type'];
             $urls = $this->backend->calendarQuery(
-                $cal['id'],
+                $calId,
                 $resultFilters,
-                $cal['type']);
+                $calType);
 
-            if (count($urls) > 0) {
-                $objs = $this->backend->getMultipleCalendarObjects(
-                    $cal['id'], $urls, $cal['type']);
+            foreach ($urls as $url) {
 
-                foreach ($objs as $obj) {
-                    /** @var \Sabre\VObject\Component\VCalendar $vo */
-                    $vo = Reader::read($obj['calendardata']);
-                    /** @var \Sabre\VObject\Component\VEvent $evt */
-                    $evt = $vo->VEVENT;
-                    /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-                    if ((!$all_day_block && !$evt->DTSTART->hasTime()) ||
-                        // Classes in NC:
-                        //  PRIVATE = when shared hide this event (not checked here)
-                        //  CONFIDENTIAL = when shared show when busy
-                        //  PUBLIC = when shared show full event
-                        (isset($evt->CLASS) && $evt->CLASS->getValue() === 'PRIVATE')) {
-                        $vo->destroy();
+                $obj = $this->backend->getCalendarObject($calId, $url, $calType);
+
+                /** @var \Sabre\VObject\Component\VCalendar $vo */
+                $vo = Reader::read($obj['calendardata']);
+                /** @var \Sabre\VObject\Component\VEvent $evt */
+                $evt = $vo->VEVENT;
+                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+                if ((!$all_day_block && !$evt->DTSTART->hasTime()) ||
+                    // Classes in NC:
+                    //  PRIVATE = when shared hide this event (not checked here)
+                    //  CONFIDENTIAL = when shared show when busy
+                    //  PUBLIC = when shared show full event
+                    (isset($evt->CLASS) && $evt->CLASS->getValue() === 'PRIVATE')) {
+                    $vo->destroy();
+                    continue;
+                }
+
+                if (isset($evt->RRULE)) {
+
+                    try {
+                        $it = new EventIterator($vo->getByUID($evt->UID->getValue()), null, $utz);
+                    } catch (NoInstancesException $e) {
+                        // This event is recurring, but it doesn't have a single instance. We are skipping this event from the output entirely.
+                        continue;
+                    }
+                    $it->fastForward($start);
+                } else {
+                    // TODO: reuse FakeIterator
+                    $it = new FakeIterator($evt, $utz);
+                }
+
+                $c = 0;
+                while ($it->valid() && $c < 128) {
+                    $c++;
+                    $_evt = $it->getEventObject();
+                    if ((isset($_evt->STATUS) && $_evt->STATUS->getValue() === 'CANCELLED') || (isset($_evt->TRANSP) && $_evt->TRANSP->getValue() === 'TRANSPARENT')) {
+                        $it->next();
                         continue;
                     }
 
-                    if (isset($evt->RRULE)) {
-
-                        try {
-                            $it = new EventIterator($vo->getByUID($evt->UID->getValue()), null, $utz);
-                        } catch (NoInstancesException $e) {
-                            // This event is recurring, but it doesn't have a single instance. We are skipping this event from the output entirely.
-                            continue;
-                        }
-                        $it->fastForward($start);
+                    if ($_evt->DTSTART && !$_evt->DTSTART->hasTime()
+                        && (!$_evt->DURATION &&
+                            // Specs prohibit time in DTEND when there is no time in DTSTART
+                            ($_evt->DTEND && $_evt->DTEND->hasTime()))
+                    ) {
+                        // an all-day event
+                        $s_ts = $it->getDtStart()->getTimestamp();
+                        $e_ts = $s_ts + 86400;
                     } else {
-                        // TODO: reuse FakeIterator
-                        $it = new FakeIterator($evt, $utz);
+                        // an event with end-time or multi-day duration
+                        $s_ts = $it->getDtStart()->getTimestamp() - $beforeBufferSec;
+                        $e_ts = $it->getDtEnd()->getTimestamp() + $afterBufferSec;
                     }
+                    // start1 <= end2 && start2 <= end1
+                    if ($start_ts <= $e_ts && $s_ts <= $end_ts) {
 
-                    $c = 0;
-                    while ($it->valid() && $c < 128) {
-                        $c++;
-                        $_evt = $it->getEventObject();
-                        if ((isset($_evt->STATUS) && $_evt->STATUS->getValue() === 'CANCELLED') || (isset($_evt->TRANSP) && $_evt->TRANSP->getValue() === 'TRANSPARENT')) {
-                            $it->next();
-                            continue;
+                        if ($log_remote_blockers && $cal['type'] === CalDavBackend::CALENDAR_TYPE_SUBSCRIPTION) {
+                            $this->logErr("debug: " . var_export([
+                                    'blocker_uid' => $_evt->UID->getValue(),
+                                    'start_timestamp' => $s_ts,
+                                    'end_timestamp' => $e_ts,
+                                    'start_value' => $_evt->DTSTART->getValue(),
+                                    'time_zone' => $it->getDtStart()->getTimezone()->getName(),
+                                ], true));
                         }
 
-                        if ($_evt->DTSTART && !$_evt->DTSTART->hasTime()
-                            && (!$_evt->DURATION &&
-                                // Specs prohibit time in DTEND when there is no time in DTSTART
-                                ($_evt->DTEND && $_evt->DTEND->hasTime()))
-                        ) {
-                            // an all-day event
-                            $s_ts = $it->getDtStart()->getTimestamp();
-                            $e_ts = $s_ts + 86400;
-                        } else {
-                            // an event with end-time or multi-day duration
-                            $s_ts = $it->getDtStart()->getTimestamp() - $beforeBufferSec;
-                            $e_ts = $it->getDtEnd()->getTimestamp() + $afterBufferSec;
+                        $itc->insert($busy_tree, $s_ts, $e_ts);
+
+                        if ($returnAfterFirstMatch) {
+                            // we short circuit when this is called from checkRangeXxx() functions
+                            return $busy_tree;
                         }
-                        // start1 <= end2 && start2 <= end1
-                        if ($start_ts <= $e_ts && $s_ts <= $end_ts) {
-
-                            if ($log_remote_blockers && $cal['type'] === CalDavBackend::CALENDAR_TYPE_SUBSCRIPTION) {
-                                $this->logErr("debug: " . var_export([
-                                        'blocker_uid' => $_evt->UID->getValue(),
-                                        'start_timestamp' => $s_ts,
-                                        'end_timestamp' => $e_ts,
-                                        'start_value' => $_evt->DTSTART->getValue(),
-                                        'time_zone' => $it->getDtStart()->getTimezone()->getName(),
-                                    ], true));
-                            }
-
-                            $itc->insert($busy_tree, $s_ts, $e_ts);
-
-                            if ($returnAfterFirstMatch) {
-                                // we short circuit when this is called from checkRangeXxx() functions
-                                return $busy_tree;
-                            }
-                        }
-                        $it->next();
                     }
-                    $vo->destroy();
+                    $it->next();
                 }
+                $vo->destroy();
             }
         }
 
@@ -747,7 +748,6 @@ class BCSabreImpl implements IBackendConnector
         }
 
         $urls = $this->backend->calendarQuery($calId, $result->filters);
-        $objs = $this->backend->getMultipleCalendarObjects($calId, $urls);
 
         $ses_start = time() . '|';
         $ret = '';
@@ -755,7 +755,9 @@ class BCSabreImpl implements IBackendConnector
         $showET = $this->utils->getUserSettings()[BackendUtils::PSN_END_TIME];
 
         $ts_pref = 'U';
-        foreach ($objs as $obj) {
+        foreach ($urls as $url) {
+
+            $obj = $this->backend->getCalendarObject($calId, $url);
 
             $vo = Reader::read($obj['calendardata']);
 
@@ -850,17 +852,18 @@ class BCSabreImpl implements IBackendConnector
             return 'error: ' . var_export($e, true);
         }
 
+        $calId = $cal['id'];
+        $calType = $cal['tytpe'];
         $urls = $this->backend->calendarQuery(
-            $cal['id'],
+            $calId,
             $result->filters,
-            $cal['type']);
+            $calType);
         $r['urls'] = $urls;
         $events = [];
 
         if (count($urls) > 0) {
-            $objs = $this->backend->getMultipleCalendarObjects(
-                $cal['id'], $urls, $cal['type']);
-            foreach ($objs as $obj) {
+            foreach ($urls as $url) {
+                $obj = $this->backend->getCalendarObject($calId, $url);
                 $events[] = $obj['calendardata'];
             }
         }
