@@ -1375,7 +1375,7 @@ class BackendUtils
             self::PSN_PREFILL_INPUTS => 0,
             // 0=show as regular inputs, 1=disable prefilled, 2=hide prefilled
             self::PSN_PREFILLED_TYPE => 0,
-            self::PSN_FORM_FINISH_TEXT=>'',
+            self::PSN_FORM_FINISH_TEXT => '',
 
             self::KEY_TMPL_DATA => [[], [], [], [], [], [], []],
             self::KEY_TMPL_INFO => [
@@ -1705,7 +1705,7 @@ class BackendUtils
         if ($key === self::KEY_REMINDERS) {
             return $this->setUserReminders($userId, $pageId, $value);
         } elseif ($key === self::SEC_HCAP_SECRET && !empty($value)) {
-            if(str_starts_with($value, '::hash::')){
+            if (str_starts_with($value, '::hash::')) {
                 // already hashed
                 return [200, ''];
             }

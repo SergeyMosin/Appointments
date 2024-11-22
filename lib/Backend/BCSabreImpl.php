@@ -18,10 +18,8 @@ use OCA\DAV\CalDAV\WebcalCaching\RefreshWebcalService;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use Sabre\DAV\Exception\BadRequest;
-use Sabre\DAV\Xml\Service as XmlService;
 use Sabre\VObject\Recur\EventIterator;
 use Sabre\VObject\Recur\NoInstancesException;
-use Sabre\Xml\ParseException;
 use Sabre\VObject\Reader;
 use Psr\Log\LoggerInterface;
 
@@ -56,23 +54,12 @@ class BCSabreImpl implements IBackendConnector
     function queryRangePast($calIds, $end, $only_empty, $delete, $delete_test = false)
     {
 
-        $cc = count($calIds);
-        if ($cc === 0) {
+        if (empty($calIds)) {
             return "0";
         }
 
-        $parser = new XmlService();
-        $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
-
         $ots = $end->getTimestamp();
         $end->setTimestamp($ots + 50400);
-
-        try {
-            $result = $parser->parse($this::makeDavReport(null, $end, $only_empty === true ? "TENTATIVE" : null));
-        } catch (ParseException $e) {
-            $this->logger->error($e);
-            return null;
-        }
 
         $utz = $end->getTimezone();
         $cnt = 0;
@@ -97,20 +84,21 @@ class BCSabreImpl implements IBackendConnector
             }
         }
 
-        for ($i = 0; $i < $cc; $i++) {
-            $calId = $calIds[$i];
-            $urls = $this->backend->calendarQuery($calId, $result->filters);
-            foreach ($urls as $url) {
-                $obj = $this->backend->getCalendarObject($calId, $url);
-                $vo = Reader::read($obj['calendardata']);
-                $ts = $vo->VEVENT->DTEND->getDateTime($utz)->getTimestamp();
-                if ($ts <= $ots) {
-                    if ($delete) {
-//                        $this->deleteCalendarObject("",$calId,$obj["uri"]);
-                        $this->backend->deleteCalendarObject($calId, $obj["uri"]);
-                    }
-                    $cnt++;
+        $iter = $this->fastQuery($calIds, -1, $end->getTimestamp(), [], ['uri', 'calendarid']);
+        foreach ($iter as $row) {
+            $vo = Reader::read($row['calendardata']);
+            if ($only_empty &&
+                (!isset($vo->VEVENT->STATUS)
+                    || $vo->VEVENT->STATUS->getValue() !== 'TENTATIVE')
+            ) {
+                continue;
+            }
+            $ts = $vo->VEVENT->DTEND->getDateTime($utz)->getTimestamp();
+            if ($ts <= $ots) {
+                if ($delete) {
+                    $this->backend->deleteCalendarObject($row['calendarid'], $row['uri']);
                 }
+                $cnt++;
             }
         }
         return $cnt;
@@ -128,29 +116,15 @@ class BCSabreImpl implements IBackendConnector
         $start = new \DateTime('@' . $start_ts);
         $start->setTimezone($utz);
 
-        // Because of floating timezones...
-        // 50400 = 14 hours
-        /** @noinspection PhpUnhandledExceptionInspection */
-        $dt = new \DateTime('@' . ($start_ts - 50400));
-        $dt->setTimezone($utz);
-        $r_start = $dt->format(self::TIME_FORMAT);
-        $dt->setTimestamp($end_ts + 50400);
-        $r_end = $dt->format(self::TIME_FORMAT);
-
-        $parser = new XmlService();
-        $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
-        try {
-            $result = $parser->parse($this::makeTrDavReport($r_start, $r_end, $settings[BackendUtils::CLS_XTM_REQ_CAT]));
-        } catch (ParseException $e) {
-            $this->logger->error($e);
-            return -1;
-        }
-
-
-        $cals = [[
-            'id' => $calId,
-            'type' => CalDavBackend::CALENDAR_TYPE_CALENDAR
-        ]];
+        // TODO: finalize floating TZ support removal
+        $queryConfig = [
+            // Because of floating timezones...
+            // 50400 = 14 hours
+            'start' => $start_ts - 50400,
+            'end' => $end_ts + 50400,
+            'props' => $settings[BackendUtils::CLS_XTM_REQ_CAT]
+                ? ['CATEGORIES:' . BackendUtils::APPT_CAT] : []
+        ];
 
         // we need to adjust/modify $start and $end by 1 sec because of "<=" and ">=" comparisons(instead of just "<" and ">" ) in the buildBusyTree function
         $start->modify('+1 second');
@@ -158,7 +132,7 @@ class BCSabreImpl implements IBackendConnector
 
         $end_ts--; // -1 second
 
-        $booked_tree = $this->buildBusyTree($cals, $result->filters, $start, $start_ts, $end_ts, true);
+        $booked_tree = $this->buildBusyTree([$calId], $queryConfig, $start, $start_ts, $end_ts, true);
 
         // if $booked_tree is NOT null then there was a match(intersection)
         return $booked_tree === null ? 0 : 1;
@@ -176,15 +150,6 @@ class BCSabreImpl implements IBackendConnector
         $start_ts = $start->getTimestamp();
         $end_ts = $end->getTimestamp();
 
-        // We need to adjust for UTC and filter
-        $rep_start = clone $start;
-        $rep_start->modify('-14 hours');
-        $rep_end = clone $end;
-        $rep_end->modify('+14 hours');
-
-        $start_str = $rep_start->format(self::TIME_FORMAT);
-        $end_str = $rep_end->format(self::TIME_FORMAT);
-
         // parse calIds
         $sp = strpos($calIds, chr(31));
         if ($sp === false) {
@@ -195,35 +160,34 @@ class BCSabreImpl implements IBackendConnector
 
         $settings = $this->utils->getUserSettings();
 
-        $parser = new XmlService();
-        $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
+        $queryConfig = [
+            // Because of floating timezones...
+            // 50400 = 14 hours
+            'start' => $start_ts - 50400,
+            'end' => $end_ts + 50400,
+            'props' => $settings[BackendUtils::CLS_XTM_REQ_CAT]
+                ? ['CATEGORIES:' . BackendUtils::APPT_CAT] : []
+        ];
 
-        try {
-            $result = $parser->parse($this::makeTrDavReport($start_str, $end_str, $settings[BackendUtils::CLS_XTM_REQ_CAT]));
-        } catch (ParseException $e) {
-            $this->logger->error($e);
-            return null;
-        }
-
-        $cals = [[
-            'id' => $dstId,
-            'type' => CalDavBackend::CALENDAR_TYPE_CALENDAR
-        ]];
-        $booked_tree = $this->buildBusyTree($cals, $result->filters, $start, $start_ts, $end_ts, false);
+        $booked_tree = $this->buildBusyTree([$dstId], $queryConfig, $start, $start_ts, $end_ts, false);
 
         // Get free/available spots
-        $urls = $this->backend->calendarQuery($srcId, $result->filters);
-
         $str_out = '';
         // '_'ts_mode(1byte)ses_time(4bytes)dates(8bytes)uri(no extension)
         $ses_info = '_1' . pack("L", time());
 
         $showET = $settings[BackendUtils::PSN_END_TIME];
-        foreach ($urls as $url) {
 
-            $obj = $this->backend->getCalendarObject($srcId, $url);
+        $iter = $this->fastQuery(
+            [$srcId],
+            $queryConfig['start'],
+            $queryConfig['end'],
+            $queryConfig['props'],
+            ['uri']
+        );
+        foreach ($iter as $row) {
 
-            $cd = $obj['calendardata'];
+            $cd = $row['calendardata'];
 
             if (strpos($cd, "\r\nTRANSP:TRANSPARENT\r\n", 22) === false) {
                 // must be "Free" aka TRANSPARENT
@@ -308,7 +272,7 @@ class BCSabreImpl implements IBackendConnector
 
                         $str_out .= $ts_pref . $s_ts
                             . ($showET ? ":" . $e_ts : "")
-                            . ':' . $this->utils->encrypt($ses_info . pack("LL", $s_ts, $e_ts) . substr($obj['uri'], 0, -4), $key) . $atl . ',';
+                            . ':' . $this->utils->encrypt($ses_info . pack("LL", $s_ts, $e_ts) . substr($row['uri'], 0, -4), $key) . $atl . ',';
                     }
                 }
                 $it->next();
@@ -322,7 +286,7 @@ class BCSabreImpl implements IBackendConnector
                     $it->next();
                 }
                 $this->utils->optimizeRecurrence($it->getDtStart(), $it->getDtEnd(), $skip_until, $vo);
-                $this->updateObject($srcId, $obj['uri'], $vo->serialize());
+                $this->updateObject($srcId, $row['uri'], $vo->serialize());
             }
             $vo->destroy();
         }
@@ -335,24 +299,10 @@ class BCSabreImpl implements IBackendConnector
     function checkRangeTemplate(array $settings, \DateTime $start, \DateTime $end, string $userId): int
     {
 
-        // We need to adjust for UTC and filter
-        $rep_start = clone $start;
-        $rep_start->modify('-24 hours');
-        $rep_end = clone $end;
-        $rep_end->modify('+14 hours');
-
-        $start_str = $rep_start->format(self::TIME_FORMAT);
-        $end_str = $rep_end->format(self::TIME_FORMAT);
-
-        $parser = new XmlService();
-        $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
-
-        try {
-            $result = $parser->parse($this::makeTrDavReport($start_str, $end_str, false));
-        } catch (ParseException $e) {
-            $this->logger->error($e);
-            return -1;
-        }
+        $queryConfig = [
+            'start' => $start->getTimestamp() - 86400, //24h
+            'end' => $end->getTimestamp() + 50400, //14h
+        ];
 
         $cals = $this->getCalsForConflictCheck($settings, $userId);
 
@@ -363,7 +313,7 @@ class BCSabreImpl implements IBackendConnector
         $start_ts = $start->getTimestamp();
         $end_ts = $end->getTimestamp();
 
-        $booked_tree = $this->buildBusyTree($cals, $result->filters, $start, $start_ts, $end_ts, true);
+        $booked_tree = $this->buildBusyTree($cals, $queryConfig, $start, $start_ts, $end_ts, true);
 
         // if $booked_tree is NOT null then there was a match(intersection)
         return $booked_tree === null ? 0 : 1;
@@ -387,30 +337,18 @@ class BCSabreImpl implements IBackendConnector
         $start_ts = $start->getTimestamp();
         $end_ts = $end->getTimestamp();
 
-        // We need to adjust for UTC and filter
-        $rep_start = clone $start;
-        $rep_start->modify('-24 hours'); // 24 =  14 + (10 max appt length)
-        $rep_end = clone $end;
-        $rep_end->modify('+18 hours');
-
-        $start_str = $rep_start->format(self::TIME_FORMAT);
-        $end_str = $rep_end->format(self::TIME_FORMAT);
-
-        $parser = new XmlService();
-        $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
-
-        try {
-            $result = $parser->parse($this::makeTrDavReport($start_str, $end_str, false));
-        } catch (ParseException $e) {
-            $this->logger->error($e);
-            return null;
-        }
+        $queryConfig = [
+            // Because of floating timezones...
+            // We need to adjust for UTC and filter
+            'start' => $start_ts - 86400, //24h
+            'end' => $end_ts + 64800, //18h
+        ];
 
         $settings = $this->utils->getUserSettings();
 
         $cals = $this->getCalsForConflictCheck($settings, $userId);
 
-        $booked_tree = $this->buildBusyTree($cals, $result->filters, $start, $start_ts, $end_ts, false);
+        $booked_tree = $this->buildBusyTree($cals, $queryConfig, $start, $start_ts, $end_ts, false);
 
         $ti = $settings[BackendUtils::KEY_TMPL_INFO];
 
@@ -475,9 +413,13 @@ class BCSabreImpl implements IBackendConnector
         return $out !== '' ? substr($out, 0, -1) : null;
     }
 
-    private function buildBusyTree(array $cals, array $resultFilters, \DateTime $start, int $start_ts, int $end_ts, bool $returnAfterFirstMatch = false): AVLIntervalNode|null
+    private function buildBusyTree(array     $calIds,
+                                   array     $queryConfig,
+                                   \DateTime $start,
+                                   int       $start_ts,
+                                   int       $end_ts,
+                                   bool      $returnAfterFirstMatch = false): AVLIntervalNode|null
     {
-
         $utz = $start->getTimezone();
 
         $busy_tree = null;
@@ -485,100 +427,87 @@ class BCSabreImpl implements IBackendConnector
 
         $settings = $this->utils->getUserSettings();
         $all_day_block = $settings[BackendUtils::CLS_ALL_DAY_BLOCK];
-        $log_remote_blockers = $settings[BackendUtils::DEBUGGING_MODE] === BackendUtils::DEBUGGING_LOG_REM_BLOCKER;
+//        $log_remote_blockers = $settings[BackendUtils::DEBUGGING_MODE] === BackendUtils::DEBUGGING_LOG_REM_BLOCKER;
 
         $beforeBufferSec = $settings[BackendUtils::CLS_BUFFER_BEFORE] * 60;
         $afterBufferSec = $settings[BackendUtils::CLS_BUFFER_AFTER] * 60;
 
+        $iter = $this->fastQuery($calIds,
+            $queryConfig['start'],
+            $queryConfig['end'],
+            $queryConfig['props'] ?? []
+        );
+        foreach ($iter as $data) {
 
-        // get booked & busy timeslots
-        foreach ($cals as $cal) {
-            $calId = $cal['id'];
-            $calType = $cal['type'];
-            $urls = $this->backend->calendarQuery(
-                $calId,
-                $resultFilters,
-                $calType);
+            /** @var \Sabre\VObject\Component\VCalendar $vo */
+            $vo = Reader::read($data);
+            /** @var \Sabre\VObject\Component\VEvent $evt */
+            $evt = $vo->VEVENT;
+            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+            if (!$all_day_block && !$evt->DTSTART->hasTime()) {
+                $vo->destroy();
+                continue;
+            }
 
-            foreach ($urls as $url) {
+            if (isset($evt->RRULE)) {
 
-                $obj = $this->backend->getCalendarObject($calId, $url, $calType);
+                try {
+                    $it = new EventIterator($vo->getByUID($evt->UID->getValue()), null, $utz);
+                } catch (NoInstancesException $e) {
+                    // This event is recurring, but it doesn't have a single instance. We are skipping this event from the output entirely.
+                    continue;
+                }
+                $it->fastForward($start);
+            } else {
+                // TODO: reuse FakeIterator
+                $it = new FakeIterator($evt, $utz);
+            }
 
-                /** @var \Sabre\VObject\Component\VCalendar $vo */
-                $vo = Reader::read($obj['calendardata']);
-                /** @var \Sabre\VObject\Component\VEvent $evt */
-                $evt = $vo->VEVENT;
-                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-                if ((!$all_day_block && !$evt->DTSTART->hasTime()) ||
-                    // Classes in NC:
-                    //  PRIVATE = when shared hide this event (not checked here)
-                    //  CONFIDENTIAL = when shared show when busy
-                    //  PUBLIC = when shared show full event
-                    (isset($evt->CLASS) && $evt->CLASS->getValue() === 'PRIVATE')) {
-                    $vo->destroy();
+            $c = 0;
+            while ($it->valid() && $c < 384) {
+                $c++;
+                $_evt = $it->getEventObject();
+                if ((isset($_evt->STATUS) && $_evt->STATUS->getValue() === 'CANCELLED') || (isset($_evt->TRANSP) && $_evt->TRANSP->getValue() === 'TRANSPARENT')) {
+                    $it->next();
                     continue;
                 }
 
-                if (isset($evt->RRULE)) {
-
-                    try {
-                        $it = new EventIterator($vo->getByUID($evt->UID->getValue()), null, $utz);
-                    } catch (NoInstancesException $e) {
-                        // This event is recurring, but it doesn't have a single instance. We are skipping this event from the output entirely.
-                        continue;
-                    }
-                    $it->fastForward($start);
+                if ($_evt->DTSTART && !$_evt->DTSTART->hasTime()
+                    && (!$_evt->DURATION &&
+                        // Specs prohibit time in DTEND when there is no time in DTSTART
+                        ($_evt->DTEND && $_evt->DTEND->hasTime()))
+                ) {
+                    // an all-day event
+                    $s_ts = $it->getDtStart()->getTimestamp();
+                    $e_ts = $s_ts + 86400;
                 } else {
-                    // TODO: reuse FakeIterator
-                    $it = new FakeIterator($evt, $utz);
+                    // an event with end-time or multi-day duration
+                    $s_ts = $it->getDtStart()->getTimestamp() - $beforeBufferSec;
+                    $e_ts = $it->getDtEnd()->getTimestamp() + $afterBufferSec;
                 }
+                // start1 <= end2 && start2 <= end1
+                if ($start_ts <= $e_ts && $s_ts <= $end_ts) {
 
-                $c = 0;
-                while ($it->valid() && $c < 128) {
-                    $c++;
-                    $_evt = $it->getEventObject();
-                    if ((isset($_evt->STATUS) && $_evt->STATUS->getValue() === 'CANCELLED') || (isset($_evt->TRANSP) && $_evt->TRANSP->getValue() === 'TRANSPARENT')) {
-                        $it->next();
-                        continue;
+//                    if ($log_remote_blockers && $cal['type'] === CalDavBackend::CALENDAR_TYPE_SUBSCRIPTION) {
+//                        $this->logErr("debug: " . var_export([
+//                                'blocker_uid' => $_evt->UID->getValue(),
+//                                'start_timestamp' => $s_ts,
+//                                'end_timestamp' => $e_ts,
+//                                'start_value' => $_evt->DTSTART->getValue(),
+//                                'time_zone' => $it->getDtStart()->getTimezone()->getName(),
+//                            ], true));
+//                    }
+
+                    $itc->insert($busy_tree, $s_ts, $e_ts);
+
+                    if ($returnAfterFirstMatch) {
+                        // we short circuit when this is called from checkRangeXxx() functions
+                        return $busy_tree;
                     }
-
-                    if ($_evt->DTSTART && !$_evt->DTSTART->hasTime()
-                        && (!$_evt->DURATION &&
-                            // Specs prohibit time in DTEND when there is no time in DTSTART
-                            ($_evt->DTEND && $_evt->DTEND->hasTime()))
-                    ) {
-                        // an all-day event
-                        $s_ts = $it->getDtStart()->getTimestamp();
-                        $e_ts = $s_ts + 86400;
-                    } else {
-                        // an event with end-time or multi-day duration
-                        $s_ts = $it->getDtStart()->getTimestamp() - $beforeBufferSec;
-                        $e_ts = $it->getDtEnd()->getTimestamp() + $afterBufferSec;
-                    }
-                    // start1 <= end2 && start2 <= end1
-                    if ($start_ts <= $e_ts && $s_ts <= $end_ts) {
-
-                        if ($log_remote_blockers && $cal['type'] === CalDavBackend::CALENDAR_TYPE_SUBSCRIPTION) {
-                            $this->logErr("debug: " . var_export([
-                                    'blocker_uid' => $_evt->UID->getValue(),
-                                    'start_timestamp' => $s_ts,
-                                    'end_timestamp' => $e_ts,
-                                    'start_value' => $_evt->DTSTART->getValue(),
-                                    'time_zone' => $it->getDtStart()->getTimezone()->getName(),
-                                ], true));
-                        }
-
-                        $itc->insert($busy_tree, $s_ts, $e_ts);
-
-                        if ($returnAfterFirstMatch) {
-                            // we short circuit when this is called from checkRangeXxx() functions
-                            return $busy_tree;
-                        }
-                    }
-                    $it->next();
                 }
-                $vo->destroy();
+                $it->next();
             }
+            $vo->destroy();
         }
 
         return $busy_tree;
@@ -586,16 +515,13 @@ class BCSabreImpl implements IBackendConnector
 
 
     /**
-     * @return array [['id'=>'x','type'=>CalDavBackend::CALENDAR_TYPE_x]]
+     * @return int[]
      */
     private function getCalsForConflictCheck(array $settings, string $userId, bool $forceSync = false): array
     {
 
         // stars with destination cal
-        $ret = [[
-            'id' => $settings[BackendUtils::CLS_TMM_DST_ID],
-            'type' => CalDavBackend::CALENDAR_TYPE_CALENDAR
-        ]];
+        $ret = [$settings[BackendUtils::CLS_TMM_DST_ID]];
 
         $currentCalIds = $settings[BackendUtils::CLS_TMM_MORE_CALS];
         if (count($currentCalIds) > 0) {
@@ -603,10 +529,7 @@ class BCSabreImpl implements IBackendConnector
                 $currentCalIds,
                 $this->getCalendarsForUser($userId, false));
             foreach ($filteredIds as $id) {
-                $ret[] = [
-                    'id' => $id,
-                    'type' => CalDavBackend::CALENDAR_TYPE_CALENDAR
-                ];
+                $ret[] = $id;
             }
         }
 
@@ -695,10 +618,7 @@ class BCSabreImpl implements IBackendConnector
                         }
                     }
 
-                    $ret[] = [
-                        'id' => $sub['id'],
-                        'type' => CalDavBackend::CALENDAR_TYPE_SUBSCRIPTION
-                    ];
+                    $ret[] = $sub['id'];
                 }
             }
         }
@@ -732,34 +652,21 @@ class BCSabreImpl implements IBackendConnector
         $o_start = $start->getTimestamp();
         $o_end = $end->getTimestamp();
 
-        // We need to adjust for UTC timezones and filter
-        // 50400 = 14 hours
-        $start->setTimestamp($start->getTimestamp() - 50400);
-        $end->setTimestamp($end->getTimestamp() + 50400);
-
-        $parser = new XmlService();
-        $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
-        try {
-            //$no_url(do not filter status) request is for the schedule generator @see grid.js::addPastAppts()
-            $result = $parser->parse($this::makeDavReport($start, $end, $no_uri === false ? "TENTATIVE" : null));
-        } catch (ParseException $e) {
-            $this->logger->error($e);
-            return null;
-        }
-
-        $urls = $this->backend->calendarQuery($calId, $result->filters);
-
         $ses_start = time() . '|';
         $ret = '';
 
         $showET = $this->utils->getUserSettings()[BackendUtils::PSN_END_TIME];
 
         $ts_pref = 'U';
-        foreach ($urls as $url) {
-
-            $obj = $this->backend->getCalendarObject($calId, $url);
-
-            $vo = Reader::read($obj['calendardata']);
+        $iter = $this->fastQuery([$calId],
+            // We need to adjust for UTC timezones and filter
+            $o_start - 50400,
+            $o_end + 50400,
+            $no_uri === false ? ['CATEGORIES:' . BackendUtils::APPT_CAT] : [],
+            ['uri']
+        );
+        foreach ($iter as $row) {
+            $vo = Reader::read($row['calendardata']);
 
             /** @var  \Sabre\VObject\Property\ICalendar\DateTime $dt_start */
             $dt_start = $vo->VEVENT->DTSTART;
@@ -784,7 +691,7 @@ class BCSabreImpl implements IBackendConnector
 
                         $ret .= $ts_pref . $s_ts
                             . ($showET ? ":" . $e_ts : "")
-                            . ':' . $this->utils->encrypt($ses_start . $obj['uri'], $key)
+                            . ':' . $this->utils->encrypt($ses_start . $row['uri'], $key)
                             . $atl . ',';
                     } else {
                         // add end_time instead of uri
@@ -842,31 +749,21 @@ class BCSabreImpl implements IBackendConnector
             'end' => $end_str
         ];
 
-        $parser = new XmlService();
-        $parser->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-query'] = 'Sabre\\CalDAV\\Xml\\Request\\CalendarQueryReport';
+        $endTs = $end->getTimestamp();
 
-        try {
-            $result = $parser->parse($this::makeTrDavReport($start_str, $end_str, false));
-        } catch (ParseException $e) {
-            $this->logger->error($e);
-            return 'error: ' . var_export($e, true);
-        }
-
-        $calId = $cal['id'];
-        $calType = $cal['tytpe'];
-        $urls = $this->backend->calendarQuery(
-            $calId,
-            $result->filters,
-            $calType);
-        $r['urls'] = $urls;
+        $r['urls'] = [];
         $events = [];
 
-        if (count($urls) > 0) {
-            foreach ($urls as $url) {
-                $obj = $this->backend->getCalendarObject($calId, $url);
-                $events[] = $obj['calendardata'];
+        $iter = $this->fastQuery([$cal['id']], $start->getTimestamp(), $end->getTimestamp());
+        foreach ($iter as $data) {
+            $vo = Reader::read($data);
+            $e_ts = $vo->VEVENT->DTEND->getDateTime()->getTimestamp();
+            if ($e_ts <= $endTs) {
+                $events[] = $data;
             }
+            $vo->destroy();
         }
+//        }
 
         $r['events'] = $events;
         return $r;
@@ -1369,14 +1266,93 @@ class BCSabreImpl implements IBackendConnector
         return false;
     }
 
-    public static function makeDavReport(\DateTime|null $start, \DateTime $end, string|null $status): string
+    /**
+     * Why? Because CalDavBackend->calendarQuery() expands recurrence when
+     * both Start and End are provided. Additionally, even though the results
+     * are cached, getCalendarObject still needs to be called.
+     * Other CalDavBackend->search*** function are not quite right for this use case.
+     *
+     * Events with CalDavBackend::CLASSIFICATION_PRIVATE ("When shared hide this event")
+     * are ignored automatically
+     * Classes in NC:
+     *   PRIVATE = when shared hide this event
+     *   CONFIDENTIAL = when shared show when busy
+     *   PUBLIC = when shared show full event
+     *
+     * @param numeric[] $calIds
+     * @param int $startTs
+     * @param int $endTs
+     * @param string[] $propFilters - Ex: ['STATUS:CONFIRMED','LOCATION'] will only get events with STATUS:CONFIRMED and non-empty LOCATION prop
+     * @return void
+     *
+     * @see CalDavBackend::INDEXED_PROPERTIES For the list of available propFilters
+     */
+    private function fastQuery(array $calIds, int $startTs, int $endTs, array $propFilters = [], array $additionalColumns = [])
     {
-        return '<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop xmlns:D="DAV:"><C:calendar-data/></D:prop><C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:prop-filter name="CATEGORIES"><C:text-match>' . BackendUtils::APPT_CAT . '</C:text-match></C:prop-filter></C:comp-filter>' . ($status !== null ? '<C:comp-filter name="VEVENT"><C:prop-filter name="STATUS"><C:text-match>' . $status . '</C:text-match></C:prop-filter></C:comp-filter>' : '') . '<C:comp-filter name="VEVENT"><C:prop-filter name="RRULE"><C:is-not-defined/></C:prop-filter></C:comp-filter><C:comp-filter name="VEVENT"><C:time-range ' . ($start !== null ? ('start="' . $start->format(self::TIME_FORMAT) . '"') : '') . ' end="' . $end->format(self::TIME_FORMAT) . '"/></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
-    }
+        $query = $this->db->getQueryBuilder();
 
-    public static function makeTrDavReport(string $start, string $end, bool $cat_required): string
-    {
-        return '<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop xmlns:D="DAV:"><C:calendar-data/></D:prop><C:filter><C:comp-filter name="VCALENDAR">' . ($cat_required ? '<C:comp-filter name="VEVENT"><C:prop-filter name="CATEGORIES"><C:text-match>' . BackendUtils::APPT_CAT . '</C:text-match></C:prop-filter></C:comp-filter>' : '') . '<C:comp-filter name="VEVENT"><C:time-range start="' . $start . '" end="' . $end . '"/></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
-    }
+        $calendarsOrExpr = $query->expr()->orX();
+        foreach ($calIds as $calId) {
+            $calendarsOrExpr->add($query->expr()->eq(
+                'c.calendarid', $query->createNamedParameter((int)$calId)
+            ));
+        }
 
+        if ($startTs > 0) {
+            $query->andWhere($query->expr()->gt('lastoccurence', $query->createNamedParameter($startTs)));
+        }
+        if ($endTs > 0) {
+            $query->andWhere($query->expr()->lt('firstoccurence', $query->createNamedParameter($endTs)));
+        }
+
+        $query->select(['c.calendardata'])
+            ->from('calendarobjects', 'c')
+            ->where($calendarsOrExpr)
+            ->andWhere($query->expr()->neq('c.classification', $query->createNamedParameter(CalDavBackend::CLASSIFICATION_PRIVATE)))
+            ->andWhere($query->expr()->isNull('c.deleted_at'))
+            ->setMaxResults(1024);
+        foreach ($additionalColumns as $column) {
+            $query->addSelect('c.' . $column);
+        }
+
+        if (($cnt = count($propFilters)) > 0) {
+            for ($i = 0; $i < $cnt; $i++) {
+                $jn = 'j' . $i;
+                $nameValue = explode(':', $propFilters[$i]);
+                $query->leftJoin('c', 'calendarobjects_props', $jn,
+                    $query->expr()->eq('c.id', $jn . '.objectid')
+                )->andWhere(
+                    count($nameValue) === 1
+                        ? $query->expr()->eq($jn . '.name',
+                        $query->createNamedParameter($nameValue[0]))
+                        : $query->expr()->andX(
+                        $query->expr()->eq($jn . '.name',
+                            $query->createNamedParameter($nameValue[0])),
+                        $query->expr()->eq($jn . '.value',
+                            $query->createNamedParameter($nameValue[1]))
+                    )
+                );
+            }
+        }
+        try {
+            $result = $query->executeQuery();
+        } catch (\Throwable $e) {
+            $this->logger->error('fastQuery: ' . $e->getMessage(), [
+                'app' => Application::APP_ID,
+                'exception' => $e
+            ]);
+            return;
+        }
+
+        if (empty($additionalColumns)) {
+            while ($row = $result->fetch()) {
+                yield $row['calendardata'];
+            }
+        } else {
+            while ($row = $result->fetch()) {
+                yield $row;
+            }
+        }
+        $result->closeCursor();
+    }
 }
