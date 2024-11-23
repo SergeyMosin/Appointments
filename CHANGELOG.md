@@ -1,3 +1,7 @@
+## v2.3.1 - 2024-11-23
+### Fixed
+- Internal Server Error: fastQuery returns Postgresql blob as resource instead of string - #563
+
 ## v2.3.0 - 2024-11-22
 ### Changed
 - performance improvement: use direct query(BCSabreImpl->fastQuery) instead of 'calendarQuery' >>> 'getMultipleCalendarObjects'
