@@ -1346,10 +1346,15 @@ class BCSabreImpl implements IBackendConnector
 
         if (empty($additionalColumns)) {
             while ($row = $result->fetch()) {
-                yield $row['calendardata'];
+                $cdata = $row['calendardata'];
+                yield is_resource($cdata) ? stream_get_contents($cdata) : $cdata;
             }
         } else {
             while ($row = $result->fetch()) {
+                $cdata = $row['calendardata'];
+                if (is_resource($cdata)) {
+                    $row['calendardata'] = stream_get_contents($cdata);
+                }
                 yield $row;
             }
         }
