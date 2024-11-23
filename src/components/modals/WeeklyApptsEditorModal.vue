@@ -157,10 +157,11 @@ const primaryButtonText = props.data.elm === null
 <template>
 	<NcModal
 			style="z-index: 10002"
+			labelId="srgdev_appts_editor_name"
 			:setReturnFocus="false"
 			:show="data !== null"
 			@update:show="handleUpdateShow">
-		<h4 v-if="header!==''" class="tao-h4">{{ header }}</h4>
+		<h4 id="srgdev_appts_editor_name" v-if="header!==''" class="tao-h4">{{ header }}</h4>
 		<div class="srgdev-appt-modal-wrap" style="text-align: left">
 			<template v-if="props.data.elm===null">
 				<LabelAccordion
