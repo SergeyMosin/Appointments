@@ -32,6 +32,8 @@ OC.L10N.register(
     "Confirmed" : "ยืนยันแล้ว",
     "Disabled" : "ปิดใช้งาน",
     "Warning" : "คำเตือน",
+    "Important" : "สำคัญ",
+    "Security" : "ความปลอดภัย",
     "Reminders" : "การแจ้งเตือน",
     "Advanced" : "ขั้นสูง",
     "Edit" : "แก้ไข",

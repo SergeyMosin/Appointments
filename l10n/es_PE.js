@@ -33,6 +33,8 @@ OC.L10N.register(
     "Disabled" : "Deshabilitado",
     "24 hours" : "24 horas",
     "Warning" : "Advertencia",
+    "Important" : "Importante",
+    "Security" : "Seguridad",
     "Reminders" : "Recordatorios",
     "Advanced" : "Avanzado",
     "Edit" : "Editar",

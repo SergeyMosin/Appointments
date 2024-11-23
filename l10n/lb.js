@@ -19,6 +19,7 @@ OC.L10N.register(
     "Deleted" : "Geläscht",
     "Disabled" : "Deaktivéiert",
     "Warning" : "Warnung",
+    "Important" : "Wichteg",
     "Reminders" : "Erennërungen",
     "Advanced" : "Erweidert",
     "Edit" : "Änneren",

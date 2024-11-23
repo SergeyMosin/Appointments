@@ -21,6 +21,7 @@ OC.L10N.register(
     "Disabled" : "Deaktivert",
     "Not set" : "Ikkje satt",
     "Warning" : "Åtvaring",
+    "Important" : "Viktig",
     "Reminders" : "Påminningar",
     "Advanced" : "Avansert",
     "Edit" : "Endra",

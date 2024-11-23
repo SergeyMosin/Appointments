@@ -23,6 +23,7 @@ OC.L10N.register(
     "Confirmed" : "Cadarnhawyd",
     "Canceled" : "Wedi diddymu",
     "Warning" : "Rhybudd",
+    "Security" : "Diogelwch",
     "Reminders" : "Nodau atgoffa",
     "Advanced" : "Uwch",
     "Edit" : "Golygu",

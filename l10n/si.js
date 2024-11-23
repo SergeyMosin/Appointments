@@ -30,6 +30,7 @@ OC.L10N.register(
     "Disabled" : "අබල කර ඇත",
     "24 hours" : "හෝරා 24 යි",
     "Warning" : "අවවාදයයි",
+    "Important" : "වැදගත්",
     "Edit" : "සංස්කරණය",
     "Back" : "ආපසු",
     "Next" : "ඊළඟ",

@@ -20,6 +20,7 @@ OC.L10N.register(
     "Deleted" : "Delite",
     "Confirmed" : "Confirmate",
     "Warning" : "Aviso",
+    "Important" : "Importante",
     "Reminders" : "Memento",
     "Edit" : "Modificar",
     "Back" : "Retro",

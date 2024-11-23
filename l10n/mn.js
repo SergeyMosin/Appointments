@@ -36,6 +36,7 @@ OC.L10N.register(
     "Disabled" : "идэвхигүй",
     "24 hours" : "24 цаг",
     "Warning" : "Warning",
+    "Security" : "Хамгаалалт",
     "Reminders" : "Сануулагууд",
     "Advanced" : "нарийвчилсан",
     "Edit" : "засварлах",
