@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2024-11-22 02:39+0000\n"
+"POT-Creation-Date: 2024-11-23 02:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,13 +27,13 @@ msgstr ""
 
 #: /app/lib/Backend/BackendUtils.php:731 /app/lib/Backend/BackendUtils.php:1511
 #: /app/lib/Backend/DavListener.php:1468
-#: /app/lib/Controller/PageController.php:1218
+#: /app/lib/Controller/PageController.php:1219
 msgid "In-person meeting"
 msgstr ""
 
 #: /app/lib/Backend/BackendUtils.php:740 /app/lib/Backend/BackendUtils.php:1512
 #: /app/lib/Backend/DavListener.php:1465
-#: /app/lib/Controller/PageController.php:1219
+#: /app/lib/Controller/PageController.php:1220
 msgid "Online (audio/video)"
 msgstr ""
 
@@ -52,12 +52,12 @@ msgid "Video/audio integration error: check logs"
 msgstr ""
 
 #: /app/lib/Backend/BackendUtils.php:1509
-#: /app/lib/Controller/PageController.php:1216
+#: /app/lib/Controller/PageController.php:1217
 msgid "Meeting Type"
 msgstr ""
 
 #: /app/lib/Backend/BackendUtils.php:1510
-#: /app/lib/Controller/PageController.php:1217
+#: /app/lib/Controller/PageController.php:1218
 msgid "Select meeting type"
 msgstr ""
 
@@ -134,8 +134,8 @@ msgstr ""
 
 #. TRANSLATORS onents/modals/DirItemEditorModal.vue:144
 #. TRANSLATORS onents/modals/RemoveSimpleApptsModal.vue:195
-#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:219
-#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:221
+#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:220
+#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:222
 #. TRANSLATORS onents/views/TimeSlotEditor.vue:246
 #: /app/lib/Backend/DavListener.php:729 /app/lib/Backend/DavListener.php:1015
 #: /app/specialVueFakeDummyForL10nScript.js:44
@@ -321,7 +321,7 @@ msgstr ""
 #: /app/lib/Controller/PageController.php:662
 #: /app/lib/Controller/PageController.php:986
 #: /app/lib/Controller/PageController.php:1085
-#: /app/lib/Controller/PageController.php:1405
+#: /app/lib/Controller/PageController.php:1406
 #: /app/specialAppInfoFakeDummyForL10nScript.php:2
 msgid "Appointments"
 msgstr ""
@@ -441,35 +441,35 @@ msgstr ""
 msgid "Book Your Appointment"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1246
+#: /app/lib/Controller/PageController.php:1247
 msgid "Name is required."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1247
+#: /app/lib/Controller/PageController.php:1248
 msgid "Email is required."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1248
+#: /app/lib/Controller/PageController.php:1249
 msgid "Phone number is required."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1249
+#: /app/lib/Controller/PageController.php:1250
 msgid "Required."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1250
+#: /app/lib/Controller/PageController.php:1251
 msgid "Number required."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1314
+#: /app/lib/Controller/PageController.php:1315
 msgid "Please add time slots first."
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1319
+#: /app/lib/Controller/PageController.php:1320
 msgid "Please select a calendar first"
 msgstr ""
 
-#: /app/lib/Controller/PageController.php:1324
+#: /app/lib/Controller/PageController.php:1325
 msgid "Selected calendar not found"
 msgstr ""
 
@@ -588,7 +588,7 @@ msgid "Directory Item Editor"
 msgstr ""
 
 #. TRANSLATORS onents/modals/DirItemEditorModal.vue:91
-#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:195
+#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:196
 #: /app/specialVueFakeDummyForL10nScript.js:32
 #: /app/specialVueFakeDummyForL10nScript.js:94
 msgid "Title"
@@ -727,18 +727,18 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:167
+#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:168
 #: /app/specialVueFakeDummyForL10nScript.js:90
 msgid "Number of Appointments"
 msgstr ""
 
-#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:179
+#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:180
 #: /app/specialVueFakeDummyForL10nScript.js:92
 msgid "Duration (hours:minutes)"
 msgstr ""
 
-#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:213
-#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:215
+#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:214
+#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:216
 #. TRANSLATORS onents/settings-v2/SettingsDir.vue:86
 #: /app/specialVueFakeDummyForL10nScript.js:96
 #: /app/specialVueFakeDummyForL10nScript.js:98

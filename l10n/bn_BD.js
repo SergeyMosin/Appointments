@@ -20,6 +20,7 @@ OC.L10N.register(
     "Deleted" : "মুছে ফেলা",
     "Disabled" : "অকার্যকর",
     "Warning" : "সতর্কবাণী",
+    "Important" : "গুরুত্বপূর্ণ",
     "Advanced" : "সুচারু",
     "Edit" : "সম্পাদনা",
     "Back" : "পেছনে যাও",

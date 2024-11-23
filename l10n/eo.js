@@ -31,6 +31,7 @@ OC.L10N.register(
     "24 hours" : "24 horoj",
     "Warning" : "Averto",
     "Important" : "Grava",
+    "Security" : "Sekurigo",
     "Reminders" : "Memorigoj",
     "Advanced" : "Progresinta",
     "Edit" : "Modifi",
