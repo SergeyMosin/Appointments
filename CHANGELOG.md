@@ -1,3 +1,10 @@
+## v2.3.0 - 2024-11-22
+### Changed
+- performance improvement: use direct query(BCSabreImpl->fastQuery) instead of 'calendarQuery' >>> 'getMultipleCalendarObjects'
+### Fixed
+- fix undefined array key "zones_file" error when page is disabled
+- grid: fix editing one appointment causes changes in another - #559
+
 ## v2.2.0 - 2024-11-16
 ### Added
 - More 'lead time' options - #557
