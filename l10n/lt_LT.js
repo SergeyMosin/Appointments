@@ -103,6 +103,7 @@ OC.L10N.register(
     "Weekly Template" : "Savaitinis šablonas",
     "Optimize recurrence" : "Optimizuoti pasikartojimus",
     "Debugging" : "Derinimas",
+    "Debugging Mode" : "Derinimo veiksena",
     "Simple" : "Paprasta",
     "External" : "Išorinė",
     "15 minutes" : "15 minučių",
