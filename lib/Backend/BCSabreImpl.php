@@ -1309,6 +1309,7 @@ class BCSabreImpl implements IBackendConnector
             ->from('calendarobjects', 'c')
             ->where($calendarsOrExpr)
             ->andWhere($query->expr()->neq('c.classification', $query->createNamedParameter(CalDavBackend::CLASSIFICATION_PRIVATE)))
+            ->andWhere($query->expr()->eq('componenttype', $query->createNamedParameter('VEVENT')))
             ->andWhere($query->expr()->isNull('c.deleted_at'))
             ->setMaxResults(1024);
         foreach ($additionalColumns as $column) {
