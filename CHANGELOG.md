@@ -1,3 +1,7 @@
+## v2.3.2 - 2024-11-24
+### Fixed
+- Internal Server Error: skip non `VEVENT` objects in fastQuery - #564
+
 ## v2.3.1 - 2024-11-23
 ### Fixed
 - Internal Server Error: fastQuery returns Postgresql blob as resource instead of string - #563
