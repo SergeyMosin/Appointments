@@ -3,7 +3,10 @@ import {useSettingsStore} from "../../stores/settings";
 import PsSelect from "../PsSelect.vue";
 import LabelAccordion from "../LabelAccordion.vue";
 import {computed, ref, inject} from "vue";
-import {NcButton} from "@nextcloud/vue";
+import {
+	NcButton,
+	NcTextField
+} from "@nextcloud/vue";
 import IconDownload from "vue-material-design-icons/Download.vue";
 import DebugDataModal from "../modals/DebugDataModal.vue";
 import ComboSelect from "./ComboSelect.vue";
@@ -54,6 +57,11 @@ const remoteCalendarOptions = computed(() => {
 	}, [])
 })
 
+const eventUid = ref('')
+const sendUid = () => {
+	handleAction('uid_info', {p: pageId, uid: eventUid.value})
+}
+
 </script>
 
 
@@ -98,6 +106,13 @@ const remoteCalendarOptions = computed(() => {
 				size="large"
 				:request="debugRequest"
 				@close-modal="handleCloseModal"/>
+		<NcTextField
+				label="Get by Event UID"
+				trailingButtonIcon="arrowRight"
+				:showTrailingButton="true"
+				trailingButtonLabel="Send"
+				@trailing-button-click="sendUid"
+				v-model="eventUid"/>
 	</div>
 </template>
 

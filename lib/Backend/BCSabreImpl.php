@@ -751,10 +751,9 @@ class BCSabreImpl implements IBackendConnector
 
         $endTs = $end->getTimestamp();
 
-        $r['urls'] = [];
         $events = [];
 
-        $iter = $this->fastQuery([$cal['id']], $start->getTimestamp(), $end->getTimestamp());
+        $iter = $this->fastQuery([$cal], $start->getTimestamp(), $end->getTimestamp());
         foreach ($iter as $data) {
             $vo = Reader::read($data);
             $e_ts = $vo->VEVENT->DTEND->getDateTime()->getTimestamp();
@@ -763,7 +762,6 @@ class BCSabreImpl implements IBackendConnector
             }
             $vo->destroy();
         }
-//        }
 
         $r['events'] = $events;
         return $r;
