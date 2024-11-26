@@ -1,3 +1,7 @@
+## v2.3.3 - 2024-11-26
+### Added
+- add 'Get by Event UID' debugging option
+
 ## v2.3.2 - 2024-11-24
 ### Fixed
 - Internal Server Error: skip non `VEVENT` objects in fastQuery - #564
