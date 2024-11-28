@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2024-11-26 03:21+0000\n"
+"POT-Creation-Date: 2024-11-28 02:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -747,7 +747,7 @@ msgid "Delete"
 msgstr ""
 
 #. TRANSLATORS onents/settings-v2/ComboSelect.vue:34
-#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:75
+#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:83
 #: /app/specialVueFakeDummyForL10nScript.js:104
 #: /app/specialVueFakeDummyForL10nScript.js:174
 #: /app/specialVueFakeDummyForL10nScript.js:178
@@ -911,39 +911,39 @@ msgstr ""
 msgid "Debugging"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:19
+#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:22
 #: /app/specialVueFakeDummyForL10nScript.js:162
 msgid "Debugging Off"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:20
+#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:23
 #: /app/specialVueFakeDummyForL10nScript.js:164
 msgid "Log remote blockers"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:21
+#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:24
 #: /app/specialVueFakeDummyForL10nScript.js:166
 msgid "Log template durations"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:65
-#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:69
+#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:73
+#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:77
 #: /app/specialVueFakeDummyForL10nScript.js:168
 #: /app/specialVueFakeDummyForL10nScript.js:170
 msgid "Settings Dump"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:72
+#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:80
 #: /app/specialVueFakeDummyForL10nScript.js:172
 msgid "Get raw calendar data"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:80
+#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:88
 #: /app/specialVueFakeDummyForL10nScript.js:176
 msgid "Sync remote calendar now"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:91
+#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:99
 #: /app/specialVueFakeDummyForL10nScript.js:180
 #: /app/specialVueFakeDummyForL10nScript.js:182
 msgid "Debugging Mode"

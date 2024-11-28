@@ -39,7 +39,7 @@ OC.L10N.register(
     "Action needed" : "Åtgärd behövs",
     "Info" : "Info",
     "Link Expired …" : "Giltighetstiden för länken har gått ut ...",
-    "An email with additional details is on its way to you at %s" : "Ett epostmeddelande med ytterligare detaljer är på väg till dig, till %s",
+    "An email with additional details is on its way to you at %s" : "Ett e-postmeddelande med ytterligare detaljer är på väg till dig på %s",
     "Almost done …" : "Nästan klart ...",
     "We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request" : "Vi har skickat ett mejl till %s. Var snäll och öppna det och klicka på bekräftelselänken för att slutföra din mötesbegäran",
     "Organization Name" : "Organisationsnamn",
