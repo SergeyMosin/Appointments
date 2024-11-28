@@ -1,3 +1,9 @@
+## v2.3.4 - 2024-11-28
+### Fixed
+- time range is ignored in 'fastQuery' - #565
+### Added
+- python script to generate .ics files for testing
+
 ## v2.3.3 - 2024-11-26
 ### Added
 - add 'Get by Event UID' debugging option
