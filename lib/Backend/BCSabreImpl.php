@@ -1296,22 +1296,22 @@ class BCSabreImpl implements IBackendConnector
             ));
         }
 
-        if ($startTs > 0) {
-            $query->andWhere($query->expr()->gt('lastoccurence', $query->createNamedParameter($startTs)));
-        }
-        if ($endTs > 0) {
-            $query->andWhere($query->expr()->lt('firstoccurence', $query->createNamedParameter($endTs)));
-        }
-
         $query->select(['c.calendardata'])
             ->from('calendarobjects', 'c')
             ->where($calendarsOrExpr)
             ->andWhere($query->expr()->neq('c.classification', $query->createNamedParameter(CalDavBackend::CLASSIFICATION_PRIVATE)))
             ->andWhere($query->expr()->eq('componenttype', $query->createNamedParameter('VEVENT')))
             ->andWhere($query->expr()->isNull('c.deleted_at'))
-            ->setMaxResults(1024);
+            ->setMaxResults(1024 * count($calIds));
         foreach ($additionalColumns as $column) {
             $query->addSelect('c.' . $column);
+        }
+
+        if ($startTs > 0) {
+            $query->andWhere($query->expr()->gt('lastoccurence', $query->createNamedParameter($startTs)));
+        }
+        if ($endTs > 0) {
+            $query->andWhere($query->expr()->lt('firstoccurence', $query->createNamedParameter($endTs)));
         }
 
         if (($cnt = count($propFilters)) > 0) {
