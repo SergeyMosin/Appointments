@@ -53,7 +53,7 @@ const handleDeleteBadEmail = (email) => {
 		<ComboCheckbox
 				class="ps-vert-spacing"
 				prop-name="secHcapEnabled"
-				:label="t('appointments', 'Enable hCaptacha')"
+				:label="t('appointments', 'Enable hCaptcha')"
 				:store="settingsStore">
 		</ComboCheckbox>
 		<div class="srgdev-appt-sb-indent" v-if="settings.secHcapEnabled">
