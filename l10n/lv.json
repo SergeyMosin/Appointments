@@ -217,7 +217,6 @@
     "Add action links" : "Pievienot darbības saites",
     "Additional reminder email text" : "Papildus atgādinājuma e-pasta teksts",
     "Default Cron/Email Language: {langCode}" : "Noklusējuma Cron/E-pasta valoda: {langCode}",
-    "Enable hCaptacha" : "Iespējot hCaptcha",
     "hCaptcha site key" : "hCaptcha vietnes atslēga",
     "hCaptcha secret" : "hCaptcha noslēpums",
     "An hCaptcha account is required, more info" : "hCaptcha konts ir nepieciešams, vairāk informācijas",

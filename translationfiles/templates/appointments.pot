@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2024-12-08 03:11+0000\n"
+"POT-Creation-Date: 2024-12-09 02:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1701,7 +1701,7 @@ msgstr ""
 
 #. TRANSLATORS onents/settings-v2/SectionSecurity.vue:56
 #: /app/specialVueFakeDummyForL10nScript.js:488
-msgid "Enable hCaptacha"
+msgid "Enable hCaptcha"
 msgstr ""
 
 #. TRANSLATORS onents/settings-v2/SectionSecurity.vue:63

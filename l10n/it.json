@@ -305,7 +305,6 @@
     "Additional reminder email text" : "Testo aggiuntivo dell'e-mail di promemoria",
     "Default Cron/Email Language: {langCode}" : "Lingua predefinita Cron/Email: {langCode}",
     "Private Page (visitors must be logged-in)" : "Pagina privata (i visitatori devono aver effettuato l'accesso)",
-    "Enable hCaptacha" : "Abilita hCaptacha",
     "hCaptcha site key" : "Chiave del sito hCaptcha",
     "hCaptcha secret" : "hCaptcha segreto",
     "An hCaptcha account is required, more info" : "È richiesto un account hCaptcha, maggiori informazioni",

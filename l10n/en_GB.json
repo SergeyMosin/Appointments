@@ -305,7 +305,6 @@
     "Additional reminder email text" : "Additional reminder email text",
     "Default Cron/Email Language: {langCode}" : "Default Cron/Email Language: {langCode}",
     "Private Page (visitors must be logged-in)" : "Private Page (visitors must be logged-in)",
-    "Enable hCaptacha" : "Enable hCaptacha",
     "hCaptcha site key" : "hCaptcha site key",
     "hCaptcha secret" : "hCaptcha secret",
     "An hCaptcha account is required, more info" : "An hCaptcha account is required, more info",
