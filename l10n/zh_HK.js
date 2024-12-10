@@ -307,6 +307,7 @@ OC.L10N.register(
     "Additional reminder email text" : "額外提醒電子郵件文字",
     "Default Cron/Email Language: {langCode}" : "默認 Cron/電郵語言：{langCode}",
     "Private Page (visitors must be logged-in)" : "私人頁面（訪客必須登入）",
+    "Enable hCaptcha" : "啟用 hCaptacha",
     "hCaptcha site key" : "hCaptacha 網站金鑰",
     "hCaptcha secret" : "hCaptacha 祕密",
     "An hCaptcha account is required, more info" : "需要 hCaptcha 帳號，更多資訊",
