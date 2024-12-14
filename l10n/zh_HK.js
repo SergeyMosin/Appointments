@@ -274,7 +274,7 @@ OC.L10N.register(
     "Show appointments for next" : "顯示未來的約會：",
     "Auto Style" : "自動樣式",
     "Show Empty Days" : "顯示空白的日子",
-    "Start on current day instead of Monday" : "一個星期從當前日期開始而非星期一",
+    "Start on current day instead of Monday" : "一個星期從目前日期開始而非星期一",
     "Show Empty Weekends" : "顯示空白的週末",
     "Show time in two columns" : "在兩列中顯示時間",
     "Show end time" : "顯示結束時間",
