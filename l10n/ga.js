@@ -307,6 +307,7 @@ OC.L10N.register(
     "Additional reminder email text" : "Téacs ríomhphoist meabhrúcháin breise",
     "Default Cron/Email Language: {langCode}" : "Cron Réamhshocraithe/Teanga Ríomhphoist: {langCode}",
     "Private Page (visitors must be logged-in)" : "Leathanach Príobháideach (ní mór do chuairteoirí a bheith logáilte isteach)",
+    "Enable hCaptcha" : "Cumasaigh hCaptcha",
     "hCaptcha site key" : "Eochair suíomh hCaptcha",
     "hCaptcha secret" : "rún hCaptcha",
     "An hCaptcha account is required, more info" : "Tá cuntas hCaptcha ag teastáil, tuilleadh eolais",
