@@ -307,6 +307,7 @@ OC.L10N.register(
     "Additional reminder email text" : "Další text e-mailu s připomínkou",
     "Default Cron/Email Language: {langCode}" : "Výchozí jazyk pro cron/e-mail: {langCode}",
     "Private Page (visitors must be logged-in)" : "Soukromá stránka (je třeba, aby se návštěvníci přihlašovali)",
+    "Enable hCaptcha" : "Zapnout hCaptcha",
     "hCaptcha site key" : "klíč k hCaptcha site",
     "hCaptcha secret" : "Tajemství pro hCaptcha",
     "An hCaptcha account is required, more info" : "Je zapotřebí hCaptcha účet, další informace",
