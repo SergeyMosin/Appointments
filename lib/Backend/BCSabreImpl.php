@@ -642,8 +642,7 @@ class BCSabreImpl implements IBackendConnector
             }
         }
 
-        if ($mode[0] === "1") {
-            // external mode
+        if ($mode[0] === BackendUtils::CLS_TS_MODE_EXTERNAL) {
             // $calId = dstCal(main)+chr(31)+srcCal(free spots) @see PageController->showForm()
             return $this->queryRangeTR($calId, $start, $end, $key);
         }
@@ -658,11 +657,16 @@ class BCSabreImpl implements IBackendConnector
         $showET = $this->utils->getUserSettings()[BackendUtils::PSN_END_TIME];
 
         $ts_pref = 'U';
+
+        $propFilters = ['CATEGORIES:' . BackendUtils::APPT_CAT];
+        if ($no_uri === false) {
+            $propFilters[] = 'STATUS:TENTATIVE';
+        }
         $iter = $this->fastQuery([$calId],
             // We need to adjust for UTC timezones and filter
             $o_start - 50400,
             $o_end + 50400,
-            $no_uri === false ? ['CATEGORIES:' . BackendUtils::APPT_CAT] : [],
+            $propFilters,
             ['uri']
         );
         foreach ($iter as $row) {
