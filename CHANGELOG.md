@@ -1,3 +1,7 @@
+## v2.3.5 - 2024-12-19
+### Fixed
+- Simple Time Slot Mode - Already reserved date not removed from list of availability - #569
+
 ## v2.3.4 - 2024-11-28
 ### Fixed
 - time range is ignored in 'fastQuery' - #565
