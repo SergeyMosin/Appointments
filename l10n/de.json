@@ -208,7 +208,7 @@
     "Booked appointments will be placed here. In addition to booked appointments, any events in this calendar marked as \"Busy\" will prevent conflicting timeslots in the \"Source Calendar\" from appearing in the public form." : "Gebuchte Termine werden hier angezeigt. Zusätzlich zu gebuchten Terminen verhindern Termine in diesem Kalender, die als \"Beschäftigt\" markiert sind, dass überschneidende Zeitfenster im \"Quellkalender\" im öffentlichen Formular angezeigt werden.",
     "error: main calendar required" : "Fehler: Hauptkalender erforderlich",
     "Main calendar" : "Hauptkalender",
-    "When you create new appointment slots they are placed here and are shown in your public page(s). It is recommended to use a dedicated calendar." : "Wenn Sie neue Terminslots erstellen, werden diese hier platziert und in Ihren öffentlichen Seiten angezeigt. Es empfiehlt sich, hierzu einen dedizierten Kalender zu verwenden.",
+    "When you create new appointment slots they are placed here and are shown in your public page(s). It is recommended to use a dedicated calendar." : "Wenn du neue Terminslots erstellst, werden diese hier platziert und in deinen öffentlichen Seiten angezeigt. Es empfiehlt sich, hierzu einen dedizierten Kalender zu verwenden.",
     "Calendar for booked appointments" : "Kalender für gebuchte Termine",
     "Use Main calendar" : "Hauptkalender verwenden",
     "If this calendar is different from the Main Calendar, once an appointment is booked it will be moved here." : "Wenn dieser Kalender sich vom Hauptkalender unterscheidet, wird eine Terminbuchung hierher verschoben.",
