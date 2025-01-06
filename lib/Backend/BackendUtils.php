@@ -596,10 +596,11 @@ class BackendUtils
     }
 
     /**
-     * @return array [string|null, int, string]
+     * @return array [string|null, int, string, string]
      *                  date_time: Localized DateTime string or null on error
      *                  state: one of self::PREF_STATUS_*
      *                  attendeeName: or empty if error
+     *                  attendeeEmail: or empty if error
      */
     function dataApptGetInfo(?string $data): array
     {
@@ -645,8 +646,11 @@ class BackendUtils
             );
         }
 
+        $attendeeEmailMailto = $a->getValue();
+
         // Attendee Name
         $ret[2] = $a->parameters['CN']->getValue();
+        $ret[3] = $attendeeEmailMailto ? substr($attendeeEmailMailto, strpos($attendeeEmailMailto, ':') + 1) : '';
 
         return $ret;
     }
