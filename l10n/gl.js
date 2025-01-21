@@ -361,7 +361,7 @@ OC.L10N.register(
     "Verifying key" : "Chave de verificación",
     "Enter key" : "Introduza a chave",
     "Items/Links" : "Elementos/Ligazóns",
-    "no items found" : "non se atoparon elementos",
+    "no items found" : "non se atopou ningún elemento",
     "Edit" : "Editar",
     "Add New Item" : "Engadir un novo elemento",
     "Page Settings" : "Axustes da páxina",
