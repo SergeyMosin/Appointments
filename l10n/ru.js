@@ -78,6 +78,7 @@ OC.L10N.register(
     "Preview" : "Предварительный просмотр",
     "Show URL/link" : "Показать ссылку",
     "Settings" : "Настройки",
+    "Delete Page" : "Удалить страницу",
     "Add New Page" : "Добавить страницу",
     "Title" : "Название",
     "Subtitle" : "Подзаголовок",
