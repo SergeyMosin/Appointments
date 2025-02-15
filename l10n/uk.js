@@ -84,6 +84,7 @@ OC.L10N.register(
     "Icon" : "Значок",
     "Debugging" : "Налагодження ",
     "Guest password" : "Гостьовий пароль",
+    "Min" : "Мін",
     "External" : "Зовнішнє",
     "No lead time" : "Без строків виконання",
     "15 minutes" : "15 хвилин",
