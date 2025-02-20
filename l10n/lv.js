@@ -100,7 +100,7 @@ OC.L10N.register(
     "Settings" : "Iestatījumi",
     "Delete Page" : "Izdzēst lappusi",
     "Add New Page" : "Pievienot jaunu lappusi",
-    "Select One Option" : "Izvēlieties vienu opciju",
+    "Select One Option" : "Atlasīt vienu iespēju",
     "error: cannot load debug data" : "kļūda: nevar ielādēt atkļūdošanas datus",
     "Title" : "Virsraksts",
     "Subtitle" : "Apakšvirsraksts",
