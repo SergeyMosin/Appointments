@@ -69,8 +69,6 @@ OC.L10N.register(
     "URL" : "URL-адреса",
     "Save" : "Зберегти",
     "Copy" : "Копіювати",
-    "Removing Appointment Slots" : "Вилучити діапазони призначень",
-    "Cannot delete old appointments/slots" : "Не вдалося вилучити застарілі призначення/діапазони",
     "Remove" : "Вилучити",
     "Add" : "Додати",
     "OK" : "Гаразд",

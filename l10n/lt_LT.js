@@ -88,7 +88,6 @@ OC.L10N.register(
     "Save" : "Įrašyti",
     "Copy" : "Kopija",
     "error: cannot load calendar data" : "klaida: nepavyksta įkelti kalendoriaus duomenų",
-    "This action CANNOT be undone. Continue?" : "Šio veiksmo NEĮMANOMA bus atšaukti. Tęsti?",
     "Remove Old Appointments" : "Šalinti senus susitikimus",
     "Remove" : "Šalinti",
     "Add" : "Pridėti",
