@@ -1904,6 +1904,7 @@ class BackendUtils
                 "PRODID:-//IDN nextcloud.com//Appointments App | srgdev.com//EN\r\n" .
                 "CALSCALE:GREGORIAN\r\n" .
                 "VERSION:2.0\r\n" .
+                $tz_data .
                 "BEGIN:VEVENT\r\n" .
                 "SUMMARY:" . $summary . $rn .
                 "STATUS:TENTATIVE\r\n" .
@@ -1918,7 +1919,7 @@ class BackendUtils
             '4_last' => $tz_Z . $rn
                 . $this->chunk_split_unicode("ORGANIZER;CN=" . $name . ":mailto:" . $email, 75, "\r\n ") . $rn
                 . (!empty($addr) ? ($this->chunk_split_unicode("LOCATION:" . $addr, 75, "\r\n ") . $rn) : '')
-                . "END:VEVENT\r\n" . $tz_data . "END:VCALENDAR\r\n"
+                . "END:VEVENT\r\nEND:VCALENDAR\r\n"
         ];
     }
 
