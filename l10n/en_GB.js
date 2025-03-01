@@ -313,6 +313,8 @@ OC.L10N.register(
     "Guest name + Date/Time" : "Guest name + Date/Time",
     "Date/Time + Guest name" : "Date/Time + Guest name",
     "Guest name only" : "Guest name only",
+    "Customize Talk room name." : "Customise Talk room name.",
+    "Customize Talk room URL email text." : "Customise Talk room URL email text.",
     "Custom \"Meeting type\" form fields." : "Custom \"Meeting type\" form fields.",
     "Create rooms for confirmed appointments" : "Create rooms for confirmed appointments",
     "Enable lobby" : "Enable lobby",
