@@ -325,11 +325,6 @@ class BackendUtils
         }
         $evt->DESCRIPTION->setValue($dsr);
 
-        if (!isset($evt->STATUS)) {
-            $evt->add('STATUS');
-        }
-        $evt->STATUS->setValue("CONFIRMED");
-
         if (!isset($evt->TRANSP)) {
             $evt->add('TRANSP');
         }
@@ -521,7 +516,7 @@ class BackendUtils
     function dataConfirmAttendee(string $data, string $userId, string $pageId): array
     {
 
-        $vo = $this->getAppointment($data, 'CONFIRMED');
+        $vo = $this->getAppointment($data, 'TENTATIVE');
         if ($vo === null) {
             return [null, null, ""];
         }
@@ -533,6 +528,11 @@ class BackendUtils
         if ($a === null) {
             return [null, null, ""];
         }
+
+        if (!isset($evt->STATUS)) {
+            $evt->add('STATUS');
+        }
+        $evt->STATUS->setValue("CONFIRMED");
 
         $presetTitle = "";
         if (isset($evt->{ApptDocProp::PROP_NAME})) {
@@ -968,7 +968,7 @@ class BackendUtils
     function dataDeleteAppt(string $data): array
     {
         $f = "";
-        $vo = $this->getAppointment($data, 'CONFIRMED');
+        $vo = $this->getAppointment($data, '*');
         if ($vo === null) {
             return ['', '', $f, ''];
         }

@@ -89,7 +89,9 @@ class BCSabreImpl implements IBackendConnector
             $vo = Reader::read($row['calendardata']);
             if ($only_empty &&
                 (!isset($vo->VEVENT->STATUS)
-                    || $vo->VEVENT->STATUS->getValue() !== 'TENTATIVE')
+                    || $vo->VEVENT->STATUS->getValue() !== 'TENTATIVE'
+                    || $vo->VEVENT->ATTENDEE
+                )
             ) {
                 continue;
             }
@@ -675,6 +677,13 @@ class BCSabreImpl implements IBackendConnector
             /** @var  \Sabre\VObject\Property\ICalendar\DateTime $dt_start */
             $dt_start = $vo->VEVENT->DTSTART;
             if ($dt_start->isFloating()) {
+                $vo->destroy();
+                continue;
+            }
+
+            if ($vo->VEVENT->ATTENDEE) {
+                // this is most likely a pending appointment that is booked
+                // in the same cal via "Use Main Calendar" setting
                 $vo->destroy();
                 continue;
             }
