@@ -1069,6 +1069,35 @@ class DavListener implements IEventListener
             }
 
         } else {
+
+            // the purposed of this block is to add strings for translation
+            // start: translate for before release
+
+            $some_org_name = "Organization Name";
+            $number_of_hours = 2;
+            $some_person_name = "John Smith";
+            $some_date_time="Date and Time";
+            $person_email="test@example.com";
+
+            // TRANSLATORS Email subject asking an attendee to confirm a pending appointment, Ex: Reminder: please confirm your {{Organization Name}} appointment
+            $future_use = $this->l10N->t("Reminder: please confirm your %s appointment", [$some_org_name]);
+
+            // TRANSLATORS Part of email body, Ex: Important: If not confirmed within 2 hours, this appointment will be automatically canceled.
+            $future_use = $this->l10N->n('Important: If not confirmed within %n hour, this appointment will be automatically canceled.', 'Important: If not confirmed within %n hours, this appointment will be automatically canceled.', $number_of_hours);
+
+            // TRANSLATORS Button text
+            $future_use = $this->l10N->t("Add a guest");
+
+            // TRANSLATORS Label for an input field
+            $future_use = $this->l10N->t("Guest Email");
+
+            // TRANSLATORS Email subject, Ex: {{Organization Name}} Appointment Guest Invitation
+            $future_use = $this->l10N->t("%s Appointment Guest Invitation", [$some_org_name]);
+
+            // TRANSLATORS Email body, Ex: {{John Smith}} has invited you to join an appointment with {{Organization Name}} on {{Date_Time}}. If you have any questions, please email {{John Smith}} directly at {{john.smith@example.com}}.
+            $future_use = $this->l10N->t('%1$s has invited you to join an appointment with %2$s on %3$s. If you have any questions, please email %1$s directly at %4$s', [$some_person_name, $some_org_name, $some_date_time, $person_email]);
+
+            // end: translate for before release
             return;
         }
 
