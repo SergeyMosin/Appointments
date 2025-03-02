@@ -1,3 +1,12 @@
+## v2.3.6 - 2025-03-01
+### Added
+- Added stings for pre-release translations
+### Changed
+- Bump nc versions: min is 29 and max is 31 now - #580
+### Fixed
+- Wrong STATUS in for pending appointments - #576
+- Timezone data is added after VEVENT
+
 ## v2.3.5 - 2024-12-19
 ### Fixed
 - Simple Time Slot Mode - Already reserved date not removed from list of availability - #569
