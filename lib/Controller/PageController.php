@@ -384,7 +384,7 @@ class PageController extends Controller
                         if (($data = $this->bc->getObjectData($otherCalId, $uri)) !== null) {
                             // this appointment is confirmed already
 
-                            list($date_time, $state, $attendeeName) = $this->utils->dataApptGetInfo($data);
+                            list($date_time, $state, $attendeeName, $attendeeEmail) = $this->utils->dataApptGetInfo($data);
 
                             if ($date_time !== null && $state === BackendUtils::PREF_STATUS_CONFIRMED) {
                                 $sts = 0;
@@ -406,7 +406,7 @@ class PageController extends Controller
                         $data = $this->bc->getObjectData($otherCalId, $uri);
                     }
 
-                    list($date_time, $state, $attendeeName) = $this->utils->dataApptGetInfo($data);
+                    list($date_time, $state, $attendeeName, $attendeeEmail) = $this->utils->dataApptGetInfo($data);
 
                     if ($date_time === null) {
                         // error
@@ -440,6 +440,7 @@ class PageController extends Controller
                         }
                         if ($settings[BackendUtils::ORG_CONFIRMED_RDR_DATA] === true) {
                             $d["name"] = $attendeeName;
+                            $d["email"] = $attendeeEmail ?? null;
                             $d["dateTimeString"] = $date_time;
                         }
 
