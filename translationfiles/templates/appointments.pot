@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2024-12-19 02:42+0000\n"
+"POT-Creation-Date: 2025-03-02 02:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -132,17 +132,17 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#. TRANSLATORS onents/modals/DirItemEditorModal.vue:144
-#. TRANSLATORS onents/modals/RemoveSimpleApptsModal.vue:195
-#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:220
-#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:222
-#. TRANSLATORS onents/views/TimeSlotEditor.vue:246
+#. TRANSLATORS onents/modals/DirItemEditorModal.vue:65
+#. TRANSLATORS onents/modals/RemoveSimpleApptsModal.vue:35
+#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:64
+#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:66
+#. TRANSLATORS onents/views/TimeSlotEditor.vue:29
 #: /app/lib/Backend/DavListener.php:729 /app/lib/Backend/DavListener.php:1015
-#: /app/specialVueFakeDummyForL10nScript.js:44
-#: /app/specialVueFakeDummyForL10nScript.js:82
-#: /app/specialVueFakeDummyForL10nScript.js:100
-#: /app/specialVueFakeDummyForL10nScript.js:102
-#: /app/specialVueFakeDummyForL10nScript.js:636
+#: /app/specialVueFakeDummyForL10nScript.js:447
+#: /app/specialVueFakeDummyForL10nScript.js:739
+#: /app/specialVueFakeDummyForL10nScript.js:930
+#: /app/specialVueFakeDummyForL10nScript.js:932
+#: /app/specialVueFakeDummyForL10nScript.js:2699
 msgid "Cancel"
 msgstr ""
 
@@ -427,9 +427,9 @@ msgid ""
 "activity that violates our community guidelines."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:40
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:14
 #: /app/lib/Controller/PageController.php:1063
-#: /app/specialVueFakeDummyForL10nScript.js:126
+#: /app/specialVueFakeDummyForL10nScript.js:1166
 msgid "Organization Name"
 msgstr ""
 
@@ -520,353 +520,305 @@ msgid ""
 "confirm or cancel their appointments via an email link."
 msgstr ""
 
-#. TRANSLATORS .vue:98
-#: /app/specialVueFakeDummyForL10nScript.js:2
+#. TRANSLATORS .vue:10
+#: /app/specialVueFakeDummyForL10nScript.js:89
 msgid "Please select or create a page"
 msgstr ""
 
-#. TRANSLATORS .vue:106
-#: /app/specialVueFakeDummyForL10nScript.js:4
+#. TRANSLATORS .vue:18
+#: /app/specialVueFakeDummyForL10nScript.js:91
 msgid "Preview"
 msgstr ""
 
-#. TRANSLATORS .vue:109
-#: /app/specialVueFakeDummyForL10nScript.js:6
+#. TRANSLATORS .vue:21
+#: /app/specialVueFakeDummyForL10nScript.js:93
 msgid "Page Is Not Enabled"
 msgstr ""
 
-#. TRANSLATORS onents/Navigation2.vue:63
-#: /app/specialVueFakeDummyForL10nScript.js:8
+#: /app/specialVueFakeDummyForL10nScript.js:220
 msgid "Delete action cannot be undone. Proceed?"
 msgstr ""
 
-#. TRANSLATORS onents/Navigation2.vue:129
-#: /app/specialVueFakeDummyForL10nScript.js:10
+#. TRANSLATORS onents/Navigation2.vue:26
+#: /app/specialVueFakeDummyForL10nScript.js:261
 msgid "Stop sharing (disable)"
 msgstr ""
 
-#. TRANSLATORS onents/Navigation2.vue:130
-#: /app/specialVueFakeDummyForL10nScript.js:12
+#. TRANSLATORS onents/Navigation2.vue:27
+#: /app/specialVueFakeDummyForL10nScript.js:263
 msgid "Publish online (enable)"
 msgstr ""
 
-#. TRANSLATORS onents/Navigation2.vue:139
-#: /app/specialVueFakeDummyForL10nScript.js:14
-#: /app/specialVueFakeDummyForL10nScript.js:20
+#. TRANSLATORS onents/Navigation2.vue:36
+#: /app/specialVueFakeDummyForL10nScript.js:265
+#: /app/specialVueFakeDummyForL10nScript.js:271
 msgid "Show URL/link"
 msgstr ""
 
-#. TRANSLATORS onents/Navigation2.vue:158
-#: /app/specialVueFakeDummyForL10nScript.js:16
-#: /app/specialVueFakeDummyForL10nScript.js:22
+#. TRANSLATORS onents/Navigation2.vue:55
+#: /app/specialVueFakeDummyForL10nScript.js:267
+#: /app/specialVueFakeDummyForL10nScript.js:273
 msgid "Settings"
 msgstr ""
 
-#. TRANSLATORS onents/Navigation2.vue:167
-#: /app/specialVueFakeDummyForL10nScript.js:18
+#. TRANSLATORS onents/Navigation2.vue:64
+#: /app/specialVueFakeDummyForL10nScript.js:269
 msgid "Delete Page"
 msgstr ""
 
-#. TRANSLATORS onents/Navigation2.vue:203
-#: /app/specialVueFakeDummyForL10nScript.js:24
+#. TRANSLATORS onents/Navigation2.vue:100
+#: /app/specialVueFakeDummyForL10nScript.js:275
 msgid "Add New Page"
 msgstr ""
 
-#. TRANSLATORS onents/PsSelect.vue:17
-#: /app/specialVueFakeDummyForL10nScript.js:26
+#: /app/specialVueFakeDummyForL10nScript.js:299
 msgid "Select One Option"
 msgstr ""
 
-#. TRANSLATORS onents/modals/DebugDataModal.vue:28
-#: /app/specialVueFakeDummyForL10nScript.js:28
+#: /app/specialVueFakeDummyForL10nScript.js:330
 msgid "error: cannot load debug data"
 msgstr ""
 
-#. TRANSLATORS onents/modals/DirItemEditorModal.vue:86
-#: /app/specialVueFakeDummyForL10nScript.js:30
+#. TRANSLATORS onents/modals/DirItemEditorModal.vue:7
+#: /app/specialVueFakeDummyForL10nScript.js:433
 msgid "Directory Item Editor"
 msgstr ""
 
-#. TRANSLATORS onents/modals/DirItemEditorModal.vue:91
-#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:196
-#: /app/specialVueFakeDummyForL10nScript.js:32
-#: /app/specialVueFakeDummyForL10nScript.js:94
+#. TRANSLATORS onents/modals/DirItemEditorModal.vue:12
+#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:40
+#: /app/specialVueFakeDummyForL10nScript.js:435
+#: /app/specialVueFakeDummyForL10nScript.js:924
 msgid "Title"
 msgstr ""
 
-#. TRANSLATORS onents/modals/DirItemEditorModal.vue:95
-#: /app/specialVueFakeDummyForL10nScript.js:34
+#. TRANSLATORS onents/modals/DirItemEditorModal.vue:16
+#: /app/specialVueFakeDummyForL10nScript.js:437
 msgid "Subtitle"
 msgstr ""
 
-#. TRANSLATORS onents/modals/DirItemEditorModal.vue:99
-#: /app/specialVueFakeDummyForL10nScript.js:36
+#. TRANSLATORS onents/modals/DirItemEditorModal.vue:20
+#: /app/specialVueFakeDummyForL10nScript.js:439
 msgid "Text"
 msgstr ""
 
-#. TRANSLATORS onents/modals/DirItemEditorModal.vue:105
-#: /app/specialVueFakeDummyForL10nScript.js:38
+#. TRANSLATORS onents/modals/DirItemEditorModal.vue:26
+#: /app/specialVueFakeDummyForL10nScript.js:441
 msgid "URL"
 msgstr ""
 
-#. TRANSLATORS onents/modals/DirItemEditorModal.vue:108
-#: /app/specialVueFakeDummyForL10nScript.js:40
+#. TRANSLATORS onents/modals/DirItemEditorModal.vue:29
+#: /app/specialVueFakeDummyForL10nScript.js:443
 msgid "Select Page"
 msgstr ""
 
-#. TRANSLATORS onents/modals/DirItemEditorModal.vue:136
-#. TRANSLATORS onents/views/TimeSlotEditor.vue:240
-#: /app/specialVueFakeDummyForL10nScript.js:42
-#: /app/specialVueFakeDummyForL10nScript.js:634
+#. TRANSLATORS onents/modals/DirItemEditorModal.vue:57
+#. TRANSLATORS onents/views/TimeSlotEditor.vue:23
+#: /app/specialVueFakeDummyForL10nScript.js:445
+#: /app/specialVueFakeDummyForL10nScript.js:2697
 msgid "Save"
 msgstr ""
 
-#. TRANSLATORS onents/modals/PageUrlModal.vue:125
-#: /app/specialVueFakeDummyForL10nScript.js:46
+#. TRANSLATORS onents/modals/PageUrlModal.vue:9
+#: /app/specialVueFakeDummyForL10nScript.js:564
 msgid "Page URL"
 msgstr ""
 
-#. TRANSLATORS onents/modals/PageUrlModal.vue:138
-#: /app/specialVueFakeDummyForL10nScript.js:48
+#. TRANSLATORS onents/modals/PageUrlModal.vue:22
+#: /app/specialVueFakeDummyForL10nScript.js:566
 msgid "Show iframe/embeddable"
 msgstr ""
 
-#. TRANSLATORS onents/modals/PageUrlModal.vue:152
-#. TRANSLATORS onents/modals/PageUrlModal.vue:159
-#: /app/specialVueFakeDummyForL10nScript.js:50
-#: /app/specialVueFakeDummyForL10nScript.js:52
+#. TRANSLATORS onents/modals/PageUrlModal.vue:36
+#. TRANSLATORS onents/modals/PageUrlModal.vue:43
+#: /app/specialVueFakeDummyForL10nScript.js:568
+#: /app/specialVueFakeDummyForL10nScript.js:570
 msgid "Copy"
 msgstr ""
 
-#. TRANSLATORS onents/modals/PageUrlModal.vue:163
-#. TRANSLATORS onents/modals/PageUrlModal.vue:169
-#: /app/specialVueFakeDummyForL10nScript.js:54
-#: /app/specialVueFakeDummyForL10nScript.js:56
+#. TRANSLATORS onents/modals/PageUrlModal.vue:47
+#. TRANSLATORS onents/modals/PageUrlModal.vue:53
+#: /app/specialVueFakeDummyForL10nScript.js:572
+#: /app/specialVueFakeDummyForL10nScript.js:574
 msgid "Visit"
 msgstr ""
 
-#. TRANSLATORS onents/modals/RemoveSimpleApptsModal.vue:35
-#. TRANSLATORS onents/views/TimeSlotEditor.vue:126
-#: /app/specialVueFakeDummyForL10nScript.js:58
-#: /app/specialVueFakeDummyForL10nScript.js:626
+#: /app/specialVueFakeDummyForL10nScript.js:609
+#: /app/specialVueFakeDummyForL10nScript.js:2601
 msgid "error: cannot load calendar data"
 msgstr ""
 
-#. TRANSLATORS onents/modals/RemoveSimpleApptsModal.vue:54
-#: /app/specialVueFakeDummyForL10nScript.js:60
+#: /app/specialVueFakeDummyForL10nScript.js:628
 msgid "Remove empty appointment slots created before {fullDate} ?"
 msgstr ""
 
-#. TRANSLATORS onents/modals/RemoveSimpleApptsModal.vue:58
-#: /app/specialVueFakeDummyForL10nScript.js:62
+#: /app/specialVueFakeDummyForL10nScript.js:632
 msgid "Remove empty slots and booked appointments created before {fullDate} ?"
 msgstr ""
 
-#. TRANSLATORS onents/modals/RemoveSimpleApptsModal.vue:68
-#: /app/specialVueFakeDummyForL10nScript.js:64
+#: /app/specialVueFakeDummyForL10nScript.js:642
 msgid "two calendars affected"
 msgstr ""
 
-#. TRANSLATORS onents/modals/RemoveSimpleApptsModal.vue:71
-#: /app/specialVueFakeDummyForL10nScript.js:66
+#: /app/specialVueFakeDummyForL10nScript.js:645
 msgid "Number of expired appointments/slots: {number}"
 msgstr ""
 
-#. TRANSLATORS onents/modals/RemoveSimpleApptsModal.vue:92
-#: /app/specialVueFakeDummyForL10nScript.js:68
-msgid "This action CANNOT be undone. Continue?"
-msgstr ""
-
-#. TRANSLATORS onents/modals/RemoveSimpleApptsModal.vue:96
-#: /app/specialVueFakeDummyForL10nScript.js:70
-msgid "Removing Appointment Slots"
-msgstr ""
-
-#. TRANSLATORS onents/modals/RemoveSimpleApptsModal.vue:99
-#: /app/specialVueFakeDummyForL10nScript.js:72
-msgid "Cannot delete old appointments/slots"
-msgstr ""
-
-#. TRANSLATORS onents/modals/RemoveSimpleApptsModal.vue:125
-#: /app/specialVueFakeDummyForL10nScript.js:74
-msgid "All empty appointment slots created before {fullDate} are removed"
-msgstr ""
-
-#. TRANSLATORS onents/modals/RemoveSimpleApptsModal.vue:129
-#: /app/specialVueFakeDummyForL10nScript.js:76
-msgid ""
-"All empty slots and booked appointments created before {fullDate} are removed"
-msgstr ""
-
-#. TRANSLATORS onents/modals/RemoveSimpleApptsModal.vue:175
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:295
-#: /app/specialVueFakeDummyForL10nScript.js:78
-#: /app/specialVueFakeDummyForL10nScript.js:294
+#. TRANSLATORS onents/modals/RemoveSimpleApptsModal.vue:15
+#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:83
+#: /app/specialVueFakeDummyForL10nScript.js:735
+#: /app/specialVueFakeDummyForL10nScript.js:1672
 msgid "Remove Old Appointments"
 msgstr ""
 
-#. TRANSLATORS onents/modals/RemoveSimpleApptsModal.vue:188
-#: /app/specialVueFakeDummyForL10nScript.js:80
+#. TRANSLATORS onents/modals/RemoveSimpleApptsModal.vue:28
+#: /app/specialVueFakeDummyForL10nScript.js:737
 msgid "Remove"
 msgstr ""
 
-#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:86
-#: /app/specialVueFakeDummyForL10nScript.js:84
+#: /app/specialVueFakeDummyForL10nScript.js:849
 msgid "More than two duration choices"
 msgstr ""
 
-#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:152
-#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:106
-#: /app/specialVueFakeDummyForL10nScript.js:86
-#: /app/specialVueFakeDummyForL10nScript.js:504
+#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:61
+#: /app/specialVueFakeDummyForL10nScript.js:915
+#: /app/specialVueFakeDummyForL10nScript.js:2153
 msgid "Add"
 msgstr ""
 
-#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:153
-#: /app/specialVueFakeDummyForL10nScript.js:88
+#: /app/specialVueFakeDummyForL10nScript.js:916
 msgid "OK"
 msgstr ""
 
-#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:168
-#: /app/specialVueFakeDummyForL10nScript.js:90
+#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:12
+#: /app/specialVueFakeDummyForL10nScript.js:920
 msgid "Number of Appointments"
 msgstr ""
 
-#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:180
-#: /app/specialVueFakeDummyForL10nScript.js:92
+#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:24
+#: /app/specialVueFakeDummyForL10nScript.js:922
 msgid "Duration (hours:minutes)"
 msgstr ""
 
-#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:214
-#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:216
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:86
-#: /app/specialVueFakeDummyForL10nScript.js:96
-#: /app/specialVueFakeDummyForL10nScript.js:98
-#: /app/specialVueFakeDummyForL10nScript.js:610
+#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:58
+#. TRANSLATORS onents/modals/WeeklyApptsEditorModal.vue:60
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:33
+#: /app/specialVueFakeDummyForL10nScript.js:926
+#: /app/specialVueFakeDummyForL10nScript.js:928
+#: /app/specialVueFakeDummyForL10nScript.js:2461
 msgid "Delete"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/ComboSelect.vue:34
-#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:83
-#: /app/specialVueFakeDummyForL10nScript.js:104
-#: /app/specialVueFakeDummyForL10nScript.js:174
-#: /app/specialVueFakeDummyForL10nScript.js:178
+#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:16
+#: /app/specialVueFakeDummyForL10nScript.js:1091
+#: /app/specialVueFakeDummyForL10nScript.js:1273
+#: /app/specialVueFakeDummyForL10nScript.js:1277
 msgid "Calendar Required"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:16
-#: /app/specialVueFakeDummyForL10nScript.js:106
+#: /app/specialVueFakeDummyForL10nScript.js:1149
 msgid "System Native Sync"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:17
-#: /app/specialVueFakeDummyForL10nScript.js:108
+#: /app/specialVueFakeDummyForL10nScript.js:1150
 msgid "1 Hour"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:18
-#: /app/specialVueFakeDummyForL10nScript.js:110
+#: /app/specialVueFakeDummyForL10nScript.js:1151
 msgid "2 Hours"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:19
-#: /app/specialVueFakeDummyForL10nScript.js:112
+#: /app/specialVueFakeDummyForL10nScript.js:1152
 msgid "4 Hours"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:20
-#: /app/specialVueFakeDummyForL10nScript.js:114
+#: /app/specialVueFakeDummyForL10nScript.js:1153
 msgid "8 Hours"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:21
-#: /app/specialVueFakeDummyForL10nScript.js:116
+#: /app/specialVueFakeDummyForL10nScript.js:1154
 msgid "12 Hours"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:22
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:51
-#: /app/specialVueFakeDummyForL10nScript.js:118
-#: /app/specialVueFakeDummyForL10nScript.js:220
+#: /app/specialVueFakeDummyForL10nScript.js:1155
+#: /app/specialVueFakeDummyForL10nScript.js:1358
 msgid "1 day"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:34
-#: /app/specialVueFakeDummyForL10nScript.js:120
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:8
+#: /app/specialVueFakeDummyForL10nScript.js:1160
 msgid "Event Title Template"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:38
-#: /app/specialVueFakeDummyForL10nScript.js:122
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:12
+#: /app/specialVueFakeDummyForL10nScript.js:1162
 msgid "Icon"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:39
-#: /app/specialVueFakeDummyForL10nScript.js:124
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:13
+#: /app/specialVueFakeDummyForL10nScript.js:1164
 msgid "Attendee name"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:41
-#: /app/specialVueFakeDummyForL10nScript.js:128
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:15
+#: /app/specialVueFakeDummyForL10nScript.js:1168
 msgid "Page Tag"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:42
-#: /app/specialVueFakeDummyForL10nScript.js:130
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:16
+#: /app/specialVueFakeDummyForL10nScript.js:1170
 msgid "Mask Token (first three letters of name + semi-random token)"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:43
-#: /app/specialVueFakeDummyForL10nScript.js:132
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:17
+#: /app/specialVueFakeDummyForL10nScript.js:1172
 msgid "Event Preset Title"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:44
-#: /app/specialVueFakeDummyForL10nScript.js:134
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:18
+#: /app/specialVueFakeDummyForL10nScript.js:1174
 msgid ""
 "For example template like {tokens} will set new appointments title to "
 "something like John Smith (Good Org)"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:50
-#: /app/specialVueFakeDummyForL10nScript.js:136
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:24
+#: /app/specialVueFakeDummyForL10nScript.js:1176
 msgid "Redirect Confirmed URL"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:53
-#: /app/specialVueFakeDummyForL10nScript.js:138
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:27
+#: /app/specialVueFakeDummyForL10nScript.js:1178
 msgid ""
 "When this URL is specified, visitors will be redirected there after "
 "confirming their email address. A base64-encoded query parameter, \"d=...\", "
 "containing a JSON object with relevant data, will be added to the URL."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:61
-#: /app/specialVueFakeDummyForL10nScript.js:140
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:35
+#: /app/specialVueFakeDummyForL10nScript.js:1180
 msgid "Generate ID"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:67
-#: /app/specialVueFakeDummyForL10nScript.js:142
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:41
+#: /app/specialVueFakeDummyForL10nScript.js:1182
 msgid "Include Form Data"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:73
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:37
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:96
-#: /app/specialVueFakeDummyForL10nScript.js:144
-#: /app/specialVueFakeDummyForL10nScript.js:198
-#: /app/specialVueFakeDummyForL10nScript.js:238
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:47
+#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:10
+#: /app/specialVueFakeDummyForL10nScript.js:1184
+#: /app/specialVueFakeDummyForL10nScript.js:1344
+#: /app/specialVueFakeDummyForL10nScript.js:1396
 msgid "Weekly Template"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:81
-#: /app/specialVueFakeDummyForL10nScript.js:146
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:55
+#: /app/specialVueFakeDummyForL10nScript.js:1186
 msgid "Subscriptions Sync Interval"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:85
-#: /app/specialVueFakeDummyForL10nScript.js:148
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:59
+#: /app/specialVueFakeDummyForL10nScript.js:1188
 msgid ""
 "When linked (subscription) calendars are selected for conflict check, the "
 "Appointments app can pull data from remote servers before checking for "
@@ -877,113 +829,110 @@ msgid ""
 "you feel that the data is not refreshed often enough."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:92
-#: /app/specialVueFakeDummyForL10nScript.js:150
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:66
+#: /app/specialVueFakeDummyForL10nScript.js:1190
 msgid "External Mode"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:99
-#: /app/specialVueFakeDummyForL10nScript.js:152
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:73
+#: /app/specialVueFakeDummyForL10nScript.js:1192
 msgid "Optimize recurrence"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:102
-#: /app/specialVueFakeDummyForL10nScript.js:154
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:76
+#: /app/specialVueFakeDummyForL10nScript.js:1194
 msgid ""
 "If recurrent events are used in the \"Source Calendar\" the start (DTSTART) "
 "date will be pushed forward once in a while in order to improve performance."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:107
-#: /app/specialVueFakeDummyForL10nScript.js:156
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:81
+#: /app/specialVueFakeDummyForL10nScript.js:1196
 msgid "Require 'Appointment' category"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:110
-#: /app/specialVueFakeDummyForL10nScript.js:158
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:84
+#: /app/specialVueFakeDummyForL10nScript.js:1198
 msgid ""
 "When this option is set only events with with \"Category\" set to "
 "\"Appointment\" (in English) will be considered."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:117
-#: /app/specialVueFakeDummyForL10nScript.js:160
+#. TRANSLATORS onents/settings-v2/SectionAdvanced.vue:91
+#: /app/specialVueFakeDummyForL10nScript.js:1200
 msgid "Debugging"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:22
-#: /app/specialVueFakeDummyForL10nScript.js:162
+#: /app/specialVueFakeDummyForL10nScript.js:1222
 msgid "Debugging Off"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:23
-#: /app/specialVueFakeDummyForL10nScript.js:164
+#: /app/specialVueFakeDummyForL10nScript.js:1223
 msgid "Log remote blockers"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:24
-#: /app/specialVueFakeDummyForL10nScript.js:166
+#: /app/specialVueFakeDummyForL10nScript.js:1224
 msgid "Log template durations"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:73
-#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:77
-#: /app/specialVueFakeDummyForL10nScript.js:168
-#: /app/specialVueFakeDummyForL10nScript.js:170
+#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:6
+#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:10
+#: /app/specialVueFakeDummyForL10nScript.js:1267
+#: /app/specialVueFakeDummyForL10nScript.js:1269
 msgid "Settings Dump"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:80
-#: /app/specialVueFakeDummyForL10nScript.js:172
+#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:13
+#: /app/specialVueFakeDummyForL10nScript.js:1271
 msgid "Get raw calendar data"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:88
-#: /app/specialVueFakeDummyForL10nScript.js:176
+#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:21
+#: /app/specialVueFakeDummyForL10nScript.js:1275
 msgid "Sync remote calendar now"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:99
-#: /app/specialVueFakeDummyForL10nScript.js:180
-#: /app/specialVueFakeDummyForL10nScript.js:182
+#. TRANSLATORS onents/settings-v2/SectionAdvancedDebugging.vue:32
+#: /app/specialVueFakeDummyForL10nScript.js:1279
+#: /app/specialVueFakeDummyForL10nScript.js:1281
 msgid "Debugging Mode"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionBbb.vue:20
-#: /app/specialVueFakeDummyForL10nScript.js:184
+#. TRANSLATORS onents/settings-v2/SectionBbb.vue:5
+#: /app/specialVueFakeDummyForL10nScript.js:1297
 msgid "Create video rooms for confirmed appointments"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionBbb.vue:27
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:77
-#: /app/specialVueFakeDummyForL10nScript.js:186
-#: /app/specialVueFakeDummyForL10nScript.js:518
+#. TRANSLATORS onents/settings-v2/SectionBbb.vue:12
+#. TRANSLATORS onents/settings-v2/SectionTalk.vue:13
+#: /app/specialVueFakeDummyForL10nScript.js:1299
+#: /app/specialVueFakeDummyForL10nScript.js:2222
 msgid "Delete when appointments is removed"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionBbb.vue:32
-#: /app/specialVueFakeDummyForL10nScript.js:188
+#. TRANSLATORS onents/settings-v2/SectionBbb.vue:17
+#: /app/specialVueFakeDummyForL10nScript.js:1301
 msgid "Auto-delete 24 hours after the call is finished"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionBbb.vue:37
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:90
-#: /app/specialVueFakeDummyForL10nScript.js:190
-#: /app/specialVueFakeDummyForL10nScript.js:522
+#. TRANSLATORS onents/settings-v2/SectionBbb.vue:22
+#. TRANSLATORS onents/settings-v2/SectionTalk.vue:26
+#: /app/specialVueFakeDummyForL10nScript.js:1303
+#: /app/specialVueFakeDummyForL10nScript.js:2226
 msgid "Guest password"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionBbb.vue:45
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:131
-#: /app/specialVueFakeDummyForL10nScript.js:192
-#: /app/specialVueFakeDummyForL10nScript.js:534
+#. TRANSLATORS onents/settings-v2/SectionBbb.vue:30
+#. TRANSLATORS onents/settings-v2/SectionTalk.vue:67
+#: /app/specialVueFakeDummyForL10nScript.js:1305
+#: /app/specialVueFakeDummyForL10nScript.js:2238
 msgid "Add 'Meeting Type' form field"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionBbb.vue:48
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:135
-#: /app/specialVueFakeDummyForL10nScript.js:194
-#: /app/specialVueFakeDummyForL10nScript.js:536
+#. TRANSLATORS onents/settings-v2/SectionBbb.vue:33
+#. TRANSLATORS onents/settings-v2/SectionTalk.vue:71
+#: /app/specialVueFakeDummyForL10nScript.js:1307
+#: /app/specialVueFakeDummyForL10nScript.js:2240
 msgid ""
 "When this option is enabled, a \"select\" drop-down will be added to the "
 "form with a choice of \"In-person\" or \"Online (audio/video)\". If a "
@@ -991,141 +940,118 @@ msgid ""
 "will NOT be created."
 msgstr ""
 
-#. TRANSLATORS "Min" is short for Minute(s) (onents/settings-v2/SectionCalendars.vue:17)
-#: /app/specialVueFakeDummyForL10nScript.js:196
+#. TRANSLATORS "Min" is short for Minute(s)
+#: /app/specialVueFakeDummyForL10nScript.js:1324
 msgid "Min"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:38
-#: /app/specialVueFakeDummyForL10nScript.js:200
-#: /app/specialVueFakeDummyForL10nScript.js:240
+#: /app/specialVueFakeDummyForL10nScript.js:1345
+#: /app/specialVueFakeDummyForL10nScript.js:1398
 msgid "Simple"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:39
-#: /app/specialVueFakeDummyForL10nScript.js:202
-#: /app/specialVueFakeDummyForL10nScript.js:242
+#: /app/specialVueFakeDummyForL10nScript.js:1346
+#: /app/specialVueFakeDummyForL10nScript.js:1400
 msgid "External"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:43
-#: /app/specialVueFakeDummyForL10nScript.js:204
+#: /app/specialVueFakeDummyForL10nScript.js:1350
 msgid "No lead time"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:44
-#: /app/specialVueFakeDummyForL10nScript.js:206
+#: /app/specialVueFakeDummyForL10nScript.js:1351
 msgid "15 minutes"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:45
-#: /app/specialVueFakeDummyForL10nScript.js:208
+#: /app/specialVueFakeDummyForL10nScript.js:1352
 msgid "30 minutes"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:46
-#. TRANSLATORS onents/settings-v2/SectionReminders.vue:17
-#: /app/specialVueFakeDummyForL10nScript.js:210
-#: /app/specialVueFakeDummyForL10nScript.js:450
+#: /app/specialVueFakeDummyForL10nScript.js:1353
+#: /app/specialVueFakeDummyForL10nScript.js:2046
 msgid "1 hour"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:47
-#. TRANSLATORS onents/settings-v2/SectionReminders.vue:18
-#: /app/specialVueFakeDummyForL10nScript.js:212
-#: /app/specialVueFakeDummyForL10nScript.js:452
+#: /app/specialVueFakeDummyForL10nScript.js:1354
+#: /app/specialVueFakeDummyForL10nScript.js:2047
 msgid "2 hours"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:48
-#. TRANSLATORS onents/settings-v2/SectionReminders.vue:19
-#: /app/specialVueFakeDummyForL10nScript.js:214
-#: /app/specialVueFakeDummyForL10nScript.js:454
+#: /app/specialVueFakeDummyForL10nScript.js:1355
+#: /app/specialVueFakeDummyForL10nScript.js:2048
 msgid "4 hours"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:49
-#. TRANSLATORS onents/settings-v2/SectionReminders.vue:20
-#: /app/specialVueFakeDummyForL10nScript.js:216
-#: /app/specialVueFakeDummyForL10nScript.js:456
+#: /app/specialVueFakeDummyForL10nScript.js:1356
+#: /app/specialVueFakeDummyForL10nScript.js:2049
 msgid "8 hours"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:50
-#: /app/specialVueFakeDummyForL10nScript.js:218
+#: /app/specialVueFakeDummyForL10nScript.js:1357
 msgid "12 hours"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:52
-#. TRANSLATORS onents/settings-v2/SectionReminders.vue:26
-#: /app/specialVueFakeDummyForL10nScript.js:222
-#: /app/specialVueFakeDummyForL10nScript.js:460
+#: /app/specialVueFakeDummyForL10nScript.js:1359
+#: /app/specialVueFakeDummyForL10nScript.js:2055
 msgid "2 days"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:53
-#. TRANSLATORS onents/settings-v2/SectionReminders.vue:28
-#: /app/specialVueFakeDummyForL10nScript.js:224
-#: /app/specialVueFakeDummyForL10nScript.js:464
+#: /app/specialVueFakeDummyForL10nScript.js:1360
+#: /app/specialVueFakeDummyForL10nScript.js:2057
 msgid "4 days"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:54
-#: /app/specialVueFakeDummyForL10nScript.js:226
+#: /app/specialVueFakeDummyForL10nScript.js:1361
 msgid "1 week"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:55
-#: /app/specialVueFakeDummyForL10nScript.js:228
+#: /app/specialVueFakeDummyForL10nScript.js:1362
 msgid "2 weeks"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:56
-#: /app/specialVueFakeDummyForL10nScript.js:230
+#: /app/specialVueFakeDummyForL10nScript.js:1363
 msgid "4 weeks"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:60
-#: /app/specialVueFakeDummyForL10nScript.js:232
+#: /app/specialVueFakeDummyForL10nScript.js:1367
 msgid "Reset (make the timeslot available)"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:61
-#: /app/specialVueFakeDummyForL10nScript.js:234
+#: /app/specialVueFakeDummyForL10nScript.js:1368
 msgid "Mark the appointment as canceled"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:92
-#: /app/specialVueFakeDummyForL10nScript.js:236
+#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:6
+#: /app/specialVueFakeDummyForL10nScript.js:1394
 msgid "Time slot mode"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:244
+#: /app/specialVueFakeDummyForL10nScript.js:1402
 msgid "Time Slot Settings"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:134
-#: /app/specialVueFakeDummyForL10nScript.js:246
+#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:48
+#: /app/specialVueFakeDummyForL10nScript.js:1404
 msgid "Minimum lead time"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:140
-#: /app/specialVueFakeDummyForL10nScript.js:248
+#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:54
+#: /app/specialVueFakeDummyForL10nScript.js:1406
 msgid "When attendee cancels"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:146
-#: /app/specialVueFakeDummyForL10nScript.js:250
+#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:60
+#: /app/specialVueFakeDummyForL10nScript.js:1408
 msgid "Include all day events in conflict check"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:154
-#: /app/specialVueFakeDummyForL10nScript.js:252
+#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:68
+#: /app/specialVueFakeDummyForL10nScript.js:1410
 msgid "Booked appointment buffers"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:161
-#: /app/specialVueFakeDummyForL10nScript.js:254
+#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:75
+#: /app/specialVueFakeDummyForL10nScript.js:1412
 msgid ""
 "It is possible to block off a period of time before and after a booked (and "
 "pending) appointment. This could be useful when some preparation/travel time "
@@ -1133,198 +1059,209 @@ msgid ""
 "an appointment."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:165
-#: /app/specialVueFakeDummyForL10nScript.js:256
+#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:79
+#: /app/specialVueFakeDummyForL10nScript.js:1414
 msgid "Before"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:182
-#: /app/specialVueFakeDummyForL10nScript.js:258
+#. TRANSLATORS onents/settings-v2/SectionCalendars.vue:96
+#: /app/specialVueFakeDummyForL10nScript.js:1416
 msgid "After"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsExternal.vue:19
-#: /app/specialVueFakeDummyForL10nScript.js:260
+#. TRANSLATORS onents/settings-v2/SectionCalendarsExternal.vue:7
+#: /app/specialVueFakeDummyForL10nScript.js:1429
 msgid "Source Calendar (Free Slots)"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsExternal.vue:23
-#: /app/specialVueFakeDummyForL10nScript.js:262
+#. TRANSLATORS onents/settings-v2/SectionCalendarsExternal.vue:11
+#: /app/specialVueFakeDummyForL10nScript.js:1431
 msgid ""
 "Any event with \"Show As\" (a.k.a. \"Time As\" a.k.a. \"Free/Busy\" a.k.a. "
 "\"Time Transparency\") set to \"Free\" will be available for booking in the "
 "public form. Most recurrence rules are supported."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsExternal.vue:33
-#: /app/specialVueFakeDummyForL10nScript.js:264
+#. TRANSLATORS onents/settings-v2/SectionCalendarsExternal.vue:21
+#: /app/specialVueFakeDummyForL10nScript.js:1433
 msgid "Destination Calendar (Booked)"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsExternal.vue:37
-#: /app/specialVueFakeDummyForL10nScript.js:266
+#. TRANSLATORS onents/settings-v2/SectionCalendarsExternal.vue:25
+#: /app/specialVueFakeDummyForL10nScript.js:1435
 msgid ""
 "Booked appointments will be placed here. In addition to booked appointments, "
 "any events in this calendar marked as \"Busy\" will prevent conflicting "
 "timeslots in the \"Source Calendar\" from appearing in the public form."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:159
-#: /app/specialVueFakeDummyForL10nScript.js:268
+#: /app/specialVueFakeDummyForL10nScript.js:1594
 msgid "error: main calendar required"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:219
-#: /app/specialVueFakeDummyForL10nScript.js:270
+#: /app/specialVueFakeDummyForL10nScript.js:1600
+msgid "error: cannot find calendar with ID "
+msgstr ""
+
+#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:7
+#: /app/specialVueFakeDummyForL10nScript.js:1648
 msgid "Main calendar"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:223
-#: /app/specialVueFakeDummyForL10nScript.js:272
+#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:11
+#: /app/specialVueFakeDummyForL10nScript.js:1650
 msgid ""
 "When you create new appointment slots they are placed here and are shown in "
 "your public page(s). It is recommended to use a dedicated calendar."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:230
-#: /app/specialVueFakeDummyForL10nScript.js:274
+#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:18
+#: /app/specialVueFakeDummyForL10nScript.js:1652
 msgid "Calendar for booked appointments"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:231
-#: /app/specialVueFakeDummyForL10nScript.js:276
+#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:19
+#: /app/specialVueFakeDummyForL10nScript.js:1654
 msgid "Use Main calendar"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:235
-#: /app/specialVueFakeDummyForL10nScript.js:278
+#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:23
+#: /app/specialVueFakeDummyForL10nScript.js:1656
 msgid ""
 "If this calendar is different from the Main Calendar, once an appointment is "
 "booked it will be moved here."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:241
-#: /app/specialVueFakeDummyForL10nScript.js:280
+#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:29
+#: /app/specialVueFakeDummyForL10nScript.js:1658
 msgid "Add Appointment Slots"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:255
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:262
-#: /app/specialVueFakeDummyForL10nScript.js:282
-#: /app/specialVueFakeDummyForL10nScript.js:284
+#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:43
+#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:50
+#: /app/specialVueFakeDummyForL10nScript.js:1660
+#: /app/specialVueFakeDummyForL10nScript.js:1662
 msgid "Select Dates"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:269
-#: /app/specialVueFakeDummyForL10nScript.js:286
+#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:57
+#: /app/specialVueFakeDummyForL10nScript.js:1664
 msgid "Time zone:"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:271
-#: /app/specialVueFakeDummyForL10nScript.js:288
+#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:59
+#: /app/specialVueFakeDummyForL10nScript.js:1666
 msgid "Appointment Duration:"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:287
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:288
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:287
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:288
-#: /app/specialVueFakeDummyForL10nScript.js:290
-#: /app/specialVueFakeDummyForL10nScript.js:292
-#: /app/specialVueFakeDummyForL10nScript.js:302
-#: /app/specialVueFakeDummyForL10nScript.js:304
+#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:75
+#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:76
+#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:75
+#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:76
+#: /app/specialVueFakeDummyForL10nScript.js:1668
+#: /app/specialVueFakeDummyForL10nScript.js:1670
+#: /app/specialVueFakeDummyForL10nScript.js:1680
+#: /app/specialVueFakeDummyForL10nScript.js:1682
 msgid "Start"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:301
-#: /app/specialVueFakeDummyForL10nScript.js:296
+#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:89
+#: /app/specialVueFakeDummyForL10nScript.js:1674
 msgid "Scheduled before"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:316
-#: /app/specialVueFakeDummyForL10nScript.js:298
+#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:104
+#: /app/specialVueFakeDummyForL10nScript.js:1676
 msgid "Remove empty slots only"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:324
-#: /app/specialVueFakeDummyForL10nScript.js:300
+#. TRANSLATORS onents/settings-v2/SectionCalendarsSimple.vue:112
+#: /app/specialVueFakeDummyForL10nScript.js:1678
 msgid "Remove empty and booked"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsWeekly.vue:113
-#: /app/specialVueFakeDummyForL10nScript.js:306
+#: /app/specialVueFakeDummyForL10nScript.js:1766
+msgid "Can't load time zones"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:1776
+msgid "Can't sync time zones"
+msgstr ""
+
+#. TRANSLATORS onents/settings-v2/SectionCalendarsWeekly.vue:7
+#: /app/specialVueFakeDummyForL10nScript.js:1789
 msgid "Destination calendar (Booked)"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsWeekly.vue:116
-#: /app/specialVueFakeDummyForL10nScript.js:308
+#. TRANSLATORS onents/settings-v2/SectionCalendarsWeekly.vue:10
+#: /app/specialVueFakeDummyForL10nScript.js:1791
 msgid "Booked/pending appointments will be placed into this calendar."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsWeekly.vue:122
-#. TRANSLATORS onents/settings-v2/SectionCalendarsWeekly.vue:127
-#: /app/specialVueFakeDummyForL10nScript.js:310
-#: /app/specialVueFakeDummyForL10nScript.js:312
+#. TRANSLATORS onents/settings-v2/SectionCalendarsWeekly.vue:16
+#. TRANSLATORS onents/settings-v2/SectionCalendarsWeekly.vue:21
+#: /app/specialVueFakeDummyForL10nScript.js:1793
+#: /app/specialVueFakeDummyForL10nScript.js:1795
 msgid "Edit Template"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsWeekly.vue:131
-#: /app/specialVueFakeDummyForL10nScript.js:314
+#. TRANSLATORS onents/settings-v2/SectionCalendarsWeekly.vue:25
+#: /app/specialVueFakeDummyForL10nScript.js:1797
 msgid "Check for conflicts in…"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionCalendarsWeekly.vue:138
-#: /app/specialVueFakeDummyForL10nScript.js:316
+#. TRANSLATORS onents/settings-v2/SectionCalendarsWeekly.vue:32
+#: /app/specialVueFakeDummyForL10nScript.js:1799
 msgid ""
 "These calendars will be checked for conflicting events in addition to the "
 "Destination Calendar."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionContact.vue:11
-#: /app/specialVueFakeDummyForL10nScript.js:318
+#. TRANSLATORS onents/settings-v2/SectionContact.vue:5
+#: /app/specialVueFakeDummyForL10nScript.js:1806
 msgid "Name/Organization"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionContact.vue:16
-#: /app/specialVueFakeDummyForL10nScript.js:320
+#. TRANSLATORS onents/settings-v2/SectionContact.vue:10
+#: /app/specialVueFakeDummyForL10nScript.js:1808
 msgid "Set to User Profile email"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionContact.vue:17
-#: /app/specialVueFakeDummyForL10nScript.js:322
+#. TRANSLATORS onents/settings-v2/SectionContact.vue:11
+#: /app/specialVueFakeDummyForL10nScript.js:1810
 msgid "Organizer Email"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionContact.vue:22
-#: /app/specialVueFakeDummyForL10nScript.js:324
+#. TRANSLATORS onents/settings-v2/SectionContact.vue:16
+#: /app/specialVueFakeDummyForL10nScript.js:1812
 msgid "Location"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionContact.vue:27
-#: /app/specialVueFakeDummyForL10nScript.js:326
+#. TRANSLATORS onents/settings-v2/SectionContact.vue:21
+#: /app/specialVueFakeDummyForL10nScript.js:1814
 #: /app/templates/public/form.php:58
 msgid "Phone"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionEmail.vue:17
-#: /app/specialVueFakeDummyForL10nScript.js:328
+#. TRANSLATORS onents/settings-v2/SectionEmail.vue:6
+#: /app/specialVueFakeDummyForL10nScript.js:1826
 msgid "Attach .ics file to confirm/cancel emails"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionEmail.vue:20
-#: /app/specialVueFakeDummyForL10nScript.js:330
+#. TRANSLATORS onents/settings-v2/SectionEmail.vue:9
+#: /app/specialVueFakeDummyForL10nScript.js:1828
 msgid ""
 "An .ics attachment will automatically be generated for notification emails, "
 "allowing better integration with email/calendar apps that support it."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionEmail.vue:24
-#: /app/specialVueFakeDummyForL10nScript.js:332
+#. TRANSLATORS onents/settings-v2/SectionEmail.vue:13
+#: /app/specialVueFakeDummyForL10nScript.js:1830
 msgid "Email Attendee when the appointment is:"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionEmail.vue:26
-#: /app/specialVueFakeDummyForL10nScript.js:334
+#. TRANSLATORS onents/settings-v2/SectionEmail.vue:15
+#: /app/specialVueFakeDummyForL10nScript.js:1832
 msgid ""
 "Attendees will be notified via email when their upcoming appointments are "
 "updated or deleted in the calendar app or through some other external "
@@ -1332,51 +1269,51 @@ msgid ""
 "\"Modified\" notification."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionEmail.vue:32
-#: /app/specialVueFakeDummyForL10nScript.js:336
+#. TRANSLATORS onents/settings-v2/SectionEmail.vue:21
+#: /app/specialVueFakeDummyForL10nScript.js:1834
 msgid "Modified (Time, Status, Location)"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionEmail.vue:36
-#: /app/specialVueFakeDummyForL10nScript.js:338
+#. TRANSLATORS onents/settings-v2/SectionEmail.vue:25
+#: /app/specialVueFakeDummyForL10nScript.js:1836
 msgid "Deleted"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionEmail.vue:40
-#: /app/specialVueFakeDummyForL10nScript.js:340
+#. TRANSLATORS onents/settings-v2/SectionEmail.vue:29
+#: /app/specialVueFakeDummyForL10nScript.js:1838
 msgid "Email Me when an appointment is:"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionEmail.vue:42
-#: /app/specialVueFakeDummyForL10nScript.js:342
+#. TRANSLATORS onents/settings-v2/SectionEmail.vue:31
+#: /app/specialVueFakeDummyForL10nScript.js:1840
 msgid ""
 "A notification email will be sent to you when an appointment is booked via "
 "the public page or when an upcoming appointment is confirmed or canceled "
 "through the email links."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionEmail.vue:48
-#: /app/specialVueFakeDummyForL10nScript.js:344
+#. TRANSLATORS onents/settings-v2/SectionEmail.vue:37
+#: /app/specialVueFakeDummyForL10nScript.js:1842
 msgid "Requested"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionEmail.vue:52
-#: /app/specialVueFakeDummyForL10nScript.js:346
+#. TRANSLATORS onents/settings-v2/SectionEmail.vue:41
+#: /app/specialVueFakeDummyForL10nScript.js:1844
 msgid "Confirmed"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionEmail.vue:56
-#: /app/specialVueFakeDummyForL10nScript.js:348
+#. TRANSLATORS onents/settings-v2/SectionEmail.vue:45
+#: /app/specialVueFakeDummyForL10nScript.js:1846
 msgid "Canceled"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionEmail.vue:62
-#: /app/specialVueFakeDummyForL10nScript.js:350
+#. TRANSLATORS onents/settings-v2/SectionEmail.vue:51
+#: /app/specialVueFakeDummyForL10nScript.js:1848
 msgid "Skip email validation step"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionEmail.vue:65
-#: /app/specialVueFakeDummyForL10nScript.js:352
+#. TRANSLATORS onents/settings-v2/SectionEmail.vue:54
+#: /app/specialVueFakeDummyForL10nScript.js:1850
 msgid ""
 "When this option is selected, the \"... action needed\" validation email "
 "will NOT be sent to the attendee. Instead, the \"... Appointment is confirmed"
@@ -1384,175 +1321,148 @@ msgid ""
 "when the form is submitted."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionEmail.vue:73
-#: /app/specialVueFakeDummyForL10nScript.js:354
+#. TRANSLATORS onents/settings-v2/SectionEmail.vue:62
+#: /app/specialVueFakeDummyForL10nScript.js:1852
 msgid "Additional VALIDATION email text:"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionEmail.vue:78
-#: /app/specialVueFakeDummyForL10nScript.js:356
+#. TRANSLATORS onents/settings-v2/SectionEmail.vue:67
+#: /app/specialVueFakeDummyForL10nScript.js:1854
 msgid "Additional CONFIRMATION email text:"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionEmail.vue:83
-#: /app/specialVueFakeDummyForL10nScript.js:358
+#. TRANSLATORS onents/settings-v2/SectionEmail.vue:72
+#: /app/specialVueFakeDummyForL10nScript.js:1856
 msgid "Additional ICS file description:"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:20
-#: /app/specialVueFakeDummyForL10nScript.js:360
+#: /app/specialVueFakeDummyForL10nScript.js:1876
 msgid "One Week"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:21
-#: /app/specialVueFakeDummyForL10nScript.js:362
+#: /app/specialVueFakeDummyForL10nScript.js:1877
 msgid "Two Weeks"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:22
-#: /app/specialVueFakeDummyForL10nScript.js:364
+#: /app/specialVueFakeDummyForL10nScript.js:1878
 msgid "Three Weeks"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:23
-#: /app/specialVueFakeDummyForL10nScript.js:366
+#: /app/specialVueFakeDummyForL10nScript.js:1879
 msgid "Four Weeks"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:24
-#: /app/specialVueFakeDummyForL10nScript.js:368
+#: /app/specialVueFakeDummyForL10nScript.js:1880
 msgid "Five Weeks"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:25
-#: /app/specialVueFakeDummyForL10nScript.js:370
+#: /app/specialVueFakeDummyForL10nScript.js:1881
 msgid "Eight Weeks"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:26
-#: /app/specialVueFakeDummyForL10nScript.js:372
+#: /app/specialVueFakeDummyForL10nScript.js:1882
 msgid "Twelve Weeks"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:27
-#: /app/specialVueFakeDummyForL10nScript.js:374
+#: /app/specialVueFakeDummyForL10nScript.js:1883
 msgid "Eighteen Weeks"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:28
-#: /app/specialVueFakeDummyForL10nScript.js:376
+#: /app/specialVueFakeDummyForL10nScript.js:1884
 msgid "Twenty Four Weeks"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:29
-#: /app/specialVueFakeDummyForL10nScript.js:378
+#: /app/specialVueFakeDummyForL10nScript.js:1885
 msgid "Thirty Two Weeks"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:30
-#: /app/specialVueFakeDummyForL10nScript.js:380
+#: /app/specialVueFakeDummyForL10nScript.js:1886
 msgid "Forty Weeks"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:31
-#: /app/specialVueFakeDummyForL10nScript.js:382
+#: /app/specialVueFakeDummyForL10nScript.js:1887
 msgid "Forty Eight Weeks"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:35
-#: /app/specialVueFakeDummyForL10nScript.js:384
+#: /app/specialVueFakeDummyForL10nScript.js:1891
 msgid "Disabled"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:36
-#: /app/specialVueFakeDummyForL10nScript.js:386
+#: /app/specialVueFakeDummyForL10nScript.js:1892
 msgid "From Query String"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:38
-#: /app/specialVueFakeDummyForL10nScript.js:388
-msgid "From User Profile (if logged-in)"
-msgstr ""
-
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:39
-#: /app/specialVueFakeDummyForL10nScript.js:390
-msgid "Query String or User Profile"
-msgstr ""
-
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:42
-#: /app/specialVueFakeDummyForL10nScript.js:392
+#: /app/specialVueFakeDummyForL10nScript.js:1898
 msgid "Regular Inputs (default)"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:43
-#: /app/specialVueFakeDummyForL10nScript.js:394
+#: /app/specialVueFakeDummyForL10nScript.js:1899
 msgid "Readonly / Plain Text"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:44
-#: /app/specialVueFakeDummyForL10nScript.js:396
+#: /app/specialVueFakeDummyForL10nScript.js:1900
 msgid "Hide Prefilled Inputs"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:65
-#: /app/specialVueFakeDummyForL10nScript.js:398
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:5
+#: /app/specialVueFakeDummyForL10nScript.js:1917
 msgid "Form Title"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:71
-#: /app/specialVueFakeDummyForL10nScript.js:400
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:11
+#: /app/specialVueFakeDummyForL10nScript.js:1919
 msgid "Show appointments for next"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:77
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:118
-#: /app/specialVueFakeDummyForL10nScript.js:402
-#: /app/specialVueFakeDummyForL10nScript.js:620
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:17
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:65
+#: /app/specialVueFakeDummyForL10nScript.js:1921
+#: /app/specialVueFakeDummyForL10nScript.js:2471
 msgid "Auto Style"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:82
-#: /app/specialVueFakeDummyForL10nScript.js:404
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:22
+#: /app/specialVueFakeDummyForL10nScript.js:1923
 msgid "Show Empty Days"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:87
-#: /app/specialVueFakeDummyForL10nScript.js:406
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:27
+#: /app/specialVueFakeDummyForL10nScript.js:1925
 msgid "Start on current day instead of Monday"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:91
-#: /app/specialVueFakeDummyForL10nScript.js:408
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:31
+#: /app/specialVueFakeDummyForL10nScript.js:1927
 msgid "Show Empty Weekends"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:99
-#: /app/specialVueFakeDummyForL10nScript.js:410
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:39
+#: /app/specialVueFakeDummyForL10nScript.js:1929
 msgid "Show time in two columns"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:103
-#: /app/specialVueFakeDummyForL10nScript.js:412
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:43
+#: /app/specialVueFakeDummyForL10nScript.js:1931
 msgid "Show end time"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:108
-#: /app/specialVueFakeDummyForL10nScript.js:414
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:48
+#: /app/specialVueFakeDummyForL10nScript.js:1933
 msgid "Hide phone number field"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:112
-#: /app/specialVueFakeDummyForL10nScript.js:416
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:52
+#: /app/specialVueFakeDummyForL10nScript.js:1935
 msgid "Advanced Form Settings"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:121
-#: /app/specialVueFakeDummyForL10nScript.js:418
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:61
+#: /app/specialVueFakeDummyForL10nScript.js:1937
 msgid "GDPR Compliance"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:124
-#: /app/specialVueFakeDummyForL10nScript.js:420
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:64
+#: /app/specialVueFakeDummyForL10nScript.js:1939
 msgid ""
 "Any text in the \"GDPR Compliance\" field will trigger the display of the "
 "\"GDPR\" checkbox. The checkbox can be hidden when the \"GDPR text only (no "
@@ -1560,8 +1470,8 @@ msgid ""
 "HTML/links without a checkbox will work as is."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:126
-#: /app/specialVueFakeDummyForL10nScript.js:422
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:66
+#: /app/specialVueFakeDummyForL10nScript.js:1941
 msgid ""
 "However, if you need to include both the checkbox and HTML or a link to your "
 "privacy policy you should separate it from the \"label\" element, and the "
@@ -1569,271 +1479,283 @@ msgid ""
 "example:"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:136
-#: /app/specialVueFakeDummyForL10nScript.js:424
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:76
+#: /app/specialVueFakeDummyForL10nScript.js:1943
 msgid "GDPR text only (no checkbox)"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:141
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:112
-#: /app/specialVueFakeDummyForL10nScript.js:426
-#: /app/specialVueFakeDummyForL10nScript.js:618
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:81
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:59
+#: /app/specialVueFakeDummyForL10nScript.js:1945
+#: /app/specialVueFakeDummyForL10nScript.js:2469
 msgid "Page Header Title"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:147
-#: /app/specialVueFakeDummyForL10nScript.js:428
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:87
+#: /app/specialVueFakeDummyForL10nScript.js:1947
 msgid "Additional Form Submitted Page Text"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:150
-#: /app/specialVueFakeDummyForL10nScript.js:430
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:90
+#: /app/specialVueFakeDummyForL10nScript.js:1949
 msgid "Allowed HTML tags: {tags}"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:171
-#: /app/specialVueFakeDummyForL10nScript.js:432
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:111
+#: /app/specialVueFakeDummyForL10nScript.js:1951
 msgid "Allow Prefilled Inputs"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:175
-#: /app/specialVueFakeDummyForL10nScript.js:434
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:115
+#: /app/specialVueFakeDummyForL10nScript.js:1953
 msgid ""
 "You can pre-fill fields in the form by adding a URL query parameter, example:"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:184
-#: /app/specialVueFakeDummyForL10nScript.js:436
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:124
+#: /app/specialVueFakeDummyForL10nScript.js:1955
 msgid "Prefilled Inputs Appearance"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:191
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:130
-#: /app/specialVueFakeDummyForL10nScript.js:438
-#: /app/specialVueFakeDummyForL10nScript.js:624
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:131
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:77
+#: /app/specialVueFakeDummyForL10nScript.js:1957
+#: /app/specialVueFakeDummyForL10nScript.js:2475
 msgid "Style Override"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:195
-#: /app/specialVueFakeDummyForL10nScript.js:440
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:135
+#: /app/specialVueFakeDummyForL10nScript.js:1959
 msgid ""
 "Insert custom \"style\" element to override default page style. Try "
 "something like this for example:"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPage.vue:221
-#: /app/specialVueFakeDummyForL10nScript.js:442
+#. TRANSLATORS onents/settings-v2/SectionPage.vue:161
+#: /app/specialVueFakeDummyForL10nScript.js:1961
 msgid "Add {taginfo} tag"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPageFormEditor.vue:69
-#: /app/specialVueFakeDummyForL10nScript.js:444
+#. TRANSLATORS onents/settings-v2/SectionPageFormEditor.vue:4
+#: /app/specialVueFakeDummyForL10nScript.js:2027
 msgid "Extra Fields (JSON Object)"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionPageFormEditor.vue:72
-#: /app/specialVueFakeDummyForL10nScript.js:446
+#. TRANSLATORS onents/settings-v2/SectionPageFormEditor.vue:7
+#: /app/specialVueFakeDummyForL10nScript.js:2029
 msgid "Advanced feature, more info at: "
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionReminders.vue:16
-#. TRANSLATORS onents/settings-v2/SectionReminders.vue:74
-#: /app/specialVueFakeDummyForL10nScript.js:448
-#: /app/specialVueFakeDummyForL10nScript.js:478
+#. TRANSLATORS onents/settings-v2/SectionReminders.vue:27
+#: /app/specialVueFakeDummyForL10nScript.js:2045
+#: /app/specialVueFakeDummyForL10nScript.js:2083
 msgid "Not set"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionReminders.vue:21
-#: /app/specialVueFakeDummyForL10nScript.js:458
+#: /app/specialVueFakeDummyForL10nScript.js:2050
 msgid "24 hours"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionReminders.vue:27
-#: /app/specialVueFakeDummyForL10nScript.js:462
+#: /app/specialVueFakeDummyForL10nScript.js:2056
 msgid "3 days"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionReminders.vue:29
-#: /app/specialVueFakeDummyForL10nScript.js:466
+#: /app/specialVueFakeDummyForL10nScript.js:2058
 msgid "5 days"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionReminders.vue:30
-#: /app/specialVueFakeDummyForL10nScript.js:468
+#: /app/specialVueFakeDummyForL10nScript.js:2059
 msgid "6 days"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionReminders.vue:31
-#: /app/specialVueFakeDummyForL10nScript.js:470
+#: /app/specialVueFakeDummyForL10nScript.js:2060
 msgid "7 days"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionReminders.vue:52
-#: /app/specialVueFakeDummyForL10nScript.js:472
-#: /app/specialVueFakeDummyForL10nScript.js:474
+#: /app/specialVueFakeDummyForL10nScript.js:2070
+msgid "Multiple Reminders"
+msgstr ""
+
+#. TRANSLATORS onents/settings-v2/SectionReminders.vue:5
+#: /app/specialVueFakeDummyForL10nScript.js:2077
+#: /app/specialVueFakeDummyForL10nScript.js:2079
 msgid "Warning"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionReminders.vue:71
-#: /app/specialVueFakeDummyForL10nScript.js:476
+#. TRANSLATORS onents/settings-v2/SectionReminders.vue:24
+#: /app/specialVueFakeDummyForL10nScript.js:2081
 msgid "Time before appointment"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionReminders.vue:80
-#: /app/specialVueFakeDummyForL10nScript.js:480
+#. TRANSLATORS onents/settings-v2/SectionReminders.vue:33
+#: /app/specialVueFakeDummyForL10nScript.js:2085
 msgid "Add action links"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionReminders.vue:88
-#: /app/specialVueFakeDummyForL10nScript.js:482
+#. TRANSLATORS onents/settings-v2/SectionReminders.vue:41
+#: /app/specialVueFakeDummyForL10nScript.js:2087
 msgid "Additional reminder email text"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionReminders.vue:93
-#: /app/specialVueFakeDummyForL10nScript.js:484
+#. TRANSLATORS onents/settings-v2/SectionReminders.vue:46
+#: /app/specialVueFakeDummyForL10nScript.js:2089
 msgid "Default Cron/Email Language: {langCode}"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:50
-#: /app/specialVueFakeDummyForL10nScript.js:486
+#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:5
+#: /app/specialVueFakeDummyForL10nScript.js:2135
 msgid "Private Page (visitors must be logged-in)"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:56
-#: /app/specialVueFakeDummyForL10nScript.js:488
+#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:11
+#: /app/specialVueFakeDummyForL10nScript.js:2137
 msgid "Enable hCaptcha"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:63
-#: /app/specialVueFakeDummyForL10nScript.js:490
+#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:18
+#: /app/specialVueFakeDummyForL10nScript.js:2139
 msgid "hCaptcha site key"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:69
-#: /app/specialVueFakeDummyForL10nScript.js:492
+#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:24
+#: /app/specialVueFakeDummyForL10nScript.js:2141
 msgid "hCaptcha secret"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:72
-#: /app/specialVueFakeDummyForL10nScript.js:494
+#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:27
+#: /app/specialVueFakeDummyForL10nScript.js:2143
 msgid "An hCaptcha account is required, more info"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:75
-#: /app/specialVueFakeDummyForL10nScript.js:496
+#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:30
+#: /app/specialVueFakeDummyForL10nScript.js:2145
 msgid "Important"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:77
-#: /app/specialVueFakeDummyForL10nScript.js:498
+#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:32
+#: /app/specialVueFakeDummyForL10nScript.js:2147
 msgid ""
 "JavaScript code and/or cookies from hcaptcha.com will be placed into your "
 "booking form. You are responsible for ensuring compliance with privacy "
 "regulations in your jurisdiction."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:85
-#: /app/specialVueFakeDummyForL10nScript.js:500
+#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:40
+#: /app/specialVueFakeDummyForL10nScript.js:2149
 msgid "Blocked email addresses:"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:87
-#: /app/specialVueFakeDummyForL10nScript.js:502
+#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:42
+#: /app/specialVueFakeDummyForL10nScript.js:2151
 msgid ""
 "Email addresses on this list cannot be used to book appointments. To block "
 "an entire domain, use a wildcard like this: *@bad-domain.tld"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:119
-#: /app/specialVueFakeDummyForL10nScript.js:506
+#. TRANSLATORS onents/settings-v2/SectionSecurity.vue:74
+#: /app/specialVueFakeDummyForL10nScript.js:2155
 msgid "Enter email adddress"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:14
-#: /app/specialVueFakeDummyForL10nScript.js:508
+#: /app/specialVueFakeDummyForL10nScript.js:2169
 msgid "Guest name + Date/Time"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:15
-#: /app/specialVueFakeDummyForL10nScript.js:510
+#: /app/specialVueFakeDummyForL10nScript.js:2170
 msgid "Date/Time + Guest name"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:16
-#: /app/specialVueFakeDummyForL10nScript.js:512
+#: /app/specialVueFakeDummyForL10nScript.js:2171
 msgid "Guest name only"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:50
-#: /app/specialVueFakeDummyForL10nScript.js:514
+#: /app/specialVueFakeDummyForL10nScript.js:2189
+msgid "Automatically enable Talk lobby when an appointment is confirmed."
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:2192
+msgid ""
+"Automatically set Talk room pseudo random password when an appointment is "
+"confirmed."
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:2195
+msgid "Customize Talk room name."
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:2198
+msgid "Customize Talk room URL email text."
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:2205
 msgid "Custom \"Meeting type\" form fields."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:69
-#: /app/specialVueFakeDummyForL10nScript.js:516
+#. TRANSLATORS onents/settings-v2/SectionTalk.vue:5
+#: /app/specialVueFakeDummyForL10nScript.js:2220
 msgid "Create rooms for confirmed appointments"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:83
-#: /app/specialVueFakeDummyForL10nScript.js:520
+#. TRANSLATORS onents/settings-v2/SectionTalk.vue:19
+#: /app/specialVueFakeDummyForL10nScript.js:2224
 msgid "Enable lobby"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:100
-#: /app/specialVueFakeDummyForL10nScript.js:524
+#. TRANSLATORS onents/settings-v2/SectionTalk.vue:36
+#: /app/specialVueFakeDummyForL10nScript.js:2228
 msgid "One option required"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:101
-#: /app/specialVueFakeDummyForL10nScript.js:526
+#. TRANSLATORS onents/settings-v2/SectionTalk.vue:37
+#: /app/specialVueFakeDummyForL10nScript.js:2230
 msgid "Talk room name"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:109
-#: /app/specialVueFakeDummyForL10nScript.js:528
+#. TRANSLATORS onents/settings-v2/SectionTalk.vue:45
+#: /app/specialVueFakeDummyForL10nScript.js:2232
 msgid "Chat/Call link:"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:111
-#: /app/specialVueFakeDummyForL10nScript.js:530
+#. TRANSLATORS onents/settings-v2/SectionTalk.vue:47
+#: /app/specialVueFakeDummyForL10nScript.js:2234
 msgid "Custom email text (optional)"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:116
-#: /app/specialVueFakeDummyForL10nScript.js:532
+#. TRANSLATORS onents/settings-v2/SectionTalk.vue:52
+#: /app/specialVueFakeDummyForL10nScript.js:2236
 msgid ""
 "You can override default email message. There are two tokens available, "
 "{token1} and if you use password protection {token2}, they will be replaced "
 "with the rooms URL and the password if used. Example:"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:144
-#: /app/specialVueFakeDummyForL10nScript.js:538
+#. TRANSLATORS onents/settings-v2/SectionTalk.vue:80
+#: /app/specialVueFakeDummyForL10nScript.js:2242
 msgid "Custom label text (optional)"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:150
-#: /app/specialVueFakeDummyForL10nScript.js:540
+#. TRANSLATORS onents/settings-v2/SectionTalk.vue:86
+#: /app/specialVueFakeDummyForL10nScript.js:2244
 msgid "Custom placeholder text (optional)"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:156
-#: /app/specialVueFakeDummyForL10nScript.js:542
+#. TRANSLATORS onents/settings-v2/SectionTalk.vue:92
+#: /app/specialVueFakeDummyForL10nScript.js:2246
 msgid "Custom 'In-person' option text (optional)"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:162
-#: /app/specialVueFakeDummyForL10nScript.js:544
+#. TRANSLATORS onents/settings-v2/SectionTalk.vue:98
+#: /app/specialVueFakeDummyForL10nScript.js:2248
 msgid "Custom 'Online' option text (optional)"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:169
-#: /app/specialVueFakeDummyForL10nScript.js:546
+#. TRANSLATORS onents/settings-v2/SectionTalk.vue:105
+#: /app/specialVueFakeDummyForL10nScript.js:2250
 msgid "Custom type change email text (optional)"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:174
-#: /app/specialVueFakeDummyForL10nScript.js:548
+#. TRANSLATORS onents/settings-v2/SectionTalk.vue:110
+#: /app/specialVueFakeDummyForL10nScript.js:2252
 msgid ""
 "If this field is not empty and has two tokens {token1} (can contain any "
 "text) and {token2} (MUST be new_type), then this text will be attached to "
@@ -1841,213 +1763,221 @@ msgid ""
 "clicking the link {token}. Example:"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SectionTalk.vue:181
-#: /app/specialVueFakeDummyForL10nScript.js:550
+#. TRANSLATORS onents/settings-v2/SectionTalk.vue:117
+#: /app/specialVueFakeDummyForL10nScript.js:2254
 msgid ""
 "Talk rooms will be created and deleted automatically when a meeting type "
 "changes."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:46
-#: /app/specialVueFakeDummyForL10nScript.js:552 /app/src/stores/pages.js:25
+#: /app/specialVueFakeDummyForL10nScript.js:2300 /app/src/stores/pages.js:25
 msgid "Directory Page"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:89
-#: /app/specialVueFakeDummyForL10nScript.js:554
+#: /app/specialVueFakeDummyForL10nScript.js:2343
 msgid "Thank You"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:91
-#: /app/specialVueFakeDummyForL10nScript.js:556
+#: /app/specialVueFakeDummyForL10nScript.js:2345
 msgid "Key accepted. All contributor only features are unlocked."
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:116
-#: /app/specialVueFakeDummyForL10nScript.js:558
+#: /app/specialVueFakeDummyForL10nScript.js:2349
+msgid "Error: Please check key"
+msgstr ""
+
+#. TRANSLATORS onents/settings-v2/Settings.vue:14
+#: /app/specialVueFakeDummyForL10nScript.js:2357
 msgid "Loading Settings"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:124
-#. TRANSLATORS onents/settings-v2/Settings.vue:133
-#: /app/specialVueFakeDummyForL10nScript.js:560
-#: /app/specialVueFakeDummyForL10nScript.js:562
+#. TRANSLATORS onents/settings-v2/Settings.vue:22
+#. TRANSLATORS onents/settings-v2/Settings.vue:31
+#: /app/specialVueFakeDummyForL10nScript.js:2359
+#: /app/specialVueFakeDummyForL10nScript.js:2361
 msgid "Preview Changes"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:139
-#: /app/specialVueFakeDummyForL10nScript.js:564
+#. TRANSLATORS onents/settings-v2/Settings.vue:37
+#: /app/specialVueFakeDummyForL10nScript.js:2363
 msgid "Calendars and Schedule"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:141
-#: /app/specialVueFakeDummyForL10nScript.js:566
+#. TRANSLATORS onents/settings-v2/Settings.vue:39
+#: /app/specialVueFakeDummyForL10nScript.js:2365
 msgid "Manage appointments and calendar settings"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:151
-#: /app/specialVueFakeDummyForL10nScript.js:568
+#. TRANSLATORS onents/settings-v2/Settings.vue:49
+#: /app/specialVueFakeDummyForL10nScript.js:2367
 msgid "Contact Information"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:153
-#: /app/specialVueFakeDummyForL10nScript.js:570
+#. TRANSLATORS onents/settings-v2/Settings.vue:51
+#: /app/specialVueFakeDummyForL10nScript.js:2369
 msgid "Form header and event organizer settings"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:160
-#: /app/specialVueFakeDummyForL10nScript.js:572
+#. TRANSLATORS onents/settings-v2/Settings.vue:58
+#: /app/specialVueFakeDummyForL10nScript.js:2371
 msgid "Email and Notifications"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:162
-#: /app/specialVueFakeDummyForL10nScript.js:574
+#. TRANSLATORS onents/settings-v2/Settings.vue:60
+#: /app/specialVueFakeDummyForL10nScript.js:2373
 msgid "Control when emails and notifications are sent"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:169
-#: /app/specialVueFakeDummyForL10nScript.js:576
+#. TRANSLATORS onents/settings-v2/Settings.vue:67
+#: /app/specialVueFakeDummyForL10nScript.js:2375
 msgid "Form Settings"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:171
-#: /app/specialVueFakeDummyForL10nScript.js:578
+#. TRANSLATORS onents/settings-v2/Settings.vue:69
+#: /app/specialVueFakeDummyForL10nScript.js:2377
 msgid "Control what your visitors see"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:178
-#: /app/specialVueFakeDummyForL10nScript.js:580
+#. TRANSLATORS onents/settings-v2/Settings.vue:76
+#: /app/specialVueFakeDummyForL10nScript.js:2379
 msgid "Security"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:180
-#: /app/specialVueFakeDummyForL10nScript.js:582
+#. TRANSLATORS onents/settings-v2/Settings.vue:78
+#: /app/specialVueFakeDummyForL10nScript.js:2381
 msgid "Security related settings"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:187
-#: /app/specialVueFakeDummyForL10nScript.js:584
+#. TRANSLATORS onents/settings-v2/Settings.vue:85
+#: /app/specialVueFakeDummyForL10nScript.js:2383
 msgid "Reminders"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:189
-#: /app/specialVueFakeDummyForL10nScript.js:586
+#. TRANSLATORS onents/settings-v2/Settings.vue:87
+#: /app/specialVueFakeDummyForL10nScript.js:2385
 msgid "Send appointment reminders to attendees"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:197
-#: /app/specialVueFakeDummyForL10nScript.js:588
+#. TRANSLATORS onents/settings-v2/Settings.vue:95
+#: /app/specialVueFakeDummyForL10nScript.js:2387
 msgid "Talk Integration"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:199
-#: /app/specialVueFakeDummyForL10nScript.js:590
+#. TRANSLATORS onents/settings-v2/Settings.vue:97
+#: /app/specialVueFakeDummyForL10nScript.js:2389
 msgid "Talk room settings for appointments"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:207
-#: /app/specialVueFakeDummyForL10nScript.js:592
+#. TRANSLATORS onents/settings-v2/Settings.vue:105
+#: /app/specialVueFakeDummyForL10nScript.js:2391
 msgid "Video Integration"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:209
-#: /app/specialVueFakeDummyForL10nScript.js:594
+#. TRANSLATORS onents/settings-v2/Settings.vue:107
+#: /app/specialVueFakeDummyForL10nScript.js:2393
 msgid "Video room settings for appointments"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:216
-#: /app/specialVueFakeDummyForL10nScript.js:596
+#. TRANSLATORS onents/settings-v2/Settings.vue:114
+#: /app/specialVueFakeDummyForL10nScript.js:2395
 msgid "Advanced"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:218
-#: /app/specialVueFakeDummyForL10nScript.js:598
+#. TRANSLATORS onents/settings-v2/Settings.vue:116
+#: /app/specialVueFakeDummyForL10nScript.js:2397
 msgid "Advanced settings and configurations"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:226
-#: /app/specialVueFakeDummyForL10nScript.js:600
+#. TRANSLATORS onents/settings-v2/Settings.vue:124
+#: /app/specialVueFakeDummyForL10nScript.js:2399
 msgid "Contributor Key"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/Settings.vue:229
-#: /app/specialVueFakeDummyForL10nScript.js:602
+#. TRANSLATORS onents/settings-v2/Settings.vue:127
+#: /app/specialVueFakeDummyForL10nScript.js:2401
 msgid "Verifying key"
 msgstr ""
 
-#: /app/specialVueFakeDummyForL10nScript.js:602
+#: /app/specialVueFakeDummyForL10nScript.js:2401
 msgid "Enter key"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:58
-#: /app/specialVueFakeDummyForL10nScript.js:604
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:5
+#: /app/specialVueFakeDummyForL10nScript.js:2455
 msgid "Items/Links"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:61
-#: /app/specialVueFakeDummyForL10nScript.js:606
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:8
+#: /app/specialVueFakeDummyForL10nScript.js:2457
 msgid "no items found"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:78
-#: /app/specialVueFakeDummyForL10nScript.js:608
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:25
+#: /app/specialVueFakeDummyForL10nScript.js:2459
 msgid "Edit"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:95
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:102
-#: /app/specialVueFakeDummyForL10nScript.js:612
-#: /app/specialVueFakeDummyForL10nScript.js:614
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:42
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:49
+#: /app/specialVueFakeDummyForL10nScript.js:2463
+#: /app/specialVueFakeDummyForL10nScript.js:2465
 msgid "Add New Item"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:108
-#: /app/specialVueFakeDummyForL10nScript.js:616
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:55
+#: /app/specialVueFakeDummyForL10nScript.js:2467
 msgid "Page Settings"
 msgstr ""
 
-#. TRANSLATORS onents/settings-v2/SettingsDir.vue:124
-#: /app/specialVueFakeDummyForL10nScript.js:622
+#. TRANSLATORS onents/settings-v2/SettingsDir.vue:71
+#: /app/specialVueFakeDummyForL10nScript.js:2473
 msgid "Private (visitors must be logged-in)"
 msgstr ""
 
-#. TRANSLATORS onents/views/TimeSlotEditor.vue:194
-#: /app/specialVueFakeDummyForL10nScript.js:628
+#: /app/specialVueFakeDummyForL10nScript.js:2623
+msgid "Can't add appointments to calendar"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:2625
+msgid "Appointments added to {calendarName} calendar"
+msgstr ""
+
+#: /app/specialVueFakeDummyForL10nScript.js:2669
 msgid "Invalid number of appointments"
 msgstr ""
 
-#. TRANSLATORS onents/views/TimeSlotEditor.vue:223
-#: /app/specialVueFakeDummyForL10nScript.js:630
+#. TRANSLATORS onents/views/TimeSlotEditor.vue:6
+#: /app/specialVueFakeDummyForL10nScript.js:2693
 msgid "Add to Calendar"
 msgstr ""
 
-#. TRANSLATORS onents/views/TimeSlotEditor.vue:226
-#: /app/specialVueFakeDummyForL10nScript.js:632
+#. TRANSLATORS onents/views/TimeSlotEditor.vue:9
+#: /app/specialVueFakeDummyForL10nScript.js:2695
 msgid "Discard"
 msgstr ""
 
-#. TRANSLATORS onents/views/TimeSlotEditor.vue:249
-#: /app/specialVueFakeDummyForL10nScript.js:638
+#. TRANSLATORS onents/views/TimeSlotEditor.vue:32
+#: /app/specialVueFakeDummyForL10nScript.js:2701
 msgid "Hint: right-click on an appointment to edit."
 msgstr ""
 
-#. TRANSLATORS onents/views/TimeSlotEditor.vue:250
-#: /app/specialVueFakeDummyForL10nScript.js:640
+#. TRANSLATORS onents/views/TimeSlotEditor.vue:33
+#: /app/specialVueFakeDummyForL10nScript.js:2703
 msgid "Time zone"
 msgstr ""
 
-#. TRANSLATORS onents/views/TimeSlotEditor.vue:285
-#: /app/specialVueFakeDummyForL10nScript.js:642
+#. TRANSLATORS onents/views/TimeSlotEditor.vue:68
+#: /app/specialVueFakeDummyForL10nScript.js:2705
 msgid "Add Appointments"
 msgstr ""
 
-#. TRANSLATORS onents/views/TimeSlotEditor.vue:294
-#: /app/specialVueFakeDummyForL10nScript.js:644
+#. TRANSLATORS onents/views/TimeSlotEditor.vue:77
+#: /app/specialVueFakeDummyForL10nScript.js:2707
 msgid "Remove All"
 msgstr ""
 
-#. TRANSLATORS onents/views/TimeSlotEditor.vue:304
-#: /app/specialVueFakeDummyForL10nScript.js:646
+#. TRANSLATORS onents/views/TimeSlotEditor.vue:87
+#: /app/specialVueFakeDummyForL10nScript.js:2709
 msgid "Copy to Next"
 msgstr ""
 

@@ -100,7 +100,6 @@ OC.L10N.register(
     "Copy" : "Copiar",
     "Visit" : "Visitar",
     "error: cannot load calendar data" : "error: nun se puen cargar los datos del calendariu",
-    "This action CANNOT be undone. Continue?" : "Esta aición NUN SE PUE desfacer. ¿Quies siguir?",
     "Remove" : "Quitar",
     "Add" : "Amestar",
     "OK" : "Normal",

@@ -1,0 +1,24 @@
+{ "translations": {
+    "Cancel" : "Batal",
+    "Password" : "Kata laluan",
+    "Appointments" : "Temujanji",
+    "Info" : "Info",
+    "Settings" : "Tetapan",
+    "Title" : "Judul",
+    "URL" : "URL",
+    "Save" : "Simpan",
+    "Remove" : "Buang",
+    "Add" : "Tambah",
+    "OK" : "OK",
+    "Delete" : "Padam",
+    "Location" : "Lokasi",
+    "Phone" : "Telefon",
+    "Deleted" : "Dipadam",
+    "Warning" : "Amaran",
+    "Advanced" : "Maju",
+    "Edit" : "Sunting",
+    "Back" : "Kembali",
+    "Next" : "Seterus",
+    "Email" : "Email"
+},"pluralForm" :"nplurals=1; plural=0;"
+}
