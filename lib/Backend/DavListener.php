@@ -1082,8 +1082,8 @@ class DavListener implements IEventListener
             // TRANSLATORS Email subject asking an attendee to confirm a pending appointment, Ex: Reminder: please confirm your {{Organization Name}} appointment
             $future_use = $this->l10N->t("Reminder: please confirm your %s appointment", [$some_org_name]);
 
-            // TRANSLATORS Part of email body, Ex: Important: If not confirmed within 2 hours, this appointment will be automatically canceled.
-            $future_use = $this->l10N->n('Important: If not confirmed within %n hour, this appointment will be automatically canceled.', 'Important: If not confirmed within %n hours, this appointment will be automatically canceled.', $number_of_hours);
+            // TRANSLATORS Part of email body, Ex: Important: If not confirmed within 2 hours, this appointment will be automatically cancelled.
+            $future_use = $this->l10N->n('Important: If not confirmed within %n hour, this appointment will be automatically cancelled.', 'Important: If not confirmed within %n hours, this appointment will be automatically cancelled.', $number_of_hours);
 
             // TRANSLATORS Button text
             $future_use = $this->l10N->t("Add a guest");
