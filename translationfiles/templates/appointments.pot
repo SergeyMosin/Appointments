@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2025-03-02 02:45+0000\n"
+"POT-Creation-Date: 2025-03-03 02:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: /app/lib/Backend/BackendUtils.php:683 /app/lib/Backend/BackendUtils.php:788
 msgid "Guest password:"
@@ -26,18 +27,18 @@ msgid "Talk integration error: check logs"
 msgstr ""
 
 #: /app/lib/Backend/BackendUtils.php:731 /app/lib/Backend/BackendUtils.php:1511
-#: /app/lib/Backend/DavListener.php:1468
+#: /app/lib/Backend/DavListener.php:1497
 #: /app/lib/Controller/PageController.php:1219
 msgid "In-person meeting"
 msgstr ""
 
 #: /app/lib/Backend/BackendUtils.php:740 /app/lib/Backend/BackendUtils.php:1512
-#: /app/lib/Backend/DavListener.php:1465
+#: /app/lib/Backend/DavListener.php:1494
 #: /app/lib/Controller/PageController.php:1220
 msgid "Online (audio/video)"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:813 /app/lib/Backend/DavListener.php:1405
+#: /app/lib/Backend/BackendUtils.php:813 /app/lib/Backend/DavListener.php:1434
 #, php-format
 msgid "Meeting link: %s"
 msgstr ""
@@ -73,7 +74,7 @@ msgstr ""
 msgid "Available"
 msgstr ""
 
-#: /app/lib/Backend/BackendUtils.php:2243
+#: /app/lib/Backend/BackendUtils.php:2244
 #: /app/lib/Controller/StateController.php:131
 #: /app/src/stores/settings_utils.js:5
 msgid "Public Page"
@@ -243,69 +244,110 @@ msgid ""
 "If you have any questions please feel free to call %1$s or write to %2$s"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:1134
+#. TRANSLATORS Email subject asking an attendee to confirm a pending appointment, Ex: Reminder: please confirm your {{Organization Name}} appointment
+#: /app/lib/Backend/DavListener.php:1083
+#, php-format
+msgid "Reminder: please confirm your %s appointment"
+msgstr ""
+
+#. TRANSLATORS Part of email body, Ex: Important: If not confirmed within 2 hours, this appointment will be automatically canceled.
+#: /app/lib/Backend/DavListener.php:1086
+msgid ""
+"Important: If not confirmed within %n hour, this appointment will be "
+"automatically canceled."
+msgid_plural ""
+"Important: If not confirmed within %n hours, this appointment will be "
+"automatically canceled."
+msgstr[0] ""
+msgstr[1] ""
+
+#. TRANSLATORS Button text
+#: /app/lib/Backend/DavListener.php:1089
+msgid "Add a guest"
+msgstr ""
+
+#. TRANSLATORS Label for an input field
+#: /app/lib/Backend/DavListener.php:1092
+msgid "Guest Email"
+msgstr ""
+
+#. TRANSLATORS Email subject, Ex: {{Organization Name}} Appointment Guest Invitation
+#: /app/lib/Backend/DavListener.php:1095
+#, php-format
+msgid "%s Appointment Guest Invitation"
+msgstr ""
+
+#. TRANSLATORS Email body, Ex: {{John Smith}} has invited you to join an appointment with {{Organization Name}} on {{Date_Time}}. If you have any questions, please email {{John Smith}} directly at {{john.smith@example.com}}.
+#: /app/lib/Backend/DavListener.php:1098
+#, php-format
+msgid ""
+"%1$s has invited you to join an appointment with %2$s on %3$s. If you have "
+"any questions, please email %1$s directly at %4$s"
+msgstr ""
+
+#: /app/lib/Backend/DavListener.php:1163
 msgid "Appointment is canceled"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:1176
+#: /app/lib/Backend/DavListener.php:1205
 #, php-format
 msgid "%s Appointment"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:1348 /app/lib/Backend/DavListener.php:1361
+#: /app/lib/Backend/DavListener.php:1377 /app/lib/Backend/DavListener.php:1390
 msgid "Password"
 msgstr ""
 
 #. TRANSLATORS This a link to chat/(video)call, Ex: Chat/Call link: https://my_domain.com/call/kzu6e4uv
-#: /app/lib/Backend/DavListener.php:1358
+#: /app/lib/Backend/DavListener.php:1387
 #, php-format
 msgid "Chat/Call link: %s"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:1408
+#: /app/lib/Backend/DavListener.php:1437
 #, php-format
 msgid "Password: %s"
 msgstr ""
 
 #. TRANSLATORS Example: Click <a href="https://example.com">here</a> to change your appointment type to In-person meeting.
-#: /app/lib/Backend/DavListener.php:1472
+#: /app/lib/Backend/DavListener.php:1501
 #, php-format
 msgid "Click %1$shere%2$s to change your appointment type to %3$s."
 msgstr ""
 
 #. TRANSLATORS Example: Click here: https://example.com to change your appointment type to Online (audio/video).
-#: /app/lib/Backend/DavListener.php:1476
+#: /app/lib/Backend/DavListener.php:1505
 #, php-format
 msgid "Click here: %1$s to change your appointment type to %2$s."
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:1500
+#: /app/lib/Backend/DavListener.php:1529
 msgid "Meeting type: Online (audio/video)"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:1502
+#: /app/lib/Backend/DavListener.php:1531
 msgid "Meeting type: In-person"
 msgstr ""
 
-#: /app/lib/Backend/DavListener.php:1530 /app/templates/public/formerr.php:29
+#: /app/lib/Backend/DavListener.php:1559 /app/templates/public/formerr.php:29
 #: /app/templates/public/thanks.php:19
 msgid "Thank you"
 msgstr ""
 
 #. TRANSLATORS This is a part of an email message. %1$s Cancel Appointment %2$s is a link to the cancellation page (HTML format).
-#: /app/lib/Backend/DavListener.php:1537
+#: /app/lib/Backend/DavListener.php:1566
 #, php-format
 msgid "To cancel your appointment please click: %1$s Cancel Appointment %2$s"
 msgstr ""
 
 #. TRANSLATORS This is a part of an email message. %s is a URL of the cancellation page (PLAIN TEXT format).
-#: /app/lib/Backend/DavListener.php:1540
+#: /app/lib/Backend/DavListener.php:1569
 #, php-format
 msgid "To cancel your appointment please visit: %s"
 msgstr ""
 
 #. TRANSLATORS %s is the server name. Example: Booked via Private Cloud Appointments
-#: /app/lib/Backend/DavListener.php:1546
+#: /app/lib/Backend/DavListener.php:1575
 #, php-format
 msgid "Booked via %s Appointments"
 msgstr ""

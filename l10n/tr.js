@@ -203,7 +203,7 @@ OC.L10N.register(
     "Before" : "Önce",
     "After" : "Sonra",
     "Source Calendar (Free Slots)" : "Kaynak takvim (boş aralıklar)",
-    "Any event with \"Show As\" (a.k.a. \"Time As\" a.k.a. \"Free/Busy\" a.k.a. \"Time Transparency\") set to \"Free\" will be available for booking in the public form. Most recurrence rules are supported." : "\"Farklı görüntüle\" (diğer adıyla \"Farklı zamanda\", diğer adıyla \"Serbest/Meşgul\", diğer adıyla \"Zaman şeffaflığı\") \"Serbest\" olarak ayarlanmış etkinlikler, herkese açık formda ayırtma için kullanılabilir. Yinelenme kurallarının çoğu desteklenir.",
+    "Any event with \"Show As\" (a.k.a. \"Time As\" a.k.a. \"Free/Busy\" a.k.a. \"Time Transparency\") set to \"Free\" will be available for booking in the public form. Most recurrence rules are supported." : "\"Farklı görüntüle\" (diğer adıyla \"Farklı zamanda\", diğer adıyla \"Uygun/Meşgul\", diğer adıyla \"Zaman şeffaflığı\") \"Uygun\" olarak ayarlanmış etkinlikler, herkese açık formda ayırtma için kullanılabilir. Yinelenme kurallarının çoğu desteklenir.",
     "Destination Calendar (Booked)" : "Hedef takvim (ayırtılmış)",
     "Booked appointments will be placed here. In addition to booked appointments, any events in this calendar marked as \"Busy\" will prevent conflicting timeslots in the \"Source Calendar\" from appearing in the public form." : "Ayırtılan randevular buraya eklenir. Ayırtılmış randevulara ek olarak, bu takvimde \"Meşgul\" olarak işaretlenmiş etkinlikler, \"Kaynak takvim\" üzerindeki çakışan zaman aralıklarının herkese açık formda görüntülenmesini önler.",
     "error: main calendar required" : "Hata: Ana takvim zorunludur",
