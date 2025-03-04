@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2025-03-03 02:46+0000\n"
+"POT-Creation-Date: 2025-03-04 02:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -250,14 +250,14 @@ msgstr ""
 msgid "Reminder: please confirm your %s appointment"
 msgstr ""
 
-#. TRANSLATORS Part of email body, Ex: Important: If not confirmed within 2 hours, this appointment will be automatically canceled.
+#. TRANSLATORS Part of email body, Ex: Important: If not confirmed within 2 hours, this appointment will be automatically cancelled.
 #: /app/lib/Backend/DavListener.php:1086
 msgid ""
 "Important: If not confirmed within %n hour, this appointment will be "
-"automatically canceled."
+"automatically cancelled."
 msgid_plural ""
 "Important: If not confirmed within %n hours, this appointment will be "
-"automatically canceled."
+"automatically cancelled."
 msgstr[0] ""
 msgstr[1] ""
 
