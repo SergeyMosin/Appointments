@@ -41,6 +41,7 @@
     "If you have any questions please write to %s" : "Ако имате било каквих питања, молимо вас да пишете %s",
     "If you have any questions please feel free to call %1$s or write to %2$s" : "Ако имате било каквих питања, слободно позовите %1$s или пишите на %2$s",
     "Reminder: please confirm your %s appointment" : "Подсетник: молим вас да потврдите свој %s састанак",
+    "_Important: If not confirmed within %n hour, this appointment will be automatically cancelled._::_Important: If not confirmed within %n hours, this appointment will be automatically cancelled._" : ["Важно: ако се не потврди у року од %n сата, овај састанак ће се аутоматски отказати.","Важно: ако се не потврди у року од %n сата, овај састанак ће се аутоматски отказати.","Важно: ако се не потврди у року од %n сати, овај састанак ће се аутоматски отказати."],
     "Add a guest" : "Додај госта",
     "Guest Email" : "И-мејл госта",
     "%s Appointment Guest Invitation" : "Позивница госту да учествује у %s састанку",

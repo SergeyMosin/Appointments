@@ -41,6 +41,7 @@
     "If you have any questions please write to %s" : "Wenn Sie Fragen haben, wenden Sie sich an %s",
     "If you have any questions please feel free to call %1$s or write to %2$s" : "Wenn Sie Fragen haben, rufen Sie unter %1$s an oder schreiben an %2$s",
     "Reminder: please confirm your %s appointment" : "Zur Erinnerung: Bitte bestätigen Sie Ihren %s-Termin",
+    "_Important: If not confirmed within %n hour, this appointment will be automatically cancelled._::_Important: If not confirmed within %n hours, this appointment will be automatically cancelled._" : ["Wichtig: Wird der Termin nicht innerhalb von %n Stunde bestätigt, wird er automatisch storniert.","Wichtig: Wird der Termin nicht innerhalb von %n Stunden bestätigt, wird er automatisch storniert."],
     "Add a guest" : "Einen Gast hinzufügen",
     "Guest Email" : "Gast E-Mail",
     "%s Appointment Guest Invitation" : "%s Termin Gästeeinladung",

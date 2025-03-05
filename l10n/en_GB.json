@@ -41,6 +41,7 @@
     "If you have any questions please write to %s" : "If you have any questions please write to %s",
     "If you have any questions please feel free to call %1$s or write to %2$s" : "If you have any questions please feel free to call %1$s or write to %2$s",
     "Reminder: please confirm your %s appointment" : "Reminder: please confirm your %s appointment",
+    "_Important: If not confirmed within %n hour, this appointment will be automatically cancelled._::_Important: If not confirmed within %n hours, this appointment will be automatically cancelled._" : ["Important: If not confirmed within %n hour, this appointment will be automatically cancelled.","Important: If not confirmed within %n hours, this appointment will be automatically cancelled."],
     "Add a guest" : "Add a guest",
     "Guest Email" : "Guest Email",
     "%s Appointment Guest Invitation" : "%s Appointment Guest Invitation",

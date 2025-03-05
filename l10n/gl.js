@@ -43,6 +43,7 @@ OC.L10N.register(
     "If you have any questions please write to %s" : "Se ten algunha dúbida, escriba a %s",
     "If you have any questions please feel free to call %1$s or write to %2$s" : "Se ten algunha dúbida, chame a %1$s ou escríballe a %2$s",
     "Reminder: please confirm your %s appointment" : "Lembrete: confirme a súa cita %s",
+    "_Important: If not confirmed within %n hour, this appointment will be automatically cancelled._::_Important: If not confirmed within %n hours, this appointment will be automatically cancelled._" : ["Importante: se non se confirma en %n hora, esta cita cancelarase automaticamente.","Importante: se non se confirma en %n horas, esta cita cancelarase automaticamente."],
     "Add a guest" : "Engadir un convidado",
     "Guest Email" : "Correo do convidado",
     "%s Appointment Guest Invitation" : "Convite á cita con %s",

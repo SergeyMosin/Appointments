@@ -43,6 +43,7 @@ OC.L10N.register(
     "If you have any questions please write to %s" : "如有任何疑問，請去信 %s",
     "If you have any questions please feel free to call %1$s or write to %2$s" : "如有任何疑問，請致電 %1$s 或去信 %2$s",
     "Reminder: please confirm your %s appointment" : "提醒：請確認您 %s 的預約",
+    "_Important: If not confirmed within %n hour, this appointment will be automatically cancelled._::_Important: If not confirmed within %n hours, this appointment will be automatically cancelled._" : ["重要提示：如果在 %n 小時內未確認，此預約將自動取消。"],
     "Add a guest" : "添加訪客",
     "Guest Email" : "訪客電郵地址",
     "%s Appointment Guest Invitation" : "%s 預約訪客邀請",

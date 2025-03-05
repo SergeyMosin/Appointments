@@ -43,6 +43,7 @@ OC.L10N.register(
     "If you have any questions please write to %s" : "Pokud máte jakékoli dotazy, napište na %s",
     "If you have any questions please feel free to call %1$s or write to %2$s" : "Pokud máte jakékoli dotazy, zavolejte na %1$s nebo napište na %2$s",
     "Reminder: please confirm your %s appointment" : "Připomínka: prosíme potvrďte svou schůzku %s",
+    "_Important: If not confirmed within %n hour, this appointment will be automatically cancelled._::_Important: If not confirmed within %n hours, this appointment will be automatically cancelled._" : ["Důležité: pokud nepotvrzeno do %n hodiny, tato schůzka bude automaticky zrušena.","Důležité: pokud nepotvrzeno do %n hodin, tato schůzka bude automaticky zrušena.","Důležité: pokud nepotvrzeno do %n hodin, tato schůzka bude automaticky zrušena.","Důležité: pokud nepotvrzeno do %n hodin, tato schůzka bude automaticky zrušena."],
     "Add a guest" : "Přidat hosta",
     "Guest Email" : "E-mail hosta",
     "%s Appointment Guest Invitation" : "Pozvánka hosta na schůzku %s",
