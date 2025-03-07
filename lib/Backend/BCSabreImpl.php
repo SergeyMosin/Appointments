@@ -1185,8 +1185,9 @@ class BCSabreImpl implements IBackendConnector
             $err = "Object does not exist: " . $uri . ", calId: " . $calId;
         } else {
             $attendeeName = "";
+            $attendeeEmail = "";
             if ($do_confirm) {
-                list($newData, $date, $attendeeName) = $this->utils->dataConfirmAttendee($d, $userId, $pageId);
+                list($newData, $date, $attendeeName, $attendeeEmail) = $this->utils->dataConfirmAttendee($d, $userId, $pageId);
             } else {
                 list($newData, $date) = $this->utils->dataCancelAttendee($d, $userId, $pageId);
             }
@@ -1194,7 +1195,7 @@ class BCSabreImpl implements IBackendConnector
                 $err = "Can not set attendee data";
             } elseif (empty($newData)) {
                 // Already confirmed
-                $ret = [0, $date, $attendeeName];
+                $ret = [0, $date, $attendeeName, $attendeeEmail];
             } else {
 
                 $settings = $this->utils->getUserSettings();
@@ -1218,7 +1219,7 @@ class BCSabreImpl implements IBackendConnector
                                 $err = "Can not update object: " . $uri . ", dcl=" . $dcl_id;
                             } else {
                                 // Object Update: SUCCESS
-                                $ret = [0, $date, $attendeeName];
+                                $ret = [0, $date, $attendeeName, $attendeeEmail];
                             }
                         }
                     }
@@ -1228,7 +1229,7 @@ class BCSabreImpl implements IBackendConnector
                         $err = "Can not update object: " . $uri;
                     } else {
                         // Object Update: SUCCESS
-                        $ret = [0, $date, $attendeeName];
+                        $ret = [0, $date, $attendeeName, $attendeeEmail];
                     }
                 }
             }
