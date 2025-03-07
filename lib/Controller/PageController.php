@@ -372,7 +372,7 @@ class PageController extends Controller
                     // Emails are handled by the DavListener... set the Hint
                     HintVar::setHint(HintVar::APPT_CONFIRM);
 
-                    list($sts, $date_time, $attendeeName) = $this->bc->confirmAttendee($userId, $pageId, $cal_id, $uri);
+                    list($sts, $date_time, $attendeeName, $attendeeEmail) = $this->bc->confirmAttendee($userId, $pageId, $cal_id, $uri);
 
                     if ($sts === 0) {
                         // Appointment is confirmed successfully
