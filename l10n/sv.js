@@ -102,6 +102,7 @@ OC.L10N.register(
     "GDPR Compliance" : "GDPR-efterlevnad",
     "Not set" : "Inte inställd",
     "24 hours" : "24 timmar",
+    "7 days" : "7 dagar",
     "Warning" : "Varning",
     "Important" : "Viktigt",
     "Enable lobby" : "Aktivera lobbyn",
