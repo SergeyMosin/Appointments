@@ -203,7 +203,7 @@ OC.L10N.register(
     "Disabled" : "Atspējots",
     "Readonly / Plain Text" : "Tikai-lasāms / Parasts teksts",
     "Form Title" : "Formas virsraksts",
-    "Hide phone number field" : "Slēpt tālruņa numura lauku",
+    "Hide phone number field" : "Paslēpt tālruņa numura lauku",
     "Advanced Form Settings" : "Papildus formas iestatījumi",
     "GDPR Compliance" : "GDPR atbilstība",
     "24 hours" : "24 stundas",
