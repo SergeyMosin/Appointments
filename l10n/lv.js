@@ -179,7 +179,7 @@ OC.L10N.register(
     "Attach .ics file to confirm/cancel emails" : "Pievienot .ics failu, lai apstiprināt/atcelt e-pastus",
     "Email Attendee when the appointment is:" : "Nosūtīt dalībniekam e-pastu kad tikšanās ir:",
     "Modified (Time, Status, Location)" : "Modificēta (Laiks, statuss, atrašanās vieta)",
-    "Deleted" : "Izdzēstie",
+    "Deleted" : "Izdzēsts",
     "Email Me when an appointment is:" : "Nosūtīt man e-pastu, kad tikšanās ir:",
     "Requested" : "Pieprasīts",
     "Confirmed" : "Apstiprināts",
