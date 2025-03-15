@@ -9,6 +9,7 @@ OC.L10N.register(
     "Preview" : "Ko‘rib chiqish",
     "Settings" : "Settings",
     "Save" : "Save",
+    "Copy" : "Nusxalash",
     "Remove" : "Remove",
     "Add" : "Add",
     "OK" : "OK",
