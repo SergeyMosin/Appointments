@@ -47,8 +47,9 @@ module.exports = {
 						options: this.mode === 'production' ? {
 							sassOptions: {
 								outputStyle: 'compressed',
-							}
-						} : {}
+							},
+							api: "modern",
+						} : {api: "modern"}
 					}
 				]
 			},

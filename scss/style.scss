@@ -1,6 +1,6 @@
 @use "_icons.css";
-@import "_svariables.scss";
-@import "_variables.scss";
+@use "_svariables.scss";
+@use "_variables.scss";
 
 .srgdev-icon-override {
   background-repeat: no-repeat;
@@ -179,8 +179,8 @@ $appt_grid_ml: 6em;
   left: 2px;
   right: 2px;
   border: 1px solid var(--color-main-background);
-  color: $color-primary-text;
-  background: $color-primary;
+  color: svariables.$color-primary-text;
+  background: svariables.$color-primary;
   overflow: hidden;
   cursor: grab;
   border-radius: 4px;
@@ -538,7 +538,7 @@ $srgdev-prog-height: 3px;
 }
 
 .appt-stn-input-form {
-  opacity: $opacity_normal;
+  opacity: variables.$opacity_normal;
   display: flex;
 
   .appt-stn-input-field {
@@ -574,7 +574,7 @@ $stn-txt-input-margin: 4px;
   cursor: pointer;
   white-space: nowrap;
 
-  opacity: $opacity_normal;
+  opacity: variables.$opacity_normal;
   color: var(--color-main-text);
   border: 0;
   border-radius: 0; // otherwise Safari will cut the border-radius area
@@ -582,7 +582,7 @@ $stn-txt-input-margin: 4px;
   box-shadow: none;
 
   font-weight: normal;
-  line-height: $clickable-area;
+  line-height: variables.$clickable-area;
 }
 
 .appt-stn-txt-form {
@@ -603,14 +603,14 @@ input.appt-stn-txt-submit {
   position: absolute;
   bottom: 1px;
   right: 1px;
-  width: #{$clickable-area - $stn-txt-input-margin * 2};
-  height: #{$clickable-area - $stn-txt-input-margin * 2};
+  width: #{variables.$clickable-area - $stn-txt-input-margin * 2};
+  height: #{variables.$clickable-area - $stn-txt-input-margin * 2};
   margin: 0;
   padding: 7px 6px;
 
   cursor: pointer;
 
-  opacity: $opacity_full;
+  opacity: variables.$opacity_full;
   color: var(--color-text-lighter);
   border: 0;
   border-radius: 50%;
@@ -626,10 +626,10 @@ input.appt-stn-txt-submit:active {
 textarea.appt-stn-txt-ta {
   flex: 1 1 auto;
 
-  min-height: #{$clickable-area * 2 - $stn-txt-input-margin * 7}; /* twice the element margin-y */
-  max-height: #{$clickable-area * 3 - $stn-txt-input-margin * 2}; /* twice the element margin-y */
+  min-height: #{variables.$clickable-area * 2 - $stn-txt-input-margin * 7}; /* twice the element margin-y */
+  max-height: #{variables.$clickable-area * 3 - $stn-txt-input-margin * 2}; /* twice the element margin-y */
   // block width widening
-  min-width: $clickable-area * 4;
+  min-width: variables.$clickable-area * 4;
   width: 100%;
   margin: 0;
   color: var(--color-main-text);
@@ -835,7 +835,7 @@ textarea.appt-stn-txt-ta {
 .srgdev-appt-sb-main-spacer {
   height: 0;
   margin: .75em 0 .75em -4%;
-  border-top: 1px solid $color-border-dark;
+  border-top: 1px solid svariables.$color-border-dark;
   width: 104%;
 
 }
@@ -1097,7 +1097,7 @@ input[type="checkbox"].ps-checkbox:disabled:not(:checked) + label:before {
 /* END: Settings Elements */
 
 
-@media only screen and (max-width: $breakpoint-mobile) {
+@media only screen and (max-width: variables.$breakpoint-mobile) {
   .srgdev-app-content {
     max-width: 100%;
   }

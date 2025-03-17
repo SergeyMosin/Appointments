@@ -1,7 +1,8 @@
-@import "_svariables.scss";
+@use "_svariables.scss";
+@use "_form-xl-screen.scss" as *;
 
 body {
-  background-color: $color-main-background;
+  background-color: svariables.$color-main-background;
   background-color: var(--color-main-background);
   --border-radius-large: 4px;
   background-image: none;
@@ -34,7 +35,7 @@ body {
   display: inline-block;
   margin: 2em 1em 1em;
   padding: 1.5em;
-  border: 1px solid $color-border;
+  border: 1px solid svariables.$color-border;
   border: 1px solid var(--color-border);
   text-align: left;
   vertical-align: top;
@@ -47,7 +48,7 @@ body {
 }
 
 .srgdev-ncfp-form-addr {
-  color: $color-text-lighter;
+  color: svariables.$color-text-lighter;
   color: var(--color-text-lighter);
 
   margin-bottom: .75em;
@@ -57,7 +58,7 @@ body {
 .srgdev-ncfp-form-header {
   font-weight: bold;
   padding: 0 0 .35em;
-  border-bottom: 1px solid $color-border;
+  border-bottom: 1px solid svariables.$color-border;
   border-bottom: 1px solid var(--color-border-dark);
   margin-top: 0;
   font-size: 115%;
@@ -99,7 +100,7 @@ body {
   max-height: 16em;
 }
 
-$color-placeholder: $color-text-maxcontrast;
+$color-placeholder: svariables.$color-text-maxcontrast;
 $color-placeholder-var: var(--color-text-maxcontrast);
 .srgdev-ncfp-form-input::-webkit-input-placeholder,
 .srgdev-ncfp-form-textarea::-webkit-input-placeholder {
@@ -140,7 +141,7 @@ $color-placeholder-var: var(--color-text-maxcontrast);
 }
 
 .srgdev-ncfp-form-select:invalid {
-  border-color: $color-border-dark;
+  border-color: svariables.$color-border-dark;
   border-color: var(--color-border-dark);
   color: $color-placeholder !important;
   color: $color-placeholder-var;
@@ -148,12 +149,12 @@ $color-placeholder-var: var(--color-text-maxcontrast);
 
 .srgdev-ncfp-form-textarea[data-more]:invalid:hover,
 .srgdev-ncfp-form-select:invalid:hover {
-  border-color: $color-primary-element !important;
+  border-color: svariables.$color-primary-element !important;
   border-color: var(--color-primary-element) !important;
 }
 
 .srgdev-ncfp-form-option {
-  color: $color-main-text;
+  color: svariables.$color-main-text;
   color: var(--color-main-text);
 }
 
@@ -177,7 +178,7 @@ $color-placeholder-var: var(--color-text-maxcontrast);
 }
 
 .srgdev-ncfp-chb-cont a {
-  color: $color-primary;
+  color: svariables.$color-primary;
   color: var(--color-primary);
 }
 
@@ -186,7 +187,7 @@ $color-placeholder-var: var(--color-text-maxcontrast);
 }
 
 .checkbox[err] + label:before {
-  border-color: $color-error !important;
+  border-color: svariables.$color-error !important;
   border-color: var(--color-error) !important;
 }
 
@@ -229,8 +230,8 @@ $color-placeholder-var: var(--color-text-maxcontrast);
   height: 1em;
   //margin: 8px;
   border-radius: 50%;
-  border: .25em solid $color-primary-text;
-  border-color: $color-primary-text transparent $color-primary-text transparent;
+  border: .25em solid svariables.$color-primary-text;
+  border-color: svariables.$color-primary-text transparent svariables.$color-primary-text transparent;
   border: .25em solid var(--color-primary-text);
   border-color: var(--color-primary-text) transparent var(--color-primary-text) transparent;
   animation: lds-dual-ring 1.2s linear infinite;
@@ -249,7 +250,7 @@ $color-placeholder-var: var(--color-text-maxcontrast);
 #srgdev-ncfp_sel-dummy {
   cursor: pointer;
   background: var(--icon-triangle-s-dark, var(--icon-triangle-s-000)) no-repeat right 4px center;
-  background-color: $color-main-background;
+  background-color: svariables.$color-main-background;
   background-color: var(--color-main-background);
 }
 
@@ -273,9 +274,9 @@ input.srgdev-ncfp-form-input:invalid,
   top: -6.4em;
   position: absolute;
   //padding-right: ;
-  box-shadow: 0 0 6px -2px $color-box-shadow;
+  box-shadow: 0 0 6px -2px svariables.$color-box-shadow;
   box-shadow: 0 0 6px -2px var(--color-box-shadow);
-  border: thin solid $color-border;
+  border: thin solid svariables.$color-border;
   border: thin solid var(--color-border);
   overflow: hidden;
 
@@ -286,7 +287,7 @@ input.srgdev-ncfp-form-input:invalid,
 }
 
 .srgdev-dpu-bkr-cls {
-  background: $color-main-background;
+  background: svariables.$color-main-background;
   background-color: var(--color-main-background);
 }
 
@@ -302,7 +303,7 @@ input.srgdev-ncfp-form-input:invalid,
   font-size: 125%;
   position: relative;
   font-weight: bold;
-  border-bottom: 1px solid $color-border;
+  border-bottom: 1px solid svariables.$color-border;
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -320,7 +321,7 @@ input.srgdev-ncfp-form-input:invalid,
 
 #srgdev-dpu_main-hdr-icon:hover,
 #srgdev-dpu_main-hdr-icon:focus-visible {
-  background-color: $color-primary;
+  background-color: svariables.$color-primary;
   background-color: var(--color-primary);
   background-image: var(--icon-close-white, var(--icon-close-fff));
 }
@@ -345,13 +346,13 @@ input.srgdev-ncfp-form-input:invalid,
 
 #srgdev-dpu_bf-next:hover,
 #srgdev-dpu_bf-back:hover {
-  color: $color-primary;
+  color: svariables.$color-primary;
   color: var(--color-primary);
 }
 
 #srgdev-dpu_bf-next[disabled],
 #srgdev-dpu_bf-back[disabled] {
-  color: $color-text-lighter;
+  color: svariables.$color-text-lighter;
   color: var(--color-text-lighter);
   opacity: .5;
 }
@@ -380,7 +381,7 @@ input.srgdev-ncfp-form-input:invalid,
   position: relative;
   text-align: center;
   white-space: nowrap;
-  transition: left $animation-slow;
+  transition: left svariables.$animation-slow;
 }
 
 .srgdev-dpu-date-cont {
@@ -392,20 +393,20 @@ input.srgdev-ncfp-form-input:invalid,
 }
 
 .srgdev-dpu-dc-empty {
-  color: $color-text-lighter;
+  color: svariables.$color-text-lighter;
   color: var(--color-text-lighter);
   opacity: .8;
 }
 
 .srgdev-dpu-date-cont:hover {
-  color: $color-primary;
+  color: svariables.$color-primary;
   color: var(--color-primary);
 }
 
 .srgdev-dpu-date-cont[data-active] {
-  background: $color-primary;
+  background: svariables.$color-primary;
   background: var(--color-primary);
-  color: $color-primary-text;
+  color: svariables.$color-primary-text;
   color: var(--color-primary-text);
 }
 
@@ -454,7 +455,7 @@ input.srgdev-ncfp-form-input:invalid,
 }
 
 #srgdev-dpu_main-time {
-  border-top: 1px solid $color-border;
+  border-top: 1px solid svariables.$color-border;
   border-top: 1px solid var(--color-border);
   height: 20em;
   display: flex;
@@ -469,7 +470,7 @@ input.srgdev-ncfp-form-input:invalid,
   padding-top: 2.5em;
   line-height: 1.6;
   height: 12.75em;
-  color: $color-text-lighter;
+  color: svariables.$color-text-lighter;
   color: var(--color-text-lighter);
 }
 
@@ -479,7 +480,7 @@ input.srgdev-ncfp-form-input:invalid,
   box-sizing: border-box;
   font-size: 120%;
   font-weight: bold;
-  color: $color-main-text;
+  color: svariables.$color-main-text;
   color: var(--color-main-text);
   flex: 0;
 }
@@ -497,7 +498,7 @@ input.srgdev-ncfp-form-input:invalid,
 .srgdev-dpu-time-unit {
   text-align: center;
   cursor: pointer;
-  border: 1px solid $color-border;
+  border: 1px solid svariables.$color-border;
   border: 1px solid var(--color-border);
   padding: .2em 0;
 }
@@ -507,7 +508,7 @@ $tz-cont-height: 2.5em;
   position: relative;
   display: block;
   overflow: hidden;
-  border-top: 1px solid $color-border;
+  border-top: 1px solid svariables.$color-border;
   border-top: 1px solid var(--color-border);
   margin-top: .25em;
   cursor: pointer;
@@ -546,13 +547,13 @@ $tz-cont-height: 2.5em;
   white-space: nowrap;
   padding: 0 2em 0 .375em;
   position: relative;
-  color: ($color-text-lighter);
+  color: svariables.$color-text-lighter;
   color: var(--color-text-lighter);
   vertical-align: middle;
 }
 
 .srgdev-dpu-tz-picker-wrapper:hover .srgdev-dpu-tz-name {
-  color: ($color-main-text);
+  color: svariables.$color-main-text;
   color: var(--color-main-text);
 }
 
@@ -573,14 +574,14 @@ $tz-cont-height: 2.5em;
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-decoration-color: var(--color-primary);
-  color: $color-main-text;
+  color: svariables.$color-main-text;
   color: var(--color-main-text);
 }
 
 .srgdev-dpu-appt-title {
   cursor: inherit;
   font-weight: normal;
-  color: $color-main-text;
+  color: svariables.$color-main-text;
   color: var(--color-main-text);
 }
 
@@ -636,9 +637,9 @@ $tz-cont-height: 2.5em;
 .srgdev-dpu-time-unit:focus-visible,
 .srgdev-dpu-time-unit2:focus-visible,
 .srgdev-dpu-time-unit_tn:focus-visible {
-  color: $color-primary;
+  color: svariables.$color-primary;
   color: var(--color-primary);
-  border-color: $color-border-dark;
+  border-color: svariables.$color-border-dark;
   border-color: var(--color-border-dark);
   font-weight: bold;
 }
@@ -661,7 +662,7 @@ $tz-cont-height: 2.5em;
 }
 
 .srgdev-appt-err-a {
-  color: $color-primary;
+  color: svariables.$color-primary;
   color: var(--color-primary);
   text-decoration: underline;
 }
@@ -671,14 +672,14 @@ $tz-cont-height: 2.5em;
   margin: 1.25em auto;
   padding: 1em;
   width: 22em;
-  border: 1px solid $color-border;
+  border: 1px solid svariables.$color-border;
   border: 1px solid var(--color-border);
 }
 
 .appt-dir-lnk:hover {
-  border: 1px solid $color-border-dark;
+  border: 1px solid svariables.$color-border-dark;
   border: 1px solid var(--color-border-dark);
-  box-shadow: 1px 1px 3px $color-border-dark;
+  box-shadow: 1px 1px 3px svariables.$color-border-dark;
   box-shadow: 1px 1px 3px var(--color-border-dark);
 }
 
@@ -687,7 +688,7 @@ $tz-cont-height: 2.5em;
   font-size: 125%;
   margin: 0;
   line-height: 1.2;
-  color: $color-main-text;
+  color: svariables.$color-main-text;
   color: var(--color-main-text);
 }
 
@@ -696,7 +697,7 @@ $tz-cont-height: 2.5em;
   font-size: 110%;
   margin: .2em 0;
   line-height: 1.4;
-  color: $color-main-text;
+  color: svariables.$color-main-text;
   color: var(--color-main-text);
 }
 
@@ -704,7 +705,7 @@ $tz-cont-height: 2.5em;
   position: relative;
   margin: .5em 0 0;
   padding-top: .5em;
-  color: $color-text-light;
+  color: svariables.$color-text-light;
   color: var(--color-text-light);
 }
 
@@ -716,7 +717,7 @@ $tz-cont-height: 2.5em;
   height: 0;
   left: 20%;
   top: 0;
-  border-bottom: 1px solid $color-border;
+  border-bottom: 1px solid svariables.$color-border;
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -733,4 +734,4 @@ $tz-cont-height: 2.5em;
   }
 }
 
-@import "_form-xl-screen.scss";
+@include xl-screen;
