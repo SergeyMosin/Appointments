@@ -508,17 +508,18 @@ class BackendUtils
     }
 
     /**
-     * @return array [string|null, string|null, string|null]
+     * @return array [string|null, string|null, string|null, string|null]
      *                  null=error|""=already confirmed,
      *                  Localized DateTime string
      *                  $attendeeName
+     *                  $attendeeEmail
      */
     function dataConfirmAttendee(string $data, string $userId, string $pageId): array
     {
 
         $vo = $this->getAppointment($data, 'TENTATIVE');
         if ($vo === null) {
-            return [null, null, ""];
+            return [null, null, "", ""];
         }
 
         /** @var \Sabre\VObject\Component\VEvent $evt */
@@ -526,7 +527,7 @@ class BackendUtils
 
         $a = $this->getAttendee($evt);
         if ($a === null) {
-            return [null, null, ""];
+            return [null, null, "", ""];
         }
 
         if (!isset($evt->STATUS)) {
@@ -556,13 +557,15 @@ class BackendUtils
             );
 
         } else {
-            return [null, null, ""];
+            return [null, null, "", ""];
         }
 
         $attendeeName = $a->parameters['CN']->getValue();
+        $attendeeEmailMailto = $a->getValue();
+        $attendeeEmail = $attendeeEmailMailto ? substr($attendeeEmailMailto, strpos($attendeeEmailMailto, ':') + 1) : '';
 
         if ($a->parameters['PARTSTAT']->getValue() === 'ACCEPTED') {
-            return ["", $dts, $attendeeName];
+            return ["", $dts, $attendeeName, $attendeeEmail];
         }
 
         $a->parameters['PARTSTAT']->setValue('ACCEPTED');
@@ -596,10 +599,11 @@ class BackendUtils
     }
 
     /**
-     * @return array [string|null, int, string]
+     * @return array [string|null, int, string, string]
      *                  date_time: Localized DateTime string or null on error
      *                  state: one of self::PREF_STATUS_*
      *                  attendeeName: or empty if error
+     *                  attendeeEmail: or empty if error
      */
     function dataApptGetInfo(?string $data): array
     {
@@ -645,8 +649,11 @@ class BackendUtils
             );
         }
 
+        $attendeeEmailMailto = $a->getValue();
+
         // Attendee Name
         $ret[2] = $a->parameters['CN']->getValue();
+        $ret[3] = $attendeeEmailMailto ? substr($attendeeEmailMailto, strpos($attendeeEmailMailto, ':') + 1) : '';
 
         return $ret;
     }
