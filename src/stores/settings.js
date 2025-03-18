@@ -71,6 +71,8 @@ export const useSettingsStore = defineStore('settings', {
 			vldNote: '',
 			cnfNote: '',
 			icsNote: '',
+			cancelPendingHours: 0,
+			notifyCancelPending: false,
 
 			formTitle: '',
 			nbrWeeks: '1',

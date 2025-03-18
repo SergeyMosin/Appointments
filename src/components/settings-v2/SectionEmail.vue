@@ -3,9 +3,38 @@ import {useSettingsStore} from "../../stores/settings";
 import ComboCheckbox from "./ComboCheckbox.vue";
 import LabelAccordion from "../LabelAccordion.vue";
 import ComboInput from "./ComboInput.vue";
+import ComboSelect from "./ComboSelect.vue";
 
+const emit = defineEmits(['show-settings-modal'])
 const settingsStore = useSettingsStore()
 const settings = settingsStore.settings
+
+const contribInterceptor = () => {
+	if (settingsStore.k === true) {
+		return false
+	}
+	settingsStore.setOne('notifyCancelPending', !settings.notifyCancelPending, false, (res) => {
+		if (res.status === 202) {
+
+			emit('show-settings-modal', {
+				type: res.data.type,
+				message: res.data.message
+			})
+		}
+	})
+
+	return true
+}
+
+const cancelPendingOptions = [
+	{value: 0, label: t('appointments', 'No auto-cancel')},
+	{value: 2, label: t('appointments', '2 hours')},
+	{value: 4, label: t('appointments', '4 hours')},
+	{value: 8, label: t('appointments', '8 hours')},
+	{value: 24, label: t('appointments', '24 hours')},
+	{value: 48, label: t('appointments', '48 hours')},
+	{value: 96, label: t('appointments', '96 hours')},
+]
 
 </script>
 
@@ -65,6 +94,25 @@ const settings = settingsStore.settings
 				{{ t('appointments', 'When this option is selected, the "... action needed" validation email will NOT be sent to the attendee. Instead, the "... Appointment is confirmed" message will be sent right away, and the "All done" page will be shown when the form is submitted.') }}
 			</template>
 		</ComboCheckbox>
+
+		<div
+				v-if="settings.skipEVS===false"
+				style="margin-bottom: 1.125em">
+			<ComboSelect
+					:label="t('appointments', 'Auto-cancel unconfirmed appointments after')"
+					prop-name="cancelPendingHours"
+					:default-value="0"
+					:placeholder="t('appointments', 'No auto-cancel')"
+					:options="cancelPendingOptions"
+					:store="settingsStore"/>
+			<ComboCheckbox
+					:disabled="settings.cancelPendingHours===0"
+					style="margin-top: -.75em"
+					:label="t('appointments', 'Send a reminder before canceling')"
+					:click-interceptor="contribInterceptor"
+					prop-name="notifyCancelPending"
+					:store="settingsStore"/>
+		</div>
 
 		<ComboInput
 				v-if="settings.skipEVS===false"

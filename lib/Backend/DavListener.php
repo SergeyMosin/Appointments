@@ -100,7 +100,7 @@ class DavListener implements IEventListener
                         'hash.' . BackendUtils::KEY_PAGE_ID,
                         'pref.' . BackendUtils::KEY_PAGE_ID)))
                 ->where($qb->expr()->isNotNull('pref.' . BackendUtils::KEY_REMINDERS))
-                ->andWhere($qb->expr()->eq('hash.status', $qb->createNamedParameter(BackendUtils::PREF_STATUS_CONFIRMED, IQueryBuilder::PARAM_INT)))
+                ->andWhere($qb->expr()->neq('hash.status', $qb->createNamedParameter(BackendUtils::PREF_STATUS_CANCELLED, IQueryBuilder::PARAM_INT)))
                 ->andWhere($qb->expr()->gte('hash.start', $qb->createNamedParameter($now + 2520, IQueryBuilder::PARAM_INT)))
                 ->andWhere($qb->expr()->lte('hash.start', $qb->createNamedParameter($now + 604800, IQueryBuilder::PARAM_INT)))
                 ->andWhere($qb->expr()->isNotNull('hash.' . BackendUtils::KEY_USER_ID))
@@ -119,7 +119,7 @@ class DavListener implements IEventListener
 
         // The first loop is to collect data from DB and close the connection,
         // the second loop actually sends the emails
-        $remindersToSend = [];
+        $inCurrentRange = [];
         while ($row = $result->fetch()) {
 
             $reuseSettings = true;
@@ -138,7 +138,30 @@ class DavListener implements IEventListener
             }
 
             foreach ($remDataArray as $remData) {
-                $remindAt = $row['start'] - $remData[BackendUtils::REMINDER_DATA_TIME];
+
+                $remSeconds = (int)$remData[BackendUtils::REMINDER_DATA_TIME];
+
+                if ($remSeconds === 0) {
+                    // this reminder is disabled
+                    continue;
+                }
+
+                $apptStatus = (int)$row['status'];
+                $remType = $remData[BackendUtils::REMINDER_DATA_TYPE];
+
+                if ($apptStatus === BackendUtils::PREF_STATUS_CONFIRMED) {
+                    if ($remType !== BackendUtils::REMINDER_TYPE_APPT) {
+                        // only BackendUtils::REMINDER_TYPE_APPT for confirmed
+                        continue;
+                    }
+                } elseif ($apptStatus === BackendUtils::PREF_STATUS_TENTATIVE) {
+                    if ($remType === BackendUtils::REMINDER_TYPE_APPT) {
+                        // only BackendUtils::REMINDER_TYPE_CANCEL and BackendUtils::REMINDER_TYPE_CANCEL_NOTICE for UN-confirmed
+                        continue;
+                    }
+                }
+
+                $remindAt = $row['start'] - $remSeconds;
 
 //                $this->logger->error($remindAt . ', '
 //                    . $row['start'] . ', '
@@ -146,11 +169,17 @@ class DavListener implements IEventListener
 
                 // $lastStart is set at the START of previous job
                 // for next job $lastStart is already set to basically $now
-                if ($remindAt >= $lastStart && $remindAt < $now) {
-                    $remindersToSend[] = [
+                if (($remindAt >= $lastStart && $remindAt < $now)
+                    // in order to auto-cancel we need to check the CREATED prop,
+                    // so for now, we grab all unconfirmed appointments and
+                    // deal with them in the second loop where we have the ICS data
+                    || $apptStatus === BackendUtils::PREF_STATUS_TENTATIVE) {
+                    $inCurrentRange[] = [
                         'userId' => $userId,
                         'pageId' => $pageId,
                         'actions' => $remData[BackendUtils::REMINDER_DATA_ACTIONS],
+                        'type' => $remType,
+                        'seconds' => $remSeconds,
                         'evtUri' => $row['uri'],
                         'evtUid' => $row['uid'],
                         'apptDoc' => is_resource($row['appt_doc'])
@@ -164,15 +193,13 @@ class DavListener implements IEventListener
         }
         $result->closeCursor();
 
-//        $this->logger->error('rts: ' . var_export($remindersToSend, true));
-
-        if (count($remindersToSend) === 0) {
+        if (count($inCurrentRange) === 0) {
             // nothing to do
             return;
         }
 
         // just in-case
-        $remindersToSend[0]['reuseSettings'] = false;
+        $inCurrentRange[0]['reuseSettings'] = false;
 
         $config = $this->config;
         $mailer = $this->mailer;
@@ -187,8 +214,12 @@ class DavListener implements IEventListener
 
         $doc = new ApptDocProp();
 
-        // This loop sends out emails (there is .5sec sleep between each send)
-        foreach ($remindersToSend as $remInfo) {
+        $lastDeleteUri = '';
+        // This loop sends out emails and if necessary
+        // cancels(deletes) unconfirmed appointments
+        // there is .125sec sleep between each send
+        foreach ($inCurrentRange as $remInfo) {
+
             if ($remInfo['reuseSettings'] === false) {
                 $userId = $remInfo['userId'];
                 $pageId = $remInfo['pageId'];
@@ -229,6 +260,12 @@ class DavListener implements IEventListener
             // settings are good at this point
 
             $evtUri = $remInfo['evtUri'];
+
+            if ($lastDeleteUri === $evtUri) {
+                // this event has been deleted, nothing to do
+                continue;
+            }
+
             $data = $bc->getObjectData($calId, $evtUri);
 
             if ($data === null && $otherCalId !== '-1') {
@@ -240,6 +277,7 @@ class DavListener implements IEventListener
                 continue;
             }
 
+            // TODO: is BackendUtils::TZI_PROP legacy ???
             if (!str_contains($data, "\r\nATTENDEE;")
                 || (!str_contains($data, "\r\n" . BackendUtils::TZI_PROP . ":")
                     && !str_contains($data, "\r\n" . ApptDocProp::PROP_NAME . ":"))
@@ -261,10 +299,9 @@ class DavListener implements IEventListener
                 || !isset($evt->ATTENDEE)
                 || !isset($evt->STATUS)
                 || !isset($evt->DTEND)
+                || !isset($evt->CREATED)
                 || !isset($evt->ORGANIZER)
-                || $evt->STATUS->getValue() !== 'CONFIRMED'
-                || (!isset($evt->{BackendUtils::XAD_PROP})
-                    && !isset($evt->{ApptDocProp::PROP_NAME}))
+                || !isset($evt->{ApptDocProp::PROP_NAME})
             ) {
                 $this->logger->error('bad event object, uid: ' . $remInfo['evtUid']);
                 $vObject->destroy();
@@ -294,60 +331,104 @@ class DavListener implements IEventListener
 
             // event data looks ok...
 
-            if (isset($evt->{ApptDocProp::PROP_NAME})) {
-                if (!empty($remInfo['apptDoc']) && strlen($remInfo['apptDoc']) > 8) {
-                    $doc->setFromString(substr($remInfo['apptDoc'], 8), 'dummy_evt_uid');
+            $evtStatus = $evt->STATUS->getValue();
+            $remType = $remInfo['type'];
+
+            if ($remType !== BackendUtils::REMINDER_TYPE_APPT
+                || $evtStatus === 'TENTATIVE') {
+                // deal with unconfirmed appointments
+                $createdAt = $evt->CREATED->getDateTime()->getTimestamp();
+                $triggerAt = $createdAt + $remInfo['seconds'];
+
+                // same 'if' logic as the first loop above
+                if ($triggerAt >= $lastStart && $triggerAt < $now) {
+
+                    // double-check just in case
+                    if ($evtStatus !== 'TENTATIVE') {
+                        // this should never happen
+                        $this->logger->error('invalid status/type combo, status: ' . $evtStatus . ', type: ' . $remType . ', uid: ' . $remInfo['evtUid']);
+                        $vObject->destroy();
+                        continue;
+                    }
+
+                    if ($remInfo['type'] === BackendUtils::REMINDER_TYPE_CANCEL) {
+                        HintVar::setHint(HintVar::APPT_CANCEL);
+                        $bc->deleteCalendarObject($userId, $calId, $evtUri);
+                        $lastDeleteUri = $evtUri;
+                        $vObject->destroy();
+                        continue;
+                    } // else send BackendUtils::REMINDER_TYPE_CANCEL_NOTICE email below
                 } else {
-                    $doc->reset();
+                    $vObject->destroy();
+                    continue;
                 }
-                $date_time = $utils->getDateTimeString(
-                    $evt->DTSTART->getDateTime(),
-                    $doc->attendeeTimezone
-                );
-            } else {
-                $date_time = $utils->getDateTimeString(
-                    $evt->DTSTART->getDateTime(),
-                    $evt->{BackendUtils::TZI_PROP}->getValue()
-                );
             }
+
+            if (!empty($remInfo['apptDoc']) && strlen($remInfo['apptDoc']) > 8) {
+                $doc->setFromString(substr($remInfo['apptDoc'], 8), 'dummy_evt_uid');
+            } else {
+                $doc->reset();
+            }
+            $date_time = $utils->getDateTimeString(
+                $evt->DTSTART->getDateTime(),
+                $doc->attendeeTimezone
+            );
 
             list($org_email, $org_name, $org_phone) = $this->getOrgInfo();
             $tmpl = $this->getEmailTemplate();
 
-            // TRANSLATORS Subject for email, Ex: {{Organization Name}} appointment reminder
-            $tmpl->setSubject($this->l10N->t("%s appointment reminder", [$org_name]));
             $tmpl->addHeading(" "); // spacer
             $tmpl->addBodyText(...$this->formatEmailBodyHtml([
                 // TRANSLATORS First line of email, Ex: Dear {{Customer Name}},
                 $this->l10N->t("Dear %s,", [$to_name])
             ]));
 
+            if ($remType === BackendUtils::REMINDER_TYPE_CANCEL_NOTICE) {
 
-            $tmpl->addBodyText(...$this->formatEmailBodyHtml([
-                !empty($org_phone)
-                    // TRANSLATORS Main part of email (if organization phone number is provided), Ex: This is a reminder from {{Organization Name}} about your upcoming appointment on {{Date And Time}}. If you need to reschedule, please call {{Organization Phone}}.
-                    ? $this->l10N->t('This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s.', [$org_name, $date_time, $org_phone])
-                    // TRANSLATORS Main part of email (if organization phone number is missing), Ex: This is a reminder from {{Organization Name}} about your upcoming appointment on {{Date And Time}}. If you need to reschedule, please write to {{Organization Email}}.
-                    : $this->l10N->t('This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please write to %3$s.', [$org_name, $date_time, $org_email])
-            ]));
+                $tmpl->setSubject(
+                // TRANSLATORS Email subject asking an attendee to confirm a pending appointment, Ex: Reminder: please confirm your {{Organization Name}} appointment
+                    $this->l10N->t("Reminder: please confirm your %s appointment", [$org_name])
+                );
+
+                $confirmWindow = $settings[BackendUtils::EML_CANCEL_PENDING_HOURS] - max(1, floor($remInfo['seconds'] / 3600));
+
+                $tmpl->addBodyText(...$this->formatEmailBodyHtml([
+                    // TRANSLATORS Part of email body, Ex: Important: If not confirmed within 2 hours, this appointment will be automatically cancelled.
+                    $this->l10N->n('Important: If not confirmed within %n hour, this appointment will be automatically cancelled.', 'Important: If not confirmed within %n hours, this appointment will be automatically cancelled.', $confirmWindow)
+                ]));
+
+            } else {
+                // TRANSLATORS Subject for email, Ex: {{Organization Name}} appointment reminder
+                $tmpl->setSubject($this->l10N->t("%s appointment reminder", [$org_name]));
+
+                $tmpl->addBodyText(...$this->formatEmailBodyHtml([
+                    !empty($org_phone)
+                        // TRANSLATORS Main part of email (if organization phone number is provided), Ex: This is a reminder from {{Organization Name}} about your upcoming appointment on {{Date And Time}}. If you need to reschedule, please call {{Organization Phone}}.
+                        ? $this->l10N->t('This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s.', [$org_name, $date_time, $org_phone])
+                        // TRANSLATORS Main part of email (if organization phone number is missing), Ex: This is a reminder from {{Organization Name}} about your upcoming appointment on {{Date And Time}}. If you need to reschedule, please write to {{Organization Email}}.
+                        : $this->l10N->t('This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please write to %3$s.', [$org_name, $date_time, $org_email])
+                ]));
+            }
 
             $cnl_lnk_url = '';
 
             // do we want links and buttons ?
             if ($remInfo['actions']) {
 
-                if (isset($evt->{ApptDocProp::PROP_NAME})) {
-                    $embed = $doc->embed;
+                $embed = $doc->embed;
 
-                    // overwrite.cli.url must be set if $embed is not used
-                    if ($embed || filter_var(
-                            $config->getSystemValue('overwrite.cli.url'),
-                            FILTER_VALIDATE_URL) !== false
-                    ) {
+                // overwrite.cli.url must be set if $embed is not used
+                if ($embed || filter_var(
+                        $config->getSystemValue('overwrite.cli.url'),
+                        FILTER_VALIDATE_URL) !== false
+                ) {
 
-                        list($btn_url, $btn_tkn) = $this->makeBtnInfo(
-                            $userId, $pageId, $embed,
-                            $evtUri, $config);
+                    list($btn_url, $btn_tkn) = $this->makeBtnInfo(
+                        $userId, $pageId, $embed,
+                        $evtUri, $config);
+
+                    if ($remType === BackendUtils::REMINDER_TYPE_APPT) {
+
                         $cnl_lnk_url = $btn_url . "0" . $btn_tkn;
 
                         $videoType = $this->getVideoType($settings);
@@ -368,52 +449,23 @@ class DavListener implements IEventListener
                             }
                         }
                     } else {
-                        $this->logger->error('can not add actions to reminder, missing overwrite.cli.url');
+                        // add confirm cancel buttons
+                        $tmpl->addBodyButtonGroup(
+                            $this->l10N->t("Confirm"),
+                            $btn_url . '1' . $btn_tkn,
+                            $this->l10N->t("Cancel"),
+                            $btn_url . '0' . $btn_tkn
+                        );
                     }
 
                 } else {
-                    // @see BackendUtils->dataSetAttendee for BackendUtils::XAD_PROP
-                    $xad = explode(chr(31), $utils->decrypt(
-                        $evt->{BackendUtils::XAD_PROP}->getValue(),
-                        $evt->UID->getValue()));
-                    if (count($xad) > 2) {
-                        $embed = $xad[3] === "1";
-                    } else {
-                        $embed = false;
-                    }
-
-                    // overwrite.cli.url must be set if $embed is not used
-                    if ($embed || $config->getSystemValue('overwrite.cli.url') !== '') {
-
-                        list($btn_url, $btn_tkn) = $this->makeBtnInfo(
-                            $userId, $pageId, $embed,
-                            $evtUri, $config);
-                        $cnl_lnk_url = $btn_url . "0" . $btn_tkn;
-
-                        if (!empty($xad) && count($xad) > 4) {
-
-                            $has_link = strlen($xad[4]) > 1;
-                            if ($settings[BackendUtils::TALK_ENABLED]) {
-                                if ($settings[BackendUtils::TALK_FORM_ENABLED] === true) {
-                                    if ($has_link) {
-                                        $ti = new TalkIntegration($settings, $utils);
-                                        // add talk link info
-                                        $this->addTalkInfo(
-                                            $tmpl, $xad, $ti, $settings,
-                                            $config->getUserValue($userId, Application::APP_ID, "c" . "nk"));
-                                    }
-                                    $this->addTypeChangeLink($tmpl, $settings, $btn_url . "3" . $btn_tkn, $has_link);
-                                }
-                            }
-                        }
-                    } else {
-                        $this->logger->error('can not add actions to reminder, missing overwrite.cli.url');
-                    }
+                    $this->logger->error('can not add actions to reminder, missing overwrite.cli.url');
                 }
             }
 
             $remObj = $settings[BackendUtils::KEY_REMINDERS];
-            if (!empty($remObj[BackendUtils::REMINDER_MORE_TEXT])) {
+            if (!empty($remObj[BackendUtils::REMINDER_MORE_TEXT])
+                && $remType === BackendUtils::REMINDER_TYPE_APPT) {
                 list($remHtml, $remPlainText) = $this->prepHtmlEmailText($remObj[BackendUtils::REMINDER_MORE_TEXT]);
                 if ($remHtml === null) {
                     $tmpl->addBodyText(...$this->formatEmailBodyHtml([$remPlainText]));
@@ -441,12 +493,23 @@ class DavListener implements IEventListener
                     $evt->add('DESCRIPTION');
                 }
                 $description = $evt->DESCRIPTION->getValue();
-                // TRANSLATORS Ex: Reminder sent on {{Date and Time}},
-                $description .= "\n" . $this->l10N->t("Reminder sent on %s", [$utils->getDateTimeString(
-                        new \DateTimeImmutable('now', $utz),
-                        "T" . $utz->getName()
-                        , 1
-                    )]);
+
+                if ($remType === BackendUtils::REMINDER_TYPE_APPT) {
+                    // TRANSLATORS Ex: Reminder sent on {{Date and Time}},
+                    $description .= "\n" . $this->l10N->t("Reminder sent on %s", [$utils->getDateTimeString(
+                            new \DateTimeImmutable('now', $utz),
+                            "T" . $utz->getName()
+                            , 1
+                        )]);
+                } elseif ($remType === BackendUtils::REMINDER_TYPE_CANCEL_NOTICE) {
+                    // TRANSLATORS Ex: Reminder sent on {{Date and Time}},
+                    $description .= "\n" . $this->l10N->t("Cancellation reminder sent on %s", [$utils->getDateTimeString(
+                            new \DateTimeImmutable('now', $utz),
+                            "T" . $utz->getName()
+                            , 1
+                        )]);
+                }
+
                 $evt->DESCRIPTION->setValue($description);
                 if ($bc->updateObject($calId, $evtUri, $vObject->serialize()) === false) {
                     $this->logger->error("Can not update object uid: " . $remInfo['evtUid']);
@@ -472,7 +535,7 @@ class DavListener implements IEventListener
             // remove all circular references, so PHP can easily clean it up.
             $vObject->destroy();
 
-            usleep(320000);
+            usleep(125000);
         }
     }
 
@@ -732,6 +795,13 @@ class DavListener implements IEventListener
 
             if (!empty($settings[BackendUtils::EML_VLD_TXT])) {
                 $this->addMoreEmailText($tmpl, $settings[BackendUtils::EML_VLD_TXT]);
+            }
+
+            if ($settings[BackendUtils::EML_CANCEL_PENDING_HOURS] > 0) {
+                $tmpl->addBodyText(...$this->formatEmailBodyHtml([
+                    // TRANSLATORS Part of email body, Ex: Important: If not confirmed within 2 hours, this appointment will be automatically cancelled.
+                    $this->l10N->n('Important: If not confirmed within %n hour, this appointment will be automatically cancelled.', 'Important: If not confirmed within %n hours, this appointment will be automatically cancelled.', $settings[BackendUtils::EML_CANCEL_PENDING_HOURS])
+                ]));
             }
 
             if ($settings[BackendUtils::EML_MREQ]) {
@@ -1076,14 +1146,8 @@ class DavListener implements IEventListener
             $some_org_name = "Organization Name";
             $number_of_hours = 2;
             $some_person_name = "John Smith";
-            $some_date_time="Date and Time";
-            $person_email="test@example.com";
-
-            // TRANSLATORS Email subject asking an attendee to confirm a pending appointment, Ex: Reminder: please confirm your {{Organization Name}} appointment
-            $future_use = $this->l10N->t("Reminder: please confirm your %s appointment", [$some_org_name]);
-
-            // TRANSLATORS Part of email body, Ex: Important: If not confirmed within 2 hours, this appointment will be automatically cancelled.
-            $future_use = $this->l10N->n('Important: If not confirmed within %n hour, this appointment will be automatically cancelled.', 'Important: If not confirmed within %n hours, this appointment will be automatically cancelled.', $number_of_hours);
+            $some_date_time = "Date and Time";
+            $person_email = "test@example.com";
 
             // TRANSLATORS Button text
             $future_use = $this->l10N->t("Add a guest");

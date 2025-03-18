@@ -91,6 +91,8 @@ class BackendUtils
     public const EML_VLD_TXT = 'vldNote';
     public const EML_CNF_TXT = 'cnfNote';
     public const EML_ICS_TXT = 'icsNote';
+    public const EML_CANCEL_PENDING_HOURS = 'cancelPendingHours';
+    public const EML_NOTIFY_BEFORE_CANCEL_PENDING = 'notifyCancelPending';
 
     // Calendar Settings
     // simple mode
@@ -186,8 +188,14 @@ class BackendUtils
     public const REMINDER_DATA = "data";
     public const REMINDER_DATA_TIME = "seconds";
     public const REMINDER_DATA_ACTIONS = "actions";
+    public const REMINDER_DATA_TYPE = "remType";
     public const REMINDER_SEND_ON_FRIDAY = "friday";
     public const REMINDER_MORE_TEXT = "moreText";
+
+    public const REMINDER_TYPE_APPT = 1;
+    public const REMINDER_TYPE_CANCEL = 2;
+    public const REMINDER_TYPE_CANCEL_NOTICE = 3;
+
     // Read only background_job_mode from appconfig and overwrite.cli.url from getSystemValue
     public const REMINDER_BJM = "bjm";
     public const REMINDER_CLI_URL = "cliUrl";
@@ -595,7 +603,7 @@ class BackendUtils
         // this will save the apptDoc as well
         $this->setApptHash($evt, $userId, $pageId);
 
-        return [$vo->serialize(), $dts, $attendeeName];
+        return [$vo->serialize(), $dts, $attendeeName, $attendeeEmail];
     }
 
     /**
@@ -1361,6 +1369,8 @@ class BackendUtils
             self::EML_VLD_TXT => "",
             self::EML_CNF_TXT => "",
             self::EML_ICS_TXT => "",
+            self::EML_CANCEL_PENDING_HOURS => 0,
+            self::EML_NOTIFY_BEFORE_CANCEL_PENDING => false,
 
             self::PSN_FORM_TITLE => "",
             self::PSN_NWEEKS => "2",
@@ -1425,19 +1435,37 @@ class BackendUtils
             self::SEC_EMAIL_BLACKLIST => [],
 
             self::KEY_REMINDERS => [
+                // ------------------------------------------------------
+                // DO NOT CHANGE INDEXES IN THE self::REMINDER_DATA ARRAY
+                // ------------------------------------------------------
                 self::REMINDER_DATA => [
                     [
                         self::REMINDER_DATA_TIME => "0",
-                        self::REMINDER_DATA_ACTIONS => true
+                        self::REMINDER_DATA_ACTIONS => true,
+                        self::REMINDER_DATA_TYPE => self::REMINDER_TYPE_APPT
                     ],
                     [
                         self::REMINDER_DATA_TIME => "0",
-                        self::REMINDER_DATA_ACTIONS => true
+                        self::REMINDER_DATA_ACTIONS => true,
+                        self::REMINDER_DATA_TYPE => self::REMINDER_TYPE_APPT
                     ],
                     [
                         self::REMINDER_DATA_TIME => "0",
-                        self::REMINDER_DATA_ACTIONS => true
+                        self::REMINDER_DATA_ACTIONS => true,
+                        self::REMINDER_DATA_TYPE => self::REMINDER_TYPE_APPT
                     ],
+                    // Internal use ---------------
+                    [
+                        self::REMINDER_DATA_TIME => "0",
+                        self::REMINDER_DATA_ACTIONS => false,
+                        self::REMINDER_DATA_TYPE => self::REMINDER_TYPE_CANCEL
+                    ],
+                    [
+                        self::REMINDER_DATA_TIME => "0",
+                        self::REMINDER_DATA_ACTIONS => true,
+                        self::REMINDER_DATA_TYPE => self::REMINDER_TYPE_CANCEL_NOTICE
+                    ],
+                    // ----------------------------
                 ],
                 self::REMINDER_SEND_ON_FRIDAY => false,
                 self::REMINDER_MORE_TEXT => ""

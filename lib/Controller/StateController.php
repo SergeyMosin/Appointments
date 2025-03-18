@@ -138,6 +138,7 @@ class StateController extends Controller
                         "message" => $this->l->t("Create Page warning. Check logs.")
                     ]));
                 } else {
+                    // TODO: set unconfirmed appointments auto-cancel for new pages ???
                     $r->setStatus(Http::STATUS_OK);
                 }
 
@@ -237,6 +238,13 @@ class StateController extends Controller
                         ]));
                     } else {
                         $settings = $this->getSettingsAndCleanup($pageId);
+
+                        // filter out cancellation reminders
+                        foreach ($settings[BackendUtils::KEY_REMINDERS][BackendUtils::REMINDER_DATA] as $index => $remData) {
+                            if ($remData[BackendUtils::REMINDER_DATA_TYPE] !== BackendUtils::REMINDER_TYPE_APPT) {
+                                unset($settings[BackendUtils::KEY_REMINDERS][BackendUtils::REMINDER_DATA][$index]);
+                            }
+                        }
 
                         // add reminder related readonly props
                         $cliUrl = $this->config->getSystemValue('overwrite.cli.url');
@@ -537,7 +545,17 @@ class StateController extends Controller
                         return [Http::STATUS_BAD_REQUEST, ''];
                     }
                 }
-                if (count($valid) !== count($value) || count($valid['data']) !== count($value['data'])) {
+
+                $validDataCount = 0;
+                foreach ($valid[BackendUtils::REMINDER_DATA] as $v) {
+                    if ($v[BackendUtils::REMINDER_DATA_TYPE] === BackendUtils::REMINDER_TYPE_APPT) {
+                        $validDataCount++;
+                    }
+                }
+
+                if (count($valid) !== count($value)
+                    || $validDataCount !== count($value[BackendUtils::REMINDER_DATA])
+                ) {
                     $this->logger->error('bad count reminders data');
                     return [Http::STATUS_BAD_REQUEST, ''];
                 }
@@ -548,13 +566,17 @@ class StateController extends Controller
                     array_push($allowed_values, "172800", "259200", "345600", "432000", "518400", "604800");
                 }
 
+                $reminders = $this->utils->getUserSettings()[BackendUtils::KEY_REMINDERS];
                 foreach ($value[BackendUtils::REMINDER_DATA] as $index => &$item) {
                     if (!in_array($item[BackendUtils::REMINDER_DATA_TIME], $allowed_values, true)
                         || ($k === "" && $index > 0)
                     ) {
                         $item[BackendUtils::REMINDER_DATA_TIME] = "0";
                     }
+                    $reminders[BackendUtils::REMINDER_DATA][$index] = $item;
                 }
+                // because we have internal items in the BackendUtils::REMINDER_DATA array
+                $value = $reminders;
                 return [Http::STATUS_OK, ''];
             },
 
@@ -617,6 +639,50 @@ class StateController extends Controller
                     $value = strip_tags($value, '<div><p><span><br>');
                 }
                 return [Http::STATUS_OK, ''];
+            },
+
+            BackendUtils::EML_CANCEL_PENDING_HOURS, BackendUtils::EML_NOTIFY_BEFORE_CANCEL_PENDING => function ($value, $pageId, $key) {
+
+                $settings = $this->utils->getUserSettings();
+
+                if ($key === BackendUtils::EML_CANCEL_PENDING_HOURS) {
+                    if (!is_numeric($value) || !in_array($value, array(0, 2, 4, 8, 24, 48, 96))) {
+                        return [Http::STATUS_BAD_REQUEST, ''];
+                    }
+                    $cancelHours = $value;
+                    $notifyBeforeCancel = $settings[BackendUtils::EML_NOTIFY_BEFORE_CANCEL_PENDING];
+
+                } else {
+                    if (!is_bool(!$value)) {
+                        return [Http::STATUS_BAD_REQUEST, ''];
+                    }
+                    if ($value === true) {
+                        $d = $this->config->getUserValue($this->userId, $this->appName, 'c' . "n" . "k");
+                        if (empty($d) || ((hexdec(substr($d, 0, 4)) >> 15) & 1) !== ((hexdec(substr($d, 4, 4)) >> 12) & 1)) {
+
+                            return [Http::STATUS_ACCEPTED, json_encode([
+                                "type" => 2,
+                                // TRANSLATORS This is an item in popup dialog
+                                "message" => $this->l->t("Unconfirmed appointments cancellation reminders")
+                            ])];
+                        }
+                    }
+
+                    $cancelHours = $settings[BackendUtils::EML_CANCEL_PENDING_HOURS];
+                    $notifyBeforeCancel = $value;
+                }
+
+                // internal representation
+                $reminders = $settings[BackendUtils::KEY_REMINDERS];
+
+                $reminders[BackendUtils::REMINDER_DATA][3][BackendUtils::REMINDER_DATA_TIME] = (string)($cancelHours * 3600);
+
+                $notifyHours = $notifyBeforeCancel === true && $cancelHours > 0
+                    ? ($cancelHours >= 4 ? 2 : 1)
+                    : 0;
+                $reminders[BackendUtils::REMINDER_DATA][4][BackendUtils::REMINDER_DATA_TIME] = (string)($notifyHours * 3600);
+
+                return $this->utils->setUserSettingsV2($this->userId, $pageId, BackendUtils::KEY_REMINDERS, $reminders);
             },
 
             default => null,

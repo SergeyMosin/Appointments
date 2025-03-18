@@ -161,7 +161,7 @@ const handleCKey = () => {
 							<h4 class="ps-section-subtitle">
 								{{ t('appointments', 'Control when emails and notifications are sent') }}
 							</h4>
-							<SectionEmail/>
+							<SectionEmail @show-settings-modal="(data)=>{emit('show-settings-modal',data)}"/>
 						</NcAppSettingsSection>
 
 						<NcAppSettingsSection

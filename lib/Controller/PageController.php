@@ -1086,7 +1086,7 @@ class PageController extends Controller
             'application' => $this->l->t('Appointments'),
             'translations' => '',
             'hCapKey' => '',
-            'zones_file'=>'',
+            'zones_file' => '',
         ];
 
         if ($settings[BackendUtils::SEC_HCAP_ENABLED] === true
