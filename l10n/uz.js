@@ -8,6 +8,7 @@ OC.L10N.register(
     "Appointments" : "Uchrashuvlar",
     "Preview" : "Ko‘rib chiqish",
     "Settings" : "Settings",
+    "Title" : "Sarlavha",
     "Save" : "Save",
     "Copy" : "Nusxalash",
     "Remove" : "Remove",
