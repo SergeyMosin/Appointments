@@ -1167,7 +1167,7 @@ class BCSabreImpl implements IBackendConnector
 
     private function confirmCancel(string $userId, string $pageId, string $calId, string $uri, bool $do_confirm): array
     {
-        $ret = [1, null, ""];
+        $ret = [1, null, "", ""];
         $err = '';
 
         // for manual mode:
