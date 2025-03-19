@@ -1,3 +1,13 @@
+## v2.4.0 - 2025-03-18
+### Added
+- Added auto-cancel(delete) option for unconfirmed appointments - #576
+### Changed
+- Use npm instead of pnpm
+- Update node/build dependencies + fix sass deprecations
+- Include attendeeEmail in redirect formdata also in main case of confirmation @Hecke29
+### Fixed
+- Ignore 'cncf' actions on HEAD(bot) requests - #293
+
 ## v2.3.6 - 2025-03-01
 ### Added
 - Added stings for pre-release translations
