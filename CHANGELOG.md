@@ -1,3 +1,7 @@
+## v2.4.1 - 2025-03-20
+### Fixed
+- Additional reminder setting is not saved - #585
+
 ## v2.4.0 - 2025-03-18
 ### Added
 - Added auto-cancel(delete) option for unconfirmed appointments - #576
