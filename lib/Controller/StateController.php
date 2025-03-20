@@ -575,6 +575,14 @@ class StateController extends Controller
                     }
                     $reminders[BackendUtils::REMINDER_DATA][$index] = $item;
                 }
+                if (is_string($value[BackendUtils::REMINDER_MORE_TEXT])) {
+                    $reminders[BackendUtils::REMINDER_MORE_TEXT] = $this->regexRemoveScriptTag($value[BackendUtils::REMINDER_MORE_TEXT]);
+                }
+
+                if(is_bool($value[BackendUtils::REMINDER_SEND_ON_FRIDAY])){
+                    $reminders[BackendUtils::REMINDER_SEND_ON_FRIDAY]=$value[BackendUtils::REMINDER_SEND_ON_FRIDAY];
+                }
+
                 // because we have internal items in the BackendUtils::REMINDER_DATA array
                 $value = $reminders;
                 return [Http::STATUS_OK, ''];
