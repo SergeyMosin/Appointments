@@ -12,6 +12,7 @@ OC.L10N.register(
     "Text" : "Tekst",
     "URL" : "URL",
     "Save" : "Salvesta",
+    "Copy" : "Kopeeri",
     "Remove" : "Eemalda",
     "Add" : "Lisa",
     "OK" : "OK",
