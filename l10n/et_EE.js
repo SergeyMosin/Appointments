@@ -41,6 +41,7 @@ OC.L10N.register(
     "Reminders" : "Meelespead",
     "Advanced" : "Täpsem",
     "Edit" : "Redigeeri",
+    "Discard" : "Loobu",
     "Back" : "Tagasi",
     "Next" : "Järgmine",
     "min" : "min",
