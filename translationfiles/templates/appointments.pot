@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud 3.14159\n"
 "Report-Msgid-Bugs-To: translations\\@example.com\n"
-"POT-Creation-Date: 2025-03-20 02:51+0000\n"
+"POT-Creation-Date: 2025-03-30 02:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -561,7 +561,7 @@ msgid "More than 2 additional calendars."
 msgstr ""
 
 #. TRANSLATORS This is an item in popup dialog
-#: /app/lib/Controller/StateController.php:666
+#: /app/lib/Controller/StateController.php:674
 msgid "Unconfirmed appointments cancellation reminders"
 msgstr ""
 
