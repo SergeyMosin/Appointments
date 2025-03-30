@@ -1,3 +1,7 @@
+## v2.4.3 - 2025-03-30
+### Added
+- Include the latest translations
+
 ## v2.4.2 - 2025-03-30
 ### Fixed
 - Undefined array key "remType" - #590
