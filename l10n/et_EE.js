@@ -34,6 +34,7 @@ OC.L10N.register(
     "24 hours" : "24 tundi",
     "Deleted" : "Kustutatud",
     "Confirmed" : "Kinnitatud",
+    "Canceled" : "Tühistatud",
     "Disabled" : "Keelatud",
     "Warning" : "Hoiatus",
     "Important" : "Tähtis",
