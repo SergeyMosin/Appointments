@@ -177,7 +177,7 @@ OC.L10N.register(
     "Location" : "Atrašanās vieta",
     "Phone" : "Tālrunis",
     "24 hours" : "24 stundas",
-    "Attach .ics file to confirm/cancel emails" : "Pievienot .ics failu, lai apstiprināt/atcelt e-pastus",
+    "Attach .ics file to confirm/cancel emails" : "Pievienot .ics datni, lai apstiprinātu/atcelt e-pastus",
     "Email Attendee when the appointment is:" : "Nosūtīt dalībniekam e-pastu kad tikšanās ir:",
     "Modified (Time, Status, Location)" : "Modificēta (Laiks, statuss, atrašanās vieta)",
     "Deleted" : "Izdzēsts",
