@@ -330,7 +330,7 @@
     "Automatically enable Talk lobby when an appointment is confirmed." : "Ative automaticamente o lobby do Talk quando um agendamento for confirmado.",
     "Automatically set Talk room pseudo random password when an appointment is confirmed." : "Defina automaticamente a senha pseudo-aleatória da sala do Talk quando um agendamento for confirmado.",
     "Customize Talk room name." : "Personalize o nome da sala do Talk.",
-    "Customize Talk room URL email text." : "Personalize o texto do e-mail do URL da sala do Talk.",
+    "Customize Talk room URL email text." : "Personalize o texto do e-mail para o URL da sala do Talk.",
     "Custom \"Meeting type\" form fields." : "Campos de formulário personalizados \"Tipo de reunião\".",
     "Create rooms for confirmed appointments" : "Criar salas para compromissos confirmados",
     "Enable lobby" : "Ativar lobby",
