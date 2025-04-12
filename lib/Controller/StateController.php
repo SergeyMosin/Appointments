@@ -786,14 +786,35 @@ class StateController extends Controller
         $tail = '';
         $ph = '';
         $class = '';
+        $id = 'srgdev-ncfp_' . hash('adler32', $index . $obj['tag'] . $obj['label']);
+        $name = 'n' . hash('adler32', json_encode($obj) . $id . $index);
+        $obj['name'] = $name;
+        $dmo = (isset($obj['required']) && $obj['required']) === true ? 'r1' : 'r0';
         switch ($obj['tag']) {
             /** @noinspection PhpMissingBreakStatementInspection */
             case 'input':
                 if (!isset($obj['type'])) {
                     $obj['type'] = 'text';
                 }
+    
+                if (($obj['type'] === 'checkbox' || $obj['type'] === 'radio') && isset($obj['options']) && is_array($obj['options'])) {
+                    $class = 'srgdev-ncfp-form-' . $obj['type'];
+                    $inputType = $obj['type'];
+                    $nameSuffix = $inputType === 'checkbox' ? '[]' : '';
+                    $r .= '<fieldset class="srgdev-ncfp-form-fieldset"><legend class="srgdev-ncfp-form-label">' . $obj['label'] . '</legend>';
+                    foreach ($obj['options'] as $optIndex => $optValue) {
+                        $optValEscaped = htmlspecialchars($optValue, ENT_QUOTES, 'UTF-8');
+                        $optId = $id . '_' . $optIndex;
+                        $r .= '<label class="srgdev-ncfp-option-label" for="' . $optId . '">' .
+                              '<input data-more="' . $dmo . '" type="' . $inputType . '" id="' . $optId . '" name="' . $name . $nameSuffix . '" class="' . $class . '" value="' . $optValEscaped . '"> ' . $optValEscaped .
+                              '</label>';
+                    }
+                    $r .= '</fieldset>';
+                    return $r;
+                }
                 $tail = ' type="' . ($obj['type'] === 'number' ? 'number' : 'text') . '" maxlength="512"/>';
                 $class = 'srgdev-ncfp-form-input';
+                break;
             case 'textarea':
                 if (!isset($obj['placeholder'])) {
                     return $r;
@@ -805,9 +826,7 @@ class StateController extends Controller
                 }
                 break;
             case 'select':
-                if (!isset($obj['options'])
-                    || gettype($obj['options']) !== 'array'
-                    || count($obj['options']) === 0) {
+                if (!isset($obj['options']) || !is_array($obj['options']) || count($obj['options']) === 0) {
                     return $r;
                 }
                 $tail = '>';
@@ -826,14 +845,6 @@ class StateController extends Controller
             default:
                 return $r;
         }
-
-        $id = 'srgdev-ncfp_' . hash('adler32', $index . $obj['tag'] . $obj['label']);
-        $name = 'n' . hash('adler32', $tail . $id . $index);
-
-        $obj['name'] = $name;
-
-        $dmo = (isset($obj['required']) && $obj['required']) === true ? 'r1' : 'r0';
-
         return '<label for="' . $id . '" class="srgdev-ncfp-form-label">' . $obj['label'] . '</label><' . $obj['tag'] . ' data-more="' . $dmo . '" id="' . $id . '" name="' . $name . '" class="' . $class . '"' . $ph . $tail;
 
     }

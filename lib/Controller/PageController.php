@@ -978,20 +978,32 @@ class PageController extends Controller
 
     private function showFormCustomField(array $field, array $post, int $index = 0): bool|string
     {
-
-        $v = '';
-        if (!empty($field) && isset($post[$field['name']])) {
-            $n = $post[$field['name']];
-            // TODO: check "number" type
-            $v = strip_tags(htmlspecialchars(preg_replace('/\s+/', ' ', trim(substr($n, 0, 512))), ENT_NOQUOTES));
-
-            if (isset($field['required']) && $field['required'] === true && $v === '') {
+        if (!isset($field['name']) || !isset($post[$field['name']])) {
+            if (!empty($field['required'])) {
                 return false;
             }
-            $v = "\n" . rtrim($field['label'], ':') . ": " . $v;
+            return '';
         }
-
-        return $v;
+    
+        $label = $field['label'] ?? 'Field';
+        $name = $field['name'];
+        $value = $post[$name];
+    
+        // Handle checkbox group (array)
+        if (is_array($value)) {
+            $value = array_map(function ($item) {
+                return strip_tags(trim(substr($item, 0, 128)));
+            }, $value);
+            $valueStr = implode(', ', $value);
+        } else {
+            $valueStr = strip_tags(trim(substr($value, 0, 512)));
+        }
+    
+        if (!empty($field['required']) && $valueStr === '') {
+            return false;
+        }
+    
+        return "\n" . rtrim($label, ':') . ": " . $valueStr;
     }
 
     private function showFinish(string $render, string $uid): Response
