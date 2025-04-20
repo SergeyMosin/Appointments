@@ -784,7 +784,6 @@ class StateController extends Controller
         }
         $obj['label'] = htmlspecialchars(trim($obj['label']), ENT_QUOTES, 'UTF-8');
         $tail = '';
-        $attrs = '';
         $class = '';
         $id = 'srgdev-ncfp_' . hash('adler32', $index . $obj['tag'] . $obj['label']);
         $name = 'n' . hash('adler32', json_encode($obj) . $id . $index);
@@ -794,29 +793,41 @@ class StateController extends Controller
             'input' => [
                 'text' => [
                     'placeholder' => false,
-                    'maxlength' => '512'
+                    'maxlength' => '512',
+                    'required' => false
                 ],
                 'number' => [
                     'min' => false,
                     'max' => false,
                     'step' => false,
-                    'placeholder' => false
+                    'placeholder' => false,
+                    'required' => false
                 ],
                 'email' => [
                     'placeholder' => false,
-                    'maxlength' => '512'
+                    'maxlength' => '512',
+                    'required' => false
                 ],
                 'url' => [
                     'placeholder' => false,
-                    'maxlength' => '512'
+                    'maxlength' => '512',
+                    'required' => false
                 ],
-                'checkbox' => [],
-                'radio' => [],
+                'checkbox' => [
+                    'required' => false
+                ],
+                'radio' => [
+                    'required' => false
+                ],
             ],
             'textarea' => [
                 'placeholder' => false,
-                'maxlength' => '512'
+                'maxlength' => '512',
+                'required' => false
             ],
+            'select' => [
+                'required' => false
+            ]
         ];
         $applyAttrs = function(array $allowed) use ($obj) {
             $out = '';
@@ -855,18 +866,19 @@ class StateController extends Controller
                     return $r;
                 }
                 $class = 'srgdev-ncfp-form-input';
-                $attrs = $applyAttrs($allowedAttrsByTag['input'][$obj['type']] ?? []);
-                $tail = ' type="' . $obj['type'] . '"/>';
+                $tail = $applyAttrs($allowedAttrsByTag['input'][$obj['type']] ?? []);
+                $tail .= ' type="' . $obj['type'] . '"/>';
                 break;
             case 'textarea':
                 $class = 'srgdev-ncfp-form-textarea';
-                $attrs = $applyAttrs($allowedAttrsByTag['textarea']);
+                $tail = $applyAttrs($allowedAttrsByTag['textarea']);
                 break;
             case 'select':
                 if (!isset($obj['options']) || !is_array($obj['options']) || count($obj['options']) === 0) {
                     return $r;
                 }
-                $tail = '>';
+                $tail = $applyAttrs($allowedAttrsByTag[$obj['tag']] ?? []);
+                $tail .= '>';
                 foreach ($obj['options'] as $option) {
                     if (isset($option[1])) {
                         $o = htmlspecialchars($option, ENT_QUOTES, 'UTF-8');
@@ -882,7 +894,7 @@ class StateController extends Controller
             default:
                 return $r;
         }
-        return '<label for="' . $id . '" class="srgdev-ncfp-form-label">' . $obj['label'] . '</label><' . $obj['tag'] . ' data-more="' . $dmo . '" id="' . $id . '" name="' . $name . '" class="' . $class . '"' . $attrs . $tail;
+        return '<label for="' . $id . '" class="srgdev-ncfp-form-label">' . $obj['label'] . '</label><' . $obj['tag'] . ' data-more="' . $dmo . '" id="' . $id . '" name="' . $name . '" class="' . $class . '"' . $tail;
     }
 
     private function getPubURI(string $pageId): string
