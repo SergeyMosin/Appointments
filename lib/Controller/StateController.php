@@ -872,6 +872,7 @@ class StateController extends Controller
             case 'textarea':
                 $class = 'srgdev-ncfp-form-textarea';
                 $tail = $applyAttrs($allowedAttrsByTag['textarea']);
+                $tail = '></textarea>';
                 break;
             case 'select':
                 if (!isset($obj['options']) || !is_array($obj['options']) || count($obj['options']) === 0) {
