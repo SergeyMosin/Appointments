@@ -801,13 +801,15 @@ class StateController extends Controller
                     $class = 'srgdev-ncfp-form-' . $obj['type'];
                     $inputType = $obj['type'];
                     $nameSuffix = $inputType === 'checkbox' ? '[]' : '';
-                    $r .= '<fieldset class="srgdev-ncfp-form-fieldset"><legend class="srgdev-ncfp-form-label">' . $obj['label'] . '</legend>';
+                    $r .= '<div class="srgdev-ncfp-form-fieldset">';
+                    $r .= '<legend class="srgdev-ncfp-form-label">' . $obj['label'] . '</legend>';
                     foreach ($obj['options'] as $optIndex => $optValue) {
                         $optValEscaped = htmlspecialchars($optValue, ENT_QUOTES, 'UTF-8');
                         $optId = $id . '_' . $optIndex;
-                        $r .= '<label class="srgdev-ncfp-option-label" for="' . $optId . '">' .
-                              '<input data-more="' . $dmo . '" type="' . $inputType . '" id="' . $optId . '" name="' . $name . $nameSuffix . '" class="' . $class . '" value="' . $optValEscaped . '"> ' . $optValEscaped .
-                              '</label>';
+                        $r .= '<p>';
+                        $r .= '<input data-more="' . $dmo . '" type="' . $inputType . '" id="' . $optId . '" name="' . $name . $nameSuffix . '" class="' . $inputType . ' ' . $class . '" value="' . $optValEscaped . '">';
+                        $r .= '<label for="' . $optId . '">' . $optValEscaped . '</label>';
+                        $r .= '</p>';
                     }
                     $r .= '</fieldset>';
                     return $r;
