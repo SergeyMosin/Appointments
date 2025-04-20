@@ -271,7 +271,7 @@ OC.L10N.register(
     "Enter email" : "Ievadiet e-pastu",
     "Enter phone number" : "Ievadiet tālruņa numuru",
     "Book Now" : "Ieplānot tagad",
-    "An error has occurred" : "Radās kļūda",
+    "An error has occurred" : "Atgadījās kļūda",
     "Please %1$stry again%2$s and select a different date." : "Lūdzu, %1$smēģiniet vēlreiz%2$s un izvēlieties citu datumu.",
     "Please contact us directly at" : "Lūdzu, sazinieties tieši ar mums",
     "Please try again later" : "Lūdzu, mēģiniet vēlreiz vēlāk"
