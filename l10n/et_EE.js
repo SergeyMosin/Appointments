@@ -51,6 +51,7 @@ OC.L10N.register(
     "Duration" : "Kestus",
     "Full Name" : "Täispikk nimi",
     "Email" : "Epost",
+    "Enter phone number" : "Sisesta telefoninumber",
     "An error has occurred" : "Tekkis tõrge"
 },
 "nplurals=2; plural=(n != 1);");
