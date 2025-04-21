@@ -49,6 +49,7 @@
     "Duration" : "Kestus",
     "Full Name" : "Täispikk nimi",
     "Email" : "Epost",
+    "Enter phone number" : "Sisesta telefoninumber",
     "An error has occurred" : "Tekkis tõrge"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
