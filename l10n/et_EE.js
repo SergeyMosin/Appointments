@@ -1,9 +1,11 @@
 OC.L10N.register(
     "appointments",
     {
+    "Available" : "Saadaval",
     "Confirm" : "Kinnita",
     "Cancel" : "Loobu",
     "Password" : "Parool",
+    "Appointments" : "Kohtumised",
     "Info" : "Info",
     "Name is required." : "Nimi on nõutud.",
     "Preview" : "Eelvaade",
