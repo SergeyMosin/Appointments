@@ -7,6 +7,7 @@
     "Preview" : "Ko‘rib chiqish",
     "Settings" : "Settings",
     "Title" : "Sarlavha",
+    "Text" : "Matn",
     "Save" : "Save",
     "Copy" : "Nusxalash",
     "Remove" : "Remove",
@@ -14,6 +15,7 @@
     "OK" : "OK",
     "Delete" : "Delete",
     "1 day" : "1 kun",
+    "Min" : "Min",
     "External" : "Tashqi",
     "15 minutes" : "15 daqiqa",
     "30 minutes" : "30 minutes",
@@ -25,9 +27,11 @@
     "Deleted" : "O`chirilgan",
     "Confirmed" : "Tasdiqlangan",
     "Canceled" : "Bekor qilingan",
+    "Security" : "Xavfsizlik",
     "Edit" : "Tahrirlash",
     "Discard" : "Bekor qilish",
     "Back" : "Orqaga",
+    "Next" : "Keyingisi",
     "Duration" : "Davomiyligi",
     "Email" : "Email"
 },"pluralForm" :"nplurals=1; plural=0;"
