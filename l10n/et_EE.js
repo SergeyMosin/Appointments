@@ -24,6 +24,7 @@ OC.L10N.register(
     "12 Hours" : "12 tundi",
     "1 day" : "1 päev",
     "Icon" : "Ikoon",
+    "Min" : "min",
     "15 minutes" : "15 minutit",
     "30 minutes" : "30 minutit",
     "1 hour" : "1 tund",
