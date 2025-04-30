@@ -784,33 +784,102 @@ class StateController extends Controller
         }
         $obj['label'] = htmlspecialchars(trim($obj['label']), ENT_QUOTES, 'UTF-8');
         $tail = '';
-        $ph = '';
         $class = '';
+        $id = 'srgdev-ncfp_' . hash('adler32', $index . $obj['tag'] . $obj['label']);
+        $name = 'n' . hash('adler32', json_encode($obj) . $id . $index);
+        $obj['name'] = $name;
+        $dmo = (isset($obj['required']) && $obj['required']) === true ? 'r1' : 'r0';
+        $allowedAttrsByTag = [
+            'input' => [
+                'text' => [
+                    'placeholder' => false,
+                    'maxlength' => '512',
+                    'required' => false
+                ],
+                'number' => [
+                    'min' => false,
+                    'max' => false,
+                    'step' => false,
+                    'placeholder' => false,
+                    'required' => false
+                ],
+                'email' => [
+                    'placeholder' => false,
+                    'maxlength' => '512',
+                    'required' => false
+                ],
+                'url' => [
+                    'placeholder' => false,
+                    'maxlength' => '512',
+                    'required' => false
+                ],
+                'checkbox' => [
+                    'required' => false
+                ],
+                'radio' => [
+                    'required' => false
+                ],
+            ],
+            'textarea' => [
+                'placeholder' => false,
+                'maxlength' => '512',
+                'required' => false
+            ],
+            'select' => [
+                'required' => false
+            ]
+        ];
+        $applyAttrs = function(array $allowed) use ($obj) {
+            $out = '';
+            foreach ($allowed as $attr => $default) {
+                if ($attr === 'required' && !empty($obj[$attr])) {
+                    $out .= ' required';
+                } elseif (isset($obj[$attr])) {
+                    $out .= ' ' . $attr . '="' . htmlspecialchars($obj[$attr], ENT_QUOTES, 'UTF-8') . '"';
+                } elseif ($default !== false) {
+                    $out .= ' ' . $attr . '="' . htmlspecialchars($default, ENT_QUOTES, 'UTF-8') . '"';
+                }
+            }
+            return $out;
+        };
+
         switch ($obj['tag']) {
             /** @noinspection PhpMissingBreakStatementInspection */
             case 'input':
-                if (!isset($obj['type'])) {
+                if (!isset($obj['type']) || !array_key_exists($obj['type'], $allowedAttrsByTag['input'])) {
                     $obj['type'] = 'text';
                 }
-                $tail = ' type="' . ($obj['type'] === 'number' ? 'number' : 'text') . '" maxlength="512"/>';
-                $class = 'srgdev-ncfp-form-input';
-            case 'textarea':
-                if (!isset($obj['placeholder'])) {
+                if (($obj['type'] === 'checkbox' || $obj['type'] === 'radio') && isset($obj['options']) && is_array($obj['options'])) {
+                    $class = 'srgdev-ncfp-form-' . $obj['type'];
+                    $nameSuffix = $obj['type'] === 'checkbox' ? '[]' : '';
+                    $r .= '<div class="srgdev-ncfp-form-fieldset">';
+                    $r .= '<legend class="srgdev-ncfp-form-label">' . $obj['label'] . '</legend>';
+                    foreach ($obj['options'] as $optIndex => $optValue) {
+                        $optValEscaped = htmlspecialchars($optValue, ENT_QUOTES, 'UTF-8');
+                        $optId = $id . '_' . $optIndex;
+                        $r .= '<p>';
+                        $r .= '<input data-more="' . $dmo . '" type="' . $obj['type'] . '" id="' . $optId . '" name="' . $name . $nameSuffix . '" class="' . $obj['type'] . ' ' . $class . '" value="' . $optValEscaped . '">';
+                        $r .= '<label for="' . $optId . '">' . $optValEscaped . '</label>';
+                        $r .= '</p>';
+                    }
+                    $r .= '</div>';
                     return $r;
                 }
-                $ph = ' placeholder="' . htmlspecialchars($obj['placeholder'], ENT_QUOTES, 'UTF-8') . '"';
-                if (empty($tail)) {
-                    $tail = ' maxlength="512"></textarea>';
-                    $class = 'srgdev-ncfp-form-textarea';
-                }
+                $class = 'srgdev-ncfp-form-input';
+                $tail = $applyAttrs($allowedAttrsByTag['input'][$obj['type']] ?? []);
+                $tail .= ' type="' . $obj['type'] . '"/>';
+                break;
+            case 'textarea':
+                $class = 'srgdev-ncfp-form-textarea';
+                $tail = $applyAttrs($allowedAttrsByTag['textarea']);
+                $tail = '></textarea>';
                 break;
             case 'select':
-                if (!isset($obj['options'])
-                    || gettype($obj['options']) !== 'array'
-                    || count($obj['options']) === 0) {
+                if (!isset($obj['options']) || !is_array($obj['options']) || count($obj['options']) === 0) {
                     return $r;
                 }
-                $tail = '>';
+                $tail = $applyAttrs($allowedAttrsByTag[$obj['tag']] ?? []);
+                $tail .= '>';
                 foreach ($obj['options'] as $option) {
                     if (isset($option[1])) {
                         $o = htmlspecialchars($option, ENT_QUOTES, 'UTF-8');
@@ -826,16 +895,7 @@ class StateController extends Controller
             default:
                 return $r;
         }
-
-        $id = 'srgdev-ncfp_' . hash('adler32', $index . $obj['tag'] . $obj['label']);
-        $name = 'n' . hash('adler32', $tail . $id . $index);
-
-        $obj['name'] = $name;
-
-        $dmo = (isset($obj['required']) && $obj['required']) === true ? 'r1' : 'r0';
-
-        return '<label for="' . $id . '" class="srgdev-ncfp-form-label">' . $obj['label'] . '</label><' . $obj['tag'] . ' data-more="' . $dmo . '" id="' . $id . '" name="' . $name . '" class="' . $class . '"' . $ph . $tail;
-
+        return '<label for="' . $id . '" class="srgdev-ncfp-form-label">' . $obj['label'] . '</label><' . $obj['tag'] . ' data-more="' . $dmo . '" id="' . $id . '" name="' . $name . '" class="' . $class . '"' . $tail;
     }
 
     private function getPubURI(string $pageId): string

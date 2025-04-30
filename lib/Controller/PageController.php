@@ -978,20 +978,103 @@ class PageController extends Controller
 
     private function showFormCustomField(array $field, array $post, int $index = 0): bool|string
     {
-
-        $v = '';
-        if (!empty($field) && isset($post[$field['name']])) {
-            $n = $post[$field['name']];
-            // TODO: check "number" type
-            $v = strip_tags(htmlspecialchars(preg_replace('/\s+/', ' ', trim(substr($n, 0, 512))), ENT_NOQUOTES));
-
-            if (isset($field['required']) && $field['required'] === true && $v === '') {
+        $label = $field['label'] ?? 'Field';
+        $name = $field['name'];
+        $type = $field['type'] ?? 'text';
+    
+        $value = $post[$name] ?? null;
+    
+        // Normalize value
+        if (in_array($type, ['checkbox', 'radio'], true)) {
+            $rawValue = is_array($value)
+                ? array_filter(
+                    array_map(function($v) {
+                        return trim((string) $v);
+                    }, $value)
+                )
+                : [trim((string)$value)];
+        } else {
+            $rawValue = trim((string)$value);
+        }
+    
+        // Required check after normalization
+        if (!empty($field['required'])) {
+            if ((is_array($rawValue) && empty($rawValue)) || (!is_array($rawValue) && $rawValue === '')) {
                 return false;
             }
-            $v = "\n" . rtrim($field['label'], ':') . ": " . $v;
         }
-
-        return $v;
+    
+        // Validation by input type
+        switch ($type) {
+            case 'email':
+                if (!is_string($rawValue) || $this->mailer->validateMailAddress($rawValue) === false) {
+                    return false;
+                }
+                if (isset($field['maxlength']) && strlen($rawValue) > (int)$field['maxlength']) {
+                    return false;
+                }
+                break;
+    
+            case 'url':
+                if (!is_string($rawValue) || !filter_var($rawValue, FILTER_VALIDATE_URL)) {
+                    return false;
+                }
+                if (isset($field['maxlength']) && strlen($rawValue) > (int)$field['maxlength']) {
+                    return false;
+                }
+                break;
+    
+            case 'number':
+                if (!is_numeric($rawValue)) {
+                    return false;
+                }
+                $n = (float)$rawValue;
+                if (isset($field['min']) && $n < (float)$field['min']) return false;
+                if (isset($field['max']) && $n > (float)$field['max']) return false;
+                if (isset($field['step'])) {
+                    $step = (float)$field['step'];
+                    $min = isset($field['min']) ? (float)$field['min'] : 0;
+                    if ($step > 0 && abs(fmod($n - $min, $step)) > 1e-8) {
+                        return false;
+                    }
+                }
+                break;
+    
+            case 'checkbox':
+            case 'radio':
+                if (isset($field['options']) && is_array($field['options'])) {
+                    $allowed = array_map('strval', $field['options']);
+                    foreach ($rawValue as $val) {
+                        if (!in_array((string) $val, $allowed, true)) {
+                            return false;
+                        }
+                    }
+                }
+                break;
+    
+            case 'text':
+            case 'textarea':
+            default:
+                if (!is_string($rawValue)) {
+                    return false;
+                }
+                if (isset($field['maxlength']) && strlen($rawValue) > (int)$field['maxlength']) {
+                    return false;
+                }
+                break;
+        }
+    
+        // Output formatting
+        if (is_array($rawValue)) {
+            $clean = array_map(fn($v) => strip_tags(substr($v, 0, 128)), $rawValue);
+            $valueStr = implode(', ', $clean);
+        } else {
+            $valueStr = strip_tags(substr($rawValue, 0, 512));
+        }
+        if (!empty($field['required']) && $valueStr === '') {
+            return false;
+        }
+        return "\n" . rtrim($label, ':') . ": " . $valueStr;
     }
 
     private function showFinish(string $render, string $uid): Response
