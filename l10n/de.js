@@ -55,7 +55,7 @@ OC.L10N.register(
     "Chat/Call link: %s" : "Link zu Chat/Anruf: %s",
     "Password: %s" : "Passwort: %s",
     "Click %1$shere%2$s to change your appointment type to %3$s." : "Klicke %1$shier%2$s um den Termintyp in %3$s zu ändern.",
-    "Click here: %1$s to change your appointment type to %2$s." : "Hier klicken: %1$s um den Termintyp in  %2$s zu ändern.",
+    "Click here: %1$s to change your appointment type to %2$s." : "Hier klicken: %1$s, um den Termintyp in  %2$s zu ändern.",
     "Meeting type: Online (audio/video)" : "Besprechungstyp: Online (Audio/Video)",
     "Meeting type: In-person" : "Besprechungstyp: Persönlich",
     "Thank you" : "Vielen Dank",
