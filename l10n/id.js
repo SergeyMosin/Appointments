@@ -17,6 +17,7 @@ OC.L10N.register(
     "Info" : "Info",
     "Link Expired …" : "Tautan kadaluarsa",
     "Almost done …" : "Hampir selesai ...",
+    "Name is required." : "Nama diperlukan.",
     "Preview" : "Pratinjau",
     "Settings" : "Setelan",
     "Title" : "Judul",
