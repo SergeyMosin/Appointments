@@ -62,6 +62,7 @@ OC.L10N.register(
     "Confirmed" : "Kinnitatud",
     "Canceled" : "Tühistatud",
     "Disabled" : "Keelatud",
+    "Not set" : "Pole määratud",
     "7 days" : "7 päeva",
     "Warning" : "Hoiatus",
     "Important" : "Tähtis",
