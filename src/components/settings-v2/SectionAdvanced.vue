@@ -41,7 +41,7 @@ const syncOptions = [
 				<strong>%P</strong> - {{ t('appointments', 'Page Tag') }}<br>
 				<strong>%T</strong> - {{ t('appointments', 'Mask Token (first three letters of name + semi-random token)') }}<br>
 				<strong>%E</strong> - {{ t('appointments', 'Event Preset Title') }}<br><br>
-				{{ t('appointments', 'For example template like {tokens} will set new appointments title to something like John Smith (Good Org)', {tokens: '%N (%O)'}) }}
+				{{ t('appointments', 'For example template like {tokens} will set new appointments title to something like "John Smith (Good Org)"', {tokens: '%N (%O)'}) }}
 			</template>
 		</ComboInput>
 

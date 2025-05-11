@@ -24,7 +24,7 @@ const checkTalkEnabled = (evt) => {
 			<ComboCheckbox
 					prop-name="bbbDelete"
 					:disabled="!settings.bbbEnabled"
-					:label="t('appointments', 'Delete when appointments is removed')"
+					:label="t('appointments', 'Delete when appointments are removed')"
 					:store="settingsStore"/>
 <!--			<ComboCheckbox-->
 <!--					prop-name="bbbAutoDelete"-->
