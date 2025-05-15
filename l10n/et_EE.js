@@ -29,6 +29,7 @@ OC.L10N.register(
     "Preview" : "Eelvaade",
     "Settings" : "Seaded",
     "Title" : "Pealkiri",
+    "Subtitle" : "Alapealkiri",
     "Text" : "Tekst",
     "URL" : "URL",
     "Save" : "Salvesta",
