@@ -254,8 +254,8 @@ $color-placeholder-var: var(--color-text-maxcontrast);
   background-color: var(--color-main-background);
 }
 
-.srgdev-ncfp-form-textarea:invalid,
-input.srgdev-ncfp-form-input:invalid,
+.srgdev-ncfp-form-textarea:user-invalid,
+input.srgdev-ncfp-form-input:user-invalid,
 .srgdev-ncfp-form-select[err],
 #srgdev-ncfp_sel-dummy[err],
 #srgdev-ncfp_talk_type[err] // because 'invalid' is overridden
