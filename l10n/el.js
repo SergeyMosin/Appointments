@@ -97,7 +97,6 @@ OC.L10N.register(
     "Weekly Template" : "Εβδομαδιαίο πρότυπο",
     "Optimize recurrence" : "Βελτιστοποιήστε την επανάληψη",
     "Debugging" : "Αποσφαλμάτωση",
-    "Delete when appointments is removed" : "Διαγραφή όταν καταργούνται τα ραντεβού",
     "Guest password" : "Συνθηματικό επισκέπτη",
     "Min" : "Ελάχιστο",
     "Simple" : "Απλή",

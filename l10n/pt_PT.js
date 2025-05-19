@@ -92,7 +92,6 @@ OC.L10N.register(
     "Weekly Template" : "Tema Semanal",
     "Optimize recurrence" : "Otimizar recorrência ",
     "Debugging" : "Depurando",
-    "Delete when appointments is removed" : "Eliminar quando reuniões são removidas",
     "Guest password" : "Palavra-passe de convidado:",
     "Simple" : "Simples",
     "External" : "Externo",

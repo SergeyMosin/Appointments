@@ -173,7 +173,6 @@ OC.L10N.register(
     "Sync remote calendar now" : "Sinkronizatu urrutiko egutegia orain",
     "Debugging Mode" : "Arazketa modua",
     "Create video rooms for confirmed appointments" : "Sortu bideo-gelak baieztatutako hitzorduetarako",
-    "Delete when appointments is removed" : "Ezabatu hitzordua ezabatzean",
     "Auto-delete 24 hours after the call is finished" : "Ezabatu automatikoki deia amaitu eta 24 ordura",
     "Guest password" : "Gonbidatuaren pasahitza",
     "Add 'Meeting Type' form field" : "Gehitu 'Bilera mota' inprimaki-eremua",

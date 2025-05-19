@@ -109,7 +109,6 @@ OC.L10N.register(
     "Debugging" : "اشکال زدایی",
     "Log remote blockers" : "ورود به سیستم مسدود کننده های راه دور",
     "Get raw calendar data" : "داده های خام تقویم را دریافت کنید",
-    "Delete when appointments is removed" : "وقتی قرارها حذف می شوند حذف کنید",
     "Guest password" : "رمز عبور مهمان",
     "Min" : "Min",
     "Simple" : "ساده",

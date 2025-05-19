@@ -109,7 +109,6 @@ OC.L10N.register(
     "Debugging" : "Отстраняване на грешки",
     "Log remote blockers" : "Регистриране /журнал/ на отдалечени блокери",
     "Get raw calendar data" : "Получаване на необработени данни от календар",
-    "Delete when appointments is removed" : "Изтриване, когато срещите се премахнат",
     "Guest password" : "Парола за гост",
     "Min" : "Мин",
     "Simple" : "Обикновен",

@@ -104,7 +104,6 @@ OC.L10N.register(
     "Optimize recurrence" : "Prilagodi ponavljanje",
     "Debugging" : "Razhroščevanje",
     "Get raw calendar data" : "Pridobi surove podatke koledarja",
-    "Delete when appointments is removed" : "Izbriši povezavo, ko je sestanek odstranjen",
     "Guest password" : "Geslo za goste",
     "Min" : "Najmanj",
     "Simple" : "Enostavna",

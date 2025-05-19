@@ -110,7 +110,6 @@ OC.L10N.register(
     "Debugging" : "Hibakeresés",
     "Log remote blockers" : "Távoli blokkolók naplózása",
     "Get raw calendar data" : "Nyers naptáradatok lekérése",
-    "Delete when appointments is removed" : "Törlés, ha a találkozókat eltávolítják",
     "Guest password" : "Vendég jelszó",
     "Min" : "Min",
     "Simple" : "Egyszerű",

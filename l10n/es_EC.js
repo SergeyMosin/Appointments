@@ -109,7 +109,6 @@ OC.L10N.register(
     "Debugging" : "Depuración",
     "Log remote blockers" : "Registrar bloqueadores remotos",
     "Get raw calendar data" : "Obtener datos brutos del calendario",
-    "Delete when appointments is removed" : "Eliminar al eliminar citas",
     "Guest password" : "Contraseña de invitado",
     "Min" : "Mín",
     "Simple" : "Simple",

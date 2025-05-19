@@ -93,7 +93,6 @@ OC.L10N.register(
     "Weekly Template" : "Tjedni predložak",
     "Optimize recurrence" : "Optimiziraj ponavljanje",
     "Debugging" : "Otklanjanje pogrešaka",
-    "Delete when appointments is removed" : "Izbriši nakon uklanjanja dogovora",
     "Guest password" : "Lozinka gosta",
     "Simple" : "Jednostavno",
     "External" : "Vanjsko",

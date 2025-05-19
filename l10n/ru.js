@@ -114,7 +114,6 @@ OC.L10N.register(
     "Log remote blockers" : "Журнал удалённого управления блокировками",
     "Settings Dump" : "Настройки дампа",
     "Get raw calendar data" : "Сбор исходных данных календаря",
-    "Delete when appointments is removed" : "Удалять при удалении записи",
     "Guest password" : "Гостевой пароль",
     "Simple" : "Простой",
     "External" : "Внешний",

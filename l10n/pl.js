@@ -114,7 +114,6 @@ OC.L10N.register(
     "Debugging" : "Debugowanie",
     "Log remote blockers" : "Zaloguj zdalne blokery",
     "Get raw calendar data" : "Uzyskaj nieprzetworzone dane kalendarza",
-    "Delete when appointments is removed" : "Usuń po zakończonych spotkaniach",
     "Guest password" : "Hasło gościa",
     "Min" : "Min.",
     "Simple" : "Prosty",

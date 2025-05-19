@@ -100,7 +100,6 @@ OC.L10N.register(
     "Debugging" : "调试中",
     "Log remote blockers" : "记录远程阻拦",
     "Get raw calendar data" : "获取原始日历数据",
-    "Delete when appointments is removed" : "当预约被移除时删除",
     "Guest password" : "来宾密码",
     "Simple" : "简单",
     "External" : "外部",

@@ -165,7 +165,6 @@ OC.L10N.register(
     "Sync remote calendar now" : "Samstilla fjartengt dagatal núna",
     "Debugging Mode" : "Villuleitarhamur",
     "Create video rooms for confirmed appointments" : "Útbúa myndfundarásir fyrir staðfest stefnumót",
-    "Delete when appointments is removed" : "Eyða þegar stefnumót eru fjarlægð",
     "Auto-delete 24 hours after the call is finished" : "Eyða sjálfkrafa 24 klukkustundum eftir að símtali er lokið",
     "Guest password" : "Lykilorð gests",
     "Add 'Meeting Type' form field" : "Bæta gagnasviðinu 'Tegund fundar' á innfyllingarform",
