@@ -74,7 +74,7 @@ const handleInterceptor = (data) => {
 			<ComboCheckbox
 					prop-name="talk_delete"
 					:disabled="!settings.talk_enabled"
-					:label="t('appointments', 'Delete when appointments is removed')"
+					:label="t('appointments', 'Delete when appointments are removed')"
 					:store="settingsStore"/>
 
 			<ComboCheckbox
