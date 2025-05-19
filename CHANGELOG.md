@@ -1,3 +1,11 @@
+## v2.4.4 - 2025-05-18
+### Added
+- "Check Hash Table" debugging option
+- More "additional fields" options - #595
+### Fixes
+- Settings Dump not working in NC31
+- Grammar fixes - #598
+
 ## v2.4.3 - 2025-03-30
 ### Added
 - Include the latest translations
