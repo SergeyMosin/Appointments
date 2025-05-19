@@ -1062,6 +1062,12 @@ class BCSabreImpl implements IBackendConnector
             // uid already exists
             $this->logger->warning("Lock uid already exists");
             $ec = 1;
+            if ($settings[BackendUtils::DEBUGGING_MODE] === BackendUtils::DEBUGGING_LOG_TEMPLATE_DUR) {
+                $this->logger->error('lock_uid inser exception:' . $e->getMessage(), [
+                    'app' => Application::APP_ID,
+                    'exception' => $e
+                ]);
+            }
         }
 
         if ($ec === 0) {

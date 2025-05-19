@@ -3,7 +3,6 @@
 
 namespace OCA\Appointments\Controller;
 
-use OC_Util;
 use OCA\Appointments\Backend\BackendManager;
 use OCA\Appointments\Backend\BackendUtils;
 use OCP\AppFramework\Controller;
@@ -12,6 +11,7 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IRequest;
+use OCP\Util;
 
 class DebugController extends Controller
 {
@@ -52,13 +52,14 @@ class DebugController extends Controller
             'get_raw' => $this->getRawCalendarData(),
             'sync' => $this->syncRemoteNow(),
             'uid_info' => $this->getUidInfo(),
+            'hash_table_check' => $this->hashTableCheck(),
             default => new DataResponse('Not Found', Http::STATUS_NOT_FOUND),
         };
     }
 
     private function settingsDump(): DataResponse
     {
-        $data = '<strong>Nextcloud Version</strong>: ' . OC_Util::getVersionString() . "\n"
+        $data = '<strong>Nextcloud Version</strong>: ' . implode('.', Util::getVersion()) . "\n"
             . '<strong>Appointments Version</strong>: ' . $this->config->getAppValue($this->appName, 'installed_version', "N/A") . "\n"
             . '<strong>Time zone</strong>: ' . $this->utils->getUserTimezone($this->userId)->getName() . " ("
             . "calendar: " . $this->config->getUserValue($this->userId, 'calendar', 'timezone', "N/A") . ", "
@@ -249,4 +250,38 @@ class DebugController extends Controller
         ], true), Http::STATUS_OK);
     }
 
+    private function hashTableCheck(): DataResponse
+    {
+        $out = [];
+
+        try {
+            $out['hash_table_exists'] = $this->db->tableExists(BackendUtils::HASH_TABLE_NAME);
+        } catch (\Throwable $e) {
+            $out['hash_table_found'] = false;
+            $out['error'] = $e->getMessage();
+        }
+
+        $stale_locks = [];
+        if ($out['hash_table_exists'] === true) {
+            $query = $this->db->getQueryBuilder();
+
+            try {
+                $result = $query->select('*')
+                    ->from(BackendUtils::HASH_TABLE_NAME)
+                    ->where($query->expr()->like('uid', $query->createNamedParameter('LOCK_%')))
+                    ->andWhere($query->expr()->eq('user_id', $query->createNamedParameter($this->userId)))
+                    ->executeQuery();
+                while ($row = $result->fetch()) {
+                    $stale_locks[] = $row;
+                }
+                $result->closeCursor();
+
+            } catch (\Throwable $e) {
+                $out['error'] = $e->getMessage();
+            }
+        }
+        $out['stale_locks'] = $stale_locks;
+
+        return new DataResponse(var_export($out, true), Http::STATUS_OK);
+    }
 }

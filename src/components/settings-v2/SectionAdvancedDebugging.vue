@@ -8,6 +8,7 @@ import {
 	NcTextField
 } from "@nextcloud/vue";
 import IconDownload from "vue-material-design-icons/Download.vue";
+import IconDB from "vue-material-design-icons/DatabaseSearch.vue";
 import DebugDataModal from "../modals/DebugDataModal.vue";
 import ComboSelect from "./ComboSelect.vue";
 
@@ -108,11 +109,22 @@ const sendUid = () => {
 				@close-modal="handleCloseModal"/>
 		<NcTextField
 				label="Get by Event UID"
+				class="ps-vert-spacing"
 				trailingButtonIcon="arrowRight"
 				:showTrailingButton="true"
 				trailingButtonLabel="Send"
 				@trailing-button-click="sendUid"
 				v-model="eventUid"/>
+		<NcButton
+				style="margin-top: 1.75em"
+				@click="handleAction('hash_table_check',{})"
+				:aria-label="t('appointments', 'Check Hash Table')">
+			<template #icon>
+				<IconDB :size="20"/>
+			</template>
+			{{ t('appointments', 'Check Hash Table') }}
+		</NcButton>
+
 	</div>
 </template>
 
