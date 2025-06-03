@@ -1,3 +1,7 @@
+## v2.4.5 - 2025-06-03
+### Fixed
+- Placeholder text not working in textarea - #600
+
 ## v2.4.4 - 2025-05-18
 ### Added
 - "Check Hash Table" debugging option
