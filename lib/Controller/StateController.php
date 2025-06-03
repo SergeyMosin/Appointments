@@ -844,7 +844,6 @@ class StateController extends Controller
         };
 
         switch ($obj['tag']) {
-            /** @noinspection PhpMissingBreakStatementInspection */
             case 'input':
                 if (!isset($obj['type']) || !array_key_exists($obj['type'], $allowedAttrsByTag['input'])) {
                     $obj['type'] = 'text';
@@ -872,7 +871,7 @@ class StateController extends Controller
             case 'textarea':
                 $class = 'srgdev-ncfp-form-textarea';
                 $tail = $applyAttrs($allowedAttrsByTag['textarea']);
-                $tail = '></textarea>';
+                $tail .= '></textarea>';
                 break;
             case 'select':
                 if (!isset($obj['options']) || !is_array($obj['options']) || count($obj['options']) === 0) {
