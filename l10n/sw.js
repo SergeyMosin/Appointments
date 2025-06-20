@@ -1,0 +1,27 @@
+OC.L10N.register(
+    "appointments",
+    {
+    "Available" : "Inayopatikana",
+    "Confirm" : "Thibitisha",
+    "Cancel" : "Cancel",
+    "Password" : "Nenosiri",
+    "Appointments" : "Miadi",
+    "Action needed" : "Matendo yanahitajika",
+    "Preview" : "Mwonekano wa awali",
+    "Settings" : "Mipangilio",
+    "Text" : "Maandishi",
+    "Save" : "Hifadhi",
+    "Copy" : "Nakili",
+    "Add" : "Ongeza",
+    "OK" : "OK",
+    "Delete" : "Futa",
+    "Location" : "Mahali/eneo",
+    "Deleted" : "Vilivyofutwa",
+    "Confirmed" : "Imethibitishwa",
+    "Canceled" : "Imesitishwa",
+    "Edit" : "Hariri",
+    "Back" : "Rudi",
+    "Duration" : "Muda",
+    "Email" : "Barua pepe"
+},
+"nplurals=2; plural=(n != 1);");
