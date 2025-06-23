@@ -22,6 +22,7 @@ OC.L10N.register(
     "Deleted" : "Vilivyofutwa",
     "Confirmed" : "Imethibitishwa",
     "Canceled" : "Imesitishwa",
+    "Important" : "Muhimu",
     "Advanced" : "a daraja la juu",
     "Edit" : "Hariri",
     "Discard" : "Tupa",
