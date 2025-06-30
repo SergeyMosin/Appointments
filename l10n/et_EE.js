@@ -35,6 +35,7 @@ OC.L10N.register(
     "Meeting type: Online (audio/video)" : "Kohtumise tüüp: võrgus (audio/video)",
     "Meeting type: In-person" : "Kohtumise tüüp: kohapealne",
     "Appointments" : "Kohtumised",
+    "Action needed" : "Tegevus on vajalik",
     "Info" : "Info",
     "Link Expired …" : "Link on aegunud…",
     "Almost done …" : "Peaaegu valmis…",
