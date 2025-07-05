@@ -19,6 +19,7 @@ OC.L10N.register(
     "OK" : "OK",
     "Delete" : "Futa",
     "1 day" : "Siku moja",
+    "Icon" : "Aikoni",
     "Min" : "Kiwango cha chini",
     "External" : "Nje",
     "30 minutes" : "Dakika 30",
