@@ -10,6 +10,7 @@ OC.L10N.register(
     "Preview" : "Mwonekano wa awali",
     "Settings" : "Mipangilio",
     "Title" : "Kichwa cha habari",
+    "Subtitle" : "Subtitle",
     "Text" : "Maandishi",
     "URL" : "Url",
     "Save" : "Hifadhi",
