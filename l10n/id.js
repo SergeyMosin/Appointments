@@ -59,7 +59,7 @@ OC.L10N.register(
     "Next" : "Berikutnya",
     "min" : "min",
     "Full Name" : "Nama Lengkap",
-    "Email" : "Surel",
+    "Email" : "Email",
     "An error has occurred" : "Sebuah kesalahan yang terjadi"
 },
 "nplurals=1; plural=0;");
