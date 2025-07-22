@@ -7,6 +7,7 @@ OC.L10N.register(
     "Password" : "Nenosiri",
     "Appointments" : "Miadi",
     "Action needed" : "Matendo yanahitajika",
+    "Name is required." : "Name is required.",
     "Preview" : "Mwonekano wa awali",
     "Settings" : "Mipangilio",
     "Title" : "Kichwa cha habari",
