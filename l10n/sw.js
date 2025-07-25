@@ -24,6 +24,7 @@ OC.L10N.register(
     "Icon" : "Aikoni",
     "Min" : "Kiwango cha chini",
     "External" : "Nje",
+    "15 minutes" : "Dakika 15",
     "30 minutes" : "Dakika 30",
     "1 hour" : "Saa 1",
     "4 hours" : "Masaa 4",
@@ -43,6 +44,7 @@ OC.L10N.register(
     "Edit" : "Hariri",
     "Discard" : "Tupa",
     "Back" : "Rudi",
+    "Next" : "Next",
     "Duration" : "Muda",
     "Email" : "Barua pepe",
     "Enter phone number" : "Ingiza namba ya simu"
