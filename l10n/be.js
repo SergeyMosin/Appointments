@@ -16,6 +16,7 @@ OC.L10N.register(
     "Delete" : "Выдаліць",
     "Icon" : "Значок",
     "4 hours" : "4 гадзіны",
+    "Deleted" : "Выдалены",
     "Confirmed" : "Пацверджана",
     "Canceled" : "Скасавана",
     "Warning" : "Папярэджанне",
