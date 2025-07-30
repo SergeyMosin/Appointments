@@ -20,6 +20,7 @@ OC.L10N.register(
     "Confirmed" : "Пацверджана",
     "Canceled" : "Скасавана",
     "Warning" : "Папярэджанне",
+    "Edit" : "Рэдагаваць",
     "Can't apply settings" : "Не ўдалося ўжыць змены",
     "Back" : "Назад",
     "Full Name" : "Поўнае імя",
