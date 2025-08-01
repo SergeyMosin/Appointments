@@ -43,6 +43,7 @@ OC.L10N.register(
     "Not set" : "Haijawekwa",
     "Warning" : "Onyo",
     "Important" : "Muhimu",
+    "Security" : "Ulinzi",
     "Advanced" : "a daraja la juu",
     "Edit" : "Hariri",
     "Discard" : "Tupa",
