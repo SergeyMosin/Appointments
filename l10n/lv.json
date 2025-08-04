@@ -55,7 +55,7 @@
     "Your appointment scheduled for %s is confirmed." : "Jūsu tikšanās ieplānotā uz %s ir apstiprināta.",
     "Your appointment scheduled for %s is canceled." : "Jūsu tikšanās ieplānotā uz %s ir atcelta.",
     "Your appointment is canceled." : "Jūsu tikšanās ir atcelta.",
-    "Please confirm your appointment scheduled for %s." : "Lūdzu, apstipriniet Jūsu tikšanos ieplānoto uz %s.",
+    "Please confirm your appointment scheduled for %s." : "Lūgums apstiprināt savu tikšanos, kas paredzēta %s.",
     "Would you like to cancel appointment scheduled for %s ?" : "Vai atcelt tikšanos, kas paredzēta %s?",
     "Yes, Cancel" : "Jā, atcelt",
     "Your %s has been changed to %s" : "Tava %s tika nomainīta uz %s",
@@ -270,8 +270,8 @@
     "Enter phone number" : "Ievadiet tālruņa numuru",
     "Book Now" : "Ieplānot tagad",
     "An error has occurred" : "Atgadījās kļūda",
-    "Please %1$stry again%2$s and select a different date." : "Lūdzu, %1$smēģiniet vēlreiz%2$s un izvēlieties citu datumu.",
-    "Please contact us directly at" : "Lūdzu, sazinieties tieši ar mums",
-    "Please try again later" : "Lūdzu, mēģiniet vēlreiz vēlāk"
+    "Please %1$stry again%2$s and select a different date." : "Lūdgums %1$smēģināt vēlreiz%2$s un atlasīt citu datumu.",
+    "Please contact us directly at" : "Lūgums sazināties tieši ar mums",
+    "Please try again later" : "Lūgums vēlāk mēģināt vēlreiz"
 },"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);"
 }
