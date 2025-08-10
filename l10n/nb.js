@@ -15,6 +15,7 @@ OC.L10N.register(
     "Available" : "Tilgjengelig",
     "Public Page" : "Offentlig side",
     "Dear %s," : "Kjære %s,",
+    "_Important: If not confirmed within %n hour, this appointment will be automatically cancelled._::_Important: If not confirmed within %n hours, this appointment will be automatically cancelled._" : ["Viktig: Dersom avtalen ikke bekreftes innen %n time, vil den automatisk bli avlyst.","Viktig: Dersom avtalen ikke bekreftes innen %n timer, vil den automatisk bli avlyst."],
     "%s appointment reminder" : "%s påminnelse om avtale",
     "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s." : "Dette er en påminnelse fra %1$s om din kommende avtale den %2$s. Hvis du trenger å planlegge på nytt, kan du ringe %3$s.",
     "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please write to %3$s." : "Dette er en påminnelse fra %1$s om din kommende avtale den %2$s. Hvis du trenger å planlegge på nytt, vennligst skriv til %3$s.",
