@@ -209,6 +209,7 @@ OC.L10N.register(
     "Enable lobby" : "Включить вестибюль",
     "Talk room name" : "Название комнаты конференции",
     "Chat/Call link:" : "Ссылка на чат/вызов:",
+    "Custom type change email text (optional)" : "Пользовательский тип изменения текста электронной почты (необязательно)",
     "Directory Page" : "Страница каталога",
     "Thank You" : "Спасибо",
     "Key accepted. All contributor only features are unlocked." : "Ключ принят. Разблокированы все функции, доступные только для участников.",
