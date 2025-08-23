@@ -115,6 +115,7 @@ OC.L10N.register(
     "Settings Dump" : "Настройки дампа",
     "Get raw calendar data" : "Сбор исходных данных календаря",
     "Guest password" : "Гостевой пароль",
+    "Min" : "Минимум",
     "Simple" : "Простой",
     "External" : "Внешний",
     "No lead time" : "Отсутствует время выполнения",
