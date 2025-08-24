@@ -61,6 +61,7 @@ OC.L10N.register(
     "Subtitle" : "Alapealkiri",
     "Text" : "Tekst",
     "URL" : "URL",
+    "Select Page" : "Vali leht",
     "Save" : "Salvesta",
     "Page URL" : "Lehe võrguaadress",
     "Show iframe/embeddable" : "Näita lõimitavat koodi",
