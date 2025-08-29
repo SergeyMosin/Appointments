@@ -194,9 +194,10 @@ const handleSimpleAddAppts = (index) => {
 		showError(t('appointments', 'Invalid number of appointments'))
 		return
 	}
+	const starterTime = Math.floor((hd.startTime.getHours() *60 + hd.startTime.getMinutes() - gridMaker.SH_OFFSET * 60) / 5);
 	editor.menuIndex = -1
 	const dur = isNaN(props.data.dur) || props.data.dur < 5 ? 5 : props.data.dur
-	gridMaker.addAppt(0, dur, n, index, props.data.calColor)
+	gridMaker.addAppt(starterTime, dur, n, index, props.data.calColor)
 	hd.hasAppts = true
 }
 
@@ -284,6 +285,13 @@ const gridApptsCopy = (index) => {
 							</template>
 							{{ t('appointments', 'Add Appointments') }}
 						</NcActionButton>
+						<NcActionInput
+								v-if="gridMode===gridMaker.MODE_SIMPLE"
+								:value.sync="hi.startTime"
+								type="time"
+								label="Starting from"
+								format="HH:mm">
+						</NcActionInput>
 						<NcActionButton
 								:disabled="!hi.hasAppts"
 								:closeAfterClick="true"
