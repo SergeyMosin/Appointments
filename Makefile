@@ -63,7 +63,6 @@ appstore: build-prod
 	$(project_directory)/l10n \
 	$(project_directory)/lib \
 	$(project_directory)/templates \
-	$(project_directory)/translationfiles \
 	$(project_directory)/COPYING \
 	$(project_directory)/CHANGELOG.md
 

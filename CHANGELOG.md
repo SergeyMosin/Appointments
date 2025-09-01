@@ -1,3 +1,11 @@
+## v2.4.6 - 2025-09-01
+### Added
+- More logging on timezone related errors
+### Fixed
+- Undefined array key "remType" - #619
+### Changed
+- Removed `$(project_directory)/translationfiles` from build script as per new transifex flow
+
 ## v2.4.5 - 2025-06-03
 ### Fixed
 - Placeholder text not working in textarea - #600
