@@ -67,7 +67,7 @@ class CalendarsController extends Controller
             $end = new \DateTime($rs, $utz);
 
         } catch (\Exception $e) {
-            \OC::$server->getLogger()->error($e->getMessage() . ", timezone: " . $utz->getName());
+            \OC::$server->get(\Psr\Log\LoggerInterface::class)->error($e->getMessage() . ", timezone: " . $utz->getName());
             $r->setStatus(400);
             return $r;
         }
@@ -144,7 +144,7 @@ class CalendarsController extends Controller
             $t_start = \DateTime::createFromFormat(
                 'j-m-Y H:i:s', $t . ' 00:00:00', $utz);
         } catch (\Exception $e) {
-            \OC::$server->getLogger()->error($e->getMessage() . ", timezone: " . $utz->getName());
+            \OC::$server->get(\Psr\Log\LoggerInterface::class)->error($e->getMessage() . ", timezone: " . $utz->getName());
             $r->setStatus(400);
             return $r;
         }

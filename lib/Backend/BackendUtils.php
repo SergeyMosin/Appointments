@@ -1834,7 +1834,7 @@ class BackendUtils
      * @param string|null $otherCal get the ID of the other calendar "-1"=not found
      * @return string calendar Id or "-1" = no main cal
      */
-    function getMainCalId(string $userId, IBackendConnector|null $bc, string &$otherCal = null): string
+    function getMainCalId(string $userId, IBackendConnector|null $bc, string|null &$otherCal = null): string
     {
 
         $settings = $this->getUserSettings();
@@ -1978,7 +1978,7 @@ class BackendUtils
      *
      * @see getUserTimezone
      */
-    function getCalendarTimezone(string $userId, array $cal = null): \DateTimeZone
+    function getCalendarTimezone(string $userId, array|null $cal = null): \DateTimeZone
     {
 
         // TODO: Double check if the following is the Calendar App order (#1 and #2 might be reversed):
