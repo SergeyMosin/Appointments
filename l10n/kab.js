@@ -6,6 +6,7 @@ OC.L10N.register(
     "Password" : "Awal uffir",
     "Settings" : "Iɣewwaṛen",
     "Title" : "Azwel",
+    "URL" : "URL",
     "Save" : "Sekles",
     "Copy" : "Nɣel",
     "Remove" : "Kkes",
