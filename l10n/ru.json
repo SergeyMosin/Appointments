@@ -191,6 +191,7 @@
     "Include all day events in conflict check" : "Включает конфликтующие дневные мероприятия.",
     "After" : "После",
     "Source Calendar (Free Slots)" : "Исходный календарь (свободные временные интервалы)",
+    "Any event with \"Show As\" (a.k.a. \"Time As\" a.k.a. \"Free/Busy\" a.k.a. \"Time Transparency\") set to \"Free\" will be available for booking in the public form. Most recurrence rules are supported." : "Любое мероприятие, для которого в параметре «Показывать как» (также известном как «Время как», также известно как «Свободно/Занято», также известно как «Прозрачность времени») установлено значение «Свободно», будет доступно для бронирования в публичной форме. Поддерживается большинство правил повторения.",
     "Destination Calendar (Booked)" : "Календарь Назначений (Забронировано)",
     "Booked appointments will be placed here. In addition to booked appointments, any events in this calendar marked as \"Busy\" will prevent conflicting timeslots in the \"Source Calendar\" from appearing in the public form." : "Забронированные встречи будут размещены здесь. В дополнение к забронированным встречам, любые события в этом календаре, отмеченные как «Занято», предотвратят появление конфликтующих временных интервалов в «Исходном календаре» в публичной форме.",
     "Main calendar" : "Основной календарь",
