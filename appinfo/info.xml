@@ -27,6 +27,7 @@
     <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/master/screenshots/screenshot1.jpg</screenshot>
     <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/master/screenshots/screenshot2.jpg</screenshot>
     <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/master/screenshots/screenshot3.jpg</screenshot>
+    <donation>https://www.srgdev.com/gh-support/nextcloudapps</donation>
     <dependencies>
         <nextcloud min-version="29" max-version="31"/>
         <backend>caldav</backend>
