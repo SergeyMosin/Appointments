@@ -44,6 +44,7 @@ OC.L10N.register(
     "Icon" : "Значок",
     "Attendee name" : "Імя ўдзельніка",
     "Page Tag" : "Тэг старонкі",
+    "External" : "Знешні",
     "15 minutes" : "15 хвілін",
     "30 minutes" : "30 хвілін",
     "1 hour" : "1 гадзіна",
@@ -79,6 +80,7 @@ OC.L10N.register(
     "Loading Settings" : "Загрузка налад",
     "Security" : "Бяспека",
     "Reminders" : "Напаміны",
+    "Advanced" : "Пашыраныя",
     "Edit" : "Рэдагаваць",
     "Discard" : "Адхіліць",
     "Time zone" : "Часавы пояс",
@@ -89,6 +91,7 @@ OC.L10N.register(
     "Duration" : "Працягласць",
     "Full Name" : "Поўнае імя",
     "Enter full name" : "Увядзіце поўнае імя",
-    "Email" : "Электронная пошта"
+    "Email" : "Электронная пошта",
+    "Enter phone number" : "Увядзіце нумар тэлефона"
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");
