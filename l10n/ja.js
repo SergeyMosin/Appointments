@@ -296,6 +296,7 @@ OC.L10N.register(
     "Guest name + Date/Time" : "ゲスト名前+日時/時間",
     "Date/Time + Guest name" : "日時/時間+ゲスト名前",
     "Guest name only" : "ゲスト名前のみ",
+    "Customize Talk room URL email text." : "トークルームのURLメール本文をカスタマイズします。",
     "Custom \"Meeting type\" form fields." : "カスタム”ミーテイング種類”フォームフィールド",
     "Create rooms for confirmed appointments" : "確認した予定のためのルームを作成する",
     "Enable lobby" : "ロビーを有効化",
