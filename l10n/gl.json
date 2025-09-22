@@ -323,7 +323,7 @@
     "Important" : "Importante",
     "JavaScript code and/or cookies from hcaptcha.com will be placed into your booking form. You are responsible for ensuring compliance with privacy regulations in your jurisdiction." : "O código JavaScript e/ou as cookies de hcaptcha.com colocaranse no formulario de reserva. Vostede é o responsábel de garantir o cumprimento das normas de privacidade na súa xurisdición.",
     "Blocked email addresses:" : "Enderezos de correo-e bloqueados",
-    "Email addresses on this list cannot be used to book appointments. To block an entire domain, use a wildcard like this: *@bad-domain.tld" : "Non é posíbel empregar os enderezos de correo-e desta lista para reservar citas. Para bloquear un dominio completo, use un comodín como este: *@bad-domain.tld",
+    "Email addresses on this list cannot be used to book appointments. To block an entire domain, use a wildcard like this: *@bad-domain.tld" : "Non é posíbel empregar os enderezos de correo-e desta lista para reservar citas. Para bloquear un dominio completo, use un comodín como este: *@dominio-rexeitado.tld",
     "Enter email adddress" : "Introduza o enderezo de correo",
     "Guest name + Date/Time" : "Nome do convidado + data/hora",
     "Date/Time + Guest name" : "Data/hora + nome do convidado",
