@@ -2,6 +2,7 @@ OC.L10N.register(
     "appointments",
     {
     "Guest password:" : "Külalise salasõna:",
+    "Talk integration error: check logs" : "Kõnerakendusega lõimimise viga: lisateavet leiad logidest",
     "In-person meeting" : "Kohtumine päris elus",
     "Online (audio/video)" : "Kohtumine võrgus (kõne või videokoosolek)",
     "Meeting link: %s" : "Kohtumise link: %s",
@@ -181,13 +182,18 @@ OC.L10N.register(
     "Add Appointments" : "Lisa kohtumisi",
     "Back" : "Tagasi",
     "Next" : "Järgmine",
+    "Select Date and Time" : "Vali kuupäev ja kellaaeg",
+    "hr" : "t",
     "min" : "min",
     "Duration" : "Kestus",
     "Full Name" : "Täispikk nimi",
     "Enter full name" : "Palun sisesta täispikk nimi",
     "Email" : "Epost",
+    "Enter email" : "Sisesta e-posti aadress",
     "Enter phone number" : "Sisesta telefoninumber",
     "Session Timeout. Reload." : "Sessioon on aegunud. Palun laadi uuesti.",
-    "An error has occurred" : "Tekkis tõrge"
+    "Book Now" : "Broneeri kohe",
+    "An error has occurred" : "Tekkis tõrge",
+    "Please try again later" : "Palun proovi hiljem uuesti"
 },
 "nplurals=2; plural=(n != 1);");
