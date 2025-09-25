@@ -78,7 +78,7 @@ OC.L10N.register(
     "Info" : "Información",
     "Link Expired …" : "Ligazón caducada…",
     "An email with additional details is on its way to you at %s" : "Foille enviado un correo con detalles adicionais a %s ",
-    "Almost done …" : "Casi feito…",
+    "Almost done …" : "Case feito…",
     "We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request" : "Témoslle enviado un correo a %s. Ábrao e prema na ligazón de confirmación para rematar a súa solicitude de cita",
     "Human verification failed" : "Produciuse un fallo na verificación humana",
     "Internal server error: validation request failed" : "Erro interno do servidor: produciuse un fallo na solicitude de validación",
