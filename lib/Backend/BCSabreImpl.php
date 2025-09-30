@@ -8,8 +8,6 @@
 
 namespace OCA\Appointments\Backend;
 
-
-use OC\OCS\Exception;
 use OCA\Appointments\AppInfo\Application;
 use OCA\Appointments\IntervalTree\AVLIntervalNode;
 use OCA\Appointments\IntervalTree\AVLIntervalTree;
@@ -357,7 +355,7 @@ class BCSabreImpl implements IBackendConnector
         if ($start->getTimezone()->getName() !== $ti[BackendUtils::TMPL_TZ_NAME]) {
             try {
                 $start->setTimezone(new \DateTimeZone($ti[BackendUtils::TMPL_TZ_NAME]));
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $this->logger->warning('Can not set template timezone');
             }
         }
@@ -613,7 +611,7 @@ class BCSabreImpl implements IBackendConnector
                                     (string)$sub['principaluri'],
                                     (string)$sub['uri']
                                 );
-                            } catch (Exception $e) {
+                            } catch (\Throwable $e) {
                                 $this->logErr("can not sync subscription " . $sub['id']);
                                 $this->logErr($e->getMessage());
                             }
@@ -932,7 +930,7 @@ class BCSabreImpl implements IBackendConnector
 
             try {
                 $ctz = new \DateTimeZone($tza[BackendUtils::TMPL_TZ_NAME]);
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $this->logger->warning('Can not set timezone from template, using default...');
                 $ctz = $this->utils->getCalendarTimezone($userId, $this->getCalendarById($calId, $userId));
             }
@@ -1058,7 +1056,7 @@ class BCSabreImpl implements IBackendConnector
                     'user_id' => $query->createNamedParameter($userId),
                     'start' => $query->createNamedParameter($start_ts)
                 ])->execute();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             // uid already exists
             $this->logger->warning("Lock uid already exists");
             $ec = 1;
@@ -1273,8 +1271,8 @@ class BCSabreImpl implements IBackendConnector
         $className = 'OCA\DAV\CalDAV\CalDavBackend';
         $interfaceName = 'Sabre\CalDAV\Backend\SubscriptionSupport';
 
-        if (class_exists($className, false) && defined($className . '::CALENDAR_TYPE_SUBSCRIPTION')) {
-            $interfaces = class_implements($className, false);
+        if (class_exists($className) && defined($className . '::CALENDAR_TYPE_SUBSCRIPTION')) {
+            $interfaces = class_implements($className);
             foreach ($interfaces as $i) {
                 if ($i === $interfaceName) {
                     return true;

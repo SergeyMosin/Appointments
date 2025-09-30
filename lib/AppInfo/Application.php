@@ -5,14 +5,14 @@ namespace OCA\Appointments\AppInfo;
 use OCA\Appointments\Backend\BeforeTemplateRenderedListener;
 use OCA\Appointments\Backend\DavListener;
 use OCA\Appointments\Backend\RemoveScriptsMiddleware;
-use OCA\DAV\Events\CalendarObjectMovedToTrashEvent;
-use OCA\DAV\Events\CalendarObjectUpdatedEvent;
 use OCA\DAV\Events\SubscriptionDeletedEvent;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\AppFramework\Http\Events\BeforeTemplateRenderedEvent;
+use OCP\Calendar\Events\CalendarObjectMovedToTrashEvent;
+use OCP\Calendar\Events\CalendarObjectUpdatedEvent;
 
 class Application extends App implements IBootstrap
 {

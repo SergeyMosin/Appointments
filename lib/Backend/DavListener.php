@@ -7,18 +7,20 @@ namespace OCA\Appointments\Backend;
 use OC\Mail\EMailTemplate;
 use OCA\Appointments\AppInfo\Application;
 use OCA\Appointments\Linkify;
-use OCA\DAV\Events\CalendarObjectMovedToTrashEvent;
-use OCA\DAV\Events\CalendarObjectUpdatedEvent;
 use OCA\DAV\Events\SubscriptionDeletedEvent;
+use OCP\Calendar\Events\CalendarObjectMovedToTrashEvent;
+use OCP\Calendar\Events\CalendarObjectUpdatedEvent;
 use OCP\DB\Exception;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IConfig;
+use OCP\IAppConfig;
 use OCP\IDBConnection;
 use OCP\IUserManager;
 use OCP\L10N\IFactory;
 use OCP\Mail\IEMailTemplate;
+use OCP\Mail\IEmailValidator;
 use OCP\Mail\IMailer;
 use OCP\Mail\IMessage;
 use Psr\Log\LoggerInterface;
@@ -31,7 +33,6 @@ class DavListener implements IEventListener
     private const VIDEO_TALK = 1;
     private const VIDEO_BBB = 2;
 
-    private $appName;
     private $l10N;
     private $logger;
     private $utils;
@@ -41,6 +42,8 @@ class DavListener implements IEventListener
 
     /** @type IConfig */
     private $config;
+
+    private IAppConfig $appConfig;
 
     private $linkify;
 
@@ -57,6 +60,7 @@ class DavListener implements IEventListener
 
         $this->mailer = \OC::$server->get(IMailer::class);
         $this->config = \OC::$server->get(IConfig::class);
+        $this->appConfig = \OC::$server->get(IAppConfig::class);
 
         $this->linkify = new Linkify();
 
@@ -202,6 +206,8 @@ class DavListener implements IEventListener
         $inCurrentRange[0]['reuseSettings'] = false;
 
         $config = $this->config;
+        /** @var IAppConfig $appConfig */
+        $appConfig = $this->appConfig;
         $mailer = $this->mailer;
 
         $utils = $this->utils;
@@ -235,7 +241,7 @@ class DavListener implements IEventListener
                     continue;
                 }
 
-                $extNotifyFilePath = $config->getAppValue(Application::APP_ID, 'ext_notify_' . $userId);
+                $extNotifyFilePath = $appConfig->getValueString(Application::APP_ID, 'ext_notify_' . $userId);
 
                 $otherCalId = '-1';
                 $calId = $utils->getMainCalId($userId, null, $otherCalId);
@@ -321,9 +327,12 @@ class DavListener implements IEventListener
                 $vObject->destroy();
                 continue;
             }
+
+            /** @var IEmailValidator $mailValidator */
+            $mailValidator=\OC::$server->get(IEmailValidator::class);
             $att_v = $att->getValue();
             $to_email = substr($att_v, strpos($att_v, ":") + 1);
-            if ($mailer->validateMailAddress($to_email) === false) {
+            if ($mailValidator->isValid($to_email) === false) {
                 $this->logger->error('invalid attendee email, uid: ' . $remInfo['evtUid']);
                 $vObject->destroy();
                 continue;
@@ -425,7 +434,7 @@ class DavListener implements IEventListener
 
                     list($btn_url, $btn_tkn) = $this->makeBtnInfo(
                         $userId, $pageId, $embed,
-                        $evtUri, $config);
+                        $evtUri, $appConfig);
 
                     if ($remType === BackendUtils::REMINDER_TYPE_APPT) {
 
@@ -589,6 +598,9 @@ class DavListener implements IEventListener
 
         $utils = $this->utils;
         $config = $this->config;
+        /** @var IAppConfig $appConfig */
+        $appConfig = $this->appConfig;
+
         $doc = null;
         if (isset($evt->{ApptDocProp::PROP_NAME})) {
             $doc = $utils->getApptDoc($evt);
@@ -705,11 +717,11 @@ class DavListener implements IEventListener
 
 //        \OC::$server->getLogger()->error('DL Debug: M10');
 
-        $mailer = $this->mailer;
-
+        /** @var IEmailValidator $mailValidator */
+        $mailValidator=\OC::$server->get(IEmailValidator::class);
         $att_v = $att->getValue();
         $to_email = substr($att_v, strpos($att_v, ":") + 1);
-        if ($mailer->validateMailAddress($to_email) === false) {
+        if ($mailValidator->isValid($to_email) === false) {
             $this->logger->error("invalid attendee email");
             return;
         }
@@ -784,7 +796,7 @@ class DavListener implements IEventListener
             list($btn_url, $btn_tkn) = $this->makeBtnInfo(
                 $userId, $pageId, $embed,
                 $objectData['uri'],
-                $config);
+                $appConfig);
 
             $tmpl->addBodyButtonGroup(
                 $this->l10N->t("Confirm"),
@@ -825,7 +837,7 @@ class DavListener implements IEventListener
             list($btn_url, $btn_tkn) = $this->makeBtnInfo(
                 $userId, $pageId, $embed,
                 $objectData['uri'],
-                $config);
+                $appConfig);
             $cnl_lnk_url = $btn_url . "0" . $btn_tkn;
 
             if ($doc) {
@@ -959,7 +971,7 @@ class DavListener implements IEventListener
             list($btn_url, $btn_tkn) = $this->makeBtnInfo(
                 $userId, $pageId, $embed,
                 $objectData['uri'],
-                $config);
+                $appConfig);
 
             if ($doc) {
 
@@ -1074,7 +1086,7 @@ class DavListener implements IEventListener
             list($btn_url, $btn_tkn) = $this->makeBtnInfo(
                 $userId, $pageId, $embed,
                 $objectData['uri'],
-                $config);
+                $appConfig);
 
             // if NOT cancelled and PARTSTAT:NEEDS-ACTION we ADD BUTTONS before the "If you have any questions..." text
             if ($is_cancelled === false && $pst === 'NEEDS-ACTION') {
@@ -1169,7 +1181,7 @@ class DavListener implements IEventListener
 
         ///-------------------
 
-
+        $mailer=$this->mailer;
         $msg = $mailer->createMessage();
 
         $this->setFromAddress($msg, $userId, $org_email, $org_name);
@@ -1358,7 +1370,7 @@ class DavListener implements IEventListener
 
         // advanced/extensions
         if ($ext_event_type >= 0) {
-            $filePath = $config->getAppValue(Application::APP_ID, 'ext_notify_' . $userId);
+            $filePath = $appConfig->getValueString(Application::APP_ID, 'ext_notify_' . $userId);
             if ($filePath !== "") {
                 $data = [
                     'eventType' => $ext_event_type,
@@ -1379,13 +1391,12 @@ class DavListener implements IEventListener
      * @param string $pageId
      * @param bool $embed
      * @param string $uri
-     * @param \OCP\IConfig $config
+     * @param IAppConfig $appConfig
      * @return string[] - [btn_url,btn_tkn]
-     * @noinspection PhpDocMissingThrowsInspection
      */
-    private function makeBtnInfo($userId, $pageId, $embed, $uri, $config)
+    private function makeBtnInfo($userId, $pageId, $embed, $uri, $appConfig)
     {
-        $key = hex2bin($config->getAppValue(Application::APP_ID, 'hk'));
+        $key = hex2bin($appConfig->getValueString(Application::APP_ID, 'hk'));
         if (empty($key)) {
             return ["", ""];
         }
@@ -1394,12 +1405,11 @@ class DavListener implements IEventListener
 
         $pageIdParam = "";
 
-        /** @noinspection PhpUnhandledExceptionInspection */
         $btn_url = $raw_url = $utils->getPublicWebBase() . '/'
             . $utils->pubPrx($utils->getToken($userId, $pageId), $embed)
             . 'cncf?d=';
         if ($embed) {
-            $btn_url = $config->getAppValue(
+            $btn_url = $appConfig->getValueString(
                 Application::APP_ID,
                 'emb_cncf_' . $userId, $btn_url);
             $pageIdParam = "&pageId=" . $pageId;
@@ -1740,7 +1750,7 @@ class DavListener implements IEventListener
      */
     private function setFromAddress($msg, $userId, $org_email, $org_name)
     {
-        if ($this->config->getAppValue(Application::APP_ID,
+        if ($this->appConfig->getValueString(Application::APP_ID,
                 BackendUtils::KEY_USE_DEF_EMAIL,
                 'yes') === 'no') {
             $email = $org_email;

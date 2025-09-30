@@ -7,7 +7,7 @@ use OCP\AppFramework\Http\Events\BeforeTemplateRenderedEvent;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
-use OCP\IConfig;
+use OCP\IAppConfig;
 use OCP\IGroupManager;
 use OCP\IUserSession;
 use Psr\Log\LoggerInterface;
@@ -22,8 +22,9 @@ class BeforeTemplateRenderedListener implements IEventListener
         if ($event->isLoggedIn() && $event->getResponse()->getRenderAs() === TemplateResponse::RENDER_AS_USER) {
 
             try {
-                $config = \OC::$server->get(IConfig::class);
-                $allowedGroups = $config->getAppValue(Application::APP_ID,
+                /** @var IAppConfig $config */
+                $config = \OC::$server->get(IAppConfig::class);
+                $allowedGroups = $config->getValueString(Application::APP_ID,
                     BackendUtils::KEY_LIMIT_TO_GROUPS);
 
                 if (!empty($allowedGroups)) {

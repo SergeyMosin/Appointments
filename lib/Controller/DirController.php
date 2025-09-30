@@ -11,7 +11,6 @@ use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IRequest;
-use OCP\Util;
 
 class DirController extends Controller
 {
