@@ -17,8 +17,10 @@ use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\IRequest;
+use OCP\IURLGenerator;
 use OCP\IUserManager;
 use OCP\IUserSession;
+use OCP\L10N\IFactory;
 use OCP\Mail\IMailer;
 use OCP\PreConditionNotMetException;
 use PHPUnit\Framework\TestCase;
@@ -35,6 +37,7 @@ class RemindersTest extends TestCase
 
     protected static IConfig $config;
     protected static IL10N $l10n;
+    protected static IFactory $l10nFactory;
     protected static IMailer $mailer;
     protected static IUserSession $userSession;
     protected static BackendUtils $utils;
@@ -43,6 +46,7 @@ class RemindersTest extends TestCase
     protected static IDBConnection $db;
     protected static BackendManager $backendManager;
     protected static IBackendConnector $backendConnector;
+    protected static IURLGenerator $urlGenerator;
 
     private $attendeeEmail;
 
@@ -56,9 +60,11 @@ class RemindersTest extends TestCase
         self::$container = $app->getContainer();
         self::$config = self::$container->get(IConfig::class);
         self::$l10n = self::$container->get(IL10N::class);
+        self::$l10nFactory = self::$container->get(IFactory::class);
         self::$mailer = self::$container->get(IMailer::class);
         self::$utils = self::$container->get(BackendUtils::class);
         self::$userSession = self::$container->get(IUserSession::class);
+        self::$urlGenerator = self::$container->get(IURLGenerator::class);
 
         $dav = new \OCA\DAV\AppInfo\Application();
         self::$davBE = $dav->getContainer()->get(CalDavBackend::class);
@@ -133,6 +139,7 @@ class RemindersTest extends TestCase
     {
         $davListener = new DavListener(
             self::$l10n,
+            self::$l10nFactory,
             self::$logger,
             self::$utils
         );
@@ -498,13 +505,13 @@ class RemindersTest extends TestCase
 
         return new PageController(
             $request,
-            $userId,
             self::$config,
             self::$mailer,
             self::$l10n,
             self::$userSession,
             self::$backendManager,
             self::$utils,
+            self::$urlGenerator,
             self::$logger
         );
     }
