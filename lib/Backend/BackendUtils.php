@@ -498,7 +498,7 @@ class BackendUtils
      */
     function dataApptGetInfo(?string $data): array
     {
-        $ret = [null, self::PREF_STATUS_TENTATIVE, ""];
+        $ret = [null, self::PREF_STATUS_TENTATIVE, "", ""];
 
         if ($data === null) {
             return $ret;

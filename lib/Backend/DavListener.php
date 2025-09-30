@@ -20,7 +20,6 @@ use OCP\IDBConnection;
 use OCP\IUserManager;
 use OCP\L10N\IFactory;
 use OCP\Mail\IEMailTemplate;
-use OCP\Mail\IEmailValidator;
 use OCP\Mail\IMailer;
 use OCP\Mail\IMessage;
 use Psr\Log\LoggerInterface;
@@ -328,11 +327,9 @@ class DavListener implements IEventListener
                 continue;
             }
 
-            /** @var IEmailValidator $mailValidator */
-            $mailValidator = \OC::$server->get(IEmailValidator::class);
             $att_v = $att->getValue();
             $to_email = substr($att_v, strpos($att_v, ":") + 1);
-            if ($mailValidator->isValid($to_email) === false) {
+            if ($mailer->validateMailAddress($to_email) === false) {
                 $this->logger->error('invalid attendee email, uid: ' . $remInfo['evtUid']);
                 $vObject->destroy();
                 continue;
@@ -704,11 +701,11 @@ class DavListener implements IEventListener
 
 //        \OC::$server->getLogger()->error('DL Debug: M10');
 
-        /** @var IEmailValidator $mailValidator */
-        $mailValidator = \OC::$server->get(IEmailValidator::class);
+        $mailer = $this->mailer;
+
         $att_v = $att->getValue();
         $to_email = substr($att_v, strpos($att_v, ":") + 1);
-        if ($mailValidator->isValid($to_email) === false) {
+        if ($mailer->validateMailAddress($to_email) === false) {
             $this->logger->error("invalid attendee email");
             return;
         }
@@ -1109,7 +1106,6 @@ class DavListener implements IEventListener
 
         ///-------------------
 
-        $mailer = $this->mailer;
         $msg = $mailer->createMessage();
 
         $this->setFromAddress($msg, $userId, $org_email, $org_name);
