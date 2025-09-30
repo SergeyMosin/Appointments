@@ -1,3 +1,12 @@
+## v2.5.0 - 2025-09-30
+### Changed
+- NC v31 is now min version
+- removed legacy code related to "X-APPT-DATA" prop
+### Fixed
+- tests code
+- NC v32 compatibility - #625
+- (re)confirmation error after date/time change by the organizer
+
 ## v2.4.6 - 2025-09-01
 ### Added
 - More logging on timezone related errors
