@@ -425,7 +425,7 @@ class BackendUtils
     function dataConfirmAttendee(string $data, string $userId, string $pageId): array
     {
 
-        $vo = $this->getAppointment($data, 'TENTATIVE');
+        $vo = $this->getAppointment($data, 'TENTATIVE|CONFIRMED');
         if ($vo === null) {
             return [null, null, "", ""];
         }
@@ -1099,7 +1099,7 @@ class BackendUtils
             return null;
         }
 
-        if (!isset($evt->STATUS) || ($status !== "*" && $evt->STATUS->getValue() !== $status)) {
+        if (!isset($evt->STATUS) || ($status !== "*" && $evt->STATUS->getValue() !== $status && !str_contains($status, $evt->STATUS->getValue()))) {
             $this->logger->error("Bad Status: must be " . $status);
             return null;
         }
