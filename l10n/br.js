@@ -4,7 +4,6 @@ OC.L10N.register(
     "Available" : "Vak",
     "Confirm" : "Kadarnañ",
     "Cancel" : "Nullañ",
-    "Password" : "Ger-tremen",
     "Info" : "Titouroù",
     "Email is required." : "Un email eo ret kaout",
     "Preview" : "Ragwell",

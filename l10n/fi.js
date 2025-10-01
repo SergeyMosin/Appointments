@@ -1,10 +1,10 @@
 OC.L10N.register(
     "appointments",
     {
-    "Guest password:" : "Vieraan salasana:",
-    "Talk integration error: check logs" : "Talk-integraation virhe: tarkista lokit",
     "In-person meeting" : "Henkilökohtainen tapaaminen",
     "Online (audio/video)" : "Verkko (ääni/video)",
+    "Guest password:" : "Vieraan salasana:",
+    "Talk integration error: check logs" : "Talk-integraation virhe: tarkista lokit",
     "Meeting link: %s" : "Kokouksen linkki: %s",
     "Guest Password: %s" : "Vieraan salasana: %s",
     "Video/audio integration error: check logs" : "Videon/äänen integraatiovirhe: tarkista lokit",
@@ -45,8 +45,6 @@ OC.L10N.register(
     "Guest Email" : "Vieraan sähköposti",
     "Appointment is canceled" : "Tapaaminen on peruttu",
     "%s Appointment" : "%s Tapaaminen",
-    "Password" : "Salasana",
-    "Chat/Call link: %s" : "Keskustelu-/puhelulinkki: %s",
     "Password: %s" : "Salasana: %s",
     "Meeting type: Online (audio/video)" : "Tapaamisen tyyppi: verkossa (ääni/video)",
     "Meeting type: In-person" : "Tapaamisen tyyppi: kasvokkain",

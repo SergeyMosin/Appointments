@@ -1,10 +1,10 @@
 OC.L10N.register(
     "appointments",
     {
-    "Guest password:" : "Külalise salasõna:",
-    "Talk integration error: check logs" : "Kõnerakendusega lõimimise viga: lisateavet leiad logidest",
     "In-person meeting" : "Kohtumine päris elus",
     "Online (audio/video)" : "Kohtumine võrgus (kõne või videokoosolek)",
+    "Guest password:" : "Külalise salasõna:",
+    "Talk integration error: check logs" : "Kõnerakendusega lõimimise viga: lisateavet leiad logidest",
     "Meeting link: %s" : "Kohtumise link: %s",
     "Guest Password: %s" : "Külalise salasõna: %s",
     "Video/audio integration error: check logs" : "Video- või helilõimingu viga: täpsem teave on logides",
@@ -32,7 +32,6 @@ OC.L10N.register(
     "Add a guest" : "Lisa külaline",
     "Guest Email" : "Külalise e-posti aadress",
     "%s Appointment Guest Invitation" : "Külalise kutse kohtumisele: %s",
-    "Password" : "Salasõna",
     "Password: %s" : "Salasõna: %s",
     "Meeting type: Online (audio/video)" : "Kohtumise tüüp: võrgus (audio/video)",
     "Meeting type: In-person" : "Kohtumise tüüp: kohapealne",

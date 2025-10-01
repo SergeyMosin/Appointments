@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Confirm" : "Serggeg",
     "Cancel" : "Semmet",
-    "Password" : "Awal n uɛeddi",
     "Password: %s" : "Awal n uɛeddi: %s",
     "Yes, Cancel" : "Ih, semmet",
     "Settings" : "Iɣewwaṛen",

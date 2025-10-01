@@ -4,7 +4,6 @@ OC.L10N.register(
     "Available" : "Disponeblaj",
     "Confirm" : "Konfirmi",
     "Cancel" : "Nuligi",
-    "Password" : "Pasvorto",
     "Action needed" : "Ago bezonata",
     "Info" : "Info",
     "Preview" : "Antaŭvidi",

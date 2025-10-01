@@ -9,7 +9,6 @@ OC.L10N.register(
     "Your %1$s appointment scheduled for %2$s is now confirmed." : "Întâlnirea %1$s programată la ora %2$s a fost confirmată",
     "Your %1$s appointment scheduled for %2$s is now canceled." : "Întâlnirea %1$s programată la ora %2$s a fost anulată.",
     "%s Appointment" : "Întâlnire%s",
-    "Password" : "Parolă",
     "Thank you" : "Mulțumesc",
     "Appointments" : "Întâlniri",
     "All done." : "Finalizat",

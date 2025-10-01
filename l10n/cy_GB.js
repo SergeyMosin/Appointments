@@ -5,7 +5,6 @@ OC.L10N.register(
     "Available" : "Ar gael?",
     "Confirm" : "Cadarnhau",
     "Cancel" : "Diddymu",
-    "Password" : "Cyfrinair",
     "Appointments" : "Apwyntiadau",
     "Info" : "Info",
     "Preview" : "Rhagolwg",

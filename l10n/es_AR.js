@@ -6,7 +6,6 @@ OC.L10N.register(
     "Cancel" : "Cancelar",
     "Appointment confirmed" : "Cita confirmada",
     "Appointment canceled" : "Cita cancelada",
-    "Password" : "Contraseña",
     "Action needed" : "Acción requerida",
     "Info" : "Info",
     "Preview" : "Vista previa",

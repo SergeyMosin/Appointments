@@ -5,7 +5,6 @@ OC.L10N.register(
     "Available" : "ມີຢູ່",
     "Confirm" : "ຢືນຢັນ",
     "Cancel" : "ຍົກເລີກ",
-    "Password" : "ລະຫັດຜ່ານ",
     "Info" : "ຂໍ້ມຸນ",
     "Settings" : "ການຕັ້ງຄ່າ",
     "URL" : "URL",

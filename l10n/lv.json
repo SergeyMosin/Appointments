@@ -1,7 +1,7 @@
 { "translations": {
-    "Guest password:" : "Viesa parole:",
     "In-person meeting" : "Klātienes tikšanās",
     "Online (audio/video)" : "Tiešsaistē (audio/video)",
+    "Guest password:" : "Viesa parole:",
     "Meeting link: %s" : "Tikšanās saite: %s",
     "Guest Password: %s" : "Viesa parole: %s",
     "Video/audio integration error: check logs" : "Video/audio integrācijas kļūda: pārbaudiet žurnālus",
@@ -39,8 +39,6 @@
     "If you have any questions please feel free to call %1$s or write to %2$s" : "Ja Jums ir kādi jautājumi, lūdzu, droži zvaniet %1$s vai pierakstiet %2$s.",
     "Appointment is canceled" : "Tikšanās ir atcelta",
     "%s Appointment" : "%s tikšanās",
-    "Password" : "Parole",
-    "Chat/Call link: %s" : "Čata/Zvana saite: %s",
     "Password: %s" : "Parole: %s",
     "Click %1$shere%2$s to change your appointment type to %3$s." : "Jāklikšķina %1$sšeit%2$s, lai mainītu tikšanās veidu uz %3$s.",
     "Click here: %1$s to change your appointment type to %2$s." : "Jāklikšķina šeit: %1$s, lai mainītu tikšanās veidu uz %2$s.",

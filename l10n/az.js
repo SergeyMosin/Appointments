@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Confirm" : "Təsdiq edin",
     "Cancel" : "Dayandır",
-    "Password" : "Şifrə",
     "Info" : "Info",
     "Settings" : "Quraşdırmalar",
     "Title" : "Başlıq",

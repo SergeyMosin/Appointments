@@ -9,7 +9,6 @@ OC.L10N.register(
     "Cancel" : "අවලංගු කරන්න",
     "Date/Time: %s" : "දිනය/වේලාව: %s",
     "Location: %s" : "ස්ථානය: %s",
-    "Password" : "මුර පදය",
     "Thank you" : "ඔබට ස්තුතියි",
     "Info" : "තොරතුරු",
     "Preview" : "පෙරදසුන",

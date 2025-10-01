@@ -1,10 +1,10 @@
 OC.L10N.register(
     "appointments",
     {
-    "Guest password:" : "Nenosiri la mgeni:",
-    "Talk integration error: check logs" : "Hitilafu ya ujumuishaji wa Talk: angalia kumbukumbu",
     "In-person meeting" : "Mkutano wa ana kwa ana",
     "Online (audio/video)" : "Mtandaoni (sauti/video)",
+    "Guest password:" : "Nenosiri la mgeni:",
+    "Talk integration error: check logs" : "Hitilafu ya ujumuishaji wa Talk: angalia kumbukumbu",
     "Meeting link: %s" : "Kiungo cha mkutano: %s",
     "Guest Password: %s" : "Nenosiri la mgeni: %s",
     "Video/audio integration error: check logs" : "Hitilafu ya ujumuishaji wa video/sauti: angalia kumbukumbu",
@@ -51,8 +51,6 @@ OC.L10N.register(
     "%1$s has invited you to join an appointment with %2$s on %3$s. If you have any questions, please email %1$s directly at %4$s" : "%1$s amekualika kujiunga na miadi na %2$s tarehe %3$s. Ikiwa una maswali yoyote, tafadhali tuma barua pepe moja kwa moja kwa %1$s kwa%4$s",
     "Appointment is canceled" : "Muadi umesitishwa",
     "%s Appointment" : "%sMuadi",
-    "Password" : "Nenosiri",
-    "Chat/Call link: %s" : "Gumzo/Kiungo cha simu: %s",
     "Password: %s" : "Nenosiri: %s",
     "Click %1$shere%2$s to change your appointment type to %3$s." : "Bofya %1$s hapa %2$s kubadilisha aina ya miadi yako kuwa %3$s.",
     "Click here: %1$s to change your appointment type to %2$s." : "Bofya hapa: %1$s kubadilisha aina ya miadi yako kuwa %2$s.",

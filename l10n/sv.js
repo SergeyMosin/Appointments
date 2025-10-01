@@ -1,10 +1,10 @@
 OC.L10N.register(
     "appointments",
     {
-    "Guest password:" : "Gästlösenord:",
-    "Talk integration error: check logs" : "Talk-integration-felmeddelande: kontrollera loggarna",
     "In-person meeting" : "Fysiskt möte",
     "Online (audio/video)" : "Online (ljud/bild)",
+    "Guest password:" : "Gästlösenord:",
+    "Talk integration error: check logs" : "Talk-integration-felmeddelande: kontrollera loggarna",
     "Meeting link: %s" : "Möteslänk: %s",
     "Guest Password: %s" : "Gästlösenord: %s",
     "Meeting Type" : "Mötestyp",
@@ -33,8 +33,6 @@ OC.L10N.register(
     "If you have any questions please write to %s" : "Om du har några frågor kan du skriva till %s",
     "Appointment is canceled" : "Mötet är inställt",
     "%s Appointment" : "%s möte",
-    "Password" : "Lösenord",
-    "Chat/Call link: %s" : "Chatt/samtalslänk: %s",
     "Thank you" : "Tack",
     "Appointments" : "Möten",
     "Your appointment scheduled for %s is confirmed." : "Ditt möte inbokat till %s är bekräftat",

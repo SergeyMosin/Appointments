@@ -9,8 +9,6 @@ OC.L10N.register(
     "Date/Time: %s" : "Дата/час: %s",
     "Status: Pending confirmation" : "Статус: Чакае пацверджання",
     "Location: %s" : "Месцазнаходжанне: %s",
-    "Password" : "Пароль",
-    "Chat/Call link: %s" : "Спасылка на чат/выклік: %s",
     "Password: %s" : "Пароль: %s",
     "Thank you" : "Дзякуй",
     "Yes, Cancel" : "Так, скасаваць",
