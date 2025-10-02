@@ -81,7 +81,7 @@ OC.L10N.register(
     "Remove" : "移除",
     "More than two duration choices" : "多于两种持续时间选择",
     "Add" : "添加",
-    "OK" : "好的",
+    "OK" : "确定",
     "Duration (hours:minutes)" : "持续时间（小时：分钟）",
     "Delete" : "删除",
     "Calendar Required" : "需要日历",
