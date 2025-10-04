@@ -1,7 +1,7 @@
 OC.L10N.register(
     "appointments",
     {
-    "In-person meeting" : "Προσωπική συνάντηση",
+    "In-person meeting" : "Συνάντηση δια ζώσης",
     "Online (audio/video)" : "Σε σύνδεση (ήχος/βίντεο)",
     "Guest password:" : "Συνθηματικό επισκέπτη:",
     "Talk integration error: check logs" : "Σφάλμα ενσωμάτωσης Talk: ελέγξτε το ιστορικό",
