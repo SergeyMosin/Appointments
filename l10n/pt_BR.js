@@ -349,7 +349,7 @@ OC.L10N.register(
     "Talk rooms will be created and deleted automatically when a meeting type changes." : "As salas de conversação serão criadas e excluídas automaticamente quando o tipo de reunião for alterado.",
     "Directory Page" : "Página do Diretório",
     "Thank You" : "Obrigado",
-    "Key accepted. All contributor only features are unlocked." : "Chave aceita. Todos os recursos somente para colaboradores estão desbloqueados.",
+    "Key accepted. All contributor only features are unlocked." : "Chave aceita. Todos os recursos somente para colaboradores estão destrancados.",
     "Error: Please check key" : "Erro: Favor verifique a chave",
     "Loading Settings" : "Carregando Configurações",
     "Preview Changes" : "Visualizar Alterações",
