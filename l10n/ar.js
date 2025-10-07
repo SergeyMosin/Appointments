@@ -1,10 +1,10 @@
 OC.L10N.register(
     "appointments",
     {
-    "Guest password:" : "كلمة مرور الزائر:",
-    "Talk integration error: check logs" : "خطأ ربط مع تطبيق المحادثة Talk: راجع السجلات",
     "In-person meeting" : "اجتماع شخصي",
     "Online (audio/video)" : "على الخط (صوت/فيديو)",
+    "Guest password:" : "كلمة مرور الزائر:",
+    "Talk integration error: check logs" : "خطأ ربط مع تطبيق المحادثة Talk: راجع السجلات",
     "Meeting link: %s" : "رابط الاجتماع: %s",
     "Guest Password: %s" : "كلمة مرور الضيف: %s",
     "Video/audio integration error: check logs" : "خطأ في تكامل الفيديو و الصوت: راجع سجل الأحداث",
@@ -51,8 +51,6 @@ OC.L10N.register(
     "%1$s has invited you to join an appointment with %2$s on %3$s. If you have any questions, please email %1$s directly at %4$s" : "%1$s قام بدعوتك للانضمام إلى موعد مع %2$s في %3$s. إذا كان لديك أي أسئلة، أرسل إيميلاً إلى  %1$s مباشرةً في %4$s",
     "Appointment is canceled" : "الموعد ملغي",
     "%s Appointment" : "%s موعد",
-    "Password" : "كلمة المرور",
-    "Chat/Call link: %s" : "رابط مكالمة/محادثة: %s",
     "Password: %s" : "كلمة المرور: %s",
     "Click %1$shere%2$s to change your appointment type to %3$s." : "أنقُر  %1$sهنا%2$s لتغيير نوع موعدك إلى %3$s.",
     "Click here: %1$s to change your appointment type to %2$s." : "أنقُر هنا: %1$s لتغيير نوع موعدك إلى %2$s.",

@@ -1,10 +1,10 @@
 OC.L10N.register(
     "appointments",
     {
-    "Guest password:" : "رمز عبور مهمان",
-    "Talk integration error: check logs" : "خطای ادغام گفتگو: بررسی سیاهه های مربوط",
     "In-person meeting" : "ملاقات حضوری",
     "Online (audio/video)" : "آنلاین (صوتی/تصویری)",
+    "Guest password:" : "رمز عبور مهمان",
+    "Talk integration error: check logs" : "خطای ادغام گفتگو: بررسی سیاهه های مربوط",
     "Meeting Type" : "نوع جلسه",
     "Select meeting type" : "نوع جلسه را انتخاب کنید",
     "Your email address is required for this operation." : "آدرس ایمیل شما برای این عملیات مورد نیاز است.",
@@ -39,8 +39,6 @@ OC.L10N.register(
     "If you have any questions please feel free to call %1$s or write to %2$s" : "اگر سوالی دارید لطفا تماس بگیرید %1$sیا بنویسید %2$s",
     "Appointment is canceled" : "قرار لغو شده است",
     "%s Appointment" : "%s قرار ملاقات",
-    "Password" : "کلمه عبور",
-    "Chat/Call link: %s" : "لینک چت/تماس :%s",
     "Thank you" : "متشکرم",
     "To cancel your appointment please click: %1$s Cancel Appointment %2$s" : "برای لغو قرار خود لطفا کلیک کنید: %1$sلغو قرار%2$s",
     "To cancel your appointment please visit: %s" : "برای لغو قرار ملاقات لطفا به آدرس زیر مراجعه کنید: %s",

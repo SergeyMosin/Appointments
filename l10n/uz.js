@@ -4,7 +4,6 @@ OC.L10N.register(
     "Available" : "Mavjud",
     "Confirm" : "Confirm",
     "Cancel" : "Bekor qilish",
-    "Password" : "Password",
     "Appointments" : "Uchrashuvlar",
     "Preview" : "Ko‘rib chiqish",
     "Settings" : "Sozlamalar",

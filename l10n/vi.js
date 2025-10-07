@@ -16,7 +16,6 @@ OC.L10N.register(
     "Status: Confirmed" : "Trạng thái: Đã xác nhận",
     "Location: %s" : "Vị trí: %s",
     "%s Appointment" : "%sCuộc hẹn",
-    "Password" : "Mật khẩu",
     "Thank you" : "Cảm ơn",
     "Appointments" : "Các cuộc hẹn",
     "All done." : "Mọi thứ đã hoàn tất.",

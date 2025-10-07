@@ -1,10 +1,10 @@
 OC.L10N.register(
     "appointments",
     {
-    "Guest password:" : "Lykilorð gests:",
-    "Talk integration error: check logs" : "Villa í samþættingu spjalls: skoðaðu atvikaskrár",
     "In-person meeting" : "Fundur í eigin persónu",
     "Online (audio/video)" : "Á netinu (hljóð/myndfundur)",
+    "Guest password:" : "Lykilorð gests:",
+    "Talk integration error: check logs" : "Villa í samþættingu spjalls: skoðaðu atvikaskrár",
     "Meeting link: %s" : "Fundartengill: %s",
     "Guest Password: %s" : "Lykilorð gests: %s",
     "Video/audio integration error: check logs" : "Villa í samþættingu hljóð-/myndmerkis: skoðaðu atvikaskrár",
@@ -44,8 +44,6 @@ OC.L10N.register(
     "If you have any questions please feel free to call %1$s or write to %2$s" : "Ef þú ert með spurningar geturðu hringt í %1$s eða skrifað til %2$s",
     "Appointment is canceled" : "Hætt var við stefnumót",
     "%s Appointment" : "%s stefnumót",
-    "Password" : "Lykilorð",
-    "Chat/Call link: %s" : "Tengill spjalls/símtals: %s",
     "Password: %s" : "Lykilorð: %s",
     "Click %1$shere%2$s to change your appointment type to %3$s." : "Smelltu %1$shér%2$s til að breyta tegund stefnumótsins í %3$s.",
     "Click here: %1$s to change your appointment type to %2$s." : "Smelltu hér: %1$s til að breyta tegund stefnumótsins í %2$s.",

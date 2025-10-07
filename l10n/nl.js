@@ -1,10 +1,10 @@
 OC.L10N.register(
     "appointments",
     {
-    "Guest password:" : "Gastenwachtwoord:",
-    "Talk integration error: check logs" : "Talk integratie fout: controleer logs",
     "In-person meeting" : "Persoonlijke afspraak",
     "Online (audio/video)" : "Online (audio/video)",
+    "Guest password:" : "Gastenwachtwoord:",
+    "Talk integration error: check logs" : "Talk integratie fout: controleer logs",
     "Meeting link: %s" : "Link bijeenkomst: %s",
     "Guest Password: %s" : "Gastenwachtwoord: %s",
     "Video/audio integration error: check logs" : "Fout bij video/audio-integratie: controleer logs",
@@ -51,8 +51,6 @@ OC.L10N.register(
     "%1$s has invited you to join an appointment with %2$s on %3$s. If you have any questions, please email %1$s directly at %4$s" : "%1$s heeft je uitgenodigd voor een afspraak met %2$s op %3$s. Bij vragen, kun je %1$s direct e-mailen via %4$s",
     "Appointment is canceled" : "Afspraak is geannuleerd",
     "%s Appointment" : "%s Afspraak",
-    "Password" : "Wachtwoord",
-    "Chat/Call link: %s" : "Chat/Call link: %s",
     "Password: %s" : "Wachtwoord: %s",
     "Click %1$shere%2$s to change your appointment type to %3$s." : "Klik %1$shier%2$s om het afspraaktype te veranderen in %3$s.",
     "Click here: %1$s to change your appointment type to %2$s." : "Klik hier: %1$s om het afspraaktype te veranderen in %2$s.",

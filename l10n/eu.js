@@ -1,10 +1,10 @@
 OC.L10N.register(
     "appointments",
     {
-    "Guest password:" : "Gonbidatuaren pasahitza:",
-    "Talk integration error: check logs" : "Talk-en integrazio errorea: begiratu erregistroak",
     "In-person meeting" : "Aurrez aurreko bilera",
     "Online (audio/video)" : "Linean (audioa/bideoa)",
+    "Guest password:" : "Gonbidatuaren pasahitza:",
+    "Talk integration error: check logs" : "Talk-en integrazio errorea: begiratu erregistroak",
     "Meeting link: %s" : "Bileraren esteka: %s",
     "Guest Password: %s" : "Gonbidatuaren pasahitza: %s",
     "Video/audio integration error: check logs" : "Bideoa/audioa integratzeko errorea: aztertu erregistroak",
@@ -51,8 +51,6 @@ OC.L10N.register(
     "%1$s has invited you to join an appointment with %2$s on %3$s. If you have any questions, please email %1$s directly at %4$s" : "%1$s-k gonbidatu zaitu %2$srekin hitzordua izateko %3$s-etan. Zalantzarik baduzu idatzi posta elektroniko bat %1$s-ri %4$s helbidera",
     "Appointment is canceled" : "Hitzordua bertan behera utzita dago",
     "%s Appointment" : "%s hitzordua",
-    "Password" : "Pasahitza",
-    "Chat/Call link: %s" : "Txat/Deiaren esteka: %s",
     "Password: %s" : "Pasahitza: %s",
     "Click %1$shere%2$s to change your appointment type to %3$s." : "Egin klik %1$shemen%2$s zure hitzordu mota honetara aldatzeko %3$s.",
     "Click here: %1$s to change your appointment type to %2$s." : "Egin klik hemen: %1$s zure hitzordu mota honetara aldatzeko %2$s.",

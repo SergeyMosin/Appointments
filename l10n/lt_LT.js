@@ -1,10 +1,10 @@
 OC.L10N.register(
     "appointments",
     {
-    "Guest password:" : "Svečio slaptažodis:",
-    "Talk integration error: check logs" : "Integracijos su pokalbiais klaida: tikrinkite žurnalus",
     "In-person meeting" : "Susitikimas gyvai",
     "Online (audio/video)" : "Susitikimas internetu (garso/vaizdo)",
+    "Guest password:" : "Svečio slaptažodis:",
+    "Talk integration error: check logs" : "Integracijos su pokalbiais klaida: tikrinkite žurnalus",
     "Guest Password: %s" : "Svečio slaptažodis: %s",
     "Video/audio integration error: check logs" : "Vaizdo/garso integracijos klaida: žiūrėkite žurnalus",
     "Meeting Type" : "Susitikimo tipas",
@@ -40,8 +40,6 @@ OC.L10N.register(
     "Guest Email" : "Svečio el. paštas",
     "Appointment is canceled" : "Susitikimo atsisakyta",
     "%s Appointment" : "Susitikimas su %s",
-    "Password" : "Slaptažodis",
-    "Chat/Call link: %s" : "Nuoroda į pokalbį/skambutį: %s",
     "Password: %s" : "Slaptažodis: %s",
     "Meeting type: Online (audio/video)" : "Susitikimo tipas: Internetu (garso/vaizdo)",
     "Meeting type: In-person" : "Susitikimo tipas: Gyvai",

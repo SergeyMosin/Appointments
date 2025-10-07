@@ -4,7 +4,6 @@ OC.L10N.register(
     "Available" : "Available",
     "Confirm" : "Confirm",
     "Cancel" : "Cancel",
-    "Password" : "პაროლი",
     "Appointments" : "Appointments",
     "Action needed" : "Action needed",
     "Info" : "Info",

@@ -1,10 +1,10 @@
 OC.L10N.register(
     "appointments",
     {
-    "Guest password:" : "訪客密碼：",
-    "Talk integration error: check logs" : "Talk 整合錯誤：檢查記錄",
     "In-person meeting" : "面對面會議",
     "Online (audio/video)" : "線上（音頻／視像）",
+    "Guest password:" : "訪客密碼：",
+    "Talk integration error: check logs" : "Talk 整合錯誤：檢查記錄",
     "Meeting link: %s" : "會議連結︰%s",
     "Guest Password: %s" : "訪客密碼：%s",
     "Video/audio integration error: check logs" : "視像/音頻整合錯誤：檢查記錄",
@@ -51,8 +51,6 @@ OC.L10N.register(
     "%1$s has invited you to join an appointment with %2$s on %3$s. If you have any questions, please email %1$s directly at %4$s" : "%1$s 邀請您參加與 %2$s 的預約，時間為 %3$s。如果您有任何問題，請直接發送電子郵件給 %1$s，電郵地址為 %4$s",
     "Appointment is canceled" : "約會已取消",
     "%s Appointment" : "%s 預約",
-    "Password" : "密碼",
-    "Chat/Call link: %s" : "聊天／通話連結：%s",
     "Password: %s" : "密碼：%s",
     "Click %1$shere%2$s to change your appointment type to %3$s." : "按一下%1$s此處%2$s將預約類型變更為%3$s 。",
     "Click here: %1$s to change your appointment type to %2$s." : "按一下：%1$s將預約類型變更為%2$s 。",

@@ -4,7 +4,6 @@ OC.L10N.register(
     "Available" : "Beskikbaar",
     "Confirm" : "Bevestig",
     "Cancel" : "Kanselleer",
-    "Password" : "Wagwoord",
     "Info" : "Inligting",
     "Preview" : "Voorskou",
     "Settings" : "Instellings",

@@ -1,10 +1,10 @@
 OC.L10N.register(
     "appointments",
     {
-    "Guest password:" : "Gjestepassord:",
-    "Talk integration error: check logs" : "Talk-integrasjon feil: se logger",
     "In-person meeting" : "Personlig møte",
     "Online (audio/video)" : "Nett (lyd/video)",
+    "Guest password:" : "Gjestepassord:",
+    "Talk integration error: check logs" : "Talk-integrasjon feil: se logger",
     "Meeting link: %s" : "Lenke til møte: %s",
     "Guest Password: %s" : "Gjestepassord: %s",
     "Video/audio integration error: check logs" : "Feil ved integrering av video / lyd: sjekk logger",
@@ -45,8 +45,6 @@ OC.L10N.register(
     "If you have any questions please feel free to call %1$s or write to %2$s" : "Hvis du har noen spørsmål, ring %1$s eller skriv til %2$s",
     "Appointment is canceled" : "Avtalen er kansellert",
     "%s Appointment" : "%s Avtale",
-    "Password" : "Passord",
-    "Chat/Call link: %s" : "Chat/Samtalekobling: %s",
     "Password: %s" : "Passord: %s",
     "Click %1$shere%2$s to change your appointment type to %3$s." : "Klikk %1$sher%2$s for å endre din avtaletype til %3$s.",
     "Click here: %1$s to change your appointment type to %2$s." : "Klikk her: %1$s for å endre din avtaletype til %2$s.",

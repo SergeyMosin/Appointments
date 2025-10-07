@@ -1,10 +1,10 @@
 OC.L10N.register(
     "appointments",
     {
-    "Guest password:" : "손님 암호 :",
-    "Talk integration error: check logs" : "토크 통합 오류: 로그 확인",
     "In-person meeting" : "대면 회의",
     "Online (audio/video)" : "온라인 (소리/영상)",
+    "Guest password:" : "손님 암호 :",
+    "Talk integration error: check logs" : "토크 통합 오류: 로그 확인",
     "Meeting link: %s" : "회의 링크: %s",
     "Guest Password: %s" : "게스트 암호: %s",
     "Video/audio integration error: check logs" : "비디오/오디오 통합 에러: 로그 확인",
@@ -43,8 +43,6 @@ OC.L10N.register(
     "If you have any questions please feel free to call %1$s or write to %2$s" : "질문이 있다면 마음 편히 %1$s에 전화하거나 %2$s에 써주십시오.",
     "Appointment is canceled" : "일정이 취소됐습니다.",
     "%s Appointment" : "%s일정",
-    "Password" : "암호",
-    "Chat/Call link: %s" : "채팅 / 통화 링크 : %s",
     "Password: %s" : "암호: %s",
     "Click %1$shere%2$s to change your appointment type to %3$s." : "당신의 일정 유형을 %3$s으로 변경하려면 여기 %2$s에서 %1$s을 클릭하세요.",
     "Click here: %1$s to change your appointment type to %2$s." : "일정 유형을 %2$s로 변경하고 싶다면 클릭:%1$s.",

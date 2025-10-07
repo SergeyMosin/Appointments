@@ -10,7 +10,6 @@ OC.L10N.register(
     "Cancel" : "Anullar",
     "Date/Time: %s" : "Data/Ora : %s",
     "%s Appointment" : "%s rendetz-vos",
-    "Password" : "Senhal",
     "Thank you" : "Mercés",
     "Appointments" : "Rendetz-vos",
     "Info" : "Info",

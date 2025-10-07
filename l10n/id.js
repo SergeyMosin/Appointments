@@ -9,7 +9,6 @@ OC.L10N.register(
     "Status: Pending confirmation" : "Status: Menunggu konfirmasi",
     "Status: Confirmed" : "Status: Dikonfirmasi",
     "Location: %s" : "Lokasi: %s",
-    "Password" : "Kata kunci",
     "Thank you" : "Terima kasih",
     "Appointments" : "Janji temu",
     "All done." : "Semua selesai.",

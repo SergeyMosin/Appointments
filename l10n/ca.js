@@ -1,10 +1,10 @@
 OC.L10N.register(
     "appointments",
     {
-    "Guest password:" : "Contrasenya de convidat:",
-    "Talk integration error: check logs" : "Error d'integració de la conversa: reviseu els registres",
     "In-person meeting" : "Reunió presencial",
     "Online (audio/video)" : "En línia (audio/vídeo)",
+    "Guest password:" : "Contrasenya de convidat:",
+    "Talk integration error: check logs" : "Error d'integració de la conversa: reviseu els registres",
     "Meeting Type" : "Tipus de reunió",
     "Select meeting type" : "Selecciona el tipus de reunió",
     "Your email address is required for this operation." : "La vostra adreça de correu electrònic és necessària per a aquesta operació.",
@@ -39,8 +39,6 @@ OC.L10N.register(
     "If you have any questions please feel free to call %1$s or write to %2$s" : "Si teniu alguna pregunta, si us plau pot trucar a %1$s o escriure a %2$s",
     "Appointment is canceled" : "La cita s’ha cancel·lat",
     "%s Appointment" : "%s Cita",
-    "Password" : "Contrasenya",
-    "Chat/Call link: %s" : "Enllaç Xat/Trucada %s",
     "Thank you" : "Gràcies",
     "To cancel your appointment please click: %1$s Cancel Appointment %2$s" : "Per cancel·lar la vostra cita, si us plau cliqueu: %1$s Cancel·la la cita %2$s",
     "To cancel your appointment please visit: %s" : "Per cancel·lar la cita, si us plau visiteu: %s",

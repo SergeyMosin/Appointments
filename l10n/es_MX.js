@@ -17,7 +17,6 @@ OC.L10N.register(
     "If you have any questions please feel free to call %1$s or write to %2$s" : "Si tiene alguna pregunta por favor llame a %1$s or escriba a %2$s",
     "Appointment is canceled" : "Cita cancelada",
     "%s Appointment" : "%s Cita",
-    "Password" : "Contraseña",
     "Thank you" : "Gracias",
     "Appointments" : "Citas",
     "Your appointment scheduled for %s is confirmed." : "Su cita agendada para %s está confirmada.",

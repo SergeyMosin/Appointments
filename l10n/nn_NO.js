@@ -2,7 +2,6 @@ OC.L10N.register(
     "appointments",
     {
     "Cancel" : "Avbryt",
-    "Password" : "Passord",
     "Info" : "Info",
     "Settings" : "Instillingar",
     "Title" : "Tittel",

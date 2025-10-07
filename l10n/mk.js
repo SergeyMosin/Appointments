@@ -7,7 +7,6 @@ OC.L10N.register(
     "Cancel" : "Откажи",
     "Reminder sent on %s" : "Потсетник е испратен на %s",
     "Date/Time: %s" : "Датум/Време: %s",
-    "Password" : "Лозинка",
     "Appointments" : "Состаноци",
     "Action needed" : "Потребна е акција",
     "Info" : "Info",

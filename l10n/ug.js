@@ -1,10 +1,10 @@
 OC.L10N.register(
     "appointments",
     {
-    "Guest password:" : "مېھمان پارولى:",
-    "Talk integration error: check logs" : "سۆزلىشىش بىرلەشتۈرۈش خاتالىقى: خاتىرىلەرنى تەكشۈرۈش",
     "In-person meeting" : "شەخسلەر ئۇچرىشىشى",
     "Online (audio/video)" : "توردا (ئاۋازلىق / سىن)",
+    "Guest password:" : "مېھمان پارولى:",
+    "Talk integration error: check logs" : "سۆزلىشىش بىرلەشتۈرۈش خاتالىقى: خاتىرىلەرنى تەكشۈرۈش",
     "Meeting link: %s" : "يىغىن ئۇلىنىشى:%s",
     "Guest Password: %s" : "مېھمان پارولى:%s",
     "Video/audio integration error: check logs" : "سىن / ئاۋاز بىرلەشتۈرۈش خاتالىقى: خاتىرىلەرنى تەكشۈرۈش",
@@ -44,8 +44,6 @@ OC.L10N.register(
     "If you have any questions please feel free to call %1$s or write to %2$s" : "سوئالىڭىز بولسا% 1 $ s غا تېلېفون قىلىڭ ياكى% 2 $ s غا خەت يېزىڭ",
     "Appointment is canceled" : "تەيىنلەش ئەمەلدىن قالدۇرۇلدى",
     "%s Appointment" : "%s تەيىنلەش",
-    "Password" : "ئىم",
-    "Chat/Call link: %s" : "پاراڭ / چاقىرىش ئۇلىنىشى:%s",
     "Password: %s" : "پارول:%s",
     "Click %1$shere%2$s to change your appointment type to %3$s." : "ئۇچرىشىش تىپىڭىزنى% 3 $ s غا ئۆزگەرتىش ئۈچۈن% 1 $ shere% 2 $ s نى بېسىڭ.",
     "Click here: %1$s to change your appointment type to %2$s." : "بۇ يەرنى چېكىڭ:% 1 $ s سىزنىڭ تەيىنلەش تىپىڭىزنى% 2 $ s غا ئۆزگەرتىڭ.",

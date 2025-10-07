@@ -1,10 +1,10 @@
 OC.L10N.register(
     "appointments",
     {
-    "Guest password:" : "Lozinka gosta:",
-    "Talk integration error: check logs" : "Pogreška integracije aplikacije Talk: provjerite zapise",
     "In-person meeting" : "Sastanak uživo",
     "Online (audio/video)" : "Na mreži (audio/video)",
+    "Guest password:" : "Lozinka gosta:",
+    "Talk integration error: check logs" : "Pogreška integracije aplikacije Talk: provjerite zapise",
     "Meeting Type" : "Vrsta sastanka",
     "Select meeting type" : "Odaberite vrstu sastanka",
     "Your email address is required for this operation." : "Za ovu je radnju potrebna vaša adresa e-pošte.",
@@ -36,8 +36,6 @@ OC.L10N.register(
     "If you have any questions please feel free to call %1$s or write to %2$s" : "Ako imate bilo kakva pitanja, nazovite nas na %1$s ili nam pišite na %2$s",
     "Appointment is canceled" : "Dogovor je otkazan",
     "%s Appointment" : "Dogovor %s",
-    "Password" : "Zaporka",
-    "Chat/Call link: %s" : "Poveznica za razmjenu poruka / poziv: %s",
     "Thank you" : "Hvala",
     "To cancel your appointment please click: %1$s Cancel Appointment %2$s" : "Za otkazivanje dogovora kliknite: %1$s Otkaži dogovor %2$s",
     "To cancel your appointment please visit: %s" : "Za otkazivanje dogovora posjetite: %s",
