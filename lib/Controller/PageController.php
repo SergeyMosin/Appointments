@@ -278,6 +278,30 @@ class PageController extends Controller
      * @noinspection PhpUnused
      * @throws NotLoggedInException
      */
+    public function cncfembpost(): Response
+    {
+        return $this->cncf(true);
+    }
+
+    /**
+     * @NoAdminRequired
+     * @PublicPage
+     * @NoCSRFRequired
+     * @noinspection PhpUnused
+     * @throws NotLoggedInException
+     */
+    public function cncfpost(): Response
+    {
+        return $this->cncf();
+    }
+
+    /**
+     * @NoAdminRequired
+     * @PublicPage
+     * @NoCSRFRequired
+     * @noinspection PhpUnused
+     * @throws NotLoggedInException
+     */
     public function cncf(bool $embed = false): Response
     {
         list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"));
@@ -291,14 +315,35 @@ class PageController extends Controller
         $this->throwIfPrivateModeNotLoggedIn();
 
         $dParam = substr($pd, 1);
-        if ($dParam === self::TEST_TOKEN_CNF) {
-            // short-circuit to testing
-            $a = '-' . $a;
-        } else {
-            $key = hex2bin($this->c->getAppValue($this->appName, 'hk'));
-            $uri = $this->utils->decrypt($dParam, $key) . ".ics";
-            if (empty($uri)) {
-                return $this->pubErrResponse($userId, $embed);
+
+//        if ($dParam === self::TEST_TOKEN_CNF) {
+//            // short-circuit to testing
+//            $a = '-' . $a;
+//        } else {
+
+        $key = hex2bin($this->c->getAppValue($this->appName, 'hk'));
+        $uri = $this->utils->decrypt($dParam, $key);
+        if (empty($uri)) {
+            return $this->pubErrResponse($userId, $embed);
+        }
+        $uri .= ".ics";
+
+//        }
+
+        // https://github.com/SergeyMosin/Appointments/issues/627
+        if ($this->request->getMethod() === 'POST') {
+            $dh = $this->request->getParam("h");
+            if ($dh !== null && $this->utils->validateHHash($dh, $pd)) {
+                // PRG to the next step...
+                $parsed_url = parse_url($this->request->getRequestUri());
+
+                $hash2 = hash('adler32', $pd . $dh);
+                $new_url = $parsed_url['path'] . '?d=' . urlencode($pd) . '&h' . $dh . '=' . $hash2;
+
+                return new RedirectResponse($new_url);
+            } else {
+                // something fishy is going on
+                return new NotFoundResponse();
             }
         }
 
@@ -324,10 +369,12 @@ class PageController extends Controller
 
         // issue https://github.com/SergeyMosin/Appointments/issues/293
         if (!$take_action) {
-            // we only take action if we have $dh param and $dh matches $pd adler32 hash
-            $dh = $this->request->getParam("h");
+            // we only take action if we have $dh param
+            $hash1 = hash('adler32', $pd);
+            $dh = $this->request->getParam("h" . $hash1);
+
             if ($dh !== null) {
-                if (!isset($dh[8]) && $dh === hash('adler32', $pd, false)) {
+                if ($this->utils->validateHHash($dh, $pd . $hash1)) {
                     $take_action = true;
                 } else {
                     // something fishy is going on
@@ -981,29 +1028,29 @@ class PageController extends Controller
         $label = $field['label'] ?? 'Field';
         $name = $field['name'];
         $type = $field['type'] ?? 'text';
-    
+
         $value = $post[$name] ?? null;
-    
+
         // Normalize value
         if (in_array($type, ['checkbox', 'radio'], true)) {
             $rawValue = is_array($value)
                 ? array_filter(
-                    array_map(function($v) {
-                        return trim((string) $v);
+                    array_map(function ($v) {
+                        return trim((string)$v);
                     }, $value)
                 )
                 : [trim((string)$value)];
         } else {
             $rawValue = trim((string)$value);
         }
-    
+
         // Required check after normalization
         if (!empty($field['required'])) {
             if ((is_array($rawValue) && empty($rawValue)) || (!is_array($rawValue) && $rawValue === '')) {
                 return false;
             }
         }
-    
+
         // Validation by input type
         switch ($type) {
             case 'email':
@@ -1014,7 +1061,7 @@ class PageController extends Controller
                     return false;
                 }
                 break;
-    
+
             case 'url':
                 if (!is_string($rawValue) || !filter_var($rawValue, FILTER_VALIDATE_URL)) {
                     return false;
@@ -1023,14 +1070,18 @@ class PageController extends Controller
                     return false;
                 }
                 break;
-    
+
             case 'number':
                 if (!is_numeric($rawValue)) {
                     return false;
                 }
                 $n = (float)$rawValue;
-                if (isset($field['min']) && $n < (float)$field['min']) return false;
-                if (isset($field['max']) && $n > (float)$field['max']) return false;
+                if (isset($field['min']) && $n < (float)$field['min']) {
+                    return false;
+                }
+                if (isset($field['max']) && $n > (float)$field['max']) {
+                    return false;
+                }
                 if (isset($field['step'])) {
                     $step = (float)$field['step'];
                     $min = isset($field['min']) ? (float)$field['min'] : 0;
@@ -1039,19 +1090,19 @@ class PageController extends Controller
                     }
                 }
                 break;
-    
+
             case 'checkbox':
             case 'radio':
                 if (isset($field['options']) && is_array($field['options'])) {
                     $allowed = array_map('strval', $field['options']);
                     foreach ($rawValue as $val) {
-                        if (!in_array((string) $val, $allowed, true)) {
+                        if (!in_array((string)$val, $allowed, true)) {
                             return false;
                         }
                     }
                 }
                 break;
-    
+
             case 'text':
             case 'textarea':
             default:
@@ -1063,7 +1114,7 @@ class PageController extends Controller
                 }
                 break;
         }
-    
+
         // Output formatting
         if (is_array($rawValue)) {
             $clean = array_map(fn($v) => strip_tags(substr($v, 0, 128)), $rawValue);

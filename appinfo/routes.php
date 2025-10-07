@@ -9,11 +9,13 @@ return [
 
 		['name' => 'page#form', 'url' => '/pub/{token}/form', 'verb' => 'GET'],
 		['name' => 'page#formpost', 'url' => '/pub/{token}/form', 'verb' => 'POST'],
-		['name' => 'page#cncf', 'url' => '/pub/{token}/cncf', 'verb' => 'GET'],
+        ['name' => 'page#cncf', 'url' => '/pub/{token}/cncf', 'verb' => 'GET'],
+        ['name' => 'page#cncfpost', 'url' => '/pub/{token}/cncf', 'verb' => 'POST'],
 
 		['name' => 'page#formemb', 'url' => '/embed/{token}/form', 'verb' => 'GET'],
 		['name' => 'page#formpostemb', 'url' => '/embed/{token}/form', 'verb' => 'POST'],
-		['name' => 'page#cncfemb', 'url' => '/embed/{token}/cncf', 'verb' => 'GET'],
+        ['name' => 'page#cncfemb', 'url' => '/embed/{token}/cncf', 'verb' => 'GET'],
+        ['name' => 'page#cncfembpost', 'url' => '/embed/{token}/cncf', 'verb' => 'POST'],
 
 		['name' => 'state#index', 'url' => '/state', 'verb' => 'POST'],
 

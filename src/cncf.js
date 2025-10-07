@@ -9,6 +9,7 @@
 				let t = e.currentTarget
 				const attrName = 'data-appt-action-url-hash'
 				if (t !== null && t.hasAttribute(attrName)) {
+
 					const uri = window.location.pathname + window.location.search + '&h=' + t.getAttribute(attrName)
 
 					//Avoid double clicks
@@ -17,11 +18,10 @@
 					// show spinner
 					document.getElementById("srgdev-ncfp_fbtn-spinner").style.display = "inline-block"
 
-					if (window.history && window.history.replaceState) {
-						window.history.replaceState({}, '', uri)
-						window.history.go()
-					} else {
-						window.location = uri
+					const form=document.getElementById("srgdev-appt-cncf_action_frm")
+					if(form){
+							form.action=uri
+						  form.submit()
 					}
 				}
 			})

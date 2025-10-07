@@ -2208,5 +2208,10 @@ class BackendUtils
         }
         return true;
     }
+
+    function validateHHash(string $dh, string $pd): bool
+    {
+        return !isset($dh[8]) && $dh === hash('adler32', $pd, false);
+    }
 }
 
