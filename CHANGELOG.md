@@ -1,3 +1,13 @@
+## v2.6.0 - 2025-10-07
+### Changed
+- Confirm/Cancel page now uses POST method - #627
+- Bump Axios version
+### Added
+- Option to add "bot protection" countdown timer/delay to the Confirm/Cancel button - #627
+- More logging for issue #626
+### Fixed
+- Form reset(bfcache) on Chrome when Back button is clicked
+
 ## v2.5.0 - 2025-09-30
 ### Changed
 - NC v31 is now min version
