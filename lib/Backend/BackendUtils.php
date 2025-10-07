@@ -142,7 +142,7 @@ class BackendUtils
     public const PSN_NWEEKS = "nbrWeeks";
     public const PSN_TIME2 = "time2Cols";
     public const PSN_HIDE_TEL = "hidePhone";
-    public const PSN_CNCF_DELAY ="cncfDelay";
+    public const PSN_CNCF_DELAY = "cncfDelay";
     public const PSN_END_TIME = "endTime";
     public const PSN_SHOW_TZ = "showTZ";
     public const PSN_USE_NC_THEME = "useNcTheme";
@@ -845,6 +845,16 @@ class BackendUtils
     {
         $r = null;
         $ao = null;
+
+        if ($evt === null) {
+            return null;
+        }
+
+        // TEMP: ref: https://github.com/SergeyMosin/Appointments/issues/626
+        if (!$evt->ORGANIZER) {
+            $this->logger->error('$evt->ORGANIZER is not set, $evt: ' . $evt->serialize());
+            return null;
+        }
 
         $ov = $evt->ORGANIZER->getValue();
         $ov = trim(substr($ov, strpos($ov, ":") + 1));
