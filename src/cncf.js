@@ -18,14 +18,37 @@
 					// show spinner
 					document.getElementById("srgdev-ncfp_fbtn-spinner").style.display = "inline-block"
 
-					const form=document.getElementById("srgdev-appt-cncf_action_frm")
-					if(form){
-							form.action=uri
-						  form.submit()
+					const form = document.getElementById("srgdev-appt-cncf_action_frm")
+					if (form) {
+						form.action = uri
+						form.submit()
 					}
 				}
 			})
 
+			if (btn.hasAttribute('data-cncf-del') && btn.getAttribute('data-cncf-del') !== '0') {
+
+				btn.disabled = true
+
+				let curCount = 3
+				const txtElm = document.getElementById("srgdev-ncfp_fbtn-text")
+				const btnText = txtElm.textContent
+
+				const tempText= atob(btn.getAttribute('data-cncf-del'))
+				txtElm.textContent = tempText + ' ' + curCount
+				curCount -= 1
+
+				const intervalId = setInterval(() => {
+					if (curCount === 0) {
+						btn.disabled = false
+						txtElm.textContent = btnText
+						clearInterval(intervalId)
+					} else {
+						txtElm.textContent = tempText + ' ' + curCount
+						curCount--
+					}
+				}, 750)
+			}
 			// embedding stuff @see /test/embedding
 			msg = "appt:action_needed"
 

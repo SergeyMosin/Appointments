@@ -82,6 +82,7 @@ export const useSettingsStore = defineStore('settings', {
 			time2Cols: false,
 			endTime: false,
 			hidePhone: false,
+			cncfDelay: false,
 			gdpr: '',
 			gdprNoChb: false,
 			pageTitle: '',

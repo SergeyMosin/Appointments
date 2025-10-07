@@ -369,7 +369,7 @@ class PageController extends Controller
 
         // issue https://github.com/SergeyMosin/Appointments/issues/293
         if (!$take_action) {
-            // we only take action if we have $dh param
+            // we only take action if we have $dh hash2 param
             $hash1 = hash('adler32', $pd);
             $dh = $this->request->getParam("h" . $hash1);
 
@@ -382,6 +382,9 @@ class PageController extends Controller
                 }
             } else {
                 $appt_action_url_hash = hash('adler32', $pd, false);
+                if($settings[BackendUtils::PSN_CNCF_DELAY]===true) {
+                    $tr_params['appt_cncf_delay'] = base64_encode($this->l->t("Please Wait"));
+                }
             }
         }
 

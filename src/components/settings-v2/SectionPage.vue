@@ -108,6 +108,13 @@ const handlePreviewClick = () => {
 				:label="t('appointments', 'Hide phone number field')"
 				:store="settingsStore"/>
 
+		<ComboCheckbox
+				prop-name="cncfDelay"
+				:label="t('appointments', 'Confirm/Cancel Button Timer')"
+				:store="settingsStore">
+			<template #help>Adds a short delay before a Confirm/Cancel action can be taken. Helps prevent unintended clicks by bots and AIs</template>
+		</ComboCheckbox>
+
 		<LabelAccordion
 				:label="t('appointments', 'Advanced Form Settings')"
 				:accordion="true">

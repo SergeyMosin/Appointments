@@ -142,6 +142,7 @@ class BackendUtils
     public const PSN_NWEEKS = "nbrWeeks";
     public const PSN_TIME2 = "time2Cols";
     public const PSN_HIDE_TEL = "hidePhone";
+    public const PSN_CNCF_DELAY ="cncfDelay";
     public const PSN_END_TIME = "endTime";
     public const PSN_SHOW_TZ = "showTZ";
     public const PSN_USE_NC_THEME = "useNcTheme";
@@ -1182,6 +1183,7 @@ class BackendUtils
             self::PSN_TIME2 => false,
             self::PSN_END_TIME => false,
             self::PSN_HIDE_TEL => false,
+            self::PSN_CNCF_DELAY => false,
             self::PSN_SHOW_TZ => false,
             self::PSN_GDPR => "",
             self::PSN_GDPR_NO_CHB => false,
