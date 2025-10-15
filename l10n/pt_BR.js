@@ -65,6 +65,7 @@ OC.L10N.register(
     "Your appointment scheduled for %s is confirmed." : "Seu compromisso agendado para %s está confirmado.",
     "Your appointment scheduled for %s is canceled." : "Seu compromisso agendado para %s está cancelado.",
     "Your appointment is canceled." : "Seu compromisso foi cancelado.",
+    "Please Wait" : "Aguarde, Por Favor",
     "Please confirm your appointment scheduled for %s." : "Por favor, confirme seu compromisso agendado para %s.",
     "Would you like to cancel appointment scheduled for %s ?" : "Gostaria de cancelar o seu compromisso agendado para %s?",
     "Yes, Cancel" : "Sim, Cancelar",
