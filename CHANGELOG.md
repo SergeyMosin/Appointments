@@ -1,3 +1,7 @@
+## v2.6.1 - 2025-10-15
+### Fixed
+- Form error handling = #628
+
 ## v2.6.0 - 2025-10-07
 ### Changed
 - Confirm/Cancel page now uses POST method - #627
