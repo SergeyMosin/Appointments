@@ -11,6 +11,7 @@ OC.L10N.register(
     "Location: %s" : "Месцазнаходжанне: %s",
     "Password: %s" : "Пароль: %s",
     "Thank you" : "Дзякуй",
+    "Please Wait" : "Пачакайце",
     "Yes, Cancel" : "Так, скасаваць",
     "Yes, Change" : "Так, змяніць",
     "Info" : "Інфармацыя",
