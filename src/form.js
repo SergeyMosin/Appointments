@@ -235,6 +235,7 @@
 		if (lee !== 0) {
 			e.preventDefault()
 			e.stopPropagation()
+			document.getElementById("srgdev-ncfp_fbtn").disabled = false
 			return false
 		}
 		document.getElementById("srgdev-ncfp_fbtn-spinner").style.display = "inline-block"

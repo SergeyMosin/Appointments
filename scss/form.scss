@@ -188,7 +188,7 @@ $color-placeholder-var: var(--color-text-maxcontrast);
 
 .checkbox[err] + label:before {
   border-color: svariables.$color-error !important;
-  border-color: var(--color-error) !important;
+  border-color: var(--color-border-error) !important;
 }
 
 .srgdev-ncfp-form-btn {
@@ -261,7 +261,7 @@ input.srgdev-ncfp-form-input:user-invalid,
 #srgdev-ncfp_talk_type[err] // because 'invalid' is overridden
 {
   box-shadow: none !important;
-  border-color: var(--color-error) !important;
+  border-color: var(--color-border-error) !important;
 }
 
 #srgdev-ncfp_sel_cont {
