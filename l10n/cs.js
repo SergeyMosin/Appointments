@@ -289,6 +289,7 @@ OC.L10N.register(
     "Show time in two columns" : "Zobrazovat čas ve dvou sloupcích",
     "Show end time" : "Zobrazit čas konce",
     "Hide phone number field" : "Skrýt kolonku telefonní číslo",
+    "Confirm/Cancel Button Timer" : "Časovač tlačítka potvrdit/zrušit",
     "Advanced Form Settings" : "Pokročilá nastavení formuláře",
     "GDPR Compliance" : "Shoda s nařízením GDPR",
     "Any text in the \"GDPR Compliance\" field will trigger the display of the \"GDPR\" checkbox. The checkbox can be hidden when the \"GDPR text only (no checkbox)\" option is selected. A checkbox with plain text (no HTML) or any HTML/links without a checkbox will work as is." : "Jakýkoli text v kolonce „Splňující GDPR“ vyvolá zobrazení zatržítka „GDPR“. Zatržítko je možné skrýt pokud je vybraná volba „Pouze GDPR text (zatržítka)\". Zatržítko s prostým textem (žádné HTML) nebo žádné HTML/odkazy bez zatržítka budou fungovat, jak jsou.",
