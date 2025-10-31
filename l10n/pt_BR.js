@@ -289,6 +289,7 @@ OC.L10N.register(
     "Show time in two columns" : "Mostrar o tempo em duas colunas",
     "Show end time" : "Mostrar hora final",
     "Hide phone number field" : "Esconder o campo do número telefônico",
+    "Confirm/Cancel Button Timer" : "Temporizador do botão Confirmar/Cancelar",
     "Advanced Form Settings" : "Configurações Avançadas do Formulário",
     "GDPR Compliance" : "Conformidade com RGPD",
     "Any text in the \"GDPR Compliance\" field will trigger the display of the \"GDPR\" checkbox. The checkbox can be hidden when the \"GDPR text only (no checkbox)\" option is selected. A checkbox with plain text (no HTML) or any HTML/links without a checkbox will work as is." : "Qualquer texto no campo \"Conformidade com RGPD\" acionará a exibição da caixa de seleção \"RGPD\". A caixa de seleção pode ser ocultada quando a opção \"Somente texto de RGPD (sem caixa de seleção)\" estiver selecionada. Uma caixa de seleção com texto simples (sem HTML) ou qualquer HTML/link sem caixa de seleção funcionará como está.",
