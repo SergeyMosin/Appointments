@@ -15,6 +15,7 @@ OC.L10N.register(
     "Available" : "Налични",
     "Public Page" : "Публична страница",
     "Dear %s," : "Уважаеми %s,",
+    "Reminder: please confirm your %s appointment" : "Напомняне: моля, потвърдете вашата%s среща",
     "%s appointment reminder" : "%s напомняне за среща",
     "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s." : "Това е напомняне от %1$s за предстоящата ви среща на %2$s. Ако трябва да се пренасрочи, моля, обадете се на %3$s.",
     "Confirm" : "Потвърди",
