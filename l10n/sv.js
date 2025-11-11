@@ -60,6 +60,7 @@ OC.L10N.register(
     "URL" : "Webbadress",
     "Save" : "Spara",
     "Copy" : "Kopiera",
+    "Visit" : "Besök",
     "Remove" : "Ta bort",
     "Add" : "Lägg till",
     "OK" : "OK",

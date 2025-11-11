@@ -71,6 +71,7 @@ OC.L10N.register(
     "Page URL" : "Lehe võrguaadress",
     "Show iframe/embeddable" : "Näita lõimitavat koodi",
     "Copy" : "Kopeeri",
+    "Visit" : "Külasta",
     "error: cannot load calendar data" : "viga: ei õnnestu laadida kalendri andmeid",
     "Number of expired appointments/slots: {number}" : "Aegunud kohtumiste või kohtumiste aegade arv: {number}",
     "Remove" : "Eemalda",
