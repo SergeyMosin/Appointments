@@ -1,3 +1,8 @@
+## v2.6.2 - 2025-11-19
+### Fixed
+- Make "Auto-style" work NC31+ default background images
+- Provide non-redirecting URL to tNC App Store - #630 and #634 
+
 ## v2.6.1 - 2025-10-15
 ### Fixed
 - Form error handling = #628
