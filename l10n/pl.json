@@ -287,6 +287,7 @@
     "Show time in two columns" : "Pokaż czas w dwóch kolumnach",
     "Show end time" : "Pokaż czas zakończenia",
     "Hide phone number field" : "Ukryj pole numeru telefonu",
+    "Confirm/Cancel Button Timer" : "Przycisk potwierdzenia/anulowania czasomierza",
     "Advanced Form Settings" : "Zaawansowane ustawienia formularza",
     "GDPR Compliance" : "Zgodność z RODO",
     "Any text in the \"GDPR Compliance\" field will trigger the display of the \"GDPR\" checkbox. The checkbox can be hidden when the \"GDPR text only (no checkbox)\" option is selected. A checkbox with plain text (no HTML) or any HTML/links without a checkbox will work as is." : "Każdy tekst w polu „Zgodność z RODO” spowoduje wyświetlenie pola wyboru „RODO”. Pole wyboru można ukryć, gdy wybrana jest opcja „Tylko tekst RODO (bez pola wyboru)”. Pole wyboru ze zwykłym tekstem (bez HTML) lub dowolny HTML/linki bez pola wyboru będą działały tak jak są.",
