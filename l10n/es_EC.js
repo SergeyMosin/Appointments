@@ -82,6 +82,7 @@ OC.L10N.register(
     "URL" : "URL",
     "Save" : "Guardar",
     "Copy" : "Copiar",
+    "Visit" : "Visitar",
     "Remove empty appointment slots created before {fullDate} ?" : "¿Eliminar los intervalos de citas vacíos creados antes de {fullDate}?",
     "Remove empty slots and booked appointments created before {fullDate} ?" : "¿Eliminar los intervalos vacíos y las citas reservadas creadas antes de {fullDate}?",
     "two calendars affected" : "dos calendarios afectados",
