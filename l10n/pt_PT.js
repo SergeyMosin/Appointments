@@ -156,6 +156,8 @@ OC.L10N.register(
     "Show end time" : "Mostrar hora final",
     "Hide phone number field" : "Ocultar campo de número de telefone",
     "GDPR Compliance" : "Compatível com RGPD",
+    "Allowed HTML tags: {tags}" : "Etiquetas HTML permitidas: {tags}",
+    "Prefilled Inputs Appearance" : "Aspeto dos campos de entrada pré-preenchidos",
     "Add {taginfo} tag" : "Adicionar {taginfo} etiqueta",
     "Not set" : "Não definido",
     "3 days" : "3 dias",
