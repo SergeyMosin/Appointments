@@ -30,6 +30,7 @@ OC.L10N.register(
     "Deleted" : "O`chirilgan",
     "Confirmed" : "Tasdiqlangan",
     "Canceled" : "Bekor qilingan",
+    "Warning" : "Ogohlantirish",
     "Security" : "Xavfsizlik",
     "Edit" : "Tahrirlash",
     "Discard" : "Bekor qilish",
