@@ -19,7 +19,7 @@
     "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s." : "Dies ist eine Erinnerung von %1$s an Ihren bevorstehenden Termin am %2$s. Wenn Sie den Termin verschieben müssen, rufen Sie bitte %3$s an.",
     "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please write to %3$s." : "Dies ist eine Erinnerung von %1$s an Ihren bevorstehenden Termin am %2$s. Wenn Sie den Termin verschieben müssen, schreiben Sie bitte %3$s an.",
     "Confirm" : "Bestätigen",
-    "Cancel" : "Absagen",
+    "Cancel" : "Abbrechen",
     "Reminder sent on %s" : "Erinnerung gesendet am %s",
     "Cancellation reminder sent on %s" : "Absageerinnerung gesendet am %s",
     "%s appointment (action needed)" : "Termin mit %s: (Aktion erforderlich)",
