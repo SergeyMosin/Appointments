@@ -15,7 +15,7 @@
     <p class="srgdev-appt-hs-p-hb">7. Get appointments page URL</p>
     <img class="quick-start-guide-img" alt="get page url" style="max-width: 706px" src="<?php print_unescaped(image_path('appointments', 'qs7-get-page-url.jpg')); ?>"/>
     <p id="srgdev-sec_timezone" class="srgdev-appt-hs-p-hb">Timezones</p>
-    <p class="srgdev-appt-hs-p">Your calendar's timezone is used as the base and appointment time will be "casted" to visitors local time.</p>
+    <p class="srgdev-appt-hs-p">Your calendar's timezone is used as the base and appointment time will be converted to visitors' local time at their end.</p>
     <p class="srgdev-appt-hs-p srgdev-appt-hs-p_t">Example: 12:00PM
         <strong>America/New_York timezone</strong> appointment based in New York</p>
     <img alt="local timezone" class="srgdev-appt-hs-tz-img quick-start-guide-img" src="<?php print_unescaped(image_path('appointments', 'actual_timezone.jpg')); ?>"/>
@@ -24,30 +24,30 @@
 
     <h2 class="srgdev-appt-hs-h1">Customize Public Page</h2>
     <p class="srgdev-appt-hs-p"><strong id="srgdev-sec_gdpr">GDPR Compliance</strong></p>
-    <p class="srgdev-appt-hs-p">Any text in the "GDPR Compliance" field will trigger display of the "GDPR" check box. The checkbox can be hidden when "GDPR text only (no checkbox)" option is checked.</p>
-    <p class="srgdev-appt-hs-p">A check box with plain text (no html) or any html/links without a checkbox will work as is. However, if you need to have a the check and html or a link to your privacy policy please read on... For the link to work properly you should separate it from the &lt;label&gt; element, and the &lt;label&gt;'s
-        <strong>"for"</strong> attribute MUST be set to <strong>"appt_gdpr_id"</strong>, example:</p>
+    <p class="srgdev-appt-hs-p">Any text in the "GDPR Compliance" field will trigger the "GDPR" checkbox to display. The checkbox can be hidden by checking the "GDPR text only (no checkbox)" option.</p>
+    <p class="srgdev-appt-hs-p">A checkbox with plain text (no html) or any html/links without a checkbox will work as is. However, if you need to include the checkbox and certain html or a link to your privacy policy, please read on: For the link to work properly, you should separate it from the &lt;label&gt; element, and the &lt;label&gt;'s
+        <strong>"for"</strong> attribute MUST be set to <strong>"appt_gdpr_id"</strong>. Example:</p>
     <code class="srgdev-appt-hs-code">
         &lt;label for=&quot;appt_gdpr_id&quot;&gt;Some text &lt;/label&gt;&lt;a href=&quot;PRIVACY_POLCY_URL&quot;&gt;Privacy Policy&lt;/a&gt;&lt;label for=&quot;appt_gdpr_id&quot;&gt; some more text.&lt;/label&gt;
     </code>
-    <p class="srgdev-appt-hs-p-h"><strong>Appointment's Title</strong></p>
-    <p class="srgdev-appt-hs-p">If an event's title/summary starts with an "_" character then the title will be displayed next or below the time in the form. For example:
+    <p class="srgdev-appt-hs-p-h"><strong>Appointment Title</strong></p>
+    <p class="srgdev-appt-hs-p">If an event title/summary starts with the "_" character then the title will be displayed next to or below the time in the form. For example:
         <code class="srgdev-appt-hs-code_short" style="padding-top: .1em; padding-bottom: .1em"><strong>_</strong>Language Lessons</code> will be displayed as "Language Lessons"
     </p>
     <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_tmm_title_template">Title Template</strong></p>
     <div class="srgdev-appt-hs-p">
-        Following template tokens can be used to customize Appointment's Title:
+        Following template tokens can be used to customize the Appointment Title:
         <div style="margin-left: 2em">
             <code>%N</code> - Attendee name<br>
             <code>%O</code> - Organization Name<br>
             <code>%P</code> - Page Name (as shown/set in page list sidebar)<br>
             <code>%T</code> - Mask Token (first three letters of name + semi-random token)<br>
         </div>
-        For example template like <code class="srgdev-appt-hs-code_short">%N (%O)</code> will set new appointments title to something like <code class="srgdev-appt-hs-code_short">John Smith (Good Org)</code>
+        For example, a template like <code class="srgdev-appt-hs-code_short">%N (%O)</code> will set new appointments title to something like <code class="srgdev-appt-hs-code_short">John Smith (Good Org)</code>
     </div>
     <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_style">Style Override</strong></p>
     <p class="srgdev-appt-hs-p">Insert custom
-        <code>&lt;style&gt;&lt;/style&gt;</code> element to override default page style. Try something like this for example:
+        <code>&lt;style&gt;&lt;/style&gt;</code> element to override default page style. Try something like this, for example:
     </p>
     <pre><code class="srgdev-appt-hs-code">&lt;style&gt;
 #header{
@@ -66,102 +66,102 @@ form{
     border-bottom: 3px solid #961AB1;
 }
 &lt;/style&gt;</code></pre>
-    <span style="font-style: italic">* Don't forget to style confirm and error pages</span>
+    <span style="font-style: italic">* Don't forget to style confirmation and error pages</span>
     <h2 class="srgdev-appt-hs-h1">Email Settings</h2>
     <p class="srgdev-appt-hs-p-h">
-        <strong id="srgdev-sec_emailatt">Email Attendee when the appointment is modified and/or deleted</strong> - Attendees will be notified via email when their
+        <strong id="srgdev-sec_emailatt">Email the Attendee when the appointment is modified and/or deleted</strong> - Attendees will be notified via email when their
         <strong>upcoming</strong> appointments are updated or deleted in the calendar app or via some other external mechanism. Only changes to Date/Time, Status or Location will trigger the "Modified" notification.
     </p>
     <p class="srgdev-appt-hs-p-h">
         <strong id="srgdev-sec_emailme">Email Me when an appointment is updated</strong> - A notification email will be sent to you when an appointment is booked via the public page or an upcoming appointment is confirmed or canceled via the email links.
     </p>
     <p class="srgdev-appt-hs-p-h">
-        <strong id="srgdev-sec_emailskipevs">Skip email validation step</strong> - When this option is selected the "<em>... action needed</em>" validation email will NOT be sent to the attendee. Instead the "<em>... Appointment is confirmed</em>" message is going to be sent right away, and the "<em>All done</em>" page is going to be shown when the form is submitted.
+        <strong id="srgdev-sec_emailskipevs">Skip email validation step</strong> - When this option is selected, the "<em>... action needed</em>" validation email will NOT be sent to the attendee. Instead, the "<em>... Appointment is confirmed</em>" message will be sent immediately, and the "<em>All done</em>" page will be displayed upon submission of the form.
     </p>
     <p class="srgdev-appt-hs-p-h">
-        <strong id="srgdev-sec_emaildef"><code>useDefaultEmail</code></strong> - Most instance of NC won't have the particular configuration allowing to send emails on behalf of organizers. Therefore, the default email address as per
-        <a class="srgdev-appt-hs-link" href="https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/email_configuration.html" target="_blank">Mail Settings</a> is used, and your address is added in the "Reply-To:" header field. If your Nextcloud configuration supports sending out emails for individual users, Admins can override the 'useDefaultEmail' directive like so:
+        <strong id="srgdev-sec_emaildef"><code>useDefaultEmail</code></strong> - Most Nextcloud instances won't have the configuration required to allow sending of emails on behalf of organizers. Therefore, the default email address set in the
+        <a class="srgdev-appt-hs-link" href="https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/email_configuration.html" target="_blank">Mail Settings</a> is used, and the organizer's address is included in the "Reply-To:" header field. If your Nextcloud configuration supports sending emails on behalf of individual users, Admins can override the 'useDefaultEmail' directive with this command:
         <code class="srgdev-appt-hs-code_short">occ config:app:set appointments useDefaultEmail --value no</code></p>
     <p class="srgdev-appt-hs-p-h">
-        <strong id="srgdev-sec_emailmoretext"><code>Additional Email Text</code></strong> - this text is appended as paragraph to the end of validation and confirmation emails. Currently only pain text is allowed, HTML will be escaped.
+        <strong id="srgdev-sec_emailmoretext"><code>Additional Email Text</code></strong> - this text is appended as a paragraph at the end of validation and confirmation emails. Currently only pain text is allowed and included HTML will be escaped.
     </p>
     <p class="srgdev-appt-hs-p-h">
         <strong id="srgdev-sec_icsmoretext"><code>Additional ICS file description</code></strong> - this text (no HTML please) will be appended to the end of the event's "DESCRIPTION" property.
     </p>
     <h2 class="srgdev-appt-hs-h1" id="srgdev-sec_ts_mode">Time slot mode</h2>
     <p class="srgdev-appt-hs-p-h">
-        <strong>Weekly Template</strong> - in this mode you can set a weekly template and it will be repeated automatically.
+        <strong>Weekly Template</strong> - this mode allows you to set up a weekly template and it will be automatically repeated.
     </p>
     <div style="margin-left: 2em">
         <p class="srgdev-appt-hs-p-h">
             <strong id="srgdev-sec_destcal_tmm">Destination Calendar (Weekly Template)</strong> - Booked/pending appointments will be placed into this calendar.
         </p>
         <p class="srgdev-appt-hs-p-h">
-            <strong id="srgdev-sec_conflicts_tmm">Check for conflicts in…</strong> - these calendars will be checked for conflicting events in addition to the Destination Calendar.
+            <strong id="srgdev-sec_conflicts_tmm">Check for conflicts in…</strong> - these calendars will also be checked for conflicts, in addition to the Destination Calendar.
         </p>
         <p class="srgdev-appt-hs-p-h"><strong id="srgdev-sec_props_tmm">Appointment Properties</strong> -
-            <em>Duration</em>: if you set multiple duration choices for an appointment, then a visitor will be able to pick one of them.
-            <em>Title</em>: if this is set then the title will be displayed next or below the time in the form.</p>
+            <em>Duration</em>: if you set multiple duration options for an appointment, then visitors can choose between them.
+            <em>Title</em>: if this is set then the title will be displayed next to or below the time in the form.</p>
         <p class="srgdev-appt-hs-p-h">
-            <strong id="srgdev-sec_tmm_subs_sync">Subscriptions Sync Interval</strong> - When linked(subscription) calendars are selected for conflict check, appointments app can pull data from remote servers before checking for scheduling conflicts. It is impractical to pull the data on every request as this will increase processing time especially if multiple remote calendars are selected. Nextcloud (as many other calendar systems) has a cache synchronization mechanism to facilitate timely updates, this option is provided just in-case you feel that the data is not refreshed often enough by nextcloud.
+            <strong id="srgdev-sec_tmm_subs_sync">Subscriptions Sync Interval</strong> - When linked (subscribed) calendars are selected for conflict checks, the appointments app can pull data from remote servers before checking for scheduling conflicts. It is impractical to pull the data on every request, as this will increase processing time, especially if multiple remote calendars are selected. Nextcloud (like many other calendar systems) has a cache synchronization mechanism to facilitate timely updates. This option is provided just in case you feel Nextcloud is not refreshing the data often enough.
         </p>
     </div>
     <p class="srgdev-appt-hs-p-h">
-        <strong>Simple mode</strong> - Use provided "Add Appointment Slots" dialog to add "available" time slots. Recurrence is not suported in this mode.
+        <strong>Simple mode</strong> - Use the provided "Add Appointment Slots" dialog to add "available" time slots. Recurrence is not supported in this mode.
     </p>
     <div style="margin-left: 2em">
         <p class="srgdev-appt-hs-p-h">
-            <strong id="srgdev-sec_maincal">Main Calendar</strong> - when you create new appointments they are placed here and are shown in the your public page(s). It is recommended to create a separate calendar.
+            <strong id="srgdev-sec_maincal">Main Calendar</strong> - when you create new appointments, they are added here and are shown on the your public page(s). It is recommended to create a separate calendar.
         </p>
         <p class="srgdev-appt-hs-p-h">
-            <strong id="srgdev-sec_destcal">Calendar for booked appointments</strong> - if this calendar is different from the main calendar, once an appointment is booked it will be moved here.
+            <strong id="srgdev-sec_destcal">Calendar for booked appointments</strong> - if this calendar is different from the main calendar, an appointment will be moved here once booked.
         </p>
     </div>
     <p class="srgdev-appt-hs-p-h">
-        <strong>External mode</strong> - Use Nextcloud's Calendar App or any other CalDAV compatible client to add "available" timeslots. Most recurrence rules are supported in this mode. Two calendars are required: a "Source Calendar" to keep track of your availability timeslots and a "Destination Calendar" for booked appointments.
+        <strong>External mode</strong> - Use Nextcloud's Calendar App or any other CalDAV-compatible client to add "available" timeslots. Most recurrence rules are supported in this mode. Two calendars are required: a "Source Calendar" to keep track of your availabile timeslots, and a "Destination Calendar" for booked appointments.
     </p>
     <div style="margin-left: 2em">
         <p class="srgdev-appt-hs-p-h">
-            <strong id="srgdev-sec_sourcecal_nr">Source Calendar (External mode)</strong> - Any event with "Show As" a.k.a. "Time As" a.k.a. "Free/Busy" a.k.a. "Time Transparency" set to "<strong>Free</strong>" (<a class="srgdev-appt-hs-link" href="https://tools.ietf.org/html/rfc5545#section-3.8.2.7">RFC5545 specs</a> "TRANSP:TRANSPARENT") will be available for booking in the public form. Most recurrence rules are supported. Also see
+            <strong id="srgdev-sec_sourcecal_nr">Source Calendar (External mode)</strong> - Any event with "Show As" a.k.a. "Time As" a.k.a. "Free/Busy" a.k.a. "Time Transparency" set to "<strong>Free</strong>" (<a class="srgdev-appt-hs-link" href="https://tools.ietf.org/html/rfc5545#section-3.8.2.7">RFC5545 specs</a> "TRANSP:TRANSPARENT") will be available for booking through the public form. Most recurrence rules are supported. See also...
             <span style="font-style: italic">Require "Appointment" category.</span></p>
         <p class="srgdev-appt-hs-p-h">
-            <strong id="srgdev-sec_destcal_nr">Destination Calendar (External mode)</strong> - Booked appointments will be placed in here. In addition to booked appointments, any events in this calendar marked as "<strong>Busy</strong>" will prevent conflicting timeslots in the "Source Calendar" from appearing in the public form. Also see
+            <strong id="srgdev-sec_destcal_nr">Destination Calendar (External mode)</strong> - Booked appointments will be added here. In addition to booked appointments, any events in this calendar marked as "<strong>Busy</strong>" will be considered as conflicts and these slots will be prevented from appearing as available in the public form. See also...
             <span style="font-style: italic">Require "Appointment" category.</span></p>
         <p class="srgdev-appt-hs-p-h">
-            <strong id="srgdev-sec_push_rec_nr">Optimize recurrence (External mode)</strong> - If recurrent events are used in the "Source Calendar" the start (DTSTART) date will be pushed forward once in a while in order to improve performance.
+            <strong id="srgdev-sec_push_rec_nr">Optimize recurrence (External mode)</strong> - If recurrent events are used in the "Source Calendar", the start (DTSTART) date will be pushed forward occasionally to improve performance.
         </p>
         <p class="srgdev-appt-hs-p-h">
-            <strong id="srgdev-sec_require_cat_nr">Require "Appointment" category (External mode)</strong> - When this option is set only events with with "Category" set to "<strong>Appointment</strong>" (in English) will be considered.
+            <strong id="srgdev-sec_require_cat_nr">Require "Appointment" category (External mode)</strong> - When this option is selected, only events with the "Category" set to "<strong>Appointment</strong>" (in English) will be considered.
         </p>
         <p class="srgdev-appt-hs-p-h">
-            <strong id="srgdev-sec_auto_fix_nr">Auto-fix "Source" timeslots (External mode)</strong> - Some calendar apps do not allow users to set Free/Busy parameter, resulting in timeslots not being available for booking. If this option is enabled
-            <strong>AND the first character of the Description/Notes is "_"</strong> then the Free/Busy will be set to "Free" and "Appointment" category will be added automatically when a new event is created in the "Source" calendar.
+            <strong id="srgdev-sec_auto_fix_nr">Auto-fix "Source" timeslots (External mode)</strong> - Some calendar apps do not allow users to set the Free/Busy parameter, resulting in timeslots not being available for booking. If this option is enabled
+            <strong>AND the first character of the Description/Notes is "_"</strong>, then the Free/Busy will be set to "Free" and the "Appointment" category will be added automatically when a new event is created in the "Source" calendar.
         </p>
     </div>
     <h2 class="srgdev-appt-hs-h1">Talk App Integration</h2>
     <p class="srgdev-appt-hs-p">Talk rooms/conversations can be automatically created when an appointment is confirmed.
         <strong>FLOATING timezones are not supported.</strong></p>
     <p class="srgdev-appt-hs-p" style="margin-top: 1em">
-        <strong id="srgdev-sec_talkPassword">Guest password</strong> - when this option is selected Talk rooms will be password protected. An autogenerated pseudo random password will be sent to attendees along with a room/conversation link.
+        <strong id="srgdev-sec_talkPassword">Guest password</strong> - when this option is selected, Talk rooms will be password protected. An automatically generated pseudo-random password will be sent to attendees along with a room/meeting link.
     </p>
     <p class="srgdev-appt-hs-p" style="margin-top: 1em">
-        <strong id="srgdev-sec_talkEmailTxt">Customize email text</strong> - you can override default email message. There are two tokens available, {{url}} and if you use password protection {{pass}}, they will be replaced with the room's URL and the password if used.
+        <strong id="srgdev-sec_talkEmailTxt">Customize email text</strong> - you can override default the email message. There are two tokens available, {{url}}, and if you use password protection, {{pass}}. These will be replaced with the room URL and the password, if used.
     </p>
-    <p class="srgdev-appt-hs-p">For example, this:</p>
+    <p class="srgdev-appt-hs-p">For example:</p>
     <code class="srgdev-appt-hs-code">
-        Please use this link {{url}} to contact me.<br>
+        Please use this link {{url}} for our meeting.<br>
         Your password is: {{pass}}
     </code>
     <p class="srgdev-appt-hs-p">will look similar to this:</p>
     <code class="srgdev-appt-hs-code">
         Please use this link
-        <span class="srgdev-appt-hs-link">https://my_domain.com/index.php/call/to6d6y4e</span> to contact me.<br>
+        <span class="srgdev-appt-hs-link">https://my_domain.com/index.php/call/to6d6y4e</span> for our meeting.<br>
         Your password is: dj984jjr
     </code>
     <p class="srgdev-appt-hs-p" style="margin-top: 1em;margin-bottom: .75em">
         <strong id="srgdev-sec_talkFF">"Meeting Type" form field</strong> - when this option is enabled, a
-        <code class="srgdev-appt-hs-code_short">&lt;select&gt;</code> drop-down similar to the one bellow will be added to the form. If a visitor selects an
-        <span style="white-space: nowrap">'In-person'</span> meeting, a Talk room for this appointment will NOT be created.
+        <code class="srgdev-appt-hs-code_short">&lt;select&gt;</code> drop-down similar to the one below will be added to the form. If a visitor selects an
+        <span style="white-space: nowrap">'In-person'</span> meeting, a Talk room will NOT be created for this appointment.
     </p>
     <style type="text/css">
         #srgdev-help_demo_talk_type:invalid {
@@ -182,7 +182,7 @@ form{
     <p class="srgdev-appt-hs-p" style="margin-top: 1em;margin-bottom: .75em">
         <strong id="srgdev-sec_talkTypeChange">Type change email text</strong> - if this field is not empty and has two tokens
         <code class="srgdev-appt-hs-code_short">{{link_text}}</code> (can contain any text) and
-        <code class="srgdev-appt-hs-code_short">{{new_type}}</code> (MUST be new_type), then this text will be attached to the email and attendees will be able to switch their meeting type simply by clicking the link
+        <code class="srgdev-appt-hs-code_short">{{new_type}}</code> (MUST be new_type), then this text will be attached to the email and attendees will be able to change their meeting type simply by clicking on the link
         <code class="srgdev-appt-hs-code_short">{{link_text}}</code>.</p>
     <p class="srgdev-appt-hs-p">For example, this:</p>
     <code class="srgdev-appt-hs-code">
@@ -195,36 +195,36 @@ form{
     <p class="srgdev-appt-hs-p">Talk rooms will be created and deleted automatically when a meeting type changes.</p>
     <br>
 
-    <h2 class="srgdev-appt-hs-h1">Redirect to a Custom "All Done" Page After Confirm</h2>
+    <h2 class="srgdev-appt-hs-h1">Redirect to a Custom "All Done" Page After Confirmation</h2>
     <p class="srgdev-appt-hs-p">
-        <strong id="srgdev-sec_confirmedUrl">Redirect Confirmed URL</strong> - when this URL is specified visitors will be redirected there after they confirm their email address. A base64 encoded
-        <code class="srgdev-appt-hs-code_short">d=...</code> query parameter containing a JSON object will be added to the URL. Final URL for
+        <strong id="srgdev-sec_confirmedUrl">Redirect Confirmed URL</strong> - when a URL is specified here, visitors will be redirected to the URL after they confirm their email address. A base64 encoded
+        <code class="srgdev-appt-hs-code_short">d=...</code> query parameter containing a JSON object will be added to the URL. The final URL for
         <span style="font-style: italic; white-space: nowrap">https://your-cool-domain.com/finish.html</span> might look something like this:
         <span style="font-style: italic; white-space: nowrap">https://your-cool-domain.com/finish.html?d=eyJpbml0aWFsQ29uZmlybSI6dHJ1ZSwiaWQiOiI4YjhkOD...</span>
     </p>
     <p class="srgdev-appt-hs-p">
         When the
-        <code class="srgdev-appt-hs-code_short">d=...</code> param data is base64 decoded the JSON object might be similar to this:
+        <code class="srgdev-appt-hs-code_short">d=...</code> param data is base64 decoded, the JSON object might be similar to this:
     <pre><code class="srgdev-appt-hs-code">{
     "initialConfirm": true,
     "id": "8b8d87915a32bc4f48eb14439cd52cef",
     "name": "Bruce Banner",
     "dateTimeString": "Wednesday, April 13, 2022, 10:30 AM EDT"
 }</code></pre>
-    <strong>"initialConfirm"</strong> - is set to "true" ONLY on initial confirm, if a user reloads the page or clicks email "Confirm" button again this will be set to "false"<br>
-    <strong>"id"</strong> - a unique hex encoded 128bit number. (only set when the "Generate ID" option is checked)<br>
+    <strong>"initialConfirm"</strong> - is set to "true" ONLY on initial confirmation. If a user reloads the page or clicks the "Confirm" button in the email again, this will be set to "false"<br>
+    <strong>"id"</strong> - a unique hex-encoded 128bit number. (only set when the "Generate ID" option is checked)<br>
     <strong>"name"</strong> - Visitor name from the form. (only set when the "Include Form Data" option is checked)<br>
-    <strong>"dateTimeString"</strong> - Localized date-time string in visitor's language (only set when the "Include Form Data" option is checked)
+    <strong>"dateTimeString"</strong> - Localized date-time string in the visitor's language (only set when the "Include Form Data" option is checked)
     </p>
     <br>
 
     <h2 class="srgdev-appt-hs-h1">iFrame/Embedding</h2>
     <div class="srgdev-appt-hs-p">
-        1. If the iframe is under a different domain use <strong>occ</strong> to set allowed Frame Ancestor Domain:
+        1. If the iframe is under a different, domain use <strong>occ</strong> to set allowed Frame Ancestor Domain:
         <code style="white-space: pre" class="srgdev-appt-hs-code">php occ config:app:set appointments "emb_afad_YourUserName" --value "your.domain.com"</code>
         2. Email confirm/cancel buttons need to be redirected.<br>Use
-        <strong>occ</strong> to set base URL for the host page with
-        <strong>a query parameter available at the end of the URL</strong>:
+        <strong>occ</strong> to set the base URL for the host page with
+        <strong>a query parameter at the end of the URL</strong>:
         <code style="white-space: pre" class="srgdev-appt-hs-code">php occ config:app:set appointments "emb_cncf_YourUserName" --value "http(s)://your.domain.com/page_url?some_param_name="</code>
 
         Example using PHP:
@@ -252,7 +252,7 @@ form{
 
     <h2 id="srgdev-sec_buffers" class="srgdev-appt-hs-h1">Booked and Pending Appointment Buffers</h2>
     <div class="srgdev-appt-hs-p">
-        It is possible to block-off a period of time before and after a booked(<strong>and pending</strong>) appointment. This could be useful when some preparation/travel time is required before or cleanup/cool-off time needs to be blocked-off after an appointment.<br><br>
+        It is possible to block off a period of time before and after a booked(<strong>and pending</strong>) appointment. This could be useful when some preparation or travel time is required before, or clean-up/cooling-off/review time needs to be blocked off after.<br><br>
         Buffer blocking logic:<br>
         <img class="quick-start-guide-img" alt="appointment buffers" style="max-width: 700px" src="<?php print_unescaped(image_path('appointments', 'appointment-buffers.jpg')); ?>"/>
     </div>
@@ -262,7 +262,7 @@ form{
     <div class="srgdev-appt-hs-p">
         Nextcloud Cron uses
         <code style="padding: .25em" class="srgdev-appt-hs-code_short">default_language</code> setting for internal calls as per here:
-        <a class="srgdev-appt-hs-link" href="https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html#user-experience" target="_blank">https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html#user-experience</a> which defaults to English. It might be different than the language selected in your user preferences.
+        <a class="srgdev-appt-hs-link" href="https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html#user-experience" target="_blank">https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html#user-experience</a>, which defaults to English. It might be different from the language selected in your user preferences.
     </div>
 
     <h2 class="srgdev-appt-hs-h1">Advanced/Notification Extensions</h2>
@@ -300,4 +300,3 @@ form{
         <code class="srgdev-appt-hs-code_short">Settings &gt; Contributor Key</code> section.<br>
     </div>
 </div>
-
