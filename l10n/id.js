@@ -1,6 +1,7 @@
 OC.L10N.register(
     "appointments",
     {
+    "Available" : "Tersedia",
     "Dear %s," : "Kepada %s,",
     "Confirm" : "Konfirmasi",
     "Cancel" : "Membatalkan",
@@ -20,6 +21,7 @@ OC.L10N.register(
     "Preview" : "Pratinjau",
     "Settings" : "Setelan",
     "Title" : "Judul",
+    "Subtitle" : "Subjudul",
     "Text" : "Teks",
     "URL" : "URL",
     "Save" : "Simpan",
@@ -47,6 +49,7 @@ OC.L10N.register(
     "Phone" : "Telpon",
     "Deleted" : "Dihapus",
     "Confirmed" : "Terkonfirmasi",
+    "Canceled" : "Dibatalkan",
     "Disabled" : "Dinonaktifkan",
     "Show end time" : "Tampilkan waktu berakhir",
     "Warning" : "Peringatan",
@@ -59,6 +62,7 @@ OC.L10N.register(
     "Back" : "Kembali",
     "Next" : "Berikutnya",
     "min" : "min",
+    "Duration" : "Durasi",
     "Full Name" : "Nama Lengkap",
     "Email" : "Email",
     "An error has occurred" : "Sebuah kesalahan yang terjadi"
