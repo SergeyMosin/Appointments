@@ -116,6 +116,7 @@ OC.L10N.register(
     "Use Main calendar" : "Upotrijebi glavni kalendar",
     "Add Appointment Slots" : "Dodaj mjesta za dogovore",
     "Select Dates" : "Odaberi datume",
+    "Time zone:" : "Vremenska zona:",
     "Appointment Duration:" : "Trajanje dogovora:",
     "Start" : "Početak",
     "Scheduled before" : "Zakazano prije",
