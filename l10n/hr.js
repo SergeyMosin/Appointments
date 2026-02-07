@@ -156,6 +156,7 @@ OC.L10N.register(
     "GDPR Compliance" : "Usklađenost s GDPR-om",
     "Add {taginfo} tag" : "Dodaj oznaku {taginfo}",
     "Not set" : "Nije postavljeno",
+    "7 days" : "7 dana",
     "Warning" : "Upozorenje",
     "Important" : "Važno",
     "Guest name + Date/Time" : "Ime gosta + datum/vrijeme",
