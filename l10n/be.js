@@ -91,7 +91,7 @@ OC.L10N.register(
     "Edit" : "Рэдагаваць",
     "Discard" : "Адхіліць",
     "Time zone" : "Часавы пояс",
-    "Can't apply settings" : "Не ўдалося ўжыць змены",
+    "Can't apply settings" : "Не ўдалося прымяніць змяненні",
     "Date & Time" : "Дата і час",
     "Select Date & Time" : "Выберыце дату і час",
     "Back" : "Назад",
