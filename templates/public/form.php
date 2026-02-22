@@ -21,7 +21,7 @@ style('appointments', 'form');
             : $l->t('No Appointments Available')) . '</h3>'
     ?>
     <div class="srgdev-ncfp-form-main-cont" id="srgdev-ncfp-main-inputs">
-        <label class="srgdev-ncfp-form-label"><?php p($l->t("Date & Time")) ?></label>
+        <label class="srgdev-ncfp-form-label" for="srgdev-ncfp_sel-dummy"><?php p($l->t("Date & Time")) ?></label>
         <div id="srgdev-ncfp_sel_cont">
             <input <?php echo $disabled ?>readonly placeholder="<?php p($l->t("Select Date & Time")); ?>" name="dtstr" class="srgdev-ncfp-form-input" id="srgdev-ncfp_sel-dummy">
             <input type="hidden" name="adatetime" style="display:none;" id="srgdev-ncfp_sel-hidden"
