@@ -887,7 +887,7 @@ class BackendUtils
         $query->select(['hash', 'user_id', 'page_id', 'appt_doc'])
             ->from(self::HASH_TABLE_NAME)
             ->where($query->expr()->eq('uid', $query->createNamedParameter($uid)));
-        $stmt = $query->execute();
+        $stmt = $query->executeQuery();
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
         $stmt->closeCursor();
 
@@ -934,7 +934,7 @@ class BackendUtils
                         $query->delete(BackendUtils::HASH_TABLE_NAME)
                             ->where($query->expr()->lt('hash',
                                 $query->createNamedParameter($cutoff_str)))
-                            ->execute();
+                            ->executeStatement();
                     }
                     break;
                 case "CANCELLED":
@@ -977,7 +977,7 @@ class BackendUtils
 
             $query->insert(self::HASH_TABLE_NAME)
                 ->values($values)
-                ->execute();
+                ->executeStatement();
         } else {
             $query->update(self::HASH_TABLE_NAME)
                 ->set('uid', $query->createNamedParameter($uid))
@@ -994,7 +994,7 @@ class BackendUtils
             }
 
             $query->where($query->expr()->eq('uid', $query->createNamedParameter($uid)))
-                ->execute();
+                ->executeStatement();
         }
     }
 
@@ -1018,7 +1018,7 @@ class BackendUtils
         $query->delete(self::HASH_TABLE_NAME)
             ->where($query->expr()->eq('uid',
                 $query->createNamedParameter($uid)))
-            ->execute();
+            ->executeStatement();
     }
 
 
@@ -1504,7 +1504,7 @@ class BackendUtils
                     $qb->createNamedParameter($userId)))
                 ->andWhere($qb->expr()->eq('page_id',
                     $qb->createNamedParameter($pageId)))
-                ->execute();
+                ->executeStatement();
         } catch (Exception $e) {
             $this->logger->error("deletePage error: " . $e->getMessage());
         }
@@ -2075,7 +2075,7 @@ class BackendUtils
             $qb->delete(self::SYNC_TABLE_NAME)
                 ->where($qb->expr()->eq('id',
                     $qb->createNamedParameter($subscriptionId)))
-                ->execute();
+                ->executeStatement();
         } catch (Exception $e) {
             $this->logger->error("removeSubscriptionSync error: " . $e->getMessage());
         }
@@ -2213,7 +2213,7 @@ class BackendUtils
                 ->set('appt_doc', $query->createNamedParameter($docData, ParameterType::BINARY))
                 ->where($query->expr()->eq(
                     'uid', $query->createNamedParameter($evtUid)))
-                ->execute();
+                ->executeStatement();
         } catch (\Throwable $e) {
             $this->logger->error('saveApptDoc failed for ' . $evtUid . ': ' . $e->getMessage());
             return false;

@@ -110,7 +110,7 @@ class DavListener implements IEventListener
                 ->andWhere($qb->expr()->isNotNull('hash.' . BackendUtils::KEY_PAGE_ID))
                 ->andWhere($qb->expr()->isNotNull('hash.uri'))
                 ->orderBy('hash.' . BackendUtils::KEY_USER_ID)
-                ->execute();
+                ->executeQuery();
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
             return;

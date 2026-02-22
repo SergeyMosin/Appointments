@@ -28,7 +28,7 @@
     <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/master/screenshots/screenshot2.jpg</screenshot>
     <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/master/screenshots/screenshot3.jpg</screenshot>
     <dependencies>
-        <nextcloud min-version="31" max-version="32"/>
+        <nextcloud min-version="32" max-version="33"/>
         <backend>caldav</backend>
     </dependencies>
     <repair-steps>

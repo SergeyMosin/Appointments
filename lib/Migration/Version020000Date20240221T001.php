@@ -96,7 +96,7 @@ class Version020000Date20240221T001 extends SimpleMigrationStep
             try {
                 $result = $qb->select('*')
                     ->from(BackendUtils::PREF_TABLE_NAME)
-                    ->execute();
+                    ->executeQuery();
             } catch (\Throwable $e) {
                 $output->warning('could execute select query: ' . $e->getMessage());
                 return;

@@ -78,7 +78,7 @@ class BCSabreImpl implements IBackendConnector
                 $query->delete(BackendUtils::HASH_TABLE_NAME)
                     ->where($query->expr()->lt('hash',
                         $query->createNamedParameter($cutoff_str)))
-                    ->execute();
+                    ->executeStatement();
             }
         }
 
@@ -558,7 +558,7 @@ class BCSabreImpl implements IBackendConnector
                             $c = $qb->select('*')
                                 ->from(BackendUtils::SYNC_TABLE_NAME)
                                 ->where($qb->expr()->eq('id', $qb->createNamedParameter($sub['id'])))
-                                ->execute();
+                                ->executeQuery();
                             $sd = $c->fetch();
                             $c->closeCursor();
                         } catch (\OCP\DB\Exception $e) {
@@ -585,7 +585,7 @@ class BCSabreImpl implements IBackendConnector
                                     ->set('lastsync', $qb->createNamedParameter($now))
                                     ->set('synctoken', $qb->createNamedParameter($sub['{http://sabredav.org/ns}sync-token']))
                                     ->where($qb->expr()->eq('id', $qb->createNamedParameter($sub['id'])))
-                                    ->execute();
+                                    ->executeStatement();
                                 if ($rows === 0) {
                                     // first run: insert
                                     $qb = $this->db->getQueryBuilder();
@@ -595,7 +595,7 @@ class BCSabreImpl implements IBackendConnector
                                             'lastsync' => $qb->createNamedParameter($now),
                                             'synctoken' => $qb->createNamedParameter($sub['{http://sabredav.org/ns}sync-token'])
                                         ])
-                                        ->execute();
+                                        ->executeStatement();
                                 }
 
                             } catch (\OCP\DB\Exception $e) {
@@ -1055,7 +1055,7 @@ class BCSabreImpl implements IBackendConnector
                     'hash' => $query->createNamedParameter('99999999.0000000000000000000000'),
                     'user_id' => $query->createNamedParameter($userId),
                     'start' => $query->createNamedParameter($start_ts)
-                ])->execute();
+                ])->executeStatement();
         } catch (\Throwable $e) {
             // uid already exists
             $this->logger->warning("Lock uid already exists");
@@ -1094,7 +1094,7 @@ class BCSabreImpl implements IBackendConnector
                                 'hash' => $query->createNamedParameter('99999999.0000000000000000000000'),
                                 'user_id' => $query->createNamedParameter($userId),
                                 'start' => $query->createNamedParameter($start_ts)
-                            ])->execute();
+                            ])->executeStatement();
                     } else {
                         $err = "Can not create object - mode: " . $ts_mode . ", cal: " . $calId . ", uri: " . $uri;
                         $ec = 6;
