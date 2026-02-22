@@ -31,6 +31,7 @@ OC.L10N.register(
     "Preview" : "Xem trước",
     "Settings" : "Cài đặt",
     "Title" : "Tên",
+    "Subtitle" : "Tiêu đề phụ",
     "Text" : "Văn bản",
     "URL" : "URL",
     "Save" : "Lưu",
