@@ -1,3 +1,10 @@
+## v2.6.3 - 2026-02-22
+### Changed
+- NC32 is now min version
+### Fixed
+- NC33 compatibility - #651
+- Missing form label for the field Date & Time - #650
+
 ## v2.6.2 - 2025-11-19
 ### Fixed
 - Make "Auto-style" work NC31+ default background images
