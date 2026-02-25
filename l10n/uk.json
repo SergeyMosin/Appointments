@@ -176,7 +176,7 @@
     "Check Hash Table" : "Перевірити хеш-таблицю",
     "Create video rooms for confirmed appointments" : "Створюйте відеокімнати для підтверджених зустрічей",
     "Delete when appointments are removed" : "Видаляти, коли зустрічі видаляються",
-    "Auto-delete 24 hours after the call is finished" : "Автоматичне видалення через 24 години після завершення дзвінка",
+    "Auto-delete 24 hours after the call is finished" : "Автоматично очистити через 24 години після завершення дзвінка",
     "Guest password" : "Гостьовий пароль",
     "Add 'Meeting Type' form field" : "Додати поле форми \"Тип наради",
     "When this option is enabled, a \"select\" drop-down will be added to the form with a choice of \"In-person\" or \"Online (audio/video)\". If a visitor selects an \"In-person\" meeting, a Talk room for this appointment will NOT be created." : "Коли ця опція увімкнена, до форми буде додано випадаюче меню «Вибрати» з варіантами «Особисто» або «Онлайн (аудіо/відео)». Якщо відвідувач вибере зустріч «Особисто», кімната для розмови для цього призначення НЕ буде створена.",
