@@ -45,6 +45,7 @@
     "Your appointment scheduled for %s is confirmed." : "您安排到%s的预约已确认。",
     "Your appointment scheduled for %s is canceled." : "您安排到%s的预约已取消。",
     "Your appointment is canceled." : "您的预约已取消。",
+    "Please Wait" : "请稍候",
     "Your %s has been changed to %s" : "您的%s已被更改为%s",
     "All done." : "全部完成。",
     "Action needed" : "需要操作",
