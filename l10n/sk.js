@@ -214,7 +214,7 @@ OC.L10N.register(
     "Destination Calendar (Booked)" : "Cieľový kalendár (rezervované)",
     "Booked appointments will be placed here. In addition to booked appointments, any events in this calendar marked as \"Busy\" will prevent conflicting timeslots in the \"Source Calendar\" from appearing in the public form." : "Rezervované termíny budú umiestnené tu. Okrem rezervovaných stretnutí zabránia všetkým udalostiam v tomto kalendári označeným ako „Obsadené“ kolidujúce časové úseky v „Zdrojovom Kalendári“, aby sa zobrazili vo verejnom formulári.",
     "error: main calendar required" : "chyba: hlavný kalendár je povinný",
-    "error: cannot find calendar with ID " : "chyba: nepodarilo sa nájisť kalendár s ID",
+    "error: cannot find calendar with ID " : "chyba: nepodarilo sa nájsť kalendár s ID",
     "Main calendar" : "Hlavný kalendár",
     "When you create new appointment slots they are placed here and are shown in your public page(s). It is recommended to use a dedicated calendar." : "Keď vytvoríte nové sloty pre schôdzky, umiestnia sa sem a zobrazia sa na vašich verejných stránkach. Odporúča sa použiť špeciálny kalendár.",
     "Calendar for booked appointments" : "Kalendár pre rezervované schôdzky",
