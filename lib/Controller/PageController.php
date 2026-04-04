@@ -508,9 +508,7 @@ class PageController extends Controller
                         $r_url .= (!str_contains($r_url, "?") ? "?" : "&") . "d=" . base64_encode(json_encode($d));
 
                         // redirect
-                        $rr = new RedirectResponse($r_url);
-                        $rr->setStatus(303);
-                        return $rr;
+                        return new RedirectResponse($r_url);
                     }
                 }
             }
@@ -798,9 +796,7 @@ class PageController extends Controller
 
         $key = hex2bin($this->appConfig->getValueString(Application::APP_ID, 'hk'));
         if (empty($key)) {
-            $rr = new RedirectResponse($server_err_url);
-            $rr->setStatus(303);
-            return $rr;
+            return new RedirectResponse($server_err_url);
         }
 
         $settings = $this->utils->getUserSettings();
@@ -834,9 +830,7 @@ class PageController extends Controller
             || !isset($post['tzi']) || strlen($post['tzi']) > 64
             || preg_match('/^[UFT][^\pC ]*$/u', $post['tzi']) !== 1) {
 
-            $rr = new RedirectResponse($bad_input_url);
-            $rr->setStatus(303);
-            return $rr;
+            return new RedirectResponse($bad_input_url);
         }
 
         if (!empty($settings[BackendUtils::SEC_EMAIL_BLACKLIST]) && is_array($settings[BackendUtils::SEC_EMAIL_BLACKLIST])) {
@@ -847,10 +841,7 @@ class PageController extends Controller
                     (str_starts_with($blocked, '*@')
                         && str_ends_with($_email, substr($blocked, 1)))
                 ) {
-                    $rr = new RedirectResponse($blocked_error_url);
-                    $rr->setStatus(303);
-                    return $rr;
-
+                    return new RedirectResponse($blocked_error_url);
                 }
             }
         }
@@ -876,18 +867,14 @@ class PageController extends Controller
                 foreach ($f0 as $index => $field) {
                     $fieldResult = $this->showFormCustomField($field, $post, $index);
                     if ($fieldResult === false) {
-                        $rr = new RedirectResponse($bad_input_url);
-                        $rr->setStatus(303);
-                        return $rr;
+                        return new RedirectResponse($bad_input_url);
                     }
                     $v .= $fieldResult;
                 }
             } else {
                 $fieldResult = $this->showFormCustomField($f0, $post);
                 if ($fieldResult === false) {
-                    $rr = new RedirectResponse($bad_input_url);
-                    $rr->setStatus(303);
-                    return $rr;
+                    return new RedirectResponse($bad_input_url);
                 }
                 $v = $fieldResult;
             }
@@ -899,13 +886,9 @@ class PageController extends Controller
             && !empty($settings[BackendUtils::SEC_HCAP_SITE_KEY])
         ) {
             if (($cErr = $this->validateHCaptcha($post, $settings)) !== 0) {
-                if ($cErr === 1) {
-                    $rr = new RedirectResponse($captcha_failed_url);
-                } else {
-                    $rr = new RedirectResponse($captcha_server_error_url);
-                }
-                $rr->setStatus(303);
-                return $rr;
+                return new RedirectResponse($cErr === 1
+                    ? $captcha_failed_url
+                    : $captcha_server_error_url);
             }
         }
 
@@ -913,17 +896,13 @@ class PageController extends Controller
 
         $cal_id = $this->utils->getMainCalId($userId, $this->bc);
         if ($cal_id === "-1") {
-            $rr = new RedirectResponse($server_err_url);
-            $rr->setStatus(303);
-            return $rr;
+            return new RedirectResponse($server_err_url);
         }
         // main cal_id is good...
 
         $dc = $this->utils->decrypt($post['adatetime'], $key);
         if (empty($dc) || (!str_contains($dc, '|') && $dc[0] !== "_")) {
-            $rr = new RedirectResponse($bad_input_url);
-            $rr->setStatus(303);
-            return $rr;
+            return new RedirectResponse($bad_input_url);
         }
 
         $dcs = substr($dc, 0, 2);
@@ -982,9 +961,7 @@ class PageController extends Controller
 
         if ($ts < $ti || $ts > $ti + 900
             || strlen($evt_uri) > 64) {
-            $rr = new RedirectResponse($bad_input_url);
-            $rr->setStatus(303);
-            return $rr;
+            return new RedirectResponse($bad_input_url);
         }
 
         $skip_evs = $settings[BackendUtils::EML_SKIP_EVS];
@@ -1004,9 +981,7 @@ class PageController extends Controller
             $this->logger->error("setAttendee error status: " . $r);
 
             // &r=1 means there was a race and someone else has booked that slot
-            $rr = new RedirectResponse($server_err_url . ($r === 1 ? "&r=1" : "") . "&eml=1");
-            $rr->setStatus(303);
-            return $rr;
+            return new RedirectResponse($server_err_url . ($r === 1 ? "&r=1" : "") . "&eml=1");
         }
 
         if ($skip_evs === false) {
@@ -1025,9 +1000,7 @@ class PageController extends Controller
                 );
         }
 
-        $rr = new RedirectResponse($uri);
-        $rr->setStatus(303);
-        return $rr;
+        return new RedirectResponse($uri);
     }
 
     private function showFormCustomField(array $field, array $post, int $index = 0): bool|string
