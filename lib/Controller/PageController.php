@@ -18,8 +18,9 @@ use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Http\Template\PublicTemplateResponse;
+use OCP\Config\IUserConfig;
 use OCP\Http\Client\IClientService;
-use OCP\IConfig;
+use OCP\IAppConfig;
 use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\IRequest;
@@ -39,7 +40,8 @@ class PageController extends Controller
     const TEST_TOKEN_CNF = '3b719b44-8ec9-41e9-b161-00fb1515b1ed';
 
     private string|null $userId;
-    private IConfig $c;
+    private IAppConfig $appConfig;
+    private IUserConfig $userConfig;
     private IMailer $mailer;
     private IL10N $l;
     private IBackendConnector $bc;
@@ -49,7 +51,8 @@ class PageController extends Controller
     private IURLGenerator $urlGenerator;
 
     public function __construct(IRequest        $request,
-                                IConfig         $c,
+                                IAppConfig      $config,
+                                IUserConfig     $userConfig,
                                 IMailer         $mailer,
                                 IL10N           $l,
                                 IUserSession    $userSession,
@@ -59,7 +62,8 @@ class PageController extends Controller
                                 LoggerInterface $logger
     ) {
         parent::__construct(Application::APP_ID, $request);
-        $this->c = $c;
+        $this->appConfig = $config;
+        $this->userConfig = $userConfig;
         $this->mailer = $mailer;
         $this->l = $l;
         $this->userSession = $userSession;
@@ -83,11 +87,11 @@ class PageController extends Controller
      */
     public function index(): TemplateResponse
     {
-        $t = new TemplateResponse($this->appName, 'index');
+        $t = new TemplateResponse(Application::APP_ID, 'index');
 
         $disable = false;
         if (!empty($this->userId)) {
-            $allowedGroups = $this->c->getAppValue($this->appName,
+            $allowedGroups = $this->appConfig->getValueString(Application::APP_ID,
                 BackendUtils::KEY_LIMIT_TO_GROUPS);
             if ($allowedGroups !== '') {
                 $aga = json_decode($allowedGroups, true);
@@ -135,7 +139,7 @@ class PageController extends Controller
     {
         list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"));
         if ($userId === null) {
-            $tr = new TemplateResponse($this->appName, "public/r404", [], "base");
+            $tr = new TemplateResponse(Application::APP_ID, "public/r404", [], "base");
             $tr->setStatus(404);
             return $tr;
         }
@@ -164,7 +168,7 @@ class PageController extends Controller
     {
         list($userId, $pageId) = $this->utils->verifyToken($this->request->getParam("token"));
         if ($userId === null) {
-            $tr = new TemplateResponse($this->appName, "public/r404", [], "base");
+            $tr = new TemplateResponse(Application::APP_ID, "public/r404", [], "base");
             $tr->setStatus(404);
         }
 
@@ -187,7 +191,7 @@ class PageController extends Controller
     {
         list($userId) = $this->utils->verifyToken($this->request->getParam("token"));
         if ($userId === null) {
-            $tr = new TemplateResponse($this->appName, "public/r404", [], "base");
+            $tr = new TemplateResponse(Application::APP_ID, "public/r404", [], "base");
             $tr->setStatus(404);
         }
         $tr = $this->cncf(true);
@@ -198,8 +202,8 @@ class PageController extends Controller
     private function setEmbCsp(Response $tr, string $userId): void
     {
 
-        $ad = $this->c->getAppValue(
-            $this->appName,
+        $ad = $this->appConfig->getValueString(
+            Application::APP_ID,
             'emb_afad_' . $userId);
         if (strlen($ad) > 3) {
             $csp = $tr->getContentSecurityPolicy();
@@ -321,7 +325,7 @@ class PageController extends Controller
 //            $a = '-' . $a;
 //        } else {
 
-        $key = hex2bin($this->c->getAppValue($this->appName, 'hk'));
+        $key = hex2bin($this->appConfig->getValueString(Application::APP_ID, 'hk'));
         $uri = $this->utils->decrypt($dParam, $key);
         if (empty($uri)) {
             return $this->pubErrResponse($userId, $embed);
@@ -382,7 +386,7 @@ class PageController extends Controller
                 }
             } else {
                 $appt_action_url_hash = hash('adler32', $pd, false);
-                if($settings[BackendUtils::PSN_CNCF_DELAY]===true) {
+                if ($settings[BackendUtils::PSN_CNCF_DELAY] === true) {
                     $tr_params['appt_cncf_delay'] = base64_encode($this->l->t("Please Wait"));
                 }
             }
@@ -693,7 +697,7 @@ class PageController extends Controller
 
         if ($a_base === true || $embed === true) {
             // renderAs=base (embedded or preview when email validation step is skipped
-            $tr = new TemplateResponse($this->appName, $tr_name, [], "base");
+            $tr = new TemplateResponse(Application::APP_ID, $tr_name, [], "base");
         } else {
             // renderAs=public
             $tr = $this->getPublicTemplate($tr_name);
@@ -724,7 +728,7 @@ class PageController extends Controller
     {
         $tn = 'public/formerr';
         if ($embed) {
-            $tr = new TemplateResponse($this->appName, $tn, [], 'base');
+            $tr = new TemplateResponse(Application::APP_ID, $tn, [], 'base');
         } else {
             $tr = $this->getPublicTemplate($tn);
         }
@@ -792,7 +796,7 @@ class PageController extends Controller
         $captcha_server_error_url = "form?sts=4" . $pageParam;
         $blocked_error_url = "form?sts=5" . $pageParam;
 
-        $key = hex2bin($this->c->getAppValue($this->appName, 'hk'));
+        $key = hex2bin($this->appConfig->getValueString(Application::APP_ID, 'hk'));
         if (empty($key)) {
             $rr = new RedirectResponse($server_err_url);
             $rr->setStatus(303);
@@ -1161,7 +1165,7 @@ class PageController extends Controller
             if ($dParam === self::TEST_TOKEN_CNF) {
                 $dd = pack('L', time()) . 'test.email@domain.com';
             } else {
-                $key = hex2bin($this->c->getAppValue($this->appName, 'hk'));
+                $key = hex2bin($this->appConfig->getValueString(Application::APP_ID, 'hk'));
                 $dd = $this->utils->decrypt($dParam, $key);
             }
             if (strlen($dd) > 7) {
@@ -1193,7 +1197,7 @@ class PageController extends Controller
         if ($render === "public") {
             $tr = $this->getPublicTemplate($tmpl);
         } else {
-            $tr = new TemplateResponse($this->appName, $tmpl, [], $render);
+            $tr = new TemplateResponse(Application::APP_ID, $tmpl, [], $render);
         }
 
         $param['appt_inline_style'] = $this->utils->getInlineStyle($uid, $settings);
@@ -1209,7 +1213,7 @@ class PageController extends Controller
         if ($render === "public") {
             $tr = $this->getPublicTemplate($templateName);
         } else {
-            $tr = new TemplateResponse($this->appName, $templateName, [], $render);
+            $tr = new TemplateResponse(Application::APP_ID, $templateName, [], $render);
         }
 
         $settings = $this->utils->getUserSettings();
@@ -1293,7 +1297,7 @@ class PageController extends Controller
 
         $params['appt_state'] = '1';
 
-        $hkey = $this->c->getAppValue($this->appName, 'hk');
+        $hkey = $this->appConfig->getValueString(Application::APP_ID, 'hk');
         if (empty($hkey)) {
             $tr->setParams($params);
             return $tr;
@@ -1357,7 +1361,8 @@ class PageController extends Controller
 
         if ($settings[BackendUtils::TALK_ENABLED] === true) {
             if ($settings[BackendUtils::TALK_FORM_ENABLED] === true
-                && !empty($this->c->getUserValue($uid, $this->appName, chr(99) . "n" . 'k'))
+                && !empty($this->userConfig->getValueString(
+                    $uid, Application::APP_ID, chr(99) . "n" . 'k'))
             ) {
                 $video_label = !empty($settings[BackendUtils::TALK_FORM_LABEL])
                     ? $settings[BackendUtils::TALK_FORM_LABEL]
@@ -1557,7 +1562,7 @@ class PageController extends Controller
     private function getPublicTemplate(string $templateName): PublicTemplateResponse
     {
         $settings = $this->utils->getUserSettings();
-        $tr = new PublicTemplateResponse($this->appName, $templateName, []);
+        $tr = new PublicTemplateResponse(Application::APP_ID, $templateName, []);
         if (!empty($settings[BackendUtils::PSN_PAGE_TITLE])) {
             $tr->setHeaderTitle($settings[BackendUtils::PSN_PAGE_TITLE]);
         } else {
