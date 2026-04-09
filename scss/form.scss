@@ -661,6 +661,11 @@ $tz-cont-height: 2.5em;
   margin: 1em 0;
 }
 
+.srgdev-appt-info-cont .srgdev-appt-cncf-label{
+  position: absolute;
+  left: -1000em;
+}
+
 .srgdev-appt-err-a {
   color: svariables.$color-primary;
   color: var(--color-primary);
