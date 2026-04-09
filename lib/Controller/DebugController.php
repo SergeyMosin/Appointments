@@ -64,9 +64,9 @@ class DebugController extends Controller
             . '<strong>Time zone</strong>: ' . $this->utils->getUserTimezone($this->userId)->getName() . " ("
             . "calendar: " . $this->config->getUserValue($this->userId, 'calendar', 'timezone', "N/A") . ", "
             . "core: " . $this->config->getUserValue($this->userId, 'core', 'timezone', "N/A") . ")\n"
-            . '<strong>Embeding Frame Ancestor</strong>: ' . $this->config->getAppValue($this->appName, 'emb_afad_' . $this->userId, "N/A") . "\n"
-            . '<strong>Embeding Button URL</strong>: ' . $this->config->getAppValue($this->appName, 'emb_cncf_' . $this->userId, "N/A") . "\n"
-            . '<strong>Extension Notify</strong>: ' . $this->config->getAppValue($this->appName, 'ext_notify_' . $this->userId, "N/A") . "\n"
+            . '<strong>Embeding Frame Ancestor</strong>: ' . $this->config->getAppValue($this->appName, substr('emb_afad_' . $this->userId, 0, 64), "N/A") . "\n"
+            . '<strong>Embeding Button URL</strong>: ' . $this->config->getAppValue($this->appName, substr('emb_cncf_' . $this->userId, 0, 64), "N/A") . "\n"
+            . '<strong>Extension Notify</strong>: ' . $this->config->getAppValue($this->appName, substr('ext_notify_' . $this->userId, 0, 64), "N/A") . "\n"
             . '<strong>Key</strong>: ' . ($this->config->getUserValue($this->userId, $this->appName, "cnk") !== "" ? "Yes" : "No") . "\n\n";
 
         return new DataResponse($data);

@@ -205,7 +205,7 @@ class PageController extends Controller
 
         $ad = $this->appConfig->getValueString(
             Application::APP_ID,
-            'emb_afad_' . $userId);
+            substr('emb_afad_' . $userId, 0, 64));
         if (strlen($ad) > 3) {
             $csp = $tr->getContentSecurityPolicy();
             if ($csp === null) {

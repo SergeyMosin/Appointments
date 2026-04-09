@@ -271,6 +271,8 @@ form{
         <a class="srgdev-appt-hs-link" href="https://github.com/SergeyMosin/Appointments/issues/26" target="_blank">https://github.com/SergeyMosin/Appointments/issues/26</a><br><br>
         Ensure the <span style="font-style: italic">ext_notify_YourUserName</span> app config variable is set like so:
         <code style="white-space: pre" class="srgdev-appt-hs-code">php occ config:app:set appointments "ext_notify_YourUserName" --value "/absolute/path/to/file.php"</code>
+        <span>* very long UserNames must be trimmed to 53 character</span>
+    </div>
     </div>
 
     <h2 id="srgdev-sec_contrib_info" class="srgdev-appt-hs-h1">Contributor Features</h2>

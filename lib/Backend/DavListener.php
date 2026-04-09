@@ -240,7 +240,7 @@ class DavListener implements IEventListener
                     continue;
                 }
 
-                $extNotifyFilePath = $appConfig->getValueString(Application::APP_ID, 'ext_notify_' . $userId);
+                $extNotifyFilePath = $appConfig->getValueString(Application::APP_ID, substr('ext_notify_' . $userId, 0, 64));
 
                 $otherCalId = '-1';
                 $calId = $utils->getMainCalId($userId, null, $otherCalId);
@@ -1308,7 +1308,7 @@ class DavListener implements IEventListener
 
         // advanced/extensions
         if ($ext_event_type >= 0) {
-            $filePath = $appConfig->getValueString(Application::APP_ID, 'ext_notify_' . $userId);
+            $filePath = $appConfig->getValueString(Application::APP_ID, substr('ext_notify_' . $userId, 0, 64));
             if ($filePath !== "") {
                 $data = [
                     'eventType' => $ext_event_type,
@@ -1349,7 +1349,7 @@ class DavListener implements IEventListener
         if ($embed) {
             $btn_url = $appConfig->getValueString(
                 Application::APP_ID,
-                'emb_cncf_' . $userId, $btn_url);
+                substr('emb_cncf_' . $userId, 0, 64), $btn_url);
             $pageIdParam = "&pageId=" . $pageId;
         }
         return [
