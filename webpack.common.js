@@ -93,7 +93,7 @@ module.exports = {
 			Components: path.resolve(__dirname, 'src/components/'),
 			'vue$': 'vue/dist/vue.esm.js'
 		},
-		extensions: ['*', '.js', '.vue', '.json'],
+		extensions: ['.js', '.vue', '.json'],
 		fallback: {
 			"buffer": require.resolve("buffer/"),
 			"path": false
