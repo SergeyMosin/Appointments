@@ -211,6 +211,7 @@ class BackendUtils
     public const DEBUGGING_NONE = 0;
     public const DEBUGGING_LOG_REM_BLOCKER = 1;
     public const DEBUGGING_LOG_TEMPLATE_DUR = 2;
+    public const DEBUGGING_CANCELLATIONS = 3;
 
     public const DIR_ITEMS = "dirItems";
 

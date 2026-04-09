@@ -23,6 +23,7 @@ const debugModeOptions = [
 	{value: 0, label: t('appointments', 'Debugging Off')},
 	{value: 1, label: t('appointments', 'Log remote blockers')},
 	{value: 2, label: t('appointments', 'Log template durations')},
+	{value: 3, label: t('appointments', 'Debug Cancellations')},
 ]
 
 const pageId = inject("pageId", '')
