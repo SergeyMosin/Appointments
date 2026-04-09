@@ -142,6 +142,7 @@ class BackendUtils
     public const PSN_NWEEKS = "nbrWeeks";
     public const PSN_TIME2 = "time2Cols";
     public const PSN_HIDE_TEL = "hidePhone";
+    // TODO: PSN_CNCF_DELAY is depreicated
     public const PSN_CNCF_DELAY = "cncfDelay";
     public const PSN_END_TIME = "endTime";
     public const PSN_SHOW_TZ = "showTZ";
