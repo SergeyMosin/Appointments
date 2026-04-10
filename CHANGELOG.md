@@ -1,3 +1,14 @@
+## v2.7.1 - 2026-04-09
+### Added
+- Settings: 'Debug Cancellations' option - #646
+- Show Simple Mode deprecation notice
+### Changed
+- Refactor confirm/cancel flow (add more bot protections) - #646
+- Trim user provided config keys to 64 chars max - #657
+- Updated dependencies
+### Fixed
+- Removed deprecated and redundant function calls
+
 ## v2.6.3 - 2026-02-22
 ### Changed
 - NC32 is now min version
