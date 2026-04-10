@@ -429,7 +429,7 @@ class PageController extends Controller
 
         $reqTs = (int)$arr[0];
         $curTs = (int)(microtime(true) * 1000);
-        if ($reqTs + 1500 < $curTs && $curTs < $reqTs + 902000 && $arr[1] === $uri) {
+        if ($reqTs + 1275 < $curTs && $curTs < $reqTs + 902000 && $arr[1] === $uri) {
             return $arr;
         }
         return null;
