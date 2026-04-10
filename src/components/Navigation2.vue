@@ -11,6 +11,7 @@ import IconWeb from "vue-material-design-icons/Web.vue";
 import IconWebOff from "vue-material-design-icons/WebOff.vue";
 import IconDelete from "vue-material-design-icons/Delete.vue";
 import IconDirectory from "vue-material-design-icons/CardSearchOutline.vue";
+import IconWarn from "vue-material-design-icons/AlertOutline.vue";
 import {
 	NcActionButton,
 	NcActionInput,
@@ -111,6 +112,12 @@ const handleActionsMenu = (pageId, evt) => {
 					:loading="pagesStore.loading===page.id"
 					@update:menuOpen="(evt)=>{handleActionsMenu(page.id,evt)}"
 					@click="handleShowPage(page.id)">
+				<template v-if="page.tsMode==='0'" #default>
+					<div style="display: flex; gap: .75rem; color: #eca700; font-size: 90%">
+					<IconWarn :size="16"/>
+					{{t('appointments', 'Simple Mode: Support Ending Soon')}}
+					</div>
+				</template>
 				<template #icon>
 					<IconEarth v-if="pagesStore.loading!==page.id && page.enabled" :size="20"/>
 					<IconEarthOff v-if="pagesStore.loading!==page.id && !page.enabled" :size="20"/>

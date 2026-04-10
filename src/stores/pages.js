@@ -9,7 +9,7 @@ const LOADING_ANY = "any"
 
 export const usePagesStore = defineStore('pages', {
 	state: () => ({
-		/** @type {[{id: string, label: string, type: string, enabled: boolean}]} */
+		/** @type {[{id: string, label: string, type: string, enabled: boolean, tsMode: string}]} */
 		pages: [],
 		/** @type {{id: string, label: string, hasData: boolean, showInNavigation: boolean}} */
 		dirPage: {},

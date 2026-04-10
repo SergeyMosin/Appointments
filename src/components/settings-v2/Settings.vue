@@ -47,10 +47,14 @@ const label = computed(() => _isDir
 		: pagesStore.getPageById(props.pageId).label
 )
 
+let pageSettingsLoaded
 onMounted(() => {
+	pageSettingsLoaded = false
 	settingsStore.getAllSettings(props.pageId).then((res) => {
 		if (res === false) {
 			handleUpdateOpen(false)
+		} else {
+			pageSettingsLoaded = true
 		}
 	})
 })
@@ -58,6 +62,9 @@ onMounted(() => {
 const handleUpdateOpen = (evt) => {
 	if (evt === false) {
 		settingsStore.cancelServiceRequest(CK.SETTINGS)
+		if (pageSettingsLoaded) {
+			pagesStore.getPageById(props.pageId).tsMode = settingsStore.settings.tsMode
+		}
 		emit('close-settings')
 	}
 }

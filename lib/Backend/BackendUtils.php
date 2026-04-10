@@ -1418,7 +1418,8 @@ class BackendUtils
                     'id' => $pageId,
                     'type' => 'page',
                     self::PAGE_ENABLED => $isEnabled,
-                    self::PAGES_LABEL => ($data[self::PAGE_LABEL] ?? '')
+                    self::PAGES_LABEL => ($data[self::PAGE_LABEL] ?? ''),
+                    self::CLS_TS_MODE => ($data[self::CLS_TS_MODE] ?? self::CLS_TS_MODE_TEMPLATE),
                 ];
             } elseif ($includeDirPages) {
                 $pages[] = [

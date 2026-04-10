@@ -12,6 +12,7 @@ import SectionCalendarsSimple from "./SectionCalendarsSimple.vue";
 import SectionCalendarsExternal from "./SectionCalendarsExternal.vue";
 import ComboSelect from "./ComboSelect.vue";
 import ComboCheckbox from "./ComboCheckbox.vue";
+import {NcNoteCard} from "@nextcloud/vue";
 
 // TRANSLATORS "Min" is short for Minute(s)
 const minute = t('appointments', 'Min')
@@ -35,8 +36,8 @@ const calendarOptions = computed(() => {
 
 const modeOptions = [
 	{label: t('appointments', 'Weekly Template'), value: TS_MODE.TEMPLATE},
-	{label: t('appointments', 'Simple'), value: TS_MODE.SIMPLE},
-	{label: t('appointments', 'External'), value: TS_MODE.EXTERNAL}
+	{label: t('appointments', 'External'), value: TS_MODE.EXTERNAL},
+	{label: '⚠ ' + t('appointments', 'Simple'), value: TS_MODE.SIMPLE}
 ]
 
 const leadTimeOptions = [
@@ -98,6 +99,9 @@ const handleSetCal = (data) => {
 				<strong>{{ t('appointments', 'External') }}</strong>: {{ t('appointments', 'Use Calendar App or any other CalDAV compatible client to add "available" timeslots. Most recurrence rules are supported in this mode. Two calendars are required: a "Source Calendar" to keep track of your availability timeslots and a "Destination Calendar" for booked appointments.') }}<br>
 			</template>
 		</ComboSelect>
+
+		<NcNoteCard v-if="settings.tsMode===TS_MODE.SIMPLE" style="margin-top:0" type="warning">Simple Mode will be discontinued after August 2026. We are streamlining the app to focus on new feature development and long-term sustainability.
+		</NcNoteCard>
 
 		<SectionCalendarsWeekly
 				v-if="settingsStore.loading.tsMode!==true && settings.tsMode===TS_MODE.TEMPLATE"
