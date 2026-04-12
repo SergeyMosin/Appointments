@@ -880,6 +880,16 @@ class BCSabreImpl implements IBackendConnector
 
         $settings = $this->utils->getUserSettings();
 
+        $location="";
+        foreach ($settings[BackendUtils::KEY_FORM_INPUTS_JSON] as $elem) {
+           foreach ($elem as $attr => $value) {
+               if ($attr === 'data-is_location') {
+                    $location=$info[$elem['name']];
+                    break;
+                }
+            }
+        }
+
         $ts_mode = $settings[BackendUtils::CLS_TS_MODE];
 
         if ($ts_mode === BackendUtils::CLS_TS_MODE_TEMPLATE) {
@@ -911,7 +921,8 @@ class BCSabreImpl implements IBackendConnector
                 (new \DateTime('now', new \DateTimeZone('UTC')))->format(self::TIME_FORMAT),
                 isset($td[$info['tmpl_day']][$info['tmpl_idx']]['title'])
                     ? '_' . $td[$info['tmpl_day']][$info['tmpl_idx']]['title']
-                    : ''
+                    : '',
+                $location
             );
             if (isset($parts['err'])) {
                 $this->logErr($parts['err'] . " - template mode");
@@ -990,7 +1001,8 @@ class BCSabreImpl implements IBackendConnector
             $parts = $this->utils->makeAppointmentParts(
                 $userId, $tzi,
                 (new \DateTime('now', new \DateTimeZone('UTC')))->format(self::TIME_FORMAT),
-                isset($evt->SUMMARY) ? '_' . $evt->SUMMARY->getValue() : ''
+                isset($evt->SUMMARY) ? '_' . $evt->SUMMARY->getValue() : '',
+                $location
             );
             if (isset($parts['err'])) {
                 $this->logErr($parts['err'] . " - calId: " . $srcId . ", uri: " . $srcUri);

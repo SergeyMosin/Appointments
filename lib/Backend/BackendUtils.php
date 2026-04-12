@@ -324,6 +324,7 @@ class BackendUtils
             $title
         ));
 
+        /// ics text
         $dsr = $info['name'] . "\n" . (empty($info['phone']) ? "" : ($info['phone'] . "\n")) . $info['email'] . $info['_more_data'];
 
         if (isset($info["_more_ics_text"])) {
@@ -349,6 +350,16 @@ class BackendUtils
         // original description
         $doc->description = $dsr;
         // -----
+
+        $settings = $this->getUserSettings();
+        foreach ($settings[BackendUtils::KEY_FORM_INPUTS_JSON] as $elem) {
+           foreach ($elem as $attr => $value) {
+               if ($attr === 'data-is_location') {
+                        $doc->$location=$info[$elem['name']];
+                        break;
+                }
+            }
+        }
 
         $this->setSEQ($evt);
 
@@ -671,6 +682,16 @@ class BackendUtils
             $location = $doc->inPersonType === true && !empty($settings[self::ORG_ADDR])
                 ? $settings[self::ORG_ADDR]
                 : $r;
+        }
+
+        // I'm OK with having chat enabled before a remote appointment regardless of conditions above
+        foreach ($settings[self::KEY_FORM_INPUTS_JSON] as $elem) {
+            foreach ($elem as $attr => $value) {
+                if ($attr === 'data-is_location') {
+                    $location=$doc->location;
+                    break;
+                }
+            }
         }
 
         if (!isset($evt->LOCATION)) {
@@ -1695,7 +1716,7 @@ class BackendUtils
      * @param string $title title is used when the appointment is being reset
      * @return string[] ['1_before_uid'=>'string...','2_before_dts'=>'string...','3_before_dte'=>'string...','4_last'=>'string...'] or ['err'=>'Error text...']
      */
-    function makeAppointmentParts(string $userId, string $tz_data_str, string $cr_date, string $title = ""): array
+    function makeAppointmentParts(string $userId, string $tz_data_str, string $cr_date, string $title = "", string $location = ""): array
     {
 
         $l10n = $this->l10n;
@@ -1721,7 +1742,11 @@ class BackendUtils
 
         $settings = $this->getUserSettings();
         $org_name = $settings[BackendUtils::ORG_NAME];
-        $addr = $settings[BackendUtils::ORG_ADDR];
+
+        $addr = empty($location)
+            ? $settings[BackendUtils::ORG_ADDR]
+            : $location;
+
         $email = $settings[self::ORG_EMAIL];
 
         $name = trim($iUser->getDisplayName());
