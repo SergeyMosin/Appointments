@@ -355,7 +355,7 @@ class BackendUtils
         foreach ($settings[BackendUtils::KEY_FORM_INPUTS_JSON] as $elem) {
            foreach ($elem as $attr => $value) {
                if ($attr === 'data-is_location') {
-                        $doc->$location=$info[$elem['name']];
+                        $doc->$location = $info[$elem['name']];
                         break 2;
                 }
             }
@@ -688,7 +688,7 @@ class BackendUtils
         foreach ($settings[self::KEY_FORM_INPUTS_JSON] as $elem) {
             foreach ($elem as $attr => $value) {
                 if ($attr === 'data-is_location') {
-                    $location=$doc->location;
+                    $location = $doc->location;
                     break 2;
                 }
             }
