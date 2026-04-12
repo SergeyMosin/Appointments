@@ -885,7 +885,7 @@ class BCSabreImpl implements IBackendConnector
            foreach ($elem as $attr => $value) {
                if ($attr === 'data-is_location') {
                     $location=$info[$elem['name']];
-                    break;
+                    break 2;
                 }
             }
         }

@@ -356,7 +356,7 @@ class BackendUtils
            foreach ($elem as $attr => $value) {
                if ($attr === 'data-is_location') {
                         $doc->$location=$info[$elem['name']];
-                        break;
+                        break 2;
                 }
             }
         }
@@ -689,7 +689,7 @@ class BackendUtils
             foreach ($elem as $attr => $value) {
                 if ($attr === 'data-is_location') {
                     $location=$doc->location;
-                    break;
+                    break 2;
                 }
             }
         }
