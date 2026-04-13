@@ -882,7 +882,12 @@ class StateController extends Controller
                 $tail = $applyAttrs($allowedAttrsByTag[$obj['tag']] ?? []);
                 $tail .= '>';
                 foreach ($obj['options'] as $option) {
-                    if (isset($option[1])) {
+                    if (is_array($option) && array_first($option) === 'optgroup') {
+                        $o = htmlspecialchars($option[1], ENT_QUOTES, 'UTF-8');
+                        $tail .= '<optgroup label="' . $o . '">';
+                    } elseif (is_array($option) && array_first($option) === '/optgroup') {
+                        $tail .= '</optgroup>';
+                    } elseif (isset($option[1])) {
                         $o = htmlspecialchars($option, ENT_QUOTES, 'UTF-8');
                         $tail .= '<option class="srgdev-ncfp-form-option" value="' . $o . '">' . $o . '</option>';
                     }
