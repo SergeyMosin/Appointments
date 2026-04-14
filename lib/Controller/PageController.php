@@ -545,7 +545,7 @@ class PageController extends Controller
         if (!$csp) {
             $csp = new \OCP\AppFramework\Http\ContentSecurityPolicy();
         }
-        $csp->addAllowedWorkerSrcDomain('blob');
+        $csp->addAllowedWorkerSrcDomain('blob:');
         $res->setContentSecurityPolicy($csp);
         return $res;
     }
