@@ -1,3 +1,9 @@
+## v2.7.2 - 2026-04-14
+### Fixed
+- fix: correct 'blob:' addAllowedWorkerSrcDomain CSP directive (thanks @lopussum)
+### Added
+- Add support for optgroup in select form components (thanks @luxigo)
+
 ## v2.7.1 - 2026-04-09
 ### Added
 - Settings: 'Debug Cancellations' option - #646
