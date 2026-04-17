@@ -108,6 +108,7 @@ OC.L10N.register(
     "Optimize recurrence" : "Optimizuoti pasikartojimus",
     "Debugging" : "Derinimas",
     "Debugging Mode" : "Derinimo veiksena",
+    "Min" : "Min",
     "External" : "Išorinė",
     "Simple" : "Paprasta",
     "15 minutes" : "15 minučių",
