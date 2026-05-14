@@ -2125,14 +2125,7 @@ class BackendUtils
             && $this->config->getAppValue('theming', 'disable-user-theming', 'no') !== 'yes') {
 
             $appointmentsBackgroundImage = "var(--image-background)";
-            $appointmentsBackgroundColor = "transparent";
-
-            // use system-wide default background color if provided
-            $backgroundMime = $this->config->getAppValue('theming', 'backgroundMime');
-            if ($backgroundMime === 'backgroundColor') {
-                $appointmentsBackgroundImage = "none";
-                $appointmentsBackgroundColor = $this->config->getAppValue('theming', 'color');
-            }
+            $appointmentsBackgroundColor = " var(--color-background-plain, var(--color-main-background))";
 
             try {
                 /** @var \OCP\App\IAppManager $appManager */
