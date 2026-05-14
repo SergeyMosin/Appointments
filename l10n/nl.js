@@ -71,6 +71,7 @@ OC.L10N.register(
     "Would you like to change your %s to %s?" : "Wil je jouw %s veranderen naar %s?",
     "Yes, Change" : "Ja, veranderen",
     "Action needed" : "Actie vereist",
+    "Please Wait" : "Even geduld aub",
     "Your %s has been changed to %s" : "Je %s is gewijzigd in %s",
     "All done." : "Klaar.",
     "Info" : "Info",
