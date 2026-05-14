@@ -1,3 +1,7 @@
+## v2.7.3 - 2026-05-13
+### Fixed
+- Simplify inline style (auto-theming)
+
 ## v2.7.2 - 2026-04-14
 ### Fixed
 - fix: correct 'blob:' addAllowedWorkerSrcDomain CSP directive (thanks @lopussum)
