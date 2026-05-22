@@ -105,7 +105,7 @@ OC.L10N.register(
     "Unconfirmed appointments cancellation reminders" : "Onaylanmamış randevu iptali anımsatıcıları",
     "Book appointments into your calendar via secure online form." : "Güvenli çevrim içi form ile randevularınızı takviminize işleyin.",
     "Book appointments into your calendar via secure online form. Attendees can confirm or cancel their appointments via an email link." : "Güvenli çevrim içi form ile randevularınızı takviminize işleyin. Katılımcılar kendilerine gönderilen e-postadaki bağlantıyı kullanarak randevuyu kabul ya da red edebilir.",
-    "Please select or create a page" : "Lütfen bir sayfa seçin ya da ekleyin",
+    "Please select or create a page" : "Lütfen bir sayfa seçin ya da oluşturun",
     "Preview" : "Ön izleme",
     "Page Is Not Enabled" : "Sayfa kullanıma alınmamış",
     "Delete action cannot be undone. Proceed?" : "Silme işlemi geri alınamaz. Silinsin mi?",
