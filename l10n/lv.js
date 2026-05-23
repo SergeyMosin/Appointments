@@ -223,6 +223,7 @@ OC.L10N.register(
     "Guest name + Date/Time" : "Viesa vārds + Datums/Laiks",
     "Date/Time + Guest name" : "Datums/Laiks + Viesa vārds",
     "Guest name only" : "Tikai viesa vārds",
+    "Customize Talk room name." : "Pielāgot Talk istabas nosaukumu.",
     "Custom \"Meeting type\" form fields." : "Pielāgoti \"Tikšanās veids\" formas lauki.",
     "Create rooms for confirmed appointments" : "Izveidot istabas apstiprinātām tikšanām",
     "Enable lobby" : "Iespējot uzgaidīšanas telpu",
