@@ -42,6 +42,7 @@ OC.L10N.register(
     "Confirmed" : "Потврдено",
     "Canceled" : "Откажано",
     "Disabled" : "Оневозможено",
+    "7 days" : "7 дена",
     "Warning" : "Предупредување",
     "Important" : "Важно",
     "Guest name + Date/Time" : "Име на гостинот + Датим/Време",
