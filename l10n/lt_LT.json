@@ -324,7 +324,7 @@
     "Important" : "Svarbu",
     "JavaScript code and/or cookies from hcaptcha.com will be placed into your booking form. You are responsible for ensuring compliance with privacy regulations in your jurisdiction." : "Jūsų užsakymo formoje bus įterptas „hcaptcha.com“ JavaScript kodas ir (arba) slapukai. Jūs esate atsakingi už privatumo taisyklių laikymąsi savo jurisdikcijoje.",
     "Blocked email addresses:" : "Užblokuoti el. pašto adresai:",
-    "Email addresses on this list cannot be used to book appointments. To block an entire domain, use a wildcard like this: *@bad-domain.tld" : "Šiame sąraše nurodytų el. pašto adresų negalima naudoti susitikimams užsisakyti. Norėdami užblokuoti visą domeną, naudokite tokį pakaitinį simbolį: *@bad-domain.tld",
+    "Email addresses on this list cannot be used to book appointments. To block an entire domain, use a wildcard like this: *@bad-domain.tld" : "Šiame sąraše nurodytų el. pašto adresų negalima naudoti susitikimams užsisakyti. Norėdami užblokuoti visą domeną, naudokite tokį pakaitos simbolį: *@bad-domain.tld",
     "Enter email adddress" : "Įveskite el. pašto adresą",
     "Guest name + Date/Time" : "Svečio vardas + Data/Laikas",
     "Date/Time + Guest name" : "Data/Laikas + Svečio vardas",
