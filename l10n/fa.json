@@ -80,6 +80,7 @@
     "URL" : "URL",
     "Save" : "ذخیره",
     "Copy" : "رونوشت",
+    "Visit" : "مراجعه کنید به",
     "Remove empty appointment slots created before {fullDate} ?" : "جای خالی قرار ملاقات ایجاد شده قبل از {fullDate} حذف شود؟",
     "Remove empty slots and booked appointments created before {fullDate} ?" : "جای خالی و قرارهای رزرو شده ایجاد شده قبل از {fullDate} حذف شود؟",
     "two calendars affected" : "دو تقویم تحت تاثیر قرار گرفت",
