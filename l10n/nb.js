@@ -185,7 +185,7 @@ OC.L10N.register(
     "Reset (make the timeslot available)" : "Tilbakestill (gjør tidsplassen tilgjengelig)",
     "Mark the appointment as canceled" : "Merk avtalen som kansellert",
     "Time slot mode" : "Modus for tidsluke",
-    "Time Slot Settings" : "Instillinger Tidsplass",
+    "Time Slot Settings" : "Tidsrominnstillinger",
     "Minimum lead time" : "Minimum ledetid",
     "When attendee cancels" : "Når deltakeren kansellerer",
     "Include all day events in conflict check" : "Inkluder heldagshendelser i konfliktsjekk",
