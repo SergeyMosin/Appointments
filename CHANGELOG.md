@@ -1,3 +1,7 @@
+## v2.7.4 - 2026-06-17
+### Added
+- Add support for Nextcloud 34 - #665
+
 ## v2.7.3 - 2026-05-13
 ### Fixed
 - Simplify inline style (auto-theming)
