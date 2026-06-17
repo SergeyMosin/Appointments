@@ -29,7 +29,7 @@
     <screenshot>https://raw.githubusercontent.com/SergeyMosin/Appointments/master/screenshots/screenshot3.jpg</screenshot>
     <donation>https://www.srgdev.com/gh-support/nextcloudapps</donation>
     <dependencies>
-        <nextcloud min-version="32" max-version="33"/>
+        <nextcloud min-version="32" max-version="34"/>
         <backend>caldav</backend>
     </dependencies>
     <repair-steps>
