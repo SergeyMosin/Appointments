@@ -17,6 +17,7 @@ OC.L10N.register(
     "Remove" : "ඉවත් කරන්න",
     "Add" : "එකතු කරන්න",
     "OK" : "හරි",
+    "Delete" : "Delete",
     "1 Hour" : "හෝරා 1 යි",
     "2 Hours" : "හෝරා 12 යි",
     "12 Hours" : "හෝරා 12 යි",
