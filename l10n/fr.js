@@ -172,6 +172,7 @@ OC.L10N.register(
     "Debugging Off" : "Débug désactivé",
     "Log remote blockers" : "Bloqueur de registres distant",
     "Log template durations" : "Durées des modèles des logs",
+    "Debug Cancellations" : "Débuggage des annulations",
     "Settings Dump" : "Vidage des paramètres",
     "Get raw calendar data" : "Obtenir les données brutes de l'agenda",
     "Sync remote calendar now" : "Synchroniser l'agenda distant maintenant",
