@@ -122,6 +122,7 @@ OC.L10N.register(
     "Minimum lead time" : "Tempo de espera mínimo",
     "Include all day events in conflict check" : "Incluir eventos de dia inteiro na verificação de conflito",
     "Before" : "Antes",
+    "After" : "Após",
     "Source Calendar (Free Slots)" : "Calendário de origem (Vagas Livres)",
     "Destination Calendar (Booked)" : "Calendário de destino (Reuniões agendadas)",
     "Main calendar" : "Calendário principal",
