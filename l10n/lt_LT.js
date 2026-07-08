@@ -368,7 +368,7 @@ OC.L10N.register(
     "Security related settings" : "Su saugumu susiję nustatymai",
     "Reminders" : "Priminimai",
     "Send appointment reminders to attendees" : "Siųsti kviestiniams priminimus apie susitikimą",
-    "Talk Integration" : "Integracija su „Pokalbiais“",
+    "Talk Integration" : "„Pokalbiai“ integracija",
     "Talk room settings for appointments" : "Susitikimų „Pokalbiams“ kambario nustatymai",
     "Video Integration" : "Vaizdo integracija",
     "Video room settings for appointments" : "Vaizdo pokalbių kambario nustatymai susitikimams",

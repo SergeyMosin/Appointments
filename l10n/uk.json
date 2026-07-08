@@ -245,7 +245,7 @@
     "Attach .ics file to confirm/cancel emails" : "Долучити файл .ics до ел.листів підтвердження/скасування",
     "An .ics attachment will automatically be generated for notification emails, allowing better integration with email/calendar apps that support it." : "Вкладення у форматі .ics буде автоматично створено для листів-сповіщень, що дозволить краще інтегруватися з поштовими програмами/календарями, які його підтримують.",
     "Email Attendee when the appointment is:" : "Надіслати ел.лист учасникові, коли зустріч:",
-    "Attendees will be notified via email when their upcoming appointments are updated or deleted in the calendar app or through some other external mechanism. Only changes to Date/Time, Status, or Location will trigger the \"Modified\" notification." : "Учасники отримають сповіщення на електронну пошту, коли їхні майбутні зустрічі будуть оновлені або видалені в додатку календаря або за допомогою іншого зовнішнього механізму. Сповіщення \"Змінено\" з'являється лише при зміні дати/часу, статусу або місцезнаходження.",
+    "Attendees will be notified via email when their upcoming appointments are updated or deleted in the calendar app or through some other external mechanism. Only changes to Date/Time, Status, or Location will trigger the \"Modified\" notification." : "Учасники отримають сповіщення на електронну пошту, коли їхні майбутні зустрічі будуть оновлені або вилучені у застосунку календаря або за допомогою іншого зовнішнього механізму. Сповіщення \"Змінено\" з'являється лише при зміні дати/часу, статусу або місця розташування.",
     "Modified (Time, Status, Location)" : "Змінено (час, статус, місце)",
     "Deleted" : "Вилучено",
     "Email Me when an appointment is:" : "Надіслати ел.лист мені, коли зустріч:",
