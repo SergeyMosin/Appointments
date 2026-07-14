@@ -109,6 +109,7 @@ OC.L10N.register(
     "Preview" : "Aperçu",
     "Page Is Not Enabled" : "La page n'est pas activée",
     "Delete action cannot be undone. Proceed?" : "L’action de suppression ne peut pas être annulée. Poursuivre ?",
+    "Simple Mode: Support Ending Soon" : "Mode simplifié : la prise en charge prendra bientôt fin",
     "Stop sharing (disable)" : "Arrêter le partage (désactiver)",
     "Publish online (enable)" : "Publier en ligne (activer)",
     "Show URL/link" : "Voir l’URL/lien",
