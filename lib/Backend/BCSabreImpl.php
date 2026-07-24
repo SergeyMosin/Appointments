@@ -111,8 +111,18 @@ class BCSabreImpl implements IBackendConnector
      * @return int 0=no events, 1=at least 1
      * @noinspection PhpDocMissingThrowsInspection
      */
-    private function checkRangeTR(int $start_ts, int $end_ts, string $calId, \DateTimeZone $utz, array $settings): int
+    private function checkRangeTR(
+        int $start_ts,
+        int $end_ts,
+        string $calId,
+        string $srcId,
+        string $srcUri,
+        \DateTimeZone $utz,
+        array $settings
+    ): int
     {
+        $slot_start_ts = $start_ts;
+        $slot_end_ts = $end_ts;
         $start = new \DateTime('@' . $start_ts);
         $start->setTimezone($utz);
 
@@ -126,16 +136,34 @@ class BCSabreImpl implements IBackendConnector
                 ? ['CATEGORIES:' . BackendUtils::APPT_CAT] : []
         ];
 
+        $capacity = new ExternalSlotCapacity();
+        $sourceRangeStart = new \DateTime('@' . $queryConfig['start']);
+        $sourceRangeStart->setTimezone($utz);
+        $this->registerExternalSourceOccurrences(
+            $capacity,
+            $srcId,
+            $queryConfig,
+            $sourceRangeStart,
+            $queryConfig['end']
+        );
+
         // we need to adjust/modify $start and $end by 1 sec because of "<=" and ">=" comparisons(instead of just "<" and ">" ) in the buildBusyTree function
         $start->modify('+1 second');
         $start_ts = $start->getTimestamp();
 
         $end_ts--; // -1 second
 
-        $booked_tree = $this->buildBusyTree([$calId], $queryConfig, $start, $start_ts, $end_ts, true);
+        $booked_tree = $this->buildBusyTree(
+            [$calId],
+            $queryConfig,
+            $start,
+            $start_ts,
+            $end_ts,
+            false,
+            $capacity
+        );
 
-        // if $booked_tree is NOT null then there was a match(intersection)
-        return $booked_tree === null ? 0 : 1;
+        return $capacity->hasBookingConflict($srcUri, $slot_start_ts, $slot_end_ts, $booked_tree) ? 1 : 0;
 
     }
 
@@ -169,10 +197,10 @@ class BCSabreImpl implements IBackendConnector
                 ? ['CATEGORIES:' . BackendUtils::APPT_CAT] : []
         ];
 
-        $booked_tree = $this->buildBusyTree([$dstId], $queryConfig, $start, $start_ts, $end_ts, false);
-
         // Get free/available spots
         $str_out = '';
+        $slots = [];
+        $capacity = new ExternalSlotCapacity();
         // '_'ts_mode(1byte)ses_time(4bytes)dates(8bytes)uri(no extension)
         $ses_info = '_1' . pack("L", time());
 
@@ -267,13 +295,14 @@ class BCSabreImpl implements IBackendConnector
                 if ($s_ts > $start_ts) {
                     $e_ts = $it->getDtEnd()->getTimestamp();
 
-                    if (AVLIntervalTree::lookUp($booked_tree,
-                            $s_ts, $e_ts) === null) {
-
-                        $str_out .= $ts_pref . $s_ts
-                            . ($showET ? ":" . $e_ts : "")
-                            . ':' . $this->utils->encrypt($ses_info . pack("LL", $s_ts, $e_ts) . substr($row['uri'], 0, -4), $key) . $atl . ',';
-                    }
+                    $capacity->addSource($row['uri'], $s_ts, $e_ts);
+                    $slots[] = [
+                        'uri' => $row['uri'],
+                        'start' => $s_ts,
+                        'end' => $e_ts,
+                        'prefix' => $ts_pref,
+                        'title' => $atl,
+                    ];
                 }
                 $it->next();
             }
@@ -290,7 +319,101 @@ class BCSabreImpl implements IBackendConnector
             }
             $vo->destroy();
         }
+
+        $booked_tree = $this->buildBusyTree(
+            [$dstId],
+            $queryConfig,
+            $start,
+            $start_ts,
+            $end_ts,
+            false,
+            $capacity
+        );
+
+        foreach ($slots as $slot) {
+            if (!$capacity->isAvailable($slot['uri'], $slot['start'], $slot['end'], $booked_tree)) {
+                continue;
+            }
+
+            $str_out .= $slot['prefix'] . $slot['start']
+                . ($showET ? ":" . $slot['end'] : "")
+                . ':' . $this->utils->encrypt(
+                    $ses_info . pack("LL", $slot['start'], $slot['end']) . substr($slot['uri'], 0, -4),
+                    $key
+                ) . $slot['title'] . ',';
+        }
         return $str_out !== '' ? substr($str_out, 0, -1) : null;
+    }
+
+    private function registerExternalSourceOccurrences(
+        ExternalSlotCapacity $capacity,
+        string $srcId,
+        array $queryConfig,
+        \DateTime $start,
+        int $end_ts
+    ): void {
+        $utz = $start->getTimezone();
+        $iter = $this->fastQuery(
+            [$srcId],
+            $queryConfig['start'],
+            $queryConfig['end'],
+            $queryConfig['props'],
+            ['uri']
+        );
+
+        foreach ($iter as $row) {
+            $cd = $row['calendardata'];
+            if (strpos($cd, "\r\nTRANSP:TRANSPARENT\r\n", 22) === false) {
+                continue;
+            }
+
+            /** @var \Sabre\VObject\Component\VCalendar $vo */
+            $vo = Reader::read($cd);
+            /** @var \Sabre\VObject\Component\VEvent $evt */
+            $evt = $vo->VEVENT;
+
+            if (!$evt->DTSTART->hasTime()
+                || $evt->DTSTART->isFloating()
+                || (isset($evt->CLASS) && $evt->CLASS->getValue() !== 'PUBLIC')) {
+                $vo->destroy();
+                continue;
+            }
+
+            if (isset($evt->RRULE)) {
+                try {
+                    $it = new EventIterator($vo->getByUID($evt->UID->getValue()), null, $utz);
+                } catch (NoInstancesException $e) {
+                    $vo->destroy();
+                    continue;
+                }
+                $it->fastForward($start);
+            } else {
+                $it = new FakeIterator($evt, $utz);
+            }
+
+            $count = 0;
+            while ($it->valid() && $count < 384) {
+                $count++;
+                $_evt = $it->getEventObject();
+                if (isset($_evt->STATUS) && $_evt->STATUS->getValue() === 'CANCELLED') {
+                    $it->next();
+                    continue;
+                }
+
+                $source_start_ts = $it->getDtStart()->getTimestamp();
+                if ($source_start_ts >= $end_ts) {
+                    break;
+                }
+
+                $source_end_ts = $it->getDtEnd()->getTimestamp();
+                if ($source_end_ts >= $queryConfig['start']) {
+                    $capacity->addSource($row['uri'], $source_start_ts, $source_end_ts);
+                }
+                $it->next();
+            }
+
+            $vo->destroy();
+        }
     }
 
     /**
@@ -418,7 +541,8 @@ class BCSabreImpl implements IBackendConnector
                                    \DateTime $start,
                                    int       $start_ts,
                                    int       $end_ts,
-                                   bool      $returnAfterFirstMatch = false): AVLIntervalNode|null
+                                   bool      $returnAfterFirstMatch = false,
+                                   ExternalSlotCapacity|null $capacity = null): AVLIntervalNode|null
     {
         $utz = $start->getTimezone();
 
@@ -478,13 +602,27 @@ class BCSabreImpl implements IBackendConnector
                         ($_evt->DTEND && $_evt->DTEND->hasTime()))
                 ) {
                     // an all-day event
-                    $s_ts = $it->getDtStart()->getTimestamp();
-                    $e_ts = $s_ts + 86400;
+                    $raw_start_ts = $it->getDtStart()->getTimestamp();
+                    $raw_end_ts = $raw_start_ts + 86400;
+                    $s_ts = $raw_start_ts;
+                    $e_ts = $raw_end_ts;
                 } else {
                     // an event with end-time or multi-day duration
-                    $s_ts = $it->getDtStart()->getTimestamp() - $beforeBufferSec;
-                    $e_ts = $it->getDtEnd()->getTimestamp() + $afterBufferSec;
+                    $raw_start_ts = $it->getDtStart()->getTimestamp();
+                    $raw_end_ts = $it->getDtEnd()->getTimestamp();
+                    $s_ts = $raw_start_ts - $beforeBufferSec;
+                    $e_ts = $raw_end_ts + $afterBufferSec;
                 }
+
+                $sourceUri = isset($_evt->{BackendUtils::X_APPT_SOURCE})
+                    ? $_evt->{BackendUtils::X_APPT_SOURCE}->getValue()
+                    : null;
+                if ($capacity !== null
+                    && $capacity->registerDestination($sourceUri, $raw_start_ts, $raw_end_ts)) {
+                    $it->next();
+                    continue;
+                }
+
                 // start1 <= end2 && start2 <= end1
                 if ($start_ts <= $e_ts && $s_ts <= $end_ts) {
 
@@ -1014,6 +1152,11 @@ class BCSabreImpl implements IBackendConnector
                 $parts['3_before_dte'] . $dt->setTimestamp($info['ext_end'])->format(self::TIME_FORMAT_NO_Z) .
                 $parts['4_last'];
 
+            $booking = Reader::read($d);
+            $booking->VEVENT->add(BackendUtils::X_APPT_SOURCE, $srcUri);
+            $d = $booking->serialize();
+            $booking->destroy();
+
             // Special "lock" uid
             $lock_uid = "LOCK_" . hash("tiger128,4", $info['ext_start'] . $info['ext_end'] . $info['ext_src_uri']);
 
@@ -1075,7 +1218,15 @@ class BCSabreImpl implements IBackendConnector
                 // for external and template modes we need to re-check the time range and update the lock_uid to "real" uid or delete the lock_uid if the time range is "taken"
 
                 if ($ts_mode === BackendUtils::CLS_TS_MODE_EXTERNAL) {
-                    $trc = $this->checkRangeTR($info['ext_start'], $info['ext_end'], $calId, $utz, $settings);
+                    $trc = $this->checkRangeTR(
+                        $info['ext_start'],
+                        $info['ext_end'],
+                        $calId,
+                        $srcId,
+                        $srcUri,
+                        $utz,
+                        $settings
+                    );
                 } else {
                     // template mode
                     $dt->setTimestamp($info['tmpl_start_ts']);
