@@ -269,6 +269,7 @@ OC.L10N.register(
     "Show end time" : "Näita lõpuaega",
     "Hide phone number field" : "Peida telefoninumbri väli",
     "Advanced Form Settings" : "Vormi täiendavad seadistused",
+    "GDPR Compliance" : "Vastavus GDPR-reeglitele",
     "GDPR text only (no checkbox)" : "Vaid GDPR-i tekst (märkeruuduta)",
     "Page Header Title" : "Pealkiri lehe päises",
     "Additional Form Submitted Page Text" : "Peale vormi edastamist kuvatav lisatekst",
