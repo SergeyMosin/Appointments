@@ -63,7 +63,7 @@ const handleUpdateShow = (evt) => {
 			<div v-else-if="state.error!==''">
 				{{ state.error }}
 			</div>
-			<pre v-else style="font-size:90%;padding: 0 1em;text-align: left;"><code v-html="state.response"/></pre>
+			<pre v-else style="font-size:90%;padding: 0 1em;text-align: left;"><code>{{ state.response }}</code></pre>
 		</div>
 	</NcModal>
 </template>
