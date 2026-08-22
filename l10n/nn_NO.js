@@ -6,6 +6,7 @@ OC.L10N.register(
     "Preview" : "Førehandsvisning",
     "Settings" : "Instillingar",
     "Title" : "Tittel",
+    "Text" : "Tekst",
     "URL" : "URL",
     "Save" : "Lagre",
     "Copy" : "Kopier",
