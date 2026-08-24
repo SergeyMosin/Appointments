@@ -62,7 +62,7 @@ onMounted(() => {
 const handleUpdateOpen = (evt) => {
 	if (evt === false) {
 		settingsStore.cancelServiceRequest(CK.SETTINGS)
-		if (pageSettingsLoaded) {
+		if (pageSettingsLoaded && !_isDir) {
 			pagesStore.getPageById(props.pageId).tsMode = settingsStore.settings.tsMode
 		}
 		emit('close-settings')
