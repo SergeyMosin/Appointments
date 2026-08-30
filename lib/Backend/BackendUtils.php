@@ -30,6 +30,7 @@ class BackendUtils
     const TZI_PROP = "X-TZI";
     // original description
     const X_DSR = "X-APPT-DSR";
+    const X_APPT_SOURCE = "X-APPT-SOURCE";
 
     // #################################################################
     //   WARNING: most of constants are used in V2 migration

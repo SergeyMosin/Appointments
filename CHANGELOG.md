@@ -1,3 +1,7 @@
+## Unreleased
+### Fixed
+- External mode keeps duplicate source slots available until each individual slot is booked - #668
+
 ## v2.7.4 - 2026-06-17
 ### Added
 - Add support for Nextcloud 34 - #665
