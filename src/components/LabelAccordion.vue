@@ -37,7 +37,10 @@ const toggleOpen = () => {
 <template>
 	<div>
 		<div class="flex-wrapper">
-			<label
+			<component
+					:is="accordion ? 'button' : 'label'"
+					:type="accordion ? 'button' : null"
+					:aria-expanded="accordion ? String(isOpen) : null"
 					v-bind="$attrs"
 					@click="toggleOpen"
 					:class="[
@@ -57,7 +60,7 @@ const toggleOpen = () => {
 				<span v-if="loading" class="wrapper-label-loading">
 				<NcLoadingIcon :size="16"/>
 			</span>
-			</label>
+			</component>
 			<div v-if="slots?.helpPopover" class="wrapper-help">
 				<NcPopover :focus-trap="false" :container="false">
 					<template #trigger="{attrs}">
@@ -95,6 +98,18 @@ const toggleOpen = () => {
 	display: inline-block;
 	overflow: hidden;
 	vertical-align: middle;
+}
+
+button.wrapper-label {
+	background: none;
+	border: none;
+	border-radius: 0;
+	margin: 0;
+	padding: 0;
+	min-height: 0;
+	font: inherit;
+	color: inherit;
+	text-align: start;
 }
 
 .wrapper-label-accordion,
