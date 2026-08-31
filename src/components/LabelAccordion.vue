@@ -1,3 +1,9 @@
+<script>
+export default {
+	inheritAttrs: false
+}
+</script>
+
 <script setup>
 import IconMenu from "vue-material-design-icons/MenuSwapOutline.vue";
 import IconInfo from "vue-material-design-icons/InformationOutline.vue";

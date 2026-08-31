@@ -1,3 +1,7 @@
+<script>
+let idCounter = 0
+</script>
+
 <script setup>
 import LabelAccordion from "../LabelAccordion.vue";
 import PsSelect from "../PsSelect.vue";
@@ -44,6 +48,7 @@ const props = defineProps({
 	}
 })
 
+const inputId = `ps-combo-select-${++idCounter}`
 const isLoading = computed(() => props.store.loading[props.propName] === true)
 const dropdownShouldOpen = computed(() => !(props.clickInterceptor && props.store.k === false))
 
@@ -78,6 +83,7 @@ const handleClick = (evt) => {
 <template>
 	<div>
 		<LabelAccordion
+				:for="inputId"
 				:label="label"
 				:loading="isLoading">
 			<template #helpPopover v-if="slots?.help">
@@ -86,6 +92,8 @@ const handleClick = (evt) => {
 		</LabelAccordion>
 		<PsSelect
 				class="ps-vert-spacing"
+				:input-id="inputId"
+				:aria-label-listbox="label"
 				:placeholder-label="placeholder"
 				:selected-value="store.settings[propName]||defaultValue"
 				:options="options"
