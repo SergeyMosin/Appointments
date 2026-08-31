@@ -58,7 +58,7 @@ const toggleOpen = () => {
 				{{ label }}
 			</span>
 				<span v-if="loading" class="wrapper-label-loading">
-				<NcLoadingIcon :size="16"/>
+				<NcLoadingIcon :size="16" :name="t('appointments', 'Loading')"/>
 			</span>
 			</component>
 			<div v-if="slots?.helpPopover" class="wrapper-help">
