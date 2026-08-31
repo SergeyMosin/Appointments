@@ -21,8 +21,17 @@
 		const pso = makePso(f.getAttribute("data-pps"))
 		prefillFields(pso)
 		makeDpu(pso)
-		document.getElementById("srgdev-ncfp_sel-dummy").addEventListener("click", selClick)
-		document.getElementById("srgdev-ncfp_sel-dummy").addEventListener("keyup", function (evt) {
+		const selDummy = document.getElementById("srgdev-ncfp_sel-dummy")
+		selDummy.setAttribute("aria-haspopup", "dialog")
+		selDummy.setAttribute("aria-expanded", "false")
+		selDummy.addEventListener("click", selClick)
+		selDummy.addEventListener("keydown", function (evt) {
+			if (isEnterKey(evt)) {
+				evt.preventDefault()
+				selClick(evt)
+			}
+		})
+		selDummy.addEventListener("keyup", function (evt) {
 			if (isSpaceKey(evt)) {
 				selClick(evt)
 			}
@@ -253,12 +262,15 @@
 			elm = document.getElementById("srgdev-dpu_main-cont")
 		}
 		elm.removeAttribute("data-open")
+		const dummy = document.getElementById("srgdev-ncfp_sel-dummy")
+		dummy.setAttribute("aria-expanded", "false")
+		dummy.focus()
 	}
 
 	function selEscCloseListener(evt) {
 		if (evt.key === "Escape" || evt.key === "Esc" || evt.keyCode === 27) {
 			selClose(null)
-			e.preventDefault()
+			evt.preventDefault()
 		}
 	}
 
@@ -278,6 +290,7 @@
 		let elm = document.getElementById("srgdev-dpu_main-cont")
 		if (elm.getAttribute("data-open") === null) {
 			elm.setAttribute("data-open", '')
+			document.getElementById("srgdev-ncfp_sel-dummy").setAttribute("aria-expanded", "true")
 			document.body.addEventListener("keyup", selEscCloseListener)
 			const curActive = document.getElementById("srgdev-dpu_main-date").curActive
 			if (curActive && curActive.indexOf('e') === -1) {
@@ -323,9 +336,12 @@
 			prevNextDPU(bfCont)
 		}
 
-		document.getElementById('srgdev-dpu_dc' + c)
-			.removeAttribute('data-active');
-		document.getElementById('srgdev-dpu_dc' + n).setAttribute('data-active', '')
+		const prevCell = document.getElementById('srgdev-dpu_dc' + c)
+		prevCell.removeAttribute('data-active')
+		prevCell.setAttribute('aria-pressed', 'false')
+		const curCell = document.getElementById('srgdev-dpu_dc' + n)
+		curCell.setAttribute('data-active', '')
+		curCell.setAttribute('aria-pressed', 'true')
 		this.parentElement.curActive = n
 
 		if (n.slice(-1) === 'e') n = 'e'
@@ -369,6 +385,7 @@
 					elm.appendChild(elm1)
 				}
 				elm.setAttribute("tabindex", "0")
+				elm.setAttribute("role", "button")
 				itemsCont.appendChild(elm)
 			})
 
@@ -446,6 +463,16 @@
 		}
 	}
 
+	function setNavDisabled(elm, disabled) {
+		if (disabled) {
+			elm.setAttribute('disabled', '')
+			elm.setAttribute('aria-disabled', 'true')
+		} else {
+			elm.removeAttribute('disabled')
+			elm.removeAttribute('aria-disabled')
+		}
+	}
+
 	function prevNextDPU(e) {
 		let p
 		// e.target===undefined when we do initial "scroll" @see makeDpu()
@@ -455,26 +482,14 @@
 				if (p.curDP > 0) p.curDP--
 			} else {
 				if (p.curDP < p.maxDP) p.curDP++
-				if (p.curDP === p.maxDP) {
-					e.target.setAttribute('disabled', '')
-				} else {
-					e.target.removeAttribute('disabled')
-				}
+				setNavDisabled(e.target, p.curDP === p.maxDP)
 			}
 		} else {
 			p = e;
 		}
-		if (p.curDP === 0) {
-			p.firstElementChild.setAttribute('disabled', '')
-		} else {
-			p.firstElementChild.removeAttribute('disabled')
-		}
+		setNavDisabled(p.firstElementChild, p.curDP === 0)
 
-		if (p.curDP === p.maxDP) {
-			p.lastElementChild.setAttribute('disabled', '')
-		} else {
-			p.lastElementChild.removeAttribute('disabled')
-		}
+		setNavDisabled(p.lastElementChild, p.curDP === p.maxDP)
 
 		// TODO: find first not empty and select it ?
 
@@ -588,6 +603,10 @@
 
 		const sel = document.createElement('select')
 		sel.id = 'srgdev-dpu_tz-picker'
+		const tzLabel = document.getElementById('srgdev-ncfp_sel-hidden').getAttribute('data-tr-tz')
+		if (tzLabel) {
+			sel.setAttribute('aria-label', tzLabel)
+		}
 
 		sel.addEventListener('change', () => {
 
@@ -705,8 +724,13 @@
 		e1.addEventListener('click', dateClickOrFocus)
 		if (!is_empty) {
 			e1.setAttribute("tabindex", "0")
+			e1.setAttribute('role', 'button')
+			e1.setAttribute('aria-label', formatters.wft(d))
+			e1.setAttribute('aria-pressed', 'false')
 			e1.addEventListener('focus', dateClickOrFocus)
 			e1.addEventListener('keyup', dateKeyboard)
+		} else {
+			e1.setAttribute('aria-hidden', 'true')
 		}
 
 		if (ref.lcc === ref.rccN) {
@@ -859,6 +883,7 @@
 		const dpuTrHdr = s.getAttribute("data-hdr")
 		const dpuTrBack = s.getAttribute("data-tr-back")
 		const dpuTrNext = s.getAttribute("data-tr-next")
+		const dpuTrClose = s.getAttribute("data-tr-close")
 
 		const has_intl = window.Intl && typeof window.Intl === "object"
 		const lang = document.documentElement.hasAttribute('data-locale')
@@ -987,6 +1012,8 @@
 			// first render
 			const cont = document.createElement('div')
 			cont.id = "srgdev-dpu_main-cont"
+			cont.setAttribute('role', 'dialog')
+			cont.setAttribute('aria-label', dpuTrHdr)
 			cont.className = "srgdev-dpu-bkr-cls"
 
 			lcd = document.createElement('div')
@@ -1004,10 +1031,19 @@
 			lcdBF.firstElementChild.id = "srgdev-dpu_bf-back"
 			lcdBF.firstElementChild.appendChild(document.createTextNode(dpuTrBack))
 			lcdBF.firstElementChild.addEventListener("click", prevNextDPU)
-			lcdBF.firstElementChild.setAttribute('disabled', '')
+			setNavDisabled(lcdBF.firstElementChild, true)
 			lcdBF.lastElementChild.id = "srgdev-dpu_bf-next"
 			lcdBF.lastElementChild.appendChild(document.createTextNode(dpuTrNext))
 			lcdBF.lastElementChild.addEventListener("click", prevNextDPU)
+			for (const nav of [lcdBF.firstElementChild, lcdBF.lastElementChild]) {
+				nav.setAttribute('role', 'button')
+				nav.setAttribute('tabindex', '0')
+				nav.addEventListener('keyup', function (evt) {
+					if (isSpaceKey(evt) || isEnterKey(evt)) {
+						this.click()
+					}
+				})
+			}
 			// Time columns
 			if (pso[PPS_TIME2] === 0 || pso[PPS_END_TIME] === 1) {
 				lcdBF.tuClass = 'srgdev-dpu-time-unit' +
@@ -1036,6 +1072,7 @@
 			const btn = document.createElement('div')
 			btn.id = "srgdev-dpu_main-hdr-icon"
 			btn.className = "icon-close"
+			btn.setAttribute('aria-label', dpuTrClose)
 			btn.addEventListener('click', function () {
 				selClose(null)
 			})
@@ -1048,6 +1085,11 @@
 			btn.setAttribute("tabindex", "0")
 			cont.appendChild(btn)
 
+			cont.addEventListener('keydown', function (evt) {
+				if (isSpaceKey(evt) && evt.target.tagName !== 'SELECT') {
+					evt.preventDefault()
+				}
+			})
 			cont.addEventListener("click", timeClick)
 			cont.addEventListener('keyup', function (evt) {
 				if (isSpaceKey(evt) || isEnterKey(evt)) {

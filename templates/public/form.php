@@ -31,7 +31,7 @@ style('appointments', 'form');
             // TRANSLATORS Button: meaning go to next section. Keep short if possible, abbreviations OK
             $next = $l->t('Next');
 
-            echo ' ' . $disabled . 'data-state="' . $_['appt_state'] . '" data-info="' . $_['appt_sel_opts'] . '" data-hdr="' . htmlspecialchars($l->t('Select Date and Time'), ENT_QUOTES, 'UTF-8') . '" data-tr-back="' . htmlspecialchars($back, ENT_QUOTES, 'UTF-8') . '" data-tr-next="' . htmlspecialchars($next, ENT_QUOTES, 'UTF-8') . '" data-tr-not-available="' . htmlspecialchars($l->t('No Appointments Available'), ENT_QUOTES, 'UTF-8') . '">';
+            echo ' ' . $disabled . 'data-state="' . $_['appt_state'] . '" data-info="' . $_['appt_sel_opts'] . '" data-hdr="' . htmlspecialchars($l->t('Select Date and Time'), ENT_QUOTES, 'UTF-8') . '" data-tr-back="' . htmlspecialchars($back, ENT_QUOTES, 'UTF-8') . '" data-tr-next="' . htmlspecialchars($next, ENT_QUOTES, 'UTF-8') . '" data-tr-not-available="' . htmlspecialchars($l->t('No Appointments Available'), ENT_QUOTES, 'UTF-8') . '" data-tr-close="' . htmlspecialchars($l->t('Close'), ENT_QUOTES, 'UTF-8') . '" data-tr-tz="' . htmlspecialchars($l->t('Time zone'), ENT_QUOTES, 'UTF-8') . '">';
             ?>
         </div>
         <?php
