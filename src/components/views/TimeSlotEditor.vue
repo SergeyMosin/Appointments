@@ -104,6 +104,7 @@ const editor = reactive({
 onMounted(() => {
 
 	gridMaker.setup(grid_cont.value, COL_COUNT, 'srgdev-appt-grd-')
+	gridMaker.setColumnLabels(editor.header.map(h => h.txt))
 
 	if (gridMode === gridMaker.MODE_TEMPLATE) {
 		gridMaker.addPastAppts(settings.template_data, null, gridShift)
