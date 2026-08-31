@@ -853,7 +853,7 @@ class StateController extends Controller
                 if (($obj['type'] === 'checkbox' || $obj['type'] === 'radio') && isset($obj['options']) && is_array($obj['options'])) {
                     $class = 'srgdev-ncfp-form-' . $obj['type'];
                     $nameSuffix = $obj['type'] === 'checkbox' ? '[]' : '';
-                    $r .= '<div class="srgdev-ncfp-form-fieldset">';
+                    $r .= '<fieldset class="srgdev-ncfp-form-fieldset">';
                     $r .= '<legend class="srgdev-ncfp-form-label">' . $obj['label'] . '</legend>';
                     foreach ($obj['options'] as $optIndex => $optValue) {
                         $optValEscaped = htmlspecialchars($optValue, ENT_QUOTES, 'UTF-8');
@@ -863,7 +863,7 @@ class StateController extends Controller
                         $r .= '<label for="' . $optId . '">' . $optValEscaped . '</label>';
                         $r .= '</p>';
                     }
-                    $r .= '</div>';
+                    $r .= '</fieldset>';
                     return $r;
                 }
                 $class = 'srgdev-ncfp-form-input';
