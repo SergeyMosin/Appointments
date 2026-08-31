@@ -4,6 +4,7 @@ let idCounter = 0
 
 <script setup>
 import {NcSelect} from "@nextcloud/vue";
+import NcEllipsisedOption from "@nextcloud/vue/dist/Components/NcEllipsisedOption.js";
 import {computed, nextTick, ref, useAttrs} from "vue";
 
 const props = defineProps({
@@ -51,6 +52,13 @@ const handleOpen = () => nextTick(() => {
 			:searchable="false"
 			class="ps-nc-select-internal"
 			:clearable="false">
+		<template #option="option">
+			<span aria-hidden="true"><NcEllipsisedOption :name="String(option.label)"/></span>
+			<span class="hidden-visually">{{ option.label }}</span>
+		</template>
+		<template #selected-option="option">
+			<span aria-hidden="true"><NcEllipsisedOption :name="String(option.label)"/></span>
+		</template>
 		<template #search="{attributes, events}">
 			<input
 					class="vs__search"
