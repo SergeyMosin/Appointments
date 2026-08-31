@@ -1,12 +1,11 @@
 <script setup>
-import {reactive, inject} from "vue";
+import {computed, reactive, inject} from "vue";
 import LabelAccordion from "../LabelAccordion.vue";
 import IconCalendarAdd from "vue-material-design-icons/CalendarPlus.vue";
 import {useSettingsStore} from "../../stores/settings";
-import DatePicker from "vue2-datepicker";
 import VueSlider from "vue-slider-component";
 import {getTimezone} from "../../use/utils";
-import {NcButton, NcCheckboxRadioSwitch} from "@nextcloud/vue";
+import {NcButton, NcCheckboxRadioSwitch, NcDateTimePickerNative} from "@nextcloud/vue";
 import {showError} from "@nextcloud/dialogs";
 import ComboSelect from "./ComboSelect.vue";
 
@@ -39,47 +38,19 @@ const state = reactive({
 
 // add new ----------------
 
-// TODO: refactor SEF
-const lang = (() => {
-	let days = undefined
-	let months = undefined
-	const formatLocale = {
-		// 1 (Mon) = default/fallback, or 0 (Sun) or 6 (Sat)
-		firstDayOfWeek: window.firstDay === 0
-				? 0
-				: (window.firstDay === 6 ? 6 : 1)
-	}
-	if (window.Intl && typeof window.Intl === "object") {
-		days = []
-		let d = new Date(1970, 1, 1)
-		let f = new Intl.DateTimeFormat([],
-				{weekday: "short",})
-		for (let i = 1; i < 8; i++) {
-			d.setDate(i)
-			days[i - 1] = f.format(d)
-		}
-		f = new Intl.DateTimeFormat([],
-				{month: "short",})
-		d.setDate(1)
-		months = []
-		for (let i = 0; i < 12; i++) {
-			d.setMonth(i)
-			months[i] = f.format(d)
-		}
-		formatLocale.monthsShort = months
-	}
-	return {days: days, formatLocale: formatLocale}
-})()
+// 1 (Mon) = default/fallback, or 0 (Sun) or 6 (Sat)
+const firstDayOfWeek = window.firstDay === 0
+		? 0
+		: (window.firstDay === 6 ? 6 : 1)
 
 const getStartOfWeek = (d) => {
 
 	d.setHours(0, 0, 0, 0)
 
-	// lang.formatLocale.firstDayOfWeek can be:
 	//  0: Sunday
 	//  1: Monday
 	//  6: Saturday
-	const fdw = lang.formatLocale.firstDayOfWeek
+	const fdw = firstDayOfWeek
 
 	//  fdw=0 : 0 1 2 3 4 5 6 | adjust: d.getDay()
 	//  fdw=1 : 1 2 3 4 5 6 0 | adjust: (d.getDay() + 6) % 7
@@ -107,33 +78,28 @@ const compNotBefore = (d) => {
 	return d < notBeforeDate
 }
 
-const datePickerPopupStyle = {
-	top: "75%",
-	left: "50% !important",
-	transform: "translate(-50%,0)"
-}
+// any selected date counts for its whole week
+const apptWeekStart = computed(() => state.apptWeek === null
+		? null
+		: getStartOfWeek(new Date(state.apptWeek.getTime())))
 
-const weekFormat = {
-	// Date to String
-	stringify: (date, fmt) => {
-		if (date) {
-			const endDate = new Date(date.getTime())
-			endDate.setDate(endDate.getDate() + 6);
-			if (window.Intl && typeof window.Intl === "object") {
-				let f = new Intl.DateTimeFormat([],
-						{month: "short", day: "2-digit",})
-				return f.format(date) + ' - ' + f.format(endDate)
-			} else {
-				return date.toLocaleDateString() + ' - ' + (endDate).toLocaleDateString()
-			}
-		} else return ''
+const weekRange = computed(() => {
+	const startDate = apptWeekStart.value
+	if (startDate === null) {
+		return ''
 	}
-}
-const setToStartOfWeek = () => {
-	if (state.apptWeek !== null) {
-		state.apptWeek = getStartOfWeek(state.apptWeek)
+	const endDate = new Date(startDate.getTime())
+	endDate.setDate(endDate.getDate() + 6)
+	if (window.Intl && typeof window.Intl === "object") {
+		const f = new Intl.DateTimeFormat([],
+				{month: "short", day: "2-digit",})
+		return f.format(startDate) + ' - ' + f.format(endDate)
 	}
-}
+	return startDate.toLocaleDateString() + ' - ' + endDate.toLocaleDateString()
+})
+
+const weekInvalid = computed(() => state.apptWeek === null
+		|| compNotBefore(new Date(state.apptWeek.getTime())))
 
 const addAccordionOpen = () => {
 	state.tzLoading = true
@@ -168,7 +134,7 @@ const showSimpleEditor = () => {
 
 	const r = {
 		tz: state.tzData,
-		week: state.apptWeek.getTime(),
+		week: apptWeekStart.value.getTime(),
 		dur: state.apptDur,
 		pageId: pageId,
 		calColor: cal.color,
@@ -255,22 +221,19 @@ const showSimpleEditor = () => {
 			<template v-else-if="state.tzName!==''">
 				<LabelAccordion
 						:label="t('appointments', 'Select Dates')"/>
-				<DatePicker
-						style="width: auto; min-width: 21em;"
-						:editable="false"
-						:disabled-date="compNotBefore"
-						:appendToBody="false"
-						:popup-style="datePickerPopupStyle"
-						:placeholder="t('appointments','Select Dates')"
-						v-model="state.apptWeek"
-						:lang="lang"
-						@input="setToStartOfWeek"
-						:formatter="weekFormat"
-						type="week"></DatePicker>
+				<NcDateTimePickerNative
+						id="ps-simple-week"
+						:label="t('appointments','Select Dates')"
+						:hide-label="true"
+						:min="notBeforeDate"
+						v-model="state.apptWeek"/>
+				<div class="srgdev-appt-info-lcont srgdev-appt-tz-cont" aria-live="polite">
+					{{ weekRange }}
+				</div>
 				<div class="srgdev-appt-info-lcont srgdev-appt-tz-cont">
 					{{ t('appointments', 'Time zone:') + ' ' + state.tzName }}
 				</div>
-				<label for="appt_dur-select" class="select-label">{{ t('appointments', 'Appointment Duration:') }}</label>
+				<label id="ps-appt-dur-label" class="select-label">{{ t('appointments', 'Appointment Duration:') }}</label>
 				<vue-slider
 						:min="5"
 						:max="120"
@@ -278,12 +241,12 @@ const showSimpleEditor = () => {
 						tooltip="always"
 						tooltipPlacement="bottom"
 						:tooltip-formatter="'{value} Min'"
-						id="appt_dur-select"
+						:dot-attrs="{'aria-labelledby': 'ps-appt-dur-label'}"
 						class="appt-slider"
 						v-model="state.apptDur"/>
 				<NcButton
 						@click="showSimpleEditor"
-						:disabled="state.apptWeek===null"
+						:disabled="weekInvalid"
 						style="margin-top: 3.5em;margin-bottom: 2em;padding-left: 3em;padding-right: 3em;"
 						class="srgdev-appt-sb-genbtn"
 						:aria-label="t('appointments', 'Start')">
