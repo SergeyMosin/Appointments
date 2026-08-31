@@ -1,3 +1,7 @@
+<script>
+let idCounter = 0
+</script>
+
 <script setup>
 import {NcSelect} from "@nextcloud/vue";
 import {computed, useAttrs} from "vue";
@@ -7,14 +11,16 @@ const props = defineProps({
 	placeholderLabel: String
 })
 const attrs = useAttrs()
+const valueId = `ps-select-value-${++idCounter}`
 
-const selectedLabel = computed(() => {
+const selectedOption = computed(() => {
 	const opt = attrs.options.find((item) => item.value === props.selectedValue)
-	return opt
-			? opt.label
-			: props.placeholderLabel
-					? props.placeholderLabel
-					: t('appointments', 'Select One Option')
+	return opt || {
+		label: props.placeholderLabel
+				? props.placeholderLabel
+				: t('appointments', 'Select One Option'),
+		value: props.selectedValue
+	}
 })
 
 </script>
@@ -23,10 +29,21 @@ const selectedLabel = computed(() => {
 	<NcSelect
 			v-bind="$attrs"
 			v-on="$listeners"
-			:value="selectedLabel"
+			:value="selectedOption"
 			:labelOutside="true"
+			:searchable="false"
 			class="ps-nc-select-internal"
-			:clearable="false"/>
+			:clearable="false">
+		<template #search="{attributes, events}">
+			<input
+					class="vs__search"
+					dir="auto"
+					v-bind="attributes"
+					v-on="events"
+					:aria-describedby="valueId">
+			<span :id="valueId" class="hidden-visually">{{ selectedOption.label }}</span>
+		</template>
+	</NcSelect>
 </template>
 
 <style scoped>
