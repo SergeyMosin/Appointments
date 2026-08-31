@@ -214,6 +214,7 @@ const showSimpleEditor = () => {
 	<div>
 		<ComboSelect
 				prop-name="mainCalId"
+				:required="true"
 				:options="calendarOptions"
 				:store="settingsStore"
 				:label="t('appointments', 'Main calendar')"
@@ -225,6 +226,7 @@ const showSimpleEditor = () => {
 		</ComboSelect>
 		<ComboSelect
 				prop-name="destCalId"
+				:required="true"
 				:options="calendarOptions"
 				:store="settingsStore"
 				:label="t('appointments', 'Calendar for booked appointments')"

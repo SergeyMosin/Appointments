@@ -42,6 +42,11 @@ const props = defineProps({
 		required: false,
 		default: false
 	},
+	required: {
+		type: Boolean,
+		required: false,
+		default: false
+	},
 	clickInterceptor: {
 		type: Function,
 		required: false
@@ -94,6 +99,7 @@ const handleClick = (evt) => {
 				class="ps-vert-spacing"
 				:input-id="inputId"
 				:aria-label-listbox="label"
+				:required="required"
 				:placeholder-label="placeholder"
 				:selected-value="store.settings[propName]||defaultValue"
 				:options="options"

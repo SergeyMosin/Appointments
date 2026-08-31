@@ -9,21 +9,15 @@ import {computed, nextTick, ref, useAttrs} from "vue";
 
 const props = defineProps({
 	selectedValue: [Number, String],
-	placeholderLabel: String
+	placeholderLabel: String,
+	required: Boolean
 })
 const attrs = useAttrs()
 const select = ref(null)
 const valueId = `ps-select-value-${++idCounter}`
 
-const selectedOption = computed(() => {
-	const opt = attrs.options.find((item) => item.value === props.selectedValue)
-	return opt || {
-		label: props.placeholderLabel
-				? props.placeholderLabel
-				: t('appointments', 'Select One Option'),
-		value: props.selectedValue
-	}
-})
+const selectedOption = computed(() => attrs.options.find((item) => item.value === props.selectedValue) || null)
+const placeholder = computed(() => props.placeholderLabel || t('appointments', 'Select One Option'))
 
 // Dropping the focus handler stops the list from opening when the field is merely tabbed to; Down/Enter/Space and mouse still open it
 const withoutFocus = ({focus, ...events}) => events
@@ -48,6 +42,8 @@ const handleOpen = () => nextTick(() => {
 			v-on="$listeners"
 			@open="handleOpen"
 			:value="selectedOption"
+			:placeholder="placeholder"
+			:required="required"
 			:labelOutside="true"
 			:searchable="false"
 			class="ps-nc-select-internal"
@@ -63,10 +59,11 @@ const handleOpen = () => nextTick(() => {
 			<input
 					class="vs__search"
 					dir="auto"
+					:required="required && !selectedOption"
 					v-bind="attributes"
 					v-on="withoutFocus(events)"
 					:aria-describedby="valueId">
-			<span :id="valueId" class="hidden-visually">{{ selectedOption.label }}</span>
+			<span :id="valueId" class="hidden-visually">{{ selectedOption ? selectedOption.label : '' }}</span>
 		</template>
 	</NcSelect>
 </template>
@@ -95,7 +92,6 @@ const handleOpen = () => nextTick(() => {
 }
 
 .ps-nc-select-internal.v-select >>> .vs__search {
-	opacity: 0;
 	pointer-events: none;
 }
 </style>
