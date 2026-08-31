@@ -24,6 +24,9 @@ const selectedOption = computed(() => {
 	}
 })
 
+// Dropping the focus handler stops the list from opening when the field is merely tabbed to; Down/Enter/Space and mouse still open it
+const withoutFocus = ({focus, ...events}) => events
+
 // The dropdown is appended to <body>; moving it into the enclosing dialog keeps focus inside the dialog while it is open
 const handleOpen = () => nextTick(() => {
 	const el = select.value.$el
@@ -53,7 +56,7 @@ const handleOpen = () => nextTick(() => {
 					class="vs__search"
 					dir="auto"
 					v-bind="attributes"
-					v-on="events"
+					v-on="withoutFocus(events)"
 					:aria-describedby="valueId">
 			<span :id="valueId" class="hidden-visually">{{ selectedOption.label }}</span>
 		</template>
