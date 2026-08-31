@@ -59,9 +59,15 @@ const toggleOpen = () => {
 			</span>
 			</label>
 			<div v-if="slots?.helpPopover" class="wrapper-help">
-				<NcPopover :focus-trap="false">
-					<template #trigger>
-						<IconInfo class="wrapper-help-icon" :size="16"/>
+				<NcPopover :focus-trap="false" :container="false">
+					<template #trigger="{attrs}">
+						<button
+								type="button"
+								class="wrapper-help-button"
+								v-bind="attrs"
+								:aria-label="t('appointments', 'Help')">
+							<IconInfo class="wrapper-help-icon" :size="16"/>
+						</button>
 					</template>
 					<template>
 						<div class="wrapper-help-content">
@@ -128,6 +134,21 @@ const toggleOpen = () => {
 .wrapper-help-icon {
 	cursor: pointer;
 	opacity: .5;
+}
+
+.wrapper-help-button {
+	background: none;
+	border: none;
+	border-radius: 0;
+	margin: 0;
+	padding: 0;
+	min-height: 0;
+	display: inline-flex;
+	color: inherit;
+}
+
+.wrapper-help-button:focus-visible .wrapper-help-icon {
+	opacity: 1;
 }
 
 .wrapper-help-content {
