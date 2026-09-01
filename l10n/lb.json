@@ -1,19 +1,27 @@
 { "translations": {
+    "Available" : "Disponibel",
     "Confirm" : "Konfirméieren",
     "Cancel" : "Ofbriechen",
     "Info" : "Info",
+    "Preview" : "Virschau",
     "Settings" : "Astellungen",
     "Title" : "Titel",
+    "Subtitle" : "Ënnertitel",
+    "Text" : "Text",
     "URL" : "URL",
     "Save" : "Späicheren",
     "Copy" : "Kopie",
     "Remove" : "Läschen",
-    "Add" : "Derbäimaachen",
+    "Add" : "Bäisetzen",
     "OK" : "OK",
     "Delete" : "Läschen",
+    "Debugging" : "Debugging",
+    "External" : "Extern",
+    "Simple" : "Einfach",
     "Location" : "Uert",
     "Phone" : "Telefon",
     "Deleted" : "Geläscht",
+    "Canceled" : "Ofgesot",
     "One Week" : "Eng Woch",
     "Two Weeks" : "Zwou Wochen",
     "Three Weeks" : "Dräi Wochen",
@@ -29,6 +37,7 @@
     "Back" : "Zeréck",
     "Next" : "Weider",
     "min" : "Minutt",
-    "Email" : "Email"
+    "Duration" : "Dauer",
+    "Email" : "E-Mail"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
