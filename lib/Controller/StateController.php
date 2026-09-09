@@ -504,8 +504,6 @@ class StateController extends Controller
                     return [Http::STATUS_BAD_REQUEST, ''];
                 }
 
-                $maxDurCount = empty($this->config->getUserValue($this->userId, $this->appName, "cnk")) ? 2 : 8;
-
                 for ($i = 0; $i < 7; ++$i) {
                     $day = $value[$i];
                     if (!is_array($day)) {
@@ -519,9 +517,6 @@ class StateController extends Controller
                             || !array_key_exists('dur', $spot)
                             || !array_key_exists('title', $spot)) {
                             return [Http::STATUS_BAD_REQUEST, ''];
-                        }
-                        if (count($spot['dur']) > $maxDurCount) {
-                            array_splice($value[$i][$j]['dur'], $maxDurCount);
                         }
                     }
                 }
