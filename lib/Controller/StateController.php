@@ -95,15 +95,6 @@ class StateController extends Controller
 
                 $pageCount = count($pages);
 
-                if ($pageCount > 2 && $this->config->getUserValue($this->userId, $this->appName, "cn" . "k") === '') {
-                    $r->setStatus(Http::STATUS_ACCEPTED);
-                    $r->setData(json_encode([
-                        "type" => 2,
-                        "message" => $this->l->t("More than 3 pages")
-                    ]));
-                    return $r;
-                }
-
                 // find first available page, ex 'p0', 'p1', 'p2', etc...
                 $pageNumbers = [];
                 for ($i = 0; $i < $pageCount; ++$i) {
@@ -513,7 +504,7 @@ class StateController extends Controller
                     return [Http::STATUS_BAD_REQUEST, ''];
                 }
 
-                $maxDurCount = empty($this->config->getUserValue($this->userId, $this->appName, "cnk")) ? 2 : 8;
+                $maxDurCount = 8;
 
                 for ($i = 0; $i < 7; ++$i) {
                     $day = $value[$i];

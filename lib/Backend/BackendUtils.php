@@ -150,6 +150,16 @@ class BackendUtils
     public const PSN_PREFILL_INPUTS = "prefillInputs";
     public const PSN_PREFILLED_TYPE = "prefilledType";
     public const PSN_FORM_FINISH_TEXT = "formFinishText";
+    public const PSN_BRAND_ID = "brandId";
+
+    public const BRANDING_APP_CONFIG_KEY = "branding_brands";
+    public const BRAND_ID = "id";
+    public const BRAND_NAME = "name";
+    public const BRAND_LOGO_URL = "logoUrl";
+    public const BRAND_FAVICON_URL = "faviconUrl";
+    public const BRAND_BG_IMAGE = "bgImage";
+    public const BRAND_PRIMARY_COLOR = "primaryColor";
+    public const BRAND_EMAIL_TEMPLATE = "emailTemplate";
 
     public const PAGES_ENABLED = "enabled";
     public const PAGES_LABEL = "label";
@@ -1204,6 +1214,7 @@ class BackendUtils
             self::PSN_META_NO_INDEX => true,
             self::PSN_PAGE_STYLE => "",
             self::PSN_USE_NC_THEME => false,
+            self::PSN_BRAND_ID => "",
             // 0=disabled, 1=from query string, 2=from user pr0file, 3=both
             self::PSN_PREFILL_INPUTS => 0,
             // 0=show as regular inputs, 1=disable prefilled, 2=hide prefilled
@@ -1298,6 +1309,7 @@ class BackendUtils
             self::PSN_PAGE_TITLE => "",
             self::PSN_PAGE_STYLE => "",
             self::PSN_USE_NC_THEME => false,
+            self::PSN_BRAND_ID => "",
             self::CLS_PRIVATE_PAGE => false,
         ];
     }
@@ -2118,7 +2130,29 @@ class BackendUtils
         }
     }
 
-    public function getInlineStyle(string $userId, array $settings): string
+    public function getBrands(): array
+    {
+        $json = $this->config->getAppValue('appointments', self::BRANDING_APP_CONFIG_KEY, '[]');
+        $brands = json_decode($json, true);
+        return is_array($brands) ? $brands : [];
+    }
+
+    public function getBrand(string $id): ?array
+    {
+        foreach ($this->getBrands() as $brand) {
+            if (($brand[self::BRAND_ID] ?? '') === $id) {
+                return $brand;
+            }
+        }
+        return null;
+    }
+
+    public function saveBrands(array $brands): void
+    {
+        $this->config->setAppValue('appointments', self::BRANDING_APP_CONFIG_KEY, json_encode(array_values($brands)));
+    }
+
+    public function getInlineStyle(string $userId, array $settings, ?array $brand = null): string
     {
 
         if ($settings[BackendUtils::PSN_USE_NC_THEME]
@@ -2151,7 +2185,21 @@ class BackendUtils
             /** @noinspection CssUnresolvedCustomProperty */
             $autoStyle = '<style>:root{--image-main-background:var(--image-background, var(--image-background-plain, var(--image-background-default)))}</style>';
         }
-        return $autoStyle . $settings[BackendUtils::PSN_PAGE_STYLE];
+        $brandStyle = '';
+        if (!empty($brand)) {
+            $brandCss = ':root{';
+            if (!empty($brand[self::BRAND_PRIMARY_COLOR])) {
+                $color = htmlspecialchars($brand[self::BRAND_PRIMARY_COLOR], ENT_QUOTES);
+                $brandCss .= '--color-primary:' . $color . ';--color-primary-element:' . $color . ';--color-primary-element-light:' . $color . '33;';
+            }
+            $brandCss .= '}';
+            if (!empty($brand[self::BRAND_BG_IMAGE])) {
+                $bgUrl = htmlspecialchars($brand[self::BRAND_BG_IMAGE], ENT_QUOTES);
+                $brandCss .= 'body{background-image:url(\'' . $bgUrl . '\')!important;background-size:cover!important;background-position:center!important;}';
+            }
+            $brandStyle = '<style>' . $brandCss . '</style>';
+        }
+        return $brandStyle . $autoStyle . $settings[BackendUtils::PSN_PAGE_STYLE];
     }
 
     public function getApptDoc(\Sabre\VObject\Component\VEvent $evt): ApptDocProp

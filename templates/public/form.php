@@ -2,6 +2,14 @@
 script('appointments', 'form');
 style('appointments', 'form');
 ?>
+<?php if (!empty($_['appt_brand']['faviconUrl'])): ?>
+<link rel="icon" href="<?php echo htmlspecialchars($_['appt_brand']['faviconUrl'], ENT_QUOTES); ?>">
+<?php endif; ?>
+<?php if (!empty($_['appt_brand']['logoUrl'])): ?>
+<div class="srgdev-appt-brand-logo" style="text-align:center;padding:1em 0 .5em">
+    <img src="<?php echo htmlspecialchars($_['appt_brand']['logoUrl'], ENT_QUOTES); ?>" alt="" style="max-height:60px;max-width:240px;object-fit:contain">
+</div>
+<?php endif; ?>
 
 <div class="srgdev-ncfp-wrap">
     <?php
