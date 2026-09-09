@@ -50,6 +50,16 @@ $deleteUrl = \OC::$server->getURLGenerator()->linkToRoute('appointments.admin.de
                     <textarea class="appt-f-email" rows="8" placeholder="<p>Dear {attendee_name},...</p>"
                               style="width:100%;padding:.4em .6em;border:1px solid var(--color-border);border-radius:4px;font-family:monospace;font-size:.85em;background:var(--color-main-background);color:var(--color-main-text);resize:vertical"></textarea>
                 </label>
+                <label style="display:flex;flex-direction:column;gap:.25em;font-size:.9em;grid-column:1/-1">
+                    <?php p($l->t('Custom CSS')); ?>
+                    <textarea class="appt-f-css" rows="5" placeholder=".srgdev-ncfp-form { ... }"
+                              style="width:100%;padding:.4em .6em;border:1px solid var(--color-border);border-radius:4px;font-family:monospace;font-size:.85em;background:var(--color-main-background);color:var(--color-main-text);resize:vertical"></textarea>
+                </label>
+                <label style="display:flex;flex-direction:column;gap:.25em;font-size:.9em;grid-column:1/-1">
+                    <?php p($l->t('Custom JS')); ?>
+                    <textarea class="appt-f-js" rows="5" placeholder="// runs after page load"
+                              style="width:100%;padding:.4em .6em;border:1px solid var(--color-border);border-radius:4px;font-family:monospace;font-size:.85em;background:var(--color-main-background);color:var(--color-main-text);resize:vertical"></textarea>
+                </label>
             </div>
             <div style="display:flex;gap:.6em">
                 <button class="appt-save-btn button primary" style="min-width:80px"><?php p($l->t('Save')); ?></button>
@@ -84,6 +94,8 @@ $deleteUrl = \OC::$server->getURLGenerator()->linkToRoute('appointments.admin.de
         card.querySelector('.appt-f-favicon').value = brand.faviconUrl || ''
         card.querySelector('.appt-f-bg').value = brand.bgImage || ''
         card.querySelector('.appt-f-email').value = brand.emailTemplate || ''
+        card.querySelector('.appt-f-css').value = brand.customCss || ''
+        card.querySelector('.appt-f-js').value = brand.customJs || ''
 
         card.querySelector('.appt-save-btn').addEventListener('click', () => saveBrand(card))
         card.querySelector('.appt-delete-btn').addEventListener('click', () => deleteBrand(card))
@@ -107,6 +119,8 @@ $deleteUrl = \OC::$server->getURLGenerator()->linkToRoute('appointments.admin.de
         body.set('faviconUrl', card.querySelector('.appt-f-favicon').value)
         body.set('bgImage', card.querySelector('.appt-f-bg').value)
         body.set('emailTemplate', card.querySelector('.appt-f-email').value)
+        body.set('customCss', card.querySelector('.appt-f-css').value)
+        body.set('customJs', card.querySelector('.appt-f-js').value)
 
         const res = await fetch(saveUrl, {
             method: 'POST',

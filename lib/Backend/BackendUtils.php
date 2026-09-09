@@ -160,6 +160,8 @@ class BackendUtils
     public const BRAND_BG_IMAGE = "bgImage";
     public const BRAND_PRIMARY_COLOR = "primaryColor";
     public const BRAND_EMAIL_TEMPLATE = "emailTemplate";
+    public const BRAND_CUSTOM_CSS = "customCss";
+    public const BRAND_CUSTOM_JS = "customJs";
 
     public const PAGES_ENABLED = "enabled";
     public const PAGES_LABEL = "label";
