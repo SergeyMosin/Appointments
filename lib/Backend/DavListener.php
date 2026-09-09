@@ -1107,12 +1107,11 @@ class DavListener implements IEventListener
 
         if (!empty($brand[BackendUtils::BRAND_EMAIL_TEMPLATE])) {
             $customHtml = str_replace(
-                ['{attendee_name}', '{org_name}', '{date_time}', '{cancel_url}', '{confirm_url}'],
+                ['{attendee_name}', '{org_name}', '{date_time}', '{cancel_url}'],
                 [
                     htmlspecialchars($to_name, ENT_QUOTES),
                     htmlspecialchars($org_name, ENT_QUOTES),
                     htmlspecialchars($date_time, ENT_QUOTES),
-                    htmlspecialchars($cnl_lnk_url, ENT_QUOTES),
                     htmlspecialchars($cnl_lnk_url, ENT_QUOTES),
                 ],
                 $brand[BackendUtils::BRAND_EMAIL_TEMPLATE]
