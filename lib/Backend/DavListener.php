@@ -625,6 +625,9 @@ class DavListener implements IEventListener
 
         $settings = $this->utils->getUserSettings();
 
+        $brandId = $settings[BackendUtils::PSN_BRAND_ID] ?? '';
+        $brand = !empty($brandId) ? $this->utils->getBrand($brandId) : null;
+
         if ($other_cal !== '-1') {
             // only allowed in simple
             if ($settings[BackendUtils::CLS_TS_MODE] !== '0') {
@@ -1099,6 +1102,32 @@ class DavListener implements IEventListener
             $future_use = $this->l10N->t('%1$s has invited you to join an appointment with %2$s on %3$s. If you have any questions, please email %1$s directly at %4$s', [$some_person_name, $some_org_name, $some_date_time, $person_email]);
 
             // end: translate for before release
+            return;
+        }
+
+        if (!empty($brand[BackendUtils::BRAND_EMAIL_TEMPLATE])) {
+            $customHtml = str_replace(
+                ['{attendee_name}', '{org_name}', '{date_time}', '{cancel_url}', '{confirm_url}'],
+                [
+                    htmlspecialchars($to_name, ENT_QUOTES),
+                    htmlspecialchars($org_name, ENT_QUOTES),
+                    htmlspecialchars($date_time, ENT_QUOTES),
+                    htmlspecialchars($cnl_lnk_url, ENT_QUOTES),
+                    htmlspecialchars($cnl_lnk_url, ENT_QUOTES),
+                ],
+                $brand[BackendUtils::BRAND_EMAIL_TEMPLATE]
+            );
+            $plainText = strip_tags($customHtml);
+            $msg = $mailer->createMessage();
+            $this->setFromAddress($msg, $userId, $org_email, $org_name);
+            $msg->setTo([$to_email]);
+            $msg->setHtmlBody($customHtml);
+            $msg->setPlainTextBody($plainText);
+            try {
+                $mailer->send($msg);
+            } catch (\Exception $e) {
+                $this->logger->error("Can not send brand email to " . $to_email . ": " . $e->getMessage());
+            }
             return;
         }
 

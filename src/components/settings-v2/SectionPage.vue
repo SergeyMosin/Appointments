@@ -11,10 +11,24 @@ import {
 	NcActions,
 	NcActionLink
 } from "@nextcloud/vue"
-import {ref} from "vue"
+import {ref, onMounted} from "vue"
+import axios from "@nextcloud/axios";
 
 const settingsStore = useSettingsStore()
 const settings = settingsStore.settings
+
+const brandOptions = ref([{value: '', label: t('appointments', 'No branding (default)')}])
+
+onMounted(async () => {
+	try {
+		const res = await axios.get(OC.generateUrl('/apps/appointments/admin/brands'))
+		if (res.data && Array.isArray(res.data)) {
+			res.data.forEach(b => brandOptions.value.push({value: b.id, label: b.name}))
+		}
+	} catch (_) {
+		// admin brands endpoint not accessible to non-admins — that's fine
+	}
+})
 
 const availableWeeksOptions = [
 	{value: "1", label: t('appointments', 'One Week')},
@@ -222,6 +236,14 @@ const handlePreviewClick = () => {
 					:store="settingsStore"/>
 		</LabelAccordion>
 
+		<ComboSelect
+				v-if="brandOptions.length > 1"
+				class="ps-wide-select"
+				prop-name="brandId"
+				default-value=""
+				:label="t('appointments', 'Brand')"
+				:store="settingsStore"
+				:options="brandOptions"/>
 
 	</div>
 </template>
