@@ -10,6 +10,12 @@ style('appointments', 'form');
     <img src="<?php echo htmlspecialchars($_['appt_brand']['logoUrl'], ENT_QUOTES); ?>" alt="" style="max-height:60px;max-width:240px;object-fit:contain">
 </div>
 <?php endif; ?>
+<?php if (!empty($_['appt_brand']['customCss'])): ?>
+<style><?php echo $_['appt_brand']['customCss']; ?></style>
+<?php endif; ?>
+<?php if (!empty($_['appt_brand']['customJs'])): ?>
+<script><?php echo $_['appt_brand']['customJs']; ?></script>
+<?php endif; ?>
 
 <div class="srgdev-ncfp-wrap">
     <?php

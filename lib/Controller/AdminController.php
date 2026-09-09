@@ -74,6 +74,8 @@ class AdminController extends Controller
             BackendUtils::BRAND_BG_IMAGE => trim($this->request->getParam('bgImage', '')),
             BackendUtils::BRAND_PRIMARY_COLOR => trim($this->request->getParam('primaryColor', '')),
             BackendUtils::BRAND_EMAIL_TEMPLATE => $this->request->getParam('emailTemplate', ''),
+            BackendUtils::BRAND_CUSTOM_CSS => $this->request->getParam('customCss', ''),
+            BackendUtils::BRAND_CUSTOM_JS => $this->request->getParam('customJs', ''),
         ];
 
         $brands = $this->utils->getBrands();
