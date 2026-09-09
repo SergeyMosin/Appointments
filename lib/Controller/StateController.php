@@ -504,7 +504,7 @@ class StateController extends Controller
                     return [Http::STATUS_BAD_REQUEST, ''];
                 }
 
-                $maxDurCount = 8;
+                $maxDurCount = empty($this->config->getUserValue($this->userId, $this->appName, "cnk")) ? 2 : 8;
 
                 for ($i = 0; $i < 7; ++$i) {
                     $day = $value[$i];
