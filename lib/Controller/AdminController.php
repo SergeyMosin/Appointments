@@ -6,59 +6,31 @@ use OCA\Appointments\Backend\BackendUtils;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http;
-use OCP\IGroupManager;
 use OCP\IRequest;
-use OCP\IUserSession;
 
 class AdminController extends Controller
 {
 
     private BackendUtils $utils;
-    private IUserSession $userSession;
-    private IGroupManager $groupManager;
 
     public function __construct(string       $AppName,
                                 IRequest     $request,
-                                BackendUtils $utils,
-                                IUserSession $userSession,
-                                IGroupManager $groupManager)
+                                BackendUtils $utils)
     {
         parent::__construct($AppName, $request);
         $this->utils = $utils;
-        $this->userSession = $userSession;
-        $this->groupManager = $groupManager;
-    }
-
-    private function isAdmin(): bool
-    {
-        $user = $this->userSession->getUser();
-        if ($user === null) {
-            return false;
-        }
-        return $this->groupManager->isAdmin($user->getUID());
     }
 
     /**
      * @NoAdminRequired
-     * @NoCSRFRequired
      */
     public function getBrands(): DataResponse
     {
-        if (!$this->isAdmin()) {
-            return new DataResponse(['error' => 'Forbidden'], Http::STATUS_FORBIDDEN);
-        }
         return new DataResponse($this->utils->getBrands());
     }
 
-    /**
-     * @NoAdminRequired
-     */
     public function saveBrand(): DataResponse
     {
-        if (!$this->isAdmin()) {
-            return new DataResponse(['error' => 'Forbidden'], Http::STATUS_FORBIDDEN);
-        }
-
         $id = trim($this->request->getParam('id', ''));
         $name = trim($this->request->getParam('name', ''));
 
@@ -97,15 +69,8 @@ class AdminController extends Controller
         return new DataResponse($brand);
     }
 
-    /**
-     * @NoAdminRequired
-     */
     public function deleteBrand(): DataResponse
     {
-        if (!$this->isAdmin()) {
-            return new DataResponse(['error' => 'Forbidden'], Http::STATUS_FORBIDDEN);
-        }
-
         $id = trim($this->request->getParam('id', ''));
         if (empty($id)) {
             return new DataResponse(['error' => 'Brand id is required'], Http::STATUS_BAD_REQUEST);

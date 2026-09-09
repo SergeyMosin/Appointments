@@ -45,7 +45,7 @@ $deleteUrl = \OC::$server->getURLGenerator()->linkToRoute('appointments.admin.de
                 <label style="display:flex;flex-direction:column;gap:.25em;font-size:.9em;grid-column:1/-1">
                     <?php p($l->t('Custom Email HTML Template')); ?>
                     <span style="font-size:.85em;color:var(--color-text-maxcontrast)">
-                        <?php p($l->t('Available placeholders: {attendee_name}, {org_name}, {date_time}, {cancel_url}, {confirm_url}')); ?>
+                        <?php p($l->t('Available placeholders: {attendee_name}, {org_name}, {date_time}, {cancel_url}')); ?>
                     </span>
                     <textarea class="appt-f-email" rows="8" placeholder="<p>Dear {attendee_name},...</p>"
                               style="width:100%;padding:.4em .6em;border:1px solid var(--color-border);border-radius:4px;font-family:monospace;font-size:.85em;background:var(--color-main-background);color:var(--color-main-text);resize:vertical"></textarea>
