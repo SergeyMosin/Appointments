@@ -170,6 +170,7 @@
     "Debugging Off" : "Ladění vypnout",
     "Log remote blockers" : "Zaznamenat blokující na protějšku",
     "Log template durations" : "Zaznamenávat trvání šablony",
+    "Debug Cancellations" : "Zrušení ladění",
     "Settings Dump" : "Výpis nastavení",
     "Get raw calendar data" : "Získat nezpracovaná kalendářová data",
     "Sync remote calendar now" : "Sesynchronizovat vzdálený kalendář nyní",
