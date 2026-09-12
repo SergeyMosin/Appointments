@@ -63,6 +63,7 @@ const deleteDirItem = (deleteIndex) => {
 				<div v-for="(item,index) in settingsStore.dirSettings.dirItems" class="srgdev-appt-dir-pl">
 					<NcActions
 							:disabled="settingsStore.loading[LOADING_DIR]===true"
+							:aria-label="item.title || undefined"
 							menuAlign="right"
 							style="position: absolute"
 							class="srgdev-appt-dir-pl_actions">

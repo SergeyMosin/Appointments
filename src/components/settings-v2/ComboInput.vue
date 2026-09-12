@@ -1,3 +1,7 @@
+<script>
+let idCounter = 0
+</script>
+
 <script setup>
 import {computed, useSlots} from "vue";
 import LabelAccordion from "../LabelAccordion.vue";
@@ -42,6 +46,7 @@ const props = defineProps({
 })
 
 const settings = props.store[props.settingsType];
+const inputId = `ps-combo-input-${++idCounter}`
 
 const isLoading = computed(() => props.store.loading[props.propName] === true)
 
@@ -63,6 +68,7 @@ const handleFocus = (evt) => {
 <template>
 	<div>
 		<LabelAccordion
+				:for="inputId"
 				:label="label"
 				:loading="isLoading">
 			<template #helpPopover v-if="slots?.help">
@@ -71,6 +77,7 @@ const handleFocus = (evt) => {
 		</LabelAccordion>
 		<textarea
 				v-if="type==='textarea'"
+				:id="inputId"
 				:placeholder="placeholder"
 				class="ps-textarea ps-vert-spacing"
 				v-model="settings[propName]"
@@ -78,6 +85,7 @@ const handleFocus = (evt) => {
 				@blur="store.setOne(propName,settings[propName])"/>
 		<NcPasswordField
 				v-else-if="type==='password'"
+				:id="inputId"
 				:label-outside="true"
 				:placeholder="placeholder"
 				class="ps-text-field  ps-vert-spacing"
@@ -89,6 +97,7 @@ const handleFocus = (evt) => {
 				@blur="store.setOne(propName, settings[propName])"/>
 		<NcTextField
 				v-else
+				:id="inputId"
 				:label-outside="true"
 				:placeholder="placeholder"
 				class="ps-text-field  ps-vert-spacing"

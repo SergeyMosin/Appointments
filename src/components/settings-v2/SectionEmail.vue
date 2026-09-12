@@ -50,12 +50,13 @@ const cancelPendingOptions = [
 			</template>
 		</ComboCheckbox>
 		<LabelAccordion
+				id="ps-email-attendee-label"
 				:label="t('appointments','Email Attendee when the appointment is:')">
 			<template #helpPopover>
 				{{ t('appointments', 'Attendees will be notified via email when their upcoming appointments are updated or deleted in the calendar app or through some other external mechanism. Only changes to Date/Time, Status, or Location will trigger the "Modified" notification.') }}
 			</template>
 		</LabelAccordion>
-		<div class="srgdev-appt-sb-indent">
+		<div class="srgdev-appt-sb-indent" role="group" aria-labelledby="ps-email-attendee-label">
 			<ComboCheckbox
 					prop-name="attMod"
 					:label="t('appointments', 'Modified (Time, Status, Location)')"
@@ -66,12 +67,13 @@ const cancelPendingOptions = [
 					:store="settingsStore"/>
 		</div>
 		<LabelAccordion
+				id="ps-email-me-label"
 				:label="t('appointments','Email Me when an appointment is:')">
 			<template #helpPopover>
 				{{ t('appointments', 'A notification email will be sent to you when an appointment is booked via the public page or when an upcoming appointment is confirmed or canceled through the email links.') }}
 			</template>
 		</LabelAccordion>
-		<div class="srgdev-appt-sb-indent">
+		<div class="srgdev-appt-sb-indent" role="group" aria-labelledby="ps-email-me-label">
 			<ComboCheckbox
 					prop-name="meReq"
 					:label="t('appointments', 'Requested')"
