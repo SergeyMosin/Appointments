@@ -21,6 +21,7 @@ class ApptDocProp extends PropEncoderBase
     public bool $inPersonType = false;
     public string $attendeeTimezone = 'UTC';
     public string $description = '';
+    public string $location = '';
 
     public string $_evtUid = '';
     private array $_defaults = [];
