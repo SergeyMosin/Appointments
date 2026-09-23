@@ -14,6 +14,7 @@ const settingsStore = useSettingsStore()
 	<div>
 		<ComboSelect
 				prop-name="nrSrcCalId"
+				:required="true"
 				:options="calendarOptions"
 				:store="settingsStore"
 				:label="t('appointments', 'Source Calendar (Free Slots)')"
@@ -28,6 +29,7 @@ const settingsStore = useSettingsStore()
 
 		<ComboSelect
 				prop-name="nrDstCalId"
+				:required="true"
 				:options="calendarOptions"
 				:store="settingsStore"
 				:label="t('appointments', 'Destination Calendar (Booked)')"

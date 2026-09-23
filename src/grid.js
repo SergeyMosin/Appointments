@@ -47,6 +47,8 @@ function _apptGridMaker() {
 
 		sorted: [],
 
+		colLabels: [],
+
 		mode: MODE_SIMPLE
 	}
 
@@ -209,8 +211,18 @@ function _apptGridMaker() {
 
 		if (idx !== null) {
 
+			elm.tabIndex = 0
+			elm.setAttribute('role', 'slider')
+			elm.setAttribute('aria-orientation', 'vertical')
+			elm.setAttribute('aria-valuemin', '0')
+			if (mData.colLabels[cID] !== undefined) {
+				elm.setAttribute('aria-label', mData.colLabels[cID])
+			}
+			setApptAria(elm)
+
 			// TODO: delegate these events to the parent ???
 			elm.addEventListener("mousedown", appGoDrag)
+			elm.addEventListener("keydown", apptKeydown)
 			if (mData.mode === MODE_TEMPLATE) {
 				elm.addEventListener("contextmenu", editAppt)
 			}
@@ -218,6 +230,64 @@ function _apptGridMaker() {
 
 		}
 		return elm
+	}
+
+	function setApptAria(elm) {
+		elm.setAttribute('aria-valuemax', String(mData.uMax - elm.uLen + 1))
+		elm.setAttribute('aria-valuenow', String(elm.uTop))
+		elm.setAttribute('aria-valuetext', makeTxt(elm) + (elm.title ? ', ' + elm.title : ''))
+	}
+
+	function apptKeydown(evt) {
+		const elm = evt.currentTarget
+
+		if (evt.key === 'Enter') {
+			if (mData.mode === MODE_TEMPLATE) {
+				mData.scrollCont.lastElementChild.dispatchEvent(new CustomEvent('gridContext', {detail: elm}))
+				evt.preventDefault()
+			}
+			return
+		}
+
+		let delta
+		switch (evt.key) {
+			case 'ArrowUp':
+				delta = -1
+				break
+			case 'ArrowDown':
+				delta = 1
+				break
+			case 'PageUp':
+				delta = -12
+				break
+			case 'PageDown':
+				delta = 12
+				break
+			default:
+				return
+		}
+		evt.preventDefault()
+		evt.stopPropagation()
+
+		const uMax = mData.uMax - elm.uLen + 1
+		let idx = elm.uTop + delta
+		if (idx < 0) idx = 0
+		else if (idx > uMax) idx = uMax
+		if (idx === elm.uTop) return
+
+		elm.uTop = idx
+		elm.style.top = mData.elms[idx].offsetTop + 'px'
+		elm.firstElementChild.textContent = makeTxt(elm)
+		setApptAria(elm)
+
+		const colElms = mData.mc_elm[elm.cID]
+		setSorted(colElms, elm)
+		const ts = mData.sorted[colElms.length - 1]
+		ts.h = elm.uTop
+		ts.l = ts.h + elm.uLen
+		setMargins(colElms)
+
+		elm.scrollIntoView({block: 'nearest'})
 	}
 
 	function editAppt(evt) {
@@ -277,6 +347,7 @@ function _apptGridMaker() {
 			}
 		}
 
+		setApptAria(el)
 		setSorted(colElms, el)
 		setMargins(colElms)
 	}
@@ -537,6 +608,7 @@ function _apptGridMaker() {
 			// Set txt
 			de.uTop = idx
 			de.firstElementChild.textContent = makeTxt(de)
+			setApptAria(de)
 			de.style.top = md.elms[idx].offsetTop + 'px'
 		} else {
 			md.ce = null
@@ -546,6 +618,14 @@ function _apptGridMaker() {
 	/**
 	 * @param n number of columns
 	 */
+	function setColumnLabels(labels) {
+		mData.colLabels = labels
+		mData.mc_cols.forEach((col, i) => {
+			col.setAttribute('role', 'group')
+			col.setAttribute('aria-label', labels[i])
+		})
+	}
+
 	function makeColumns(n) {
 		for (let al = mData.apptLayer, elm,
 			     w = getColumnWidth(n), i = 0; i < n; i++) {
@@ -746,6 +826,7 @@ function _apptGridMaker() {
 		resetAllColumns: resetAllColumns,
 		getStarEnds: getStarEnds,
 		addPastAppts: addPastAppts,
+		setColumnLabels: setColumnLabels,
 		setMode: setMode,
 		updateAppt: updateAppt,
 		getTemplateData: getTemplateData,

@@ -108,6 +108,7 @@ const handleEditTemplate = () => {
 	<div>
 		<ComboSelect
 				prop-name="tmmDstCalId"
+				:required="true"
 				:options="calendarOptions"
 				:store="settingsStore"
 				:label="t('appointments','Destination calendar (Booked)')"

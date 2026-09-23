@@ -167,7 +167,7 @@ const handleSetCal = (data) => {
 			<LabelAccordion
 					style="margin-top: .5em"
 					:label="t('appointments', 'Before')"
-					for="ps-buffer-before"/>
+					id="ps-buffer-before-label"/>
 			<vue-slider
 					:min="0"
 					:max="120"
@@ -177,14 +177,14 @@ const handleSetCal = (data) => {
 					tooltip="always"
 					tooltipPlacement="right"
 					:tooltip-formatter="'{value} '+minute"
-					id="ps-buffer-before"
+					:dot-attrs="{'aria-labelledby': 'ps-buffer-before-label'}"
 					class="ps-slider"
 					:value="settings.bufferBefore"
 					@change="(value)=>{settingsStore.setOne('bufferBefore',value)}"/>
 			<LabelAccordion
 					style="margin-top: .5em"
 					:label="t('appointments', 'After')"
-					for="ps-buffer-after"/>
+					id="ps-buffer-after-label"/>
 			<vue-slider
 					:min="0"
 					:max="120"
@@ -194,7 +194,7 @@ const handleSetCal = (data) => {
 					tooltip="always"
 					tooltipPlacement="right"
 					:tooltip-formatter="'{value} '+minute"
-					id="ps-buffer-after"
+					:dot-attrs="{'aria-labelledby': 'ps-buffer-after-label'}"
 					class="ps-slider"
 					:value="settings.bufferBefore"
 					@change="(value)=>{settingsStore.setOne('bufferBefore',value)}"/>

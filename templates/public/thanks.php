@@ -18,7 +18,7 @@ echo $_['appt_inline_style'];
         echo isset($_['appt_c_more']) ? $_['appt_c_more'] : '';
         if (isset($_['appt_t1'])) { ?>
             <form id="srgdev-appt-cncf_action_frm" data-lbl="<?= $_['appt_cncf_delay'] ?>" method="post">
-                <label class="srgdev-appt-cncf-label"><input name="tos" type="checkbox"/>Agree to TOS</label>
+                <label class="srgdev-appt-cncf-label" aria-hidden="true"><input name="tos" type="checkbox" tabindex="-1"/>Agree to TOS</label>
                 <button id="srgdev-appt-cncf_action_btn"
                         data-t1="<?= $_['appt_t1'] ?>"
                         class="primary srgdev-ncfp-form-btn"

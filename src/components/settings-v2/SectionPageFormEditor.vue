@@ -66,6 +66,7 @@ const handleBlur = () => {
 <template>
 	<div>
 		<LabelAccordion
+				for="ps-form-extra-fields"
 				:label="t('appointments','Extra Fields (JSON Object)')"
 				:loading="isLoading">
 			<template #helpPopover>
@@ -74,6 +75,7 @@ const handleBlur = () => {
 			</template>
 		</LabelAccordion>
 		<textarea
+				id="ps-form-extra-fields"
 				placeholder="[{...}]"
 				class="ps-textarea ps-vert-spacing"
 				v-model="model"

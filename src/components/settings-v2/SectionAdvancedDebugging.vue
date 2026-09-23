@@ -79,17 +79,21 @@ const sendUid = () => {
 			{{ t('appointments', 'Settings Dump') }}
 		</NcButton>
 
-		<LabelAccordion :label="t('appointments', 'Get raw calendar data')"/>
+		<LabelAccordion for="ps-debug-get-raw" :label="t('appointments', 'Get raw calendar data')"/>
 		<PsSelect
 				class="ps-vert-spacing"
+				input-id="ps-debug-get-raw"
+				:aria-label-listbox="t('appointments', 'Get raw calendar data')"
 				:placeholder-label="t('appointments', 'Calendar Required')"
 				:selected-value="-1"
 				:options="calendarOptions"
 				@input="(evt)=>{handleAction('get_raw',{p:pageId,cal_id:evt.value})}"/>
 
-		<LabelAccordion :label="t('appointments', 'Sync remote calendar now')"/>
+		<LabelAccordion for="ps-debug-sync" :label="t('appointments', 'Sync remote calendar now')"/>
 		<PsSelect
 				class="ps-vert-spacing"
+				input-id="ps-debug-sync"
+				:aria-label-listbox="t('appointments', 'Sync remote calendar now')"
 				:placeholder-label="t('appointments', 'Calendar Required')"
 				:selected-value="-1"
 				:options="remoteCalendarOptions"

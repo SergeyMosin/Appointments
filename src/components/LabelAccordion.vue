@@ -1,3 +1,9 @@
+<script>
+export default {
+	inheritAttrs: false
+}
+</script>
+
 <script setup>
 import IconMenu from "vue-material-design-icons/MenuSwapOutline.vue";
 import IconInfo from "vue-material-design-icons/InformationOutline.vue";
@@ -31,7 +37,10 @@ const toggleOpen = () => {
 <template>
 	<div>
 		<div class="flex-wrapper">
-			<label
+			<component
+					:is="accordion ? 'button' : 'label'"
+					:type="accordion ? 'button' : null"
+					:aria-expanded="accordion ? String(isOpen) : null"
 					v-bind="$attrs"
 					@click="toggleOpen"
 					:class="[
@@ -49,13 +58,19 @@ const toggleOpen = () => {
 				{{ label }}
 			</span>
 				<span v-if="loading" class="wrapper-label-loading">
-				<NcLoadingIcon :size="16"/>
+				<NcLoadingIcon :size="16" :name="t('appointments', 'Loading')"/>
 			</span>
-			</label>
+			</component>
 			<div v-if="slots?.helpPopover" class="wrapper-help">
-				<NcPopover :focus-trap="false">
-					<template #trigger>
-						<IconInfo class="wrapper-help-icon" :size="16"/>
+				<NcPopover :focus-trap="false" :container="false">
+					<template #trigger="{attrs}">
+						<button
+								type="button"
+								class="wrapper-help-button"
+								v-bind="attrs"
+								:aria-label="t('appointments', 'Help')">
+							<IconInfo class="wrapper-help-icon" :size="16"/>
+						</button>
 					</template>
 					<template>
 						<div class="wrapper-help-content">
@@ -83,6 +98,18 @@ const toggleOpen = () => {
 	display: inline-block;
 	overflow: hidden;
 	vertical-align: middle;
+}
+
+button.wrapper-label {
+	background: none;
+	border: none;
+	border-radius: 0;
+	margin: 0;
+	padding: 0;
+	min-height: 0;
+	font: inherit;
+	color: inherit;
+	text-align: start;
 }
 
 .wrapper-label-accordion,
@@ -122,6 +149,21 @@ const toggleOpen = () => {
 .wrapper-help-icon {
 	cursor: pointer;
 	opacity: .5;
+}
+
+.wrapper-help-button {
+	background: none;
+	border: none;
+	border-radius: 0;
+	margin: 0;
+	padding: 0;
+	min-height: 0;
+	display: inline-flex;
+	color: inherit;
+}
+
+.wrapper-help-button:focus-visible .wrapper-help-icon {
+	opacity: 1;
 }
 
 .wrapper-help-content {

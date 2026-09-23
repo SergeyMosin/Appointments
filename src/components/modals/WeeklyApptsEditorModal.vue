@@ -166,20 +166,20 @@ const primaryButtonText = props.data.elm === null
 			<template v-if="props.data.elm===null">
 				<LabelAccordion
 						:label="t('appointments', 'Number of Appointments')"
-						for="atam-slider-count"/>
+						id="atam-slider-count-label"/>
 				<vue-slider
 						:min="1"
 						:max="32"
 						tooltip="always"
 						tooltipPlacement="bottom"
-						id="atam-slider-count"
+						:dot-attrs="{'aria-labelledby': 'atam-slider-count-label'}"
 						class="ps-slider appt-slider"
 						v-model="state.count"/>
 			</template>
 			<div class="pml-cont">
-				<label class="slider-label">{{ t('appointments', 'Duration (hours:minutes)') }}</label>
-				<span class="pml-p" @click="addDurationHandler">+</span>
-				<span class="pml-m" @click="removeDurationHandler">−</span>
+				<label id="atam-slider-dur-label" class="slider-label">{{ t('appointments', 'Duration (hours:minutes)') }}</label>
+				<button type="button" class="pml-p" :aria-label="t('appointments', 'Add duration choice')" @click="addDurationHandler">+</button>
+				<button type="button" class="pml-m" :aria-label="t('appointments', 'Remove duration choice')" @click="removeDurationHandler">−</button>
 			</div>
 			<vue-slider
 					:min="5"
@@ -190,6 +190,7 @@ const primaryButtonText = props.data.elm === null
 					tooltip="always"
 					tooltipPlacement="bottom"
 					:tooltip-formatter="durationsTooltipFormatter"
+					:dot-attrs="{'aria-labelledby': 'atam-slider-dur-label'}"
 					class="ps-slider appt-slider"
 					v-model="state.durations"/>
 			<LabelAccordion
@@ -248,6 +249,13 @@ const primaryButtonText = props.data.elm === null
 
 .pml-m,
 .pml-p {
+	background: none;
+	border: none;
+	border-radius: 0;
+	margin: 0;
+	padding: 0;
+	min-height: 0;
+	font: inherit;
 	font-size: 125%;
 	position: absolute;
 	height: 1em;

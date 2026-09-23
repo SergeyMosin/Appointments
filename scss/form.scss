@@ -647,6 +647,17 @@ $tz-cont-height: 2.5em;
 
 // ---- THANK YOU NOTE ------
 
+.srgdev-ncfp-form-fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.srgdev-ncfp-form-fieldset legend {
+  padding: 0;
+}
+
 .srgdev-appt-info-cont {
   margin-top: 3em;
   max-width: 40em;

@@ -76,9 +76,15 @@ const handleClick = (evt) => {
 				@click.native.capture="handleClick"
 				@update:checked="(value)=>{store.setOne(propName,value);emit('value-updated',{propName: propName, value: value})}"/>
 		<div v-if="slots?.help" class="wrapper-checkbox-help">
-			<NcPopover>
-				<template #trigger>
-					<IconInfo class="wrapper-help-icon" :size="16"/>
+			<NcPopover :container="false">
+				<template #trigger="{attrs}">
+					<button
+							type="button"
+							class="wrapper-help-button"
+							v-bind="attrs"
+							:aria-label="t('appointments', 'Help')">
+						<IconInfo class="wrapper-help-icon" :size="16"/>
+					</button>
 				</template>
 				<template>
 					<div class="wrapper-help-content">
@@ -110,6 +116,21 @@ const handleClick = (evt) => {
 .wrapper-help-icon {
 	cursor: pointer;
 	opacity: .5;
+}
+
+.wrapper-help-button {
+	background: none;
+	border: none;
+	border-radius: 0;
+	margin: 0;
+	padding: 0;
+	min-height: 0;
+	display: inline-flex;
+	color: inherit;
+}
+
+.wrapper-help-button:focus-visible .wrapper-help-icon {
+	opacity: 1;
 }
 
 .wrapper-checkbox:hover .wrapper-help-icon {

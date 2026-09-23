@@ -154,6 +154,7 @@ const handleActionsMenu = (pageId, evt) => {
 							<NcLoadingIcon v-if="pagesStore.loading===LOADING_LABEL" :size="20"/>
 							<IconPencil v-else :size="20"/>
 						</template>
+						{{ t('appointments', 'Page name') }}
 					</NcActionInput>
 					<NcActionButton
 							:disabled="!!pagesStore.loading"

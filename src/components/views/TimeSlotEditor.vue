@@ -26,6 +26,7 @@ const store = useSettingsStore()
 const settings = store.settings
 
 const grid_cont = ref(null)
+const root = ref(null)
 
 /**
  * data is only set for Simple editor (in weekly template mode data is {})
@@ -103,6 +104,7 @@ const editor = reactive({
 onMounted(() => {
 
 	gridMaker.setup(grid_cont.value, COL_COUNT, 'srgdev-appt-grd-')
+	gridMaker.setColumnLabels(editor.header.map(h => h.txt))
 
 	if (gridMode === gridMaker.MODE_TEMPLATE) {
 		gridMaker.addPastAppts(settings.template_data, null, gridShift)
@@ -130,7 +132,10 @@ onMounted(() => {
 			editor.loading = false
 		})
 	}
-	nextTick(gridMaker.scrollGridToTopElm)
+	nextTick(() => {
+		gridMaker.scrollGridToTopElm()
+		root.value.querySelector('button')?.focus()
+	})
 })
 
 const close = () => {
@@ -216,7 +221,7 @@ const gridApptsCopy = (index) => {
 </script>
 
 <template>
-	<div class="srgdev-appt-grid-flex">
+	<div class="srgdev-appt-grid-flex" ref="root">
 		<div v-show="gridMode===gridMaker.MODE_SIMPLE"
 				 class="srgdev-appt-cal-view-btns">
 			<button @click="handleAddToCalendar" class="primary">
@@ -254,6 +259,8 @@ const gridApptsCopy = (index) => {
 			Loading...
 		</div>
 		<div class="srgdev-appt-grid-flex-lower"
+				 role="region"
+				 :aria-label="t('appointments', 'Appointment slots')"
 				 :class="{'editor-hidden':editor.loading===true}">
 			<ul class="srgdev-appt-grid-header">
 				<li v-for="(hi, index) in editor.header"
@@ -262,6 +269,7 @@ const gridApptsCopy = (index) => {
 					<div class="srgdev-appt-gh-txt">{{ hi.txt }}</div>
 					<NcActions
 							menuAlign="right"
+							:aria-label="hi.txt"
 							:open="editor.menuIndex===index"
 							@open="editor.menuIndex=index"
 							class="srgdev-appt-gh-act1">
@@ -274,6 +282,7 @@ const gridApptsCopy = (index) => {
 							<template #icon>
 								<IconPlus :size="20"/>
 							</template>
+							{{ t('appointments', 'Appointments to add') }}
 						</NcActionInput>
 						<NcActionButton
 								v-else
