@@ -424,6 +424,6 @@ OC.L10N.register(
     "An error has occurred" : "Es ist ein Fehler aufgetreten",
     "Please %1$stry again%2$s and select a different date." : "Bitte %1$s versuchen Sie es erneut %2$s und wählen Sie ein anderes Datum.",
     "Please contact us directly at" : "Bitte kontaktieren Sie uns direkt unter",
-    "Please try again later" : "Bitte später erneut versuchen"
+    "Please try again later" : "Bitte später noch einmal versuchen."
 },
 "nplurals=2; plural=(n != 1);");
