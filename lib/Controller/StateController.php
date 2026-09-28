@@ -833,6 +833,11 @@ class StateController extends Controller
         ];
         $applyAttrs = function (array $allowed) use ($obj) {
             $out = '';
+            foreach ($obj as $attr => $value) {
+              if (preg_match("/^data\-[a-z0-9\-_]+$/",$attr)) {
+                $out .= ' ' . $attr . '="' . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . '"';
+              }
+            }
             foreach ($allowed as $attr => $default) {
                 if ($attr === 'required' && !empty($obj[$attr])) {
                     $out .= ' required';
