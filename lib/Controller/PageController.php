@@ -773,7 +773,10 @@ class PageController extends Controller
             }
         }
 
-        $params['appt_inline_style'] = $this->utils->getInlineStyle($userId, $settings);
+        $brandId = $settings[BackendUtils::PSN_BRAND_ID] ?? '';
+        $brand = !empty($brandId) ? $this->utils->getBrand($brandId) : null;
+        $params['appt_inline_style'] = $this->utils->getInlineStyle($userId, $settings, $brand);
+        $params['appt_brand'] = $brand ?? [];
 
         if ($renderAsBase) {
             // renderAs=base (embedded or preview when email validation step is skipped
@@ -842,8 +845,12 @@ class PageController extends Controller
             $tr = $this->getPublicTemplate($tn);
         }
 
+        $errSettings = $this->utils->getUserSettings();
+        $errBrandId = $errSettings[BackendUtils::PSN_BRAND_ID] ?? '';
+        $errBrand = !empty($errBrandId) ? $this->utils->getBrand($errBrandId) : null;
         $tr->setParams([
-            'appt_inline_style' => $this->utils->getInlineStyle($userId, $this->utils->getUserSettings()),
+            'appt_inline_style' => $this->utils->getInlineStyle($userId, $errSettings, $errBrand),
+            'appt_brand' => $errBrand ?? [],
             'application' => $this->l->t('Appointments')
         ]);
 
@@ -1284,7 +1291,10 @@ class PageController extends Controller
             $tr = new TemplateResponse(Application::APP_ID, $tmpl, [], $render);
         }
 
-        $param['appt_inline_style'] = $this->utils->getInlineStyle($uid, $settings);
+        $cncfBrandId = $settings[BackendUtils::PSN_BRAND_ID] ?? '';
+        $cncfBrand = !empty($cncfBrandId) ? $this->utils->getBrand($cncfBrandId) : null;
+        $param['appt_inline_style'] = $this->utils->getInlineStyle($uid, $settings, $cncfBrand);
+        $param['appt_brand'] = $cncfBrand ?? [];
 
         $tr->setParams($param);
         $tr->setStatus($rs);
@@ -1301,6 +1311,9 @@ class PageController extends Controller
         }
 
         $settings = $this->utils->getUserSettings();
+
+        $sfBrandId = $settings[BackendUtils::PSN_BRAND_ID] ?? '';
+        $brand = !empty($sfBrandId) ? $this->utils->getBrand($sfBrandId) : null;
 
         $ft = $settings[BackendUtils::PSN_FORM_TITLE];
         $org_name = $settings[BackendUtils::ORG_NAME];
@@ -1326,7 +1339,8 @@ class PageController extends Controller
             'appt_pps' => '',
             'appt_gdpr' => '',
             'appt_gdpr_no_chb' => false,
-            'appt_inline_style' => $this->utils->getInlineStyle($uid, $settings),
+            'appt_inline_style' => $this->utils->getInlineStyle($uid, $settings, $brand ?? null),
+            'appt_brand' => $brand ?? [],
             'appt_hide_phone' => $settings[BackendUtils::PSN_HIDE_TEL],
             'more_html' => '',
             'application' => $this->l->t('Appointments'),

@@ -5,6 +5,7 @@ namespace OCA\Appointments\AppInfo;
 use OCA\Appointments\Backend\BeforeTemplateRenderedListener;
 use OCA\Appointments\Backend\DavListener;
 use OCA\Appointments\Backend\RemoveScriptsMiddleware;
+use OCA\Appointments\Settings\BrandingAdminSettings;
 use OCA\DAV\Events\SubscriptionDeletedEvent;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
@@ -36,6 +37,8 @@ class Application extends App implements IBootstrap
         $context->registerMiddleware('ApptRemoveScriptsMiddleware');
 
         $context->registerEventListener(BeforeTemplateRenderedEvent::class, BeforeTemplateRenderedListener::class);
+
+        $context->registerAdmin(BrandingAdminSettings::class);
     }
 
     public function boot(IBootContext $context): void
