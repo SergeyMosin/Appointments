@@ -115,7 +115,7 @@ const handleActionsMenu = (pageId, evt) => {
 				<template v-if="page.tsMode==='0'" #default>
 					<div style="display: flex; gap: .75rem; color: #eca700; font-size: 90%">
 					<IconWarn :size="16"/>
-					{{t('appointments', 'Simple Mode: Support Ending Soon')}}
+					{{t('appointments', 'Simple Mode: Support Discontinued')}}
 					</div>
 				</template>
 				<template #icon>

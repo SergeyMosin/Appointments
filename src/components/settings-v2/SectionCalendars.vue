@@ -100,7 +100,7 @@ const handleSetCal = (data) => {
 			</template>
 		</ComboSelect>
 
-		<NcNoteCard v-if="settings.tsMode===TS_MODE.SIMPLE" style="margin-top:0" type="warning">Simple Mode will be discontinued after August 2026. We are streamlining the app to focus on new feature development and long-term sustainability.
+		<NcNoteCard v-if="settings.tsMode===TS_MODE.SIMPLE" style="margin-top:0" type="error">WARNING: Simple Mode Will Be Removed In The Next Update
 		</NcNoteCard>
 
 		<SectionCalendarsWeekly
