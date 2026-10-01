@@ -105,13 +105,17 @@
 			const form = document.getElementById('srgdev-appt-cncf_action_frm')
 			txtElm.textContent = atob(form.getAttribute('data-lbl'))
 
+			let bypassVisibilityCheck = false
 			let went = false
 			const go = () => {
 				if (went) {
 					return
 				}
 
-				if (document.visibilityState === 'visible' && document.hasFocus()) {
+				if (
+					(document.visibilityState === 'visible' && document.hasFocus())
+					|| bypassVisibilityCheck === true
+				) {
 					went = true
 					window.removeEventListener('focus', go)
 
@@ -145,6 +149,13 @@
 			}
 
 			setTimeout(go, 1250)
+
+			setTimeout(() => {
+				if(!went){
+					bypassVisibilityCheck=true
+					go()
+				}
+			}, 4000)
 
 			setTimeout(() => {
 				btn.disabled = true
