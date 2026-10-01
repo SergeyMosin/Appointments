@@ -1,6 +1,7 @@
 node_modules/
 
 /vendor/
+/build/
 /composer.phar
 /.phpunit.result.cache
 /js/

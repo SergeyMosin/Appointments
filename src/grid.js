@@ -183,6 +183,7 @@ function _apptGridMaker() {
 			if (mData.mode !== MODE_SIMPLE && clr !== null) {
 				elm.dur = clr.dur
 				elm.title = clr.title
+				elm.tkn = clr.tkn
 			}
 		} else {
 			elm.className += " " + sP + "appt-empty"
@@ -289,20 +290,41 @@ function _apptGridMaker() {
 		}
 	}
 
+	/**
+	 * Called when loading template
+	 * @param data
+	 * @param gridShift
+	 */
 	function addTemplateData(data, gridShift) {
 		const day_start_ts = SH * 3600
-		for (let f, iMod, colElms, l = data.length, i = 0; i < l; i++) {
+		for (let iMod, colElms, l = data.length, i = 0; i < l; i++) {
 			if (data[i].length !== 0) {
 
 				// @see gridShift in App.vue
 				iMod = (i + gridShift) % 7
 
-				f = document.createDocumentFragment()
-				for (let uTop, uLen, info, d = data[i], k = d.length, j = 0; j < k; j++) {
-					info = d[j]
-					uTop = Math.floor((info.start - day_start_ts) / 300)
-					uLen = Math.floor(info.dur[0] / 5)
-					f.appendChild(makeApptElement(uTop, uLen, j, iMod, info))
+				// reconstitute duration groups from tokens
+				const groups = {}
+				for (let d = data[i], k = d.length, j = 0; j < k; j++) {
+					const timeSlot = d[j]
+					const tkn = timeSlot['tkn']
+					let group = groups[tkn]
+					if (!group) {
+						group = timeSlot
+						groups[tkn] = group
+					} else {
+						group.dur.push(timeSlot['dur'][0])
+					}
+				}
+
+				const f = document.createDocumentFragment()
+				let idx = 0
+				for (const info of Object.values(groups)) {
+					info.dur.sort((a, b) => a - b);
+					const uTop = Math.floor((info.start - day_start_ts) / 300)
+					const uLen = Math.floor(info.dur[0] / 5)
+					f.appendChild(makeApptElement(uTop, uLen, idx, iMod, info))
+					++idx
 				}
 
 				mData.mc_cols[iMod].appendChild(f)
@@ -679,6 +701,7 @@ function _apptGridMaker() {
 	}
 
 	/**
+	 * called on template save
 	 * @param gridShift - here we shift the grid so that grid Monday is at index 0 in template data, @see gridShift in App.vue
 	 * @returns {*[]}
 	 */
@@ -692,11 +715,19 @@ function _apptGridMaker() {
 			// the (i % 7) is because of the gridShift
 			for (let elm, ea = mData.mc_elm[(i % 7)], j = 0, k = ea.length; j < k; j++) {
 				elm = ea[j]
-				da.push({
-					start: day_start_ts + elm.uTop * 300,
-					dur: elm.dur,
-					title: elm.title.replaceAll(',', ' ')
-				})
+
+				const tkn = elm.tkn || 't' + Math.floor(Math.random() * 0x100000000).toString(16).padStart(8, '0')
+				for (let durations = elm.dur, ll = durations.length, jj = 0; jj < ll; jj++) {
+					const duration = durations[jj]
+					const start = day_start_ts + elm.uTop * 300
+					da.push({
+						start: start,
+						end: start + (duration * 60),
+						dur: [duration],
+						title: elm.title.replaceAll(',', ' ').trim(),
+						tkn: tkn
+					})
+				}
 			}
 			wa.push(da)
 		}

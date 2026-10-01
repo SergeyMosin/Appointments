@@ -80,7 +80,7 @@ const addDurationHandler = () => {
 		state.durations = [state.durations]
 	}
 
-	if (props.data.k === false && state.durations.length > 1) {
+	if (props.data.k === false && state.durations.length > 2) {
 		emit('show-info-modal', {
 			type: MODAL.CONTRIBUTION,
 			message: t('appointments', 'More than two duration choices')
@@ -88,7 +88,7 @@ const addDurationHandler = () => {
 		return
 	}
 
-	if (state.durations.length > 7) return
+	if (state.durations.length > 16) return
 
 	const a = [...state.durations, DUR_MAX].sort((a, b) => a - b)
 	// find the largest space
@@ -178,8 +178,11 @@ const primaryButtonText = props.data.elm === null
 			</template>
 			<div class="pml-cont">
 				<label class="slider-label">{{ t('appointments', 'Duration (hours:minutes)') }}</label>
-				<span class="pml-p" @click="addDurationHandler">+</span>
-				<span class="pml-m" @click="removeDurationHandler">−</span>
+				<span class="pml-pm">
+					<span class="pml-p" @click="addDurationHandler">+</span>
+					<span style="padding: 0 .625em; font-size: 90%; opacity: .75">{{ state.durations.length }}</span>
+					<span class="pml-m" @click="removeDurationHandler">−</span>
+				</span>
 			</div>
 			<vue-slider
 					:min="5"
@@ -246,16 +249,20 @@ const primaryButtonText = props.data.elm === null
 	position: relative;
 }
 
-.pml-m,
-.pml-p {
+.pml-pm {
+	right: 0;
 	font-size: 125%;
 	position: absolute;
 	height: 1em;
-	width: 1em;
 	line-height: 1em;
 	top: 50%;
 	margin-top: -.5em;
 	text-align: center;
+}
+
+.pml-m,
+.pml-p {
+	width: 1em;
 	cursor: pointer;
 	color: var(--color-text-light);
 }
@@ -264,14 +271,6 @@ const primaryButtonText = props.data.elm === null
 .pml-p:hover {
 	color: var(--color-main-text);
 	transform: scale(1.2);
-}
-
-.pml-p {
-	right: 1.375em;
-}
-
-.pml-m {
-	right: 0;
 }
 
 .actions-cont {

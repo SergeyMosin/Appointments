@@ -30,6 +30,7 @@ class BackendUtils
     const TZI_PROP = "X-TZI";
     // original description
     const X_DSR = "X-APPT-DSR";
+    const X_TKN = "X-APPT-TKN";
 
     // #################################################################
     //   WARNING: most of constants are used in V2 migration
@@ -53,6 +54,8 @@ class BackendUtils
     public const KEY_CLS = 'calendar_settings';
     public const KEY_TMPL_DATA = 'template_data';
     public const KEY_TMPL_INFO = 'template_info';
+    public const KEY_TMPL_DATA_SORTED = 'template_data_sorted';
+    public const KEY_TMPL_ALLOW_OVERLAP = 'template_allow_overlap';
     public const KEY_PSN = "page_options";
     public const KEY_MPS_COL = "more_pages";
     public const KEY_MPS = "more_pages_";
@@ -354,6 +357,17 @@ class BackendUtils
 
         // this will save the apptDoc as well
         $this->setApptHash($evt, $userId, $info['_page_id'], $uri);
+
+        //
+        $settings = $this->getUserSettings();
+        if ($settings[self::CLS_TS_MODE] === self::CLS_TS_MODE_TEMPLATE
+            && isset($info['tmpl_token']) && strlen($info['tmpl_token']) < 32
+        ) {
+            if (!isset($evt->{self::X_TKN})) {
+                $evt->add(self::X_TKN);
+            }
+            $evt->{self::X_TKN}->setValue($info['tmpl_token']);
+        }
 
         return $vo->serialize();
     }
@@ -1215,6 +1229,8 @@ class BackendUtils
                 self::TMPL_TZ_NAME => "",
                 self::TMPL_TZ_DATA => ""
             ],
+            self::KEY_TMPL_DATA_SORTED => false,
+            self::KEY_TMPL_ALLOW_OVERLAP => false,
 
             self::KEY_FORM_INPUTS_HTML => "",
             self::KEY_FORM_INPUTS_JSON => [],
@@ -1331,7 +1347,51 @@ class BackendUtils
                 return false;
             }
         }
-        return $this->parseSettings($row, $isDir);
+
+        $isParseOK = $this->parseSettings($row, $isDir);
+
+        // TODO: this can eventually be removed
+        if ($isParseOK && $this->settings[self::KEY_TMPL_DATA_SORTED] === false) {
+
+            $td = $this->settings[self::KEY_TMPL_DATA];
+
+            $l = count($td);
+            for ($i = 0; $i < $l; $i++) {
+                $day = $td[$i];
+                if (is_array($day) && !empty($day)) {
+                    $newDay = [];
+                    foreach ($day as $timeslot) {
+                        $durations = $timeslot['dur'];
+                        if (is_array($durations)) {
+                            $token = 't' . bin2hex(random_bytes(4));
+                            foreach ($durations as $duration) {
+                                $newDay[] = [
+                                    'start' => $timeslot['start'],
+                                    'end' => $timeslot['start'] + ($duration * 60),
+                                    'dur' => [$duration],
+                                    'title' => $timeslot['title'],
+                                    'tkn' => $token,
+                                ];
+                            }
+                        }
+                    }
+
+                    usort($newDay, function ($a, $b) {
+                        return ($a['start'] <=> $b['start']) ?: ($a['end'] <=> $b['end']);
+                    });
+
+                    $td[$i] = $newDay;
+                }
+            }
+
+            $this->settings[self::KEY_TMPL_DATA] = $td;
+            $this->settings[self::KEY_TMPL_DATA_SORTED] = true;
+
+            // this should save self::KEY_TMPL_DATA array as well
+            $this->setUserSettingsV2($userId, $pageId, self::KEY_TMPL_DATA_SORTED, true);
+        }
+
+        return $isParseOK;
     }
 
     private function parseSettings(array $row, bool $isDir = false): bool

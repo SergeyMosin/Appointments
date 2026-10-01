@@ -11,6 +11,7 @@ namespace OCA\Appointments\Backend;
 use OCA\Appointments\AppInfo\Application;
 use OCA\Appointments\IntervalTree\AVLIntervalNode;
 use OCA\Appointments\IntervalTree\AVLIntervalTree;
+use OCA\Appointments\RangeIndex\RangeIndex;
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\CalDAV\WebcalCaching\RefreshWebcalService;
 use OCP\IConfig;
@@ -298,6 +299,14 @@ class BCSabreImpl implements IBackendConnector
      */
     function checkRangeTemplate(array $settings, \DateTime $start, \DateTime $end, string $userId): int
     {
+        $start_ts = $start->getTimestamp();
+        $end_ts = $end->getTimestamp();
+
+        $ri = new RangeIndex();
+        $ri->buildFromTemplate(
+            $settings[BackendUtils::KEY_TMPL_DATA],
+            $start, $start_ts, $end_ts
+        );
 
         $queryConfig = [
             'start' => $start->getTimestamp() - 86400, //24h
@@ -306,19 +315,12 @@ class BCSabreImpl implements IBackendConnector
 
         $cals = $this->getCalsForConflictCheck($settings, $userId);
 
-        // we need to adjust/modify $start and $end by 1 sec because of "<=" and ">=" comparisons(instead of just "<" and ">" ) in the buildBusyTree function
-        $start->modify('+1 second');
-        $end->modify('-1 second');
+        $this->invalidateTimeslots(
+            $ri, $cals, $queryConfig, clone $start, $start_ts, $end_ts,
+        );
 
-        $start_ts = $start->getTimestamp();
-        $end_ts = $end->getTimestamp();
-
-        $booked_tree = $this->buildBusyTree($cals, $queryConfig, $start, $start_ts, $end_ts, true);
-
-        // if $booked_tree is NOT null then there was a match(intersection)
-        return $booked_tree === null ? 0 : 1;
+        return $ri->hasExactInterval($start_ts, $end_ts) ? 0 : 1;
     }
-
 
     /**
      * @inheritDoc
@@ -332,23 +334,10 @@ class BCSabreImpl implements IBackendConnector
             return null;
         }
 
-        $utz = $start->getTimezone();
-
         $start_ts = $start->getTimestamp();
         $end_ts = $end->getTimestamp();
 
-        $queryConfig = [
-            // Because of floating timezones...
-            // We need to adjust for UTC and filter
-            'start' => $start_ts - 86400, //24h
-            'end' => $end_ts + 64800, //18h
-        ];
-
         $settings = $this->utils->getUserSettings();
-
-        $cals = $this->getCalsForConflictCheck($settings, $userId);
-
-        $booked_tree = $this->buildBusyTree($cals, $queryConfig, $start, $start_ts, $end_ts, false);
 
         $ti = $settings[BackendUtils::KEY_TMPL_INFO];
 
@@ -360,57 +349,177 @@ class BCSabreImpl implements IBackendConnector
             }
         }
 
+        $startClone = clone $start;
+
         $td = $settings[BackendUtils::KEY_TMPL_DATA];
         if (count($td) !== 7) {
             $td[] = [];
+            return '';
         }
+
         $start->modify("today");
-        // 0=Monday
-        $day = $start->format('N') - 1;
-        $ds = $start->getTimestamp();
-        $out = "";
-        $ses_start = '_2' . time() . '_';
-        while ($ds < $end_ts) {
-            $dia = $td[$day];
-            $tc = 0;
 
-            foreach ($dia as $di) {
-                //TODO: there are better ways to sent this to the front end, instead of calculating it here
-                $start->setTime(0, 0, $di['start']);
-                $sts = $start->getTimestamp();
+        $ri = new RangeIndex();
+        $ri->buildFromTemplate($td, $start, $start_ts, $end_ts);
 
-                if ($sts < $start_ts) {
-                    continue;
-                } // skip past
-                if ($sts > $end_ts) {
-                    break 2;
-                } // Done :)
-                $cc = 0;
-                foreach ($di['dur'] as $dur) {
-                    $ets = $sts + $dur * 60;
-                    if (AVLIntervalTree::lookUp($booked_tree, $sts, $ets) !== null) {
-                        // this spot is taken
-                        break;
-                    }
-                    ++$cc;
-                }
-                if ($cc !== 0) {
-                    $data = $ses_start . $day . $tc . '_' . $sts;
-                    $out .= 'T' . $sts . ":" . implode(';', array_slice($di['dur'], 0, $cc)) . ":" . $this->utils->encrypt($data, $key) . ":_" . $di['title'] . ',';
-                }
-                $tc++;
+        // ------
+
+        $cals = $this->getCalsForConflictCheck($settings, $userId);
+
+        $queryConfig = [
+            // Because of floating timezones...
+            // We need to adjust for UTC and filter
+            'start' => $start_ts - 86400, //24h
+            'end' => $end_ts + 64800, //18h
+        ];
+
+        $this->invalidateTimeslots(
+            $ri, $cals, $queryConfig, $startClone, $start_ts, $end_ts,
+        );
+
+        $sep = "\x1f"; // chr(31)
+        $out = '';
+        [$starts, $ends, , $data] = $ri->dump();
+        $l = count($starts);
+        $ses_start = '_2' . time() . $sep;
+        $lastStart = 0;
+        $lastEnd = 0;
+        $lastTitle = '';
+        for ($i = 0; $i < $l; $i++) {
+            $e_ts = $ends[$i];
+            if ($e_ts < 0) {
+                continue;
+            }
+            $s_ts = $starts[$i];
+
+            $slotData = $data[$i];
+
+            $title = $slotData['title'];
+
+            if ($s_ts === $lastStart && $e_ts === $lastEnd && $title === $lastTitle) {
+                continue;
             }
 
-            $day++;
-            if ($day >= 7) {
-                $day = 0;
-            }
-            // we need to re-calculate this because of daytime savings
-            $start->setTime(0, 0);
-            $start->modify('+1 day');
-            $ds = $start->getTimestamp();
+            $lastStart = $s_ts;
+            $lastEnd = $e_ts;
+            $lastTitle = $title;
+
+            $encData = $ses_start . $slotData['tkn'] . $sep . $s_ts . $sep . $e_ts . $sep . $title;
+            $out .= 'T' . $s_ts . ":" . ($e_ts - $s_ts) . ":" . $this->utils->encrypt($encData, $key) . ":_" . $title . ',';
         }
+
         return $out !== '' ? substr($out, 0, -1) : null;
+    }
+
+    private function invalidateTimeslots(
+        RangeIndex $ri,
+        array      $calIds,
+        array      $queryConfig,
+        \DateTime  $start,
+        int        $start_ts,
+        int        $end_ts,
+    ): void {
+        $settings = $this->utils->getUserSettings();
+        $allDayBlock = $settings[BackendUtils::CLS_ALL_DAY_BLOCK];
+        $beforeBufferSec = $settings[BackendUtils::CLS_BUFFER_BEFORE] * 60;
+        $afterBufferSec = $settings[BackendUtils::CLS_BUFFER_AFTER] * 60;
+
+        // template mode supports overlapping time-slots (multiple attendees)
+        $dstCal = '';
+        if ($settings[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_TEMPLATE
+            && $settings[BackendUtils::KEY_TMPL_ALLOW_OVERLAP] === true
+        ) {
+            $dstCal = $settings[BackendUtils::CLS_TMM_DST_ID];
+            // we also want to move the $dstCla to the end of calIds
+            if (count($calIds) > 1) {
+                $dstCalIndex = array_search($dstCal, $calIds);
+                if ($dstCalIndex !== false) {
+                    array_splice($calIds, $dstCalIndex, 1);
+                    $calIds[] = $dstCal;
+                }
+            }
+        }
+
+        $utz = $start->getTimezone();
+
+        $fakeEvtIter = new FakeIterator2($utz);
+
+        $iter = $this->fastQuery($calIds,
+            $queryConfig['start'],
+            $queryConfig['end'],
+            $queryConfig['props'] ?? [],
+            ['calendarid']
+        );
+        foreach ($iter as $row) {
+
+            /** @var \Sabre\VObject\Component\VCalendar $vo */
+            $vo = Reader::read($row['calendardata']);
+            /** @var \Sabre\VObject\Component\VEvent $evt */
+            $evt = $vo->VEVENT;
+            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+            if (!$allDayBlock && !$evt->DTSTART->hasTime()) {
+                $vo->destroy();
+                continue;
+            }
+
+            $evtCal = $row['calendarid'];
+            $token = null;
+            $invalidateSingle = false;
+
+            if (isset($evt->RRULE)) {
+                try {
+                    $it = new EventIterator($vo->getByUID($evt->UID->getValue()), null, $utz);
+                } catch (NoInstancesException $e) {
+                    // This event is recurring, but it doesn't have a single instance. We are skipping this event from the output entirely.
+                    continue;
+                }
+                $it->fastForward($start);
+            } else {
+                $fakeEvtIter->setEvt($evt);
+                $it = $fakeEvtIter;
+                if ($dstCal == $evtCal && isset($evt->{ApptDocProp::PROP_NAME})) {
+                    // if we are here than "overlaps" are allowed,
+                    // and we have created this event/appointment
+                    $invalidateSingle = true;
+                    if(isset($evt->{BackendUtils::X_TKN})) {
+                        $token = $evt->{BackendUtils::X_TKN}->getValue();
+                    }
+                }
+            }
+
+            $c = 0;
+            while ($it->valid() && ++$c < 384) {
+                $_evt = $it->getEventObject();
+                if ((isset($_evt->STATUS) && $_evt->STATUS->getValue() === 'CANCELLED') || (isset($_evt->TRANSP) && $_evt->TRANSP->getValue() === 'TRANSPARENT')) {
+                    $it->next();
+                    continue;
+                }
+
+                if ($_evt->DTSTART && !$_evt->DTSTART->hasTime()
+                    && (!$_evt->DURATION &&
+                        // Specs prohibit time in DTEND when there is no time in DTSTART
+                        ($_evt->DTEND && $_evt->DTEND->hasTime()))
+                ) {
+                    // an all-day event
+                    $s_ts = $it->getDtStart()->getTimestamp();
+                    $e_ts = $s_ts + 86400;
+                } else {
+                    // an event with end-time or multi-day duration
+                    $s_ts = $it->getDtStart()->getTimestamp() - $beforeBufferSec;
+                    $e_ts = $it->getDtEnd()->getTimestamp() + $afterBufferSec;
+                }
+                // start1 <= end2 && start2 <= end1
+                if ($start_ts <= $e_ts && $s_ts <= $end_ts) {
+                    if ($invalidateSingle) {
+                        $ri->invalidateSingleIntervalInRange($s_ts, $e_ts, $token);
+                    } else {
+                        $ri->invalidateRange($s_ts, $e_ts);
+                    }
+                }
+                $it->next();
+            }
+            $vo->destroy();
+        }
     }
 
     private function buildBusyTree(array     $calIds,
@@ -884,21 +993,6 @@ class BCSabreImpl implements IBackendConnector
 
         if ($ts_mode === BackendUtils::CLS_TS_MODE_TEMPLATE) {
             // weekly template
-            $td = $settings[BackendUtils::KEY_TMPL_DATA];
-            if (!isset($td[$info['tmpl_day']])
-                || !isset($td[$info['tmpl_day']][$info['tmpl_idx']])
-                || !isset($td[$info['tmpl_day']][$info['tmpl_idx']]['dur'])
-                || !isset($td[$info['tmpl_day']][$info['tmpl_idx']]['dur'][intval($info['appt_dur'])])) {
-
-                $this->logErr("Can't find template dur: " . $info['tmpl_day'] . ", " . $info['tmpl_idx']);
-
-                if ($settings[BackendUtils::DEBUGGING_MODE] === BackendUtils::DEBUGGING_LOG_TEMPLATE_DUR) {
-                    $this->logErr("template debug: template_data: " . var_export($td, true));
-                    $this->logErr("template debug: post_info: " . var_export($info, true));
-                }
-
-                return 1;
-            }
 
             $tza = $settings[BackendUtils::KEY_TMPL_INFO];
             if (!isset($tza[BackendUtils::TMPL_TZ_DATA])) {
@@ -909,19 +1003,18 @@ class BCSabreImpl implements IBackendConnector
             $parts = $this->utils->makeAppointmentParts(
                 $userId, $tza[BackendUtils::TMPL_TZ_DATA],
                 (new \DateTime('now', new \DateTimeZone('UTC')))->format(self::TIME_FORMAT),
-                isset($td[$info['tmpl_day']][$info['tmpl_idx']]['title'])
-                    ? '_' . $td[$info['tmpl_day']][$info['tmpl_idx']]['title']
-                    : ''
+                '_' . $info['tmpl_title'],
             );
             if (isset($parts['err'])) {
                 $this->logErr($parts['err'] . " - template mode");
                 return 3;
             }
 
-            $end_ts = $info['tmpl_start_ts'] + $td[$info['tmpl_day']][$info['tmpl_idx']]['dur'][intval($info['appt_dur'])] * 60;
+            $start_ts = $info['tmpl_start_ts'];
+            $end_ts = $info['tmpl_end_ts'];
 
             // make UID
-            $h = hash("tiger128,4", $uri . rand() . $userId . $pageId . time() . $info['tmpl_start_ts'] . $end_ts);
+            $h = hash("tiger128,4", $uri . rand() . $userId . $pageId . time() . $start_ts . $end_ts);
             $uid = substr($h, 0, 7) . "-" .
                 substr($h, 7, 6) . "-" .
                 substr($h, 13, 6) . "-" .
@@ -939,14 +1032,14 @@ class BCSabreImpl implements IBackendConnector
 
             // Insert the UID, start and end
             $d = $parts['1_before_uid'] . $uid .
-                $parts['2_before_dts'] . $dt->setTimestamp($info['tmpl_start_ts'])->format(self::TIME_FORMAT_NO_Z) .
+                $parts['2_before_dts'] . $dt->setTimestamp($start_ts)->format(self::TIME_FORMAT_NO_Z) .
                 $parts['3_before_dte'] . $dt->setTimestamp($end_ts)->format(self::TIME_FORMAT_NO_Z) .
                 $parts['4_last'];
 
             // Special "lock" uid
-            $lock_uid = "LOCK_" . hash("tiger128,4", $info['tmpl_start_ts'] . $pageId . $userId . $settings[BackendUtils::CLS_TMM_DST_ID]);
-
-            $start_ts = $info['tmpl_start_ts'];
+            $lock_uid = $settings[BackendUtils::KEY_TMPL_ALLOW_OVERLAP] === true
+                ? "LOCK_" . hash("tiger128,4", $start_ts . $end_ts . $pageId . $userId . $settings[BackendUtils::CLS_TMM_DST_ID] . $info['tmpl_title'] . $info['tmpl_token'])
+                : "LOCK_" . hash("tiger128,4", $start_ts . $pageId . $userId . $settings[BackendUtils::CLS_TMM_DST_ID]);
 
         } elseif ($ts_mode === BackendUtils::CLS_TS_MODE_EXTERNAL) {
             // external mode...
@@ -1078,7 +1171,7 @@ class BCSabreImpl implements IBackendConnector
                     $trc = $this->checkRangeTR($info['ext_start'], $info['ext_end'], $calId, $utz, $settings);
                 } else {
                     // template mode
-                    $dt->setTimestamp($info['tmpl_start_ts']);
+                    $dt->setTimestamp($start_ts);
                     $dt_end = clone($dt);
                     $dt_end->setTimestamp($end_ts);
                     $trc = $this->checkRangeTemplate($settings, $dt, $dt_end, $userId);

@@ -513,25 +513,65 @@ class StateController extends Controller
                     return [Http::STATUS_BAD_REQUEST, ''];
                 }
 
-                $maxDurCount = empty($this->config->getUserValue($this->userId, $this->appName, "cnk")) ? 2 : 8;
+                $maxDurCount = empty($this->config->getUserValue($this->userId, $this->appName, "cnk")) ? 2 : 16;
 
-                for ($i = 0; $i < 7; ++$i) {
-                    $day = $value[$i];
-                    if (!is_array($day)) {
-                        return [Http::STATUS_BAD_REQUEST, ''];
-                    }
-                    $spotsCount = count($day);
-                    for ($j = 0; $j < $spotsCount; ++$j) {
-                        $spot = $day[$j];
-                        if (!is_array($spot)
-                            || !array_key_exists('start', $spot)
-                            || !array_key_exists('dur', $spot)
-                            || !array_key_exists('title', $spot)) {
+                $settings = $this->utils->getUserSettings();
+
+                if (isset($settings[BackendUtils::KEY_TMPL_ALLOW_OVERLAP])) {
+                    // new structure
+
+                    for ($i = 0; $i < 7; ++$i) {
+                        $day = &$value[$i];
+                        if (!is_array($day)) {
                             return [Http::STATUS_BAD_REQUEST, ''];
                         }
-                        if (count($spot['dur']) > $maxDurCount) {
-                            array_splice($value[$i][$j]['dur'], $maxDurCount);
+                        $spotsCount = count($day);
+                        for ($j = 0; $j < $spotsCount; ++$j) {
+                            $spot = $day[$j];
+                            if (!is_array($spot)
+                                || !array_key_exists('start', $spot)
+                                || !array_key_exists('end', $spot)
+                                || !array_key_exists('dur', $spot)
+                                || !array_key_exists('title', $spot)
+                                || !array_key_exists('tkn', $spot)
+                            ) {
+                                return [Http::STATUS_BAD_REQUEST, ''];
+                            }
                         }
+
+                        if ($spotsCount > 0) {
+                            usort($day, function ($a, $b) {
+                                return $a['start'] <=> $b['start'] ?: ($a['end'] <=> $b['end']);
+                            });
+                        }
+                    }
+                } else {
+                    // old structure
+                    for ($i = 0; $i < 7; ++$i) {
+                        $day = &$value[$i];
+                        if (!is_array($day)) {
+                            return [Http::STATUS_BAD_REQUEST, ''];
+                        }
+                        $spotsCount = count($day);
+                        for ($j = 0; $j < $spotsCount; ++$j) {
+                            $spot = $day[$j];
+                            if (!is_array($spot)
+                                || !array_key_exists('start', $spot)
+                                || !array_key_exists('dur', $spot)
+                                || !array_key_exists('title', $spot)) {
+                                return [Http::STATUS_BAD_REQUEST, ''];
+                            }
+                            if (count($spot['dur']) > $maxDurCount) {
+                                array_splice($value[$i][$j]['dur'], $maxDurCount);
+                            }
+                        }
+
+                        if (!empty($day)) {
+                            usort($day, function ($a, $b) {
+                                return $a['start'] <=> $b['start'];
+                            });
+                        }
+
                     }
                 }
                 return [Http::STATUS_OK, ''];

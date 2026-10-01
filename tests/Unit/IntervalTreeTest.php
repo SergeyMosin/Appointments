@@ -1,17 +1,16 @@
 <?php
 
-namespace OCA\Appointments\Tests\Unit;
+namespace Unit;
 
 use OCA\Appointments\IntervalTree\AVLIntervalNode;
 use OCA\Appointments\IntervalTree\AVLIntervalTree;
-use OCA\Appointments\Tests\ConsoleLoger;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 
 class IntervalTreeTest extends TestCase
 {
     function testTree() {
-        $logger = new ConsoleLoger();
+        $logger = new ConsoleLogger();
 
         $logger->info("start testTree");
 

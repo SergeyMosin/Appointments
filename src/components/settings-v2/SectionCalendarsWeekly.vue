@@ -10,6 +10,7 @@ import {MODAL} from "../../use/constants"
 import ComboSelect from "./ComboSelect.vue"
 import {getTimezone} from "../../use/utils"
 import {showError} from "@nextcloud/dialogs";
+import ComboCheckbox from "./ComboCheckbox.vue";
 
 const emit = defineEmits(['show-editor', 'show-settings-modal'])
 
@@ -115,6 +116,15 @@ const handleEditTemplate = () => {
 				v-on="$listeners">
 			<template #help>{{ t('appointments', 'Booked/pending appointments will be placed into this calendar.') }}</template>
 		</ComboSelect>
+		<ComboCheckbox
+				class="ps-vert-spacing"
+				prop-name="template_allow_overlap"
+				:label="t('appointments', 'Allow overlapping timeslots (multiple attendees)')"
+				:store="settingsStore">
+			<template #help>
+				{{ t('appointments', 'If the template contains overlapping timeslots, one booked appointment blocks only a single timeslot instance.') }}
+			</template>
+		</ComboCheckbox>
 		<NcButton
 				class="ps-vert-spacing"
 				:disabled="settings.tmmDstCalId==='-1' || templateInfoLoading===true"
