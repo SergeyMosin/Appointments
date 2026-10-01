@@ -401,47 +401,6 @@
 			elm.selectedIndex = t.dpuClickID
 			elm.value = elm.dataRef[t.dpuClickID].d
 
-			// const dur = elm.dataRef[t.dpuClickID].dur
-			// elm = document.getElementById('srgdev-ncfp_dur-cont')
-			//
-			// const hrStr = elm.getAttribute("data-tr-hr")
-			// const mnStr = elm.getAttribute("data-tr-mn")
-			// const makeHrMin = function (v) {
-			// 	let hrMinStr = ""
-			// 	const hours = (v / 60) | 0
-			// 	if (hours > 0) {
-			// 		hrMinStr += hours + hrStr + " "
-			// 	}
-			// 	const minutes = (v - hours * 60)
-			// 	return hrMinStr + (minutes > 0 ? (minutes + mnStr) : '')
-			// }
-			// if (dur === null || dur.length === 1) {
-			// 	elm.style.display = 'none'
-			// } else {
-			// 	const opts = elm.lastElementChild.children
-			// 	opts[0].textContent = makeHrMin(dur[0])
-			// 	for (let o, i = 1, hours = 0, minutes = 0, l = Math.max(opts.length, dur.length); i < l; i++) {
-			// 		if (i >= opts.length) {
-			// 			// create
-			// 			o = document.createElement('option')
-			// 			o.className = 'srgdev-ncfp-form-option'
-			// 			o.appendChild(document.createTextNode(''))
-			// 			elm.lastElementChild.appendChild(o)
-			// 		} else {
-			// 			o = opts[i]
-			// 			if (i >= dur.length) {
-			// 				o.style.display = 'none'
-			// 				continue
-			// 			}
-			// 		}
-			// 		o.style.display = 'block'
-			// 		o.value = i
-			// 		o.textContent = makeHrMin(dur[i])
-			// 	}
-			// 	elm.style.display = 'block'
-			// }
-			// elm.lastElementChild.value = 0
-
 			selClose(null)
 		}
 	}

@@ -93,17 +93,6 @@ const handlePreviewClick = () => {
 		</div>
 
 		<ComboCheckbox
-				prop-name="time2Cols"
-				:disabled="settings.endTime===true"
-				:indeterminate="settings.endTime===true"
-				:label="t('appointments', 'Show time in two columns')"
-				:store="settingsStore"/>
-		<ComboCheckbox
-				prop-name="endTime"
-				:label="t('appointments', 'Show end time')"
-				:store="settingsStore"/>
-
-		<ComboCheckbox
 				prop-name="hidePhone"
 				:label="t('appointments', 'Hide phone number field')"
 				:store="settingsStore"/>
