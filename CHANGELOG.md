@@ -1,3 +1,13 @@
+## v2.8.0 - 2026-10-01
+### Added
+- Add support for Nextcloud 35 - #690
+- Allow multiple attendees book the same timeslot - #54 
+### Changed
+- Remove duration selection dropdown (not compatible with overlapping time slots) - #186
+- Remove 'Show time in two columns' (force: false) and 'Show end time' (force: true) settings options (part of UI optimization)
+### Fixed
+- Add 'bypassVisibilityCheck' fallback (4 sec. delay) on Confirm/Cancel pages - #691
+
 ## v2.7.4 - 2026-06-17
 ### Added
 - Add support for Nextcloud 34 - #665
