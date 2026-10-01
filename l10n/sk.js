@@ -19,7 +19,7 @@ OC.L10N.register(
     "_Important: If not confirmed within %n hour, this appointment will be automatically cancelled._::_Important: If not confirmed within %n hours, this appointment will be automatically cancelled._" : ["Dôležité: Ak nie je potvrdené do %n hodiny, toto stretnutie sa automaticky zruší.","Dôležité: Ak nie je potvrdené do %n hodín, toto stretnutie sa automaticky zruší.","Dôležité: Ak nie je potvrdené do %n hodín, toto stretnutie sa automaticky zruší.","Dôležité: Ak nie je potvrdené do %n hodín, toto stretnutie sa automaticky zruší."],
     "%s appointment reminder" : "%s pripomienka stretnutia",
     "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please call %3$s." : "Toto je pripomenutie o %1$s vašom nadchádzajúcom stretnutí dňa %2$s. Ak potrebujete zmeniť termín, zavolajte na %3$s.",
-    "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please write to %3$s." : "Toto je pripomenutie od %1$s o vašom nadchádzajúcom stretnutí dňa %2$s. Ak potrebujete zmeniť termín, zavolajte na %3$s.",
+    "This is a reminder from %1$s about your upcoming appointment on %2$s. If you need to reschedule, please write to %3$s." : "Toto je pripomenutie od %1$s o vašom nadchádzajúcom stretnutí dňa %2$s. Ak potrebujete zmeniť termín, napíšte prosím na %3$s.",
     "Confirm" : "Potvrdiť",
     "Cancel" : "Zrušiť",
     "Reminder sent on %s" : "Pripomienka nastavená na %s",
