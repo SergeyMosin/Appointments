@@ -7,6 +7,7 @@ OC.L10N.register(
     "Cancel" : "Diddymu",
     "Appointments" : "Apwyntiadau",
     "Info" : "Info",
+    "Appointment" : "Apwyntiad",
     "Preview" : "Rhagolwg",
     "Settings" : "Gosodiadau",
     "Title" : "Teitl",

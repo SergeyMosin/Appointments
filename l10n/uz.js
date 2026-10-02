@@ -5,6 +5,7 @@ OC.L10N.register(
     "Confirm" : "Confirm",
     "Cancel" : "Bekor qilish",
     "Appointments" : "Uchrashuvlar",
+    "Appointment" : "Uchrashuv",
     "Preview" : "Ko‘rib chiqish",
     "Settings" : "Sozlamalar",
     "Title" : "Sarlavha",

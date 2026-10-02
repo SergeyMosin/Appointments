@@ -10,6 +10,7 @@ OC.L10N.register(
     "Appointments" : "Состаноци",
     "Action needed" : "Потребна е акција",
     "Info" : "Info",
+    "Appointment" : "Состанок",
     "Name is required." : "Потребно е име.",
     "Preview" : "Преглед",
     "Settings" : "Параметри",

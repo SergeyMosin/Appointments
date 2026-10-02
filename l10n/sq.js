@@ -135,8 +135,6 @@ OC.L10N.register(
     "Show Empty Days" : "Trego Ditët Bosh",
     "Start on current day instead of Monday" : "Fillo në ditën e sotme në vend të të Hënës",
     "Show Empty Weekends" : "Trego Fundjavat Bosh",
-    "Show time in two columns" : "Trego kohën në dy kolona",
-    "Show end time" : "Trego kohën e përfundimit.",
     "Hide phone number field" : "Mos shfaq fushën e numrit telefonik",
     "Add {taginfo} tag" : "Shto tag {taginfo}",
     "3 days" : "3 ditë ",

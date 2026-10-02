@@ -13,6 +13,7 @@ OC.L10N.register(
     "Thank you" : "Mercés",
     "Appointments" : "Rendetz-vos",
     "Info" : "Info",
+    "Appointment" : "Rendetz-vos",
     "Preview" : "Apercebut",
     "Settings" : "Paramètres",
     "Title" : "Títol",

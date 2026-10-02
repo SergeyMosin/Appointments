@@ -282,8 +282,6 @@ OC.L10N.register(
     "Show Empty Days" : "اظهر الأيام الفارغة",
     "Start on current day instead of Monday" : "ابدأ من اليوم الحالي بدلا من يوم الاثنين",
     "Show Empty Weekends" : "اظهر نهاية أيام الاسبوع الفارغة",
-    "Show time in two columns" : "اظهر الوقت في عمودين",
-    "Show end time" : "اظهر نهاية الوقت",
     "Hide phone number field" : "اخفاء حقل رقم الجوال",
     "Advanced Form Settings" : "إعدادات النموذج المتقدمة",
     "GDPR Compliance" : "الالتزام بـ اللائحة العامة لحماية البيانات GDPR",

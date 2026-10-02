@@ -42,6 +42,7 @@ OC.L10N.register(
     "Reminders" : "Recordatorios",
     "Advanced" : "Avanzado",
     "Edit" : "Editar",
+    "Discard" : "Descartar",
     "Back" : "Atrás",
     "Next" : "Siguiente",
     "min" : "min",
