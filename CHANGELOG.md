@@ -1,3 +1,7 @@
+## v2.8.2 - 2026-10-02
+### Changed
+- bump dependencies
+
 ## v2.8.1 - 2026-10-02
 ### Fixed
 - fix regression from v2.8.0 update (template migration not triggered) - #693
