@@ -1352,46 +1352,50 @@ class BackendUtils
 
         // TODO: this can eventually be removed
         if ($isParseOK && $this->settings[self::KEY_TMPL_DATA_SORTED] === false) {
-
-            $td = $this->settings[self::KEY_TMPL_DATA];
-
-            $l = count($td);
-            for ($i = 0; $i < $l; $i++) {
-                $day = $td[$i];
-                if (is_array($day) && !empty($day)) {
-                    $newDay = [];
-                    foreach ($day as $timeslot) {
-                        $durations = $timeslot['dur'];
-                        if (is_array($durations)) {
-                            $token = 't' . bin2hex(random_bytes(4));
-                            foreach ($durations as $duration) {
-                                $newDay[] = [
-                                    'start' => $timeslot['start'],
-                                    'end' => $timeslot['start'] + ($duration * 60),
-                                    'dur' => [$duration],
-                                    'title' => $timeslot['title'],
-                                    'tkn' => $token,
-                                ];
-                            }
-                        }
-                    }
-
-                    usort($newDay, function ($a, $b) {
-                        return ($a['start'] <=> $b['start']) ?: ($a['end'] <=> $b['end']);
-                    });
-
-                    $td[$i] = $newDay;
-                }
-            }
-
-            $this->settings[self::KEY_TMPL_DATA] = $td;
-            $this->settings[self::KEY_TMPL_DATA_SORTED] = true;
-
-            // this should save self::KEY_TMPL_DATA array as well
-            $this->setUserSettingsV2($userId, $pageId, self::KEY_TMPL_DATA_SORTED, true);
+            $this->migrateTemplate($userId, $pageId);
         }
 
         return $isParseOK;
+    }
+
+    private function migrateTemplate(string $userId, string $pageId):void
+    {
+        $td = $this->settings[self::KEY_TMPL_DATA];
+
+        $l = count($td);
+        for ($i = 0; $i < $l; $i++) {
+            $day = $td[$i];
+            if (is_array($day) && !empty($day)) {
+                $newDay = [];
+                foreach ($day as $timeslot) {
+                    $durations = $timeslot['dur'];
+                    if (is_array($durations)) {
+                        $token = 't' . bin2hex(random_bytes(4));
+                        foreach ($durations as $duration) {
+                            $newDay[] = [
+                                'start' => $timeslot['start'],
+                                'end' => $timeslot['start'] + ($duration * 60),
+                                'dur' => [$duration],
+                                'title' => $timeslot['title'],
+                                'tkn' => $token,
+                            ];
+                        }
+                    }
+                }
+
+                usort($newDay, function ($a, $b) {
+                    return ($a['start'] <=> $b['start']) ?: ($a['end'] <=> $b['end']);
+                });
+
+                $td[$i] = $newDay;
+            }
+        }
+
+        $this->settings[self::KEY_TMPL_DATA] = $td;
+        $this->settings[self::KEY_TMPL_DATA_SORTED] = true;
+
+        // this should save self::KEY_TMPL_DATA array as well
+        $this->setUserSettingsV2($userId, $pageId, self::KEY_TMPL_DATA_SORTED, true);
     }
 
     private function parseSettings(array $row, bool $isDir = false): bool
@@ -2051,6 +2055,11 @@ class BackendUtils
 
         if ($this->parseSettings($row) === false) {
             return [null, null];
+        }
+
+        // TODO: this can eventually be removed
+        if ($this->settings[self::KEY_TMPL_DATA_SORTED] === false) {
+            $this->migrateTemplate($userId, $pageId);
         }
 
         return [$userId, $pageId];
