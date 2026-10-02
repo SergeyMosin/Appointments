@@ -1,3 +1,8 @@
+## v2.8.1 - 2026-10-02
+### Fixed
+- fix regression from v2.8.0 update (template migration not triggered) - #693
+- fix(settings): crash when closing the Directory Page settings dialog
+
 ## v2.8.0 - 2026-10-01
 ### Added
 - Add support for Nextcloud 35 - #690
