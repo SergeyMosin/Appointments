@@ -753,6 +753,8 @@ function _apptGridMaker() {
 			}
 		}
 
+		const startTime = new Date()
+		startTime.setHours(SH_OFFSET, 0, 0)
 		const header = []
 		for (let ts = startDate.getTime(), i = 0; i < n; i++) {
 			header[i] = {
@@ -761,6 +763,7 @@ function _apptGridMaker() {
 				w: w,
 				n: '8',// Initial value for "add" input must be string
 				hasAppts: false,
+				startTime: startTime
 			}
 			ts = startDate.setDate(startDate.getDate() + 1)
 		}
@@ -770,6 +773,7 @@ function _apptGridMaker() {
 	return {
 		MODE_SIMPLE: MODE_SIMPLE,
 		MODE_TEMPLATE: MODE_TEMPLATE,
+		SH_OFFSET: SH_OFFSET,
 		setup: setup,
 		addAppt: addAppt,
 		cloneColumns: cloneColumns,
