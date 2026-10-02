@@ -13,6 +13,7 @@ OC.L10N.register(
     "Appointments" : "Уулзалтууд",
     "Action needed" : "Үйлдэл шаардлагатай",
     "Info" : "Info",
+    "Appointment" : "Уулзалт",
     "Name is required." : "Нэр шаардлагатай.",
     "Preview" : "шалгах",
     "Settings" : "Тохиргоо",

@@ -7,6 +7,7 @@ OC.L10N.register(
     "Appointments" : "Appointments",
     "Action needed" : "Action needed",
     "Info" : "Info",
+    "Appointment" : "Appointment",
     "Preview" : "Preview",
     "Settings" : "Settings",
     "Text" : "Text",
