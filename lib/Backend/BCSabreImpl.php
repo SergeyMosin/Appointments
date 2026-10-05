@@ -177,7 +177,8 @@ class BCSabreImpl implements IBackendConnector
         // '_'ts_mode(1byte)ses_time(4bytes)dates(8bytes)uri(no extension)
         $ses_info = '_1' . pack("L", time());
 
-        $showET = $settings[BackendUtils::PSN_END_TIME];
+//        $showET = $settings[BackendUtils::PSN_END_TIME];
+        $showET = true;
 
         $iter = $this->fastQuery(
             [$srcId],
@@ -481,7 +482,7 @@ class BCSabreImpl implements IBackendConnector
                     // if we are here than "overlaps" are allowed,
                     // and we have created this event/appointment
                     $invalidateSingle = true;
-                    if(isset($evt->{BackendUtils::X_TKN})) {
+                    if (isset($evt->{BackendUtils::X_TKN})) {
                         $token = $evt->{BackendUtils::X_TKN}->getValue();
                     }
                 }
@@ -763,7 +764,8 @@ class BCSabreImpl implements IBackendConnector
         $ses_start = time() . '|';
         $ret = '';
 
-        $showET = $this->utils->getUserSettings()[BackendUtils::PSN_END_TIME];
+//        $showET = $this->utils->getUserSettings()[BackendUtils::PSN_END_TIME];
+        $showET = true;
 
         $ts_pref = 'U';
 

@@ -1207,7 +1207,7 @@ class BackendUtils
             self::PSN_FNED => false, // start at first not empty day
             self::PSN_WEEKEND => false,
             self::PSN_TIME2 => false,
-            self::PSN_END_TIME => false,
+            self::PSN_END_TIME => true,
             self::PSN_HIDE_TEL => false,
             self::PSN_CNCF_DELAY => false,
             self::PSN_SHOW_TZ => false,
