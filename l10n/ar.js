@@ -76,6 +76,7 @@ OC.L10N.register(
     "Info" : "معلومات",
     "Link Expired …" : "الرابط منتهي الصلاحية …",
     "An email with additional details is on its way to you at %s" : "تفاصيل إضافية في طريقها إلى بريدك الإلكتروني على %s",
+    "Appointment" : "موعد",
     "Almost done …" : "على وشك الانتهاء …",
     "We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request" : "تمّ ارسال بريد إلى %s. يرجى الاطلاع عليه و الضغط على رابط التأكيد لتأكيد حجز الموعد.",
     "Human verification failed" : "فشل التحقق البشري",
