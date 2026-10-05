@@ -1,3 +1,9 @@
+## v2.8.3 - 2026-10-05
+### Fixed
+- fix: regression from 'Show end time' option removal (ensure backend sends the 'end time' in External Mode) - #695
+### Added
+- show 'template_data_sorted' status in the settings dump
+
 ## v2.8.2 - 2026-10-02
 ### Changed
 - bump dependencies
