@@ -98,6 +98,7 @@ export const useSettingsStore = defineStore('settings', {
 				tzData: ''
 			},
 			template_allow_overlap: false,
+			template_data_sorted: false,
 			fi_html: '',
 			fi_json: [],
 
