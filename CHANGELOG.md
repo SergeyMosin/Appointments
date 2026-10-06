@@ -1,3 +1,7 @@
+## v2.8.4 - 2026-10-06
+### Fixed
+- fix: title length validation - #698
+
 ## v2.8.3 - 2026-10-05
 ### Fixed
 - fix: regression from 'Show end time' option removal (ensure backend sends the 'end time' in External Mode) - #695
