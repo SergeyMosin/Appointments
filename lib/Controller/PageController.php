@@ -920,7 +920,12 @@ class PageController extends Controller
             $post['phone'] = "1234567890";
         }
 
-        if (!isset($post['adatetime']) || strlen($post['adatetime']) > 127
+        // Ref: https://github.com/SergeyMosin/Appointments/issues/698
+        // TODO: Only encrypt title hash and send title plain text ???
+        // TODO: better error logging
+        $maxPayloadLen = $settings[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_TEMPLATE ? 512 : 127;
+
+        if (!isset($post['adatetime']) || strlen($post['adatetime']) > $maxPayloadLen
             || preg_match('/[^a-zA-Z0-9+\/=]/', $post['adatetime'])
 
             || !isset($post['appt_dur']) || strlen($post['appt_dur']) !== 1
