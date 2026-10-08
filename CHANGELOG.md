@@ -1,3 +1,7 @@
+## v2.8.5 - 2026-10-08
+### Fixed
+- regression: do not call template migration for Dir Pages (settings corruption) - #702
+
 ## v2.8.4 - 2026-10-06
 ### Fixed
 - fix: title length validation - #698
