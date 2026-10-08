@@ -52,7 +52,7 @@ OC.L10N.register(
     "Appointment is canceled" : "Stretnutie je zrušené",
     "%s Appointment" : "%s Stretnutie",
     "Password: %s" : "Heslo: %s",
-    "Click %1$shere%2$s to change your appointment type to %3$s." : "Kliknikte %1$s tu %2$s pre zmenu typu stretnutia na %3$s.",
+    "Click %1$shere%2$s to change your appointment type to %3$s." : "Kliknite %1$s sem %2$s pre zmenu typu stretnutia na %3$s.",
     "Click here: %1$s to change your appointment type to %2$s." : "Kliknite sem: %1$s pre zmenu typu vášho stretnutia na %2$s.",
     "Meeting type: Online (audio/video)" : "Typ stretnutia: Online (audio/video)",
     "Meeting type: In-person" : "Typ stretnutia: Osobné",
