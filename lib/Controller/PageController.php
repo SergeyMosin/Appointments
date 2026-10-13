@@ -1706,7 +1706,9 @@ class PageController extends Controller
             $res = $client->post('https://api.hcaptcha.com/siteverify', [
                     'form_params' => [
                         'response' => $post['h-captcha-response'],
-                        'secret' => $this->utils->decrypt(substr($settings[BackendUtils::SEC_HCAP_SECRET], 8), $this->utils->getLocalHash()),
+                        'secret' => str_starts_with($settings[BackendUtils::SEC_HCAP_SECRET], '::hsh2::')
+                            ? $this->utils->decrypt(substr($settings[BackendUtils::SEC_HCAP_SECRET], 8), $this->utils->getLocalHash())
+                            : $this->utils->decrypt_CFB(substr($settings[BackendUtils::SEC_HCAP_SECRET], 8), $this->utils->getLocalHash()),
                         'sitekey' => $settings[BackendUtils::SEC_HCAP_SITE_KEY]
                     ]]
             );

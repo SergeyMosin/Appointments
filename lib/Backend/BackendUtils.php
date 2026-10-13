@@ -36,7 +36,8 @@ class BackendUtils
     //   WARNING: most of constants are used in V2 migration
     //   ******** DO NOT CHANGE/DELETE (yet) ********
     // #################################################################
-    const CIPHER = "AES-128-CFB";
+    const CIPHER = "AES-128-GCM";
+    const CIPHER_TAG_LEN = 16;
     const HASH_TABLE_NAME = "appointments_hash";
     const PREF_TABLE_NAME = "appointments_pref";
     const PREF_TABLE_V2_NAME = "appointments_pref_v2";
@@ -1358,7 +1359,7 @@ class BackendUtils
         return $isParseOK;
     }
 
-    private function migrateTemplate(string $userId, string $pageId):void
+    private function migrateTemplate(string $userId, string $pageId): void
     {
         $td = $this->settings[self::KEY_TMPL_DATA];
 
@@ -1621,11 +1622,14 @@ class BackendUtils
         if ($key === self::KEY_REMINDERS) {
             return $this->setUserReminders($userId, $pageId, $value);
         } elseif ($key === self::SEC_HCAP_SECRET && !empty($value)) {
-            if (str_starts_with($value, '::hash::')) {
+            if (str_starts_with($value, '::hsh2::') // new GCM
+                || str_starts_with($value, '::hash::') // old CFB
+            ) {
                 // already hashed
                 return [200, ''];
             }
-            $value = '::hash::' . $this->encrypt($value, $this->getLocalHash());
+//            $value = '::hash::' . $this->encrypt($value, $this->getLocalHash());
+            $value = '::hsh2::' . $this->encrypt($value, $this->getLocalHash());
         }
 
         $settings = $this->settings;
@@ -1971,6 +1975,45 @@ class BackendUtils
         return $date_time;
     }
 
+    function encrypt_CFB(string $data, string $key, string $iv = ''): string
+    {
+        if ($iv === '') {
+            $iv = $_iv = openssl_random_pseudo_bytes(
+                openssl_cipher_iv_length('AES-128-CFB'));
+        } else {
+            $_iv = '';
+        }
+        $ciphertext_raw = openssl_encrypt(
+            $data,
+            'AES-128-CFB',
+            $key,
+            OPENSSL_RAW_DATA,
+            $iv);
+
+        return $_iv !== ''
+            ? base64_encode($_iv . $ciphertext_raw)
+            : $_iv . $ciphertext_raw;
+    }
+
+    function decrypt_CFB(string $data, string $key, string $iv = ''): string
+    {
+        $s1 = $iv === '' ? base64_decode($data) : $data;
+        if ($s1 === false || empty($key)) {
+            return '';
+        }
+
+        $s1 = $iv . $s1;
+
+        $ivlen = openssl_cipher_iv_length('AES-128-CFB');
+        $t = openssl_decrypt(
+            substr($s1, $ivlen),
+            'AES-128-CFB',
+            $key,
+            OPENSSL_RAW_DATA,
+            substr($s1, 0, $ivlen));
+        return $t === false ? '' : $t;
+    }
+
     function encrypt(string $data, string $key, string $iv = ''): string
     {
         if ($iv === '') {
@@ -1984,11 +2027,15 @@ class BackendUtils
             self::CIPHER,
             $key,
             OPENSSL_RAW_DATA,
-            $iv);
+            $iv,
+            $tag,
+            '',
+            self::CIPHER_TAG_LEN
+        );
 
         return $_iv !== ''
-            ? base64_encode($_iv . $ciphertext_raw)
-            : $_iv . $ciphertext_raw;
+            ? base64_encode($_iv . $tag . $ciphertext_raw)
+            : $_iv . $tag . $ciphertext_raw;
     }
 
     function decrypt(string $data, string $key, string $iv = ''): string
@@ -2001,12 +2048,19 @@ class BackendUtils
         $s1 = $iv . $s1;
 
         $ivlen = openssl_cipher_iv_length(self::CIPHER);
+
+        $metaLen=$ivlen + self::CIPHER_TAG_LEN;
+        if(strlen($s1) <= $metaLen) {
+            return '';
+        }
+
         $t = openssl_decrypt(
-            substr($s1, $ivlen),
+            substr($s1, $metaLen),
             self::CIPHER,
             $key,
             OPENSSL_RAW_DATA,
-            substr($s1, 0, $ivlen));
+            substr($s1, 0, $ivlen),
+            substr($s1, $ivlen, self::CIPHER_TAG_LEN));
         return $t === false ? '' : $t;
     }
 
