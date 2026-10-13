@@ -1569,6 +1569,16 @@ class DavListener implements IEventListener
     private function extNotify(array $data, string $userId, string $filePath)
     {
 
+        // Security Warning (Credit: Jahn Kohlhas): Any appconfig-write primitive anywhere in the instance (e.g., a SQL injection in any app) is thereby promoted to PHP code execution.
+        // The include_once $filePath; statement by itself is not vulnerable, but if there is an exploit in some other app or part of the system, this route can potentially be used by malicious attackers.
+        // Use at your own risk.
+        // TODO: Use Nextcloud Flow: https://docs.nextcloud.com/server/stable/developer_manual/digging_deeper/flow.html | OCP\WorkflowEngine\IManager for this
+
+        // --- Remove this block to allow extensions ----
+        $this->logger->warning('notificationEventListener is disabled as of v2.8.x, manual code edit required in DavListener.php to enable');
+        return;
+        // -----------------------------------------------
+
         if ($filePath !== "") {
 
             include_once $filePath;
