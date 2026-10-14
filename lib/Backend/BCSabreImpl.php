@@ -405,7 +405,12 @@ class BCSabreImpl implements IBackendConnector
             $lastEnd = $e_ts;
             $lastTitle = $title;
 
-            $encData = $ses_start . $slotData['tkn'] . $sep . $s_ts . $sep . $e_ts . $sep . $title;
+            $titleHash = '';
+            if ($title !== '') {
+                $titleHash = substr(hash('sha256', $slotData['tkn'] . $title, true),0,24);
+            }
+
+            $encData = $ses_start . $slotData['tkn'] . $sep . $s_ts . $sep . $e_ts . $sep . $titleHash;
             $out .= 'T' . $s_ts . ":" . ($e_ts - $s_ts) . ":" . $this->utils->encrypt($encData, $key) . ":_" . $title . ',';
         }
 

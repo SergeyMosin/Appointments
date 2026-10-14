@@ -167,6 +167,7 @@
 		} else {
 			tzi = el.dataRef[sdx].tzi
 		}
+		const title = el.dataRef[sdx].t
 
 		el = document.getElementById("srgdev-ncfp_talk_type")
 		if (el !== null) {
@@ -224,7 +225,6 @@
 			}
 		}
 
-
 		el = document.getElementById('appt_gdpr_id')
 		if (el !== null && el.checked === false) {
 			el.setAttribute("err", "err")
@@ -244,6 +244,14 @@
 		el.name = "tzi"
 		el.value = tzi
 		this.appendChild(el)
+
+		if (title) {
+			el = document.createElement("input")
+			el.type = "hidden"
+			el.name = "title"
+			el.value = title
+			this.appendChild(el)
+		}
 	}
 
 	function selClose(elm) {
@@ -396,10 +404,20 @@
 		}
 
 		if (t.dpuClickID !== undefined) {
-			document.getElementById('srgdev-ncfp_sel-dummy').value = t.parentElement.getAttribute('data-dm') + ' - ' + t.timeAt;
-			let elm = document.getElementById('srgdev-ncfp_sel-hidden')
-			elm.selectedIndex = t.dpuClickID
-			elm.value = elm.dataRef[t.dpuClickID].d
+
+			const dummyElm = document.getElementById('srgdev-ncfp_sel-dummy')
+			dummyElm.value = t.parentElement.getAttribute('data-dm') + ' - ' + t.timeAt;
+			const elm = document.getElementById('srgdev-ncfp_sel-hidden')
+
+			const idx = t.dpuClickID
+			elm.selectedIndex = idx
+			const ref = elm.dataRef[idx]
+			elm.value = ref.d
+			if (ref.t) {
+				dummyElm.setAttribute('title', ref.t)
+			} else {
+				dummyElm.removeAttribute('title')
+			}
 
 			selClose(null)
 		}

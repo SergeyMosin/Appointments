@@ -29,7 +29,7 @@ use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Controller;
 use OCP\IURLGenerator;
 use OCP\IUserSession;
-use OCP\Mail\IMailer;
+use OCP\Mail\IEmailValidator;
 use OCP\Util;
 use Psr\Log\LoggerInterface;
 
@@ -43,29 +43,28 @@ class PageController extends Controller
     private string|null $userId;
     private IAppConfig $appConfig;
     private IUserConfig $userConfig;
-    private IMailer $mailer;
     private IL10N $l;
     private IBackendConnector $bc;
     private BackendUtils $utils;
     private LoggerInterface $logger;
     private IUserSession $userSession;
     private IURLGenerator $urlGenerator;
+    private IEmailValidator $emailValidator;
 
     public function __construct(IRequest        $request,
                                 IAppConfig      $config,
                                 IUserConfig     $userConfig,
-                                IMailer         $mailer,
                                 IL10N           $l,
                                 IUserSession    $userSession,
                                 BackendManager  $backendManager,
                                 BackendUtils    $utils,
                                 IURLGenerator   $urlGenerator,
-                                LoggerInterface $logger
+                                LoggerInterface $logger,
+                                IEmailValidator $emailValidator
     ) {
         parent::__construct(Application::APP_ID, $request);
         $this->appConfig = $config;
         $this->userConfig = $userConfig;
-        $this->mailer = $mailer;
         $this->l = $l;
         $this->userSession = $userSession;
         /** @noinspection PhpUnhandledExceptionInspection */
@@ -74,6 +73,7 @@ class PageController extends Controller
         $this->urlGenerator = $urlGenerator;
         $this->logger = $logger;
         $this->userId = $this->userSession->getUser()?->getUID();
+        $this->emailValidator = $emailValidator;
     }
 
     /**
@@ -593,7 +593,7 @@ class PageController extends Controller
                     $ts = unpack('Lint', substr($uri, 0, 4))['int'];
                     if ($ts + 8 >= time()) {
                         $em = substr($uri, 4, $sp);
-                        if ($this->mailer->validateMailAddress($em)) {
+                        if ($this->emailValidator->isValid($em)) {
                             // form is ok and skip evs is active
                             $uri = substr($uri, $sp + 1 + 4);
                             $skip_evs_email = $em;
@@ -941,11 +941,14 @@ class PageController extends Controller
 
             || !isset($post['email']) || strlen($post['email']) > 128
             || strlen($post['email']) < 4
-            || $this->mailer->validateMailAddress($post['email']) === false
+            || $this->emailValidator->isValid($post['email']) === false
 
             || !isset($post['tzi']) || strlen($post['tzi']) > 64
-            || preg_match('/^[UFT][^\pC ]*$/u', $post['tzi']) !== 1) {
+            || preg_match('/^[UFT][^\pC ]*$/u', $post['tzi']) !== 1
 
+            || (isset($post['title']) && (strlen($post['title']) > 256
+                    || preg_match('/[^\PC ]/u', $post['title'])))
+        ) {
             return new RedirectResponse($bad_input_url);
         }
 
@@ -1024,7 +1027,7 @@ class PageController extends Controller
         $dcs = substr($dc, 0, 2);
         if ($dcs === "_2") {
             // template mode
-            // $dc = '_2'.ses_time. $sep. $token . $sep . $s_ts . $sep . $e_ts . $sep . $title;
+            // $dc = '_2'.ses_time. $sep. $token . $sep . $s_ts . $sep . $e_ts . $sep . $titleHash;
             $dcParts = explode("\x1f", substr($dc, 2), 5);
             if (count($dcParts) !== 5) {
                 return new RedirectResponse($bad_input_url);
@@ -1034,7 +1037,15 @@ class PageController extends Controller
             $post['tmpl_token'] = $dcParts[1];
             $post['tmpl_start_ts'] = $dcParts[2];
             $post['tmpl_end_ts'] = $dcParts[3];
-            $post['tmpl_title'] = $dcParts[4] ?: $this->l->t('Appointment');
+
+            if ($post['title'] &&
+                substr(hash('sha256', $dcParts[1] . $post['title'], true), 0, 24) === $dcParts[4]
+            ) {
+                $post['tmpl_title'] = str_replace(["\r", "\n"], '', $post['title']);
+            } else {
+                $post['tmpl_title'] = $this->l->t('Appointment');
+            }
+            $post['title'] = '';
 
             // make new uri, it is needed for email, buttons, etc...
             $o = strtoupper(hash("tiger128,4", $dc . "appointments app - srgdev.com" . $userId . rand() . $cal_id . $pageId));
@@ -1152,7 +1163,7 @@ class PageController extends Controller
         // Validation by input type
         switch ($type) {
             case 'email':
-                if (!is_string($rawValue) || $this->mailer->validateMailAddress($rawValue) === false) {
+                if (!is_string($rawValue) || $this->emailValidator->isValid($rawValue) === false) {
                     return false;
                 }
                 if (isset($field['maxlength']) && strlen($rawValue) > (int)$field['maxlength']) {
@@ -1263,7 +1274,7 @@ class PageController extends Controller
                 $ts = unpack('Lint', substr($dd, 0, 4))['int'];
                 $em = substr($dd, 4);
                 if ($ts + 8 >= time()) {
-                    if ($this->mailer->validateMailAddress($em)) {
+                    if ($this->emailValidator->isValid($em)) {
                         $tmpl = 'public/thanks';
                         $param['appt_c_msg'] = $this->l->t("We have sent an email to %s, please open it and click on the confirmation link to finalize your appointment request", [$em]);
                         $param['appt_c_more'] = $settings[BackendUtils::PSN_FORM_FINISH_TEXT];
