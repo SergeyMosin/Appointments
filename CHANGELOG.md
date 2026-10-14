@@ -1,3 +1,12 @@
+## v2.8.6 - 2026-10-13
+### Fixed
+- Security improvements ( Thank you Jahn Kohlhas ):
+  - use GCM encryption mode (instead of CFB)
+  - disable extensions via hardcoded return in extNotify (must be manually enabled as per info in DavListener.php in addition to 'php occ ...' config)
+  - ensure timeslot lock is released on event create errors
+### Changed
+- improve performance and security for appointments with long titles - #698
+
 ## v2.8.5 - 2026-10-08
 ### Fixed
 - regression: do not call template migration for Dir Pages (settings corruption) - #702
