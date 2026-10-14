@@ -407,7 +407,7 @@ class BCSabreImpl implements IBackendConnector
 
             $titleHash = '';
             if ($title !== '') {
-                $titleHash = substr(hash('sha256', $slotData['tkn'] . $title, true),0,24);
+                $titleHash = substr(hash('sha256', $slotData['tkn'] . $title, true), 0, 24);
             }
 
             $encData = $ses_start . $slotData['tkn'] . $sep . $s_ts . $sep . $e_ts . $sep . $titleHash;
@@ -917,7 +917,7 @@ class BCSabreImpl implements IBackendConnector
     {
         try {
             $this->backend->createCalendarObject($calId, $uri, $data);
-        } catch (BadRequest $e) {
+        } catch (\Throwable $e) {
             $this->logger->error($e);
             return false;
         }
@@ -1173,37 +1173,45 @@ class BCSabreImpl implements IBackendConnector
 
             if ($ts_mode !== BackendUtils::CLS_TS_MODE_SIMPLE) {
                 // for external and template modes we need to re-check the time range and update the lock_uid to "real" uid or delete the lock_uid if the time range is "taken"
-
-                if ($ts_mode === BackendUtils::CLS_TS_MODE_EXTERNAL) {
-                    $trc = $this->checkRangeTR($info['ext_start'], $info['ext_end'], $calId, $utz, $settings);
-                } else {
-                    // template mode
-                    $dt->setTimestamp($start_ts);
-                    $dt_end = clone($dt);
-                    $dt_end->setTimestamp($end_ts);
-                    $trc = $this->checkRangeTemplate($settings, $dt, $dt_end, $userId);
-                }
-                if ($trc === 0) {
-                    // the time range is good, create new object...
-                    if ($this->createObject($calId, $uri, $d) !== false) {
-                        // new object OK, set real uid hash
-                        $query = $this->db->getQueryBuilder();
-                        $query->insert(BackendUtils::HASH_TABLE_NAME)
-                            ->values([
-                                'uid' => $query->createNamedParameter($uid),
-                                'hash' => $query->createNamedParameter('99999999.0000000000000000000000'),
-                                'user_id' => $query->createNamedParameter($userId),
-                                'start' => $query->createNamedParameter($start_ts)
-                            ])->executeStatement();
+                try {
+                    if ($ts_mode === BackendUtils::CLS_TS_MODE_EXTERNAL) {
+                        $trc = $this->checkRangeTR($info['ext_start'], $info['ext_end'], $calId, $utz, $settings);
                     } else {
-                        $err = "Can not create object - mode: " . $ts_mode . ", cal: " . $calId . ", uri: " . $uri;
-                        $ec = 6;
+                        // template mode
+                        $dt->setTimestamp($start_ts);
+                        $dt_end = clone($dt);
+                        $dt_end->setTimestamp($end_ts);
+                        $trc = $this->checkRangeTemplate($settings, $dt, $dt_end, $userId);
                     }
+                    if ($trc === 0) {
+                        // the time range is good, create new object...
+                        if ($this->createObject($calId, $uri, $d) !== false) {
+                            // new object OK, set real uid hash
+                            $query = $this->db->getQueryBuilder();
+                            $query->insert(BackendUtils::HASH_TABLE_NAME)
+                                ->values([
+                                    'uid' => $query->createNamedParameter($uid),
+                                    'hash' => $query->createNamedParameter('99999999.0000000000000000000000'),
+                                    'user_id' => $query->createNamedParameter($userId),
+                                    'start' => $query->createNamedParameter($start_ts)
+                                ])->executeStatement();
+                        } else {
+                            $err = "Can not create object - mode: " . $ts_mode . ", cal: " . $calId . ", uri: " . $uri;
+                            $ec = 6;
+                        }
 
-                } else {
-                    // spot busy or error occurred
-                    $this->logger->warning("BusySpot/error detected in setAttendee func, mode: " . $ts_mode . ", trc_code: " . $trc);
-                    $ec = 1;
+                    } else {
+                        // spot busy or error occurred
+                        $this->logger->warning("BusySpot/error detected in setAttendee func, mode: " . $ts_mode . ", trc_code: " . $trc);
+                        $ec = 1;
+                    }
+                } catch (\Throwable $e) {
+                    $this->logger->error($e->getMessage(), [
+                        'app' => Application::APP_ID,
+                        'exception' => $e
+                    ]);
+                    $err = "Exception while creating object: - mode: " . $ts_mode . ", cal: " . $calId . ", uri: " . $uri;
+                    $ec = 9;
                 }
 
                 // "release" the "lock"
