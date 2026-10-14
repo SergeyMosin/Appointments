@@ -188,6 +188,7 @@
     "Time Slot Settings" : "Настройки временного интервала",
     "Minimum lead time" : "Минимальное время выполнения",
     "Include all day events in conflict check" : "Включает конфликтующие дневные мероприятия.",
+    "Before" : "До",
     "After" : "После",
     "Source Calendar (Free Slots)" : "Исходный календарь (свободные временные интервалы)",
     "Any event with \"Show As\" (a.k.a. \"Time As\" a.k.a. \"Free/Busy\" a.k.a. \"Time Transparency\") set to \"Free\" will be available for booking in the public form. Most recurrence rules are supported." : "Любое мероприятие, для которого в параметре «Показывать как» (также известном как «Время как», также известно как «Свободно/Занято», также известно как «Прозрачность времени») установлено значение «Свободно», будет доступно для бронирования в публичной форме. Поддерживается большинство правил повторения.",
