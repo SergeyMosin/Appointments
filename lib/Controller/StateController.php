@@ -396,6 +396,14 @@ class StateController extends Controller
     {
         return match ($prop) {
 
+            BackendUtils::CLS_SLOT_START_TIME => function ($value, $pageId, $key): array {
+                if (!is_string($value) || !preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $value)) {
+                    return [Http::STATUS_BAD_REQUEST, ''];
+                }
+                $minutes = (int)substr($value, 3, 2);
+                return $minutes % 5 === 0 ? [Http::STATUS_OK, ''] : [Http::STATUS_BAD_REQUEST, ''];
+            },
+
             BackendUtils::PAGE_ENABLED => function ($value, $pageId, $key): array {
                 if ($value === false) {
                     return [Http::STATUS_OK, ''];

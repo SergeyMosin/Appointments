@@ -125,6 +125,7 @@ class BackendUtils
     public const CLS_TITLE_TEMPLATE = 'titleTemplate';
     public const CLS_PRIVATE_PAGE = 'privatePage';
     public const CLS_TS_MODE = 'tsMode';
+    public const CLS_SLOT_START_TIME = 'slotStartTime';
     // values for tsMode
     public const CLS_TS_MODE_SIMPLE = '0';
     public const CLS_TS_MODE_EXTERNAL = '1';
@@ -1188,6 +1189,7 @@ class BackendUtils
 
             self::CLS_PRIVATE_PAGE => false,
             self::CLS_TS_MODE => self::CLS_TS_MODE_TEMPLATE,
+            self::CLS_SLOT_START_TIME => '08:00',
 
             self::EML_ICS => false,
             self::EML_SKIP_EVS => false,
@@ -2347,4 +2349,3 @@ class BackendUtils
         return !isset($dh[8]) && $dh === hash('adler32', $pd, false);
     }
 }
-
