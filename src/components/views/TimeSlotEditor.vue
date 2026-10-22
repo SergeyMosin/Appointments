@@ -58,6 +58,7 @@ const gridShift = window.firstDay === 0 ? 1 : window.firstDay === 6 ? 2 : 0
 
 gridMaker.resetAllColumns()
 gridMaker.setMode(gridMode)
+gridMaker.setStartTime(settings.slotStartTime)
 
 const getStartDate = () => {
 	if (gridMode === gridMaker.MODE_TEMPLATE) {
@@ -355,4 +356,3 @@ const gridApptsCopy = (index) => {
 	line-height: normal;
 }
 </style>
-
