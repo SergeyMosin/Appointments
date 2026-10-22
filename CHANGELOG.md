@@ -1,3 +1,7 @@
+## v2.8.7 - 2026-10-21
+### Fixed
+- migration/activation error on NC v35 - #706
+
 ## v2.8.6 - 2026-10-13
 ### Fixed
 - Security improvements ( Thank you Jahn Kohlhas ):
