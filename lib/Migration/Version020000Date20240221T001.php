@@ -8,6 +8,7 @@ namespace OCA\Appointments\Migration;
 use OCA\Appointments\AppInfo\Application;
 use OCA\Appointments\Backend\BackendUtils;
 use OCP\DB\ISchemaWrapper;
+use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
 use OCP\Migration\SimpleMigrationStep;
@@ -322,7 +323,7 @@ class Version020000Date20240221T001 extends SimpleMigrationStep
 
     private function getTokenV1($userId, $pageId): string
     {
-        $config = \OC::$server->getConfig();
+        $config = \OC::$server->get(IConfig::class);
         $key = hex2bin($config->getAppValue(Application::APP_ID, 'hk'));
         $iv = hex2bin($config->getAppValue(Application::APP_ID, 'tiv'));
         if (empty($key) || empty($iv)) {
