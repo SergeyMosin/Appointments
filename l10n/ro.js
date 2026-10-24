@@ -40,6 +40,7 @@ OC.L10N.register(
     "Icon" : "Pictogramă",
     "Min" : "Min",
     "External" : "Extern",
+    "Simple" : "Simplu",
     "15 minutes" : "15 minute",
     "30 minutes" : "30 de minute",
     "1 hour" : "1 oră",
