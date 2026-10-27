@@ -135,6 +135,7 @@ OC.L10N.register(
     "Guest password" : "Viesa parole",
     "Add 'Meeting Type' form field" : "Pievienot 'Tikšanās veids' formas lauku",
     "Min" : "Min",
+    "External" : "Ārējs",
     "15 minutes" : "15 minūtes",
     "30 minutes" : "30 minūtes",
     "1 hour" : "1 stunda",

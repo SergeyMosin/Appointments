@@ -95,6 +95,7 @@ OC.L10N.register(
     "Date & Time" : "Дата і час",
     "Select Date & Time" : "Выберыце дату і час",
     "Back" : "Назад",
+    "Next" : "Далей",
     "Duration" : "Працягласць",
     "Full Name" : "Поўнае імя",
     "Enter full name" : "Увядзіце поўнае імя",

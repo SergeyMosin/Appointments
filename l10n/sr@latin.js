@@ -6,6 +6,7 @@ OC.L10N.register(
     "Preview" : "Pregled",
     "Settings" : "Поставке",
     "Title" : "Naslov",
+    "Text" : "Tekst",
     "URL" : "Url",
     "Save" : "Sačuvaj",
     "Copy" : "Kopiraj",
@@ -16,6 +17,7 @@ OC.L10N.register(
     "1 Hour" : "1 sat",
     "2 Hours" : "2 sata",
     "12 Hours" : "12 sati",
+    "External" : "Spoljno",
     "15 minutes" : "15 minuta",
     "30 minutes" : "30 minuta",
     "1 hour" : "1 sat",
@@ -25,8 +27,11 @@ OC.L10N.register(
     "Deleted" : "Obrisano",
     "Not set" : "Nije postavljeno",
     "Warning" : "Upozorenje",
+    "Advanced" : "Napredno",
     "Edit" : "Izmeni",
+    "Discard" : "Odbaci",
     "Back" : "Nazad",
+    "Next" : "Sledeće",
     "Email" : "email"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");
