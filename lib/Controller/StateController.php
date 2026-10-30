@@ -241,9 +241,11 @@ class StateController extends Controller
 
                         // filter out cancellation reminders
                         foreach ($settings[BackendUtils::KEY_REMINDERS][BackendUtils::REMINDER_DATA] as $index => $remData) {
-                            $remType = $remData[BackendUtils::REMINDER_DATA_TYPE] ?? BackendUtils::REMINDER_TYPE_APPT;
-                            if ($remType !== BackendUtils::REMINDER_TYPE_APPT) {
-                                unset($settings[BackendUtils::KEY_REMINDERS][BackendUtils::REMINDER_DATA][$index]);
+                            $remType = $remData[BackendUtils::REMINDER_DATA_TYPE];
+                            if ($remType !== BackendUtils::REMINDER_TYPE_APPT || $index > 2) {
+                                unset(
+                                    $settings[BackendUtils::KEY_REMINDERS][BackendUtils::REMINDER_DATA][$index]
+                                );
                             }
                         }
 
@@ -589,7 +591,7 @@ class StateController extends Controller
 
                 $validDataCount = 0;
                 foreach ($valid[BackendUtils::REMINDER_DATA] as $v) {
-                    $remType = $v[BackendUtils::REMINDER_DATA_TYPE] ?? BackendUtils::REMINDER_TYPE_APPT;
+                    $remType = $v[BackendUtils::REMINDER_DATA_TYPE];
                     if ($remType === BackendUtils::REMINDER_TYPE_APPT) {
                         $validDataCount++;
                     }
@@ -723,14 +725,22 @@ class StateController extends Controller
                 }
 
                 // internal representation
+
+                $valid = $this->utils->getDefaultSettingsData()[BackendUtils::KEY_REMINDERS][BackendUtils::REMINDER_DATA];
+
                 $reminders = $settings[BackendUtils::KEY_REMINDERS];
 
-                $reminders[BackendUtils::REMINDER_DATA][3][BackendUtils::REMINDER_DATA_TIME] = (string)($cancelHours * 3600);
+                $cancelReminder = $valid[3];
+                $cancelReminder[BackendUtils::REMINDER_DATA_TIME] = (string)($cancelHours * 3600);
+                $reminders[BackendUtils::REMINDER_DATA][3] = $cancelReminder;
 
                 $notifyHours = $notifyBeforeCancel === true && $cancelHours > 0
                     ? ($cancelHours >= 4 ? 2 : 1)
                     : 0;
-                $reminders[BackendUtils::REMINDER_DATA][4][BackendUtils::REMINDER_DATA_TIME] = (string)($notifyHours * 3600);
+
+                $cancelNotifyReminder = $valid[4];
+                $cancelNotifyReminder[BackendUtils::REMINDER_DATA_TIME] = (string)($notifyHours * 3600);
+                $reminders[BackendUtils::REMINDER_DATA][4] = $cancelNotifyReminder;
 
                 return $this->utils->setUserSettingsV2($this->userId, $pageId, BackendUtils::KEY_REMINDERS, $reminders);
             },

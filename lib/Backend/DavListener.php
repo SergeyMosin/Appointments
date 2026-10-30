@@ -150,7 +150,12 @@ class DavListener implements IEventListener
                 }
 
                 $apptStatus = (int)$row['status'];
-                $remType = $remData[BackendUtils::REMINDER_DATA_TYPE] ?? BackendUtils::REMINDER_TYPE_APPT;
+                $remType = $remData[BackendUtils::REMINDER_DATA_TYPE] ?? 0;
+                if ($remType === 0) {
+                    // this should not happen
+                    $this->logger->error("undefined reminder type: " . $userId . ", pageId: " . $pageId);
+                    continue;
+                }
 
                 if ($apptStatus === BackendUtils::PREF_STATUS_CONFIRMED) {
                     if ($remType !== BackendUtils::REMINDER_TYPE_APPT) {
