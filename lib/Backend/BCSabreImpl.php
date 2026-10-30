@@ -303,21 +303,25 @@ class BCSabreImpl implements IBackendConnector
         $start_ts = $start->getTimestamp();
         $end_ts = $end->getTimestamp();
 
+        $dayStart = clone $start;
+        $dayStart->modify('today');
+        $dt_ts = $dayStart->getTimestamp();
+
         $ri = new RangeIndex();
         $ri->buildFromTemplate(
             $settings[BackendUtils::KEY_TMPL_DATA],
-            $start, $start_ts, $end_ts
+            clone $dayStart, $dt_ts, $end_ts
         );
 
         $queryConfig = [
-            'start' => $start->getTimestamp() - 86400, //24h
-            'end' => $end->getTimestamp() + 50400, //14h
+            'start' => $dt_ts - 86400, //24h
+            'end' => $end_ts + 50400, //14h
         ];
 
         $cals = $this->getCalsForConflictCheck($settings, $userId);
 
         $this->invalidateTimeslots(
-            $ri, $cals, $queryConfig, clone $start, $start_ts, $end_ts,
+            $ri, $cals, $queryConfig, clone $dayStart, $dt_ts, $end_ts,
         );
 
         return $ri->hasExactInterval($start_ts, $end_ts) ? 0 : 1;
