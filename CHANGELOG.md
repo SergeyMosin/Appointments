@@ -1,3 +1,10 @@
+## v2.8.8 - 2026-10-30
+### Fixed
+- ensure REMINDER_DATA stays intact - #707
+- allow overlap: booking fails (use day start in checkRangeTemplate) - #708
+### Changed
+- disable 'Preview Changes' button (for now)
+
 ## v2.8.7 - 2026-10-21
 ### Fixed
 - migration/activation error on NC v35 - #706
