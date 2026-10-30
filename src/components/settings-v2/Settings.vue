@@ -126,19 +126,19 @@ const handleCKey = () => {
 					</div>
 				</NcAppSettingsSection>
 				<template v-if="!settingsStore.loading[LOADING_ALL]">
-					<NcButton
-							class="preview-button"
-							:aria-label="t('appointments','Preview Changes')"
-							:readonly="readonly"
-							:disabled="pageUrl==='loading'"
-							@click="handleShowPreview"
-							type="tertiary-no-background">
-						<template #icon>
-							<NcLoadingIcon v-if="pageUrl==='loading'" :size="20"/>
-							<IconPreview v-else :size="20"/>
-						</template>
-						{{ t('appointments', 'Preview Changes') }}
-					</NcButton>
+<!--					<NcButton-->
+<!--							class="preview-button"-->
+<!--							:aria-label="t('appointments','Preview Changes')"-->
+<!--							:readonly="readonly"-->
+<!--							:disabled="pageUrl==='loading'"-->
+<!--							@click="handleShowPreview"-->
+<!--							type="tertiary-no-background">-->
+<!--						<template #icon>-->
+<!--							<NcLoadingIcon v-if="pageUrl==='loading'" :size="20"/>-->
+<!--							<IconPreview v-else :size="20"/>-->
+<!--						</template>-->
+<!--						{{ t('appointments', 'Preview Changes') }}-->
+<!--					</NcButton>-->
 
 					<template v-if="_isDir===false">
 						<NcAppSettingsSection
