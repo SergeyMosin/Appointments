@@ -60,6 +60,7 @@ export const useSettingsStore = defineStore('settings', {
 			titleTemplate: '',
 			privatePage: false,
 			tsMode: '2',
+			slotStartTime: '08:00',
 
 			icsFile: false,
 			skipEVS: false,

@@ -89,6 +89,7 @@ form{
         <strong id="srgdev-sec_icsmoretext"><code>Additional ICS file description</code></strong> - this text (no HTML please) will be appended to the end of the event's "DESCRIPTION" property.
     </p>
     <h2 class="srgdev-appt-hs-h1" id="srgdev-sec_ts_mode">Time slot mode</h2>
+    <p class="srgdev-appt-hs-p">In Time Slot Settings, set the start time for new time slots on each booking page. The default is 08:00. This also determines where the time slot editor opens; existing slots are not moved.</p>
     <p class="srgdev-appt-hs-p-h">
         <strong>Weekly Template</strong> - this mode allows you to set up a weekly template and it will be automatically repeated.
     </p>

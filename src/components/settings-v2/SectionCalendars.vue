@@ -62,6 +62,14 @@ const cancelationOptions = [
 	{label: t('appointments', 'Mark the appointment as canceled'), value: 'mark'},
 ]
 
+const handleStartTimeChange = (event) => {
+	if (!event.target.validity.valid) {
+		event.target.value = settings.slotStartTime
+		return
+	}
+	settingsStore.setOne('slotStartTime', event.target.value)
+}
+
 /**
  * @param {{prop:String,value:{value:String,label:String}}} data
  */
@@ -132,6 +140,21 @@ const handleSetCal = (data) => {
 			<template #accordionIcon>
 				<IconTimeslot :size="24"/>
 			</template>
+			<LabelAccordion
+					v-if="settings.tsMode!==TS_MODE.EXTERNAL"
+					:label="t('appointments', 'Start time for new time slots')"
+					for="ps-slot-start-time"/>
+			<input
+					v-if="settings.tsMode!==TS_MODE.EXTERNAL"
+					id="ps-slot-start-time"
+					class="ps-text-field ps-vert-spacing"
+					type="time"
+					min="00:00"
+					max="23:55"
+					step="300"
+					:disabled="settingsStore.loading.slotStartTime===true"
+					:value="settings.slotStartTime"
+					@change="handleStartTimeChange"/>
 			<ComboSelect
 					prop-name="prepTime"
 					default-value="0"
