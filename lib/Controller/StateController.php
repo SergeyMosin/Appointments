@@ -398,6 +398,16 @@ class StateController extends Controller
     {
         return match ($prop) {
 
+            BackendUtils::EML_ATT_CC => function ($value, $pageId, $key): array {
+                if (BackendUtils::parseCcList($value) === null) {
+                    return [Http::STATUS_ACCEPTED, json_encode([
+                        "type" => 3,
+                        "message" => $this->l->t("Enter up to %d valid email addresses, separated by commas.", [BackendUtils::EML_ATT_CC_MAX])
+                    ])];
+                }
+                return [Http::STATUS_OK, ''];
+            },
+
             BackendUtils::PAGE_ENABLED => function ($value, $pageId, $key): array {
                 if ($value === false) {
                     return [Http::STATUS_OK, ''];
