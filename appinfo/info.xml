@@ -49,4 +49,7 @@
     <background-jobs>
         <job>OCA\Appointments\Cron\Reminders</job>
     </background-jobs>
+    <settings>
+        <admin>OCA\Appointments\Settings\BrandingAdminSettings</admin>
+    </settings>
 </info>

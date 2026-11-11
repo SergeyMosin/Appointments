@@ -1,8 +1,8 @@
 <?php
 /** @noinspection PhpUndefinedVariableInspection */
-$apiBase = \OC::$server->getURLGenerator()->linkToRoute('appointments.admin.get_brands');
-$saveUrl = \OC::$server->getURLGenerator()->linkToRoute('appointments.admin.save_brand');
-$deleteUrl = \OC::$server->getURLGenerator()->linkToRoute('appointments.admin.delete_brand');
+$apiBase = \OCP\Server::get(\OCP\IURLGenerator::class)->linkToRoute('appointments.admin.get_brands');
+$saveUrl = \OCP\Server::get(\OCP\IURLGenerator::class)->linkToRoute('appointments.admin.save_brand');
+$deleteUrl = \OCP\Server::get(\OCP\IURLGenerator::class)->linkToRoute('appointments.admin.delete_brand');
 ?>
 <div id="appt-branding-admin" style="max-width:900px;padding:1em 0">
     <h2 style="font-size:1.3em;font-weight:600;margin-bottom:1em"><?php p($l->t('Appointments — Brand Settings')); ?></h2>
