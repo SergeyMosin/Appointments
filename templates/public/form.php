@@ -14,7 +14,7 @@ style('appointments', 'form');
 <style><?php echo $_['appt_brand']['customCss']; ?></style>
 <?php endif; ?>
 <?php if (!empty($_['appt_brand']['customJs'])): ?>
-<script><?php echo $_['appt_brand']['customJs']; ?></script>
+<script nonce="<?php p($_['cspNonce']); ?>"><?php echo $_['appt_brand']['customJs']; ?></script>
 <?php endif; ?>
 
 <div class="srgdev-ncfp-wrap">

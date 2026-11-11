@@ -75,7 +75,7 @@ $deleteUrl = \OCP\Server::get(\OCP\IURLGenerator::class)->linkToRoute('appointme
 #appt-branding-admin .button.primary{background:var(--color-primary);color:var(--color-primary-text);border-color:var(--color-primary)}
 </style>
 
-<script>
+<script nonce="<?php p($_['cspNonce']); ?>">
 (function () {
     const listEl = document.getElementById('appt-brand-list')
     const tpl = document.getElementById('appt-brand-tpl')

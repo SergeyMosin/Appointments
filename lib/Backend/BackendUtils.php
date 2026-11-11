@@ -2315,7 +2315,7 @@ class BackendUtils
         $brandStyle = '';
         if (!empty($brand)) {
             $brandCss = ':root{';
-            if (!empty($brand[self::BRAND_PRIMARY_COLOR])) {
+            if (!empty($brand[self::BRAND_PRIMARY_COLOR]) && preg_match('/^#[0-9a-fA-F]{6}$/', $brand[self::BRAND_PRIMARY_COLOR])) {
                 $color = htmlspecialchars($brand[self::BRAND_PRIMARY_COLOR], ENT_QUOTES);
                 $brandCss .= '--color-primary:' . $color . ';--color-primary-element:' . $color . ';--color-primary-element-light:' . $color . '33;';
             }

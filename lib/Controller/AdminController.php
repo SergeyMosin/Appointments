@@ -6,27 +6,47 @@ use OCA\Appointments\Backend\BackendUtils;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http;
+use OCP\IGroupManager;
 use OCP\IRequest;
+use OCP\IUserSession;
 
 class AdminController extends Controller
 {
 
     private BackendUtils $utils;
+    private IGroupManager $groupManager;
+    private IUserSession $userSession;
 
-    public function __construct(string       $AppName,
-                                IRequest     $request,
-                                BackendUtils $utils)
+    public function __construct(string        $AppName,
+                                IRequest      $request,
+                                BackendUtils  $utils,
+                                IGroupManager $groupManager,
+                                IUserSession  $userSession)
     {
         parent::__construct($AppName, $request);
         $this->utils = $utils;
+        $this->groupManager = $groupManager;
+        $this->userSession = $userSession;
     }
 
     /**
+     * Admins get the full brands; other users only id and name, which is all
+     * the page settings dropdown needs. Email templates and custom CSS/JS
+     * stay admin-only.
+     *
      * @NoAdminRequired
      */
     public function getBrands(): DataResponse
     {
-        return new DataResponse($this->utils->getBrands());
+        $brands = $this->utils->getBrands();
+        $user = $this->userSession->getUser();
+        if ($user === null || !$this->groupManager->isAdmin($user->getUID())) {
+            $brands = array_map(fn($b) => [
+                BackendUtils::BRAND_ID => $b[BackendUtils::BRAND_ID] ?? '',
+                BackendUtils::BRAND_NAME => $b[BackendUtils::BRAND_NAME] ?? '',
+            ], $brands);
+        }
+        return new DataResponse($brands);
     }
 
     public function saveBrand(): DataResponse
@@ -49,6 +69,16 @@ class AdminController extends Controller
             BackendUtils::BRAND_CUSTOM_CSS => $this->request->getParam('customCss', ''),
             BackendUtils::BRAND_CUSTOM_JS => $this->request->getParam('customJs', ''),
         ];
+
+        if ($brand[BackendUtils::BRAND_PRIMARY_COLOR] !== ''
+            && !preg_match('/^#[0-9a-fA-F]{6}$/', $brand[BackendUtils::BRAND_PRIMARY_COLOR])) {
+            return new DataResponse(['error' => 'Primary color must be #rrggbb'], Http::STATUS_BAD_REQUEST);
+        }
+        foreach ([BackendUtils::BRAND_LOGO_URL, BackendUtils::BRAND_FAVICON_URL, BackendUtils::BRAND_BG_IMAGE] as $k) {
+            if ($brand[$k] !== '' && !preg_match('#^(https?://|/)#i', $brand[$k])) {
+                return new DataResponse(['error' => $k . ' must be an http(s) URL or start with /'], Http::STATUS_BAD_REQUEST);
+            }
+        }
 
         $brands = $this->utils->getBrands();
         $found = false;
