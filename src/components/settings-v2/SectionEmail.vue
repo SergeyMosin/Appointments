@@ -49,6 +49,16 @@ const cancelPendingOptions = [
 				{{ t('appointments', 'An .ics attachment will automatically be generated for notification emails, allowing better integration with email/calendar apps that support it.') }}
 			</template>
 		</ComboCheckbox>
+		<ComboInput
+				class="ps-vert-spacing"
+				prop-name="attCc"
+				:placeholder="t('appointments', 'name@example.com, other@example.com')"
+				:label="t('appointments', 'Cc on attendee emails')"
+				:store="settingsStore">
+			<template #help>
+				{{ t('appointments', 'These addresses get a copy of every email sent to the attendee (booking, confirmation, cancellation). The attendee can see them. Separate multiple addresses with commas.') }}
+			</template>
+		</ComboInput>
 		<LabelAccordion
 				:label="t('appointments','Email Attendee when the appointment is:')">
 			<template #helpPopover>
