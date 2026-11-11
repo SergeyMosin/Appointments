@@ -4,15 +4,20 @@ script('appointments', 'cncf');
 style('appointments', 'form');
 /** @noinspection PhpUndefinedVariableInspection */
 echo $_['appt_inline_style'];
+$slotTaken = !empty($_['appt_e_rc']) && $_['appt_e_rc'] === '1';
 ?>
 
 <div class="srgdev-ncfp-wrap">
     <div class="srgdev-appt-info-cont">
         <h1><?php
-            p($l->t("An error has occurred")); ?></h1>
+            p($slotTaken ? $l->t("This time was just booked") : $l->t("An error has occurred")); ?></h1>
         <?php
-        if (!empty($_['appt_e_rc']) && $_['appt_e_rc'] === '1') {
-            echo $l->t('Please %1$stry again%2$s and select a different date.', ['<a class="srgdev-appt-err-a" href="form">', '</a>']);
+        if ($slotTaken) {
+            echo '<p>';
+            p($l->t("Someone booked it a moment ago. Please pick another time."));
+            echo '</p><p><a class="srgdev-appt-err-a srgdev-appt-err-btn button primary" href="form">';
+            p($l->t("Pick another time"));
+            echo '</a></p>';
         } elseif (!empty($_['appt_e_ne'])) {
             echo '<p>';
             // TRANSLATORS This is followed by an email address
