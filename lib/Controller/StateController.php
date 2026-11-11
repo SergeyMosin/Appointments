@@ -398,6 +398,46 @@ class StateController extends Controller
     {
         return match ($prop) {
 
+            BackendUtils::ANA_GTM_ID,
+            BackendUtils::ANA_GA4_ID,
+            BackendUtils::ANA_CLARITY_ID,
+            BackendUtils::ANA_LINKEDIN_ID,
+            BackendUtils::ANA_LINKEDIN_CONV_ID => function ($value, $pageId, $key): array {
+                if (!BackendUtils::isValidAnalyticsId($key, $value)) {
+                    $msg = match ($key) {
+                        BackendUtils::ANA_GTM_ID => $this->l->t('Enter a Google Tag Manager container ID like GTM-XXXXXXX, or leave it empty.'),
+                        BackendUtils::ANA_GA4_ID => $this->l->t('Enter a Google Analytics 4 measurement ID like G-XXXXXXXXXX, or leave it empty.'),
+                        BackendUtils::ANA_CLARITY_ID => $this->l->t('Enter a Microsoft Clarity project ID (lowercase letters and digits), or leave it empty.'),
+                        default => $this->l->t('Enter a numeric LinkedIn ID, or leave it empty.'),
+                    };
+                    return [Http::STATUS_ACCEPTED, json_encode([
+                        "type" => 3,
+                        "message" => $msg
+                    ])];
+                }
+                return [Http::STATUS_OK, ''];
+            },
+
+            BackendUtils::ANA_PRIVACY_URL => function ($value, $pageId, $key): array {
+                if (!BackendUtils::isValidPrivacyUrl($value)) {
+                    return [Http::STATUS_ACCEPTED, json_encode([
+                        "type" => 3,
+                        "message" => $this->l->t('The privacy policy URL must start with http:// or https://.')
+                    ])];
+                }
+                return [Http::STATUS_OK, ''];
+            },
+
+            BackendUtils::ANA_CONSENT_TEXT => function ($value, $pageId, $key): array {
+                if (mb_strlen($value) > BackendUtils::ANA_CONSENT_TEXT_MAX) {
+                    return [Http::STATUS_ACCEPTED, json_encode([
+                        "type" => 3,
+                        "message" => $this->l->t('The consent text can be at most %d characters long.', [BackendUtils::ANA_CONSENT_TEXT_MAX])
+                    ])];
+                }
+                return [Http::STATUS_OK, ''];
+            },
+
             BackendUtils::PAGE_ENABLED => function ($value, $pageId, $key): array {
                 if ($value === false) {
                     return [Http::STATUS_OK, ''];

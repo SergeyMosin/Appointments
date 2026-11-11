@@ -2,6 +2,9 @@
 script('appointments', 'form');
 style('appointments', 'form');
 ?>
+<?php if (!empty($_['appt_analytics'])): ?>
+<?php print_unescaped($this->inc('public/analytics', ['appt_analytics' => $_['appt_analytics']])); ?>
+<?php endif; ?>
 
 <div class="srgdev-ncfp-wrap">
     <?php

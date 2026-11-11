@@ -7,6 +7,7 @@ import {
 } from "@nextcloud/vue"
 import IconPreview from "vue-material-design-icons/MonitorEye.vue";
 import SectionAdvanced from "./SectionAdvanced.vue";
+import SectionAnalytics from "./SectionAnalytics.vue";
 import SectionBbb from "./SectionBbb.vue";
 import SectionCalendars from "./SectionCalendars.vue";
 import SectionContact from "./SectionContact.vue";
@@ -216,6 +217,15 @@ const handleCKey = () => {
 								{{ t('appointments', 'Video room settings for appointments') }}
 							</h4>
 							<SectionBbb/>
+						</NcAppSettingsSection>
+
+						<NcAppSettingsSection
+								id="analytics"
+								:name="t('appointments','Analytics')">
+							<h4 class="ps-section-subtitle">
+								{{ t('appointments', 'Tracking and conversion tags for the public booking form') }}
+							</h4>
+							<SectionAnalytics/>
 						</NcAppSettingsSection>
 
 						<NcAppSettingsSection
