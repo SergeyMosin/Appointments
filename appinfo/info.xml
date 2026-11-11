@@ -49,4 +49,11 @@
     <background-jobs>
         <job>OCA\Appointments\Cron\Reminders</job>
     </background-jobs>
+    <commands>
+        <command>OCA\Appointments\Command\PageCreate</command>
+        <command>OCA\Appointments\Command\PageToken</command>
+        <command>OCA\Appointments\Command\PageList</command>
+        <command>OCA\Appointments\Command\Export</command>
+        <command>OCA\Appointments\Command\Import</command>
+    </commands>
 </info>

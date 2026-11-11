@@ -1579,20 +1579,20 @@ class BackendUtils
         return $count;
     }
 
-    function createPage($userId, $pageId, $data): int
+    /**
+     * @param string|null $token a caller-chosen token, see isValidPageToken()
+     * @throws \InvalidArgumentException if $token is malformed or already used
+     */
+    function createPage($userId, $pageId, $data, ?string $token = null): int
     {
-        // make sure the token is not used
-        do {
-            $token = $this->makePageToken();
-            $qb = $this->db->getQueryBuilder();
-            $r = $qb->select('id')
-                ->from(self::PREF_TABLE_V2_NAME)
-                ->where($qb->expr()->eq(self::KEY_TOKEN,
-                    $qb->createNamedParameter($token)))
-                ->executeQuery();
-
-            $id = $r->fetch();
-        } while ($id !== false);
+        if ($token !== null) {
+            $this->assertPageTokenAvailable($token);
+        } else {
+            // make sure the token is not used
+            do {
+                $token = $this->makePageToken();
+            } while ($this->isPageTokenUsed($token));
+        }
 
         $qb = $this->db->getQueryBuilder();
         $count = $qb->insert(self::PREF_TABLE_V2_NAME)
@@ -1603,6 +1603,55 @@ class BackendUtils
             ->executeStatement();
         // count should be 1, because we are inserting one row/page
         return $count;
+    }
+
+    /**
+     * Changes the public token (URL) of an existing page.
+     * @throws \InvalidArgumentException if $token is malformed or already used, or the page does not exist
+     */
+    function setPageToken(string $userId, string $pageId, string $token): void
+    {
+        if ($this->getToken($userId, $pageId) === $token) {
+            return;
+        }
+        $this->assertPageTokenAvailable($token);
+        $qb = $this->db->getQueryBuilder();
+        $count = $qb->update(self::PREF_TABLE_V2_NAME)
+            ->set(self::KEY_TOKEN, $qb->createNamedParameter($token))
+            ->where($qb->expr()->eq(self::KEY_USER_ID, $qb->createNamedParameter($userId)))
+            ->andWhere($qb->expr()->eq(self::KEY_PAGE_ID, $qb->createNamedParameter($pageId)))
+            ->executeStatement();
+        if ($count !== 1) {
+            throw new \InvalidArgumentException("page " . $pageId . " not found for user " . $userId);
+        }
+    }
+
+    static function isValidPageToken(string $token): bool
+    {
+        return preg_match('/^[A-Za-z0-9]{16}$/', $token) === 1;
+    }
+
+    function isPageTokenUsed(string $token): bool
+    {
+        $qb = $this->db->getQueryBuilder();
+        $r = $qb->select('id')
+            ->from(self::PREF_TABLE_V2_NAME)
+            ->where($qb->expr()->eq(self::KEY_TOKEN,
+                $qb->createNamedParameter($token)))
+            ->executeQuery();
+        $row = $r->fetch();
+        $r->closeCursor();
+        return $row !== false;
+    }
+
+    private function assertPageTokenAvailable(string $token): void
+    {
+        if (!self::isValidPageToken($token)) {
+            throw new \InvalidArgumentException("invalid token, expected 16 characters A-Z, a-z, 0-9");
+        }
+        if ($this->isPageTokenUsed($token)) {
+            throw new \InvalidArgumentException("token is already used by another page");
+        }
     }
 
     private function makePageToken(int $count = 16): string
