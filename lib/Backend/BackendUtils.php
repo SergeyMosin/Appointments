@@ -96,6 +96,9 @@ class BackendUtils
     public const EML_ICS_TXT = 'icsNote';
     public const EML_CANCEL_PENDING_HOURS = 'cancelPendingHours';
     public const EML_NOTIFY_BEFORE_CANCEL_PENDING = 'notifyCancelPending';
+    // Comma separated addresses copied (Cc) on the attendee's emails
+    public const EML_ATT_CC = 'attCc';
+    public const EML_ATT_CC_MAX = 10;
 
     // Calendar Settings
     // simple mode
@@ -1201,6 +1204,7 @@ class BackendUtils
             self::EML_ICS_TXT => "",
             self::EML_CANCEL_PENDING_HOURS => 0,
             self::EML_NOTIFY_BEFORE_CANCEL_PENDING => false,
+            self::EML_ATT_CC => "",
 
             self::PSN_FORM_TITLE => "",
             self::PSN_NWEEKS => "2",
@@ -2346,5 +2350,25 @@ class BackendUtils
     {
         return !isset($dh[8]) && $dh === hash('adler32', $pd, false);
     }
-}
 
+    /**
+     * Parse the attCc setting into a list of addresses.
+     * Returns null if any entry is not a valid email or there are too many.
+     *
+     * @return string[]|null
+     */
+    public static function parseCcList(string $value): ?array
+    {
+        $list = [];
+        foreach (preg_split('/[\s,;]+/', $value, -1, PREG_SPLIT_NO_EMPTY) as $email) {
+            if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+                return null;
+            }
+            $list[strtolower($email)] = $email;
+        }
+        if (count($list) > self::EML_ATT_CC_MAX) {
+            return null;
+        }
+        return array_values($list);
+    }
+}
