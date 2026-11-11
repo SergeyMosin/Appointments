@@ -205,6 +205,27 @@ export const useSettingsStore = defineStore('settings', {
 			})
 		},
 
+		async exportPage() {
+			if (!currentPageId || isDir(currentPageId)) {
+				return null
+			}
+			const res = await settingsService.exportPage(currentPageId)
+			return res !== null && res.status === 200 ? res.data : null
+		},
+
+		async importPage(json) {
+			if (!currentPageId || isDir(currentPageId)) {
+				return null
+			}
+			const pageId = currentPageId
+			const res = await settingsService.importPage(pageId, json)
+			if (res === null) {
+				return null
+			}
+			await this.getAllSettings(pageId)
+			return res.data
+		},
+
 		setOne(key, value, debounce = false, callback = undefined) {
 			if (!debounce) {
 				this._setOne(key, value).then(res => {
