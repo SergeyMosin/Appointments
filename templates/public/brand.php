@@ -1,4 +1,4 @@
-<?php /* Brand head assets for public pages of a branded page. Params: appt_brand, cspNonce. */ ?>
+<?php /* Brand head assets for public pages of a branded page. Params: appt_brand, appt_page_title, cspNonce. */ ?>
 <?php if (!empty($_['appt_brand']['faviconUrl'])): ?>
 <link rel="icon" href="<?php echo htmlspecialchars($_['appt_brand']['faviconUrl'], ENT_QUOTES); ?>">
 <?php endif; ?>
@@ -12,4 +12,7 @@
 <?php endif; ?>
 <?php if (!empty($_['appt_brand']['customJs'])): ?>
 <script nonce="<?php p($_['cspNonce']); ?>"><?php echo $_['appt_brand']['customJs']; ?></script>
+<?php endif; ?>
+<?php if (!empty($_['appt_page_title'])): ?>
+<script nonce="<?php p($_['cspNonce']); ?>">document.title = <?php echo json_encode($_['appt_page_title'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;</script>
 <?php endif; ?>

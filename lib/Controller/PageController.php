@@ -777,6 +777,7 @@ class PageController extends Controller
         $brand = !empty($brandId) ? $this->utils->getBrand($brandId) : null;
         $params['appt_inline_style'] = $this->utils->getInlineStyle($userId, $settings, $brand);
         $params['appt_brand'] = $brand ?? [];
+        $params['appt_page_title'] = $settings[BackendUtils::PSN_PAGE_TITLE] ?? '';
 
         if ($renderAsBase) {
             // renderAs=base (embedded or preview when email validation step is skipped
@@ -1313,6 +1314,7 @@ class PageController extends Controller
         $cncfBrand = !empty($cncfBrandId) ? $this->utils->getBrand($cncfBrandId) : null;
         $param['appt_inline_style'] = $this->utils->getInlineStyle($uid, $settings, $cncfBrand);
         $param['appt_brand'] = $cncfBrand ?? [];
+        $param['appt_page_title'] = $settings[BackendUtils::PSN_PAGE_TITLE] ?? '';
 
         $tr->setParams($param);
         $tr->setStatus($rs);
