@@ -5,6 +5,9 @@ style('appointments', 'form');
 /** @noinspection PhpUndefinedVariableInspection */
 echo $_['appt_inline_style'];
 ?>
+<?php if (!empty($_['appt_analytics'])): ?>
+<?php print_unescaped($this->inc('public/analytics', ['appt_analytics' => $_['appt_analytics']])); ?>
+<?php endif; ?>
 
 <div class="srgdev-ncfp-wrap">
     <div class="srgdev-appt-info-cont">

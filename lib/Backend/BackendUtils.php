@@ -97,6 +97,24 @@ class BackendUtils
     public const EML_CANCEL_PENDING_HOURS = 'cancelPendingHours';
     public const EML_NOTIFY_BEFORE_CANCEL_PENDING = 'notifyCancelPending';
 
+    // Analytics (public form and its finish page)
+    public const ANA_GTM_ID = 'anaGtmId';
+    public const ANA_GA4_ID = 'anaGa4Id';
+    public const ANA_CLARITY_ID = 'anaClarityId';
+    public const ANA_LINKEDIN_ID = 'anaLinkedInId';
+    public const ANA_LINKEDIN_CONV_ID = 'anaLinkedInConvId';
+    public const ANA_CONSENT_TEXT = 'anaConsentText';
+    public const ANA_CONSENT_TEXT_MAX = 500;
+    public const ANA_PRIVACY_URL = 'anaPrivacyUrl';
+    public const ANA_TEST_MODE = 'anaTestMode';
+    public const ANA_ID_PATTERNS = [
+        self::ANA_GTM_ID => '/^GTM-[A-Z0-9]{4,12}$/',
+        self::ANA_GA4_ID => '/^G-[A-Z0-9]{4,16}$/',
+        self::ANA_CLARITY_ID => '/^[a-z0-9]{6,20}$/',
+        self::ANA_LINKEDIN_ID => '/^[0-9]{1,12}$/',
+        self::ANA_LINKEDIN_CONV_ID => '/^[0-9]{1,12}$/',
+    ];
+
     // Calendar Settings
     // simple mode
     public const CLS_MAIN_ID = 'mainCalId'; // this cal_id now
@@ -1201,6 +1219,15 @@ class BackendUtils
             self::EML_ICS_TXT => "",
             self::EML_CANCEL_PENDING_HOURS => 0,
             self::EML_NOTIFY_BEFORE_CANCEL_PENDING => false,
+
+            self::ANA_GTM_ID => "",
+            self::ANA_GA4_ID => "",
+            self::ANA_CLARITY_ID => "",
+            self::ANA_LINKEDIN_ID => "",
+            self::ANA_LINKEDIN_CONV_ID => "",
+            self::ANA_CONSENT_TEXT => "",
+            self::ANA_PRIVACY_URL => "",
+            self::ANA_TEST_MODE => false,
 
             self::PSN_FORM_TITLE => "",
             self::PSN_NWEEKS => "2",
@@ -2345,6 +2372,52 @@ class BackendUtils
     function validateHHash(string $dh, string $pd): bool
     {
         return !isset($dh[8]) && $dh === hash('adler32', $pd, false);
+    }
+
+    public static function isValidAnalyticsId(string $key, string $value): bool
+    {
+        return $value === '' || preg_match(self::ANA_ID_PATTERNS[$key], $value) === 1;
+    }
+
+    public static function isValidPrivacyUrl(string $value): bool
+    {
+        if ($value === '') {
+            return true;
+        }
+        if (filter_var($value, FILTER_VALIDATE_URL) === false) {
+            return false;
+        }
+        $scheme = strtolower((string)parse_url($value, PHP_URL_SCHEME));
+        return $scheme === 'http' || $scheme === 'https';
+    }
+
+    /**
+     * Analytics config for the public page, or null when no tracker is set.
+     * Stored values that fail validation are ignored.
+     */
+    public static function getAnalyticsConfig(array $settings): ?array
+    {
+        $ids = [];
+        foreach (array_keys(self::ANA_ID_PATTERNS) as $key) {
+            $v = $settings[$key] ?? '';
+            $ids[$key] = (is_string($v) && $v !== '' && self::isValidAnalyticsId($key, $v)) ? $v : '';
+        }
+        if ($ids[self::ANA_GTM_ID] === '' && $ids[self::ANA_GA4_ID] === ''
+            && $ids[self::ANA_CLARITY_ID] === '' && $ids[self::ANA_LINKEDIN_ID] === '') {
+            return null;
+        }
+        $url = $settings[self::ANA_PRIVACY_URL] ?? '';
+        return [
+            'gtm' => $ids[self::ANA_GTM_ID],
+            // GTM wins when both are set, GA4 is then expected to be configured inside the container
+            'ga4' => $ids[self::ANA_GTM_ID] === '' ? $ids[self::ANA_GA4_ID] : '',
+            'clarity' => $ids[self::ANA_CLARITY_ID],
+            'li' => $ids[self::ANA_LINKEDIN_ID],
+            'liConv' => $ids[self::ANA_LINKEDIN_ID] !== '' ? $ids[self::ANA_LINKEDIN_CONV_ID] : '',
+            'text' => trim((string)($settings[self::ANA_CONSENT_TEXT] ?? '')),
+            'privacyUrl' => (is_string($url) && self::isValidPrivacyUrl($url)) ? $url : '',
+            'test' => ($settings[self::ANA_TEST_MODE] ?? false) === true,
+        ];
     }
 }
 

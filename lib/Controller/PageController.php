@@ -235,7 +235,7 @@ class PageController extends Controller
         $this->throwIfPrivateModeNotLoggedIn();
 
         if ($this->request->getParam("sts") !== null) {
-            $tr = $this->showFinish('public', $userId);
+            $tr = $this->showFinish('public', $userId, $pageId);
         } else {
             $tr = $this->showForm('public', $userId, $pageId);
         }
@@ -1237,7 +1237,7 @@ class PageController extends Controller
         return "\n" . rtrim($label, ':') . ": " . $valueStr;
     }
 
-    private function showFinish(string $render, string $uid): Response
+    private function showFinish(string $render, string $uid, string $pageId = ''): Response
     {
         // Redirect to finalize page...
         // sts: 0=OK, 1=bad input, 2=server error, 3=bad captcha, 4=captcha server error, 5=blocked
@@ -1303,6 +1303,17 @@ class PageController extends Controller
         }
 
         $param['appt_inline_style'] = $this->utils->getInlineStyle($uid, $settings);
+
+        if ($render === 'public' && $pageId !== '') {
+            // booking_submitted fires on the "check your email" page (sts=0)
+            $evt = ($rs === 200 && $tmpl === 'public/thanks')
+                ? substr(hash('sha256', (string)$this->request->getParam('d', '')), 0, 16)
+                : '';
+            $ana = $this->addAnalytics($tr, $settings, $uid . '/' . $pageId, $evt);
+            if ($ana !== null) {
+                $param['appt_analytics'] = $ana;
+            }
+        }
 
         $tr->setParams($param);
         $tr->setStatus($rs);
@@ -1373,6 +1384,13 @@ class PageController extends Controller
             $csp->addAllowedConnectDomain('https://*.hcaptcha.com/');
             $tr->setContentSecurityPolicy($csp);
             $params['hCapKey'] = $settings[BackendUtils::SEC_HCAP_SITE_KEY];
+        }
+
+        if ($render === 'public') {
+            $ana = $this->addAnalytics($tr, $settings, $uid . '/' . $pageId, '');
+            if ($ana !== null) {
+                $params['appt_analytics'] = $ana;
+            }
         }
 
         // google recaptcha
@@ -1659,6 +1677,84 @@ class PageController extends Controller
             }
         }
         return $rtn . '|' . $i . '|' . $c;
+    }
+
+    /**
+     * Extends the CSP for the configured trackers and returns the template
+     * config, or null (CSP untouched) when the page has no tracker.
+     */
+    private function addAnalytics(Response $tr, array $settings, string $pageKey, string $evt): ?array
+    {
+        $cfg = BackendUtils::getAnalyticsConfig($settings);
+        if ($cfg === null) {
+            return null;
+        }
+
+        $script = [];
+        $connect = [];
+        $img = [];
+        $frame = [];
+        if ($cfg['gtm'] !== '' || $cfg['ga4'] !== '') {
+            // https://developers.google.com/tag-platform/security/guides/csp
+            $script[] = 'https://*.googletagmanager.com';
+            $img[] = 'https://*.googletagmanager.com';
+            $img[] = 'https://*.google-analytics.com';
+            $connect[] = 'https://*.googletagmanager.com';
+            $connect[] = 'https://*.google-analytics.com';
+            $connect[] = 'https://*.analytics.google.com';
+            // Google signals
+            $img[] = 'https://*.g.doubleclick.net';
+            $connect[] = 'https://*.g.doubleclick.net';
+        }
+        if ($cfg['gtm'] !== '') {
+            // GTM preview / Tag Assistant
+            $frame[] = 'https://*.googletagmanager.com';
+            $img[] = 'https://*.gstatic.com';
+        }
+        if ($cfg['clarity'] !== '') {
+            // https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-csp
+            $script[] = 'https://*.clarity.ms';
+            $script[] = 'https://c.bing.com';
+            $connect[] = 'https://*.clarity.ms';
+            $connect[] = 'https://c.bing.com';
+            $img[] = 'https://*.clarity.ms';
+            $img[] = 'https://c.bing.com';
+        }
+        if ($cfg['li'] !== '') {
+            // LinkedIn Insight Tag
+            $script[] = 'https://snap.licdn.com';
+            $connect[] = 'https://px.ads.linkedin.com';
+            $img[] = 'https://px.ads.linkedin.com';
+        }
+
+        $csp = $tr->getContentSecurityPolicy();
+        foreach (array_unique($script) as $d) {
+            $csp->addAllowedScriptDomain($d);
+        }
+        foreach (array_unique($connect) as $d) {
+            $csp->addAllowedConnectDomain($d);
+        }
+        foreach (array_unique($img) as $d) {
+            $csp->addAllowedImageDomain($d);
+        }
+        foreach (array_unique($frame) as $d) {
+            $csp->addAllowedFrameDomain($d);
+        }
+        $tr->setContentSecurityPolicy($csp);
+
+        if ($cfg['text'] === '') {
+            $cfg['text'] = $this->l->t('This page uses analytics cookies to measure visits and bookings. They are only set if you accept.');
+        }
+        $cfg['page'] = substr(hash('sha256', $pageKey), 0, 12);
+        $cfg['evt'] = $evt;
+        $cfg['nonce'] = \OC::$server->get(ContentSecurityPolicyNonceManager::class)->getNonce();
+        $cfg['l'] = [
+            'accept' => $this->l->t('Accept'),
+            'decline' => $this->l->t('Decline'),
+            'privacy' => $this->l->t('Privacy policy'),
+            'label' => $this->l->t('Analytics consent'),
+        ];
+        return $cfg;
     }
 
     private function getPublicTemplate(string $templateName): PublicTemplateResponse
