@@ -2,6 +2,7 @@
 script('appointments', 'form');
 style('appointments', 'form');
 ?>
+<?php print_unescaped($this->inc('public/brand')); ?>
 
 <div class="srgdev-ncfp-wrap">
     <?php
