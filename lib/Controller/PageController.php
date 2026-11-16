@@ -1119,7 +1119,10 @@ class PageController extends Controller
                     $this->utils->encrypt(pack('L', time()) . $post['email'], $key)
                 );
         } else {
-            $raw_url = $this->utils->getPublicWebBase() . '/' . $this->utils->pubPrx($this->utils->getToken($userId, $pageId), $embed) . 'cncf?d=';
+            // relative, like $ok_uri: the page may be served on another host than
+            // overwritehost (a proxied domain), and a cross-origin redirect after the
+            // POST is blocked by the page CSP (form-action 'self')
+            $raw_url = 'cncf?d=';
             $raw_btkn = substr($evt_uri, 0, -4);
 
             $uri = $raw_url . "2" . urlencode(
