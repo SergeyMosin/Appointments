@@ -458,7 +458,8 @@ class BCSabreImpl implements IBackendConnector
             $queryConfig['start'],
             $queryConfig['end'],
             $queryConfig['props'] ?? [],
-            ['calendarid']
+            ['calendarid'],
+            true // private events still block the time
         );
         foreach ($iter as $row) {
 
@@ -554,7 +555,9 @@ class BCSabreImpl implements IBackendConnector
         $iter = $this->fastQuery($calIds,
             $queryConfig['start'],
             $queryConfig['end'],
-            $queryConfig['props'] ?? []
+            $queryConfig['props'] ?? [],
+            [],
+            true // private events still block the time
         );
         foreach ($iter as $data) {
 
@@ -1415,7 +1418,7 @@ class BCSabreImpl implements IBackendConnector
      *
      * @see CalDavBackend::INDEXED_PROPERTIES For the list of available propFilters
      */
-    private function fastQuery(array $calIds, int $startTs, int $endTs, array $propFilters = [], array $additionalColumns = [])
+    private function fastQuery(array $calIds, int $startTs, int $endTs, array $propFilters = [], array $additionalColumns = [], bool $includePrivate = false)
     {
         $query = $this->db->getQueryBuilder();
 
@@ -1429,10 +1432,12 @@ class BCSabreImpl implements IBackendConnector
         $query->select(['c.calendardata'])
             ->from('calendarobjects', 'c')
             ->where($calendarsOrExpr)
-            ->andWhere($query->expr()->neq('c.classification', $query->createNamedParameter(CalDavBackend::CLASSIFICATION_PRIVATE)))
             ->andWhere($query->expr()->eq('componenttype', $query->createNamedParameter('VEVENT')))
             ->andWhere($query->expr()->isNull('c.deleted_at'))
             ->setMaxResults(1024 * count($calIds));
+        if (!$includePrivate) {
+            $query->andWhere($query->expr()->neq('c.classification', $query->createNamedParameter(CalDavBackend::CLASSIFICATION_PRIVATE)));
+        }
         foreach ($additionalColumns as $column) {
             $query->addSelect('c.' . $column);
         }
