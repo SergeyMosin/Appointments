@@ -99,6 +99,20 @@ export default class SettingsService2 {
 		})
 	}
 
+	async exportPage(pageId) {
+		return this.#sendRequest('export_page', pageId, CK.SETTINGS + '_io').catch(_ => {
+			showError(t('appointments', "Can't export settings. Check console"))
+			return null
+		})
+	}
+
+	async importPage(pageId, json) {
+		return this.#sendRequest('import_page', pageId, CK.SETTINGS + '_io', {v: json}).catch(_ => {
+			showError(t('appointments', "Can't import settings. Check console"))
+			return null
+		})
+	}
+
 	getDebugData(action, data) {
 		return this.#sendRequest(action, undefined, CK.DEBUG, data,'debug').catch(_ => {
 			showError(t('appointments', "error: cannot get debug data"))

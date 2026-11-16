@@ -7,6 +7,7 @@ import {
 } from "@nextcloud/vue"
 import IconPreview from "vue-material-design-icons/MonitorEye.vue";
 import SectionAdvanced from "./SectionAdvanced.vue";
+import SectionBackup from "./SectionBackup.vue";
 import SectionBbb from "./SectionBbb.vue";
 import SectionCalendars from "./SectionCalendars.vue";
 import SectionContact from "./SectionContact.vue";
@@ -225,6 +226,15 @@ const handleCKey = () => {
 								{{ t('appointments', 'Advanced settings and configurations') }}
 							</h4>
 							<SectionAdvanced/>
+						</NcAppSettingsSection>
+
+						<NcAppSettingsSection
+								id="backup"
+								:name="t('appointments','Backup')">
+							<h4 class="ps-section-subtitle">
+								{{ t('appointments', 'Export or import the settings of this page') }}
+							</h4>
+							<SectionBackup/>
 						</NcAppSettingsSection>
 
 						<NcAppSettingsSection
