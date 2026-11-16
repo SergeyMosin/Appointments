@@ -493,6 +493,7 @@ input.srgdev-ncfp-form-input:user-invalid,
   flex: 1;
 }
 
+.srgdev-dpu-time-md-wrap,
 .srgdev-dpu-time-unit_tn,
 .srgdev-dpu-time-unit2,
 .srgdev-dpu-time-unit {
@@ -502,6 +503,25 @@ input.srgdev-ncfp-form-input:user-invalid,
   border: 1px solid var(--color-border);
   padding: .2em 0;
 }
+
+.srgdev-dpu-time-md-wrap {
+  text-align: center;
+  border:none;
+}
+
+.srgdev-dpu-time-md-sub {
+  border: 1px solid svariables.$color-border;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  padding: .2em 0;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
 
 $tz-cont-height: 2.5em;
 .srgdev-dpu-tz-picker-wrapper {
@@ -585,6 +605,7 @@ $tz-cont-height: 2.5em;
   color: var(--color-main-text);
 }
 
+.srgdev-dpu-time-md-wrap,
 .srgdev-dpu-time-unit,
 .srgdev-dpu-time-unit_tn {
   display: inline-block;
@@ -596,6 +617,11 @@ $tz-cont-height: 2.5em;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.srgdev-dpu-time-md-wrap {
+  padding: 0;
+  overflow: visible;
 }
 
 .srgdev-dpu-time-unit .srgdev-dpu-appt-title:before {
@@ -610,6 +636,7 @@ $tz-cont-height: 2.5em;
   padding: .4em 0;
 }
 
+.srgdev-dpu-time-md-sub,
 .srgdev-dpu-time-unit2,
 .srgdev-dpu-time-unit_tn {
   line-height: 1.2;
@@ -617,6 +644,7 @@ $tz-cont-height: 2.5em;
   padding-bottom: .4em;
 }
 
+.srgdev-dpu-time-md-wrap .srgdev-dpu-appt-title,
 .srgdev-dpu-time-unit2 .srgdev-dpu-appt-title,
 .srgdev-dpu-time-unit_tn .srgdev-dpu-appt-title {
   display: block;
@@ -630,10 +658,15 @@ $tz-cont-height: 2.5em;
 .srgdev-dpu-time-unit_tn .srgdev-dpu-appt-title {
   padding: 0;
 }
+.srgdev-dpu-time-md-wrap .srgdev-dpu-appt-title{
+  padding-top: .25em;
+}
 
+.srgdev-dpu-time-md-sub:hover,
 .srgdev-dpu-time-unit:hover,
 .srgdev-dpu-time-unit2:hover,
 .srgdev-dpu-time-unit_tn:hover,
+.srgdev-dpu-time-md-sub:focus-visible,
 .srgdev-dpu-time-unit:focus-visible,
 .srgdev-dpu-time-unit2:focus-visible,
 .srgdev-dpu-time-unit_tn:focus-visible {
@@ -661,7 +694,7 @@ $tz-cont-height: 2.5em;
   margin: 1em 0;
 }
 
-.srgdev-appt-info-cont .srgdev-appt-cncf-label{
+.srgdev-appt-info-cont .srgdev-appt-cncf-label {
   position: absolute;
   left: -1000em;
 }

@@ -368,13 +368,20 @@
 				const elm = document.createElement("span")
 				elm.className = tuClass
 				elm.dpuClickID = item.dpuClickID
-				elm.timeAt = item.timeAt
-				elm.appendChild(document.createTextNode(item.time))
-				if (item.title !== "") {
-					const elm1 = document.createElement("span")
-					elm1.className = "srgdev-dpu-appt-title"
-					elm1.appendChild(document.createTextNode(item.title))
-					elm.appendChild(elm1)
+
+				if (item.dur) {
+					// multiple durations (expandable/accordion)
+					elm.itemData = item
+					elm.appendChild(document.createTextNode(item.timeAt))
+				} else {
+					elm.timeAt = item.timeAt
+					elm.appendChild(document.createTextNode(item.time))
+					if (item.title !== "") {
+						const elm1 = document.createElement("span")
+						elm1.className = "srgdev-dpu-appt-title"
+						elm1.appendChild(document.createTextNode(item.title))
+						elm.appendChild(elm1)
+					}
 				}
 				elm.setAttribute("tabindex", "0")
 				itemsCont.appendChild(elm)
@@ -405,21 +412,65 @@
 
 		if (t.dpuClickID !== undefined) {
 
-			const dummyElm = document.getElementById('srgdev-ncfp_sel-dummy')
-			dummyElm.value = t.parentElement.getAttribute('data-dm') + ' - ' + t.timeAt;
-			const elm = document.getElementById('srgdev-ncfp_sel-hidden')
+			if (t.itemData) {
+				// multi duration item needs to be expanded
 
-			const idx = t.dpuClickID
-			elm.selectedIndex = idx
-			const ref = elm.dataRef[idx]
-			elm.value = ref.d
-			if (ref.t) {
-				dummyElm.setAttribute('title', ref.t)
+				const itemData = t.itemData
+				console.log(itemData)
+
+				t.dpuClickID = undefined
+				t.itemData = undefined
+
+				while (t.lastChild) {
+					t.removeChild(t.lastChild);
+				}
+				t.className = 'srgdev-dpu-time-md-wrap'
+				t.setAttribute('data-dm', t.parentElement.getAttribute('data-dm'))
+				t.removeAttribute('tabindex')
+
+				const timeAt = itemData.timeAt
+
+				for (let i = -1, dur = itemData.dur, l = dur.length; i < l; i++) {
+
+					const item = i === -1 ? itemData : dur[i]
+
+					const elm = document.createElement("span")
+					elm.className = 'srgdev-dpu-time-md-sub'
+					elm.dpuClickID = item.dpuClickID
+
+					elm.timeAt = timeAt
+					elm.appendChild(document.createTextNode(item.time))
+					if (item.title !== "") {
+						const elm1 = document.createElement("span")
+						elm1.className = "srgdev-dpu-appt-title"
+						elm1.appendChild(document.createTextNode(item.title))
+						elm.appendChild(elm1)
+					}
+
+					elm.setAttribute("tabindex", "0")
+					t.appendChild(elm)
+				}
+
 			} else {
-				dummyElm.removeAttribute('title')
-			}
 
-			selClose(null)
+				// single duration or already expanded
+				const dummyElm = document.getElementById('srgdev-ncfp_sel-dummy')
+				dummyElm.value = t.parentElement.getAttribute('data-dm') + ' - ' + t.timeAt;
+
+				const refElm = document.getElementById('srgdev-ncfp_sel-hidden')
+				const idx = t.dpuClickID
+				const ref = refElm.dataRef[idx]
+
+				refElm.selectedIndex = idx
+				refElm.value = ref.d
+				if (ref.t) {
+					dummyElm.setAttribute('title', ref.t)
+				} else {
+					dummyElm.removeAttribute('title')
+				}
+
+				selClose(null)
+			}
 		}
 	}
 
@@ -728,6 +779,7 @@
 
 		let an = -1
 		let lastUD = -1
+		let lastTs = -1
 
 		const timePages = []
 		const l = dta.length
@@ -805,12 +857,29 @@
 				lastUD = ud
 			}
 
+			if (ts === lastTs && timePage.timeItems.length > 0) {
+				// combine multiple durations that start at the same time
+				const curTimeItem = timePage.timeItems[timePage.timeItems.length - 1]
+				if (!curTimeItem.dur) {
+					curTimeItem.dur = []
+				}
+				curTimeItem.dur.push({
+					dpuClickID: i,
+					time: dto.time,
+					title: dto.t,
+				})
+				continue
+			}
+
 			timePage.timeItems.push({
 				dpuClickID: i,
 				timeAt: dto.timeAt,
 				time: dto.time,
-				title: dto.t
+				title: dto.t,
+				dur: undefined
 			})
+
+			lastTs = ts
 		}
 
 		// fill in empty space ?????
@@ -898,23 +967,23 @@
 			ts = md.getTime()
 
 			dur = null
-			if (endTime === 1 || t === 'T') {
-				sp2 = sp + 1
-				// sp must be the pos of the last used ':'
-				sp = ds.indexOf(":", sp2)
+			sp2 = sp + 1
+			// sp must be the pos of the last used ':'
+			sp = ds.indexOf(":", sp2)
 
-				if (t === "T") {
-					dur = ds.substr(sp2, sp - sp2).split(';').map(n => n | 0)
-					if (endTime === 1 && dur.length < 2) {
-						md.setTime(ts + (dur[0] * 1000))
-						tStr += ' - ' + tf(md)
-					}
-				} else {
-					sp2 = +ds.substr(sp2, sp - sp2) * 1000
-					md.setTime(sp2)
-					tStr += ' - ' + tf(md)
-				}
+			let _d
+			let _t
+			dur = undefined
+
+			if (t === "T") {
+				sp2 = ds.substring(sp2, sp) | 0
+				md.setTime(ts + (sp2 * 1000))
+			} else {
+				sp2 = +ds.substring(sp2, sp) * 1000
+				md.setTime(sp2)
 			}
+
+			tStr += ' - ' + tf(md)
 
 			if (tzn !== undefined) {
 				tzi = t + tzn
@@ -929,15 +998,16 @@
 
 			sp++
 			sp2 = ds.indexOf(":", sp)
-			dta[i] = {
+
+			dta.push({
 				rts: ts,
-				d: ds.substr(sp, sp2 - sp),
-				t: ds.substr(sp2 + 2), // +2 is for ":_"
+				d: ds.substring(sp, sp2),
+				t: ds.substring(sp2 + 2), // +2 is for ":_",
 				dur: dur,
 				tzi: tzi,
 				time: tStr,
 				timeAt: atStr
-			}
+			})
 		}
 
 		dta.sort((a, b) => (a.rts > b.rts) ? 1 : -1)
