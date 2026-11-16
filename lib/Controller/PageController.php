@@ -343,7 +343,7 @@ class PageController extends Controller
                 $responseType = $a === '2'
                     ? 'f' // go to final step automatically if "Skip email verification step" is set
                     : 'v'; // verify that not a bot
-            } elseif (is_string($tkn) && strlen($tkn) < 192 && strlen($tkn) > 32) {
+            } elseif (is_string($tkn) && strlen($tkn) < 384 && strlen($tkn) > 32) {
                 $tknDecrypted = $this->utils->decrypt($tkn, $key);
                 if (!empty($tknDecrypted)) {
                     $tknData = $this->decodeTkn($tknDecrypted, $uri);
@@ -366,7 +366,7 @@ class PageController extends Controller
         } elseif ($method === 'POST') {
             if ($this->request->getParam('tos') === null) {
                 $tkn = $this->request->getParam('t1');
-                if (is_string($tkn) && strlen($tkn) < 192 && strlen($tkn) > 32) {
+                if (is_string($tkn) && strlen($tkn) < 384 && strlen($tkn) > 32) {
                     // this an anti-bot request
                     $tknDecrypted = $this->utils->decrypt($tkn, $key);
                     $tknData = $this->decodeTkn($tknDecrypted, $uri);
