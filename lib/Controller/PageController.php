@@ -1038,7 +1038,7 @@ class PageController extends Controller
             $post['tmpl_start_ts'] = $dcParts[2];
             $post['tmpl_end_ts'] = $dcParts[3];
 
-            if ($post['title'] &&
+            if (!empty($post['title']) &&
                 substr(hash('sha256', $dcParts[1] . $post['title'], true), 0, 24) === $dcParts[4]
             ) {
                 $post['tmpl_title'] = str_replace(["\r", "\n"], '', $post['title']);
