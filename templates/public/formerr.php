@@ -4,6 +4,15 @@ script('appointments', 'cncf');
 style('appointments', 'form');
 /** @noinspection PhpUndefinedVariableInspection */
 echo $_['appt_inline_style'];
+
+// START: translations for upcoming features, ref: https://github.com/SergeyMosin/Appointments/pull/719
+
+$tr_1 = $l->t("This time was just booked");
+$tr_2 = $l->t("Someone booked it a moment ago. Please pick another time.");
+$tr_3 = $l->t("Pick another time");
+
+// END: translations for upcoming features
+
 ?>
 
 <div class="srgdev-ncfp-wrap">
