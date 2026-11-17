@@ -32,7 +32,7 @@ OC.L10N.register(
     "Location: " : "Ort: ",
     "Appointment confirmed" : "Termin bestätigt",
     "%s Appointment is canceled" : "Der %s-Termin ist abgesagt",
-    "%s appointment status changed" : "%s Terminsstatus geändert",
+    "%s appointment status changed" : "%s Terminstatus geändert",
     "Your %1$s appointment scheduled for %2$s is now canceled." : "Dein für %1$s geplanter %2$s-Termin ist jetzt abgesagt.",
     "Appointment canceled" : "Termin abgesagt",
     "%s Appointment update" : "%s Terminaktualisierung",
