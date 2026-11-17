@@ -1,3 +1,7 @@
+## Unreleased
+### Fixed
+- auto-cancel and confirmation reminders for unconfirmed appointments now also work for appointments starting more than 7 days ahead (or less than 42 min after the trigger time)
+
 ## v2.8.8 - 2026-10-30
 ### Fixed
 - ensure REMINDER_DATA stays intact - #707

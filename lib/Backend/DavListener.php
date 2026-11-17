@@ -88,7 +88,11 @@ class DavListener implements IEventListener
      */
     public function handleReminders(int $lastStart, IDBConnection $db, IBackendConnector $bc): void
     {
-        // we need to pull all pending appointments between now + 42 min( 1 hour [min delta] - 18 min [time between jobs]) and now + 7 days(max delta)
+        // Confirmed appointments (appointment reminders): we only need those starting between
+        // now + 42 min( 1 hour [min delta] - 18 min [time between jobs]) and now + 7 days(max delta).
+        // Unconfirmed (TENTATIVE) appointments (confirmation reminder and auto-cancel) are timed from
+        // the CREATED prop, not from the start time, so they must be pulled no matter how far in the
+        // future they start, otherwise bookings made more than 7 days ahead would never be handled.
         $now = time();
         $qb = $db->getQueryBuilder();
         try {
@@ -104,8 +108,16 @@ class DavListener implements IEventListener
                         'pref.' . BackendUtils::KEY_PAGE_ID)))
                 ->where($qb->expr()->isNotNull('pref.' . BackendUtils::KEY_REMINDERS))
                 ->andWhere($qb->expr()->neq('hash.status', $qb->createNamedParameter(BackendUtils::PREF_STATUS_CANCELLED, IQueryBuilder::PARAM_INT)))
-                ->andWhere($qb->expr()->gte('hash.start', $qb->createNamedParameter($now + 2520, IQueryBuilder::PARAM_INT)))
-                ->andWhere($qb->expr()->lte('hash.start', $qb->createNamedParameter($now + 604800, IQueryBuilder::PARAM_INT)))
+                ->andWhere($qb->expr()->orX(
+                    $qb->expr()->andX(
+                        $qb->expr()->gte('hash.start', $qb->createNamedParameter($now + 2520, IQueryBuilder::PARAM_INT)),
+                        $qb->expr()->lte('hash.start', $qb->createNamedParameter($now + 604800, IQueryBuilder::PARAM_INT))
+                    ),
+                    $qb->expr()->andX(
+                        $qb->expr()->eq('hash.status', $qb->createNamedParameter(BackendUtils::PREF_STATUS_TENTATIVE, IQueryBuilder::PARAM_INT)),
+                        $qb->expr()->gt('hash.start', $qb->createNamedParameter($now, IQueryBuilder::PARAM_INT))
+                    )
+                ))
                 ->andWhere($qb->expr()->isNotNull('hash.' . BackendUtils::KEY_USER_ID))
                 ->andWhere($qb->expr()->isNotNull('hash.' . BackendUtils::KEY_PAGE_ID))
                 ->andWhere($qb->expr()->isNotNull('hash.uri'))
