@@ -1200,6 +1200,24 @@ class DavListener implements IEventListener
                 }
             }
 
+            // Add Cc recipients as NON-PARTICIPANT attendees in the .ics file
+            // so calendar clients show them for full transparency.
+            // https://www.kanzaki.com/docs/ical/role.html
+            $rawCc = $settings[BackendUtils::EML_ATT_CC] ?? '';
+            if (is_string($rawCc) && trim($rawCc) !== '') {
+                $ccIcs = BackendUtils::parseCcList($rawCc);
+                if ($ccIcs !== null) {
+                    foreach ($ccIcs as $ccEmail) {
+                        if (strcasecmp($ccEmail, $to_email) !== 0) {
+                            $a = $evt->add('ATTENDEE', 'mailto:' . $ccEmail);
+                            $a['ROLE'] = 'NON-PARTICIPANT';
+                            $a['RSVP'] = 'FALSE';
+                            $a['CN'] = $ccEmail;
+                        }
+                    }
+                }
+            }
+
             if (!isset($vObject->METHOD)) {
                 $vObject->add('METHOD');
             }
