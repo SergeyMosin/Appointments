@@ -27,5 +27,9 @@ return [
         ['name' => 'dir#indexv1', 'url' => '/pub/{token}/dir', 'verb' => 'GET'], # v1 legacy
 
 		['name' => 'debug#index', 'url' => '/debug', 'verb' => 'POST'],
+
+		['name' => 'admin#get_brands', 'url' => '/admin/brands', 'verb' => 'GET'],
+		['name' => 'admin#save_brand', 'url' => '/admin/brands/save', 'verb' => 'POST'],
+		['name' => 'admin#delete_brand', 'url' => '/admin/brands/delete', 'verb' => 'POST'],
 	]
 ];

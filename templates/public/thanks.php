@@ -4,6 +4,7 @@
 style('appointments', 'form');
 /** @noinspection PhpUndefinedVariableInspection */
 echo $_['appt_inline_style'];
+print_unescaped($this->inc('public/brand'));
 ?>
 
 <div class="srgdev-ncfp-wrap">
