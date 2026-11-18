@@ -1,3 +1,15 @@
+## v2.9.0 - 2026-11-18
+### Changed
+- Simple Mode has been removed - #687
+- increase token length limit (192 -> 384), a quick fix for #727
+- form: combine multiple durations that start at the same time into expandable accordion - #701
+### Added
+- pre-add translations for #719
+### Fixed
+- relative redirect after a booking so pages on a proxied domain can submit @thereisnotime
+- count private calendar events as busy when checking free time slots @thereisnotime
+- no PHP warning when a booking is posted without a title @thereisnotime
+
 ## v2.8.8 - 2026-10-30
 ### Fixed
 - ensure REMINDER_DATA stays intact - #707
