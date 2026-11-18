@@ -96,6 +96,15 @@ class BackendUtils
     public const EML_ICS_TXT = 'icsNote';
     public const EML_CANCEL_PENDING_HOURS = 'cancelPendingHours';
     public const EML_NOTIFY_BEFORE_CANCEL_PENDING = 'notifyCancelPending';
+    // Sender (From) address for this page's emails, empty = global setting
+    public const EML_FROM = 'emlFrom';
+    // Email header logo (absolute https URL to a PNG/JPG) and its background colour,
+    // empty = server theming. When the logo is set the footer names the organization.
+    public const EML_LOGO_URL = 'emlLogoUrl';
+    public const EML_LOGO_BG = 'emlLogoBg';
+    // Base URL for links in this page's emails (e.g. https://book.example.com) when the
+    // page is served on its own domain, empty = the server's URL
+    public const EML_LINK_BASE = 'emlLinkBase';
 
     // Calendar Settings
     // simple mode
@@ -1201,6 +1210,10 @@ class BackendUtils
             self::EML_ICS_TXT => "",
             self::EML_CANCEL_PENDING_HOURS => 0,
             self::EML_NOTIFY_BEFORE_CANCEL_PENDING => false,
+            self::EML_FROM => "",
+            self::EML_LOGO_URL => "",
+            self::EML_LOGO_BG => "",
+            self::EML_LINK_BASE => "",
 
             self::PSN_FORM_TITLE => "",
             self::PSN_NWEEKS => "2",
@@ -2078,6 +2091,10 @@ class BackendUtils
 
     function getPublicWebBase(): string
     {
+        $base = rtrim(trim($this->settings[self::EML_LINK_BASE] ?? ''), '/');
+        if ($base !== '') {
+            return $base . '/apps/' . Application::APP_ID;
+        }
         // we need to detect if the server is configured to use '.../index.php/...'
         $defaultUrl = $this->urlGenerator->linkToDefaultPageUrl();
         return substr($defaultUrl, 0, strpos($defaultUrl, '/apps/') + 6) . Application::APP_ID;

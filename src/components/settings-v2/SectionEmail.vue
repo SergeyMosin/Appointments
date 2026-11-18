@@ -49,6 +49,43 @@ const cancelPendingOptions = [
 				{{ t('appointments', 'An .ics attachment will automatically be generated for notification emails, allowing better integration with email/calendar apps that support it.') }}
 			</template>
 		</ComboCheckbox>
+		<ComboInput
+				class="ps-vert-spacing"
+				prop-name="emlFrom"
+				:placeholder="t('appointments', 'noreply@example.com')"
+				:label="t('appointments', 'Send emails from')"
+				:store="settingsStore">
+			<template #help>
+				{{ t('appointments', 'Sender address for this page\'s emails. Leave empty to use the server default. The mail server must allow sending from this address.') }}
+			</template>
+		</ComboInput>
+		<ComboInput
+				class="ps-vert-spacing"
+				prop-name="emlLogoUrl"
+				:placeholder="t('appointments', 'https://example.com/logo.png')"
+				:label="t('appointments', 'Email logo')"
+				:store="settingsStore">
+			<template #help>
+				{{ t('appointments', 'PNG or JPG shown at the top of attendee emails instead of the server logo. The email footer then shows the organization name. Leave empty for the server default.') }}
+			</template>
+		</ComboInput>
+		<ComboInput
+				class="ps-vert-spacing"
+				prop-name="emlLogoBg"
+				:placeholder="t('appointments', '#ffffff')"
+				:label="t('appointments', 'Email logo background colour')"
+				:store="settingsStore">
+		</ComboInput>
+		<ComboInput
+				class="ps-vert-spacing"
+				prop-name="emlLinkBase"
+				:placeholder="t('appointments', 'https://book.example.com')"
+				:label="t('appointments', 'Base URL for email links')"
+				:store="settingsStore">
+			<template #help>
+				{{ t('appointments', 'Use when this page is served on its own domain, so confirm and cancel links in emails point there. Leave empty to use the server URL.') }}
+			</template>
+		</ComboInput>
 		<LabelAccordion
 				:label="t('appointments','Email Attendee when the appointment is:')">
 			<template #helpPopover>
