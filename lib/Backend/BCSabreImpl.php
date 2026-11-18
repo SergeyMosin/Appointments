@@ -48,64 +48,6 @@ class BCSabreImpl implements IBackendConnector
     }
 
     /**
-     * @inheritDoc
-     */
-    function queryRangePast($calIds, $end, $only_empty, $delete, $delete_test = false)
-    {
-
-        if (empty($calIds)) {
-            return "0";
-        }
-
-        $ots = $end->getTimestamp();
-        $end->setTimestamp($ots + 50400);
-
-        $utz = $end->getTimezone();
-        $cnt = 0;
-
-        if ($delete) {
-
-            if ($delete_test === false) {
-                // let's make easier for the DavListener...
-                HintVar::setHint(HintVar::APPT_SKIP);
-            } else {
-                HintVar::setHint(HintVar::APPT_CANCEL);
-            }
-            // Cleanup hash table
-            if ($only_empty === false && $delete_test === false) {
-                $cutoff_str = $end->modify('-35 days')->format(BackendUtils::FLOAT_TIME_FORMAT);
-                $query = $this->db->getQueryBuilder();
-
-                $query->delete(BackendUtils::HASH_TABLE_NAME)
-                    ->where($query->expr()->lt('hash',
-                        $query->createNamedParameter($cutoff_str)))
-                    ->executeStatement();
-            }
-        }
-
-        $iter = $this->fastQuery($calIds, -1, $end->getTimestamp(), [], ['uri', 'calendarid']);
-        foreach ($iter as $row) {
-            $vo = Reader::read($row['calendardata']);
-            if ($only_empty &&
-                (!isset($vo->VEVENT->STATUS)
-                    || $vo->VEVENT->STATUS->getValue() !== 'TENTATIVE'
-                    || $vo->VEVENT->ATTENDEE
-                )
-            ) {
-                continue;
-            }
-            $ts = $vo->VEVENT->DTEND->getDateTime($utz)->getTimestamp();
-            if ($ts <= $ots) {
-                if ($delete) {
-                    $this->backend->deleteCalendarObject($row['calendarid'], $row['uri']);
-                }
-                $cnt++;
-            }
-        }
-        return $cnt;
-    }
-
-    /**
      * @param int $start_ts UTC
      * @param int $end_ts UTC
      * @param \DateTimeZone $utz user's timezone
@@ -747,12 +689,8 @@ class BCSabreImpl implements IBackendConnector
         return $ret;
     }
 
-    /**
-     * @inheritDoc
-     */
-    function queryRange($calId, $start, $end, $mode, $pageId = null): ?string
+    public function queryExternal($calId, $start, $end, $mode, $pageId = null): ?string
     {
-
         $no_uri = ($mode === 'no_url');
         if ($no_uri) {
             $key = ''; // add end_time instead of uri
@@ -764,81 +702,9 @@ class BCSabreImpl implements IBackendConnector
             }
         }
 
-        if ($mode[0] === BackendUtils::CLS_TS_MODE_EXTERNAL) {
-            // $calId = dstCal(main)+chr(31)+srcCal(free spots) @see PageController->showForm()
-            return $this->queryRangeTR($calId, $start, $end, $key);
-        }
-
-        // Simple Mode...
-        $o_start = $start->getTimestamp();
-        $o_end = $end->getTimestamp();
-
-        $ses_start = time() . '|';
-        $ret = '';
-
-//        $showET = $this->utils->getUserSettings()[BackendUtils::PSN_END_TIME];
-        $showET = true;
-
-        $ts_pref = 'U';
-
-        $propFilters = ['CATEGORIES:' . BackendUtils::APPT_CAT];
-        if ($no_uri === false) {
-            $propFilters[] = 'STATUS:TENTATIVE';
-        }
-        $iter = $this->fastQuery([$calId],
-            // We need to adjust for UTC timezones and filter
-            $o_start - 50400,
-            $o_end + 50400,
-            $propFilters,
-            ['uri']
-        );
-        foreach ($iter as $row) {
-            $vo = Reader::read($row['calendardata']);
-
-            /** @var  \Sabre\VObject\Property\ICalendar\DateTime $dt_start */
-            $dt_start = $vo->VEVENT->DTSTART;
-            if ($dt_start->isFloating()) {
-                $vo->destroy();
-                continue;
-            }
-
-            if ($vo->VEVENT->ATTENDEE) {
-                // this is most likely a pending appointment that is booked
-                // in the same cal via "Use Main Calendar" setting
-                $vo->destroy();
-                continue;
-            }
-
-            $s_ts = $dt_start->getDateTime()->getTimestamp();
-            if ($s_ts > $o_start) {
-                $e_ts = $vo->VEVENT->DTEND->getDateTime()->getTimestamp();
-                if ($e_ts <= $o_end) {
-
-                    if ($key !== "") {
-                        $atl = ':';
-                        if (isset($vo->VEVENT->SUMMARY)) {
-                            $s = $vo->VEVENT->SUMMARY->getValue();
-                            if ($s[0] === "_") {
-                                $atl .= str_replace(',', ' ', $s);
-                            }
-                        }
-
-                        $ret .= $ts_pref . $s_ts
-                            . ($showET ? ":" . $e_ts : "")
-                            . ':' . $this->utils->encrypt($ses_start . $row['uri'], $key)
-                            . $atl . ',';
-                    } else {
-                        // add end_time instead of uri
-                        $ret .= $ts_pref . $s_ts . ':' . $ts_pref . $e_ts . ',';
-                    }
-                }
-            }
-            $vo->destroy();
-        }
-
-        return $ret !== '' ? substr($ret, 0, -1) : null;
+        // $calId = dstCal(main)+chr(31)+srcCal(free spots) @see PageController->showForm()
+        return $this->queryRangeTR($calId, $start, $end, $key);
     }
-
 
     function getRawCalData(array $calInfo, string $userId)
     {
@@ -1127,28 +993,9 @@ class BCSabreImpl implements IBackendConnector
             $start_ts = $info['ext_start'];
 
         } else {
-            // manual mode
-            $d = $this->getObjectData($calId, $uri);
-            if ($d === null) {
-                $this->logErr("Object does not exist - mode: 0, cal: " . $calId . ", uri: " . $uri);
-                return 1;
-            }
-
-            // We need uid and start_ts
-            $vo = Reader::read($d);
-            if ($vo === null || !isset($vo->VEVENT)) {
-                $this->logger->error("Bad Data: not an event");
-                return 1;
-            }
-            /** @var \Sabre\VObject\Component\VEvent $evt */
-            $evt = $vo->VEVENT;
-            if (!isset($evt->DTSTART)) {
-                $this->logger->error("Bad Data: no DTSTART");
-                return 1;
-            }
-
-            $lock_uid = $uid = $evt->UID->getValue();
-            $start_ts = $evt->DTSTART->getDateTime()->getTimestamp();
+            // manual mode (deprecated)
+            $this->logErr("not supported (Simple) mode is used");
+            return 1;
         }
 
         $err = '';
@@ -1176,54 +1023,50 @@ class BCSabreImpl implements IBackendConnector
         }
 
         if ($ec === 0) {
-            // It is SAFE (for manual made) to take this time slot
-
-            if ($ts_mode !== BackendUtils::CLS_TS_MODE_SIMPLE) {
-                // for external and template modes we need to re-check the time range and update the lock_uid to "real" uid or delete the lock_uid if the time range is "taken"
-                try {
-                    if ($ts_mode === BackendUtils::CLS_TS_MODE_EXTERNAL) {
-                        $trc = $this->checkRangeTR($info['ext_start'], $info['ext_end'], $calId, $utz, $settings);
-                    } else {
-                        // template mode
-                        $dt->setTimestamp($start_ts);
-                        $dt_end = clone($dt);
-                        $dt_end->setTimestamp($end_ts);
-                        $trc = $this->checkRangeTemplate($settings, $dt, $dt_end, $userId);
-                    }
-                    if ($trc === 0) {
-                        // the time range is good, create new object...
-                        if ($this->createObject($calId, $uri, $d) !== false) {
-                            // new object OK, set real uid hash
-                            $query = $this->db->getQueryBuilder();
-                            $query->insert(BackendUtils::HASH_TABLE_NAME)
-                                ->values([
-                                    'uid' => $query->createNamedParameter($uid),
-                                    'hash' => $query->createNamedParameter('99999999.0000000000000000000000'),
-                                    'user_id' => $query->createNamedParameter($userId),
-                                    'start' => $query->createNamedParameter($start_ts)
-                                ])->executeStatement();
-                        } else {
-                            $err = "Can not create object - mode: " . $ts_mode . ", cal: " . $calId . ", uri: " . $uri;
-                            $ec = 6;
-                        }
-
-                    } else {
-                        // spot busy or error occurred
-                        $this->logger->warning("BusySpot/error detected in setAttendee func, mode: " . $ts_mode . ", trc_code: " . $trc);
-                        $ec = 1;
-                    }
-                } catch (\Throwable $e) {
-                    $this->logger->error($e->getMessage(), [
-                        'app' => Application::APP_ID,
-                        'exception' => $e
-                    ]);
-                    $err = "Exception while creating object: - mode: " . $ts_mode . ", cal: " . $calId . ", uri: " . $uri;
-                    $ec = 9;
+            // for external and template modes we need to re-check the time range and update the lock_uid to "real" uid or delete the lock_uid if the time range is "taken"
+            try {
+                if ($ts_mode === BackendUtils::CLS_TS_MODE_EXTERNAL) {
+                    $trc = $this->checkRangeTR($info['ext_start'], $info['ext_end'], $calId, $utz, $settings);
+                } else {
+                    // template mode
+                    $dt->setTimestamp($start_ts);
+                    $dt_end = clone($dt);
+                    $dt_end->setTimestamp($end_ts);
+                    $trc = $this->checkRangeTemplate($settings, $dt, $dt_end, $userId);
                 }
+                if ($trc === 0) {
+                    // the time range is good, create new object...
+                    if ($this->createObject($calId, $uri, $d) !== false) {
+                        // new object OK, set real uid hash
+                        $query = $this->db->getQueryBuilder();
+                        $query->insert(BackendUtils::HASH_TABLE_NAME)
+                            ->values([
+                                'uid' => $query->createNamedParameter($uid),
+                                'hash' => $query->createNamedParameter('99999999.0000000000000000000000'),
+                                'user_id' => $query->createNamedParameter($userId),
+                                'start' => $query->createNamedParameter($start_ts)
+                            ])->executeStatement();
+                    } else {
+                        $err = "Can not create object - mode: " . $ts_mode . ", cal: " . $calId . ", uri: " . $uri;
+                        $ec = 6;
+                    }
 
-                // "release" the "lock"
-                $this->utils->deleteApptHashByUID($this->db, $lock_uid);
+                } else {
+                    // spot busy or error occurred
+                    $this->logger->warning("BusySpot/error detected in setAttendee func, mode: " . $ts_mode . ", trc_code: " . $trc);
+                    $ec = 1;
+                }
+            } catch (\Throwable $e) {
+                $this->logger->error($e->getMessage(), [
+                    'app' => Application::APP_ID,
+                    'exception' => $e
+                ]);
+                $err = "Exception while creating object: - mode: " . $ts_mode . ", cal: " . $calId . ", uri: " . $uri;
+                $ec = 9;
             }
+
+            // "release" the "lock"
+            $this->utils->deleteApptHashByUID($this->db, $lock_uid);
 
             if ($ec === 0) {
 
@@ -1289,13 +1132,6 @@ class BCSabreImpl implements IBackendConnector
         $ret = [1, null, "", ""];
         $err = '';
 
-        // for manual mode:
-        //  if confirming:
-        //      pending appointments are always in the main calendar
-        //      might need to be moved to BackendUtils::CLS_DEST_ID if set
-        //  if cancelling:
-        //      calId is "pre-calculated" in the PageController
-        //
         // for external mode:
         //  pending appointments are always in the main calendar
         $d = $this->getObjectData($calId, $uri);
@@ -1316,41 +1152,13 @@ class BCSabreImpl implements IBackendConnector
                 // Already confirmed
                 $ret = [0, $date, $attendeeName, $attendeeEmail];
             } else {
-
-                $settings = $this->utils->getUserSettings();
-
-                if ($do_confirm && $settings[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_SIMPLE
-                    && $settings[BackendUtils::CLS_DEST_ID] !== "-1") {
-                    // confirming in regular mode into different calendar
-                    $dcl_id = $settings[BackendUtils::CLS_DEST_ID];
-
-                    // 1. delete from original calendar
-                    $ra = $this->deleteCalendarObject($userId, $calId, $uri);
-                    if ($ra[0] !== 0) {
-                        $err = "Can not delete object: " . $uri . ", dcl=" . $dcl_id;
-                    } else {
-                        // 2. create new calendar object
-                        if ($this->createObject($dcl_id, $uri, $newData) === false) {
-                            $err = "Can not create object: " . $uri . ", dcl=" . $dcl_id;
-                        } else {
-                            // 3. update calendar object - this is bad, but as of now only updateObject() triggers a DavEvent that send emails
-                            if ($this->updateObject($dcl_id, $uri, $newData) === false) {
-                                $err = "Can not update object: " . $uri . ", dcl=" . $dcl_id;
-                            } else {
-                                // Object Update: SUCCESS
-                                $ret = [0, $date, $attendeeName, $attendeeEmail];
-                            }
-                        }
-                    }
+                if ($this->updateObject($calId, $uri, $newData) === false) {
+                    $err = "Can not update object: " . $uri;
                 } else {
-                    // same calendar
-                    if ($this->updateObject($calId, $uri, $newData) === false) {
-                        $err = "Can not update object: " . $uri;
-                    } else {
-                        // Object Update: SUCCESS
-                        $ret = [0, $date, $attendeeName, $attendeeEmail];
-                    }
+                    // Object Update: SUCCESS
+                    $ret = [0, $date, $attendeeName, $attendeeEmail];
                 }
+
             }
         }
         if ($err !== '') {

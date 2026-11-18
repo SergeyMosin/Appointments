@@ -37,7 +37,7 @@ const calendarOptions = computed(() => {
 const modeOptions = [
 	{label: t('appointments', 'Weekly Template'), value: TS_MODE.TEMPLATE},
 	{label: t('appointments', 'External'), value: TS_MODE.EXTERNAL},
-	{label: '⚠ ' + t('appointments', 'Simple'), value: TS_MODE.SIMPLE}
+	{label: '🚫 ' + t('appointments', 'Simple'), value: TS_MODE.SIMPLE, disabled: true}
 ]
 
 const leadTimeOptions = [
@@ -95,12 +95,11 @@ const handleSetCal = (data) => {
 				:options="modeOptions">
 			<template #help>
 				<strong>{{ t('appointments', 'Weekly Template') }}</strong>: {{ t('appointments', 'In this mode you can set a weekly template and it will be repeated automatically.') }}<br>
-				<strong>{{ t('appointments', 'Simple') }}</strong>: {{ t('appointments', 'Use provided "Add Appointment Slots" dialog to add "available" time slots. Recurrence is not supported in this mode.') }}<br>
 				<strong>{{ t('appointments', 'External') }}</strong>: {{ t('appointments', 'Use Calendar App or any other CalDAV compatible client to add "available" timeslots. Most recurrence rules are supported in this mode. Two calendars are required: a "Source Calendar" to keep track of your availability timeslots and a "Destination Calendar" for booked appointments.') }}<br>
 			</template>
 		</ComboSelect>
 
-		<NcNoteCard v-if="settings.tsMode===TS_MODE.SIMPLE" style="margin-top:0" type="error">WARNING: Simple Mode Will Be Removed In The Next Update
+		<NcNoteCard v-if="settings.tsMode===TS_MODE.SIMPLE" style="margin-top:0" type="error">WARNING: Simple Mode: Support Discontinued. Please use a different mode or delete this page.
 		</NcNoteCard>
 
 		<SectionCalendarsWeekly

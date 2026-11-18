@@ -5,16 +5,6 @@ namespace OCA\Appointments\Backend;
 interface IBackendConnector
 {
 
-
-    /**
-     * @param string[] $calIds
-     * @param \DateTime $end
-     * @param bool $only_empty
-     * @param bool $delete if false just count
-     * @return mixed
-     */
-    function queryRangePast($calIds, $end, $only_empty, $delete);
-
     /**
      * @param string $calId
      * @param \DateTime $start should have user's timezone
@@ -23,7 +13,7 @@ interface IBackendConnector
      * @param string|null $pageId
      * @return string|null
      */
-    function queryRange($calId, $start, $end, $mode, $pageId);
+    function queryExternal($calId, $start, $end, $mode, $pageId);
 
     /**
      * @param array $cms

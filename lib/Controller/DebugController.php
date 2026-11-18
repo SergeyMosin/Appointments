@@ -193,10 +193,11 @@ class DebugController extends Controller
         $settings = $this->utils->getUserSettings();
 
         switch ($settings[BackendUtils::CLS_TS_MODE]) {
-            case BackendUtils::CLS_TS_MODE_SIMPLE:
+            case BackendUtils::CLS_TS_MODE_TEMPLATE:
                 $pageCalendars = [
-                    'main' => $settings[BackendUtils::CLS_MAIN_ID],
-                    'dest' => $settings[BackendUtils::CLS_DEST_ID]
+                    'dest' => $settings[BackendUtils::CLS_TMM_DST_ID],
+                    'moreCals' => $settings[BackendUtils::CLS_TMM_MORE_CALS],
+                    'subs' => $settings[BackendUtils::CLS_TMM_SUBSCRIPTIONS],
                 ];
                 break;
             case BackendUtils::CLS_TS_MODE_EXTERNAL:
@@ -205,12 +206,8 @@ class DebugController extends Controller
                     'dest' => $settings[BackendUtils::CLS_XTM_DST_ID]
                 ];
                 break;
-            default: // BackendUtils::CLS_TS_MODE_TEMPLATE:
-                $pageCalendars = [
-                    'dest' => $settings[BackendUtils::CLS_TMM_DST_ID],
-                    'moreCals' => $settings[BackendUtils::CLS_TMM_MORE_CALS],
-                    'subs' => $settings[BackendUtils::CLS_TMM_SUBSCRIPTIONS],
-                ];
+            default:
+                return new DataResponse('invalid template type', Http::STATUS_BAD_REQUEST);
         }
 
         $query = $this->db->getQueryBuilder();

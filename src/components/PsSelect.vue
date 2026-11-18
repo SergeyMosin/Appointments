@@ -26,6 +26,7 @@ const selectedLabel = computed(() => {
 			:value="selectedLabel"
 			:labelOutside="true"
 			class="ps-nc-select-internal"
+			:selectable="(option) => !option.disabled"
 			:clearable="false"/>
 </template>
 

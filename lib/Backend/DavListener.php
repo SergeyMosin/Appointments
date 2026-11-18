@@ -253,16 +253,9 @@ class DavListener implements IEventListener
                     $this->logger->error("can not find main calendar, userId: " . $userId . ", pageId: " . $pageId);
                     continue;
                 }
-                if ($otherCalId !== '-1'
-                    && $settings[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_SIMPLE) {
-                    // if we have a dst calendar in simple mode than it will hold confirmed appointments, so we should check it first and then check the src calendar just in-case settings have been changed after the appointment was booked
-                    $temp = $calId;
-                    $calId = $otherCalId;
-                    $otherCalId = $temp;
-                } else {
-                    // dst calendar is only valid in simple mode
-                    $otherCalId = '-1';
-                }
+                // dst calendar is only valid in (deprecated)simple mode
+                // TODO: remove all (otherCalId) refs
+                $otherCalId = '-1';
 
                 $utz = $this->utils->getCalendarTimezone($userId, $bc->getCalendarById($calId, $userId));
             }

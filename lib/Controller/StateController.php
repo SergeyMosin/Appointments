@@ -278,8 +278,6 @@ class StateController extends Controller
                     $r->setData($tz->getName());
                     $r->setStatus(200);
                     break;
-                case 'get_calweek':
-                    return $this->calgetweek($pageId);
                 case 'set_one':
                     list($status, $data) = $this->updateSettings($pageId);
                     if ($status === Http::STATUS_OK) {
@@ -489,10 +487,6 @@ class StateController extends Controller
                     $buf2 = BackendUtils::CLS_BUFFER_AFTER;
                 } else {
                     $buf2 = BackendUtils::CLS_BUFFER_BEFORE;
-                }
-                $settings = $this->utils->getUserSettings();
-                if ($settings[BackendUtils::CLS_TS_MODE] === BackendUtils::CLS_TS_MODE_SIMPLE && $value !== 0) {
-                    return [Http::STATUS_BAD_REQUEST, $this->makeErrorJson('in simple mode buffers must be 0')];
                 }
                 if ($value < 0 || $value > 120) {
                     return [Http::STATUS_BAD_REQUEST, ''];
@@ -998,139 +992,4 @@ class StateController extends Controller
 
         return substr($out, 0, -1);
     }
-
-    private function calgetweek($pageId)
-    {
-        $settings = $this->utils->getUserSettings();
-
-        if ($settings[BackendUtils::CLS_TS_MODE] !== BackendUtils::CLS_TS_MODE_SIMPLE) {
-            $r = new SendDataResponse();
-            $r->setStatus(400);
-            return $r;
-        }
-
-        // t must be d[d]-mm-yyyy
-        $t = $this->request->getParam("t", "");
-
-        //Reusing the url for deleting old appointments
-        if (strpos($t, "before") !== false) {
-            return $this->calGetOld($t, $pageId);
-        }
-
-        $r = new SendDataResponse();
-
-        if (empty($t)) {
-            $r->setStatus(400);
-            return $r;
-        }
-
-        $dcl_id = '-1';
-        $cal_id = $this->utils->getMainCalId($this->userId, $this->bc, $dcl_id);
-        if ($cal_id === "-1") {
-            $r->setStatus(400);
-            return $r;
-        }
-
-        $utz = $this->utils->getCalendarTimezone($this->userId, $this->bc->getCalendarById($cal_id, $this->userId));
-        try {
-            $t_start = \DateTime::createFromFormat(
-                'j-m-Y H:i:s', $t . ' 00:00:00', $utz);
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage() . ", timezone: " . $utz->getName());
-            $r->setStatus(400);
-            return $r;
-        }
-
-        $r->setStatus(200);
-
-        $t_end = clone $t_start;
-        $t_end->setTimestamp($t_start->getTimestamp() + (7 * 86400));
-
-        $data_out = "";
-
-        $out = $this->bc->queryRange($cal_id, $t_start, $t_end, 'no_url');
-        if ($out !== null) {
-            $data_out .= $out;
-        }
-
-        // check dest calendar
-        if ($dcl_id !== "-1") {
-            $dc = $this->bc->getCalendarById($dcl_id, $this->userId);
-            $out = $this->bc->queryRange($dcl_id, $t_start, $t_end, 'no_url');
-            if ($out !== null) {
-                $data_out .= chr(31) . $dc['color'] . chr(30) . $out;
-            }
-        }
-
-        if (!empty($data_out)) {
-            $r->setData($data_out);
-        }
-
-        return $r;
-    }
-
-    /**
-     * @param string $t JSON string {
-     *      "type": "empty|both" ,
-     *      "before": 1|7,
-     *      ["delete":boolean]
-     * }
-     * @param string $pageId
-     * @return SendDataResponse
-     */
-    private function calGetOld($t, $pageId)
-    {
-
-        $r = new SendDataResponse();
-
-        $jo = json_decode($t);
-        if ($jo === null) {
-            $r->setStatus(400);
-            return $r;
-        }
-
-        // Because of floating timezones...
-        $utz = $this->utils->getUserTimezone($this->userId);
-        try {
-            if ($jo->before === 1) {
-                $rs = 'yesterday';
-            } else {
-                $rs = 'today -7 days';
-            }
-            $end = new \DateTime($rs, $utz);
-
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage() . ", timezone: " . $utz->getName());
-            $r->setStatus(400);
-            return $r;
-        }
-
-        $cals = [];
-
-        $dst_cal_id = "-1";
-        $main_cal_id = $this->utils->getMainCalId($this->userId, $this->bc, $dst_cal_id);
-
-        if ($main_cal_id !== "-1") {
-            $cals[] = $main_cal_id;
-        }
-        // dest calendar
-        if ($jo->type === "both" && $dst_cal_id !== "-1") {
-            $cals[] = $dst_cal_id;
-        }
-
-        $ots = $end->getTimestamp();
-
-        $out = $this->bc->queryRangePast($cals, $end, $jo->type === 'empty', isset($jo->delete));
-
-        $r = new SendDataResponse();
-        if ($out !== null) {
-            $r->setData($out . "|" . $ots);
-            $r->setStatus(200);
-        } else {
-            $r->setStatus(500);
-        }
-
-        return $r;
-    }
-
 }
