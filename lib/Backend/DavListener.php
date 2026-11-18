@@ -1109,6 +1109,7 @@ class DavListener implements IEventListener
         $this->setFromAddress($msg, $userId, $org_email, $org_name);
 
         $msg->setTo(array($to_email));
+        $this->addAttendeeCc($msg, $settings, $to_email);
         $msg->useTemplate($tmpl);
 
         if ($doc) {
@@ -1189,6 +1190,24 @@ class DavListener implements IEventListener
                     }
                     $evt->ATTENDEE[$k]->setValue($av);
                     $evt->ATTENDEE->offsetSet('ROLE', 'REQ-PARTICIPANT');
+                }
+            }
+
+            // Add Cc recipients as NON-PARTICIPANT attendees in the .ics file
+            // so calendar clients show them for full transparency.
+            // https://www.kanzaki.com/docs/ical/role.html
+            $rawCc = $settings[BackendUtils::EML_ATT_CC] ?? '';
+            if (is_string($rawCc) && trim($rawCc) !== '') {
+                $ccIcs = BackendUtils::parseCcList($rawCc);
+                if ($ccIcs !== null) {
+                    foreach ($ccIcs as $ccEmail) {
+                        if (strcasecmp($ccEmail, $to_email) !== 0) {
+                            $a = $evt->add('ATTENDEE', 'mailto:' . $ccEmail);
+                            $a['ROLE'] = 'NON-PARTICIPANT';
+                            $a['RSVP'] = 'FALSE';
+                            $a['CN'] = $ccEmail;
+                        }
+                    }
                 }
             }
 
@@ -1645,6 +1664,28 @@ class DavListener implements IEventListener
      * @param string $org_name
      * @return void
      */
+    /**
+     * Copy the page's attCc addresses on an attendee email. An invalid stored
+     * value (set before validation existed) is logged and skipped rather than
+     * blocking the attendee's email.
+     */
+    private function addAttendeeCc($msg, array $settings, string $to_email): void
+    {
+        $raw = $settings[BackendUtils::EML_ATT_CC] ?? '';
+        if (!is_string($raw) || trim($raw) === '') {
+            return;
+        }
+        $cc = BackendUtils::parseCcList($raw);
+        if ($cc === null) {
+            $this->logger->warning("appointments: ignoring invalid Cc list in page settings");
+            return;
+        }
+        $cc = array_values(array_filter($cc, fn($e) => strcasecmp($e, $to_email) !== 0));
+        if (!empty($cc)) {
+            $msg->setCc($cc);
+        }
+    }
+
     private function setFromAddress($msg, $userId, $org_email, $org_name)
     {
         if ($this->appConfig->getValueString(Application::APP_ID,
